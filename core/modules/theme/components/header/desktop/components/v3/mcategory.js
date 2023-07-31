@@ -4,19 +4,20 @@
 /* eslint-disable react/no-danger */
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useRef } from 'react';
-import { WHITE, PRIMARY } from '@theme_color';
-import getPath from '@helper_getpath';
-import { setResolver, getResolver } from '@helper_localstorage';
-import classNames from 'classnames';
-import Link from 'next/link';
-import dynamic from 'next/dynamic';
-import CmsRenderer from '@core_modules/cms/components/cms-renderer';
-import { makeStyles } from '@material-ui/core/styles';
-import { useRouter } from 'next/router';
-import '@fortawesome/fontawesome-free/css/all.min.css';
-import 'animate.css';
 import { basePath } from '@config';
+import CmsRenderer from '@core_modules/cms/components/cms-renderer';
+import '@fortawesome/fontawesome-free/css/all.min.css';
+import { getStoreHost } from '@helper_config';
+import getPath from '@helper_getpath';
+import { getResolver, setResolver } from '@helper_localstorage';
+import { makeStyles } from '@material-ui/core/styles';
+import { PRIMARY, WHITE } from '@theme_color';
+import 'animate.css';
+import classNames from 'classnames';
+import dynamic from 'next/dynamic';
+import Link from 'next/link';
+// import { useRouter } from 'next/router';
+import React, { useRef } from 'react';
 
 const MenuChildren = dynamic(() => import('@common_headerdesktop/components/v3/mcategoryChildren'), { ssr: false });
 
@@ -27,8 +28,11 @@ const Menu = (props) => {
     if (!menu) {
         menu = [];
     }
-    const router = useRouter();
+    // const router = useRouter();
     const generateLink = (cat) => {
+        if (cat.link_type === 'custom_link' && cat.link.includes(getStoreHost())) {
+            return cat.link.replace(getStoreHost(), '');
+        }
         const link = cat.link ? getPath(cat.link) : `/${cat.url_path}`;
         if (storeConfig.pwa.ves_menu_enable) {
             if (cat.link_type === 'category_link') {
@@ -134,12 +138,15 @@ const Menu = (props) => {
                                             <>
                                                 {val.before_html && <div dangerouslySetInnerHTML={{ __html: val.before_html }} />}
                                                 <a
-                                                    href={val.link_type === 'category_link' && `${basePath}${getPath(val.link)}`}
-                                                    onClick={() => {
-                                                        if (val.link_type === 'custom_link') {
-                                                            router.push(val.link);
-                                                        }
-                                                    }}
+                                                    href={
+                                                        val.link_type === 'category_link' ? `${basePath}${getPath(val.link)}` : generateLink(val)[0]
+                                                    }
+                                                    // href={val.link_type === 'category_link' && `${basePath}${getPath(val.link)}`}
+                                                    // onClick={() => {
+                                                    //     if (val.link_type === 'custom_link') {
+                                                    //         router.push(val.link);
+                                                    //     }
+                                                    // }}
                                                     ref={linkEl}
                                                     dangerouslySetInnerHTML={{
                                                         __html: prefix !== '' ? `${prefix}` : val.name,
