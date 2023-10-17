@@ -7,6 +7,11 @@
         "required": "Nomor telepon tidak boleh kosong",
         "wrong": "Nomor telepon tidak sesuai"
     },
+    
+    "phoneEmail": {
+        "required": "Nomor telepon atau email tidak boleh kosong",
+        "wrong": "Nomor telepon atau email tidak sesuai"
+    },
     "password": {
         "required": "Password tidak boleh kosong",
         "wrong": "Password tidak sesuai"
@@ -61,5 +66,39 @@
     "maps": {
         "required": "Lokasi maps tidak boleh kosong"
     },
-    "required": "tidak boleh kosong"
+    "guest": {
+        "wrong": "Anda harus login terlebih dahulu"
+    },
+    "required": "tidak boleh kosong",
+    "captcha": {
+        "required": "Captcha tidak boleh kosong",
+        "wrong": "Captcha tidak sesuai"
+    },
+    "gender": {
+        "required": "Jenis kelamin tidak boleh kosong"
+    },
+    "dob": {
+        "required": "Tanggal lahir tidak boleh kosong"
+    },
+    "confirmPinPoint": {
+        "required": "Anda harus menyetujui pernyataan diatas ini."
+    },
+    "to": "Dari",
+    "from": "Ke",
+    "recipientName": "Nama Penerima",
+    "recipientEmail": "Email Penerima",
+    "senderName": "Nama Pengirim",
+    "senderEmail": "Email Pengirim",
+    "emailTemplate": "Email Template",
+    "amount": "Jumlah",
+    "notValid": "tidak valid",
+    "greaterThanOrEqual": "harus lebih dari atau sama dengan",
+    "lessThanOrEqual": "harus kurang dari atau sama dengan",
+    "value": "Nilai",
+    "code": "Kode",
+    "chooseAmount": "Pilih Jumlah",
+    "customAmount": "Masukkan Jumlah Lainnya",
+    "selectDesign": "Pilih Desain",
+    "composeEmail": "Susun Email",
+    "deliveryDate": "Tanggal Pengiriman"
 }

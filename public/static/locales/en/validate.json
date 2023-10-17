@@ -6,6 +6,10 @@
     "phoneNumber": {
         "required": "Phone number is required",
         "wrong": "Phone number is not valid"
+    },    
+    "phoneEmail": {
+        "required": "Phone number or email is required",
+        "wrong": "Phone number or email is not valid"
     },
     "password": {
         "required": "Password is required",
@@ -61,5 +65,39 @@
     "maps": {
         "required": "Maps location is required"
     },
-    "required": "is required"
+    "guest": {
+        "wrong": "You must login first"
+    },
+    "required": "is required",
+    "captcha": {
+        "required": "Captcha is required",
+        "wrong": "Captcha is not valid"
+    },
+    "gender": {
+        "required": "Gender is required"
+    },
+    "dob": {
+        "required": "Date of Birth is required"
+    },
+    "confirmPinPoint": {
+        "required": "You have to check the agreements above."
+    },
+    "to": "To",
+    "from": "From",
+    "recipientName": "Recipient Name",
+    "recipientEmail": "Recipient Email",
+    "senderName": "Sender Name",
+    "senderEmail": "Sender Email",
+    "emailTemplate": "Email Template",
+    "amount": "Amount",
+    "notValid": "is not valid",
+    "greaterThanOrEqual": "must be greater than or equal to",
+    "lessThanOrEqual": "must be less than or equal to",
+    "value": "Value",
+    "code": "Code",
+    "chooseAmount": "Choose an Amount",
+    "customAmount": "Enter Custom Amount",
+    "selectDesign": "Select a Design",
+    "composeEmail": "Compose Your Email",
+    "deliveryDate": "Delivery Date"
 }

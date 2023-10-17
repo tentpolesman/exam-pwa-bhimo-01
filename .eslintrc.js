@@ -6,6 +6,7 @@ module.exports = {
     env: {
         browser: true,
         es6: true,
+        jest: true,
     },
     extends: 'airbnb',
     globals: {
@@ -14,20 +15,20 @@ module.exports = {
         React: 'writable',
         snap: true,
     },
-    parser: "babel-eslint",
     parserOptions: {
         ecmaFeatures: {
             jsx: true,
         },
-        ecmaVersion: 2018,
+        ecmaVersion: 2020,
         sourceType: 'module',
         allowImportExportEverywhere: false,
         codeFrame: false,
     },
     plugins: ['react'],
     rules: {
-        'camelcase': 'off',
+        camelcase: 'off',
         indent: ['error', 4],
+        'implicit-arrow-linebreak': 'off',
         'react/react-in-jsx-scope': 'off',
         'react/jsx-indent': ['error', 4],
         'react/jsx-indent-props': ['error', 4],
@@ -51,10 +52,10 @@ module.exports = {
                 paths: ['@material-ui/core', '@material-ui/icons', '@material-ui/lab'],
             },
         ],
+        'import/no-extraneous-dependencies': 'off',
+        'import/no-unresolved': 'off',
     },
     settings: {
-        'import/parser': 'babel-eslint',
-        'import/resolver': 'eslint-import-resolver-babel-module',
         'import/ignore': 'node_modules',
     },
 };
