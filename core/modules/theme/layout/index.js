@@ -33,6 +33,7 @@ import { getCountCart } from '@core_modules/theme/services/graphql';
 import { frontendConfig } from '@helpers/frontendOptions';
 import { getCartId } from '@helper_cartid';
 import { localTotalCart } from '@services/graphql/schema/local';
+import Script from 'next/script';
 
 const GlobalPromoMessage = dynamic(() => import('@core_modules/theme/components/globalPromo'), { ssr: false });
 const BottomNavigation = dynamic(() => import('@common_bottomnavigation'), { ssr: true });
@@ -479,7 +480,7 @@ const Layout = (props) => {
                     href={canonicalUrl.substring(0, canonicalUrl.indexOf('?') !== -1 ? canonicalUrl.indexOf('?') : canonicalUrl.length)}
                 />
                 {preloadImages && Object.values(preloadImages).map((_image, idx) => <link rel="preload" as="image" href={_image} key={idx} />)}
-                {showPopup && <script src="/install.js" defer />}
+                {/* {showPopup && <script src="/install.js" defer />} */}
             </Head>
             {showPopup && storeConfig && storeConfig.pwa && storeConfig.pwa.header_version !== 'v2' ? (
                 <PopupInstallAppMobile appName={appName} installMessage={installMessage} />
@@ -590,6 +591,7 @@ const Layout = (props) => {
                     className={bodyStyles.itemProduct}
                 />
             )}
+            <Script src="/install.js" defer />
         </>
     );
 };
