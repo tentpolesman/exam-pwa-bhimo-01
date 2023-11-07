@@ -12,7 +12,13 @@ const CmsSlug = (props) => {
     } = props;
     const { data, error, loading } = getCmsPage({ identifier: slug[0] });
     const mixedContents = data?.cmsPage?.content?.replace('[/mgz_pagebuilder]', '[mgz_pagebuilder]').split('[mgz_pagebuilder]');
-    const removeIdentifier = mixedContents && JSON.parse(mixedContents[1]);
+    let removeIdentifier = '';
+
+    try {
+        removeIdentifier = mixedContents && JSON.parse(mixedContents[1]);
+    } catch (err) {
+        console.log('Error: ', err.message);
+    }
 
     // eslint-disable-next-line consistent-return
     const findImages = (content) => {
