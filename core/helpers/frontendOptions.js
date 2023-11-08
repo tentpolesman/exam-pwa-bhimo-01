@@ -9,6 +9,16 @@ export const frontendConfig = (pwaConfig) => {
             button_text_color = button_background_color === '#FFFFFF' ? '#000000' : '#FFFFFF';
         }
         return `
+            :root {
+                --color-primary: ${pwaConfig?.primary_color || '#000000'};
+                --color-secondary: ${pwaConfig?.secondary_color || '#818181'};
+                --color-font: ${pwaConfig?.font_color || '#000000'};
+                --color-bg: ${pwaConfig?.background_color || '#FFFFFF'};
+                --color-btn-bg: ${pwaConfig?.button_background_color || '#000000'};
+                --color-error: ${pwaConfig?.error_color || '#FF0000'};
+                --color-warning: ${pwaConfig?.warning_msg_color || '#FE5D26'};
+                --color-success: ${pwaConfig?.success_msg_color || '#46954D'};
+            }
             body {
                 background-color: ${pwaConfig.background_color || '#ffffff'};
                 color: ${pwaConfig.font_color || '#000000'};

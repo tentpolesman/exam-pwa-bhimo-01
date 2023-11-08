@@ -6,7 +6,24 @@ module.exports = {
         './src/**/*.{js,ts,jsx,tsx,mdx}',
     ],
     theme: {
-        extend: {},
+        extend: {
+            colors: {
+                primary: 'var(--color-primary)',
+                secondary: 'var(--color-secondary)',
+                font: 'var(--color-font)',
+                'bg-color': 'var(--color-bg)',
+                btn: 'var(--color-btn-bg)',
+                error: 'var(--color-btn-error)',
+                warning: 'var(--color-btn-warning)',
+                success: 'var(--color-btn-success)',
+                'gray-primary': '#DEDEDE',
+                'gray-secondary': '#B4B4B4',
+                'gray-third': '#6E6E6E',
+                'gray-light': '#F8F8F8',
+                orange: '#FE5D26',
+                green: '#46954D',
+            },
+        },
         screens: {
             xs: '0px',
             xm: '480px',
