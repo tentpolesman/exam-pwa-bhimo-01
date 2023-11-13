@@ -2,12 +2,9 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useState } from 'react';
-import classNames from 'classnames';
-import LeftArrowIcon from '@material-ui/icons/ArrowBackIos';
-import RightArrowIcon from '@material-ui/icons/ArrowForwardIos';
 import Slider from 'react-slick';
 import ImageSlide from '@common_slick/Banner/ImageSlider';
-import useStyles from '@common_slick/Banner/style';
+import { PRIMARY } from '@root/core/theme/colors';
 
 const Banner = ({
     data = [],
@@ -21,19 +18,33 @@ const Banner = ({
     autoplaySpeed = 4000,
     storeConfig = {},
 }) => {
-    const styles = useStyles();
     const [slideIndex, setIndex] = useState(0);
     const [count, setCount] = useState(0);
     let sliderRef = React.createRef();
 
-    const dotActive = data.length > 1 ? classNames(styles.dotsItem, styles.dotActive) : styles.hide;
-    const dotItem = data.length > 1 ? styles.dotsItem : styles.hide;
     const handleLeftArrow = () => {
         if (slideIndex === 0) {
             sliderRef.slickPrev(data.length - 1);
         } else {
             sliderRef.slickPrev(slideIndex - 1);
         }
+    };
+
+    const generateDotItemProps = (isActive) => {
+        const dotItemProps = {
+            className: 'hidden',
+        };
+
+        if (data.length > 1) {
+            if (isActive) {
+                dotItemProps.className = 'w-[10px] h-[10px] rounded-[100px] m-[5px] cursor-pointer';
+                dotItemProps.style = { backgroundColor: PRIMARY };
+            } else {
+                dotItemProps.className = 'w-[7px] h-[7px] rounded-[100px] m-[5px] cursor-pointer bg-white';
+            }
+        }
+
+        return dotItemProps;
     };
 
     const handleRightArrow = () => {
@@ -58,7 +69,7 @@ const Banner = ({
     };
 
     return (
-        <div className={styles.caraousel}>
+        <div className="w-full h-full relative sm:h-auto">
             <Slider ref={(slider) => (sliderRef = slider)} {...settings}>
                 {data.map((item, key) => (
                     <ImageSlide
@@ -75,19 +86,23 @@ const Banner = ({
             </Slider>
             {showArrow ? (
                 <>
-                    <div className={classNames(styles.arrow, styles.leftArrow)} onClick={handleLeftArrow}>
-                        <LeftArrowIcon fontSize="inherit" />
+                    <div
+                        className="text-[1.5rem] bg-[rgba(255,255,255,0.5)] p-[10px] rounded flex flex-col justify-center items-center pl-[5px] w-[40px] h-[40px] cursor-pointer absolute top-[calc(50%-1rem)] left-[20px]"
+                        onClick={handleLeftArrow}
+                    >
+                        <i class="fas fa-chevron-left" />
                     </div>
-                    <div className={classNames(styles.arrow, styles.rightArrow)} onClick={handleRightArrow}>
-                        <RightArrowIcon fontSize="inherit" />
+                    <div
+                        className="text-[1.5rem] bg-[rgba(255,255,255,0.5)] p-[10px] rounded flex flex-col justify-center items-center pl-[5px] w-[40px] h-[40px] cursor-pointer absolute top-[calc(50%-1rem)] right-[20px]"
+                        onClick={handleRightArrow}
+                    >
+                        <i class="fas fa-chevron-right" />
                     </div>
                 </>
             ) : null}
-            <div className={styles.dots}>
+            <div className="z-[2] flex flex-row justify-around absolute bottom-[33px] left-[50%] -translate-x-[50%] -translate-y-[50%]">
                 {data.map((item, id) => (
-                    /* eslint-disable jsx-a11y/click-events-have-key-events */
-                    /* eslint-disable jsx-a11y/no-static-element-interactions */
-                    <div className={slideIndex === id ? dotActive : dotItem} key={id} onClick={() => sliderRef.slickGoTo(id)} />
+                    <div {...generateDotItemProps(slideIndex === id)} key={id} onClick={() => sliderRef.slickGoTo(id)} />
                 ))}
             </div>
         </div>

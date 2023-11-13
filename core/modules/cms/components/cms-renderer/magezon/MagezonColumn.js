@@ -1,14 +1,41 @@
 import React from 'react';
 import MagezonElement from '@core_modules/cms/components/cms-renderer/magezon/index';
-import useStyles from '@core_modules/cms/components/cms-renderer/magezon/style';
 
 const MagezonColumn = (props) => {
     const {
-        elements, xs_size, sm_size, md_size, lg_size, xl_size,
-        xs_offset_size, sm_offset_size, md_offset_size, lg_offset_size, xl_offset_size,
-        xs_hide, sm_hide, md_hide, lg_hide, xl_hide, storeConfig,
+        elements,
+        xs_size,
+        sm_size,
+        md_size,
+        lg_size,
+        xl_size,
+        xs_offset_size,
+        sm_offset_size,
+        md_offset_size,
+        lg_offset_size,
+        xl_offset_size,
+        xs_hide,
+        sm_hide,
+        md_hide,
+        lg_hide,
+        xl_hide,
+        storeConfig,
+        border_style,
+        background_position,
+        background_color,
+        border_top_width,
+        border_right_width,
+        border_bottom_width,
+        border_left_width,
+        margin_top,
+        margin_right,
+        margin_bottom,
+        margin_left,
+        padding_top,
+        padding_right,
+        padding_bottom,
+        padding_left,
     } = props;
-    const classes = useStyles(props);
     let classColumn = 'mgz-column ';
     if (xs_size && xs_size !== '') classColumn += `col-xs-${xs_size} `;
     if (sm_size && sm_size !== '') classColumn += `col-sm-${sm_size} `;
@@ -20,10 +47,10 @@ const MagezonColumn = (props) => {
     if (md_offset_size && md_offset_size !== '') classColumn += `col-md-offset-${md_offset_size} `;
     if ((lg_offset_size && lg_offset_size !== '') || (xl_offset_size && xl_offset_size !== '')) classColumn += `col-lg-offset-${lg_offset_size} `;
 
-    if (xs_hide) classColumn += 'hidden-mobile ';
-    if (sm_hide) classColumn += 'hidden-sm ';
-    if (md_hide) classColumn += 'hidden-md ';
-    if (lg_hide || xl_hide) classColumn += 'hidden-lg ';
+    if (xs_hide) classColumn += 'max-sm:hidden ';
+    if (sm_hide) classColumn += 'max-md:hidden ';
+    if (md_hide) classColumn += 'max-lg:hidden ';
+    if (lg_hide || xl_hide) classColumn += 'max-xl:hidden ';
 
     if (!classColumn.includes('col-')) {
         classColumn += 'col-xs-12 col-lg-12';
@@ -31,32 +58,38 @@ const MagezonColumn = (props) => {
 
     return (
         <>
-            <div className={`${classes.container} ${classColumn}`}>
-                { elements && elements.length > 0 && elements.map((item, key) => (
-                    <MagezonElement key={key} {...item} storeConfig={storeConfig} />
-                )) }
+            <div className={classColumn}>
+                {elements && elements.length > 0 && elements.map((item, key) => <MagezonElement key={key} {...item} storeConfig={storeConfig} />)}
             </div>
             <style jsx>
-                {
-                    `
-                        .col-md-15 {
-                            flex: 1 20%;
-                            max-width: 20%;
-                        }
-                        .col-md-25 {
-                            flex: 1 40%;
-                            max-width: 40%;
-                        }
-                        .col-md-35 {
-                            flex: 1 60%;
-                            max-width: 60%;
-                        }
-                        .col-md-45 {
-                            flex: 1 80%;
-                            max-width: 80%;
-                        }
-                    `
-                }
+                {`
+                    .mgz-column {
+                        width: 100%,
+                        border-style: ${border_style || 'solid'};
+                        background-position: ${background_position?.split('-').join(' ')};
+                        background-color: ${background_color || 'transparent'};
+                        border-width: ${border_top_width || 0}px ${border_right_width || 0}px ${border_bottom_width || 0}px
+                            ${border_left_width || 0}px;
+                        margin: ${margin_top || 0}px ${margin_right || 0}px ${margin_bottom || 0}px ${margin_left || 0}px;
+                        padding: ${padding_top || 0}px ${padding_right || 0}px ${padding_bottom || 0}px ${padding_left || 0}px;
+                    }
+                    .col-md-15 {
+                        flex: 1 20%;
+                        max-width: 20%;
+                    }
+                    .col-md-25 {
+                        flex: 1 40%;
+                        max-width: 40%;
+                    }
+                    .col-md-35 {
+                        flex: 1 60%;
+                        max-width: 60%;
+                    }
+                    .col-md-45 {
+                        flex: 1 80%;
+                        max-width: 80%;
+                    }
+                `}
             </style>
         </>
     );
