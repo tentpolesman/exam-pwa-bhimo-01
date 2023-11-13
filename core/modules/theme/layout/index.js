@@ -19,7 +19,7 @@ import TagManager from 'react-gtm-module';
 // eslint-disable-next-line object-curly-newline
 import { basePath, custDataNameCookie, debuging, features, modules } from '@config';
 import { createCompareList } from '@core_modules/product/services/graphql';
-import useStyles from '@core_modules/theme/layout/style';
+// import useStyles from '@core_modules/theme/layout/style';
 import { getAppEnv } from '@helpers/env';
 import { getHost } from '@helper_config';
 import { getCookies, setCookies } from '@helper_cookies';
@@ -53,7 +53,7 @@ const HeaderDesktop = dynamic(() => import('@common_headerdesktop'), { ssr: true
 // END CHAT FEATURES IMPORT
 
 const Layout = (props) => {
-    const bodyStyles = useStyles();
+    // const bodyStyles = useStyles();
     const {
         dataVesMenu,
         pageConfig,

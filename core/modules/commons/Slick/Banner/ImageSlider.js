@@ -2,10 +2,10 @@
 /* eslint-disable no-mixed-operators */
 import React from 'react';
 import Link from 'next/link';
-import classNames from 'classnames';
-import useStyles from '@common_slick/Banner/style';
 import Thumbor from '@common_image';
-import ProductVideo from '@common_slick/Banner/productVideo';
+import dynamic from 'next/dynamic';
+
+const ProductVideo = dynamic(() => import('@common_slick/Banner/productVideo'), { ssr: false });
 
 /**
  slug page need props 'href' & 'as' to prevent browser reloading
@@ -20,7 +20,6 @@ const ImageSlide = ({
     link = '#',
     isSlug = true,
     mobileImageUrl = '',
-    contentWidth,
     video,
     videoUrl,
     storeConfig,
@@ -29,11 +28,10 @@ const ImageSlide = ({
     noLink = false,
     lazy,
 }) => {
-    const styles = useStyles();
     const href = (link && link.includes('http://')) || link.includes('https://') ? link : link[0] === '/' ? link : `/${link}`;
 
     if (urlEmbed || video) {
-        if (urlEmbed || imageUrl && video) {
+        if (urlEmbed || (imageUrl && video)) {
             return <ProductVideo urlEmbed={urlEmbed} video={video} />;
         }
         if (!imageUrl && video) {
@@ -45,57 +43,44 @@ const ImageSlide = ({
             return <ProductVideo videoUrl={videoUrl} />;
         }
     }
-    return <>
-        {
-            noLink
-                ? (
-                    <a>
-                        <Thumbor
-                            src={imageUrl}
-                            srcMobile={mobileImageUrl}
-                            width={width || storeConfig?.pwa?.home_slider_desktop_width}
-                            height={height || storeConfig?.pwa?.home_slider_desktop_height}
-                            widthMobile={width || storeConfig?.pwa?.home_slider_mobile_width}
-                            heightMobile={height || storeConfig?.pwa?.home_slider_mobile_height}
-                            alt={alt}
-                            className={
-                                classNames(styles.imageSlider, styles.thumborImage, {
-                                    [styles.imageSliderAuto]: contentWidth === 'auto',
-                                    [styles.imageSlider]: contentWidth === 'auto',
-                                })
-                            }
-                            storeConfig={storeConfig}
-                            lazy={lazy}
-                            slickBanner
-                        />
-                    </a>
-                )
-                : (
-                    (<Link href={isSlug ? '/[...slug]' : href} {...(isSlug && { as: href })} prefetch={false}>
 
-                        <Thumbor
-                            src={imageUrl}
-                            srcMobile={mobileImageUrl}
-                            width={width || storeConfig?.pwa?.home_slider_desktop_width}
-                            height={height || storeConfig?.pwa?.home_slider_desktop_height}
-                            widthMobile={width || storeConfig?.pwa?.home_slider_mobile_width}
-                            heightMobile={height || storeConfig?.pwa?.home_slider_mobile_height}
-                            alt={alt}
-                            className={
-                                classNames(styles.imageSlider, styles.thumborImage, {
-                                    [styles.imageSliderAuto]: contentWidth === 'auto',
-                                    [styles.imageSlider]: contentWidth === 'auto',
-                                })
-                            }
-                            storeConfig={storeConfig}
-                            lazy={lazy}
-                            slickBanner
-                        />
-
-                    </Link>)
-                )
-        }
-    </>;
+    return (
+        <>
+            {noLink ? (
+                <a>
+                    <Thumbor
+                        src={imageUrl}
+                        srcMobile={mobileImageUrl}
+                        width={width || storeConfig?.pwa?.home_slider_desktop_width}
+                        height={height || storeConfig?.pwa?.home_slider_desktop_height}
+                        widthMobile={width || storeConfig?.pwa?.home_slider_mobile_width}
+                        heightMobile={height || storeConfig?.pwa?.home_slider_mobile_height}
+                        alt={alt}
+                        className="flex w-full h-full sm:h-auto"
+                        storeConfig={storeConfig}
+                        lazy={lazy}
+                        slickBanner
+                    />
+                </a>
+            ) : (
+                <Link href={isSlug ? '/[...slug]' : href} {...(isSlug && { as: href })} prefetch={false}>
+                    <Thumbor
+                        src={imageUrl}
+                        srcMobile={mobileImageUrl}
+                        width={width || storeConfig?.pwa?.home_slider_desktop_width}
+                        height={height || storeConfig?.pwa?.home_slider_desktop_height}
+                        widthMobile={width || storeConfig?.pwa?.home_slider_mobile_width}
+                        heightMobile={height || storeConfig?.pwa?.home_slider_mobile_height}
+                        alt={alt}
+                        className="flex w-full h-full sm:h-auto"
+                        storeConfig={storeConfig}
+                        lazy={lazy}
+                        slickBanner
+                    />
+                </Link>
+            )}
+        </>
+    );
 };
 
 export default ImageSlide;

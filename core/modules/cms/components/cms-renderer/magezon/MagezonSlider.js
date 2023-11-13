@@ -213,22 +213,22 @@ const MagezonSliderContent = (props) => {
                     .magezon-slide-heading, .magezon-slide-caption1, .magezon-slide-caption2 {
                         margin-bottom: 5px;
                     }
-                    .magezon-slide-heading :global(.magezone-heading :is(h1, h2, h3, h4, h5, h6)) {
+                    .magezon-slide-heading :global(.magezon-heading :is(h1, h2, h3, h4, h5, h6)) {
                         line-height: ${heading_line_height}px;
                         padding: ${heading_padding}px;
                         margin: 0;
                     }
-                    .magezon-slide-caption1 :global(.magezone-heading :is(h1, h2, h3, h4, h5, h6)) {
+                    .magezon-slide-caption1 :global(.magezon-heading :is(h1, h2, h3, h4, h5, h6)) {
                         line-height: ${caption1_line_height}px;
                         padding: ${caption1_padding}px;
                         margin: 0;
                     }
-                    .magezon-slide-caption2 :global(.magezone-heading :is(h1, h2, h3, h4, h5, h6)) {
+                    .magezon-slide-caption2 :global(.magezon-heading :is(h1, h2, h3, h4, h5, h6)) {
                         line-height: ${caption2_line_height}px;
                         padding: ${caption2_padding}px;
                         margin: 0;
                     }
-                    .magezon-slide-captions :global(.magezone-heading) {
+                    .magezon-slide-captions :global(.magezon-heading) {
                         justify-content: center;
                     }
                     .magezon-slide-button {

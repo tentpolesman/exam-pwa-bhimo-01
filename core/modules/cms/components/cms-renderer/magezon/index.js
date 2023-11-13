@@ -11,7 +11,7 @@ const MagezonSlider = dynamic(() => import('@core_modules/cms/components/cms-ren
 const MagezonCaraousel = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonCaraousel'), { ssr: false });
 const MagezonColumn = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonColumn'));
 const MagezonRow = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonRow'));
-const MagezonHeading = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonHeading'));
+// const MagezonHeading = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonHeading'));
 const MagezonSingleImage = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonSingleImage'));
 const MagezonText = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonText'));
 const MagezonButton = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonButton'));
@@ -172,7 +172,7 @@ const MagezonElement = (props) => {
             childrenContent = <MagezonColumn {...props} />;
             break;
         case 'heading':
-            childrenContent = <MagezonHeading {...props} />;
+            // childrenContent = <MagezonHeading {...props} />;
             break;
         case 'single_image':
             childrenContent = <MagezonSingleImage {...props} />;
