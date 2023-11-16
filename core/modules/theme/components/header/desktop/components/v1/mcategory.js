@@ -48,7 +48,6 @@ const Menu = (props) => {
     if (!menu) {
         menu = [];
     }
-    console.log('menu', menu);
     const generateLink = (cat) => {
         const link = cat.link ? getPath(cat.link) : `/${cat.url_path}`;
         if (storeConfig.pwa.ves_menu_enable) {

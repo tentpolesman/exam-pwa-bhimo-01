@@ -4,11 +4,10 @@
 /* eslint-disable indent */
 /* eslint-disable no-nested-ternary */
 
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import LeftArrowIcon from '@material-ui/icons/ChevronLeft';
-import RightArrowIcon from '@material-ui/icons/ChevronRight';
+import { BREAKPOINTS } from '@root/core/theme/vars';
 import { useRef, useState } from 'react';
 import Slider from 'react-slick';
+import { useWindowSize } from '@uidotdev/usehooks';
 
 const ProductSlider = (props) => {
     // prettier-ignore
@@ -24,13 +23,15 @@ const ProductSlider = (props) => {
         owl_autoplay, owl_autoplay_hover_pause,
     } = props;
 
+    const size = useWindowSize();
+    const isXl = size.width >= BREAKPOINTS.xl;
+    const isLg = size.width >= BREAKPOINTS.lg && size.width < BREAKPOINTS.xl;
+    const isMd = size.width >= BREAKPOINTS.md && size.width < BREAKPOINTS.lg;
+    const isSm = size.width >= BREAKPOINTS.sm && size.width < BREAKPOINTS.md;
+    const isXs = size.width >= BREAKPOINTS.xs && size.width < BREAKPOINTS.sm;
+
     const navSize = owl_nav_size === 'mini' ? 10 : owl_nav_size === 'small' ? 15 : owl_nav_size === 'normal' ? 20 : 25;
     const [showNav, setShowNav] = useState(true);
-    const isXl = useMediaQuery('(min-width:1200px)');
-    const isLg = useMediaQuery('(min-width:992px) and (max-width:1199px)');
-    const isMd = useMediaQuery('(min-width:768px) and (max-width:991px)');
-    const isSm = useMediaQuery('(min-width:576px) and (max-width:767px)');
-    const isXs = useMediaQuery('(max-width:576px)');
     let sliderRef = useRef();
 
     const getItemsToShow = () => {
@@ -75,17 +76,17 @@ const ProductSlider = (props) => {
     return (
         <>
             <div className="mgz-product-slider">
-                <div className="mgz-product-slider-content">
+                <div className={`mgz-product-slider-content ${owl_nav_position.includes('bottom') ? 'xs:max-sm:relative' : ''}`}>
                     <Slider ref={(slider) => (sliderRef = slider)} {...settings}>
                         {children}
                     </Slider>
                     {owl_nav && showNav && children.length > 0 && (
                         <div className="mgz-product-slider-nav">
                             <div className="mgz-product-slider-nav--btn" onClick={() => sliderRef.slickPrev()}>
-                                <LeftArrowIcon />
+                                <i class="fas fa-chevron-left" />
                             </div>
                             <div className="mgz-product-slider-nav--btn" onClick={() => sliderRef.slickNext()}>
-                                <RightArrowIcon />
+                                <i class="fas fa-chevron-right" />
                             </div>
                         </div>
                     )}
@@ -133,11 +134,10 @@ const ProductSlider = (props) => {
                     }
                     .mgz-product-slider-content {
                         text-align: center;
-                        ${owl_nav_position.includes('bottom') && (isXs || isSm) ? 'position: relative;' : ''}
                     }
                     .mgz-product-slider-nav {
                         position: absolute;
-                        top: ${owl_nav_position.includes('top') ? (isXs || isSm ? '2%' : '10%') : '50%'};
+                        top: 50%;
                         bottom: ${owl_nav_position.includes('bottom') ? '-10%' : '50%'};
                         display: flex;
                         width: 98.5%;
@@ -146,6 +146,11 @@ const ProductSlider = (props) => {
                             : owl_nav_position === 'top_right' || owl_nav_position === 'bottom_right'
                             ? 'flex-end'
                             : 'space-between'};
+                    }
+                    @media (max-width: ${BREAKPOINTS.sm}) {
+                        .mgz-product-slider-nav {
+                            top: ${owl_nav_position.includes('top') ? '2%' : '10%'};
+                        }
                     }
                     .mgz-product-slider-nav--btn {
                         display: flex;

@@ -27,7 +27,7 @@ const MagezonRow = (props) => {
         padding_bottom,
         padding_left,
     } = props;
-    let classRow = 'mgz-row flex ';
+    let classRow = 'mgz-row flex flex-wrap ';
 
     if (max_width && max_width !== '') classRow += 'mgz-element-row-max-width';
 
@@ -45,7 +45,7 @@ const MagezonRow = (props) => {
             <style jsx>
                 {`
                     .mgz-row {
-                        width: 100%,
+                        width: 100%;
                         border-style: ${border_style || 'solid'};
                         background-position: ${background_position?.split('-').join(' ')};
                         background-color: ${background_color || 'transparent'};

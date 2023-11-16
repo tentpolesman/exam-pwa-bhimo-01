@@ -64,7 +64,7 @@ const MagezonColumn = (props) => {
             <style jsx>
                 {`
                     .mgz-column {
-                        width: 100%,
+                        width: 100%;
                         border-style: ${border_style || 'solid'};
                         background-position: ${background_position?.split('-').join(' ')};
                         background-color: ${background_color || 'transparent'};

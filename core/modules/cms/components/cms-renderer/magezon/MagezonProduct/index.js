@@ -1,19 +1,25 @@
 /* eslint-disable operator-linebreak */
 import Typography from '@common_typography';
-import Skeleton from '@core_modules/cms/components/cms-renderer/magezon/MagezonProduct/Skeleton';
-import ProductSlider from '@core_modules/cms/components/cms-renderer/magezon/MagezonProduct/Slider';
-import SingleProduct from '@core_modules/cms/components/cms-renderer/magezon/MagezonProduct/SingleProduct';
+// import Skeleton from '@core_modules/cms/components/cms-renderer/magezon/MagezonProduct/Skeleton';
+// import ProductSlider from '@core_modules/cms/components/cms-renderer/magezon/MagezonProduct/Slider';
+// import SingleProduct from '@core_modules/cms/components/cms-renderer/magezon/MagezonProduct/SingleProduct';
+// import ErrorMessage from '@plugin_productlist/components/ErrorMessage';
 import { generateQueries, getProductListConditions } from '@core_modules/cms/helpers/getProductListConditions';
 import { getProductList, getProductPrice } from '@core_modules/cms/services/graphql';
 import { useTranslation } from 'next-i18next';
 import Grid from '@material-ui/core/Grid';
-import ErrorMessage from '@plugin_productlist/components/ErrorMessage';
 import React, {
     useEffect, useMemo, useRef, useState,
 } from 'react';
 import { useRouter } from 'next/router';
 import { priceVar } from '@root/core/services/graphql/cache';
 import { useReactiveVar } from '@apollo/client';
+import dynamic from 'next/dynamic';
+
+const Skeleton = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonProduct/Skeleton'));
+const ProductSlider = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonProduct/Slider'));
+const SingleProduct = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonProduct/SingleProduct'));
+const ErrorMessage = dynamic(() => import('@plugin_productlist/components/ErrorMessage'));
 
 const MagezonProductList = (props) => {
     // prettier-ignore
@@ -192,6 +198,7 @@ const MagezonProductList = (props) => {
                     {loading || !display ? (
                         <Skeleton />
                     ) : content}
+                    {/* {content} */}
                 </div>
                 {error && (
                     <>
