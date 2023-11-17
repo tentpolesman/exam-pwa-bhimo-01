@@ -3,9 +3,9 @@ import Typography from '@common_typography';
 import dynamic from 'next/dynamic';
 import { useEffect, useRef, useState } from 'react';
 
-const TheProduct = dynamic(() => import('./TheProduct'));
+const TheProduct = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonProduct/Product'));
 
-const MagezonProductList = (props) => {
+const MagezonProduct = (props) => {
     // prettier-ignore
     const {
         type, border_hover_color,
@@ -143,4 +143,4 @@ const MagezonProductList = (props) => {
         </>
     );
 };
-export default MagezonProductList;
+export default MagezonProduct;
