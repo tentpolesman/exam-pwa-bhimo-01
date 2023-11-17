@@ -70,7 +70,7 @@ const Content = (props) => {
             })}
         >
             {props.storeConfig && props.storeConfig.pwa && props.storeConfig.pwa.mobile_navigation !== 'burger_menu' && (
-                <div className="sm:max-md:w-screen w-full flex justify-center bg-gray-primary">
+                <div className="sm:max-md:w-screen w-full flex justify-center bg-neutral-50">
                     <div className="absolute z-[99] left-[50%] -translate-x-[50%] hidden-desktop">
                         <Thumbor
                             className="mt-[25%] w-full h-full relative"
