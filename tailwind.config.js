@@ -64,6 +64,14 @@ module.exports = {
             fontSize: FONT_SIZE,
             fontFamily: FONT_FAMILY,
             spacing: SPACING,
+            boxShadow: {
+                'sm-300-inset': `0px 0px 1px 0px #${COLORS.neutral[200]}40 inset`,
+                'sm-300': `0px 3px 5px 0px #${COLORS.neutral[200]}26`,
+                'md-300-inset': `0px 0px 1px 0px #${COLORS.neutral[200]}40 inset`,
+                'md-300': `0px 8px 12px 0px #${COLORS.neutral[200]}26`,
+                'lg-300-inset': `0px 0px 1px 0px #${COLORS.neutral[200]}47 inset`,
+                'lg-300': `0px 10px 18px 0px #${COLORS.neutral[200]}26`,
+            },
         },
         screens: {
             xs: `${BREAKPOINTS.xs}px`,

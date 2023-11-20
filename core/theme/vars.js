@@ -68,8 +68,8 @@ export const LETTER_SPACING = {
     loose: '0.1px',
 };
 export const LINE_HEIGHT = {
-    small: '12px',
-    medium: '16px',
+    sm: '12px',
+    md: '16px',
     lg: '18px',
     '2lg': '20px',
     xl: '24px',
