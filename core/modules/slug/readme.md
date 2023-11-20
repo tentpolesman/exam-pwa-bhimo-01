@@ -40,7 +40,7 @@ import CoreBase from '@core_modules/slug/core'; // must import and uses core bas
 ```node
 // for example loader LoadingView uses default
 ....
-import LoadingView from '@core_modules/commons/Backdrop';
+import LoadingView from '@commons/Backdrop';
 ....
 
 ```
@@ -58,7 +58,7 @@ import CategoryPage from '@core_modules/catalog/pages/category'; // point to you
 import ProductPage from '@pages/slug/pages/product'; // point to your custom page
 import CmsPage from '@pages/slug/pages/cms'; // point to your custom page
 import Core from '@core_modules/slug/core';
-import LoadingView from '@core_modules/commons/Backdrop';
+import LoadingView from '@commons/Backdrop';
 
 const Page = (props) => (
     <Core

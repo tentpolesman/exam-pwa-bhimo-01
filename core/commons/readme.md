@@ -24,7 +24,7 @@ you can import and uses this module.
 ```
 or
 ```node
-    import Button from '@core_modules/commons/Button';
+    import Button from '@common/Button';
     ..... //other code
 ```
 

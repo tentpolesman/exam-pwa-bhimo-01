@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable radix */
 import React from 'react';
 import classNames from 'classnames';
 import useStyles from '@common_buttonqty/style';
