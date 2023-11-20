@@ -3,7 +3,7 @@
 /* eslint-disable react/no-danger */
 /* eslint-disable no-nested-ternary */
 
-import Typography from '@core_modules/commons/Typography';
+import Typography from '@common_typography';
 import formatDate from '@helper_date';
 import LaunchIcon from '@material-ui/icons/Launch';
 import Link from 'next/link';

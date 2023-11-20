@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable radix */
 import React from 'react';
 import Typography from '@common_typography';
 import { useTranslation } from 'next-i18next';
@@ -49,7 +50,8 @@ const SpanCategory = (props) => {
                     <Link
                         href="/[...slug]"
                         as={`/${url}`}
-                        onClick={() => handleClick(`/${url}`, id)}>
+                        onClick={() => handleClick(`/${url}`, id)}
+                    >
 
                         <Thumbor
                             src={setDefaultWhenEmpty(UrlString)}
@@ -72,7 +74,8 @@ const SpanCategory = (props) => {
                         <Link
                             href="/[...slug]"
                             as={`/${url}`}
-                            onClick={() => handleClick(`/${url}`, id)}>
+                            onClick={() => handleClick(`/${url}`, id)}
+                        >
 
                             <Typography variant="title" type="bold" align="center">
                                 {name}
@@ -86,7 +89,8 @@ const SpanCategory = (props) => {
                         <Link
                             href="/[...slug]"
                             as={`/${url}`}
-                            onClick={() => handleClick(`/${url}`, id)}>
+                            onClick={() => handleClick(`/${url}`, id)}
+                        >
 
                             <Typography variant="span" type="bold" className={styles.textBtn}>
                                 {t('common:button:shop')}
