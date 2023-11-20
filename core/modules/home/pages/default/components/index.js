@@ -1,7 +1,7 @@
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable max-len */
 import CmsPage from '@core_modules/cms/pages/default';
-import classNames from 'classnames';
+import cx from 'classnames';
 import dynamic from 'next/dynamic';
 import Thumbor from '@common_image';
 
@@ -64,13 +64,13 @@ const Content = (props) => {
 
     return (
         <div
-            className={classNames('w-full h-full overflow-x-hidden', {
+            className={cx('swtpwa-home', 'w-full', 'h-full', 'overflow-x-hidden', {
                 'p-0': useCms,
-                'w-full h-full flex flex-col justify-center items-center pb-[30px]': !useCms,
+                'flex flex-col justify-center items-center pb-[30px]': !useCms,
             })}
         >
             {props.storeConfig && props.storeConfig.pwa && props.storeConfig.pwa.mobile_navigation !== 'burger_menu' && (
-                <div className="sm:max-md:w-screen w-full flex justify-center bg-gray-primary">
+                <div className="sm:max-md:w-screen w-full flex justify-center bg-neutral-50">
                     <div className="absolute z-[99] left-[50%] -translate-x-[50%] hidden-desktop">
                         <Thumbor
                             className="mt-[25%] w-full h-full relative"
