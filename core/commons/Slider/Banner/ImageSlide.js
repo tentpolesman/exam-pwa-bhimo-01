@@ -1,3 +1,4 @@
+/* eslint-disable radix */
 import React from 'react';
 import Link from 'next/link';
 import setDefaultWhenEmpty from '@helper_checkimagesrc';
@@ -23,21 +24,23 @@ const ImageSlide = ({
     if (typeof defaultHeight === 'string') defaultHeight = parseInt(defaultHeight, 0);
 
     return (
-        (<Link
-            href={isSlug ? '/[...slug]' : href}
-            {...(isSlug && { as: href })}
-        >
+        (
+            <Link
+                href={isSlug ? '/[...slug]' : href}
+                {...(isSlug && { as: href })}
+            >
 
-            <Thumbor
-                src={setDefaultWhenEmpty(imageUrl)}
-                alt={href}
-                width={width || defaultWidth}
-                height={height || defaultHeight}
-                quality={100}
-                className={styles.imageSlider}
-            />
+                <Thumbor
+                    src={setDefaultWhenEmpty(imageUrl)}
+                    alt={href}
+                    width={width || defaultWidth}
+                    height={height || defaultHeight}
+                    quality={100}
+                    className={styles.imageSlider}
+                />
 
-        </Link>)
+            </Link>
+        )
     );
 };
 

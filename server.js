@@ -195,23 +195,22 @@ async function renderAndCache(req, res) {
     /**
      * configuration firebase messaging
      *   */
-    const serviceWorkers = [
-        {
-            filename: '.well-known/assetlinks.json',
-            pathfile: './public/static/assetlinks.json',
-        },
-    ];
+    // const serviceWorkers = [
+    //     {
+    //         filename: '.well-known/assetlinks.json',
+    //         pathfile: './public/static/assetlinks.json',
+    //     },
+    // ];
 
-    serviceWorkers.forEach(({ filename, pathfile }) => {
-        server.get(path.join(basePath, filename), (req, res) => {
-            app.serveStatic(req, res, pathfile);
-        });
-    });
+    // serviceWorkers.forEach(({ filename, pathfile }) => {
+    //     // console.log('pathfile', pathfile);
+    //     server.get(path.join(basePath, '.next', filename), (req, res) => {
+    //         app.serveStatic(req, res, pathfile);
+    //     });
+    // });
 
     server.get(/^(\/static\/chunks)/g, (req, res) => {
         const parsedUrl = parse(req.originalUrl, true);
-        // console.log('parsedUrl', parsedUrl);
-
         const { pathname } = parsedUrl;
 
         const filePath = path.join(basePath, '.next', pathname);

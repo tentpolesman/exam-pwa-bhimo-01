@@ -1,6 +1,7 @@
 /* eslint-disable no-return-assign */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable max-len */
 import React, { useState } from 'react';
 import Slider from 'react-slick';
 import ImageSlide from '@common_slick/Banner/ImageSlider';

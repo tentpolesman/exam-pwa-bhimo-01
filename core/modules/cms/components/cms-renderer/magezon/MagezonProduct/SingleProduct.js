@@ -8,7 +8,6 @@
 // import { modules } from '@config';
 // import CmsRenderer from '@core_modules/cms/components/cms-renderer';
 import { useProduct } from '@core_modules/cms/components/cms-renderer/magezon/MagezonProduct/helpers/useProduct';
-// import Typography from '@core_modules/commons/Typography';
 import { useTranslation } from 'next-i18next';
 // import Grid from '@material-ui/core/Grid';
 // import IconButton from '@material-ui/core/IconButton';
@@ -275,8 +274,8 @@ const SingleProduct = (props) => {
             <style jsx global>
                 {`
                     .mgz-single-product-card:hover {
-                        ${isProductGrid &&
-                        `
+                        ${isProductGrid
+                        && `
                             border: 1px solid #bbbbbb;
                             position: relative;
                             z-index: 2;
