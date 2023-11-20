@@ -1,11 +1,11 @@
 export const MAX_WIDTH = '1440px';
 export const BREAKPOINTS = {
     xs: 0,
-    xm: 480,
-    sm: 768,
-    md: 1024,
-    lg: 1200,
-    xl: 1920,
+    xm: 480, // reminder to delete this later
+    sm: 576,
+    md: 768,
+    lg: 992,
+    xl: 1200,
 };
 
 export const COLORS = {
@@ -32,8 +32,9 @@ export const COLORS = {
         300: '#374151',
         400: '#1F2937',
         500: '#030712',
+        white: '#FFFFFF',
     },
-    label: {
+    accent: {
         eucalyptus: {
             50: '#ECFDF5',
             100: '#D2F9E4',
@@ -60,4 +61,49 @@ export const COLORS = {
         },
     },
 };
+export const LETTER_SPACING = {
+    densest: '-0.3px',
+    denser: '-0.2px',
+    normal: '0em',
+    loose: '0.1px',
+};
+export const LINE_HEIGHT = {
+    small: '12px',
+    medium: '16px',
+    lg: '18px',
+    '2lg': '20px',
+    xl: '24px',
+    '2xl': '32px',
+    '3xl': '40px',
+};
+export const FONT_SIZE = {
+    xs: '10px',
+    sm: '12px',
+    md: '14px',
+    '2md': '16px',
+    lg: '20px',
+    xl: '24px',
+    '2xl': '30px',
+};
+export const FONT_FAMILY = {
+    sans: ['Inter'],
+};
+export const SPACING = {
+    'space-2': '2px',
+    'space-4': '4px',
+    'space-6': '6px',
+    'space-8': '8px',
+    'space-12': '12px',
+    'space-16': '16px',
+    'space-20': '20px',
+    'space-24': '24px',
+    'space-32': '32px',
+    'space-40': '40px',
+    'space-48': '48px',
+    'space-64': '64px',
+    'space-80': '80px',
+    'space-96': '96px',
+    'space-128': '128px',
+};
+
 export default {};

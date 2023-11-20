@@ -1,12 +1,17 @@
-import { COLORS } from './core/theme/vars';
+import {
+    BREAKPOINTS, COLORS, FONT_FAMILY, FONT_SIZE, LETTER_SPACING, LINE_HEIGHT, SPACING,
+} from './core/theme/vars';
 
+// full list https://github.com/tailwindlabs/tailwindcss/blob/master/stubs/config.full.js
 /** @type {import('tailwindcss').Config} */
 module.exports = {
     content: ['./pages/**/*.{js,ts,jsx,tsx,mdx}', './core/**/*.{js,ts,jsx,tsx,mdx}', './src/**/*.{js,ts,jsx,tsx,mdx}'],
     theme: {
         extend: {
             colors: {
-                // this refers to colors set in store config
+                /**
+                 * START store config value
+                 */
                 pwa: {
                     primary: 'var(--color-pwa-primary_color)',
                     secondary: 'var(--color-pwa-secondary_color)',
@@ -26,7 +31,7 @@ module.exports = {
                     button_disabled_text: 'var(--color-pwa-button_disabled_text_color)',
                     button_disabled_background: 'var(--color-pwa-button_disabled_background_color)',
                 },
-                // main colors
+                // END store config value
                 primary: {
                     ...COLORS.primary,
                     DEFAULT: COLORS.primary[300],
@@ -39,29 +44,33 @@ module.exports = {
                     ...COLORS.neutral,
                     DEFAULT: COLORS.neutral[400],
                 },
-                label: {
+                accent: {
                     eucalyptus: {
-                        ...COLORS.label.eucalyptus,
-                        DEFAULT: COLORS.label.eucalyptus[300],
+                        ...COLORS.accent.eucalyptus,
+                        DEFAULT: COLORS.accent.eucalyptus[300],
                     },
                     saffron_mango: {
-                        ...COLORS.label.saffron_mango,
-                        DEFAULT: COLORS.label.saffron_mango[300],
+                        ...COLORS.accent.saffron_mango,
+                        DEFAULT: COLORS.accent.saffron_mango[300],
                     },
                     red_orange: {
-                        ...COLORS.label.red_orange,
-                        DEFAULT: COLORS.label.red_orange[200],
+                        ...COLORS.accent.red_orange,
+                        DEFAULT: COLORS.accent.red_orange[200],
                     },
                 },
             },
+            letterSpacing: LETTER_SPACING,
+            lineHeight: LINE_HEIGHT,
+            fontSize: FONT_SIZE,
+            fontFamily: FONT_FAMILY,
+            spacing: SPACING,
         },
         screens: {
-            xs: '0px',
-            xm: '480px',
-            sm: '768px',
-            md: '1024px',
-            lg: '1200px',
-            xl: '1920px',
+            xs: `${BREAKPOINTS.xs}px`,
+            sm: `${BREAKPOINTS.sm}px`,
+            md: `${BREAKPOINTS.md}px`,
+            lg: `${BREAKPOINTS.lg}px`,
+            xl: `${BREAKPOINTS.xl}px`,
         },
     },
     plugins: [],
