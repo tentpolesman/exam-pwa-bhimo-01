@@ -64,7 +64,7 @@ export const COLORS = {
 export const LETTER_SPACING = {
     densest: '-0.3px',
     denser: '-0.2px',
-    normal: '0em',
+    normal: '0px',
     loose: '0.1px',
 };
 export const LINE_HEIGHT = {
