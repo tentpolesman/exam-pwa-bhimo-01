@@ -22,7 +22,7 @@ const uri = graphqlEndpoint[appEnv] ? graphqlEndpoint[appEnv] : graphqlEndpoint.
 
 const host = HOST[appEnv] ? HOST[appEnv] : HOST.dev;
 
-const uriInternal = `${host}/graphql`;
+const uriInternal = `${host}/api/graphql`;
 // handle if token expired
 const logoutLink = onError((err) => {
     const { graphQLErrors, networkError } = err;
@@ -48,7 +48,7 @@ const link = new RetryLink().split(
     (operation) => operation.getContext().request === 'internal',
     new HttpLink({
         uri: uriInternal, // Server URL (must be absolute)
-        credentials: 'same-origin', // Additional fetch() options like `credentials` or `headers`
+        credentials: 'include', // Additional fetch() options like `credentials` or `headers`
         fetch,
     }),
     new HttpLink({
@@ -62,11 +62,8 @@ const link = new RetryLink().split(
 export default function createApolloClient(initialState, ctx) {
     // The `ctx` (NextPageContext) will only be present on the server.
     // use it to extract auth headers (ctx.req) or similar.
-    let token = '';
     let store_code_storage = cookies.get('store_code_storage');
     if (ctx && ctx.req) {
-        token = ctx.req.session.token;
-
         if (typeof window === 'undefined') {
             store_code_storage = ctx.req.cookies.store_code_storage || store_code_storage;
         }
@@ -77,10 +74,6 @@ export default function createApolloClient(initialState, ctx) {
      */
     const middlewareHeader = new ApolloLink((operation, forward) => {
         const additionalHeader = {};
-
-        if (token && token !== '') {
-            additionalHeader.Authorization = token;
-        }
 
         if (storeCode !== '') {
             additionalHeader.store = storeCode;

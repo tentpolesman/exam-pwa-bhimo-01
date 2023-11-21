@@ -1,7 +1,5 @@
 /* eslint-disable no-console */
 import React from 'react';
-import App from 'next/app';
-import Head from 'next/head';
 import { ApolloProvider } from '@apollo/client';
 import createApolloClient from './apolloClient';
 
@@ -79,6 +77,7 @@ export const initOnContext = (ctx) => {
  * @param  {Boolean} [withApolloOptions.ssr=false]
  * @returns {(PageComponent: ReactNode) => ReactNode}
  */
+// eslint-disable-next-line no-unused-vars
 export const withApollo = ({ ssr = false } = {}) => (PageComponent) => {
     const WithApollo = ({ apolloClient, apolloState, ...pageProps }) => {
         let client;

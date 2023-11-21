@@ -9,6 +9,12 @@ const getSSRProps = async ({ apolloClient, identifier = '' }) => {
         variables: {
             identifier,
         },
+        context: {
+            request: 'internal',
+            Headers: {
+                store: 'v9',
+            },
+        },
     });
 
     // get cms slider

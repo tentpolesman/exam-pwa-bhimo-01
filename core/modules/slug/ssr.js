@@ -4,7 +4,7 @@ import graphRequest from '@graphql_request';
 import graphRequestClear from '@graphql_ssr';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { getCmsList } from '@services/graphql/schema/config';
-import { storeConfigNameCookie } from '@config';
+import { customerTokenKey, storeConfigNameCookie } from '@config';
 import { getResolver } from '@core_modules/slug/services/graphql/schema';
 import getCmsSSRProps from '@core_modules/cms/pages/default/ssr';
 import createApolloClient from '@lib/apollo/apolloClient';
@@ -23,7 +23,7 @@ const getSSRProps = async (ctx) => {
     const obj = {
         slug: ctx?.query?.slug,
         ...(await serverSideTranslations(ctx.locale, ['common', 'product', 'category', 'validate', 'catalog'])),
-        token: ctx.query && ctx.query.session ? ctx.query.session.token : '',
+        token: (ctx.query && allcookie[customerTokenKey]) ? allcookie[customerTokenKey] : '',
         isLogin: allcookie.isLogin || 0,
         url_key: '',
     };
