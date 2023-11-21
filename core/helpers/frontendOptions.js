@@ -31,17 +31,14 @@ export const frontendConfig = (pwaConfig) => {
 
         return `
             :root {
-                // general styles
                 --color-pwa-primary_color: ${primary_color || COLORS.primary[300]};
                 --color-pwa-secondary_color: ${secondary_color || COLORS.secondary[400]};
                 --color-pwa-background_color: ${background_color || COLORS.neutral.white};
 
-                // message styles
                 --color-pwa-error_color: ${error_color || COLORS.accent.red_orange[200]};
                 --color-pwa-warning_msg_color: ${warning_msg_color || COLORS.accent.saffron_mango[300]};
                 --color-pwa-success_msg_color: ${success_msg_color || COLORS.accent.eucalyptus[300]};
 
-                // button styles
                 --color-pwa-button_text_color: ${button_text_color || COLORS.neutral.white};
                 --color-pwa-button_disabled_text_color: ${button_disabled_text_color || COLORS.neutral[50]};
                 --color-pwa-button_background_color: ${button_background_color || COLORS.primary[300]};
@@ -51,12 +48,10 @@ export const frontendConfig = (pwaConfig) => {
                 --color-pwa-button_border_color: ${button_border_color || COLORS.primary[300]};
                 --color-pwa-button_border_hover_color: ${button_border_hover_color || COLORS.primary[100]};
 
-                // font styles
                 --color-pwa-font_color: ${font_color || COLORS.neutral[500]};
-                --font-pwa-default_font: ${default_font || 'Inter'};
-                --font-pwa-heading_font: ${heading_font || 'Inter'};
+                --font-pwa-default_font: ${(default_font && default_font !== '0') || 'var(--font-inter)'};
+                --font-pwa-heading_font: ${(heading_font && heading_font !== '0') || 'var(--font-inter)'};
 
-                // link styles
                 --color-pwa-link_color: ${link_color || COLORS.neutral[500]};
                 --color-pwa-link_hover_color: ${link_hover_color || COLORS.neutral[400]};
                 --font-pwa-link_font_decoration: ${link_font_decoration || 'underline'};
@@ -88,8 +83,8 @@ export const frontendConfig = (pwaConfig) => {
 
             // font styles
             --color-pwa-font_color: ${COLORS.neutral[500]};
-            --font-pwa-default_font: Inter;
-            --font-pwa-heading_font: Inter;
+            --font-pwa-default_font: var(--font-inter);
+            --font-pwa-heading_font: var(--font-inter);
 
             // link styles
             --color-pwa-link_color: ${COLORS.neutral[500]};
