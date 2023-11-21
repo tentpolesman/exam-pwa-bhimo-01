@@ -1,20 +1,17 @@
+import Button from '@common_button';
+import cx from 'classnames';
 import React from 'react';
-import Fab from '@material-ui/core/Fab';
-import { makeStyles } from '@material-ui/core/styles';
-import Zoom from '@material-ui/core/Zoom';
-import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        position: 'fixed',
-        bottom: theme.spacing(2),
-        right: theme.spacing(2),
-        zIndex: theme.zIndex.drawer + 3,
-    },
-}));
+const ScrollTop = (props) => {
+    const { storeConfig } = props;
 
-function ScrollTop({ storeConfig }) {
-    const classes = useStyles();
+    const classes = cx(
+        'fixed',
+        'bottom-space-16',
+        'right-space-16',
+        'z-1099',
+    );
+
     const [triger, setTriger] = React.useState(false);
     const maxHeigtToShow = 600;
 
@@ -54,14 +51,16 @@ function ScrollTop({ storeConfig }) {
     };
 
     return (
-        <Zoom in={triger}>
-            <div onClick={scrollTop} role="presentation" className={classes.root}>
-                <Fab color="primary" size="medium" aria-label="scroll back to top">
-                    <KeyboardArrowUpIcon />
-                </Fab>
-            </div>
-        </Zoom>
+        <div onClick={scrollTop} role="presentation" className={cx(classes)}>
+            <Button
+                iconProps={{
+                    icon: 'keyboard_arrow_up',
+                    iconOnly: true,
+                }}
+                variant="secondary"
+            />
+        </div>
     );
-}
+};
 
 export default ScrollTop;
