@@ -67,7 +67,7 @@ const font = localFont({
 // const BottomNavigation = dynamic(() => import('@common_bottomnavigation'), { ssr: false });
 // const HeaderMobile = dynamic(() => import('@common_headermobile'), { ssr: false });
 const HeaderDesktop = dynamic(() => import('@common_headerdesktop'), { ssr: true });
-// const Message = dynamic(() => import('@common_toast'), { ssr: false });
+const Toast = dynamic(() => import('@common_toast'), { ssr: false });
 // const Loading = dynamic(() => import('@common_loaders/Backdrop'), { ssr: false });
 // const ScrollToTop = dynamic(() => import('@common_scrolltotop'), { ssr: false });
 // const Footer = dynamic(() => import('@common_footer'), { ssr: false });
@@ -120,6 +120,10 @@ const Layout = (props) => {
             open: false,
             variant: 'success',
             text: '',
+            position: 'bottom',
+            positionNumber: '0',
+            duration: 3000,
+            close: true,
         },
         backdropLoader: false,
     });
@@ -557,13 +561,17 @@ const Layout = (props) => {
                 </header>
             )}
             <main className={generateClasses()}>
-                {/* <Loading open={state.backdropLoader} />
-                <Message
+                {/* <Loading open={state.backdropLoader} /> */}
+                <Toast
+                    close={state.toastMessage.close}
+                    setOpen={handleCloseMessage}
                     open={state.toastMessage.open}
                     variant={state.toastMessage.variant}
-                    setOpen={handleCloseMessage}
                     message={state.toastMessage.text}
-                /> */}
+                    position={state.toastMessage.position}
+                    positionNumber={state.toastMessage.positionNumber}
+                    autoHideDuration={state.toastMessage.duration}
+                />
                 {/* {!isHomepage && storeConfig.weltpixel_newsletter_general_enable === '1' && (
                     <NewsletterPopup t={t} storeConfig={storeConfig} pageConfig={pageConfig} isLogin={isLogin} />
                 )} */}

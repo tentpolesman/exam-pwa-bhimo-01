@@ -2,8 +2,14 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 
 const Typography = (props) => {
-    const { variant = 'bd-2', className = '', children } = props;
-    const classes = cx('text-pwa-font', className);
+    const {
+        variant = 'bd-2',
+        className = '',
+        children,
+        color,
+    } = props;
+
+    const classes = cx(color || 'text-pwa-font', className);
 
     if (variant === 'h-xl') {
         return <h5 className={cx('text-2xl', 'font-bold', 'leading-3xl', 'tracking-densest', classes)}>{children}</h5>;
