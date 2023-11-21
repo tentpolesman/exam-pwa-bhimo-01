@@ -86,7 +86,7 @@ export const FONT_SIZE = {
     '2xl': '30px',
 };
 export const FONT_FAMILY = {
-    sans: ['Inter'],
+    sans: ['var(--font-inter)'],
 };
 export const SPACING = {
     'space-2': '2px',

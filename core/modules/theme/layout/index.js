@@ -35,6 +35,33 @@ import { frontendConfig } from '@helpers/frontendOptions';
 import { getCartId } from '@helper_cartid';
 import { localTotalCart } from '@services/graphql/schema/local';
 import Script from 'next/script';
+import localFont from 'next/font/local';
+
+/**
+ * Set font family using nextjs helper,
+ * path property needs to be an absolute path
+ */
+const font = localFont({
+    src: [
+        {
+            path: '../../../../public/assets/fonts/Inter-Regular.ttf',
+            weight: '400',
+        },
+        {
+            path: '../../../../public/assets/fonts/Inter-Medium.ttf',
+            weight: '500',
+        },
+        {
+            path: '../../../../public/assets/fonts/Inter-SemiBold.ttf',
+            weight: '600',
+        },
+        {
+            path: '../../../../public/assets/fonts/Inter-Bold.ttf',
+            weight: '700',
+        },
+    ],
+    variable: '--font-inter' // set the font css variable name, which we refer in tailwind.config.js
+});
 
 // const GlobalPromoMessage = dynamic(() => import('@core_modules/theme/components/globalPromo'), { ssr: false });
 // const BottomNavigation = dynamic(() => import('@common_bottomnavigation'), { ssr: false });
@@ -56,7 +83,7 @@ const Layout = (props) => {
     // const bodyStyles = useStyles();
     const {
         dataVesMenu,
-        pageConfig,
+        pageConfig = {},
         children,
         app_cookies,
         CustomHeader = false,
@@ -96,6 +123,7 @@ const Layout = (props) => {
         },
         backdropLoader: false,
     });
+
     const [restrictionCookies, setRestrictionCookies] = useState(false);
     const [showGlobalPromo, setShowGlobalPromo] = React.useState(enablePromo);
     const [setCompareList] = createCompareList();
@@ -290,7 +318,7 @@ const Layout = (props) => {
     };
 
     const generateClasses = () => {
-        let classes = 'main-app main-app-v1-sticky-not-homepage';
+        let classes = `main-app main-app-v1-sticky-not-homepage ${font.variable} font-sans`;
         if (pageConfig.bottomNav && storeConfig?.pwa?.mobile_navigation === 'bottom_navigation' && storeConfig?.pwa?.enabler_footer_mobile) {
             classes += ' mb-[60px]';
         } else {
@@ -324,27 +352,11 @@ const Layout = (props) => {
             const pwaConfig = frontendCache.pwa;
 
             const stylesheet = document.createElement('style');
-            const fontStylesheet = document.createElement('link');
-            const fontStylesheetHeading = document.createElement('link');
 
             if (pwaConfig) {
-                // eslint-disable-next-line max-len
-                fontStylesheet.href = `https://fonts.googleapis.com/css2?family=${
-                    pwaConfig.default_font && pwaConfig.default_font !== '0' ? pwaConfig.default_font.replace(' ', '-') : 'Montserrat'
-                }:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&display=swap`;
-                fontStylesheet.id = 'font-stylesheet-id';
-                fontStylesheet.rel = 'stylesheet';
-                // eslint-disable-next-line max-len
-                fontStylesheetHeading.href = `https://fonts.googleapis.com/css2?family=${
-                    pwaConfig.heading_font && pwaConfig.default_font !== '0' ? pwaConfig.heading_font.replace(' ', '-') : 'Montserrat'
-                }:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&display=swap`;
-                fontStylesheetHeading.id = 'font-stylesheet-heading-id';
-                fontStylesheetHeading.rel = 'stylesheet';
                 stylesheet.innerHTML = frontendConfig(pwaConfig);
                 stylesheet.id = 'frontend-options-stylesheet';
                 if (!document.getElementById('frontend-options-stylesheet') && !document.getElementById('font-stylesheet-id')) {
-                    document.head.appendChild(fontStylesheet);
-                    document.head.appendChild(fontStylesheetHeading);
                     document.head.appendChild(stylesheet);
                 }
             }
@@ -508,7 +520,7 @@ const Layout = (props) => {
                 <PopupInstallAppMobile appName={appName} installMessage={installMessage} />
             ) : null} */}
             {allowHeaderCheckout && (
-                <header ref={refHeader}>
+                <header ref={refHeader} className={`${font.variable} font-sans`}>
                     {/* {typeof window !== 'undefined' && storeConfig.global_promo && storeConfig.global_promo.enable && (
                         <GlobalPromoMessage
                             t={t}
@@ -579,7 +591,7 @@ const Layout = (props) => {
             {/* END CHAT FEATURES */}
 
             {withLayoutFooter && (
-                <footer className="sm:mt-[50px]" ref={refFooter}>
+                <footer className={`sm:mt-[50px] ${font.variable} font-sans`} ref={refFooter}>
                     {/* {!deviceType?.isMobile ? (
                         <div className="hidden-mobile">
                             {footer ? <Footer storeConfig={storeConfig} t={t} /> : null}
