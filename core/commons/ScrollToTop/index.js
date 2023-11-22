@@ -57,7 +57,7 @@ const ScrollTop = (props) => {
                     icon: 'keyboard_arrow_up',
                     iconOnly: true,
                 }}
-                variant="secondary"
+                variant="primary"
             />
         </div>
     );
