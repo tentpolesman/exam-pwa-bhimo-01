@@ -11,7 +11,7 @@ const CircularProgress = (props) => {
         sizeClasses = 'w-3 h-3 m-1';
         break;
     case 'regular':
-        sizeClasses = 'w-[24px] h-[24px] m-1.5';
+        sizeClasses = 'w-5 h-5 m-1.5';
         break;
     case 'large':
         sizeClasses = 'w-7 h-7 m-2';
