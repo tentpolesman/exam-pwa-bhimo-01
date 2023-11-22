@@ -1,5 +1,6 @@
 import cx from 'classnames';
 import Typography from '@common_typography';
+import Icon from '@common_icon';
 
 const Button = (props) => {
     const {
@@ -60,16 +61,15 @@ const Button = (props) => {
                 })}
             >
                 {icon || loading ? (
-                    <span
-                        class={cx('material-symbols-outlined', {
+                    <Icon
+                        className={cx('material-symbols-outlined', {
                             'mr-[6px]': position !== 'right' && !iconOnly,
                             'ml-[6px]': position === 'right' && !iconOnly,
                             'text-lg': !iconOnly || (iconOnly && (size === 'sm' || size === 'md')),
                             'animate-spin': loading,
                         })}
-                    >
-                        {!loading ? icon : 'progress_activity'}
-                    </span>
+                        icon={!loading ? icon : 'progress_activity'}
+                    />
                 ) : null}
                 {icon && iconOnly ? null : children}
             </Typography>
