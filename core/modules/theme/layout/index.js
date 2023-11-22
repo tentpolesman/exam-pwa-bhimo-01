@@ -68,7 +68,7 @@ const font = localFont({
 // const HeaderMobile = dynamic(() => import('@common_headermobile'), { ssr: false });
 const HeaderDesktop = dynamic(() => import('@common_headerdesktop'), { ssr: true });
 const Toast = dynamic(() => import('@common_toast'), { ssr: false });
-// const Loading = dynamic(() => import('@common_loaders/Backdrop'), { ssr: false });
+const Backdrop = dynamic(() => import('@common_backdrop'), { ssr: false });
 // const ScrollToTop = dynamic(() => import('@common_scrolltotop'), { ssr: false });
 // const Footer = dynamic(() => import('@common_footer'), { ssr: false });
 // const RestrictionPopup = dynamic(() => import('@common_restrictionPopup'), { ssr: false });
@@ -561,7 +561,7 @@ const Layout = (props) => {
                 </header>
             )}
             <main className={generateClasses()}>
-                {/* <Loading open={state.backdropLoader} /> */}
+                <Backdrop open={state.backdropLoader} />
                 <Toast
                     close={state.toastMessage.close}
                     setOpen={handleCloseMessage}

@@ -3,7 +3,7 @@ import Button from '@common_button';
 import TextField from '@common_textfield';
 import Toast from '@common_toast';
 
-import Loading from '@common_loaders/Backdrop';
+import Backdrop from '@common_backdrop';
 import OtpBlock from '@plugin_otp';
 
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -29,13 +29,13 @@ const ForgotPassword = (props) => {
         useForgotWithPhone,
     } = props;
 
-    if (loading || !data) return <Loading open />;
+    if (loading || !data) return <Backdrop open />;
 
     return (
         <div className="row">
             <div className="col-xs-12 col-md-6">
                 <form className={styles.container} onSubmit={formik.handleSubmit}>
-                    <Loading open={load} />
+                    <Backdrop open={load} />
                     {data && data.otpConfig.otp_enable[0].enable_otp_forgot_password && (
                         <FormControlLabel
                             control={<Switch checked={useEmail} onChange={handleSwitch} name="useOtp" color="primary" />}
