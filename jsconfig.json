@@ -74,6 +74,7 @@
             "@helper_zxcvbn": ["src/helpers/zxcvbn", "core/helpers/zxcvbn"],
             "@helper_localstorage": ["src/helpers/localstorage", "core/helpers/localstorage"],
 
+            "@common_icon": ["src/commons/Icon", "core/commons/Icon"],
             "@common_button": ["src/commons/Button", "core/commons/Button"],
             "@common_buttonqty": ["src/commons/ButtonQty", "core/commons/ButtonQty"],
             "@common_breadcrumb": ["src/commons/Breadcrumb", "core/commons/Breadcrumb"],
