@@ -1,41 +1,58 @@
-import Skeleton from '@material-ui/lab/Skeleton';
-import classNames from 'classnames';
-import { makeStyles } from '@material-ui/core/styles';
+import { COLORS } from '@root/core/theme/vars';
+import cx from 'classnames';
 
-/*
-    for detail docs visit:
-    - https://material-ui.com/styles/basics/
-    - https://material-ui.com/customization/breakpoints/
+const Skeleton = ({
+    className,
+    height = 20,
+    width = 100,
+    radius = 5,
+    duration = 1,
+    color = COLORS.neutral[100],
+    colorShimmer = COLORS.neutral[50],
+}) => (
+    <div
+        style={{
+            ...(width ? { width } : null),
+            ...(height ? { height } : null),
+        }}
+        className={cx(
+            'section-skeleton',
+            'shimmer',
+            'h-10',
+            className,
+        )}
+    >
+        <style jsx>
+            {`
+                    .shimmer {
+                        background: ${color};
+                        background-image: linear-gradient(to right, ${color} 0%, ${colorShimmer} 20%, ${color} 40%, ${color} 100%);
+                        background-repeat: no-repeat;
+                        background-size: 800px 104px; 
+                        display: inline-block;
+                        position: relative; 
+                        border-radius: ${radius}px;
+                        
+                        -webkit-animation-duration: ${duration}s;
+                        -webkit-animation-fill-mode: forwards; 
+                        -webkit-animation-iteration-count: infinite;
+                        -webkit-animation-name: placeholderShimmer;
+                        -webkit-animation-timing-function: linear;
+                    }
 
-    xs, extra-small: 0px
-    sm, small: 600px
-    md, medium: 960px
-    lg, large: 1280px
-    xl, extra-large: 1920px
-*/
+                    @-webkit-keyframes placeholderShimmer {
+                        0% {
+                            background-position: -100vw 0;
+                        }
+                        
+                        100% {
+                            background-position: 100vw 0; 
+                        }
+                    }
+                  
+                `}
+        </style>
+    </div>
+);
 
-const useStyles = makeStyles((theme) => ({
-    skeleton: ({
-        xsStyle, smStyle, mdStyle, lgStyle, xlStyle,
-    }) => ({
-        ...xsStyle,
-        [theme.breakpoints.up('sm')]: smStyle,
-        [theme.breakpoints.up('md')]: mdStyle,
-        [theme.breakpoints.up('lg')]: lgStyle,
-        [theme.breakpoints.up('xl')]: xlStyle,
-    }),
-}));
-
-const CustomSkeleton = ({
-    xsStyle, smStyle, mdStyle, lgStyle, xlStyle, className, ...props
-}) => {
-    const classes = useStyles({
-        xsStyle, smStyle, mdStyle, lgStyle, xlStyle,
-    });
-
-    return (
-        <Skeleton {...props} className={classNames(className, classes.skeleton)} />
-    );
-};
-
-export default CustomSkeleton;
+export default Skeleton;
