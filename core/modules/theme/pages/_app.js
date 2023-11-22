@@ -10,19 +10,19 @@
 import { custDataNameCookie, features, modules, sentry } from '@config';
 import { getLastPathWithoutLogin, getLoginInfo } from '@helper_auth';
 import { getLocalStorage, setLocalStorage, setResolver, testLocalStorage } from '@helper_localstorage';
-import { appWithTranslation } from 'next-i18next';
 import { getAppEnv } from '@root/core/helpers/env';
+import { appWithTranslation } from 'next-i18next';
 // import { RewriteFrames } from '@sentry/integrations';
 // import { Integrations } from '@sentry/tracing';
-import { getCategories, getVesMenu, storeConfig as ConfigSchema } from '@services/graphql/schema/config';
-import { currencyVar, storeConfigVar, cmsPageVar } from '@root/core/services/graphql/cache';
+import { cmsPageVar, currencyVar, storeConfigVar } from '@root/core/services/graphql/cache';
+import { storeConfig as ConfigSchema, getCategories, getVesMenu } from '@services/graphql/schema/config';
 import Cookie from 'js-cookie';
 // import { unregister } from 'next-offline/runtime';
 import App from 'next/app';
 import React from 'react';
 
 import { gql } from '@apollo/client';
-// import PageProgressLoader from '@common_loaders/PageProgress';
+import PageProgressLoader from '@common_pageprogress';
 import graphRequest from '@graphql_request';
 // import Notification from '@lib_firebase/notification';
 // import firebase from '@lib_firebase/index';
@@ -143,7 +143,8 @@ class MyApp extends App {
             storeConfig = storeConfig.storeConfig;
             if (!modules.checkout.checkoutOnly) {
                 dataVesMenu = storeConfig.pwa.ves_menu_enable
-                    ? await graphRequest(getVesMenu, { alias: storeConfig.pwa.ves_menu_alias }, {}, { method: 'GET' }) : await graphRequest(getCategories, {}, {}, { method: 'GET' });
+                    ? await graphRequest(getVesMenu, { alias: storeConfig.pwa.ves_menu_alias }, {}, { method: 'GET' })
+                    : await graphRequest(getCategories, {}, {}, { method: 'GET' });
             }
             frontendOptions = frontendOptions.storeConfig;
             removeDecimalConfig = storeConfig?.pwa?.remove_decimal_price_enable !== null ? storeConfig?.pwa?.remove_decimal_price_enable : false;
@@ -239,7 +240,7 @@ class MyApp extends App {
          */
         if (getAppEnv() === 'prod') {
             // eslint-disable-next-line no-console
-            console.log = () => { };
+            console.log = () => {};
         }
 
         /*
@@ -306,13 +307,13 @@ class MyApp extends App {
          */
 
         /* Google Tag Manager
-        * this gtm configuration is enabled via backoffice.
-        * before enable this configuration, firstly you need to import the gtm tags json.
-        * gtm tags json need to be exported from Magento admin in Welpixel GTM configuration.
-        * adjust the tag name if you want before import into GTM dashboard setting.
-        * as reference you can find sample gtm tags in folder "sample/gtm" folder
-        * NOTE: this GTM functionality includes connecting to GA via GTM tag.
-        */
+         * this gtm configuration is enabled via backoffice.
+         * before enable this configuration, firstly you need to import the gtm tags json.
+         * gtm tags json need to be exported from Magento admin in Welpixel GTM configuration.
+         * adjust the tag name if you want before import into GTM dashboard setting.
+         * as reference you can find sample gtm tags in folder "sample/gtm" folder
+         * NOTE: this GTM functionality includes connecting to GA via GTM tag.
+         */
 
         const storeConfig = storeConfigVar();
         // let GTM = {};
@@ -365,9 +366,7 @@ class MyApp extends App {
         pageProps.storeConfig = pageProps.storeConfig ? pageProps.storeConfig : {};
         if (typeof window !== 'undefined' && testLocalStorage() === false) {
             // not available
-            return (
-                <ModalCookies {...pageProps} />
-            );
+            return <ModalCookies {...pageProps} />;
         }
 
         if (typeof window !== 'undefined') {
@@ -392,6 +391,7 @@ class MyApp extends App {
 
         return (
             <>
+                <PageProgressLoader />
                 <Component {...pageProps} />
             </>
         );
