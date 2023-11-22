@@ -2,7 +2,7 @@
 
 Button
 
-## How To Import
+## How To Use
 
 **1. Import module to your component**
 ```node
