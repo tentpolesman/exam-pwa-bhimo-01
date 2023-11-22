@@ -1,4 +1,4 @@
-import Loading from '@common_loaders/Backdrop';
+import Backdrop from '@common_backdrop';
 import Alert from '@material-ui/lab/Alert';
 
 const Copyright = (props) => {
@@ -12,7 +12,7 @@ const Copyright = (props) => {
             </Alert>
         );
     }
-    if (loading) return <Loading open={loading} />;
+    if (loading) return <Backdrop open={loading} />;
     return (
         <div className="copyright">
             <span>{storeConfig.copyright}</span>
