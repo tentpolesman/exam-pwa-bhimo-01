@@ -1,6 +1,9 @@
+/* eslint-disable max-len */
+/* eslint-disable no-nested-ternary */
 import React from 'react';
 import cx from 'classnames';
 import Typography from '@common_typography/index';
+import useMediaQuery from '@hook/useMediaQuery';
 
 const Toast = ({
     open,
@@ -14,6 +17,7 @@ const Toast = ({
     autoHideDuration = 3000,
 }) => {
     const timerRef = React.useRef(null);
+    const { isXl } = useMediaQuery();
 
     React.useEffect(() => {
         if (open) {
@@ -56,8 +60,12 @@ const Toast = ({
         <div
             role="alert"
             style={{
-                ...(position === 'bottom' ? { bottom: positionNumber } : null),
-                ...(position === 'top' ? { top: positionNumber } : null),
+                ...(position === 'bottom' ? (isXl ? { bottom: positionNumber, marginLeft: 'auto', marginRight: 'auto' } : { bottom: positionNumber }) : null),
+                ...(position === 'bottom-right' ? (isXl ? { bottom: positionNumber, marginLeft: 'auto' } : { bottom: positionNumber }) : null),
+                ...(position === 'bottom-left' ? (isXl ? { bottom: positionNumber, marginRight: 'auto' } : { bottom: positionNumber }) : null),
+                ...(position === 'top' ? (isXl ? { top: positionNumber, marginLeft: 'auto', marginRight: 'auto' } : { top: positionNumber }) : null),
+                ...(position === 'top-right' ? (isXl ? { top: positionNumber, marginLeft: 'auto' } : { top: positionNumber }) : null),
+                ...(position === 'top-left' ? (isXl ? { top: positionNumber, marginRight: 'auto' } : { top: positionNumber }) : null),
             }}
             className={
                 cx(
@@ -66,13 +74,13 @@ const Toast = ({
                     'inset-x-0',
                     'p-[16px]',
                     'transition-opacity ease-in duration-200',
-                    'p-[16px]',
                     'border-l-[3px]',
                     'flex',
                     'justify-between',
                     'align-middle',
                     'rounded-[4px]',
-                    'm-5',
+                    'lg:m-4 md:m-4 xs:m-4 xs:m-4',
+                    'lg:max-w-md',
                     'items-center',
                     open && 'z-50 opacity-100',
                     !open && 'z-0 opacity-0',
