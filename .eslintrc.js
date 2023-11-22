@@ -52,6 +52,7 @@ module.exports = {
         'import/no-unresolved': 'off',
         'react/forbid-prop-types': 'off',
         'react/no-unknown-property': 'off',
+        'jsx-a11y/label-has-associated-control': 'off',
     },
     settings: {
         'import/ignore': 'node_modules',

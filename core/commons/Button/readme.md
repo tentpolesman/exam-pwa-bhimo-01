@@ -1,47 +1,33 @@
 # Description
 
-Button is module coomons to create all
+Button
 
-this component use some dependency and **required**, so you need to install
-
-| Depedency   | Description | Type |
-| :---        | :---        |:---  |
-| `@material-ui/core` | depedency ui <br/> link docs [here](https://material-ui.com/getting-started/installation/)| external dependency |
-| `classnames`   | dependency for merge className | external dependency |
-
-## How To Install
+## How To Use
 
 **1. Import module to your component**
 ```node
 import Button from '@common_button';
 ```
 
-or
+**2. Use the button component**
 
 ```node
-import Button from '{pathModule}/commons/Button';
-```
-
-**2. Place button component on your component**
-
-```node
-<Button variant="outlined">
-    TEST BUTTON
+<Button variant="primary">
+    Text
 </Button>
 ```
 
 ### Properties
 | Props       | Required | Description | Type |
 | :---        | :---     | :---        |:---  |
-| children       | true    | props children can be text or html component | any |
-| rootClassName       | false    | className for root layout button | string |
-| className       | false    | classname for button | string |
-| variant       | false    | variant button from `@material-ui` | string |
-| color       | false    | variant color button from `@material-ui` | string |
-| disabled       | false    | bool for disable clik button | bool |
-| loading       | false    | bool for show loader button & disable | bool |
-| onClick       | false    | head title carousel | string |
-| customRootStyle       | false    | overide hard styles root layout button | object |
-| href       | false    | link page if button action to link other pages | string |
-| all props buttoon       | false    | all property button component html | any |
-
+| children       | true    | component's children, can be a text or component | any |
+| className       | false    | additional className for the button | string |
+| variant       | false    | defaults to 'primary' | string |
+| disabled       | false    | set disabled state, defaults to false | bool |
+| loading       | false    | set loading state, defaults to false | bool |
+| onClick       | false    | click handler | func |
+| size       | false    | size of the button, defaults to 'md' | string |
+| iconProps       | false    | set the props of button icon | obj |
+| iconProps.icon       | false    | name of the icon, refer to https://fonts.google.com/icons | string |
+| iconProps.position       | false    | position of the icon, defaults to 'right' | string |
+| iconProps.iconOnly       | false    | show icon only, defaults to false | bool |
