@@ -3,7 +3,7 @@ import Typography from '@common_typography';
 
 const Button = (props) => {
     const {
-        className = {},
+        className = '',
         variant = 'primary',
         children,
         disabled = false,
