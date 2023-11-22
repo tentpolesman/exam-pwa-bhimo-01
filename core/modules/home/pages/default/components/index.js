@@ -4,7 +4,6 @@ import CmsPage from '@core_modules/cms/pages/default';
 import cx from 'classnames';
 import dynamic from 'next/dynamic';
 import Thumbor from '@common_image';
-import Skeleton from '@common_skeleton';
 
 const BannerSlider = dynamic(() => import('@core_modules/home/pages/default/components/Banner'));
 const FeaturedProducts = dynamic(() => import('@core_modules/home/pages/default/components/FeaturedProducts'));
@@ -86,7 +85,6 @@ const Content = (props) => {
                 </div>
             )}
             {content}
-            <Skeleton width="100%" height={50} radius={5} duration={2} />
         </div>
     );
 };
