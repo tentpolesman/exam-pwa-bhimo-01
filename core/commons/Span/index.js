@@ -1,11 +1,19 @@
+import cx from 'classnames';
 import React from 'react';
-import classNames from 'classnames';
-import useStyles from '@common_span/style';
 
-const Span = ({ className = {}, children }) => {
-    const styles = useStyles();
-    const customClass = classNames(styles.span, className);
-    return <div className={customClass}>{children}</div>;
+const Span = (props) => {
+    const { className = {}, children } = props;
+
+    const classes = cx(
+        'w-full',
+        'h-[375px]',
+        'flex',
+        'justify-center',
+        'items-center',
+        'bg-neutral',
+    );
+
+    return <div className={cx(classes, className)}>{children}</div>;
 };
 
 export default Span;
