@@ -10,7 +10,7 @@ if (typeof window !== 'undefined') {
 export const getCmsPage = (variables) => useQuery(Schema.getCmsPage, {
     variables,
     context: {
-        request: isLogin ? 'internal' : '',
+        request: 'internal',
     },
     ssr: true,
     ...(isLogin && { fetchPolicy: 'network-only' }),

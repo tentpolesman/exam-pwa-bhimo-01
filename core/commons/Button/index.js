@@ -41,6 +41,7 @@ const Button = (props) => {
                     'bg-pwa-button_background hover:bg-pwa-button_background_hover focus:shadow-primary-100 active:bg-primary-400':
                         variant === 'primary',
                     'bg-secondary hover:bg-secondary-300 focus:shadow-secondary-100 active:bg-secondary-500': variant === 'secondary',
+                    // eslint-disable-next-line max-len
                     'bg-neutral-white hover:shadow-[0_10px_15px_-3px] hover:shadow-black/10 focus:shadow-primary-100 active:shadow-[0_1px_3px_0] active:shadow-black/10':
                         variant === 'tertiary',
                     'bg-neutral-white border border-black hover:opacity-50 focus:shadow-neutral-100 focus:border-none': variant === 'outlined',
