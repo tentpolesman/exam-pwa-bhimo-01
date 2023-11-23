@@ -57,10 +57,10 @@ const GenerateFilter = React.memo((props) => {
         }, 1000);
     };
 
-    React.useEffect(() =>{
+    React.useEffect(() =>
         // clear timeout when the component unmounts
-        return () => clearTimeout(timeRef.current);
-    },[])
+        () => clearTimeout(timeRef.current),
+    []);
 
     const ItemValueByLabel = React.useMemo(() => {
         const itemValue = [];

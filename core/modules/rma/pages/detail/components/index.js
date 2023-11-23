@@ -1,7 +1,7 @@
 /* eslint-disable react/no-danger */
 import classNames from 'classnames';
 import React from 'react';
-import ConfirmModal from '@common_confirmdialog';
+import Dialog from '@common_dialog';
 import Layout from '@layout_customer';
 import { updateRma, cancelRma } from '@core_modules/rma/services/graphql';
 import ItemField from '@core_modules/rma/pages/detail/components/ItemField';
@@ -201,7 +201,7 @@ const DetailContent = (props) => {
 
     return (
         <Layout {...props} title={t('customer:menu:return')} activeMenu="/rma/customer">
-            <ConfirmModal
+            <Dialog
                 open={state.openDialog}
                 handleCancel={() => setState({ ...state, openDialog: false })}
                 handleYes={state.handleYes}
