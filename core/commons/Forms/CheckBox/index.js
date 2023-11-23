@@ -66,7 +66,7 @@ const CheckBox = (props) => {
                     {label}
                 </Typography>
             ) : null}
-            <div className={cx('flex', 'flex-col', 'mt-2', 'sm:basis', checkboxGroupClasses)}>
+            <div className={cx('flex', 'flex-col', 'mt-2', checkboxGroupClasses)}>
                 {/*
                 Todo: review the usage
 

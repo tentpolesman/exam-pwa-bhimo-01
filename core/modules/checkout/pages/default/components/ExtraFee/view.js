@@ -2,7 +2,7 @@
 /* eslint-disable consistent-return */
 import React from 'react';
 import Typography from '@common_typography';
-import Radio from '@common_radio';
+import Radio from '@common_forms/Radio';
 import Select from '@common_select';
 import Checkbox from '@common_forms/CheckBox';
 import { formatPrice } from '@helper_currency';
@@ -63,7 +63,7 @@ const ExtraFeeView = ({
                                     </Typography>
                                     <Radio
                                         flex="column"
-                                        valueData={data}
+                                        data={data}
                                         value={state[item.id_fee] ? state[item.id_fee] : ''}
                                         onChange={(val) => handleChange(item.id_fee, val)}
                                         classContainer={styles.radio}

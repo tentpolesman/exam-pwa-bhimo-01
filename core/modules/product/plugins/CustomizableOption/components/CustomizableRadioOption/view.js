@@ -1,5 +1,5 @@
 import React from 'react';
-import Radio from '@common_radio';
+import Radio from '@common_forms/Radio';
 import Typography from '@common_typography';
 import classNames from 'classnames';
 import useStyles from '@plugin_customizableitem/components/style';
@@ -27,7 +27,7 @@ const ViewCustomizableRadioOption = ({
                         name={title}
                         label={title}
                         CustomLabel={Label}
-                        valueData={data}
+                        data={data}
                         value={selected || ''}
                         flex="column"
                         onChange={onChange}

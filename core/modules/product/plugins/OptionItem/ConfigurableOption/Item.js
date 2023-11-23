@@ -1,6 +1,6 @@
 import dynamic from 'next/dynamic';
 
-// import CustomRadio from '@common_radio';
+// import CustomRadio from '@common_forms/Radio';
 // import SelectColor from '@common_forms/SelectColor';
 // import SelectSize from '@common_forms/SelectSize';
 import Typography from '@common_typography';
@@ -10,7 +10,7 @@ import classNames from 'classnames';
 
 import useStyles from '@plugin_optionitem/ConfigurableOption/style';
 // import SelectOption from '@common_optionconfigurable';
-const CustomRadio = dynamic(() => import('@common_radio'), { ssr: true });
+const CustomRadio = dynamic(() => import('@common_forms/Radio'), { ssr: true });
 const SelectOption = dynamic(() => import('@common_optionconfigurable'), { ssr: true });
 
 const ItemConfigurableView = (props) => {
@@ -40,7 +40,7 @@ const ItemConfigurableView = (props) => {
                 flex="row"
                 CustomItem={SelectOption}
                 value={selected[option.attribute_code]}
-                valueData={value}
+                data={value}
                 onChange={(val) => handleSelect(val, option.attribute_code)}
                 className={isGrid ? styles.label : ''}
                 classContainer={isGrid ? classNames(styles.classContainer, `product-OptionItem-${option.label}`) : ''}

@@ -5,7 +5,7 @@ import CircularProgress from '@common_circularprogress';
 import useStyles from '@common_filterdialog/style';
 import CheckBoxColor from '@common_forms/CheckBoxColor';
 import CheckBoxSize from '@common_forms/CheckBoxSize';
-import RadioGroup from '@common_radio';
+import RadioGroup from '@common_forms/Radio';
 import RangeSlider from '@common_rangeslider';
 import Typography from '@common_typography';
 import { getSeller } from '@core_modules/catalog/services/graphql';
@@ -159,7 +159,7 @@ const FilterDialog = (props) => {
                     <div className={styles.fieldContainer}>
                         <RadioGroup
                             label={itemProps.labelSortBy || t('common:title:short')}
-                            valueData={sortByData || []}
+                            data={sortByData || []}
                             value={itemProps.sortByValue || sort}
                             onChange={itemProps.sortByChange || setSort}
                         />
@@ -257,7 +257,7 @@ const FilterDialog = (props) => {
                                     <RadioGroup
                                         name={itemFilter.field}
                                         label={itemFilter.label || ''}
-                                        valueData={itemFilter.value || []}
+                                        data={itemFilter.value || []}
                                         value={selectedFilter[itemFilter.field]}
                                         onChange={(value) => setSelectedFilter(itemFilter.field, value)}
                                     />
