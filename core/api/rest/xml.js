@@ -5,7 +5,7 @@ const path = require('path');
 const requestGraph = require('../graphql/request');
 const { getHost } = require('../../helpers/config');
 
-const baseDir = path.join(__dirname, '../../../public/static/');
+const baseDir = path.join('./public/static/');
 
 const queryProduct = (page, size) => `
 {
@@ -93,8 +93,7 @@ const getXmlData = async (res) => {
         const category = values[1].categoryList[0].children;
         const products = values[0];
 
-        res.set('Content-Type', 'text/xml');
-        let content = `
+        let content = `<xml version="1.0" encoding="UTF-8">
         <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
             xmlns:content="http://www.google.com/schemas/sitemap-content/1.0"
             xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
@@ -189,7 +188,10 @@ const getXmlData = async (res) => {
         fs.writeFile(`${baseDir}sitemap.xml`, content, (err) => {
             if (err) throw err;
         });
-        res.send(content);
+
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'text/xml');
+        res.end(content);
     });
 };
 
@@ -207,8 +209,9 @@ const generateXml = (req, res) => {
         } else {
             fs.readFile(`${baseDir}sitemap.xml`, { encoding: 'utf-8' }, (err, data) => {
                 if (!err) {
-                    res.set('Content-Type', 'text/xml');
-                    res.send(data);
+                    res.statusCode = 200;
+                    res.setHeader('Content-Type', 'text/xml');
+                    res.end(data);
                 }
             });
         }
