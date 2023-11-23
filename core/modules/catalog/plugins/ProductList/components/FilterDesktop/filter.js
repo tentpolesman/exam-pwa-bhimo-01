@@ -9,7 +9,7 @@ import Button from '@common_button';
 import CheckBox from '@common_forms/CheckBox';
 import CheckBoxColor from '@common_forms/CheckBoxColor';
 import CheckBoxSize from '@common_forms/CheckBoxSize';
-import RadioGroup from '@common_radio';
+import RadioGroup from '@common_forms/Radio';
 import RangeSlider from '@common_rangeslider';
 import useStyles from '@plugin_productlist/components/FilterDesktop/style';
 
@@ -166,7 +166,7 @@ const GenerateFilter = React.memo((props) => {
                         noLabel
                         name={itemFilter.field}
                         label={itemFilter.label || ''}
-                        valueData={itemFilter.value || []}
+                        data={itemFilter.value || []}
                         value={selectedFilter[itemFilter.field]}
                         onChange={(value) => selectFilter(itemFilter.field, value)}
                     />

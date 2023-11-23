@@ -1,4 +1,4 @@
-import CustomRadio from '@common_radio';
+import CustomRadio from '@common_forms/Radio';
 // import SelectColor from '@common_forms/SelectColor';
 // import SelectSize from '@common_forms/SelectSize';
 import Typography from '@common_typography';
@@ -36,7 +36,7 @@ const ConfigurableView = (props) => {
                 flex="row"
                 CustomItem={SelectOption}
                 value={selected[option.attribute_code]}
-                valueData={value}
+                data={value}
                 onChange={(val) => handleSelect(val, option.attribute_code)}
                 className={styles.label}
                 classContainer={styles.classContainer}

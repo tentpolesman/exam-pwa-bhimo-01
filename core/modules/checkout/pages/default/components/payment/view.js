@@ -239,7 +239,7 @@ const PaymentView = (props) => {
                                                             key={`${index}-${item.group}`}
                                                             value={selected.payment}
                                                             onChange={handlePayment}
-                                                            valueData={item.data}
+                                                            data={item.data}
                                                             CustomItem={RadioItem}
                                                             ComponentOptional={(item) => {
                                                                 // prettier-ignore

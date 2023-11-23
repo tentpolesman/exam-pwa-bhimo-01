@@ -479,7 +479,7 @@ const ShippingView = (props) => {
                                                         <Radio
                                                             value={selected.shipping}
                                                             onChange={handleShipping}
-                                                            valueData={item.data}
+                                                            data={item.data}
                                                             CustomItem={DeliveryItem}
                                                             classContainer={styles.radioShiping}
                                                             storeConfig={storeConfig}
