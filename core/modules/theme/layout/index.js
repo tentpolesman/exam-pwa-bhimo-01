@@ -63,12 +63,13 @@ const font = localFont({
     variable: '--font-inter', // set the font css variable name, which we refer in tailwind.config.js
 });
 
-// const GlobalPromoMessage = dynamic(() => import('@core_modules/theme/components/globalPromo'), { ssr: false });
-// const BottomNavigation = dynamic(() => import('@common_bottomnavigation'), { ssr: false });
-// const HeaderMobile = dynamic(() => import('@common_headermobile'), { ssr: false });
 const HeaderDesktop = dynamic(() => import('@common_headerdesktop'), { ssr: true });
 const Toast = dynamic(() => import('@common_toast'), { ssr: false });
 const Backdrop = dynamic(() => import('@common_backdrop'), { ssr: false });
+const Dialog = dynamic(() => import('@common_dialog'), { ssr: false });
+// const GlobalPromoMessage = dynamic(() => import('@core_modules/theme/components/globalPromo'), { ssr: false });
+// const BottomNavigation = dynamic(() => import('@common_bottomnavigation'), { ssr: false });
+// const HeaderMobile = dynamic(() => import('@common_headermobile'), { ssr: false });
 // const ScrollToTop = dynamic(() => import('@common_scrolltotop'), { ssr: false });
 // const Footer = dynamic(() => import('@common_footer'), { ssr: false });
 // const RestrictionPopup = dynamic(() => import('@common_restrictionPopup'), { ssr: false });
@@ -115,6 +116,16 @@ const Layout = (props) => {
     const enablePromo =
         getCookies(features.globalPromo.key_cookies) !== '' ? !!getCookies(features.globalPromo.key_cookies) : storeConfig.global_promo?.enable;
 
+    const [dialog, setDialog] = useState({
+        open: false,
+        title: null,
+        content: null,
+        positiveLabel: null,
+        positiveAction: null,
+        negativeLabel: null,
+        negativeAction: null,
+    });
+    
     const [state, setState] = useState({
         toastMessage: {
             open: false,
@@ -167,6 +178,10 @@ const Layout = (props) => {
             backdropLoader: status,
         });
     };
+
+    const handlerDialog = (params) => {
+        setDialog({ ...dialog, ...params });
+    }
 
     const handleCloseMessage = () => {
         setState({
@@ -280,6 +295,7 @@ const Layout = (props) => {
         if (typeof window !== 'undefined') {
             window.toastMessage = handleSetToast;
             window.backdropLoader = handleLoader;
+            window.dialog = handlerDialog;
             const custData = Cookies.getJSON(custDataNameCookie);
             const tagManagerArgs = {
                 dataLayer: {
@@ -582,6 +598,15 @@ const Layout = (props) => {
             )}
             <main className={generateClasses()}>
                 <Backdrop open={state.backdropLoader} />
+                <Dialog
+                    open={dialog.open}
+                    title={dialog.title}
+                    content={dialog.content}
+                    positiveLabel={dialog.positiveLabel}
+                    positiveAction={dialog.positiveAction}
+                    negativeLabel={dialog.negativeLabel}
+                    negativeAction={dialog.negativeAction}
+                />
                 <Toast
                     close={state.toastMessage.close}
                     setOpen={handleCloseMessage}

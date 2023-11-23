@@ -1,5 +1,5 @@
 import Button from '@common_button';
-import Modal from '@common_confirmdialog';
+import Dialog from '@common_dialog';
 import Typography from '@common_typography';
 import Address from '@core_modules/checkout/pages/default/components/address';
 import Confirmation from '@core_modules/checkout/pages/default/components/Confirmation';
@@ -108,7 +108,7 @@ const Content = (props) => {
             <Typography variant="h1" style={{ display: 'none' }}>
                 Checkout
             </Typography>
-            <Modal
+            <Dialog
                 open={checkoutTokenState}
                 handleYes={() => {
                     setCheckoutTokenState(!checkoutTokenState);
