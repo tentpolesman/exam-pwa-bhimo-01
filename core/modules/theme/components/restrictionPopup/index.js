@@ -10,7 +10,7 @@ const RestrictionPopup = (props) => {
     return (
         <div className={restrictionStyle}>
             <div className="wrapper-text">
-                <div className="row">
+                <div className="flex flex-row">
                     <Typography variant="title" type="semiBold" style={{ fontSize: 12 }}>
                         {`${cookiesMessage[0]}.`}
                     </Typography>

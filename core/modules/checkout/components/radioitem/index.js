@@ -45,13 +45,13 @@ const RadioDeliveryItem = (props) => {
     const base_currency_code = storeConfig ? storeConfig.base_currency_code : 'RP';
     if (amount && price_incl_tax && price_incl_tax.value > amount.value) {
         rightSide = (
-            <div className="row between-xs">
-                <div className="col-xs-12 col-sm-6">
+            <div className="flex flex-row between-xs">
+                <div className="xs:basis-full sm:basis-1/2">
                     <Typography variant="p" type={labelType} className={styles.originalPrice} align="right">
                         {formatPrice(price_incl_tax.value, amount.currency, currencyCache || base_currency_code, currencyCache)}
                     </Typography>
                 </div>
-                <div className="col-xs-12 col-sm-6">
+                <div className="xs:basis-full sm:basis-1/2">
                     <Typography variant="p" type={labelType} className={styles.promo} align="right">
                         {formatPrice(amount.value, amount.currency, currencyCache || base_currency_code, currencyCache)}
                     </Typography>
@@ -60,8 +60,8 @@ const RadioDeliveryItem = (props) => {
         );
     } else if (price_incl_tax && price_incl_tax.value) {
         rightSide = (
-            <div className="row">
-                <div className="col-xs-12 col-sm-6">
+            <div className="flex flex-row">
+                <div className="xs:basis-full sm:basis-1/2">
                     <Typography variant="p" type={labelType} className={styles.notPromo} align="right">
                         {formatPrice(price_incl_tax.value, amount.currency, currencyCache || base_currency_code, currencyCache)}
                     </Typography>
@@ -70,8 +70,8 @@ const RadioDeliveryItem = (props) => {
         );
     } else if (price_incl_tax && price_incl_tax.value === 0 && amount && amount.value === 0) {
         rightSide = (
-            <div className="row">
-                <div className="col-xs-12 col-sm-6">
+            <div className="flex flex-row">
+                <div className="xs:basis-full sm:basis-1/2">
                     <Typography variant="p" type={labelType} className={styles.freeShipping} align="right">
                         {price_incl_tax.value !== 0 ? formatPrice(price_incl_tax.value, amount.currency, currencyCache
                             || base_currency_code, currencyCache) : 'FREE'}

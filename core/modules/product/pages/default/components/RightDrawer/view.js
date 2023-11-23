@@ -19,11 +19,11 @@ const ItemLook = (props) => {
     let defaultWidth = storeConfig?.pwa?.image_product_width;
     let defaultHeight = storeConfig?.pwa?.image_product_height;
 
-    if (typeof defaultWidth === 'string') defaultWidth = parseInt(defaultWidth, 0);
-    if (typeof defaultHeight === 'string') defaultHeight = parseInt(defaultHeight, 0);
+    if (typeof defaultWidth === 'string') defaultWidth = parseInt(defaultWidth, 10);
+    if (typeof defaultHeight === 'string') defaultHeight = parseInt(defaultHeight, 10);
 
     return (
-        <div className={classNames('col-xs-12 col-sm-12 col-md-6 col-lg-6', styles.itemLookContainer)}>
+        <div className={classNames('xs:basis-full sm:basis-full md:basis-1/2 lg:basis-1/2', styles.itemLookContainer)}>
             <Link href="[...slug]" as={`${url_key}`} className={styles.imageLookContainer}>
 
                 <Tooltip title={label}>
@@ -85,7 +85,7 @@ const UpsellDrawerView = (props) => {
                         </div>
                     </div>
                     <div className={contetStyle}>
-                        <div className="row" style={{ height: 'fit-content', width: '100%' }}>
+                        <div className="flex flex-row" style={{ height: 'fit-content', width: '100%' }}>
                             {
                                 data.length > 0
                                 && data.map((item, index) => (<ItemLook key={index} {...item} storeConfig={storeConfig} />))

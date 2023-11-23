@@ -36,7 +36,7 @@ const RegisterView = ({
 
     return (
         <>
-            <form className={classNames('col-md-6', styles.container)} onSubmit={formik.handleSubmit}>
+            <form className={classNames('md:basis-1/2', styles.container)} onSubmit={formik.handleSubmit}>
                 <TextField
                     id="register-firstname-textfield"
                     label={t('common:form:firstName')}
@@ -164,7 +164,7 @@ const RegisterView = ({
                         name="subscribe"
                         control={<Checkbox id="register-newsletter-checkbox" name="subscribe" color="primary" size="small" />}
                         label={(
-                            <Typography variant="p" letter="capitalize" className="row center">
+                            <Typography variant="p" letter="capitalize" className="flex flex-row center">
                                 {t('register:subscribe')}
                             </Typography>
                         )}

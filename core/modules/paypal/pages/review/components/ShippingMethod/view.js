@@ -11,19 +11,19 @@ const ShippingMethodView = (props) => {
     } = props;
     const styles = useStyles();
     return (
-        <div className="row">
-            <div className="col-xs-12">
+        <div className="flex flex-row">
+            <div className="xs:basis-full">
                 <Typography variant="span" letter="capitalize" type="bold">
                     {t('checkout:shippingMethod')}
                 </Typography>
             </div>
-            <div className="col-xs-12">
+            <div className="xs:basis-full">
                 {
                     checkout.loading.all
                         ? (<SkeletonShippingMethod />)
                         : data.length > 0
                             ? (
-                                <div className="col-xs-12">
+                                <div className="xs:basis-full">
                                     <Select
                                         native
                                         defaultValue={checkout.selectedShippingMethod}

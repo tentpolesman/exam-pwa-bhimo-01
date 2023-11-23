@@ -23,7 +23,7 @@ const ItemOrder = ({
 
                 </Link>
                 <div className={styles.detailItem}>
-                    <div className={`column ${styles.columnLabel}`}>
+                    <div className={`flex flex-col ${styles.columnLabel}`}>
                         <Typography variant="span" letter="capitalize" className="clear-margin-padding">
                             {t('order:date')}
                         </Typography>

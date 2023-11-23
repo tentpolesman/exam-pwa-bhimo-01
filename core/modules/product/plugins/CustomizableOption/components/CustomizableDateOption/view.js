@@ -9,7 +9,7 @@ const ViewCustomizableDateOption = ({
     onChange = () => {}, error = '', required = false,
 }) => {
     const styles = useStyles();
-    const customClass = classNames('column', styles.container, styles.customizableDateOption);
+    const customClass = classNames('flex flex-col', styles.container, styles.customizableDateOption);
     return (
         <div className={customClass}>
             {

@@ -98,15 +98,15 @@ const Login = (props) => {
                     label={t('login:switchPhone')}
                 />
             )}
-            <div className={classNames('row between-sm between-md between-lg', styles.desktopContainer)}>
-                <div className="col-sm-12 col-md-12 col-lg-12 hidden-mobile">
+            <div className={classNames('flex flex-row between-sm between-md between-lg', styles.desktopContainer)}>
+                <div className="sm:basis-full md:basis-full lg:basis-full hidden-mobile">
                     <Typography type="bold" variant="h1" className={styles.title}>
                         {t('login:customerLogin')}
                     </Typography>
                 </div>
-                <div className="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                    <div className="row">
-                        <div className="col-sm-12 hidden-mobile">
+                <div className="xs:basis-full sm:basis-1/2 md:basis-1/2 lg:basis-1/2">
+                    <div className="flex flex-row">
+                        <div className="sm:basis-full hidden-mobile">
                             <div className={styles.headerSpan}>
                                 <Typography variant="span" className="clear-margin-padding" letter="uppercase">
                                     {t('login:registerCustomer')}
@@ -114,15 +114,15 @@ const Login = (props) => {
                             </div>
                         </div>
                         {(!isOtp || desktop) && phonePassword === false && (
-                            <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <div className="xs:basis-full sm:basis-full md:basis-full lg:basis-full">
                                 <div className={classNames(styles.spanLabel, 'hidden-mobile')}>
                                     <Typography type="bold" variant="p" className="clear-margin-padding">
                                         {t('login:loginInformation')}
                                     </Typography>
                                 </div>
                                 <form onSubmit={formik.handleSubmit}>
-                                    <div className="row center-xs start-sm">
-                                        <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <div className="flex flex-row center-xs start-sm">
+                                        <div className="xs:basis-full sm:basis-full md:basis-full lg:basis-full">
                                             <TextField
                                                 id="login-email-textfield"
                                                 name="username"
@@ -134,7 +134,7 @@ const Login = (props) => {
                                                 errorMessage={formik.errors.username || null}
                                             />
                                         </div>
-                                        <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <div className="xs:basis-full sm:basis-full md:basis-full lg:basis-full">
                                             <PasswordField
                                                 id="login-password-passfield"
                                                 name="password"
@@ -147,7 +147,7 @@ const Login = (props) => {
                                                 showVisible
                                             />
                                         </div>
-                                        <div className="col-xs-12  col-sm-12">
+                                        <div className="xs:basis-full  sm:basis-full">
                                             {enableRecaptcha ? (
                                                 <>
                                                     <ReCAPTCHA sitekey={sitekey} onChange={handleChangeCaptcha} ref={recaptchaRef} />
@@ -155,7 +155,7 @@ const Login = (props) => {
                                                 </>
                                             ) : null}
                                         </div>
-                                        <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <div className="xs:basis-full sm:basis-full md:basis-full lg:basis-full">
                                             <Button
                                                 id="login-signin-button"
                                                 className={styles.generalButton}
@@ -169,12 +169,12 @@ const Login = (props) => {
                                                 </Typography>
                                             </Button>
                                         </div>
-                                        <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <div className="xs:basis-full sm:basis-full md:basis-full lg:basis-full">
                                             {firebaseLoaded && firebase.app() && !socialLoginMethodLoading && (
                                                 <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
                                             )}
                                         </div>
-                                        <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <div className="xs:basis-full sm:basis-full md:basis-full lg:basis-full">
                                             <Button
                                                 fullWidth={false}
                                                 variant="text"
@@ -191,15 +191,15 @@ const Login = (props) => {
                             </div>
                         )}
                         {(!isOtp || desktop) && phonePassword !== false && (
-                            <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <div className="xs:basis-full sm:basis-full md:basis-full lg:basis-full">
                                 <div className={classNames(styles.spanLabel, 'hidden-mobile')}>
                                     <Typography type="bold" variant="p" className="clear-margin-padding">
                                         {t('login:loginPhoneEmailInformation')}
                                     </Typography>
                                 </div>
                                 <form onSubmit={formikPhoneEmail.handleSubmit}>
-                                    <div className="row center-xs start-sm">
-                                        <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <div className="flex flex-row center-xs start-sm">
+                                        <div className="xs:basis-full sm:basis-full md:basis-full lg:basis-full">
                                             <TextField
                                                 id="login-email-textfield"
                                                 name="username"
@@ -221,7 +221,7 @@ const Login = (props) => {
                                                 errorMessage={formikPhoneEmail.errors.username || null}
                                             />
                                         </div>
-                                        <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <div className="xs:basis-full sm:basis-full md:basis-full lg:basis-full">
                                             <PasswordField
                                                 id="login-password-passfield"
                                                 name="password"
@@ -234,7 +234,7 @@ const Login = (props) => {
                                                 showVisible
                                             />
                                         </div>
-                                        <div className="col-xs-12  col-sm-12">
+                                        <div className="xs:basis-full  sm:basis-full">
                                             {enableRecaptcha ? (
                                                 <>
                                                     <ReCAPTCHA sitekey={sitekey} onChange={handleChangeCaptcha} ref={recaptchaRef} />
@@ -244,7 +244,7 @@ const Login = (props) => {
                                                 </>
                                             ) : null}
                                         </div>
-                                        <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <div className="xs:basis-full sm:basis-full md:basis-full lg:basis-full">
                                             <Button
                                                 id="login-signin-button"
                                                 className={styles.generalButton}
@@ -258,12 +258,12 @@ const Login = (props) => {
                                                 </Typography>
                                             </Button>
                                         </div>
-                                        <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <div className="xs:basis-full sm:basis-full md:basis-full lg:basis-full">
                                             {firebaseLoaded && firebase.app() && !socialLoginMethodLoading && (
                                                 <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
                                             )}
                                         </div>
-                                        <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <div className="xs:basis-full sm:basis-full md:basis-full lg:basis-full">
                                             <Button
                                                 fullWidth={false}
                                                 variant="text"
@@ -279,23 +279,23 @@ const Login = (props) => {
                                 </form>
                             </div>
                         )}
-                        <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 hidden-mobile">
-                            <div className={classNames('row middle-sm', styles.spanDivider)}>
-                                <div className="col-sm-12">
+                        <div className="xs:basis-full sm:basis-full md:basis-full lg:basis-full hidden-mobile">
+                            <div className={classNames('flex flex-row middle-sm', styles.spanDivider)}>
+                                <div className="sm:basis-full">
                                     <Divider />
                                 </div>
                             </div>
                         </div>
                         {(isOtp || desktop) && otpConfig.data && otpConfig.data.otpConfig.otp_enable[0].enable_otp_login && (
-                            <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <div className="xs:basis-full sm:basis-full md:basis-full lg:basis-full">
                                 <div className={classNames(styles.spanLabel, 'hidden-mobile')}>
                                     <Typography type="bold" variant="p" className="clear-margin-padding">
                                         {t('login:loginOtpInformation')}
                                     </Typography>
                                 </div>
                                 <form onSubmit={formikOtp.handleSubmit} className={styles.formOtp}>
-                                    <div className="row center-xs start-sm">
-                                        <div className="col-xs-12 col-sm-12">
+                                    <div className="flex flex-row center-xs start-sm">
+                                        <div className="xs:basis-full sm:basis-full">
                                             <OtpBlock
                                                 setDisabled={setDisabled}
                                                 type="login"
@@ -317,7 +317,7 @@ const Login = (props) => {
                                                 }}
                                             />
                                         </div>
-                                        <div className="col-xs-12  col-sm-12">
+                                        <div className="xs:basis-full  sm:basis-full">
                                             {enableRecaptcha ? (
                                                 <>
                                                     <ReCAPTCHA sitekey={sitekey} onChange={handleChangeCaptcha} ref={recaptchaRef} />
@@ -325,7 +325,7 @@ const Login = (props) => {
                                                 </>
                                             ) : null}
                                         </div>
-                                        <div className="col-xs-12 col-sm-12">
+                                        <div className="xs:basis-full sm:basis-full">
                                             <Button
                                                 id="login-signin-button"
                                                 className={styles.generalButton}
@@ -345,19 +345,19 @@ const Login = (props) => {
                         )}
                     </div>
                 </div>
-                <div className="col-xs-12 col-sm-5 col-md-5 col-lg-5 hidden-mobile">
-                    <div className="row">
-                        <div className="col-sm-12">
+                <div className="xs:basis-full sm:basis-5/12 md:basis-5/12 lg:basis-5/12 hidden-mobile">
+                    <div className="flex flex-row">
+                        <div className="sm:basis-full">
                             <div className={styles.headerSpan}>
                                 <Typography className="clear-margin-padding" variant="span" letter="uppercase">
                                     {t('login:newCustomer')}
                                 </Typography>
                             </div>
                         </div>
-                        <div className="col-sm-12">
+                        <div className="sm:basis-full">
                             <Typography variant="p">{t('login:registerInformation')}</Typography>
                         </div>
-                        <div className="col-sm-12">
+                        <div className="sm:basis-full">
                             <Button
                                 className={styles.generalButton}
                                 fullWidth={false}

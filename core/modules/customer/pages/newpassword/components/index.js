@@ -6,8 +6,8 @@ const ForgotPassword = (props) => {
     const styles = useStyles();
     const { t, formik, disabled } = props;
     return (
-        <div className="row">
-            <div className="col-md-6 col-xs-12">
+        <div className="flex flex-row">
+            <div className="md:basis-1/2 xs:basis-full">
                 <form className={styles.container} onSubmit={formik.handleSubmit}>
                     <Password
                         label="Password"

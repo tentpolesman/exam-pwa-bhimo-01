@@ -207,7 +207,7 @@ const DetailContent = (props) => {
                 handleYes={state.handleYes}
                 message={state.messageDialog}
             />
-            <div className="column">
+            <div className="flex flex-col">
                 {
                     detail_rma.confirm_shipping.status
                         ? (<div className={styles.block} dangerouslySetInnerHTML={{ __html: detail_rma.confirm_shipping.step }} />)

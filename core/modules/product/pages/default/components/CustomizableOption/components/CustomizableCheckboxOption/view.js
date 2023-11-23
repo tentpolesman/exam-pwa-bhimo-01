@@ -6,7 +6,7 @@ const ViewCustomizableCheckboxOption = ({
     title = 'test', data = [], selected = [], disabled,
     onChange = () => {}, error = '', required = false,
 }) => (
-    <div className="column">
+    <div className="flex flex-col">
         {
             data && data.length > 0 && (
                 <>

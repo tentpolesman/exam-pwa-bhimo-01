@@ -102,7 +102,7 @@ const Content = (props) => {
      */
     return (
         <div id="checkout" className={classNames(styles.mobileBottomSpace, 'row between-lg')}>
-            <div className="col-xs-12 center hidden-mobile">
+            <div className="xs:basis-full center hidden-mobile">
                 <HeaderView storeConfig={storeConfig} />
             </div>
             <Typography variant="h1" style={{ display: 'none' }}>
@@ -122,12 +122,12 @@ const Content = (props) => {
                 message={`${t('checkout:invalidToken')}`}
                 confirmationMessage={`${t('checkout:invalidTokenConfirmation')}`}
             />
-            <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 center">
+            <div className="xs:basis-full sm:basis-full md:basis-full lg:basis-full center">
                 {checkout && checkout.data && checkout.data.cart && checkout.data.cart.promoBanner.length > 0 && (
                     <GimmickBanner data={checkout.data.cart.promoBanner || []} />
                 )}
             </div>
-            <div className="col-xs-12 col-sm-8 col-md-8 col-lg-8" style={containerStyle || {}}>
+            <div className="xs:basis-full sm:basis-8/12 md:basis-8/12 lg:basis-8/12" style={containerStyle || {}}>
                 {modules.checkout.cashback.enabled && checkout.data.cart && checkout.data.cart.applied_cashback.is_cashback && (
                     <CashbackInfoView
                         message={chasbackMessage}
@@ -138,11 +138,11 @@ const Content = (props) => {
                 )}
 
                 {/* {modules.checkout.inStorePickup.enabled && (
-                    <div className="row col-xs-12">
-                        <div className="col-xs-6">
+                    <div className="flex flex-row xs:basis-full">
+                        <div className="xs:basis-6/12">
                             <Button onClick={() => setInStore(false)}>Shipping</Button>
                         </div>
-                        <div className="col-xs-6">
+                        <div className="xs:basis-6/12">
                             <Button onClick={() => setInStore(true)}>In Store Pickup</Button>
                         </div>
                     </div>
@@ -221,7 +221,7 @@ const Content = (props) => {
                         <Typography variant="h2" type="bold" letter="uppercase">
                             {t('checkout:feePromoLabel')}
                         </Typography>
-                        <div className="row">
+                        <div className="flex flex-row">
                             {modules.checkout.extraFee.enabled ? (
                                 <ExtraFee
                                     checkout={checkout}
@@ -235,7 +235,7 @@ const Content = (props) => {
                                 />
                             ) : null}
                             {modules.promo.enabled ? (
-                                <div className="col-xs-12 col-sm-12 col-md-12 col-xl-12">
+                                <div className="xs:basis-full sm:basis-full md:basis-full xl:basis-full">
                                     <Promo
                                         t={t}
                                         checkout={checkout}
@@ -248,7 +248,7 @@ const Content = (props) => {
                                 </div>
                             ) : null}
                             {modules.giftcard.enabled ? (
-                                <div className="col-xs-12 col-sm-12 col-md-12 col-xl-12">
+                                <div className="xs:basis-full sm:basis-full md:basis-full xl:basis-full">
                                     <GiftCard
                                         t={t}
                                         checkout={checkout}
@@ -261,7 +261,7 @@ const Content = (props) => {
                                 </div>
                             ) : null}
                             {modules.rewardpoint.enabled ? (
-                                <div className="col-xs-12 col-sm-12 col-md-6 col-xl-6">
+                                <div className="xs:basis-full sm:basis-full md:basis-1/2 xl:basis-6/12">
                                     <RewardPoint
                                         t={t}
                                         checkout={checkout}
@@ -275,7 +275,7 @@ const Content = (props) => {
                                 </div>
                             ) : null}
                             {modules.storecredit.enabled ? (
-                                <div className="col-xs-12 col-sm-12 col-md-6 col-xl-6">
+                                <div className="xs:basis-full sm:basis-full md:basis-1/2 xl:basis-6/12">
                                     <Credit
                                         t={t}
                                         checkout={checkout}
@@ -322,7 +322,7 @@ const Content = (props) => {
                     
                     {!enableMultiSeller ? (
                         <div className={classNames(styles.block)}>
-                            <div className="col-xs-12 col-sm-12 col-md-12 col-xl-12">
+                            <div className="xs:basis-full sm:basis-full md:basis-full xl:basis-full">
                                 <OrderComment
                                     t={t}
                                     checkout={checkout}
@@ -337,7 +337,7 @@ const Content = (props) => {
                     ) : null}
                 </>
             </div>
-            <div className="col-xs-12 col-sm-4 col-md-4 col-lg-3">
+            <div className="xs:basis-full sm:basis-4/12 md:basis-4/12 lg:basis-3/12">
                 <PromoModalItem
                     t={t}
                     storeConfig={storeConfig}
@@ -363,7 +363,7 @@ const Content = (props) => {
                     setCheckoutTokenState={setCheckoutTokenState}
                 />
             </div>
-            <div className="col-xs-12 col-sm-8 hidden-mobile center">
+            <div className="xs:basis-full sm:basis-8/12 hidden-mobile center">
                 <Button
                     customRootStyle={{ marginBottom: 80, marginTop: 50 }}
                     onClick={handleClick}

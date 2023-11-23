@@ -64,19 +64,19 @@ const SingleProduct = (props) => {
     const getCol5Classes = () => {
         let classes = '';
         if (item_xl === 5) {
-            classes += 'col-xl-5 ';
+            classes += 'xl:basis-5/12 ';
         }
         if (item_lg === 5) {
-            classes += 'col-lg-5 ';
+            classes += 'lg:basis-5/12 ';
         }
         if (item_md === 5) {
-            classes += 'col-md-5 ';
+            classes += 'md:basis-5/12 ';
         }
         if (item_sm === 5) {
-            classes += 'col-sm-5 ';
+            classes += 'sm:basis-5/12 ';
         }
         if (item_xs === 5) {
-            classes += 'col-xs-5 ';
+            classes += 'xs:basis-5/12 ';
         }
 
         return classes;

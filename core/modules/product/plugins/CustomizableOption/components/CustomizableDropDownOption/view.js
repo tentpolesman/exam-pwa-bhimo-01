@@ -9,7 +9,7 @@ const ViewCustomizableDropDownOption = ({
     onChange = () => {}, error = '', required = false,
 }) => {
     const styles = useStyles();
-    const customClass = classNames('column', styles.container, styles.customizableDropDownOption);
+    const customClass = classNames('flex flex-col', styles.container, styles.customizableDropDownOption);
     return (
         <div className={customClass}>
             {

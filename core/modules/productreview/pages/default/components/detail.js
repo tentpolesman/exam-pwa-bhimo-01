@@ -38,7 +38,7 @@ const ProductReview = (props) => {
             >
                 <div>
                     <DialogContent dividers>
-                        <div className={classNames('col-md-12', styles.container)}>
+                        <div className={classNames('md:basis-full', styles.container)}>
                             <IconButton
                                 style={{
                                     position: 'absolute',
@@ -51,8 +51,8 @@ const ProductReview = (props) => {
                             >
                                 <CloseIcon />
                             </IconButton>
-                            <div className="row">
-                                <div className="col-md-5">
+                            <div className="flex flex-row">
+                                <div className="md:basis-5/12">
                                     <Image
                                         src={reviewItem.product.image.url}
                                         lazy
@@ -61,7 +61,7 @@ const ProductReview = (props) => {
                                         storeConfig={storeConfig}
                                     />
                                 </div>
-                                <div className="col-md-5 col">
+                                <div className="md:basis-5/12 col">
                                     <Typography variant="h1" align="left" style={{ textTransform: 'uppercase' }}>
                                         {reviewItem.product.name}
                                     </Typography>

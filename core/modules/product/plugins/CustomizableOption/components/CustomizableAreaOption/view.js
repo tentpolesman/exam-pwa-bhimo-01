@@ -9,7 +9,7 @@ const ViewCustomizableAreaOption = ({
     onChange = () => {}, error = '', required = false,
 }) => {
     const styles = useStyles();
-    const customClass = classNames('column', styles.container, styles.customizableArea);
+    const customClass = classNames('flex flex-col', styles.container, styles.customizableArea);
     return (
         <div className={customClass}>
             {

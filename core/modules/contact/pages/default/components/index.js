@@ -108,12 +108,12 @@ const ContactPage = (props) => {
             <Typography variant="h1" type="bold" align="left" className={styles.pageTitles}>
                 {t('contact:contactUs')}
             </Typography>
-            <div className="row">
-                <div className="col-md-6 col-xs-12">
+            <div className="flex flex-row">
+                <div className="md:basis-1/2 xs:basis-full">
                     {(!loading && <div className={styles.container} dangerouslySetInnerHTML={{ __html: data.cmsBlocks.items[0].content }} />)}
                     {(loading && <Skeleton />)}
                 </div>
-                <div className="col-md-6 col-xs-12">
+                <div className="md:basis-1/2 xs:basis-full">
                     <ContactForm {...props} />
                 </div>
             </div>

@@ -6,7 +6,7 @@ const ViewCustomizableDropDownOption = ({
     title = 'test', data = [], selected = '', disabled,
     onChange = () => {}, error = '', required = false,
 }) => (
-    <div className="column customizable-container">
+    <div className="flex flex-col customizable-container">
         {
             data && data.length > 0 && (
                 <Select

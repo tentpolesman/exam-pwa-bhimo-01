@@ -7,10 +7,10 @@ export const Loader = () => {
     const styles = useStyles();
     return (
         <div className={classNames(styles.container, 'row')}>
-            <div className="col-lg-10 col-xs-12 col-sm-12">
+            <div className="lg:basis-10/12 xs:basis-full sm:basis-full">
                 <div className={styles.tableOuterContainer}>
                     <div className={styles.table}>
-                        <div className="column" style={{ marginTop: 15, marginBottom: 10 }}>
+                        <div className="flex flex-col" style={{ marginTop: 15, marginBottom: 10 }}>
                             <Skeleton variant="text" width="100%" height={30} />
                             <Skeleton variant="text" width="100%" height={30} />
                             <Skeleton variant="text" width="100%" height={30} />
@@ -19,7 +19,7 @@ export const Loader = () => {
                             <Skeleton variant="text" width="100%" height={30} />
                             <Divider />
                         </div>
-                        <div className="column" style={{ marginTop: 15, marginBottom: 10 }}>
+                        <div className="flex flex-col" style={{ marginTop: 15, marginBottom: 10 }}>
                             <Skeleton variant="text" width="100%" height={30} />
                             <Skeleton variant="text" width="100%" height={30} />
                             <Skeleton variant="text" width="100%" height={30} />
@@ -28,7 +28,7 @@ export const Loader = () => {
                             <Skeleton variant="text" width="100%" height={30} />
                             <Divider />
                         </div>
-                        <div className="column" style={{ marginTop: 15, marginBottom: 10 }}>
+                        <div className="flex flex-col" style={{ marginTop: 15, marginBottom: 10 }}>
                             <Skeleton variant="text" width="100%" height={30} />
                             <Skeleton variant="text" width="100%" height={30} />
                             <Skeleton variant="text" width="100%" height={30} />

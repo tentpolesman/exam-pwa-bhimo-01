@@ -25,12 +25,12 @@ const ListItemCart = (props) => {
     let defaultWidth = storeConfig?.pwa?.image_product_width;
     let defaultHeight = storeConfig?.pwa?.image_product_height;
 
-    if (typeof defaultWidth === 'string') defaultWidth = parseInt(defaultWidth, 0);
-    if (typeof defaultHeight === 'string') defaultHeight = parseInt(defaultHeight, 0);
+    if (typeof defaultWidth === 'string') defaultWidth = parseInt(defaultWidth, 10);
+    if (typeof defaultHeight === 'string') defaultHeight = parseInt(defaultHeight, 10);
 
     return (
-        <div className={classNames('row', styles.containerItem)}>
-            <div className={classNames('col-xs-12', styles.labelTitle)}>
+        <div className={classNames('flex flex-row', styles.containerItem)}>
+            <div className={classNames('xs:basis-full', styles.labelTitle)}>
                 <Typography variant="h5">
                     {t('checkout:paypal:itemsCart')}
                 </Typography>
@@ -42,7 +42,7 @@ const ListItemCart = (props) => {
 
                 </Link>
             </div>
-            <div className="col-xs-12">
+            <div className="xs:basis-full">
                 {
                     checkout.loading.all ? (<SkeletonTable />) : (
                         <TableContainer component={Paper} className={styles.tableContainer}>
@@ -108,8 +108,8 @@ const ListItemCart = (props) => {
                                                             align="left"
                                                             className={styles.noBorder}
                                                         >
-                                                            <div className="row">
-                                                                <div className="col-xs-12">
+                                                            <div className="flex flex-row">
+                                                                <div className="xs:basis-full">
                                                                     <Link
                                                                         href="/[...slug]"
                                                                         as={`/${val.product.url_key}`}
@@ -121,7 +121,7 @@ const ListItemCart = (props) => {
 
                                                                     </Link>
                                                                 </div>
-                                                                <div className="col-xs-12 column">
+                                                                <div className="xs:basis-full flex flex-col">
                                                                     { val.configurable_options ? val.configurable_options.map((item, idx) => (
                                                                         <Typography variant="span" letter="capitalize" key={idx}>
                                                                             <strong>{item.option_label}</strong>
@@ -134,12 +134,12 @@ const ListItemCart = (props) => {
                                                                 </div>
                                                                 {
                                                                     val.links && val.links.length > 0 && (
-                                                                        <div className="col-xs-12 row option-link">
+                                                                        <div className="xs:basis-full row option-link">
                                                                             <Typography variant="span" letter="capitalize" type="bold">
                                                                                 Downloads :
                                                                                 {' '}
                                                                             </Typography>
-                                                                            <div className="column">
+                                                                            <div className="flex flex-col">
                                                                                 { val.links.map((item, idx) => (
                                                                                     <Typography variant="span" letter="capitalize" key={idx}>
                                                                                         {item.title}
@@ -206,7 +206,7 @@ const ListItemCart = (props) => {
                                                                 <div className="product-options">
                                                                     {val.customizable_options.map((op, idx) => (
                                                                         <div className="option-wrapper" key={idx}>
-                                                                            <div className="row option-wrapper__item">
+                                                                            <div className="flex flex-row option-wrapper__item">
                                                                                 <strong>
                                                                                     {op.label}
                                                                                     {' '}

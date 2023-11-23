@@ -136,7 +136,7 @@ const FeeAndPromotion = (props) => {
 
     return (
         <>
-            <div className="col-xs-12 col-sm-12 col-md-12 col-lg-4">
+            <div className="xs:basis-full sm:basis-full md:basis-full lg:basis-4/12">
                 <Typography variant="h3" type="bold">
                     Fee and Promotion
                 </Typography>

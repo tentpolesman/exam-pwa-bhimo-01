@@ -54,7 +54,7 @@ const PickupInformation = (props) => {
                 {t('checkout:pickupInformation:label')}
             </Typography>
             <div className={classNames(styles.cardPoint, classes.card)}>
-                <div className="column">
+                <div className="flex flex-col">
                     {
                         (Object.keys(checkout.pickupInformation).length > 0) && (
                             <>
@@ -99,7 +99,7 @@ const PickupInformation = (props) => {
                 {t('checkout:pickupInformation:pickupAtLabel')}
             </Typography>
             <div className={classNames(styles.cardPoint, classes.card)}>
-                <div className="column">
+                <div className="flex flex-col">
                     {
                         (Object.keys(checkout.selectStore).length > 0) && (
                             <>

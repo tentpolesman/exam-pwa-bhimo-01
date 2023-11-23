@@ -18,7 +18,7 @@ const ViewCustomizableFileOption = ({
         });
     }
     return (
-        <div className="column customizable-container">
+        <div className="flex flex-col customizable-container">
             {
                 data && data.uid && (
                     <>

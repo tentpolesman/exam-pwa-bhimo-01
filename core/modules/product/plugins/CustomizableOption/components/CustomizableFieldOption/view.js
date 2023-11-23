@@ -9,7 +9,7 @@ const ViewCustomizableFieldOption = ({
     onChange = () => {}, error = '', required = false,
 }) => {
     const styles = useStyles();
-    const customClass = classNames('column', styles.container, styles.customizableFieldOption);
+    const customClass = classNames('flex flex-col', styles.container, styles.customizableFieldOption);
     return (
         <div className={customClass}>
             {

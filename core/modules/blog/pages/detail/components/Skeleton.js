@@ -7,14 +7,14 @@ const style = {
 
 const SkeletonLoader = () => (
     <>
-        <div className="row">
-            <div className="col-sm-2 hidden-mobile" style={{ paddingTop: 30 }}>
+        <div className="flex flex-row">
+            <div className="sm:basis-2/12 hidden-mobile" style={{ paddingTop: 30 }}>
                 <Skeleton animation="wave" variant="text" width="95%" height={30} />
                 <Skeleton animation="wave" variant="text" width="80%" height={20} />
                 <Skeleton animation="wave" variant="text" width="80%" height={20} />
                 <Skeleton animation="wave" variant="text" width="80%" height={20} />
             </div>
-            <div className="col-sm-10 col-xs-12">
+            <div className="sm:basis-10/12 xs:basis-full">
                 <div style={style}>
                     <Skeleton animation="wave" variant="text" width="100%" height={30} />
                     <Skeleton animation="wave" variant="text" width="70%" height={30} style={{ marginBottom: 10 }} />

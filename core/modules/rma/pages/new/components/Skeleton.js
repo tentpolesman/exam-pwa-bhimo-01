@@ -5,11 +5,11 @@ import useStyles from '@core_modules/rma/pages/new/components/styles';
 const SkeletonLoader = () => {
     const styles = useStyles();
     return (
-        <div className="row" style={{ paddingBottom: 100 }}>
-            <div className="col-lg-2 hidden-mobile">
+        <div className="flex flex-row" style={{ paddingBottom: 100 }}>
+            <div className="lg:basis-2/12 hidden-mobile">
                 <Skeleton animation="wave" variant="rect" height={540} width="100%" />
             </div>
-            <div className="col-lg-10 col-xs-12 col-sm-12">
+            <div className="lg:basis-10/12 xs:basis-full sm:basis-full">
                 <Skeleton animation="wave" variant="rect" width="100%" height={40} style={{ marginBottom: 10 }} />
                 <div className={classNames(styles.block)} style={{ height: '50%' }}>
                     <Skeleton animation="wave" variant="text" width={120} height={25} />

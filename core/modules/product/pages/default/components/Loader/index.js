@@ -15,9 +15,9 @@ const SkeletonLoader = (props) => {
     const styles = useStyles();
 
     return (
-        <div className="column row">
-            <div className="col-sm-12 col-lg-12 hidden-mobile">
-                <div className="row col-md-3" style={{ marginBottom: 20, justifyContent: 'space-between' }}>
+        <div className="flex flex-col row">
+            <div className="sm:basis-full lg:basis-full hidden-mobile">
+                <div className="flex flex-row md:basis-3/12" style={{ marginBottom: 20, justifyContent: 'space-between' }}>
                     <Skeleton width={75} />
                     <Skeleton width={75} />
                     <Skeleton width={75} />
@@ -25,7 +25,7 @@ const SkeletonLoader = (props) => {
                 </div>
             </div>
             {!banner || banner.length === 0 && (
-                <div className="col-lg-1 hidden-mobile">
+                <div className="lg:basis-1/12 hidden-mobile">
                     <Skeleton
                         marginbottom={27}
                         variant="rect"
@@ -58,7 +58,7 @@ const SkeletonLoader = (props) => {
                     />
                 </div>
             )}
-            <div className="col-sm-12 col-xs-12 col-lg-6">
+            <div className="sm:basis-full xs:basis-full lg:basis-1/2">
                 {banner && banner.length > 0 ? (
                     <Banner
                         data={banner}
@@ -94,9 +94,9 @@ const SkeletonLoader = (props) => {
                 )}
             </div>
             <div className={classNames(
-                'col-sm-12 col-xs-12', {
-                    'col-lg-6': banner && banner.length > 0,
-                    'col-lg-5': !banner || banner.length === 0,
+                'sm:basis-full xs:basis-full', {
+                    'lg:basis-1/2': banner && banner.length > 0,
+                    'lg:basis-5/12': !banner || banner.length === 0,
                 },
             )}
             >

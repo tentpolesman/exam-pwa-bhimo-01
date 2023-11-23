@@ -9,7 +9,7 @@ const ViewCustomizableCheckboxOption = ({
     onChange = () => {}, error = '', required = false,
 }) => {
     const styles = useStyles();
-    const customClass = classNames('column', styles.container, styles.customizableCheckboxOption);
+    const customClass = classNames('flex flex-col', styles.container, styles.customizableCheckboxOption);
     return (
         <div className={customClass}>
             {

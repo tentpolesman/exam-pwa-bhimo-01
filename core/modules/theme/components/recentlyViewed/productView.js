@@ -33,7 +33,7 @@ const ProductView = (props) => {
                     {t('common:recentlyView:title')}
                 </Typography>
             </ButtonCompare>
-            <div className={classNames('row', contentFeatured)}>
+            <div className={classNames('flex flex-row', contentFeatured)}>
                 {
                     product && product.products && product.products.items
                     && product.products.items.length <= 3

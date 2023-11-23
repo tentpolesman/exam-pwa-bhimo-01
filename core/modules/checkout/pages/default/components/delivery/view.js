@@ -21,10 +21,10 @@ const ShippingView = (props) => {
             <Typography variant="h2" type="bold" letter="uppercase">
                 {t('checkout:deliveryMethod:label')}
             </Typography>
-            <div className="row">
-                <div className="col-xs-6">
+            <div className="flex flex-row">
+                <div className="xs:basis-6/12">
                     <div className={checkStyles('home')} onClick={() => handleSelect('home')}>
-                        <div className="column">
+                        <div className="flex flex-col">
                             <Typography variant="span" type="bold">
                                 {t('checkout:deliveryMethod:homeDelivery')}
                             </Typography>
@@ -35,9 +35,9 @@ const ShippingView = (props) => {
                     </div>
                 </div>
                 {modules.checkout.pickupStore.enabled && (
-                    <div className="col-xs-6">
+                    <div className="xs:basis-6/12">
                         <div className={checkStyles('pickup')} onClick={() => handleSelect('pickup')}>
-                            <div className="column">
+                            <div className="flex flex-col">
                                 <Typography variant="span" type="bold">
                                     {t('checkout:deliveryMethod:pickupDelivery')}
                                 </Typography>
@@ -49,9 +49,9 @@ const ShippingView = (props) => {
                     </div>
                 )}
                 {modules.checkout.inStorePickup.enabled && (
-                    <div className="col-xs-6">
+                    <div className="xs:basis-6/12">
                         <div className={checkStyles('instore')} onClick={() => handleSelect('instore')}>
-                            <div className="column">
+                            <div className="flex flex-col">
                                 <Typography variant="span" type="bold">
                                     {t('checkout:deliveryMethod:instorePickup')}
                                 </Typography>

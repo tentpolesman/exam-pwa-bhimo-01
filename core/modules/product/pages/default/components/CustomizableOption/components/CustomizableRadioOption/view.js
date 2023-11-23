@@ -16,7 +16,7 @@ const ViewCustomizableRadioOption = ({
         </>
     );
     return (
-        <div className="column customizable-container">
+        <div className="flex flex-col customizable-container">
             {
                 data && data.length > 0 && (
                     <Radio

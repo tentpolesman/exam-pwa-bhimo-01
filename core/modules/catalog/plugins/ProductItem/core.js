@@ -374,7 +374,7 @@ const ProductItem = (props) => {
         }
     }, [dataDetailProduct]);
 
-    const ratingValue = review && review.rating_summary ? parseInt(review.rating_summary, 0) / 20 : 0;
+    const ratingValue = review && review.rating_summary ? parseInt(review.rating_summary, 10) / 20 : 0;
     const enableProductCompare = modules.productcompare.enabled;
     const DetailProps = {
         spesificProduct,
@@ -514,8 +514,8 @@ const ProductItem = (props) => {
                 />
             )}
             <div className={classNames(styles.listContainer, className, showQuickView ? styles.quickView : '')}>
-                <div className="row start-xs">
-                    <div className="col-xs-6 col-sm-6 col-md-4 col-lg-3">
+                <div className="flex flex-row start-xs">
+                    <div className="xs:basis-6/12 sm:basis-1/2 md:basis-4/12 lg:basis-3/12">
                         <div
                             className={styles.listImgItem}
                             style={{
@@ -543,12 +543,12 @@ const ProductItem = (props) => {
                             />
                         </div>
                     </div>
-                    <div className="col-xs-6 col-sm-6 col-md-8 col-lg-9">
-                        <div className="row start-xs">
-                            <div className="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                    <div className="xs:basis-6/12 sm:basis-1/2 md:basis-8/12 lg:basis-9/12">
+                        <div className="flex flex-row start-xs">
+                            <div className="xs:basis-full sm:basis-full md:basis-1/2 lg:basis-1/2">
                                 <DetailProductView t={t} {...DetailProps} {...other} enableWishlist={false} urlKey={url_key} />
                             </div>
-                            <div className="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                            <div className="xs:basis-full sm:basis-full md:basis-1/2 lg:basis-1/2">
                                 {showOption ? (
                                     <ConfigurableOpt
                                         enableBundle={false}

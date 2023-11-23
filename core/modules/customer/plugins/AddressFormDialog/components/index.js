@@ -470,7 +470,7 @@ const AddressView = (props) => {
                                     name="defaultShippingBilling"
                                     control={<Checkbox id="addressForm-addressDefault-checkbox" name="checkboxDefaultShippingBilling" color="primary" size="small" />}
                                     label={(
-                                        <Typography variant="p" letter="capitalize" className="row center">
+                                        <Typography variant="p" letter="capitalize" className="flex flex-row center">
                                             {t('customer:address:useDefault')}
                                         </Typography>
                                     )}
@@ -487,7 +487,7 @@ const AddressView = (props) => {
                                     name="confirmPinPoint"
                                     control={<Checkbox id="addressForm-confirmPinPoint-checkbox" name="newsletter" color="primary" size="small" />}
                                     label={(
-                                        <Typography variant="h4" className="row center" style={{ fontWeight: '600' }}>
+                                        <Typography variant="h4" className="flex flex-row center" style={{ fontWeight: '600' }}>
                                             {`${t('customer:address:confirmPinPoint')}`}
                                         </Typography>
                                     )}

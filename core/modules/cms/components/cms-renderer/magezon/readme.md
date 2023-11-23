@@ -25,7 +25,7 @@ Column has object can be rendered on SwiftPWA i.e
 | ------------- |-------------|
 | `elements`     | this object for render child element (all from list element magezon) |
 |`base object` | all base object [list base object](#base-object) |
-|`[device]_size`| `[device]` will be replace `(xs, sm, md, lg, xl)` example `sm_size`. And this object has value number, finally this value to render grid number, example `sm_size: 12` then can be rendered `col-sm-12`|
+|`[device]_size`| `[device]` will be replace `(xs, sm, md, lg, xl)` example `sm_size`. And this object has value number, finally this value to render grid number, example `sm_size: 12` then can be rendered `sm:basis-full`|
 |`[device]_offsite_size`| `[device]` will be replace `(xs, sm, md, lg, xl)` example `sm_offsite_size`. And this object has value number, finally this value to render grid number, example `sm_size: 12` then can be rendered `col-sm-offset-12`|
 
 

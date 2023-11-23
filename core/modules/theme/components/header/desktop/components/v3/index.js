@@ -41,7 +41,7 @@ const ViewTopNavigation = (props) => {
 
     return (
         <div id="header-inner">
-            <div className="row header-top">
+            <div className="flex flex-row header-top">
                 <main style={{ width: '97%' }}>
                     {enablePopupInstallation ? <DesktopInstallApp appName={appName} installMessage={installMessage} /> : null}
                     <TopMenu
@@ -75,8 +75,8 @@ const ViewTopNavigation = (props) => {
                             </div>
                         </div>
                         <div className="header-middle__center">
-                            <div className="row menu-category">
-                                <div className="col-xs-12 menu-middle">
+                            <div className="flex flex-row menu-category">
+                                <div className="xs:basis-full menu-middle">
                                     {loading ? null : <Menu vesMenuConfig={vesMenuConfig} data={data} storeConfig={storeConfig} />}
                                 </div>
                             </div>
@@ -125,8 +125,11 @@ const ViewTopNavigation = (props) => {
                 </div>
             </main>
             <div className="header-tab">
-                <div className="row menu-category">
-                    <div className="col-xs-12">{loading ? null : <Menu vesMenuConfig={vesMenuConfig} data={data} storeConfig={storeConfig} />}</div>
+                <div className="flex flex-row menu-category">
+                    <div className="xs:basis-full">
+                        {loading ? null : <Menu vesMenuConfig={vesMenuConfig} data={data} storeConfig={storeConfig} />}
+
+                    </div>
                 </div>
                 <div className="header-small__menu">
                     {loading ? null : <Menu vesMenuConfig={vesMenuConfig} data={data} storeConfig={storeConfig} />}

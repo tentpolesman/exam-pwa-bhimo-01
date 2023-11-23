@@ -70,11 +70,11 @@ const FormCom = (props) => {
 
     return (
         <>
-            <div className="row">
-                <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <div className="flex flex-row">
+                <div className="lg:basis-1/2 md:basis-1/2 sm:basis-full xs:basis-full">
                     <FormView {...props} formik={formik} handleOpenResult={handleOpenResult} openResult={openResult} />
                 </div>
-                <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div className="lg:basis-1/2 md:basis-1/2 sm:basis-full xs:basis-full">
                     {openResult ? (
                         loading || !data ? (
                             <SkeletonResult />

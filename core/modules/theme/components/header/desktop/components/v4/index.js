@@ -90,7 +90,7 @@ const ViewTopNavigation = (props) => {
 
     return (
         <div id="header-inner" style={{ top: `${headerInnerTop}px` }}>
-            <div className="row header-top">
+            <div className="flex flex-row header-top">
                 <main style={{ width: '97%' }}>
                     <TopMenu
                         t={t}
@@ -167,8 +167,8 @@ const ViewTopNavigation = (props) => {
                     </div>
                     <div className="header-middle">
                         <div className="header-middle__center">
-                            <div className="row menu-category">
-                                <div className="col-xs-12 menu-middle">
+                            <div className="flex flex-row menu-category">
+                                <div className="xs:basis-full menu-middle">
                                     {loading ? null : <Menu vesMenuConfig={vesMenuConfig} data={data} storeConfig={storeConfig} />}
                                 </div>
                             </div>
