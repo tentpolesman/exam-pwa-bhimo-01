@@ -3,7 +3,7 @@ import cx from 'classnames';
 
 const Typography = (props) => {
     const {
-        variant = 'bd-2',
+        variant = 'bd-2a',
         className = '',
         children,
         color,
@@ -33,7 +33,7 @@ const Typography = (props) => {
         return <span className={cx('text-2md', 'font-bold', 'leading-2lg', 'tracking-normal', classes)}>{children}</span>;
     }
     if (variant === 'bd-1a') {
-        return <span className={cx('text-2md', 'font-bold', 'leading-2lg', 'tracking-normal', classes)}>{children}</span>;
+        return <span className={cx('text-2md', 'font-normal', 'leading-2lg', 'tracking-normal', classes)}>{children}</span>;
     }
     if (variant === 'bd-2') {
         return <span className={cx('text-md', 'font-bold', 'leading-lg', 'tracking-normal', classes)}>{children}</span>;
@@ -109,7 +109,7 @@ Typography.propTypes = {
 };
 
 Typography.defaultProps = {
-    variant: 'bd-2',
+    variant: 'bd-2a',
 };
 
 export default Typography;

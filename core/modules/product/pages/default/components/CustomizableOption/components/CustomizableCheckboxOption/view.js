@@ -1,5 +1,5 @@
 import React from 'react';
-import CheckBox from '@common_checkbox';
+import CheckBox from '@common_forms/Checkbox';
 import Typography from '@common_typography';
 
 const ViewCustomizableCheckboxOption = ({

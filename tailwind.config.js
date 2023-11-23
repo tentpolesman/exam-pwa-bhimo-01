@@ -81,5 +81,10 @@ module.exports = {
             xl: `${BREAKPOINTS.xl}px`,
         },
     },
-    plugins: [],
+    plugins: [
+        // eslint-disable-next-line global-require
+        require('@tailwindcss/forms')({
+            strategy: 'class',
+        }),
+    ],
 };

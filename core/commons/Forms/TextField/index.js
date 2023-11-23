@@ -19,7 +19,9 @@ const TextField = (props) => {
     const [isFocus, setIsFocus] = useState(false);
 
     const { displayHintText = false, hintType = '', hintText = '' } = hintProps;
-    const { leftIcon = 'imagesmode', leftIconClasses = '', rightIcon = 'notifications', rightIconClasses = '' } = iconProps;
+    const {
+        leftIcon = '', leftIconClasses = '', rightIcon = '', rightIconClasses = '',
+    } = iconProps;
 
     const generateRightIcon = () => {
         if (hintType === 'error') {
