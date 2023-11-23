@@ -5,10 +5,11 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/no-danger */
 /* eslint-disable max-len */
+/* eslint-disable */
 
 import { useApolloClient, useReactiveVar } from '@apollo/client';
 import { storeConfigVar } from '@root/core/services/graphql/cache';
-import classNames from 'classnames';
+import cx from 'classnames';
 import Cookies from 'js-cookie';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
@@ -18,43 +19,72 @@ import TagManager from 'react-gtm-module';
 // eslint-disable-next-line object-curly-newline
 import { basePath, custDataNameCookie, debuging, features, modules } from '@config';
 import { createCompareList } from '@core_modules/product/services/graphql';
-import useStyles from '@core_modules/theme/layout/style';
+// import useStyles from '@core_modules/theme/layout/style';
 import { getAppEnv } from '@helpers/env';
 import { getHost } from '@helper_config';
 import { getCookies, setCookies } from '@helper_cookies';
-import { breakPointsDown, breakPointsUp } from '@helper_theme';
+// import { breakPointsDown, breakPointsUp } from '@helper_theme';
 // import crypto from 'crypto';
-import Fab from '@material-ui/core/Fab';
-import ChatIcon from '@material-ui/icons/Chat';
+// import Fab from '@material-ui/core/Fab';
+// import ChatIcon from '@material-ui/icons/Chat';
 
-import PopupInstallAppMobile from '@core_modules/theme/components/custom-install-popup/mobile';
-import Copyright from '@core_modules/theme/components/footer/desktop/components/copyright';
+// import PopupInstallAppMobile from '@core_modules/theme/components/custom-install-popup/mobile';
+// import Copyright from '@core_modules/theme/components/footer/desktop/components/copyright';
 import { getCountCart } from '@core_modules/theme/services/graphql';
 import { frontendConfig } from '@helpers/frontendOptions';
 import { getCartId } from '@helper_cartid';
 import { localTotalCart } from '@services/graphql/schema/local';
+import Script from 'next/script';
+import localFont from 'next/font/local';
 
-const GlobalPromoMessage = dynamic(() => import('@core_modules/theme/components/globalPromo'), { ssr: false });
-const BottomNavigation = dynamic(() => import('@common_bottomnavigation'), { ssr: true });
-const HeaderMobile = dynamic(() => import('@common_headermobile'), { ssr: true });
+/**
+ * Set font family using nextjs helper,
+ * path property needs to be an absolute path
+ */
+const font = localFont({
+    src: [
+        {
+            path: '../../../../public/assets/fonts/Inter-Regular.ttf',
+            weight: '400',
+        },
+        {
+            path: '../../../../public/assets/fonts/Inter-Medium.ttf',
+            weight: '500',
+        },
+        {
+            path: '../../../../public/assets/fonts/Inter-SemiBold.ttf',
+            weight: '600',
+        },
+        {
+            path: '../../../../public/assets/fonts/Inter-Bold.ttf',
+            weight: '700',
+        },
+    ],
+    variable: '--font-inter', // set the font css variable name, which we refer in tailwind.config.js
+});
+
 const HeaderDesktop = dynamic(() => import('@common_headerdesktop'), { ssr: true });
-const Message = dynamic(() => import('@common_toast'), { ssr: false });
-const Loading = dynamic(() => import('@common_loaders/Backdrop'), { ssr: false });
-const ScrollToTop = dynamic(() => import('@common_scrolltotop'), { ssr: false });
-const Footer = dynamic(() => import('@common_footer'), { ssr: false });
-const RestrictionPopup = dynamic(() => import('@common_restrictionPopup'), { ssr: false });
-const NewsletterPopup = dynamic(() => import('@core_modules/theme/components/newsletterPopup'), { ssr: false });
-const RecentlyViewed = dynamic(() => import('@core_modules/theme/components/recentlyViewed'), { ssr: false });
+const Toast = dynamic(() => import('@common_toast'), { ssr: false });
+const Backdrop = dynamic(() => import('@common_backdrop'), { ssr: false });
+const Dialog = dynamic(() => import('@common_dialog'), { ssr: false });
+// const GlobalPromoMessage = dynamic(() => import('@core_modules/theme/components/globalPromo'), { ssr: false });
+// const BottomNavigation = dynamic(() => import('@common_bottomnavigation'), { ssr: false });
+// const HeaderMobile = dynamic(() => import('@common_headermobile'), { ssr: false });
+// const ScrollToTop = dynamic(() => import('@common_scrolltotop'), { ssr: false });
+// const Footer = dynamic(() => import('@common_footer'), { ssr: false });
+// const RestrictionPopup = dynamic(() => import('@common_restrictionPopup'), { ssr: false });
+// const NewsletterPopup = dynamic(() => import('@core_modules/theme/components/newsletterPopup'), { ssr: false });
+// const RecentlyViewed = dynamic(() => import('@core_modules/theme/components/recentlyViewed'), { ssr: false });
 
 // CHAT FEATURES IMPORT
-const ChatContent = dynamic(() => import('@core_modules/customer/plugins/ChatPlugin'), { ssr: false });
+// const ChatContent = dynamic(() => import('@core_modules/customer/plugins/ChatPlugin'), { ssr: false });
 // END CHAT FEATURES IMPORT
 
 const Layout = (props) => {
-    const bodyStyles = useStyles();
+    // const bodyStyles = useStyles();
     const {
         dataVesMenu,
-        pageConfig,
+        pageConfig = {},
         children,
         app_cookies,
         CustomHeader = false,
@@ -77,7 +107,7 @@ const Layout = (props) => {
         isCheckout = false,
         isLoginPage = false,
         isShowChat = true,
-        // deviceType = {},
+        deviceType = {},
         preloadImages = [],
     } = props;
     const { ogContent = {}, schemaOrg = null, headerDesktop = true, footer = true } = pageConfig;
@@ -86,14 +116,29 @@ const Layout = (props) => {
     const enablePromo =
         getCookies(features.globalPromo.key_cookies) !== '' ? !!getCookies(features.globalPromo.key_cookies) : storeConfig.global_promo?.enable;
 
+    const [dialog, setDialog] = useState({
+        open: false,
+        title: null,
+        content: null,
+        positiveLabel: null,
+        positiveAction: null,
+        negativeLabel: null,
+        negativeAction: null,
+    });
+    
     const [state, setState] = useState({
         toastMessage: {
             open: false,
             variant: 'success',
             text: '',
+            position: 'bottom',
+            positionNumber: '0',
+            duration: 3000,
+            close: true,
         },
         backdropLoader: false,
     });
+
     const [restrictionCookies, setRestrictionCookies] = useState(false);
     const [showGlobalPromo, setShowGlobalPromo] = React.useState(enablePromo);
     const [setCompareList] = createCompareList();
@@ -133,6 +178,10 @@ const Layout = (props) => {
             backdropLoader: status,
         });
     };
+
+    const handlerDialog = (params) => {
+        setDialog({ ...dialog, ...params });
+    }
 
     const handleCloseMessage = () => {
         setState({
@@ -246,6 +295,7 @@ const Layout = (props) => {
         if (typeof window !== 'undefined') {
             window.toastMessage = handleSetToast;
             window.backdropLoader = handleLoader;
+            window.dialog = handlerDialog;
             const custData = Cookies.getJSON(custDataNameCookie);
             const tagManagerArgs = {
                 dataLayer: {
@@ -268,16 +318,16 @@ const Layout = (props) => {
         // setMainMinimumHeight(refFooter.current.clientHeight + refHeader.current.clientHeight);
     }, []);
 
-    const desktop = breakPointsUp('md');
+    // const desktop = breakPointsUp('md');
 
-    const ipadUp = breakPointsUp('sm');
-    const ipadDown = breakPointsDown('md');
+    // const ipadUp = breakPointsUp('sm');
+    // const ipadDown = breakPointsDown('md');
 
-    const ipadLUp = breakPointsUp('md');
-    const ipadLDown = breakPointsDown('lg');
+    // const ipadLUp = breakPointsUp('md');
+    // const ipadLDown = breakPointsDown('lg');
 
-    const ipad = !!(ipadUp && ipadDown);
-    const ipadL = !!(ipadLUp && ipadLDown);
+    // const ipad = !!(ipadUp && ipadDown);
+    // const ipadL = !!(ipadLUp && ipadLDown);
 
     const styles = {
         marginBottom:
@@ -285,6 +335,27 @@ const Layout = (props) => {
                 ? '60px'
                 : 0,
         marginTop: storeConfig?.pwa?.mobile_navigation === 'burger_menu' && !isHomepage && !isPdp ? '55px' : 0,
+    };
+
+    const generateClasses = () => {
+        let classes = `main-app main-app-v1-sticky-not-homepage ${font.variable} font-sans !font-pwa-default`;
+        if (pageConfig.bottomNav && storeConfig?.pwa?.mobile_navigation === 'bottom_navigation' && storeConfig?.pwa?.enabler_footer_mobile) {
+            classes += ' mb-[60px]';
+        } else {
+            classes += ' mb-0';
+        }
+
+        if (storeConfig?.pwa?.mobile_navigation === 'burger_menu' && !isHomepage && !isPdp) {
+            classes += ' mt-[55px]';
+        } else {
+            classes += ' mt-0';
+        }
+
+        if (isCheckout) {
+            classes += ' relative';
+        }
+
+        return classes;
     };
 
     const footerMobile = {
@@ -305,18 +376,22 @@ const Layout = (props) => {
             const fontStylesheetHeading = document.createElement('link');
 
             if (pwaConfig) {
-                // eslint-disable-next-line max-len
-                fontStylesheet.href = `https://fonts.googleapis.com/css2?family=${
-                    pwaConfig.default_font && pwaConfig.default_font !== '0' ? pwaConfig.default_font.replace(' ', '-') : 'Montserrat'
-                }:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&display=swap`;
-                fontStylesheet.id = 'font-stylesheet-id';
-                fontStylesheet.rel = 'stylesheet';
-                // eslint-disable-next-line max-len
-                fontStylesheetHeading.href = `https://fonts.googleapis.com/css2?family=${
-                    pwaConfig.heading_font && pwaConfig.default_font !== '0' ? pwaConfig.heading_font.replace(' ', '-') : 'Montserrat'
-                }:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&display=swap`;
-                fontStylesheetHeading.id = 'font-stylesheet-heading-id';
-                fontStylesheetHeading.rel = 'stylesheet';
+                if (pwaConfig.default_font && pwaConfig.default_font !== '0') {
+                    fontStylesheet.href = `https://fonts.googleapis.com/css2?family=${pwaConfig.default_font.replace(
+                        ' ',
+                        '-',
+                    )}:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&display=swap`;
+                    fontStylesheet.id = 'font-stylesheet-id';
+                    fontStylesheet.rel = 'stylesheet';
+                }
+                if (pwaConfig.heading_font && pwaConfig.heading_font !== '0') {
+                    fontStylesheetHeading.href = `https://fonts.googleapis.com/css2?family=${pwaConfig.heading_font.replace(
+                        ' ',
+                        '-',
+                    )}:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&display=swap`;
+                    fontStylesheetHeading.id = 'font-stylesheet-id';
+                    fontStylesheetHeading.rel = 'stylesheet';
+                }
                 stylesheet.innerHTML = frontendConfig(pwaConfig);
                 stylesheet.id = 'frontend-options-stylesheet';
                 if (!document.getElementById('frontend-options-stylesheet') && !document.getElementById('font-stylesheet-id')) {
@@ -328,77 +403,77 @@ const Layout = (props) => {
         }
     }, [storeConfig]);
 
-    let classMain;
+    // let classMain;
 
-    if (storeConfig && storeConfig.pwa && storeConfig.pwa.enabler_sticky_header) {
-        if (isCheckout) {
-            classMain = 'checkout-mode';
-        } else if (storeConfig.pwa.header_version === 'v2') {
-            if (isHomepage) {
-                if (ipadL) {
-                    classMain = 'main-app-v2-ipad-landscape';
-                } else {
-                    classMain = 'main-app-v2';
-                }
-                classMain += ' main-app-homepage';
-            } else if (isPdp && desktop) {
-                classMain = 'main-app-v2-pdp';
-            } else if (isLoginPage && desktop) {
-                classMain = 'main-app-v2-login';
-            } else if (isPdp && ipad && !desktop) {
-                classMain = 'main-app-sticky-v2-ipad';
-            } else {
-                classMain = 'main-app-v2-not-homepage';
-            }
-        } else if (storeConfig.pwa.header_version === 'v1') {
-            if (isHomepage) {
-                classMain = 'main-app-v1-sticky-homepage';
-            } else {
-                classMain = 'main-app-v1-sticky-not-homepage';
-            }
-        } else if (storeConfig.pwa.header_version === 'v4') {
-            if (isHomepage) {
-                if (ipad) {
-                    if (storeConfig.pwa.mobile_navigation === 'burger_menu') {
-                        classMain = 'main-app-sticky-v4-homepage';
-                    } else {
-                        classMain = 'main-app-sticky-v4-homepage-not-burgermenu';
-                    }
-                } else {
-                    classMain = 'main-app-sticky-v4-homepage';
-                }
-            } else if (isPdp) {
-                if (ipad) {
-                    classMain = 'main-app-sticky-v4-pdp-ipad';
-                } else {
-                    classMain = 'main-app-sticky-v4-pdp';
-                }
-            } else {
-                classMain = 'main-app-sticky-v4';
-            }
-        } else if (isHomepage) {
-            classMain = 'main-app-sticky-homepage';
-        } else {
-            classMain = 'main-app-sticky';
-        }
-    } else if (storeConfig && storeConfig.pwa && !storeConfig.pwa.enabler_sticky_header) {
-        if (isCheckout) {
-            classMain = 'checkout-mode';
-        } else if (storeConfig.pwa.header_version === 'v2') {
-            if (isHomepage) {
-                classMain = 'main-app-v2-not-sticky';
-                classMain += ' main-app-homepage';
-            } else if (isPdp && ipad) {
-                classMain = 'main-app-v2-ipad';
-            } else {
-                classMain = 'main-app-v2-not-sticky-not-homepage';
-            }
-        } else if (storeConfig.pwa.header_version === 'v4') {
-            classMain = 'main-app-not-sticky';
-        } else {
-            classMain = 'main-app-not-sticky';
-        }
-    }
+    // if (storeConfig && storeConfig.pwa && storeConfig.pwa.enabler_sticky_header) {
+    //     if (isCheckout) {
+    //         classMain = 'checkout-mode';
+    //     } else if (storeConfig.pwa.header_version === 'v2') {
+    //         if (isHomepage) {
+    //             if (ipadL) {
+    //                 classMain = 'main-app-v2-ipad-landscape';
+    //             } else {
+    //                 classMain = 'main-app-v2';
+    //             }
+    //             classMain += ' main-app-homepage';
+    //         } else if (isPdp && desktop) {
+    //             classMain = 'main-app-v2-pdp';
+    //         } else if (isLoginPage && desktop) {
+    //             classMain = 'main-app-v2-login';
+    //         } else if (isPdp && ipad && !desktop) {
+    //             classMain = 'main-app-sticky-v2-ipad';
+    //         } else {
+    //             classMain = 'main-app-v2-not-homepage';
+    //         }
+    //     } else if (storeConfig.pwa.header_version === 'v1') {
+    //         if (isHomepage) {
+    //             classMain = 'main-app-v1-sticky-homepage';
+    //         } else {
+    //             classMain = 'main-app-v1-sticky-not-homepage';
+    //         }
+    //     } else if (storeConfig.pwa.header_version === 'v4') {
+    //         if (isHomepage) {
+    //             if (ipad) {
+    //                 if (storeConfig.pwa.mobile_navigation === 'burger_menu') {
+    //                     classMain = 'main-app-sticky-v4-homepage';
+    //                 } else {
+    //                     classMain = 'main-app-sticky-v4-homepage-not-burgermenu';
+    //                 }
+    //             } else {
+    //                 classMain = 'main-app-sticky-v4-homepage';
+    //             }
+    //         } else if (isPdp) {
+    //             if (ipad) {
+    //                 classMain = 'main-app-sticky-v4-pdp-ipad';
+    //             } else {
+    //                 classMain = 'main-app-sticky-v4-pdp';
+    //             }
+    //         } else {
+    //             classMain = 'main-app-sticky-v4';
+    //         }
+    //     } else if (isHomepage) {
+    //         classMain = 'main-app-sticky-homepage';
+    //     } else {
+    //         classMain = 'main-app-sticky';
+    //     }
+    // } else if (storeConfig && storeConfig.pwa && !storeConfig.pwa.enabler_sticky_header) {
+    //     if (isCheckout) {
+    //         classMain = 'checkout-mode';
+    //     } else if (storeConfig.pwa.header_version === 'v2') {
+    //         if (isHomepage) {
+    //             classMain = 'main-app-v2-not-sticky';
+    //             classMain += ' main-app-homepage';
+    //         } else if (isPdp && ipad) {
+    //             classMain = 'main-app-v2-ipad';
+    //         } else {
+    //             classMain = 'main-app-v2-not-sticky-not-homepage';
+    //         }
+    //     } else if (storeConfig.pwa.header_version === 'v4') {
+    //         classMain = 'main-app-not-sticky';
+    //     } else {
+    //         classMain = 'main-app-not-sticky';
+    //     }
+    // }
 
     let metaDescValue = ogData['og:description'];
     let metaTitleValue = ogData['og:title'];
@@ -479,14 +554,14 @@ const Layout = (props) => {
                     href={canonicalUrl.substring(0, canonicalUrl.indexOf('?') !== -1 ? canonicalUrl.indexOf('?') : canonicalUrl.length)}
                 />
                 {preloadImages && Object.values(preloadImages).map((_image, idx) => <link rel="preload" as="image" href={_image} key={idx} />)}
-                {showPopup && <script src="/install.js" defer />}
+                {/* {showPopup && <script src="/install.js" defer />} */}
             </Head>
-            {showPopup && storeConfig && storeConfig.pwa && storeConfig.pwa.header_version !== 'v2' ? (
+            {/* {showPopup && storeConfig && storeConfig.pwa && storeConfig.pwa.header_version !== 'v2' ? (
                 <PopupInstallAppMobile appName={appName} installMessage={installMessage} />
-            ) : null}
+            ) : null} */}
             {allowHeaderCheckout && (
-                <header ref={refHeader}>
-                    {typeof window !== 'undefined' && storeConfig.global_promo && storeConfig.global_promo.enable && (
+                <header ref={refHeader} className={cx(font.variable, 'font-sans', '!font-pwa-default')}>
+                    {/* {typeof window !== 'undefined' && storeConfig.global_promo && storeConfig.global_promo.enable && (
                         <GlobalPromoMessage
                             t={t}
                             storeConfig={storeConfig}
@@ -495,9 +570,9 @@ const Layout = (props) => {
                             appName={appName}
                             installMessage={installMessage}
                         />
-                    )}
+                    )} */}
                     <div className="hidden-mobile">
-                        {desktop && headerDesktop ? (
+                        {!deviceType?.isMobile && headerDesktop ? (
                             <HeaderDesktop
                                 storeConfig={storeConfig}
                                 isLogin={isLogin}
@@ -512,36 +587,45 @@ const Layout = (props) => {
                             />
                         ) : null}
                     </div>
-                    <div className="hidden-desktop">
+                    {/* <div className="hidden-desktop">
                         {React.isValidElement(CustomHeader) ? (
                             <>{React.cloneElement(CustomHeader, { pageConfig, ...headerProps })}</>
                         ) : (
                             <HeaderMobile pageConfig={pageConfig} storeConfig={storeConfig} {...headerProps} isCheckout />
                         )}
-                    </div>
+                    </div> */}
                 </header>
             )}
-            <main
-                style={{ ...styles, position: classMain === 'checkout-mode' ? 'relative' : '' }}
-                className={classNames(!onlyCms ? 'main-app' : 'main-app main-app-cms', classMain)}
-                id="maincontent"
-            >
-                <Loading open={state.backdropLoader} />
-                <Message
+            <main className={generateClasses()}>
+                <Backdrop open={state.backdropLoader} />
+                <Dialog
+                    open={dialog.open}
+                    title={dialog.title}
+                    content={dialog.content}
+                    positiveLabel={dialog.positiveLabel}
+                    positiveAction={dialog.positiveAction}
+                    negativeLabel={dialog.negativeLabel}
+                    negativeAction={dialog.negativeAction}
+                />
+                <Toast
+                    close={state.toastMessage.close}
+                    setOpen={handleCloseMessage}
                     open={state.toastMessage.open}
                     variant={state.toastMessage.variant}
-                    setOpen={handleCloseMessage}
                     message={state.toastMessage.text}
+                    position={state.toastMessage.position}
+                    positionNumber={state.toastMessage.positionNumber}
+                    autoHideDuration={state.toastMessage.duration}
                 />
-                {!isHomepage && storeConfig.weltpixel_newsletter_general_enable === '1' && (
+                {/* {!isHomepage && storeConfig.weltpixel_newsletter_general_enable === '1' && (
                     <NewsletterPopup t={t} storeConfig={storeConfig} pageConfig={pageConfig} isLogin={isLogin} />
-                )}
+                )} */}
                 {children}
-                {desktop ? <ScrollToTop {...props} /> : null}
+                {/* {desktop ? <ScrollToTop {...props} /> : null} */}
             </main>
 
             {/* CHAT FEATURES */}
-            {features.chatSystem.enable && isShowChat && (
+            {/* {features.chatSystem.enable && isShowChat && (
                 <div className={bodyStyles.chatPlugin}>
                     {isLogin ? (
                         <ChatContent />
@@ -556,28 +640,28 @@ const Layout = (props) => {
                         </Fab>
                     )}
                 </div>
-            )}
+            )} */}
             {/* END CHAT FEATURES */}
 
             {withLayoutFooter && (
-                <footer className={bodyStyles.footerContainer} ref={refFooter}>
-                    {desktop ? (
+                <footer className={cx('sm:mt-[50px]', font.variable, 'font-sans', '!font-pwa-default')} ref={refFooter}>
+                    {/* {!deviceType?.isMobile ? (
                         <div className="hidden-mobile">
                             {footer ? <Footer storeConfig={storeConfig} t={t} /> : null}
                             <Copyright storeConfig={storeConfig} />
                         </div>
-                    ) : null}
-                    {footer && storeConfig?.pwa?.enabler_footer_mobile === true ? (
+                    ) : null} */}
+                    {/* {footer && storeConfig?.pwa?.enabler_footer_mobile === true ? (
                         <div className="hidden-desktop" style={{ ...footerMobile }}>
                             <Footer storeConfig={storeConfig} t={t} />
                         </div>
-                    ) : null}
-                    {desktop ? null : storeConfig && storeConfig.pwa && storeConfig.pwa.mobile_navigation === 'bottom_navigation' ? (
+                    ) : null} */}
+                    {/* {!deviceType?.isMobile ? null : storeConfig && storeConfig.pwa && storeConfig.pwa.mobile_navigation === 'bottom_navigation' ? (
                         <BottomNavigation active={pageConfig.bottomNav} storeConfig={storeConfig} />
-                    ) : null}
+                    ) : null} */}
                 </footer>
             )}
-            {storeConfig.cookie_restriction && !restrictionCookies && (
+            {/* {storeConfig.cookie_restriction && !restrictionCookies && (
                 <RestrictionPopup handleRestrictionCookies={handleRestrictionCookies} restrictionStyle={bodyStyles.cookieRestriction} />
             )}
             {showRecentlyBar && !onlyCms && (
@@ -589,7 +673,8 @@ const Layout = (props) => {
                     contentFeatured={bodyStyles.contentFeatured}
                     className={bodyStyles.itemProduct}
                 />
-            )}
+            )} */}
+            <Script src="/install.js" defer />
         </>
     );
 };

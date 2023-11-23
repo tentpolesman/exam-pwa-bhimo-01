@@ -14,13 +14,13 @@ const ShippingAddress = (props) => {
     const styles = useStyles();
 
     return (
-        <div className="row">
-            <div className="col-xs-12">
+        <div className="flex flex-row">
+            <div className="xs:basis-full">
                 <Typography variant="span" letter="capitalize" type="bold">
                     {t('checkout:shippingAddress')}
                 </Typography>
             </div>
-            <div className={classNames('col-xs-12', styles.detail)}>
+            <div className={classNames('xs:basis-full', styles.detail)}>
                 {
                     paypallShippingAddress && paypallShippingAddress.firstname && (
                         <Typography variant="span" letter="capitalize">
@@ -46,7 +46,7 @@ const ShippingAddress = (props) => {
                     {paypallShippingAddress.country ? paypallShippingAddress.country.label : ''}
                 </Typography>
             </div>
-            {/* <div className="col-xs-12">
+            {/* <div className="xs:basis-full">
                 <Link href={initialOptionPaypal.editUrl || ''}>
                     <a>
                         <Typography variant="span" letter="capitalize">

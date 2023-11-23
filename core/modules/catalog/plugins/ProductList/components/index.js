@@ -72,10 +72,10 @@ const ContentPagination = (props) => {
                 </div>
             ) : null}
 
-            <div className="row">
+            <div className="flex flex-row">
                 {storeConfig?.pwa?.drawer_filter_on_desktop_enable
                     ? (
-                        <div className="col-sm-12 col-lg-2 hidden-mobile">
+                        <div className="sm:basis-full lg:basis-2/12 hidden-mobile">
                             <FilterDesktop
                                 filter={customFilter || aggregations}
                                 defaultSort={JSON.stringify(defaultSort)}
@@ -93,7 +93,12 @@ const ContentPagination = (props) => {
                         </div>
                     )
                     : null}
-                <div className={`col-sm-12 col-xs-12 col-lg-${storeConfig?.pwa?.drawer_filter_on_desktop_enable ? '10' : '12'}`}>
+                <div className={
+                        storeConfig?.pwa?.drawer_filter_on_desktop_enable
+                            ? 'sm:basis-full xs:basis-full lg:basis-10/12'
+                            : 'sm:basis-full xs:basis-full lg:basis-full'
+                }
+                >
                     {storeConfig?.pwa?.drawer_filter_on_desktop_enable
                         ? (
                             <Typography variant="p" type="regular" className={classNames('hidden-mobile', styles.countProductTextDesktop)}>
@@ -238,10 +243,10 @@ const ContentLoadMore = (props) => {
                 </div>
             ) : null}
 
-            <div className="row">
+            <div className="flex flex-row">
                 {storeConfig?.pwa?.drawer_filter_on_desktop_enable
                     ? (
-                        <div className="col-sm-12 col-lg-2 hidden-mobile">
+                        <div className="sm:basis-full lg:basis-2/12 hidden-mobile">
                             <FilterDesktop
                                 filter={customFilter || aggregations}
                                 defaultSort={JSON.stringify(defaultSort)}
@@ -259,7 +264,12 @@ const ContentLoadMore = (props) => {
                         </div>
                     )
                     : null}
-                <div className={`col-sm-12 col-xs-12 col-lg-${storeConfig?.pwa?.drawer_filter_on_desktop_enable ? '10' : '12'}`}>
+                <div className={
+                        storeConfig?.pwa?.drawer_filter_on_desktop_enable
+                            ? 'sm:basis-full xs:basis-full lg:basis-10/12'
+                            : 'sm:basis-full xs:basis-full lg:basis-full'
+                }
+                >
                     {storeConfig?.pwa?.drawer_filter_on_desktop_enable
                         ? (
                             <Typography variant="p" type="regular" className={classNames('hidden-mobile', styles.countProductTextDesktop)}>

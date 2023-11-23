@@ -4,6 +4,7 @@
 import React from 'react';
 import { basePath } from '@config';
 import Typography from '@common_typography';
+import { getFlexBasisTailwind } from '@root/core/helpers/style';
 import PhotoSwipe from '../MagezonInstagramFeed/components/PhotoSwipe/index';
 
 const ImageItem = ({ src, alt, onClick = () => {} }) => (
@@ -46,10 +47,10 @@ const MagezonFlickrView = (props) => {
     if (lg_hide) classFlickr += 'hidden-lg ';
 
     let classItem = 'magezon-item-flickr ';
-    if (item_xs) classItem += `col-xs-${(12 / item_xs).toFixed(0)} `;
-    if (item_sm) classItem += `col-sm-${(12 / item_sm).toFixed(0)} `;
-    if (item_md) classItem += `col-md-${(12 / item_md).toFixed(0)} `;
-    if (item_lg) classItem += `col-lg-${(12 / item_lg).toFixed(0)} `;
+    if (item_xs) classItem += `${getFlexBasisTailwind((12 / item_xs).toFixed(0), 'xs')} `;
+    if (item_sm) classItem += `${getFlexBasisTailwind((12 / item_sm).toFixed(0), 'sm')} `;
+    if (item_md) classItem += `${getFlexBasisTailwind((12 / item_md).toFixed(0), 'md')} `;
+    if (item_lg) classItem += `${getFlexBasisTailwind((12 / item_lg).toFixed(0), 'lg')} `;
 
     const handleClick = (id) => {
         setImagePosition(id);
@@ -85,7 +86,7 @@ const MagezonFlickrView = (props) => {
                         {title}
                     </Typography>
                 </div>
-                <div className="row">
+                <div className="flex flex-row">
                     {images && images.length && images.map((image, i) => (
                         <div key={i} className={classItem}>
                             <ImageItem

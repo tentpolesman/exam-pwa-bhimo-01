@@ -6,7 +6,7 @@ const SkeletonLoader = () => {
     const styles = useStyles();
     return (
         <div className={classNames(styles.container, 'row')}>
-            <div className="col-lg-10 col-xs-12 col-sm-12">
+            <div className="lg:basis-10/12 xs:basis-full sm:basis-full">
                 <div className={classNames(styles.block, styles.detail)} style={{ height: '50%' }}>
                     <Skeleton animation="wave" variant="text" width={150} height={35} />
                     <Skeleton animation="wave" variant="text" width={120} height={25} />

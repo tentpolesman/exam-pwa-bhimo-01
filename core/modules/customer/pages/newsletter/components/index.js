@@ -18,7 +18,7 @@ const SettingPage = (props) => {
     const desktop = breakPointsUp('sm');
     return (
         <Layout {...props} title={t('customer:setting:newsletter')}>
-            <div className={classNames('col-md-12', styles.container)}>
+            <div className={classNames('md:basis-full', styles.container)}>
                 <div className={styles.block}>
                     {typeof customer.is_subscribed !== 'undefined' ? (
                         <CheckboxSettings

@@ -7,8 +7,8 @@ const SkeletonLoader = () => {
     const styles = useStyles();
     return (
         <>
-            <div className="row hidden-mobile">
-                <div className="col-lg-10">
+            <div className="flex flex-row hidden-mobile">
+                <div className="lg:basis-10/12">
                     <Skeleton animation="wave" variant="rect" height={240} width="100%" style={{ marginBottom: 50 }} />
                     <Skeleton animation="wave" variant="rect" height={240} width="100%" style={{ marginBottom: 50 }} />
                     <Skeleton animation="wave" variant="rect" height={240} width="100%" style={{ marginBottom: 50 }} />

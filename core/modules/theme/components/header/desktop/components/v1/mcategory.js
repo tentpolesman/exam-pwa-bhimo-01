@@ -12,11 +12,33 @@ import classNames from 'classnames';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import CmsRenderer from '@core_modules/cms/components/cms-renderer';
-import { makeStyles } from '@material-ui/core/styles';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'animate.css';
+import css from 'styled-jsx/css';
 
 const MenuChildren = dynamic(() => import('@common_headerdesktop/components/v1/mcategoryChildren'), { ssr: false });
+
+const generateMenuStyles = (props) => {
+    const {
+        bg_color, color, bg_hover_color, hover_color,
+        dropdown_bgcolor, dropdown_animation_time,
+    } = props;
+
+    return css.resolve`
+        a {
+            background-color: ${bg_color ? `${bg_color} !important` : WHITE};
+            color: ${color ? `${color} !important` : PRIMARY};
+        }
+        a:hover {
+            background-color: ${bg_hover_color ? `${bg_hover_color} !important` : '#F3F3F3'};
+            color: ${hover_color ? `${hover_color} !important` : '#FF0000'};
+        }
+        .mega-menu {
+            background-color: ${dropdown_bgcolor || WHITE};
+            animation-duration: ${dropdown_animation_time || '1'}s;
+        }
+    `;
+};
 
 const Menu = (props) => {
     const { data, storeConfig } = props;
@@ -72,24 +94,7 @@ const Menu = (props) => {
             <ul className="nav" role="menubar" id="header-nav-menubar">
                 {menu.map((val, idx) => {
                     if ((val.include_in_menu || storeConfig.pwa.ves_menu_enable) && val.name) {
-                        const useStyles = makeStyles(() => ({
-                            linkStyle: {
-                                backgroundColor: `${val.bg_color} !important` || WHITE,
-                                color: `${val.color} !important` || PRIMARY,
-                                '&:hover': {
-                                    backgroundColor: `${val.bg_hover_color} !important` || '#F3F3F3',
-                                    color: `${val.hover_color} !important` || '#FF0000',
-                                },
-                            },
-                            vesMegaMenu: {
-                                backgroundColor: val.dropdown_bgcolor || WHITE,
-                            },
-                            animationDuration: {
-                                animationDuration: `${val.dropdown_animation_time || '1'}s`,
-                            },
-                        }));
-
-                        const styles = useStyles();
+                        const { className, styles } = generateMenuStyles(val);
 
                         const linkEl = useRef(null);
                         const megaMenuRef = useRef(null);
@@ -135,7 +140,8 @@ const Menu = (props) => {
                                             href={{ pathname: generatedLink[0], query: generatedLink[1] }}
                                             as={generatedLink[1]}
                                             prefetch={false}
-                                            legacyBehavior>
+                                            legacyBehavior
+                                        >
                                             <a
                                                 onClick={() => handleClick(val)}
                                                 ref={linkEl}
@@ -152,7 +158,7 @@ const Menu = (props) => {
                                                         linkEl.current.innerHTML = linkEl.current.innerHTML.replace(val.hover_caret, val.caret);
                                                     }
                                                 }}
-                                                className={styles.linkStyle}
+                                                className={className}
                                             />
                                         </Link>
                                         {val.after_html && <div dangerouslySetInnerHTML={{ __html: val.after_html }} />}
@@ -164,7 +170,7 @@ const Menu = (props) => {
 
                                 {val.children.length > 0 ? (
                                     <div
-                                        className={classNames('mega-menu', 'grid', styles.vesMegaMenu, styles.animationDuration)}
+                                        className={classNames(className, 'mega-menu', 'grid')}
                                         aria-hidden="true"
                                         role="menu"
                                         ref={megaMenuRef}
@@ -182,6 +188,7 @@ const Menu = (props) => {
                                         )}
                                     </div>
                                 ) : null}
+                                {styles}
                             </li>
                         );
                     }

@@ -1,8 +1,8 @@
 import Button from '@common_button';
+import CircularProgress from '@common_circularprogress';
 import Typography from '@common_typography';
 import useStyles from '@core_modules/checkout/pages/default/components/style';
 import { formatPrice } from '@helper_currency';
-import CircularProgress from '@material-ui/core/CircularProgress';
 
 const RewardPointView = (props) => {
     const styles = useStyles();
@@ -11,7 +11,7 @@ const RewardPointView = (props) => {
     } = props;
     return (
         <div className={styles.cardPoint} id="checkoutRewardPoint">
-            <div className="column">
+            <div className="flex flex-col">
                 <Typography variant="span" letter="capitalize">
                     {checkout.data.cart.applied_reward_points.is_use_reward_points
                         ? `${t('checkout:myPoint:used')} 
@@ -49,7 +49,7 @@ const RewardPointView = (props) => {
                     >
                         {reward_point.is_use_reward_points ? t('checkout:myPoint:removeButton') : t('checkout:myPoint:button')}
                     </Typography>
-                    {loading && <CircularProgress className={styles.smallCircular} size={16} />}
+                    {loading && <CircularProgress />}
                 </Button>
             </div>
         </div>

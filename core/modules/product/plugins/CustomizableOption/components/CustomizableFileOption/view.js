@@ -10,7 +10,7 @@ const ViewCustomizableFileOption = ({
     let maxSize = 2000000;
     let acceptedFile = 'image/*';
     const styles = useStyles();
-    const customClass = classNames('column', styles.container, styles.customizableFileOption);
+    const customClass = classNames('flex flex-col', styles.container, styles.customizableFileOption);
     if (data && data.image_size_x && data.image_size_y) {
         maxSize = (data.image_size_x * data.image_size_y) * 3;
     }

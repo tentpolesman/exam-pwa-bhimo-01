@@ -1,5 +1,5 @@
+import CircularProgress from '@common_circularprogress';
 import React from 'react';
-import CircularProgress from '@material-ui/core/CircularProgress';
 
 const NewsletterView = (props) => {
     // base props
@@ -53,11 +53,11 @@ const NewsletterView = (props) => {
         <div>
             <div className="newsletter-container">
                 <div className="wrapper">
-                {type === 'pwa-newsletter-subscribe' ? null :
-                    <div className="title">
-                        <h3>{isCms && title ? title : t('common:newsletter:title')}</h3>
-                    </div>
-                }
+                    {type === 'pwa-newsletter-subscribe' ? null : (
+                        <div className="title">
+                            <h3>{isCms && title ? title : t('common:newsletter:title')}</h3>
+                        </div>
+                    )}
                     {isCms && description ? (
                         <div className="description">
                             <p>{description}</p>
@@ -79,9 +79,7 @@ const NewsletterView = (props) => {
                                                 error={(!!formik.errors.email).toString()}
                                                 errormessage={formik.errors.email || null}
                                             />
-                                            {formik.errors.email ? (
-                                                <p className='error-validation'>{formik.errors.email}</p>
-                                            ) : null}
+                                            {formik.errors.email ? <p className="error-validation">{formik.errors.email}</p> : null}
                                         </label>
                                     </div>
                                 </div>
@@ -131,14 +129,22 @@ const NewsletterView = (props) => {
                                         onClick={() =>
                                             formik.values.email === ''
                                                 ? window.toastMessage({
-                                                    open: true,
-                                                    variant: 'error',
-                                                    text: t('common:newsletter:emptyValue'),
-                                                })
+                                                      open: true,
+                                                      variant: 'error',
+                                                      text: t('common:newsletter:emptyValue'),
+                                                  })
                                                 : ''
                                         }
                                     >
-                                        {loading ? <CircularProgress color="inherit" size={14} /> : <span>{storeConfig?.pwa?.footer_version !== 'pwa_footer_v2' ? 'Sign Up' : t('common:newsletter:buttonLabel')}</span>}
+                                        {loading ? (
+                                            <CircularProgress />
+                                        ) : (
+                                            <span>
+                                                {storeConfig?.pwa?.footer_version !== 'pwa_footer_v2'
+                                                    ? 'Sign Up'
+                                                    : t('common:newsletter:buttonLabel')}
+                                            </span>
+                                        )}
                                     </button>
                                 </div>
                             </form>

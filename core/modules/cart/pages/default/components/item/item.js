@@ -154,11 +154,11 @@ const ItemView = (props) => {
                         ))
                         : null}
                     {links && links.length > 0 && (
-                        <div className="col-xs-12 row option-link-mobile">
+                        <div className="xs:basis-full row option-link-mobile">
                             <Typography variant="span" letter="capitalize" type="bold">
                                 Downloads :{' '}
                             </Typography>
-                            <div className="column">
+                            <div className="flex flex-col">
                                 {links.map((item, idx) => (
                                     <Typography variant="span" letter="capitalize" key={idx}>
                                         {item.title}
@@ -188,7 +188,7 @@ const ItemView = (props) => {
                         <div className="product-options">
                             {customizable_options.map((op, idx) => (
                                 <div className="option-wrapper" key={idx}>
-                                    <div className="row option-wrapper__item">
+                                    <div className="flex flex-row option-wrapper__item">
                                         <strong>{op.label} :</strong>
                                         {op.values.map((item, idt) => (
                                             <p key={idt} className="option-item">

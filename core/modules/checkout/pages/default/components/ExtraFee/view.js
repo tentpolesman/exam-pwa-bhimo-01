@@ -4,7 +4,7 @@ import React from 'react';
 import Typography from '@common_typography';
 import Radio from '@common_radio';
 import Select from '@common_select';
-import Checkbox from '@common_checkbox';
+import Checkbox from '@common_forms/CheckBox';
 import { formatPrice } from '@helper_currency';
 import Skeleton from '@material-ui/lab/Skeleton';
 

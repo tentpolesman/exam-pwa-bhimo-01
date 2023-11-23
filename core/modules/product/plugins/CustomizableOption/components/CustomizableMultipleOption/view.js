@@ -1,5 +1,5 @@
 import React from 'react';
-import CheckBox from '@common_checkbox';
+import CheckBox from '@common_forms/CheckBox';
 import Typography from '@common_typography';
 import classNames from 'classnames';
 import useStyles from '@plugin_customizableitem/components/style';
@@ -9,7 +9,7 @@ const ViewCustomizableMultipleOption = ({
     onChange = () => {}, error = '', required = false,
 }) => {
     const styles = useStyles();
-    const customClass = classNames('column', styles.container, styles.customizableMultipleOption);
+    const customClass = classNames('flex flex-col', styles.container, styles.customizableMultipleOption);
     return (
         <div className={customClass}>
             {

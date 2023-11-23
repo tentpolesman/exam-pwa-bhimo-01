@@ -7,7 +7,7 @@ const SettingPage = (props) => {
     const styles = useStyles();
     const { t } = props;
     return (
-        <div className={classNames('col-md-12', styles.container)}>
+        <div className={classNames('md:basis-full', styles.container)}>
             <div className={styles.block}>
                 <SwitcherLanguage {...props} />
             </div>

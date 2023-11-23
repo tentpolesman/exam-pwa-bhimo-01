@@ -50,8 +50,8 @@ const GiftCard = (props) => {
                         {t('customer:giftCard:notFound')}
                     </Alert>
                 )}
-                <div className="row">
-                    <div className="col-md-6 col-xs-12">
+                <div className="flex flex-row">
+                    <div className="md:basis-1/2 xs:basis-full">
                         <List>
                             {data
                                 && data.customer.gift_card.map((item, index) => (
@@ -68,8 +68,8 @@ const GiftCard = (props) => {
                         <Divider />
                     </div>
                 </div>
-                <div className="row">
-                    <div className="col-md-6 col-xs-12">
+                <div className="flex flex-row">
+                    <div className="md:basis-1/2 xs:basis-full">
                         <div className={styles.searchBox}>
                             <TextField
                                 label={t('customer:giftCard:inputSearch')}

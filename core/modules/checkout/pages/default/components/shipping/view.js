@@ -361,7 +361,7 @@ const ShippingView = (props) => {
                         <Typography letter="uppercase" variant="span" type="bold">
                             {`${seller.seller_name} - ${seller.seller_city}`}
                         </Typography>
-                        <div className="column">
+                        <div className="flex flex-col">
                             <div className={styles.paymentExpansionContainer}>
                                 {seller.sellerData === null && <Typography variant="p">{t('checkout:noShipping')}</Typography>}
                                 {/* eslint-disable-next-line consistent-return, array-callback-return */}
@@ -403,7 +403,7 @@ const ShippingView = (props) => {
                                                         </div>
                                                     </AccordionSummary>
                                                     <AccordionDetails>
-                                                        <div className="column">
+                                                        <div className="flex flex-col">
                                                             {item.data.length !== 0 ? (
                                                                 <RadioMultiseller
                                                                     value={selected.shipping}
@@ -441,7 +441,7 @@ const ShippingView = (props) => {
                 ));
             } else {
                 content = (
-                    <div className="column">
+                    <div className="flex flex-col">
                         <div className={styles.paymentExpansionContainer}>
                             {shipping.map((item, keyIndex) => {
                                 if (item.data.length !== 0) {
@@ -474,7 +474,7 @@ const ShippingView = (props) => {
                                                 </div>
                                             </AccordionSummary>
                                             <AccordionDetails>
-                                                <div className="column">
+                                                <div className="flex flex-col">
                                                     {item.data.length !== 0 ? (
                                                         <Radio
                                                             value={selected.shipping}

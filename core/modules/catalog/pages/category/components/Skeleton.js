@@ -7,6 +7,8 @@ const SkeletonCategory = (props) => {
 
     const { drawer_filter_on_desktop_enable } = props;
 
+    const className = drawer_filter_on_desktop_enable ? 'xs:basis-full lg:basis-10/12' : 'xs:basis-full lg:basis-full';
+
     return (
         <div className={styles.container}>
             <Skeleton
@@ -19,14 +21,14 @@ const SkeletonCategory = (props) => {
             <Skeleton variant="text" width="100%" />
             <Skeleton variant="text" width="100%" />
             <Skeleton variant="text" width="40%" style={{ marginBottom: 20 }} />
-            <div className="row">
+            <div className="flex flex-row">
                 {drawer_filter_on_desktop_enable
                     ? (
-                        <div className="hidden-mobile col-lg-2">
+                        <div className="hidden-mobile lg:basis-2/12">
                             <Skeleton variant="rect" width="100%" height={705} />
                         </div>
                     ) : null }
-                <div className={`col-xs-12 col-lg-${drawer_filter_on_desktop_enable ? '10' : '12'}`}>
+                <div className={className}>
                     <ProductListSkeleton {...props} />
                 </div>
             </div>

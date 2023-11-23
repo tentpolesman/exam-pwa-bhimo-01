@@ -189,7 +189,7 @@ const InStorePickup = (props) => {
             </Typography>
             <Typography>{t('checkout:pickupInformation:pickupAtLabel')}</Typography>
             <div className={classNames(styles.cardPoint, classes.card)}>
-                <div className="column">
+                <div className="flex flex-col">
                     {address && pickup_location_code && Object.keys(address).length > 0 && (
                         <>
                             <Typography variant="span" type="bold">

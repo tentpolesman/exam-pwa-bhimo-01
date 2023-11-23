@@ -9,12 +9,13 @@ import SearchIcon from '@material-ui/icons/Search';
 import Router from 'next/router';
 import { useState } from 'react';
 import useStyles from '@core_modules/theme/components/bottom-navigation/mobile/style';
-import dynamic from 'next/dynamic';
+// import dynamic from 'next/dynamic';
 
-const BrowseModal = dynamic(() => import('@common_searchmodal'));
+// const BrowseModal = dynamic(() => import('@common_searchmodal'));
 
 const Navigation = ({ active, ...other }) => {
     const styles = useStyles();
+    // eslint-disable-next-line no-unused-vars
     const [openModal, setOpenModal] = useState(false);
     const handleOpenModal = (val) => {
         setOpenModal(val);
@@ -25,9 +26,9 @@ const Navigation = ({ active, ...other }) => {
     if (active) {
         return (
             <>
-                {openModal ? (
+                {/* {openModal ? (
                     <BrowseModal open={openModal} setOpenModal={handleOpenModal} {...other} />
-                ) : null}
+                ) : null} */}
                 <BottomNavigation
                     className={styles.navigation}
                     value={active}

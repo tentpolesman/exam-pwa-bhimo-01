@@ -1,4 +1,4 @@
-import Typography from '@core_modules/commons/Typography/';
+import Typography from '@common_typography';
 
 const Heading = (props) => {
     // prettier-ignore

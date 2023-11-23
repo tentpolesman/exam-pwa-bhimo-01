@@ -1,7 +1,7 @@
 import React from 'react';
 import { getPageBuilderTemplate } from '@core_modules/cms/services/graphql';
 import Alert from '@material-ui/lab/Alert';
-import Loading from '@common_loaders/Backdrop';
+import Backdrop from '@common_backdrop';
 import MagezonRenderer from '@core_modules/cms/components/cms-renderer/MagezonRenderer';
 
 const MagezonPagebuilderTemplate = (props) => {
@@ -9,7 +9,7 @@ const MagezonPagebuilderTemplate = (props) => {
     // const { t } = props;
     const { data, loading, error } = getPageBuilderTemplate({ identifier: template_id });
     if (loading) {
-        return <Loading open={loading} />;
+        return <Backdrop open={loading} />;
     }
     if (error) {
         return (

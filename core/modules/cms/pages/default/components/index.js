@@ -1,4 +1,4 @@
-import Loading from '@common_loaders/Backdrop';
+import Backdrop from '@common_backdrop';
 import Alert from '@material-ui/lab/Alert';
 import CmsRenderer from '@core_modules/cms/components/cms-renderer';
 
@@ -14,7 +14,7 @@ const CmsPage = (props) => {
         );
     }
 
-    if (loading) return <Loading open={loading} />;
+    if (loading) return <Backdrop open={loading} />;
     if (onlyCms) return <CmsRenderer {...other} t={t} content={data.cmsPage.content} storeConfig={storeConfig} />;
 
     return (

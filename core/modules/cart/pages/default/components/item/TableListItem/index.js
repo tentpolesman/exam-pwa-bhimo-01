@@ -176,7 +176,8 @@ const TableListProduct = ({ data, t, deleteItem, handleFeed, toggleEditDrawer, s
         );
     };
 
-    return <>
+    return (
+<>
         <ConfirmationDelete t={t} open={confirmDel} handleDelete={handleDelete} handleCancel={cancelDelete} />
         <TableContainer component={Paper} className={styles.tableContainer}>
             <Table className={styles.table} size="small" aria-label="a dense table">
@@ -233,8 +234,8 @@ const TableListProduct = ({ data, t, deleteItem, handleFeed, toggleEditDrawer, s
                                                     </div>
                                                 </TableCell>
                                                 <TableCell align="left" className={styles.noBorder}>
-                                                    <div className="row">
-                                                        <div className="col-xs-12">
+                                                    <div className="flex flex-row">
+                                                        <div className="xs:basis-full">
                                                             <Link href="/[...slug]" as={`/${val.product.url_key}`}>
 
                                                                 <Typography variant="span" letter="capitalize" className={styles.productTitle}>
@@ -243,7 +244,7 @@ const TableListProduct = ({ data, t, deleteItem, handleFeed, toggleEditDrawer, s
 
                                                             </Link>
                                                         </div>
-                                                        <div className="col-xs-12 column">
+                                                        <div className="xs:basis-full flex flex-col">
                                                             {val.configurable_options
                                                                 ? val.configurable_options.map((item, idx) => (
                                                                       <Typography variant="span" letter="capitalize" key={idx}>
@@ -253,11 +254,11 @@ const TableListProduct = ({ data, t, deleteItem, handleFeed, toggleEditDrawer, s
                                                                 : null}
                                                         </div>
                                                         {val.links && val.links.length > 0 && (
-                                                            <div className="col-xs-12 row option-link">
+                                                            <div className="xs:basis-full row option-link">
                                                                 <Typography variant="span" letter="capitalize" type="bold">
                                                                     Downloads :{' '}
                                                                 </Typography>
-                                                                <div className="column">
+                                                                <div className="flex flex-col">
                                                                     {val.links.map((item, idx) => (
                                                                         <Typography variant="span" letter="capitalize" key={idx}>
                                                                             {item.title}
@@ -303,7 +304,7 @@ const TableListProduct = ({ data, t, deleteItem, handleFeed, toggleEditDrawer, s
                                                         <div className="product-options">
                                                             {cartCustomOptions.map((op, idx) => (
                                                                 <div className="option-wrapper" key={idx}>
-                                                                    <div className="row option-wrapper__item">
+                                                                    <div className="flex flex-row option-wrapper__item">
                                                                         <strong>{op.label} :</strong>
                                                                         {op.values.map((item, idt) => (
                                                                             <p key={idt} className="option-item">
@@ -342,8 +343,8 @@ const TableListProduct = ({ data, t, deleteItem, handleFeed, toggleEditDrawer, s
                                                 {/* <TableCell
                                                         align="center"
                                                     >
-                                                        <div className="row center-xs" style={{ maxWidth: 100 }}>
-                                                            <div className="col-xs-12" style={{ maxWidth: 100 }}>
+                                                        <div className="flex flex-row center-xs" style={{ maxWidth: 100 }}>
+                                                            <div className="xs:basis-full" style={{ maxWidth: 100 }}>
                                                                 <IconButton
                                                                     className={styles.iconBtn}
                                                                     onClick={() => openEdit(val)}
@@ -351,12 +352,12 @@ const TableListProduct = ({ data, t, deleteItem, handleFeed, toggleEditDrawer, s
                                                                     <CreateOutlined className={styles.icon} />
                                                                 </IconButton>
                                                             </div>
-                                                            <div className="col-xs-12" style={{ maxWidth: 100 }}>
+                                                            <div className="xs:basis-full" style={{ maxWidth: 100 }}>
                                                                 <IconButton className={styles.iconBtn} onClick={() => handleAddWishlist(val)}>
                                                                     <FavoriteBorderOutlined className={styles.icon} />
                                                                 </IconButton>
                                                             </div>
-                                                            <div className="col-xs-12" style={{ maxWidth: 100 }}>
+                                                            <div className="xs:basis-full" style={{ maxWidth: 100 }}>
                                                                 <IconButton className={styles.iconBtn} onClick={() => confirmDelete(val)}>
                                                                     <DeleteOutlineOutlined className={styles.icon} />
                                                                 </IconButton>
@@ -460,8 +461,8 @@ const TableListProduct = ({ data, t, deleteItem, handleFeed, toggleEditDrawer, s
                                                             </div>
                                                         </TableCell>
                                                         <TableCell align="left" className={styles.noBorder}>
-                                                            <div className="row">
-                                                                <div className="col-xs-12">
+                                                            <div className="flex flex-row">
+                                                                <div className="xs:basis-full">
                                                                     <Link href="/[...slug]" as={`/${val.product.url_key}`}>
 
                                                                         <Typography variant="span" letter="capitalize" className={styles.productTitle}>
@@ -470,7 +471,7 @@ const TableListProduct = ({ data, t, deleteItem, handleFeed, toggleEditDrawer, s
 
                                                                     </Link>
                                                                 </div>
-                                                                <div className="col-xs-12 column">
+                                                                <div className="xs:basis-full flex flex-col">
                                                                     {val.configurable_options
                                                                         ? val.configurable_options.map((item, idx) => (
                                                                               <Typography variant="span" letter="capitalize" key={idx}>
@@ -480,11 +481,11 @@ const TableListProduct = ({ data, t, deleteItem, handleFeed, toggleEditDrawer, s
                                                                         : null}
                                                                 </div>
                                                                 {val.links && val.links.length > 0 && (
-                                                                    <div className="col-xs-12 row option-link">
+                                                                    <div className="xs:basis-full row option-link">
                                                                         <Typography variant="span" letter="capitalize" type="bold">
                                                                             Downloads :{' '}
                                                                         </Typography>
-                                                                        <div className="column">
+                                                                        <div className="flex flex-col">
                                                                             {val.links.map((item, idx) => (
                                                                                 <Typography variant="span" letter="capitalize" key={idx}>
                                                                                     {item.title}
@@ -532,7 +533,7 @@ const TableListProduct = ({ data, t, deleteItem, handleFeed, toggleEditDrawer, s
                                                                 <div className="product-options">
                                                                     {cartCustomOptions.map((op, idx) => (
                                                                         <div className="option-wrapper" key={idx}>
-                                                                            <div className="row option-wrapper__item">
+                                                                            <div className="flex flex-row option-wrapper__item">
                                                                                 <strong>{op.label} :</strong>
                                                                                 {op.values.map((item, idt) => (
                                                                                     <p key={idt} className="option-item">
@@ -635,7 +636,8 @@ const TableListProduct = ({ data, t, deleteItem, handleFeed, toggleEditDrawer, s
                     ))}
             </Table>
         </TableContainer>
-    </>;
+</>
+);
 };
 
 export default TableListProduct;

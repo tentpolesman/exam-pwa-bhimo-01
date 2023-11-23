@@ -91,12 +91,12 @@ const resultItem = ({
         }
         return (
             <div className={classNames(styles.container, 'row')}>
-                <div className="col-xs-12">
+                <div className="xs:basis-full">
                     <Typography variant="title" size="16" className="label-result">
                         {t('trackingorder:trackingInformation')}
                     </Typography>
                 </div>
-                <div className="col-xs-12 hidden-mobile">
+                <div className="xs:basis-full hidden-mobile">
                     <TableContainer className={styles.tableContainer}>
                         <Table className={styles.table} aria-label="simple table">
                             <TableBody>
@@ -118,7 +118,7 @@ const resultItem = ({
                         </Table>
                     </TableContainer>
                 </div>
-                <div className="col-xs-12 hidden-desktop">
+                <div className="xs:basis-full hidden-desktop">
                     <List>
                         {items.map((item, i) => (
                             <ListItem key={i}>

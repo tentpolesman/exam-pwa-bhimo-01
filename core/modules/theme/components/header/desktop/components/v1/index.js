@@ -1,20 +1,23 @@
 /* eslint-disable indent */
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable */
 // import TextField from '@material-ui/core/TextField';
-import SearchIcon from '@material-ui/icons/Search';
-import IconButton from '@material-ui/core/IconButton';
+// import SearchIcon from '@material-ui/icons/Search';
+// import IconButton from '@material-ui/core/IconButton';
 import Link from 'next/link';
 import Menu from '@core_modules/theme/components/header/desktop/components/v1/mcategory';
 import dynamic from 'next/dynamic';
 import Image from '@common_image';
 
+import '@fortawesome/fontawesome-free/css/all.min.css';
+
 const ProductCompareIcon = dynamic(() => import('@core_modules/catalog/plugins/ProductCompare'));
 const ShoppingBagIcon = dynamic(() => import('@plugin_shoppingbag'));
 const NotificationBell = dynamic(() => import('@plugin_notificationbell'));
-const DesktopInstallApp = dynamic(() => import('@core_modules/theme/components/custom-install-popup/desktop'), { ssr: false });
-const Autocomplete = dynamic(() => import('@core_modules/theme/components/header/desktop/components/autocomplete'), { ssr: false });
-const OptionAutocomplete = dynamic(() => import('@core_modules/theme/components/header/desktop/components/autocomplete/view'), { ssr: false });
+// const DesktopInstallApp = dynamic(() => import('@core_modules/theme/components/custom-install-popup/desktop'), { ssr: false });
+// const Autocomplete = dynamic(() => import('@core_modules/theme/components/header/desktop/components/autocomplete'), { ssr: false });
+// const OptionAutocomplete = dynamic(() => import('@core_modules/theme/components/header/desktop/components/autocomplete/view'), { ssr: false });
 const TopMenu = dynamic(() => import('@core_modules/theme/components/header/desktop/components/mtop'), { ssr: false });
 
 const ViewTopNavigation = (props) => {
@@ -41,9 +44,9 @@ const ViewTopNavigation = (props) => {
 
     return (
         <div id="header-inner">
-            <div className="row header-top">
+            <div className="flex flex-row header-top">
                 <main style={{ width: '97%' }}>
-                    {enablePopupInstallation ? <DesktopInstallApp appName={appName} installMessage={installMessage} /> : null}
+                    {/* {enablePopupInstallation ? <DesktopInstallApp appName={appName} installMessage={installMessage} /> : null} */}
                     <TopMenu t={t} isLogin={isLogin} data={customer} handleLogout={handleLogout} app_cookies={app_cookies} />
                 </main>
             </div>
@@ -82,13 +85,7 @@ const ViewTopNavigation = (props) => {
                                         <ShoppingBagIcon withLink storeConfig={storeConfig} />
                                     </div>
                                 </div>
-                                <div className="header-middle__search">
-                                    {/* <TextField
-                                        id="standard-basic"
-                                        label="Search..."
-                                        onChange={(e) => setValue(e.target.value)}
-                                        onKeyPress={(e) => handleSearch(e)}
-                                    /> */}
+                                {/* <div className="header-middle__search">
                                     <Autocomplete
                                         setValue={setValue}
                                         handleSearch={handleSearch}
@@ -101,14 +98,14 @@ const ViewTopNavigation = (props) => {
                                             <SearchIcon />
                                         </IconButton>
                                     </div>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                     </div>
                     <div className="header-middle">
                         <div id="submenu" className="header-middle__center">
-                            <div className="row menu-category">
-                                <div className="col-xs-12 menu-middle">
+                            <div className="flex flex-row menu-category">
+                                <div className="xs:basis-full menu-middle">
                                     {loading ? null : <Menu vesMenuConfig={vesMenuConfig} data={data} storeConfig={storeConfig} />}
                                 </div>
                             </div>

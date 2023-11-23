@@ -60,8 +60,8 @@ const Layout = (props) => {
         }
     }
     return (
-        <div className="row">
-            <div className="col-md-2 col-xs-12 hidden-mobile">
+        <div className="flex flex-row">
+            <div className="md:basis-2/12 xs:basis-full hidden-mobile">
                 <div className={styles.listMenuContainer}>
                     <ul className={styles.listMenu}>
                         {menu.map((val, idx) => (
@@ -81,7 +81,7 @@ const Layout = (props) => {
                     </ul>
                 </div>
             </div>
-            <div className="col-md-10 col-xs-12 col-sm-12">
+            <div className="md:basis-10/12 xs:basis-full sm:basis-full">
                 <Typography variant="h4" type="bold" letter="capitalize" className={classNames('hidden-mobile', styles.titleContent)}>
                     {title || titlePage}
                 </Typography>

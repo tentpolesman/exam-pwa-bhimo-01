@@ -113,7 +113,7 @@ const Content = (props) => {
                                     const { product } = productCompare;
                                     return (
                                         <TableCell className={styles.column} style={{ width: columnWidth }}>
-                                            <Typography type="bold" variant="p" className="column__title hidden-desktop">
+                                            <Typography type="bold" variant="p" className="flex flex-col__title hidden-desktop">
                                                 {t('common:productCompare:label:description')}
                                             </Typography>
                                             <div
@@ -133,7 +133,7 @@ const Content = (props) => {
                                     const { product } = productCompare;
                                     return (
                                         <TableCell className={styles.column} style={{ width: columnWidth }}>
-                                            <Typography type="bold" variant="p" className="column__title hidden-desktop">
+                                            <Typography type="bold" variant="p" className="flex flex-col__title hidden-desktop">
                                                 {t('common:productCompare:label:shortDescription')}
                                             </Typography>
 
@@ -148,7 +148,7 @@ const Content = (props) => {
                                 </TableCell>
                                 {compareList.compareList.items.map(() => (
                                     <TableCell className={styles.column} style={{ width: columnWidth }}>
-                                        <Typography type="bold" variant="p" className="column__title hidden-desktop">
+                                        <Typography type="bold" variant="p" className="flex flex-col__title hidden-desktop">
                                             {t('common:productCompare:label:brand')}
                                         </Typography>{' '}
                                     </TableCell>

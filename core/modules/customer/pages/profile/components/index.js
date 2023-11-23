@@ -30,7 +30,7 @@ const ProfileForm = (props) => {
     } = props;
     const desktop = breakPointsUp('sm');
     return (
-        <form className={classNames('col-md-6', styles.container)} onSubmit={formik.handleSubmit}>
+        <form className={classNames('md:basis-1/2', styles.container)} onSubmit={formik.handleSubmit}>
             <TextField
                 label={t('common:form:firstName')}
                 name="firstName"

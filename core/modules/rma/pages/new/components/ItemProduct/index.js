@@ -92,7 +92,7 @@ const ItemProduct = (props) => {
     };
 
     return (
-        <div className="column">
+        <div className="flex flex-col">
             <ItemProductView
                 checked={checked}
                 disabled={disabled}

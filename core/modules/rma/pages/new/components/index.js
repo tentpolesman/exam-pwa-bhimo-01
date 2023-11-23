@@ -9,7 +9,7 @@ import Layout from '@layout_customer';
 import Button from '@common_button';
 import Divider from '@material-ui/core/Divider';
 import DropFile from '@common_dropfile';
-import CheckBox from '@common_checkbox';
+import CheckBox from '@common_forms/CheckBox';
 import Router from 'next/router';
 import { requestRma } from '@core_modules/rma/services/graphql';
 import useStyles from './styles';
@@ -184,7 +184,7 @@ const NewContent = (props) => {
 
     return (
         <Layout {...props} title={t('customer:menu:return')} activeMenu="/rma/customer">
-            <div className="column">
+            <div className="flex flex-col">
                 <div className={classNames(styles.block)}>
                     {
                         custom_fields && custom_fields.length > 0 && custom_fields.map((item, index) => {

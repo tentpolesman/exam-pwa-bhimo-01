@@ -593,7 +593,7 @@ index ba702af46..af269ada7 100644
 +                {paymentMethod && paymentMethod.email_address && <Typography variant="p">{paymentMethod.email_address}</Typography>}
 +                <img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/pp-acceptance-medium.png" alt="Buy now with paypal" />
              </div>
-             {/* <div className="col-xs-12">
+             {/* <div className="xs:basis-full">
                  <Link href={initialOptionPaypal.editUrl || ''}>
 diff --git a/core/modules/paypal/pages/review/components/PlaceOrder/index.js b/core/modules/paypal/pages/review/components/PlaceOrder/index.js
 index 5fdf01b4e..5ee0e59f8 100644

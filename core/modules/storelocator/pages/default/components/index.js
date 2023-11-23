@@ -41,8 +41,8 @@ const StoreLocatorContent = ({ gmapKey, storeLocations, t }) => {
     }
 
     return (
-        <div className="row" style={{ padding: '0 16px' }}>
-            <div className="col-xs-12 col-sm-4 col-md-3 last-xs first-sm">
+        <div className="flex flex-row" style={{ padding: '0 16px' }}>
+            <div className="xs:basis-full sm:basis-4/12 md:basis-3/12 last-xs first-sm">
                 <StoreList
                     t={t}
                     storeList={storeList}
@@ -53,7 +53,7 @@ const StoreLocatorContent = ({ gmapKey, storeLocations, t }) => {
                     }}
                 />
             </div>
-            <div className="col-xs-12 col-sm-8 col-md-9">
+            <div className="xs:basis-full sm:basis-8/12 md:basis-9/12">
                 <StoreLocatorMaps
                     t={t}
                     centerPosition={centerPosition}

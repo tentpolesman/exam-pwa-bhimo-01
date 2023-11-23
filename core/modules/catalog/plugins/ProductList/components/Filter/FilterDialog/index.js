@@ -1,9 +1,9 @@
 /* eslint-disable radix */
 import Button from '@common_button';
-import CheckBox from '@common_checkbox';
+import CheckBox from '@common_forms/CheckBox';
+import CircularProgress from '@common_circularprogress';
 import CheckBoxColor from '@common_forms/CheckBoxColor';
 import CheckBoxSize from '@common_forms/CheckBoxSize';
-import Loading from '@common_loaders';
 import RadioGroup from '@common_radio';
 import RangeSlider from '@common_rangeslider';
 import Typography from '@common_typography';
@@ -14,8 +14,8 @@ import IconButton from '@material-ui/core/IconButton';
 import Slide from '@material-ui/core/Slide';
 import CloseIcon from '@material-ui/icons/Close';
 import { BREAKPOINTS } from '@theme/vars';
-import React from 'react';
 import { useRouter } from 'next/router';
+import React from 'react';
 import useStyles from './style';
 
 const Transition = React.forwardRef((props, ref) => <Slide direction={window.innerWidth >= BREAKPOINTS.sm ? 'left' : 'up'} ref={ref} {...props} />);
@@ -120,7 +120,7 @@ const FilterDialog = (props) => {
                         />
                     </div>
                 )}
-                {loading ? <Loading size="20px" /> : null}
+                {loading ? <CircularProgress size="regular" /> : null}
                 {data.map((itemFilter, idx) => {
                     const ItemValueByLabel = [];
                     // eslint-disable-next-line no-plusplus

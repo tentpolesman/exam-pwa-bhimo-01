@@ -1,12 +1,12 @@
 import React from 'react';
-import CheckBox from '@common_checkbox';
+import CheckBox from '@common_forms/CheckBox';
 import Typography from '@common_typography';
 
 const ViewCustomizableCheckboxOption = ({
     title = 'test', data = [], selected = [], disabled,
     onChange = () => {}, error = '', required = false,
 }) => (
-    <div className="column">
+    <div className="flex flex-col">
         {
             data && data.length > 0 && (
                 <>

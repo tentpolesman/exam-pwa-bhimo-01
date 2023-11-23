@@ -6,13 +6,12 @@ import dynamic from 'next/dynamic';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'open-iconic/font/css/open-iconic-bootstrap.css';
 import 'animate.css';
-import useStyles from '@core_modules/cms/components/cms-renderer/magezon/style';
 
 const MagezonSlider = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonSlider'), { ssr: false });
 const MagezonCaraousel = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonCaraousel'), { ssr: false });
 const MagezonColumn = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonColumn'));
 const MagezonRow = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonRow'));
-const MagezonHeading = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonHeading'));
+// const MagezonHeading = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonHeading'));
 const MagezonSingleImage = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonSingleImage'));
 const MagezonText = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonText'));
 const MagezonButton = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonButton'));
@@ -87,9 +86,8 @@ const MagezonElement = (props) => {
         storeConfig,
     } = props;
     const { base_media_url } = storeConfig;
-    const customStyles = useStyles();
     let childrenContent;
-    let classes = `${customStyles.wrapper} mgz-element `;
+    let classes = 'mgz-element inline-block ';
     let customId = '';
     let innerClasses = 'mgz-element-inner ';
     const { className, styles } = generateCustomCssAnimation(animation_duration, animation_delay, animation_infinite);
@@ -122,11 +120,11 @@ const MagezonElement = (props) => {
 
     if (disable_element) return null;
 
-    if (xs_hide) classes += 'xs-hide ';
-    if (sm_hide) classes += 'sm-hide ';
-    if (md_hide) classes += 'md-hide ';
-    if (lg_hide) classes += 'lg-hide ';
-    if (xl_hide) classes += 'xl-hide ';
+    if (xs_hide) classes += 'max-sm:hidden ';
+    if (sm_hide) classes += 'max-md:hidden ';
+    if (md_hide) classes += 'max-lg:hidden ';
+    if (lg_hide) classes += 'max-xl:hidden ';
+    if (xl_hide) classes += 'xl:hidden ';
 
     if (hidden_default) classes += 'hidden-default ';
 
@@ -174,7 +172,7 @@ const MagezonElement = (props) => {
             childrenContent = <MagezonColumn {...props} />;
             break;
         case 'heading':
-            childrenContent = <MagezonHeading {...props} />;
+            // childrenContent = <MagezonHeading {...props} />;
             break;
         case 'single_image':
             childrenContent = <MagezonSingleImage {...props} />;
@@ -349,7 +347,6 @@ const MagezonElement = (props) => {
                 {`
                     .mgz-element {
                         position: relative;
-                        display: inline-block;
                         width: 100%;
                         ${background_color ? `background-color: ${background_color};` : ''}
                     }
@@ -395,13 +392,13 @@ const MagezonElement = (props) => {
                     }
 
                     @media screen and (min-width: 768px) {
-                        .mgz-element:not(.full_height) > .mgz-element-inner >.row > .mgz-column > * {
+                        .mgz-element:not(.full_height) > .mgz-element-inner >.mgz-row > .mgz-column > * {
                             padding: 10px;
                         }
                     }
 
                     @media screen and (max-width: 768px) {
-                        .mgz-element.full_height > .mgz-element-inner >  .row > .mgz-column > .mgz-element {
+                        .mgz-element.full_height > .mgz-element-inner >  .mgz-row > .mgz-column > .mgz-element {
                             margin-top: -15px;
                             position: absolute;
                         }
@@ -413,7 +410,7 @@ const MagezonElement = (props) => {
                     }
 
                     @media screen and (min-width: 1200px) {
-                        .mgz-element.full_height > .mgz-element-inner > .row > .mgz-column > .mgz-element {
+                        .mgz-element.full_height > .mgz-element-inner > .mgz-row > .mgz-column > .mgz-element {
                             padding-top: 0px !important;
                             padding-left: 0px !important;
                             padding-right: 0px !important;

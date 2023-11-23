@@ -213,22 +213,22 @@ const MagezonSliderContent = (props) => {
                     .magezon-slide-heading, .magezon-slide-caption1, .magezon-slide-caption2 {
                         margin-bottom: 5px;
                     }
-                    .magezon-slide-heading :global(.magezone-heading :is(h1, h2, h3, h4, h5, h6)) {
+                    .magezon-slide-heading :global(.magezon-heading :is(h1, h2, h3, h4, h5, h6)) {
                         line-height: ${heading_line_height}px;
                         padding: ${heading_padding}px;
                         margin: 0;
                     }
-                    .magezon-slide-caption1 :global(.magezone-heading :is(h1, h2, h3, h4, h5, h6)) {
+                    .magezon-slide-caption1 :global(.magezon-heading :is(h1, h2, h3, h4, h5, h6)) {
                         line-height: ${caption1_line_height}px;
                         padding: ${caption1_padding}px;
                         margin: 0;
                     }
-                    .magezon-slide-caption2 :global(.magezone-heading :is(h1, h2, h3, h4, h5, h6)) {
+                    .magezon-slide-caption2 :global(.magezon-heading :is(h1, h2, h3, h4, h5, h6)) {
                         line-height: ${caption2_line_height}px;
                         padding: ${caption2_padding}px;
                         margin: 0;
                     }
-                    .magezon-slide-captions :global(.magezone-heading) {
+                    .magezon-slide-captions :global(.magezon-heading) {
                         justify-content: center;
                     }
                     .magezon-slide-button {
@@ -309,8 +309,8 @@ const MagezonSlider = (props) => {
     const { unhoverStyle, hoverStyle } = useHoverStyle(image_hover_effect);
     let slideHeight = storeConfig.pwa?.magezon_slider_desktop_height;
     let slideWidth = storeConfig.pwa?.magezon_slider_desktop_width;
-    slideHeight = (typeof slideHeight === 'string') ? parseInt(slideHeight, 0) : slideHeight;
-    slideWidth = (typeof slideWidth === 'string') ? parseInt(slideWidth, 0) : slideWidth;
+    slideHeight = (typeof slideHeight === 'string') ? parseInt(slideHeight, 10) : slideHeight;
+    slideWidth = (typeof slideWidth === 'string') ? parseInt(slideWidth, 10) : slideWidth;
 
     const navSize = owl_nav_size === 'mini' ? 10 : owl_nav_size === 'small' ? 15 : owl_nav_size === 'normal' ? 20 : 25;
     let sliderRef = useRef();

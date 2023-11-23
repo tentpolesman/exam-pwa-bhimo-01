@@ -18,7 +18,7 @@ const ViewCustomizableRadioOption = ({
         </>
     );
     const styles = useStyles();
-    const customClass = classNames('column', styles.container, styles.customizableRadioOption);
+    const customClass = classNames('flex flex-col', styles.container, styles.customizableRadioOption);
     return (
         <div className={customClass}>
             {

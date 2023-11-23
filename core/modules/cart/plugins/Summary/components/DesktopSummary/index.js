@@ -115,27 +115,27 @@ const Summary = (props) => {
             )}
             {showItems ? (
                 <>
-                    <div className={classNames('row between-xs')} onClick={() => setOpenItem(!openItem)}>
-                        <div className="col-xs-6">
+                    <div className={classNames('flex flex-row between-xs')} onClick={() => setOpenItem(!openItem)}>
+                        <div className="xs:basis-6/12">
                             <Typography variant="span">{`${items.length} items in Cart`}</Typography>
                         </div>
-                        <div className="col-xs-2">{openItem ? <ExpandLess /> : <ExpandMore />}</div>
+                        <div className="xs:basis-2/12">{openItem ? <ExpandLess /> : <ExpandMore />}</div>
                     </div>
                     {storeConfigLocalStorage.enable_oms_multiseller === '1' && openItem ? (
-                        <div className={classNames('row')}>
+                        <div className={classNames('flex flex-row')}>
                             {
                                 cartItemBySeller.map((seller) => (
                                     <>
-                                        <div className={classNames('col-xs-12', styles.sellerLabel)}>
+                                        <div className={classNames('xs:basis-full', styles.sellerLabel)}>
                                             <Typography variant="span" style={{ fontWeight: 'bold' }}>{seller.seller_name}</Typography>
                                         </div>
                                         {seller.productList.map((item, index) => (
                                             <div
                                                 id="listItemProductSummary"
-                                                className={classNames('col-xs-12 row between-xs', styles.list, styles.listProduct)}
+                                                className={classNames('xs:basis-full row between-xs', styles.list, styles.listProduct)}
                                                 key={index}
                                             >
-                                                <div className="col-xs-4">
+                                                <div className="xs:basis-4/12">
                                                     <Thumbor
                                                         className="product-image-photo"
                                                         src={item.product.small_image.url}
@@ -144,7 +144,7 @@ const Summary = (props) => {
                                                         height={75}
                                                     />
                                                 </div>
-                                                <div className={classNames('col-xs-8', styles.bodyProductItem)}>
+                                                <div className={classNames('xs:basis-8/12', styles.bodyProductItem)}>
                                                     <Typography variant="span" className={styles.productTitle}>{item.product.name}</Typography>
                                                     {item.configurable_options && item.configurable_options.length ? (
                                                         <div className="product-options">
@@ -175,7 +175,7 @@ const Summary = (props) => {
                                                 </div>
                                             </div>
                                         ))}
-                                        <List className={classNames('col-xs-12', styles.removeBottomPadding)}>
+                                        <List className={classNames('xs:basis-full', styles.removeBottomPadding)}>
                                             <ListItem className={classNames(styles.list, styles.listSubtotal)}>
                                                 <ListItemText
                                                     className={styles.labelItem}
@@ -198,11 +198,11 @@ const Summary = (props) => {
                         </div>
                     ) : null}
                     {storeConfigLocalStorage.enable_oms_multiseller !== '1' && openItem ? (
-                        <div className={classNames('row')}>
+                        <div className={classNames('flex flex-row')}>
                             {items.map((item, index) => (
                                 <div
                                     id="listItemProductSummary"
-                                    className={classNames('col-xs-12 row between-xs', styles.list, styles.listProduct)}
+                                    className={classNames('xs:basis-full row between-xs', styles.list, styles.listProduct)}
                                     key={index}
                                 >
                                     {withAction && (
@@ -215,7 +215,7 @@ const Summary = (props) => {
                                             x
                                         </div>
                                     )}
-                                    <div className="col-xs-4">
+                                    <div className="xs:basis-4/12">
                                         <Thumbor
                                             className="product-image-photo"
                                             src={item.product.small_image.url}
@@ -225,7 +225,7 @@ const Summary = (props) => {
                                             storeConfig={storeConfig}
                                         />
                                     </div>
-                                    <div className={classNames('col-xs-8', styles.bodyProductItem)}>
+                                    <div className={classNames('xs:basis-8/12', styles.bodyProductItem)}>
                                         <Typography variant="span" className={styles.productTitle}>{item.product.name}</Typography>
                                         {item.configurable_options && item.configurable_options.length ? (
                                             <div className="product-options">

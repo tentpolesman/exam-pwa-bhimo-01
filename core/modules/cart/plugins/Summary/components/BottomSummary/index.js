@@ -118,27 +118,27 @@ const CheckoutDrawer = ({
                             <>
                                 {showItems && storeConfigLocalStorage.enable_oms_multiseller === '1' ? (
                                     <>
-                                        <div className={classNames('row', styles.itemContainer)}>
+                                        <div className={classNames('flex flex-row', styles.itemContainer)}>
                                             {cartItemBySeller.map((seller) => (
                                                 <>
-                                                    <div className={classNames('col-xs-12', styles.sellerLabel)}>
+                                                    <div className={classNames('xs:basis-full', styles.sellerLabel)}>
                                                         <Typography variant="span" style={{ fontWeight: 'bold' }}>
                                                             {seller.seller_name}
                                                         </Typography>
                                                     </div>
                                                     {seller.productList.map((item, index) => (
                                                         <div
-                                                            className={classNames('col-xs-12 row', styles.bottomListMultiseller)}
+                                                            className={classNames('xs:basis-full row', styles.bottomListMultiseller)}
                                                             key={index}
                                                             id="bottomListItemProductSummary"
                                                         >
-                                                            <div className="col-xs-12 row between-xs clear-margin-padding">
-                                                                <div className="col-xs-6">
+                                                            <div className="xs:basis-full row between-xs clear-margin-padding">
+                                                                <div className="xs:basis-6/12">
                                                                     <Typography variant="p" className={styles.productTitle}>
                                                                         {item.product.name}
                                                                     </Typography>
                                                                 </div>
-                                                                <div className="col-xs-6">
+                                                                <div className="xs:basis-6/12">
                                                                     <Typography variant="p" align="right">
                                                                         {formatPrice(
                                                                             item.prices.row_total_including_tax.value,
@@ -148,7 +148,7 @@ const CheckoutDrawer = ({
                                                                     </Typography>
                                                                 </div>
                                                             </div>
-                                                            <div className={classNames('col-xs-12', styles.qtyOption)}>
+                                                            <div className={classNames('xs:basis-full', styles.qtyOption)}>
                                                                 <Typography variant="p">
                                                                     {item.configurable_options && item.configurable_options.length > 0 && (
                                                                         <>
@@ -168,7 +168,7 @@ const CheckoutDrawer = ({
                                                             </div>
                                                         </div>
                                                     ))}
-                                                    <List className={classNames('col-xs-12', styles.removeBottomPadding)}>
+                                                    <List className={classNames('xs:basis-full', styles.removeBottomPadding)}>
                                                         <ListItem className={classNames(styles.list, styles.listSubtotal)}>
                                                             <ListItemText
                                                                 className={styles.labelItem}
@@ -193,16 +193,16 @@ const CheckoutDrawer = ({
                                 ) : null}
                                 {showItems && storeConfigLocalStorage.enable_oms_multiseller !== '1' ? (
                                     <>
-                                        <div className={classNames('row', styles.itemContainer)}>
+                                        <div className={classNames('flex flex-row', styles.itemContainer)}>
                                             {items.map((item, index) => (
-                                                <div className="col-xs-12 row" key={index} id="bottomListItemProductSummary">
-                                                    <div className="col-xs-12 row between-xs">
-                                                        <div className="col-xs-6">
+                                                <div className="xs:basis-full row" key={index} id="bottomListItemProductSummary">
+                                                    <div className="xs:basis-full row between-xs">
+                                                        <div className="xs:basis-6/12">
                                                             <Typography variant="p" className={styles.productTitle}>
                                                                 {item.product.name}
                                                             </Typography>
                                                         </div>
-                                                        <div className="col-xs-6">
+                                                        <div className="xs:basis-6/12">
                                                             <Typography variant="p" align="right">
                                                                 {formatPrice(
                                                                     item.prices.row_total_including_tax.value,
@@ -212,7 +212,7 @@ const CheckoutDrawer = ({
                                                             </Typography>
                                                         </div>
                                                     </div>
-                                                    <div className={classNames('col-xs-12')}>
+                                                    <div className={classNames('xs:basis-full')}>
                                                         <Typography variant="p">
                                                             {item.configurable_options && item.configurable_options.length > 0 && (
                                                                 <>
@@ -229,8 +229,11 @@ const CheckoutDrawer = ({
                                                         </Typography>
                                                     </div>
                                                     {withAction && (
-                                                        <div className={classNames('col-xs-12  row between-xs clear-margin-padding', styles.action)}>
-                                                            <div className="col-xs-6">
+                                                        <div className={
+                                                            classNames('xs:basis-full  row between-xs clear-margin-padding', styles.action)
+                                                        }
+                                                        >
+                                                            <div className="xs:basis-6/12">
                                                                 <span
                                                                     className="item-minus qty-update"
                                                                     onClick={() => {
@@ -250,7 +253,7 @@ const CheckoutDrawer = ({
                                                                 />
                                                             </div>
                                                             <div
-                                                                className="col-xs-6 delete"
+                                                                className="xs:basis-6/12 delete"
                                                                 onClick={() => {
                                                                     setExpanded(0);
                                                                     deleteCart(item.id);

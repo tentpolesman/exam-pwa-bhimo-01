@@ -133,7 +133,7 @@ const MagezonProduct = (props) => {
                         }
                     }
                     @media (min-width: 1200px) {
-                        .mgz-product :global(.col-xl-5) {
+                        .mgz-product :global(.col-lg-5) {
                             flex: 1 20%;
                             max-width: 20%;
                         }

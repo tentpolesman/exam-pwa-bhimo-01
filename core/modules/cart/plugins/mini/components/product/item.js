@@ -24,7 +24,8 @@ const Item = (props) => {
                     href="/[...slug]"
                     as={`/${product.url_key}`}
                     passHref
-                    className="product-item-photo">
+                    className="product-item-photo"
+                >
 
                     <Thumbor
                         className="product-image-photo"
@@ -85,7 +86,7 @@ const Item = (props) => {
                         <div className="product-options">
                             {cartCustomOptions.map((val, idx) => (
                                 <div className="option-wrapper" key={idx}>
-                                    <div className="row option-wrapper__item">
+                                    <div className="flex flex-row option-wrapper__item">
                                         <strong>
                                             {val.label}
                                             {' '}
@@ -105,7 +106,7 @@ const Item = (props) => {
                         <div className="product-options">
                             {aw_giftcard_option.map((val, idx) => (
                                 <div className="option-wrapper" key={idx}>
-                                    <div className="row option-wrapper__item">
+                                    <div className="flex flex-row option-wrapper__item">
                                         <strong>
                                             {val.label}
                                             {' '}

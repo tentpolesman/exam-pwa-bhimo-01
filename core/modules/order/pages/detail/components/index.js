@@ -105,7 +105,7 @@ const DetailOrder = (props) => {
                         xendit_qrcode_external_id={paymentInfo.xendit_qrcode_external_id}
                     />
                 )}
-                <div className="column">
+                <div className="flex flex-col">
                     <div className={classNames('hidden-mobile', styles.blockHeader)}>
                         <Typography variant="h1" letter="uppercase" type="regular" className={classNames('clear-margin-padding', styles.headerTitle)}>
                             {t('order:order')}
@@ -128,8 +128,8 @@ const DetailOrder = (props) => {
                         <OrderStatusIcon status={detail[0].status} t={t} />
                     </div>
                     <div className={classNames(styles.block)}>
-                        <div className="row center-xs start-sm start-sm start-md start-lg">
-                            <div className="col-xs-12">
+                        <div className="flex flex-row center-xs start-sm start-sm start-md start-lg">
+                            <div className="xs:basis-full">
                                 <Typography
                                     variant="span"
                                     letter="capitalize"
@@ -139,7 +139,7 @@ const DetailOrder = (props) => {
                                     {t('order:orderInfo')}
                                 </Typography>
                             </div>
-                            <div className="col-xs-12 hidden-desktop">
+                            <div className="xs:basis-full hidden-desktop">
                                 <Typography variant="p" type="bold" letter="uppercase" className={styles.labelDetail}>
                                     {t('order:orderId')}
                                 </Typography>
@@ -154,7 +154,7 @@ const DetailOrder = (props) => {
                                 </Typography>
                             </div>
                             {Object.keys(detail[0].detail[0].shipping_address).length > 0 && (
-                                <div className="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                <div className="xs:basis-full sm:basis-1/2 md:basis-1/2 lg:basis-1/2">
                                     <Typography variant="p" type="bold" letter="uppercase" className={styles.labelDetail}>
                                         {detail[0].detail[0].pickup_store && detail[0].detail[0].pickup_store.is_using_pickup_store
                                             ? t('order:pickupAt')
@@ -180,7 +180,7 @@ const DetailOrder = (props) => {
                                 </div>
                             )}
                             {detail[0].detail[0].pickup_store && detail[0].detail[0].pickup_store.is_using_pickup_store && (
-                                <div className="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                <div className="xs:basis-full sm:basis-1/2 md:basis-1/2 lg:basis-1/2">
                                     <Typography variant="p" type="bold" letter="uppercase" className={styles.labelDetail}>
                                         {t('order:pickupBy')}
                                     </Typography>
@@ -198,7 +198,7 @@ const DetailOrder = (props) => {
                                     </Typography>
                                 </div>
                             )}
-                            <div className="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <div className="xs:basis-full sm:basis-1/2 md:basis-1/2 lg:basis-1/2">
                                 <Typography variant="p" type="bold" letter="uppercase" className={styles.labelDetail}>
                                     {t('order:orderStatus')}
                                 </Typography>
@@ -206,7 +206,7 @@ const DetailOrder = (props) => {
                                     {detail[0].status_label || ''}
                                 </Typography>
                             </div>
-                            <div className="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <div className="xs:basis-full sm:basis-1/2 md:basis-1/2 lg:basis-1/2">
                                 <Typography variant="p" type="bold" letter="uppercase" className={styles.labelDetail}>
                                     {t('order:billingAddress')}
                                 </Typography>
@@ -229,7 +229,7 @@ const DetailOrder = (props) => {
                                 </Typography>
                             </div>
                             {Object.keys(detail[0].detail[0].shipping_address).length > 0 && (
-                                <div className="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                <div className="xs:basis-full sm:basis-1/2 md:basis-1/2 lg:basis-1/2">
                                     <Typography variant="p" type="bold" letter="uppercase" className={styles.labelDetail}>
                                         {t('order:shippingMethod')}
                                     </Typography>
@@ -262,7 +262,7 @@ const DetailOrder = (props) => {
                                 setOpen={setOpenModal}
                                 orders={dataTrackingOrder.ordersFilter}
                             />
-                            <div className="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <div className="xs:basis-full sm:basis-1/2 md:basis-1/2 lg:basis-1/2">
                                 <Typography variant="p" type="bold" letter="uppercase" className={styles.labelDetail}>
                                     {t('order:paymentMethod')}
                                 </Typography>
@@ -314,8 +314,8 @@ const DetailOrder = (props) => {
                         </div>
                     </div>
                     <div className={styles.block}>
-                        <div className="row center-xs start-sm start-sm start-md start-lg">
-                            <div className="col-xs-12">
+                        <div className="flex flex-row center-xs start-sm start-sm start-md start-lg">
+                            <div className="xs:basis-full">
                                 <Typography
                                     variant="span"
                                     letter="capitalize"
@@ -326,19 +326,19 @@ const DetailOrder = (props) => {
                                 </Typography>
                                 <hr />
                             </div>
-                            <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <div className="xs:basis-full sm:basis-full md:basis-full lg:basis-full">
                                 <Typography variant="p" type="bold" letter="uppercase" className={styles.labelDetail}>
                                     {t('order:orderComment:commentHistory')}
                                 </Typography>
                                 {detail[0].comments.length > 0
                                     ? detail[0].comments.map((item) => (
-                                        <div className="row" style={{ margin: '1rem 0rem 1rem' }}>
-                                            <div className="col-xs-12 col-sm-4 col-md-3 col-lg-2 clear-margin-padding">
+                                        <div className="flex flex-row" style={{ margin: '1rem 0rem 1rem' }}>
+                                            <div className="xs:basis-full sm:basis-4/12 md:basis-3/12 lg:basis-2/12 clear-margin-padding">
                                                 <Typography variant="span" className="clear-margin-padding" style={{ fontWeight: 'bold' }}>
                                                     {formatDate(item.timestamp)}
                                                 </Typography>
                                             </div>
-                                            <div className="col-xs-12 col-sm-8 col-md-9 col-lg-10 clear-margin-padding">
+                                            <div className="xs:basis-full sm:basis-8/12 md:basis-9/12 lg:basis-10/12 clear-margin-padding">
                                                 <Typography variant="span" className="clear-margin-padding">
                                                     {item.message}
                                                 </Typography>
@@ -347,7 +347,7 @@ const DetailOrder = (props) => {
                                     ))
                                     : '-'}
                             </div>
-                            <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <div className="xs:basis-full sm:basis-full md:basis-full lg:basis-full">
                                 <Typography variant="p" type="bold" letter="uppercase" className={styles.labelDetail}>
                                     {t('order:orderComment:subTitle')}
                                 </Typography>
@@ -356,7 +356,7 @@ const DetailOrder = (props) => {
                                 </Typography>
                             </div>
                             {storeConfig.enable_oms_multiseller === '1' && detail[0].seller_id ? (
-                                <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <div className="xs:basis-full sm:basis-full md:basis-full lg:basis-full">
                                     <Typography variant="p" type="bold" letter="uppercase" className={styles.labelDetail}>
                                         {t('order:seller')}
                                     </Typography>
@@ -370,8 +370,8 @@ const DetailOrder = (props) => {
                         </div>
                     </div>
                     <div className={styles.block}>
-                        <div className="row center-xs start-sm start-sm start-md start-lg">
-                            <div className="col-xs-12">
+                        <div className="flex flex-row center-xs start-sm start-sm start-md start-lg">
+                            <div className="xs:basis-full">
                                 <Typography
                                     variant="span"
                                     letter="capitalize"
@@ -381,7 +381,7 @@ const DetailOrder = (props) => {
                                     {t('order:orderItem')}
                                 </Typography>
                             </div>
-                            <div className="col-xs-12">
+                            <div className="xs:basis-full">
                                 <div className="hidden-desktop">
                                     {items.length > 0
                                         && items.map((item, key) => (
@@ -395,9 +395,9 @@ const DetailOrder = (props) => {
                         </div>
                     </div>
                     <div className={classNames(styles.block)}>
-                        <div className="row end-md">
-                            <div className="col-xs-12 col-sm-6 col-md-8 hidden-mobile" />
-                            <div className="col-xs-12 col-sm-6 col-md-4">
+                        <div className="flex flex-row end-md">
+                            <div className="xs:basis-full sm:basis-1/2 md:basis-8/12 hidden-mobile" />
+                            <div className="xs:basis-full sm:basis-1/2 md:basis-4/12">
                                 {(detail[0].detail[0].subtotalt !== null || detail[0].detail[0].subtotal_incl_taxt !== null) && (
                                     <div className={styles.listSummary}>
                                         <Typography variant="span" letter="capitalize" className={styles.labelSummary}>
@@ -507,9 +507,9 @@ const DetailOrder = (props) => {
                                 </div>
                             </div>
                         </div>
-                        <div className="row">
-                            <div className="col-xs-12 col-sm-12 col-md-8">
-                                <div className="row">
+                        <div className="flex flex-row">
+                            <div className="xs:basis-full sm:basis-full md:basis-8/12">
+                                <div className="flex flex-row">
                                     <div className={styles.wrapperButton}>
                                         <button type="button" className={styles.reorderButton} onClick={reOrder}>
                                             <Typography variant="span" type="regular">
