@@ -45,8 +45,8 @@ const SpanCategory = (props) => {
 
     return (
         <div className={styles.container}>
-            <div className={classNames('row center middle-sm', right ? 'reverse' : '')}>
-                <div className="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div className={classNames('flex flex-row center middle-sm', right ? 'reverse' : '')}>
+                <div className="xs:basis-full sm:basis-1/2 md:basis-1/2 lg:basis-1/2">
                     <Link
                         href="/[...slug]"
                         as={`/${url}`}
@@ -69,7 +69,7 @@ const SpanCategory = (props) => {
 
                     </Link>
                 </div>
-                <div className="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <div className="xs:basis-full sm:basis-1/2 md:basis-1/2 lg:basis-1/2">
                     <div className={styles.contentContainer}>
                         <Link
                             href="/[...slug]"

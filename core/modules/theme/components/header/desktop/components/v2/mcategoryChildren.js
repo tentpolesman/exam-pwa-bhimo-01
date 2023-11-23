@@ -23,7 +23,8 @@ const MenuChildren = ({ data, handleClick, generateLink, mainData }) => {
                         key={idx}
                         href={generateLink(val)[0]}
                         as={generateLink(val)[1]}
-                        legacyBehavior>
+                        legacyBehavior
+                    >
                         <a onClick={() => handleClick(val)} className={active === idx ? 'active' : ''} onMouseEnter={() => setActive(idx)}>
                             {val.name}
                         </a>
@@ -31,9 +32,9 @@ const MenuChildren = ({ data, handleClick, generateLink, mainData }) => {
                 ))}
             </div>
             <div className="nav-column nav-column-right" style={{ width: '500px' }}>
-                <div className={`${child.image_path ? 'col-lg-9' : 'col-lg-12'} row`}>
+                <div className={`${child.image_path ? 'lg:basis-9/12' : 'lg:basis-full'} row`}>
                     {child.children.map((lvl3, id3) => (
-                        <div className="col-lg-3" key={id3}>
+                        <div className="lg:basis-3/12" key={id3}>
                             <Link href={generateLink(lvl3)[0]} as={generateLink(lvl3)[1]} legacyBehavior>
                                 <a onClick={() => handleClick(lvl3)}>{lvl3.name}</a>
                             </Link>
@@ -50,7 +51,7 @@ const MenuChildren = ({ data, handleClick, generateLink, mainData }) => {
                     ))}
                 </div>
                 {child.image_path ? (
-                    <div className="col-lg-3">
+                    <div className="lg:basis-3/12">
                         <Thumbor
                             // eslint-disable-next-line no-nested-ternary
                             src={child.image_path}

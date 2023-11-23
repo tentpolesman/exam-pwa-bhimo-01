@@ -43,7 +43,7 @@ const QuickView = (props) => {
 
     const product = data && data.items[productKey];
 
-    const reviewValue = parseInt(product?.review?.rating_summary, 0) / 20;
+    const reviewValue = parseInt(product?.review?.rating_summary, 10) / 20;
 
     let enableMultiSeller = false;
     if (storeConfig) {
@@ -243,7 +243,7 @@ const QuickView = (props) => {
                     <CloseIcon />
                 </IconButton>
                 <div className={classNames(styles.container, 'row')}>
-                    <div className={classNames(styles.headContainer, 'col-xs-12 col-lg-6')}>
+                    <div className={classNames(styles.headContainer, 'xs:basis-full lg:basis-1/2')}>
                         <Banner
                             data={banner}
                             noLink
@@ -260,7 +260,7 @@ const QuickView = (props) => {
                             )}
                         </Banner>
                     </div>
-                    <div className={classNames(styles.body, 'col-xs-12 col-lg-6')}>
+                    <div className={classNames(styles.body, 'xs:basis-full lg:basis-1/2')}>
                         <div className={styles.titleContainer}>
                             <div className={styles.titlePriceContainer}>
                                 <Typography
@@ -277,7 +277,7 @@ const QuickView = (props) => {
                             </div>
                         </div>
                         <div className={styles.titleContainer}>
-                            <div className={classNames('row', styles.sku)}>
+                            <div className={classNames('flex flex-row', styles.sku)}>
                                 <Typography className="clear-margin-padding" variant="p" type="regular" letter="capitalize">
                                     SKU#:
                                     {' '}
@@ -328,7 +328,7 @@ const QuickView = (props) => {
                                 </Grid>
                             </div>
                         ) : null}
-                        <div className="row">
+                        <div className="flex flex-row">
                             {storeConfig?.pwa?.label_enable && storeConfig?.pwa?.label_weltpixel_enable && (
                                 <WeltpixelLabel t={t} weltpixel_labels={weltpixel_labels || []} categoryLabel={false} onDetailProduct />
                             )}

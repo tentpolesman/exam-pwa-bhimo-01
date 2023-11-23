@@ -9,11 +9,11 @@ const Content = ({
     t, data, loadMore, loading, handleLoadMore, page, loadCategory,
     storeConfig, ContentCategory, ContentItem, ...other
 }) => (
-    <div className="row">
-        <div className="col-xs-12 col-sm-2">
+    <div className="flex flex-row">
+        <div className="xs:basis-full sm:basis-2/12">
             <Category t={t} {...other} />
         </div>
-        <div className="col-xs-12 col-sm-10">
+        <div className="xs:basis-full sm:basis-10/12">
             <Typography variant="h1" style={{ display: 'none' }}>
                 Blog
             </Typography>

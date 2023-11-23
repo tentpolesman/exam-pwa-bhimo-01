@@ -101,12 +101,12 @@ const WidgetNewsletterPopup = (props) => {
                     );
                 }
 
-                if (attribs.class === 'col-md-7 newsletter-left') {
-                    return <div className="col-xs-12 col-sm-7 col-md-7 newsletter-left">{domToReact(children, options)}</div>;
+                if (attribs.class === 'md:basis-7/12 newsletter-left') {
+                    return <div className="xs:basis-full sm:basis-7/12 md:basis-7/12 newsletter-left">{domToReact(children, options)}</div>;
                 }
 
-                if (attribs.class === 'col-md-5 newsletter-right') {
-                    return <div className="col-sm-5 col-md-5 newsletter-right">{domToReact(children, options)}</div>;
+                if (attribs.class === 'md:basis-5/12 newsletter-right') {
+                    return <div className="sm:basis-5/12 md:basis-5/12 newsletter-right">{domToReact(children, options)}</div>;
                 }
             }
         },

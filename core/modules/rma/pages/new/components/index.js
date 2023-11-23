@@ -184,7 +184,7 @@ const NewContent = (props) => {
 
     return (
         <Layout {...props} title={t('customer:menu:return')} activeMenu="/rma/customer">
-            <div className="column">
+            <div className="flex flex-col">
                 <div className={classNames(styles.block)}>
                     {
                         custom_fields && custom_fields.length > 0 && custom_fields.map((item, index) => {

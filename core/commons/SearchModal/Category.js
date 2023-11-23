@@ -21,7 +21,7 @@ const Category = ({
             <div className={styles.item}>
                 {data.length
                     ? data.map((catlvl1, index) => (
-                        <div key={index} className="column">
+                        <div key={index} className="flex flex-col">
                             <Button
                                 fullWidth
                                 variant="text"

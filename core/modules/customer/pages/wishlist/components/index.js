@@ -44,7 +44,7 @@ const Content = (props) => {
                 )}
                 <div className={[styles.content, styles.wishlistItems, 'row'].join(' ')}>
                     {wishlist.map((item, index) => (
-                        <div className="col-md-3 col-xs-12">
+                        <div className="md:basis-3/12 xs:basis-full">
                             <Item
                                 key={index}
                                 {...item}

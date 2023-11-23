@@ -19,8 +19,8 @@ const CategoryListSkeleteon = () => {
                 <Skeleton className={styles.skeleton} style={{ alignSelf: 'center' }} variant="rect" width="35%" height={10} animation="wave" />
                 <Skeleton className={styles.skeleton} variant="rect" width="75%" height={10} animation="wave" />
             </Grid>
-            <div className={classNames('row hidden-mobile', styles.contentContainer)}>
-                <div className="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div className={classNames('flex flex-row hidden-mobile', styles.contentContainer)}>
+                <div className="xs:basis-full sm:basis-1/2 md:basis-1/2 lg:basis-1/2">
                     <Skeleton
                         className={styles.skeleton}
                         variant="rect"
@@ -29,8 +29,8 @@ const CategoryListSkeleteon = () => {
                         style={{ alignSelf: 'center' }}
                     />
                 </div>
-                <div className="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                    <div className="col-md-12" style={{ marginBottom: '20px' }}>
+                <div className="xs:basis-full sm:basis-1/2 md:basis-1/2 lg:basis-1/2">
+                    <div className="md:basis-full" style={{ marginBottom: '20px' }}>
                         <Skeleton
                             className={styles.skeleton}
                             style={{ alignSelf: 'center', margin: '0 auto' }}
@@ -40,7 +40,7 @@ const CategoryListSkeleteon = () => {
                             animation="wave"
                         />
                     </div>
-                    <div className="col-md-12" style={{ marginBottom: '20px' }}>
+                    <div className="md:basis-full" style={{ marginBottom: '20px' }}>
                         <Skeleton
                             className={styles.skeleton}
                             style={{ alignSelf: 'center', margin: '0 auto' }}
@@ -50,7 +50,7 @@ const CategoryListSkeleteon = () => {
                             animation="wave"
                         />
                     </div>
-                    <div className="col-md-12" style={{ marginBottom: '20px' }}>
+                    <div className="md:basis-full" style={{ marginBottom: '20px' }}>
                         <Skeleton
                             className={styles.skeleton}
                             style={{ alignSelf: 'center', margin: '0 auto' }}
@@ -62,9 +62,9 @@ const CategoryListSkeleteon = () => {
                     </div>
                 </div>
             </div>
-            <div className={classNames('row hidden-mobile', styles.contentContainer)}>
-                <div className="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                    <div className="col-md-12" style={{ marginBottom: '20px' }}>
+            <div className={classNames('flex flex-row hidden-mobile', styles.contentContainer)}>
+                <div className="xs:basis-full sm:basis-1/2 md:basis-1/2 lg:basis-1/2">
+                    <div className="md:basis-full" style={{ marginBottom: '20px' }}>
                         <Skeleton
                             className={styles.skeleton}
                             style={{ alignSelf: 'center', margin: '0 auto' }}
@@ -74,7 +74,7 @@ const CategoryListSkeleteon = () => {
                             animation="wave"
                         />
                     </div>
-                    <div className="col-md-12" style={{ marginBottom: '20px' }}>
+                    <div className="md:basis-full" style={{ marginBottom: '20px' }}>
                         <Skeleton
                             className={styles.skeleton}
                             style={{ alignSelf: 'center', margin: '0 auto' }}
@@ -84,7 +84,7 @@ const CategoryListSkeleteon = () => {
                             animation="wave"
                         />
                     </div>
-                    <div className="col-md-12" style={{ marginBottom: '20px' }}>
+                    <div className="md:basis-full" style={{ marginBottom: '20px' }}>
                         <Skeleton
                             className={styles.skeleton}
                             style={{ alignSelf: 'center', margin: '0 auto' }}
@@ -95,7 +95,7 @@ const CategoryListSkeleteon = () => {
                         />
                     </div>
                 </div>
-                <div className="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <div className="xs:basis-full sm:basis-1/2 md:basis-1/2 lg:basis-1/2">
                     <Skeleton
                         className={styles.skeleton}
                         variant="rect"

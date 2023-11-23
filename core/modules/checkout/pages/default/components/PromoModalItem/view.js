@@ -73,7 +73,7 @@ const PromoModalItemView = (props) => {
                         </IconButton>
                     ) : null}
                 </MuiDialogTitle>
-                <div className={classNames(styles.carouselContainer, 'col-xs-12 col-lg-12')}>
+                <div className={classNames(styles.carouselContainer, 'xs:basis-full lg:basis-full')}>
                     <Caraousel
                         data={items}
                         Item={ProductItem}

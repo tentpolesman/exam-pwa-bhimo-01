@@ -6,7 +6,7 @@ const ViewCustomizableFieldOption = ({
     title = 'test', data = {}, value = '', disabled,
     onChange = () => {}, error = '', required = false,
 }) => (
-    <div className="column customizable-container">
+    <div className="flex flex-col customizable-container">
         {
             data && data.uid && (
                 <TextField

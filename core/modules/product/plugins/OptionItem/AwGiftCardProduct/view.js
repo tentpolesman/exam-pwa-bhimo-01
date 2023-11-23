@@ -120,7 +120,7 @@ const AwGiftCardProduct = (props) => {
             {(aw_gc_allow_open_amount || aw_gc_amounts?.length > 1) && (
                 <div className="gc-first">
                     <Typography variant="h2">{`1. ${t('validate:chooseAmount')}`}</Typography>
-                    <div className="row" style={{ margin: 10 }}>
+                    <div className="flex flex-row" style={{ margin: 10 }}>
                         <Select
                             name="aw_gc_amount"
                             options={amountList}
@@ -147,12 +147,12 @@ const AwGiftCardProduct = (props) => {
                     <Typography variant="h2">
                         {aw_gc_allow_open_amount || aw_gc_amounts?.length > 1 ? '2.' : '1.'} {`${t('validate:selectDesign')}`}
                     </Typography>
-                    <div className="row">
+                    <div className="flex flex-row">
                         {emailTemplates.map((template, idx) => {
                             return (
                                 <div
                                     key={idx}
-                                    className={classnames('col-xs-12 col-sm-6 col-md-4 template-option', {
+                                    className={classnames('xs:basis-full sm:basis-1/2 md:basis-4/12 template-option', {
                                         'template-selected': selectedTemplate.value === template.value,
                                     })}
                                     onClick={handleSelectTemplate}
@@ -196,9 +196,9 @@ const AwGiftCardProduct = (props) => {
                             helperText={(formik.touched.aw_gc_delivery_date && formik.errors.aw_gc_delivery_date) || null}
                         />
                     )}
-                    <div className="row">
+                    <div className="flex flex-row">
                         <TextField
-                            className="textfield col-xs-12 col-md-6"
+                            className="textfield xs:basis-full md:basis-1/2"
                             name="aw_gc_recipient_name"
                             label={`${t('validate:to')}*`}
                             placeholder={t('validate:recipientName')}
@@ -209,7 +209,7 @@ const AwGiftCardProduct = (props) => {
                             errorMessage={(formik.touched.aw_gc_recipient_name && formik.errors.aw_gc_recipient_name) || null}
                         />
                         <TextField
-                            className="textfield col-xs-12 col-md-6"
+                            className="textfield xs:basis-full md:basis-1/2"
                             name="aw_gc_sender_name"
                             label={`${t('validate:from')}*`}
                             placeholder={t('validate:senderName')}
@@ -220,9 +220,9 @@ const AwGiftCardProduct = (props) => {
                             errorMessage={(formik.touched.aw_gc_sender_name && formik.errors.aw_gc_sender_name) || null}
                         />
                     </div>
-                    <div className="row">
+                    <div className="flex flex-row">
                         <TextField
-                            className="textfield col-xs-12 col-md-6"
+                            className="textfield xs:basis-full md:basis-1/2"
                             name="aw_gc_recipient_email"
                             placeholder={t('validate:recipientEmail')}
                             fullWidth={false}
@@ -232,7 +232,7 @@ const AwGiftCardProduct = (props) => {
                             errorMessage={(formik.touched.aw_gc_recipient_email && formik.errors.aw_gc_recipient_email) || null}
                         />
                         <TextField
-                            className="textfield col-xs-12 col-md-6"
+                            className="textfield xs:basis-full md:basis-1/2"
                             name="aw_gc_sender_email"
                             placeholder={t('validate:senderEmail')}
                             fullWidth={false}

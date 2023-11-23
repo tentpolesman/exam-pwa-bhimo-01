@@ -32,8 +32,8 @@ const ForgotPassword = (props) => {
     if (loading || !data) return <Backdrop open />;
 
     return (
-        <div className="row">
-            <div className="col-xs-12 col-md-6">
+        <div className="flex flex-row">
+            <div className="xs:basis-full md:basis-1/2">
                 <form className={styles.container} onSubmit={formik.handleSubmit}>
                     <Backdrop open={load} />
                     {data && data.otpConfig.otp_enable[0].enable_otp_forgot_password && (

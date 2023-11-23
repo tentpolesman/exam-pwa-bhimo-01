@@ -25,7 +25,7 @@ const SubCategory = ({
                     {data
                         ? data.map((catlvl1, index) => {
                             const renderMenu = () => (
-                                <div key={index} className="column">
+                                <div key={index} className="flex flex-col">
                                     <Button
                                         fullWidth
                                         variant="text"

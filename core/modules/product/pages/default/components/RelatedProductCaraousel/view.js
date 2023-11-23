@@ -11,7 +11,7 @@ const ProductItem = dynamic(() => import('@plugin_productitem'), { ssr: false })
 const RelatedProductCaraouselView = ({ data, t, storeConfig }) => {
     const styles = useStyles();
     return (
-        <div className={classNames(styles.carouselContainer, 'col-xs-12 col-lg-12')}>
+        <div className={classNames(styles.carouselContainer, 'xs:basis-full lg:basis-full')}>
             <Typography variant="h1" component="h2" align="center" className={styles.carouselTitle}>
                 {t('common:title:relatedProduct')}
             </Typography>

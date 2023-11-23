@@ -42,27 +42,32 @@ const CarouselProductSkeleton = () => {
 const FeaturedSkeleteon = () => {
     const styles = useStyles();
     return (
-        <div className={classNames('row center-xs', styles.contentContainer)}>
+        <div className={classNames('flex flex-row center-xs', styles.contentContainer)}>
             {[1, 2].map((key) => (
-                <div key={key} className={classNames('col-xs-12 row', styles.features)}>
-                    <div className={classNames('col-xs-12')}>
+                <div key={key} className={classNames('xs:basis-full row', styles.features)}>
+                    <div className={classNames('xs:basis-full')}>
                         <div className={styles.labelCategory}>
                             <Skeleton variant="text" height={45} width={200} />
                         </div>
                     </div>
-                    <div className={classNames('col-xs-12 row between-lg', styles.featuresBox, key === 0 ? 'reverse' : '')} style={{ width: '85%' }}>
-                        <div className={classNames('col-xs-12 col-sm-12 col-lg-4 hidden-mobile hidden-sm', styles.imgFeaturedContainer)}>
+                    <div
+                        className={
+                            classNames('xs:basis-full row between-lg', styles.featuresBox, key === 0 ? 'reverse' : '')
+                        }
+                        style={{ width: '85%' }}
+                    >
+                        <div className={classNames('xs:basis-full sm:basis-full lg:basis-4/12 hidden-mobile hidden-sm', styles.imgFeaturedContainer)}>
                             <div className={styles.imgFeaturedItem}>
                                 <Skeleton height="100%" width="100%" variant="rect" />
                             </div>
                         </div>
 
-                        <div className={classNames('col-xs-12 col-sm-12 col-lg-8')}>
-                            <div className={classNames('row center-xs', styles.contentFeatured)}>
-                                <div className={classNames('col-xs-12', styles.contentMobileFeatured)}>
+                        <div className={classNames('xs:basis-full sm:basis-full lg:basis-8/12')}>
+                            <div className={classNames('flex flex-row center-xs', styles.contentFeatured)}>
+                                <div className={classNames('xs:basis-full', styles.contentMobileFeatured)}>
                                     <CarouselProductSkeleton />
                                 </div>
-                                <div className={classNames('col-xs-12')}>
+                                <div className={classNames('xs:basis-full')}>
                                     <div className={styles.footerFeatured}>
                                         <Skeleton height={45} width={150} variant="rect" />
                                     </div>

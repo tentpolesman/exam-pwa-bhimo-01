@@ -46,7 +46,7 @@ const ItemAddress = (props) => {
                 setOpen={() => setOpen(!open)}
                 pageTitle={t('customer:address:editTitle')}
             />
-            <div className="column">
+            <div className="flex flex-col">
                 <div className={[styles.address_content, first ? styles.address_content_first : ''].join(' ')}>
                     <RadioGroup row aria-label="position" onChange={handleChange} name="position" value={selectedAddressId}>
                         <FormControlLabel

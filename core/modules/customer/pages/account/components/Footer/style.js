@@ -21,7 +21,7 @@ export default makeStyles({
         },
         '& .content-assets': {
             '& .col-sm-3': { flex: 1 },
-            '& .col-xs-12': { flex: 1 },
+            '& .xs:basis-full': { flex: 1 },
         },
         '& li': {
             'list-style-type': 'none',

@@ -11,6 +11,7 @@ import PhotoSwipe from '@core_modules/cms/components/cms-renderer/magezon/Magezo
 import SimpleReactLightbox, { SRLWrapper } from 'simple-react-lightbox';
 import { generateThumborUrl, getImageFallbackUrl } from '@helpers/image';
 import { basePath } from '@config';
+import { getFlexBasisTailwind } from '@root/core/helpers/style';
 
 const ImageItem = ({ src, alt, onClick = () => {}, storeConfig }) => {
     const enable = storeConfig.pwa.thumbor_enable;
@@ -66,10 +67,12 @@ const MagezonInstagramFeedView = (props) => {
 
     let classItem = '';
 
-    if (item_xs && item_xs !== '') classItem += `col-xs-${(item_xs !== 5 ? 12 / item_xs : item_xs)} `;
-    if (item_sm && item_sm !== '') classItem += `col-sm-${(item_sm !== 5 ? 12 / item_sm : item_sm)} `;
-    if (item_md && item_md !== '') classItem += `col-md-${(item_md !== 5 ? 12 / item_md : item_md)} `;
-    if ((item_xl && item_xl !== '') || (item_lg && item_lg !== '')) classItem += `col-lg-${(item_xl !== 5 ? 12 / item_xl : item_xl)} `;
+    if (item_xs && item_xs !== '') classItem += `${getFlexBasisTailwind((item_xs !== 5 ? 12 / item_xs : item_xs), 'xs')} `;
+    if (item_sm && item_sm !== '') classItem += `${getFlexBasisTailwind((item_sm !== 5 ? 12 / item_sm : item_sm), 'sm')} `;
+    if (item_md && item_md !== '') classItem += `${getFlexBasisTailwind((item_md !== 5 ? 12 / item_md : item_md), 'md')} `;
+    if ((item_xl && item_xl !== '') || (item_lg && item_lg !== '')) {
+        classItem += `${getFlexBasisTailwind((item_xl !== 5 ? 12 / item_xl : item_xl), 'lg')} `;
+    }
 
     const handleClick = (id) => {
         if (onclick && onclick !== '') {
@@ -95,8 +98,9 @@ const MagezonInstagramFeedView = (props) => {
         },
     };
 
-    return <>
-        { open && data && data.length > 0 && (
+    return (
+        <>
+            { open && data && data.length > 0 && (
             <Popup
                 open={open}
                 setOpen={() => setOpen(false)}
@@ -105,23 +109,23 @@ const MagezonInstagramFeedView = (props) => {
                 max_items={max_items}
             />
         ) }
-        <div className={classInstagram}>
-            <div className="magezone-title-instagram-box">
-                <Typography
-                    variant={title_tag}
-                    align={title_align}
-                    className="magezon-title-instagram"
-                >
-                    {title}
-                </Typography>
-            </div>
-            <div className="row">
-                {
+            <div className={classInstagram}>
+                <div className="magezone-title-instagram-box">
+                    <Typography
+                        variant={title_tag}
+                        align={title_align}
+                        className="magezon-title-instagram"
+                    >
+                        {title}
+                    </Typography>
+                </div>
+                <div className="flex flex-row">
+                    {
                     (onclick && onclick === 'magnific')
                         ? (
                             <SimpleReactLightbox>
                                 <SRLWrapper options={ligtboxSetting}>
-                                    <div className="row">
+                                    <div className="flex flex-row">
                                         {
                                             data && data.length > 0 && data.map((item, key) => (key < max_items ? (
                                                 <div
@@ -166,25 +170,25 @@ const MagezonInstagramFeedView = (props) => {
                             </div>
                         ) : null))
                 }
-            </div>
+                </div>
 
-            <Link href={`https://instagram.com/${instagram_username}`} legacyBehavior>
-                <a
-                    target="_blank"
-                    color="inherit"
-                    underline="none"
-                >
-                    <Typography
-                        variant="span"
-                        letter="capitalize"
-                        size="14"
+                <Link href={`https://instagram.com/${instagram_username}`} legacyBehavior>
+                    <a
+                        target="_blank"
+                        color="inherit"
+                        underline="none"
                     >
-                        {link_text}
-                    </Typography>
-                </a>
-            </Link>
-            <style jsx>
-                {`
+                        <Typography
+                            variant="span"
+                            letter="capitalize"
+                            size="14"
+                        >
+                            {link_text}
+                        </Typography>
+                    </a>
+                </Link>
+                <style jsx>
+                    {`
                     @media only screen and (max-width: 47em) {
                         .col-xs-5 {
                             flex: 1 20%;
@@ -192,13 +196,13 @@ const MagezonInstagramFeedView = (props) => {
                         }
                     }
                     @media only screen and (min-width: 48em) and (max-width: 63em) {
-                        .col-sm-5 {
+                        .sm:basis-5/12 {
                             flex: 1 20%;
                             max-width: 20%;
                         }
                     }
                     @media only screen and (min-width: 64em) and (max-width: 74em) {
-                        .col-md-5 {
+                        .md:basis-5/12 {
                             flex: 1 20%;
                             max-width: 20%;
                         }
@@ -210,9 +214,9 @@ const MagezonInstagramFeedView = (props) => {
                         }
                     }
                 `}
-            </style>
-            <style jsx global>
-                {`
+                </style>
+                <style jsx global>
+                    {`
                     
                     @media (max-width: 768px) {
                         .SRLNextButton {
@@ -276,9 +280,10 @@ const MagezonInstagramFeedView = (props) => {
                         z-index:0;
                     }
                 `}
-            </style>
-        </div>
-    </>;
+                </style>
+            </div>
+        </>
+);
 };
 
 export default MagezonInstagramFeedView;

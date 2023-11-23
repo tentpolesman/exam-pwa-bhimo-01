@@ -14,8 +14,8 @@ const ConfirmPayment = (props) => {
     } = props;
     const styles = useStyles();
     return (
-        <div className="row">
-            <div className="col-md-6 col-xs-12">
+        <div className="flex flex-row">
+            <div className="md:basis-1/2 xs:basis-full">
                 <div className={styles.container}>
                     <form onSubmit={formik.handleSubmit}>
                         <TextField

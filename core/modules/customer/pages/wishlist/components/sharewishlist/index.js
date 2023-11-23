@@ -49,7 +49,7 @@ const ShareWishlistView = (props) => {
         >
             <div>
                 <DialogContent dividers>
-                    <div className={classNames('col-md-12', styles.container)}>
+                    <div className={classNames('md:basis-full', styles.container)}>
                         <IconButton
                             style={{
                                 position: 'absolute',

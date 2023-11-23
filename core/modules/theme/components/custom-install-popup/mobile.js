@@ -37,7 +37,7 @@ const PopupInstalation = ({ appName, installMessage }) => {
     };
 
     return (
-        <div id="popup-mobile__install" className={classNames('row', styles.containerMobile)}>
+        <div id="popup-mobile__install" className={classNames('flex flex-row', styles.containerMobile)}>
             <div className={styles.iconClose}>
                 <span className={styles.iconCloseButton} onClick={() => closePopup()}>
                     x

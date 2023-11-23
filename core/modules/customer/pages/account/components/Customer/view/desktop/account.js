@@ -5,8 +5,8 @@ const AddressView = ({ customer, styles, t }) => (
     <>
         <h2 className={styles.infoTitle}>{t('customer:menu:accountInformation')}</h2>
         <hr />
-        <div className="row">
-            <div className="col-sm-6 col-lg-6">
+        <div className="flex flex-row">
+            <div className="sm:basis-1/2 lg:basis-1/2">
                 <h3>{t('customer:menu:contactInformation')}</h3>
                 <p>
                     {customer.firstname}
@@ -26,7 +26,7 @@ const AddressView = ({ customer, styles, t }) => (
                     </Link>
                 </p>
             </div>
-            <div className="col-sm-6 col-lg-6">
+            <div className="sm:basis-1/2 lg:basis-1/2">
                 <h3>{t('customer:menu:newsletter')}</h3>
                 <p>
                     {customer.is_subscribed ? t('customer:menu:subcription') : t('customer:menu:noSubcription')}

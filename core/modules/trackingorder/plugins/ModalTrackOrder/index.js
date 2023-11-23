@@ -105,8 +105,8 @@ const ModalResult = (props) => {
             });
 
             return (
-                <div className="row">
-                    <div className="col-xs-12">
+                <div className="flex flex-row">
+                    <div className="xs:basis-full">
                         {
                             modalData || modalData.length > 0
                                 ? (

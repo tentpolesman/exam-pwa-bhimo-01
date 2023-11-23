@@ -9,7 +9,7 @@ const ViewCustomizableMultipleOption = ({
     onChange = () => {}, error = '', required = false,
 }) => {
     const styles = useStyles();
-    const customClass = classNames('column', styles.container, styles.customizableMultipleOption);
+    const customClass = classNames('flex flex-col', styles.container, styles.customizableMultipleOption);
     return (
         <div className={customClass}>
             {

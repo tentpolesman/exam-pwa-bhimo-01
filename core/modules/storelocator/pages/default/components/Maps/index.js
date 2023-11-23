@@ -103,14 +103,14 @@ const StoreLocatorMaps = compose(
 
     return (
         <>
-            <div className="row">
-                <div className="col-xs-12 col-sm-5" style={{ marginTop: 16 }}>
+            <div className="flex flex-row">
+                <div className="xs:basis-full sm:basis-5/12" style={{ marginTop: 16 }}>
                     <SearchBox ref={searchBoxRef} handleSearch={handleSearch} value={querySearch} setValue={setQuerySearch} />
                 </div>
-                <div className="col-xs-8 col-sm-4 col-md-5" style={{ marginTop: 16 }}>
+                <div className="xs:basis-8/12 sm:basis-4/12 md:basis-5/12" style={{ marginTop: 16 }}>
                     <SliderRadius radius={radius} setRadius={handleRadius} />
                 </div>
-                <div className="col-xs-4 col-sm-3 col-md-2" style={{ marginTop: 16 }}>
+                <div className="xs:basis-4/12 sm:basis-3/12 md:basis-2/12" style={{ marginTop: 16 }}>
                     <Button style={{ width: '100%' }} variant="contained" startIcon={<AutorenewIcon />} onClick={handleReset}>
                         Reset
                     </Button>

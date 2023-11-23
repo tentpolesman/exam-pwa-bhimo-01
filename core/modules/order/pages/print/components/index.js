@@ -35,41 +35,42 @@ const PrintOrder = (props) => {
         items = [...configurableProduct, ...simpleProduct];
     }
 
-    return <>
-        <div className={classNames('column', styles.blockContainer)}>
-            <div className={classNames(styles.blockHeader)}>
-                <div className="header-middle__left">
-                    <div className="box header-middle__logo">
-                        <Link href="/" legacyBehavior>
-                            <img
-                                className="header-middle__logo-link"
-                                src={`${storeConfig.secure_base_media_url}logo/${storeConfig.header_logo_src}`}
-                            />
-                        </Link>
+    return (
+        <>
+            <div className={classNames('flex flex-col', styles.blockContainer)}>
+                <div className={classNames(styles.blockHeader)}>
+                    <div className="header-middle__left">
+                        <div className="box header-middle__logo">
+                            <Link href="/" legacyBehavior>
+                                <img
+                                    className="header-middle__logo-link"
+                                    src={`${storeConfig.secure_base_media_url}logo/${storeConfig.header_logo_src}`}
+                                />
+                            </Link>
+                        </div>
                     </div>
-                </div>
-                <div className="row">
-                    <Typography
-                        variant="h1"
-                        letter="uppercase"
-                        type="semiBold"
-                        className={classNames('clear-margin-padding', styles.headerTitle)}
-                    >
-                        {t('order:order')}
-                        {' # '}
-                        {detail[0].order_number || ''}
+                    <div className="flex flex-row">
+                        <Typography
+                            variant="h1"
+                            letter="uppercase"
+                            type="semiBold"
+                            className={classNames('clear-margin-padding', styles.headerTitle)}
+                        >
+                            {t('order:order')}
+                            {' # '}
+                            {detail[0].order_number || ''}
+                        </Typography>
+                        <Typography id="status_label" variant="span" size="14" letter="uppercase">
+                            {detail[0].status_label || ''}
+                        </Typography>
+                    </div>
+                    <Typography variant="span" className="clear-margin-padding">
+                        {formatDate(detail[0].created_at)}
                     </Typography>
-                    <Typography id="status_label" variant="span" size="14" letter="uppercase">
-                        {detail[0].status_label || ''}
-                    </Typography>
                 </div>
-                <Typography variant="span" className="clear-margin-padding">
-                    {formatDate(detail[0].created_at)}
-                </Typography>
-            </div>
-            <div className={styles.block}>
-                <div className="row start-xs start-sm start-sm start-md start-lg">
-                    {/* <div className="col-xs-12">
+                <div className={styles.block}>
+                    <div className="flex flex-row start-xs start-sm start-sm start-md start-lg">
+                        {/* <div className="xs:basis-full">
                         <Typography
                             variant="span"
                             letter="capitalize"
@@ -79,49 +80,49 @@ const PrintOrder = (props) => {
                             {t('order:orderItem')}
                         </Typography>
                     </div> */}
-                    {/* <div className="col-xs-12">
+                        {/* <div className="xs:basis-full">
                         <div className="hidden-mobile">
                             <Table data={items} t={t} currency={currency} {...props} />
                         </div>
                     </div> */}
+                    </div>
                 </div>
-            </div>
-            <div className={classNames(styles.block)}>
-                <div className={styles.wrapper}>
-                    <div className="col-xs-12">
-                        <div>
-                            <Table
-                                data={items}
-                                t={t}
-                                currency={currency}
-                                currencyCache={currencyCache}
-                                {...props}
-                            />
-                        </div>
-                        {/* <div className="hide-desktop">
+                <div className={classNames(styles.block)}>
+                    <div className={styles.wrapper}>
+                        <div className="xs:basis-full">
+                            <div>
+                                <Table
+                                    data={items}
+                                    t={t}
+                                    currency={currency}
+                                    currencyCache={currencyCache}
+                                    {...props}
+                                />
+                            </div>
+                            {/* <div className="hide-desktop">
                             {items.length > 0
                                     && items.map((item, key) => (
                                         <ItemProduct t={t} key={key} {...item} currency={currency} storeConfig={storeConfig} />
                                     ))}
                         </div> */}
-                    </div>
-                    <div className="row end-xs end-sm end-md">
-                        <div className="col-md-4 col-sm-4">
-                            {(detail[0].detail[0].subtotal || detail[0].detail[0].subtotal_incl_tax) && (
-                                <div className={styles.listSummary}>
-                                    <Typography variant="span" letter="capitalize" className={styles.labelSummary}>
-                                        Sub total
-                                    </Typography>
-                                    <Typography variant="span" letter="capitalize">
-                                        {formatPrice(
-                                            detail[0].detail[0].tax_amount ? detail[0].detail[0].subtotal : detail[0].detail[0].subtotal_incl_tax,
-                                            currency,
-                                            currencyCache,
-                                        )}
-                                    </Typography>
-                                </div>
-                            )}
-                            {/* {detail[0].detail[0].tax_amount && (
+                        </div>
+                        <div className="flex flex-row end-xs end-sm end-md">
+                            <div className="md:basis-4/12 sm:basis-4/12">
+                                {(detail[0].detail[0].subtotal || detail[0].detail[0].subtotal_incl_tax) && (
+                                    <div className={styles.listSummary}>
+                                        <Typography variant="span" letter="capitalize" className={styles.labelSummary}>
+                                            Sub total
+                                        </Typography>
+                                        <Typography variant="span" letter="capitalize">
+                                            {formatPrice(
+                                                detail[0].detail[0].tax_amount ? detail[0].detail[0].subtotal : detail[0].detail[0].subtotal_incl_tax,
+                                                currency,
+                                                currencyCache,
+                                            )}
+                                        </Typography>
+                                    </div>
+                                )}
+                                {/* {detail[0].detail[0].tax_amount && (
                             <div className={styles.listSummary}>
                                 <Typography variant="span" letter="capitalize" className={styles.labelSummary}>
                                     {t('order:tax')}
@@ -131,138 +132,138 @@ const PrintOrder = (props) => {
                                 </Typography>
                             </div>
                         )} */}
-                            {detail[0].detail[0].payment && (
+                                {detail[0].detail[0].payment && (
+                                    <div className={styles.listSummary}>
+                                        <Typography variant="span" letter="capitalize" className={styles.labelSummary}>
+                                            {t('order:shipping')}
+                                        </Typography>
+                                        <Typography variant="span" letter="capitalize">
+                                            {formatPrice(detail[0].detail[0].payment.shipping_amount, currency, currencyCache)}
+                                        </Typography>
+                                    </div>
+                                )}
+                                {detail[0].detail[0].discount_amount ? (
+                                    <div className={styles.listSummary}>
+                                        <Typography variant="span" letter="capitalize" className={styles.labelSummary}>
+                                            {t('order:discount')}
+                                        </Typography>
+                                        <Typography variant="span" letter="capitalize">
+                                            {formatPrice(detail[0].detail[0].discount_amount, currency, currencyCache)}
+                                        </Typography>
+                                    </div>
+                                ) : null}
+                                {detail[0].detail[0].aw_store_credit.is_use_store_credit ? (
+                                    <div className={styles.listSummary}>
+                                        <Typography variant="span" letter="capitalize" className={styles.labelSummary}>
+                                            {t('order:credit')}
+                                        </Typography>
+                                        <Typography variant="span" letter="capitalize">
+                                            {formatPrice(detail[0].detail[0].aw_store_credit.store_credit_amount, currency, currencyCache)}
+                                        </Typography>
+                                    </div>
+                                ) : null}
+                                {modules.giftcard.enabled && detail[0].detail[0] && detail[0].detail[0].aw_giftcard.giftcard_amount ? (
+                                    <div className={styles.listSummary}>
+                                        <Typography variant="span" letter="capitalize" className={styles.labelSummary}>
+                                            {t('order:giftcard')}
+                                            {' '}
+                                            (
+                                            {detail[0].detail[0].aw_giftcard.giftcard_detail[0].giftcard_code}
+                                            )
+                                        </Typography>
+                                        <Typography variant="span" letter="capitalize">
+                                            {formatPrice(-detail[0].detail[0].aw_giftcard.giftcard_amount, currency, currencyCache)}
+                                        </Typography>
+                                    </div>
+                                ) : null}
+                                {detail[0].detail[0].applied_extra_fee ? (
+                                    <div className={styles.listSummary}>
+                                        <Typography variant="span" letter="capitalize" className={styles.labelSummary}>
+                                            {detail[0].detail[0].applied_extra_fee.title}
+                                        </Typography>
+                                        <Typography variant="span" letter="capitalize">
+                                            {formatPrice(
+                                                detail[0].detail[0].applied_extra_fee.extrafee_value.value,
+                                                detail[0].detail[0].applied_extra_fee.extrafee_value.currency,
+                                                currencyCache,
+                                            )}
+                                        </Typography>
+                                    </div>
+                                ) : null}
                                 <div className={styles.listSummary}>
-                                    <Typography variant="span" letter="capitalize" className={styles.labelSummary}>
-                                        {t('order:shipping')}
+                                    <Typography variant="title" type="bold" letter="capitalize" className={styles.labelSummary}>
+                                        Total
                                     </Typography>
-                                    <Typography variant="span" letter="capitalize">
-                                        {formatPrice(detail[0].detail[0].payment.shipping_amount, currency, currencyCache)}
+                                    <Typography variant="title" type="bold" letter="capitalize">
+                                        {detail[0].detail[0].grand_total && formatPrice(detail[0].detail[0].grand_total, currency, currencyCache)}
                                     </Typography>
                                 </div>
-                            )}
-                            {detail[0].detail[0].discount_amount ? (
-                                <div className={styles.listSummary}>
-                                    <Typography variant="span" letter="capitalize" className={styles.labelSummary}>
-                                        {t('order:discount')}
-                                    </Typography>
-                                    <Typography variant="span" letter="capitalize">
-                                        {formatPrice(detail[0].detail[0].discount_amount, currency, currencyCache)}
-                                    </Typography>
-                                </div>
-                            ) : null}
-                            {detail[0].detail[0].aw_store_credit.is_use_store_credit ? (
-                                <div className={styles.listSummary}>
-                                    <Typography variant="span" letter="capitalize" className={styles.labelSummary}>
-                                        {t('order:credit')}
-                                    </Typography>
-                                    <Typography variant="span" letter="capitalize">
-                                        {formatPrice(detail[0].detail[0].aw_store_credit.store_credit_amount, currency, currencyCache)}
-                                    </Typography>
-                                </div>
-                            ) : null}
-                            {modules.giftcard.enabled && detail[0].detail[0] && detail[0].detail[0].aw_giftcard.giftcard_amount ? (
-                                <div className={styles.listSummary}>
-                                    <Typography variant="span" letter="capitalize" className={styles.labelSummary}>
-                                        {t('order:giftcard')}
-                                        {' '}
-                                        (
-                                        {detail[0].detail[0].aw_giftcard.giftcard_detail[0].giftcard_code}
-                                        )
-                                    </Typography>
-                                    <Typography variant="span" letter="capitalize">
-                                        {formatPrice(-detail[0].detail[0].aw_giftcard.giftcard_amount, currency, currencyCache)}
-                                    </Typography>
-                                </div>
-                            ) : null}
-                            {detail[0].detail[0].applied_extra_fee ? (
-                                <div className={styles.listSummary}>
-                                    <Typography variant="span" letter="capitalize" className={styles.labelSummary}>
-                                        {detail[0].detail[0].applied_extra_fee.title}
-                                    </Typography>
-                                    <Typography variant="span" letter="capitalize">
-                                        {formatPrice(
-                                            detail[0].detail[0].applied_extra_fee.extrafee_value.value,
-                                            detail[0].detail[0].applied_extra_fee.extrafee_value.currency,
-                                            currencyCache,
-                                        )}
-                                    </Typography>
-                                </div>
-                            ) : null}
-                            <div className={styles.listSummary}>
-                                <Typography variant="title" type="bold" letter="capitalize" className={styles.labelSummary}>
-                                    Total
-                                </Typography>
-                                <Typography variant="title" type="bold" letter="capitalize">
-                                    {detail[0].detail[0].grand_total && formatPrice(detail[0].detail[0].grand_total, currency, currencyCache)}
-                                </Typography>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div className={classNames(styles.block)}>
-                <div className="row start-xs start-sm start-sm start-md start-lg">
-                    <div className="col-xs-12">
-                        <Typography
-                            variant="span"
-                            letter="capitalize"
-                            type="regular"
-                            className={classNames('clear-margin-padding', styles.blockLabel)}
-                        >
-                            {t('order:orderInfo')}
-                        </Typography>
-                        <hr />
-                    </div>
-                    {Object.keys(detail[0].detail[0].shipping_address).length > 0 && (
-                    // shipped to block
-                        <div className="col-xs-12 col-xs-print-4 col-sm-4 col-md-4">
-                            <Typography variant="p" type="bold" letter="uppercase" className={styles.labelDetail}>
-                                {detail[0].detail[0].pickup_store && detail[0].detail[0].pickup_store.is_using_pickup_store
-                                    ? t('order:pickupAt')
-                                    : t('order:shippedTo')}
+                <div className={classNames(styles.block)}>
+                    <div className="flex flex-row start-xs start-sm start-sm start-md start-lg">
+                        <div className="xs:basis-full">
+                            <Typography
+                                variant="span"
+                                letter="capitalize"
+                                type="regular"
+                                className={classNames('clear-margin-padding', styles.blockLabel)}
+                            >
+                                {t('order:orderInfo')}
                             </Typography>
-                            <Typography variant="span" className="clear-margin-padding">
-                                {detail[0].detail[0].shipping_address.firstname || ''}
-                                {' '}
-                                {detail[0].detail[0].shipping_address.lastname || ''}
-                                <br />
-                                {detail[0].detail[0].shipping_address.street || ''}
-                                <br />
-                                {detail[0].detail[0].shipping_address.city || ''}
-                                <br />
-                                {detail[0].detail[0].shipping_address.region || ''}
-                                <br />
-                                {detail[0].detail[0].shipping_address.country_id || ''}
-                                <br />
-                                {detail[0].detail[0].shipping_address.telephone || ''}
-                                <br />
-                                {detail[0].detail[0].shipping_address.postcode || ''}
-                            </Typography>
+                            <hr />
                         </div>
-                    )}
-                    {detail[0].detail[0].pickup_store && detail[0].detail[0].pickup_store.is_using_pickup_store && (
-                    // pickup store
-                        <div className="col-xs-12 col-xs-print-3 col-sm-3 col-md-3">
-                            <Typography variant="p" type="bold" letter="uppercase" className={styles.labelDetail}>
-                                {t('order:pickupBy')}
-                            </Typography>
-                            <Typography variant="span" className="clear-margin-padding">
-                                {detail[0].detail[0].pickup_store.pickup_person.name}
-                                <br />
-                            </Typography>
-                            <Typography variant="span" className="clear-margin-padding">
-                                {`Hp : ${detail[0].detail[0].pickup_store.pickup_person.handphone}`}
-                                <br />
-                            </Typography>
-                            <Typography variant="span" className="clear-margin-padding">
-                                {`Email : ${detail[0].detail[0].pickup_store.pickup_person.email}`}
-                                <br />
-                            </Typography>
-                        </div>
-                    )}
-                    {/* orderstatus */}
-                    {/* <div className="col-xs-3">
+                        {Object.keys(detail[0].detail[0].shipping_address).length > 0 && (
+                        // shipped to block
+                            <div className="xs:basis-full col-xs-print-4 sm:basis-4/12 md:basis-4/12">
+                                <Typography variant="p" type="bold" letter="uppercase" className={styles.labelDetail}>
+                                    {detail[0].detail[0].pickup_store && detail[0].detail[0].pickup_store.is_using_pickup_store
+                                        ? t('order:pickupAt')
+                                        : t('order:shippedTo')}
+                                </Typography>
+                                <Typography variant="span" className="clear-margin-padding">
+                                    {detail[0].detail[0].shipping_address.firstname || ''}
+                                    {' '}
+                                    {detail[0].detail[0].shipping_address.lastname || ''}
+                                    <br />
+                                    {detail[0].detail[0].shipping_address.street || ''}
+                                    <br />
+                                    {detail[0].detail[0].shipping_address.city || ''}
+                                    <br />
+                                    {detail[0].detail[0].shipping_address.region || ''}
+                                    <br />
+                                    {detail[0].detail[0].shipping_address.country_id || ''}
+                                    <br />
+                                    {detail[0].detail[0].shipping_address.telephone || ''}
+                                    <br />
+                                    {detail[0].detail[0].shipping_address.postcode || ''}
+                                </Typography>
+                            </div>
+                        )}
+                        {detail[0].detail[0].pickup_store && detail[0].detail[0].pickup_store.is_using_pickup_store && (
+                        // pickup store
+                            <div className="xs:basis-full col-xs-print-3 sm:basis-3/12 md:basis-3/12">
+                                <Typography variant="p" type="bold" letter="uppercase" className={styles.labelDetail}>
+                                    {t('order:pickupBy')}
+                                </Typography>
+                                <Typography variant="span" className="clear-margin-padding">
+                                    {detail[0].detail[0].pickup_store.pickup_person.name}
+                                    <br />
+                                </Typography>
+                                <Typography variant="span" className="clear-margin-padding">
+                                    {`Hp : ${detail[0].detail[0].pickup_store.pickup_person.handphone}`}
+                                    <br />
+                                </Typography>
+                                <Typography variant="span" className="clear-margin-padding">
+                                    {`Email : ${detail[0].detail[0].pickup_store.pickup_person.email}`}
+                                    <br />
+                                </Typography>
+                            </div>
+                        )}
+                        {/* orderstatus */}
+                        {/* <div className="col-xs-3">
                     <Typography variant="p" type="bold" letter="uppercase" className={styles.labelDetail}>
                         {t('order:orderStatus')}
                     </Typography>
@@ -270,68 +271,68 @@ const PrintOrder = (props) => {
                         {detail[0].status_label || ''}
                     </Typography>
                 </div> */}
-                    {/* shipping method */}
-                    {Object.keys(detail[0].detail[0].shipping_address).length > 0 && (
-                        <div className="col-xs-3 col-xs-print-3">
+                        {/* shipping method */}
+                        {Object.keys(detail[0].detail[0].shipping_address).length > 0 && (
+                            <div className="xs:basis-3/12 col-xs-print-3">
+                                <Typography variant="p" type="bold" letter="uppercase" className={styles.labelDetail}>
+                                    {t('order:shippingMethod')}
+                                </Typography>
+                                <Typography variant="span" className="clear-margin-padding">
+                                    {detail[0].detail[0].shipping_methods.shipping_description || ''}
+                                </Typography>
+                            </div>
+                        )}
+                        {/* billing address */}
+                        <div className="xs:basis-full col-xs-print-3 sm:basis-3/12 md:basis-3/12">
                             <Typography variant="p" type="bold" letter="uppercase" className={styles.labelDetail}>
-                                {t('order:shippingMethod')}
+                                {t('order:billingAddress')}
                             </Typography>
                             <Typography variant="span" className="clear-margin-padding">
-                                {detail[0].detail[0].shipping_methods.shipping_description || ''}
+                                {detail[0].detail[0].billing_address.firstname || ''}
+                                {' '}
+                                {detail[0].detail[0].billing_address.lastname || ''}
+                                <br />
+                                {detail[0].detail[0].billing_address.street || ''}
+                                <br />
+                                {detail[0].detail[0].billing_address.city || ''}
+                                <br />
+                                {detail[0].detail[0].billing_address.region || ''}
+                                <br />
+                                {detail[0].detail[0].billing_address.country_id || ''}
+                                <br />
+                                {detail[0].detail[0].billing_address.telephone || ''}
+                                <br />
+                                {detail[0].detail[0].billing_address.postcode || ''}
                             </Typography>
                         </div>
-                    )}
-                    {/* billing address */}
-                    <div className="col-xs-12 col-xs-print-3 col-sm-3 col-md-3">
-                        <Typography variant="p" type="bold" letter="uppercase" className={styles.labelDetail}>
-                            {t('order:billingAddress')}
-                        </Typography>
-                        <Typography variant="span" className="clear-margin-padding">
-                            {detail[0].detail[0].billing_address.firstname || ''}
-                            {' '}
-                            {detail[0].detail[0].billing_address.lastname || ''}
-                            <br />
-                            {detail[0].detail[0].billing_address.street || ''}
-                            <br />
-                            {detail[0].detail[0].billing_address.city || ''}
-                            <br />
-                            {detail[0].detail[0].billing_address.region || ''}
-                            <br />
-                            {detail[0].detail[0].billing_address.country_id || ''}
-                            <br />
-                            {detail[0].detail[0].billing_address.telephone || ''}
-                            <br />
-                            {detail[0].detail[0].billing_address.postcode || ''}
-                        </Typography>
-                    </div>
-                    <div className="col-xs-12 col-xs-print-2 col-sm-2 col-md-2">
-                        <Typography variant="p" type="bold" letter="uppercase" className={styles.labelDetail}>
-                            {t('order:paymentMethod')}
-                        </Typography>
-                        {Object.keys(detail[0].detail[0].payment.payment_additional_info).map((item) => {
-                            if (
-                                item !== '__typename'
+                        <div className="xs:basis-full col-xs-print-2 sm:basis-2/12 md:basis-2/12">
+                            <Typography variant="p" type="bold" letter="uppercase" className={styles.labelDetail}>
+                                {t('order:paymentMethod')}
+                            </Typography>
+                            {Object.keys(detail[0].detail[0].payment.payment_additional_info).map((item) => {
+                                if (
+                                    item !== '__typename'
                                     && detail[0].detail[0].payment.payment_additional_info[item] !== ''
                                     && detail[0].detail[0].payment.payment_additional_info[item] !== null
-                            ) {
-                                return (
-                                    <React.Fragment key={item}>
-                                        <Typography variant="p" type="bold" letter="capitalize" className={styles.labelDetailSm}>
-                                            {item.replace('_', ' ')}
-                                        </Typography>
-                                        <Typography variant="span" className="clear-margin-padding">
-                                            {detail[0].detail[0].payment.payment_additional_info[item] || ''}
-                                        </Typography>
-                                    </React.Fragment>
-                                );
-                            }
-                        })}
+                                ) {
+                                    return (
+                                        <React.Fragment key={item}>
+                                            <Typography variant="p" type="bold" letter="capitalize" className={styles.labelDetailSm}>
+                                                {item.replace('_', ' ')}
+                                            </Typography>
+                                            <Typography variant="span" className="clear-margin-padding">
+                                                {detail[0].detail[0].payment.payment_additional_info[item] || ''}
+                                            </Typography>
+                                        </React.Fragment>
+                                    );
+                                }
+                            })}
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <style jsx>
-            {`
+            <style jsx>
+                {`
                 .header-middle__logo-link {
                     cursor: pointer;
                     width: 120px;
@@ -355,8 +356,9 @@ const PrintOrder = (props) => {
                     }
                 }
             `}
-        </style>
-    </>;
+            </style>
+        </>
+    );
 };
 
 export default PrintOrder;

@@ -62,11 +62,11 @@ const Content = (props) => {
     };
     const styles = useStyles();
     return (
-        <div className={classNames(styles.mobileBottomSpace, 'row cart-pages')}>
-            <div className="col-xs-12">
+        <div className={classNames(styles.mobileBottomSpace, 'flex flex-row cart-pages')}>
+            <div className="xs:basis-full">
                 <GimmickBanner data={dataCart.promoBanner || []} t={t} {...other} />
             </div>
-            <div className="col-xs-12 col-sm-12 col-md-9" style={{ height: '100%' }}>
+            <div className="xs:basis-full sm:basis-full md:basis-9/12" style={{ height: '100%' }}>
                 <ItemView
                     data={dataCart}
                     t={t}
@@ -111,7 +111,7 @@ const Content = (props) => {
                     />
                 ) : null} */}
             </div>
-            <div className="col-xs-12 col-sm-4 col-md-3 hidden-mobile">
+            <div className="xs:basis-full sm:basis-4/12 md:basis-3/12 hidden-mobile">
                 {
                     !loadingSummary && allData ? (
                         <Summary

@@ -44,11 +44,11 @@ const ContentProducts = (props) => {
                     <SellerInfo {...props} />
                     <div className={styles.sellerProduct}>
                         <TabLayout noBanner={banner} t={t}>
-                            <div className="row">
+                            <div className="flex flex-row">
                                 {
                                     dataEtalase && (
                                         <>
-                                            <div className="col-md-2 hidden-mobile">
+                                            <div className="md:basis-2/12 hidden-mobile">
                                                 <EtalaseDesktop noBanner={banner} t={t} data={dataEtalase} route={route} />
                                             </div>
                                             <div className="hidden-desktop" style={{ width: '100%' }}>
@@ -57,7 +57,7 @@ const ContentProducts = (props) => {
                                         </>
                                     )
                                 }
-                                <div className={dataEtalase ? 'col-md-10 col-12' : 'col-md-12'} style={{ width: '100%' }}>
+                                <div className={dataEtalase ? 'md:basis-10/12 basis-full' : 'md:basis-full'} style={{ width: '100%' }}>
                                     <CoreBase
                                         t={t}
                                         ErrorMessage={ErrorMessage}

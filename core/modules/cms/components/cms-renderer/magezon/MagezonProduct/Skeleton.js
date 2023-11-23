@@ -42,14 +42,15 @@
 // //     );
 // // };
 
+// eslint-disable-next-line arrow-body-style
 const FeaturedSkeleteon = () => {
     return null;
     // const styles = useStyles();
     // return (
-    //     <div className={classNames('row center-xs', styles.contentContainer)}>
-    //         <div className={classNames('col-xs-12 col-sm-12 col-lg-12')}>
-    //             <div className={classNames('row center-xs', styles.contentFeatured)}>
-    //                 <div className={classNames('col-xs-12', styles.contentMobileFeatured)}>
+    //     <div className={classNames('flex flex-row center-xs', styles.contentContainer)}>
+    //         <div className={classNames('xs:basis-full sm:basis-full lg:basis-full')}>
+    //             <div className={classNames('flex flex-row center-xs', styles.contentFeatured)}>
+    //                 <div className={classNames('xs:basis-full', styles.contentMobileFeatured)}>
     //                     <CarouselProductSkeleton />
     //                 </div>
     //             </div>

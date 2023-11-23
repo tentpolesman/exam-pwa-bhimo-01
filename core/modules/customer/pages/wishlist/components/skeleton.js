@@ -6,11 +6,11 @@ const SkeletonLoader = () => {
     const styles = useStyles();
     return (
         <>
-            <div className="row hidden-mobile">
-                {/* <div className="col-lg-2">
+            <div className="flex flex-row hidden-mobile">
+                {/* <div className="lg:basis-2/12">
                     <Skeleton animation="wave" variant="rect" height={300} width="100%" />
                 </div> */}
-                <div className="col-lg-10">
+                <div className="lg:basis-10/12">
                     <Skeleton animation="wave" variant="rect" height={240} width="100%" style={{ marginBottom: 50 }} />
                 </div>
             </div>

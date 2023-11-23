@@ -15,7 +15,7 @@ export const SkeletonContent = () => {
                             <Skeleton variant="text" width={70} height={15} animation="wave" />
                             <Skeleton variant="text" width={120} height={20} animation="wave" />
                             <div className={styles.detailItem}>
-                                <div className={`column ${styles.columnLabel}`}>
+                                <div className={`flex flex-col ${styles.columnLabel}`}>
                                     <Skeleton variant="text" width="80%" height={15} animation="wave" />
                                     <Skeleton variant="text" width="80%" height={15} animation="wave" />
                                     <Skeleton variant="text" width="80%" height={15} animation="wave" />
@@ -52,22 +52,22 @@ const SkeletonLoader = () => {
                         <div key={i} className={styles.itemContainer}>
                             <div className={styles.contentItem}>
                                 <div className={styles.detailItem}>
-                                    <div className={`column ${styles.columnLabelId}`}>
+                                    <div className={`flex flex-col ${styles.columnLabelId}`}>
                                         <Skeleton variant="text" width="80%" height={15} animation="wave" />
                                     </div>
-                                    <div className={`column ${styles.columnLabelDate}`}>
+                                    <div className={`flex flex-col ${styles.columnLabelDate}`}>
                                         <Skeleton variant="text" width="80%" height={15} animation="wave" />
                                     </div>
-                                    <div className={`column ${styles.columnLabelShipped}`}>
+                                    <div className={`flex flex-col ${styles.columnLabelShipped}`}>
                                         <Skeleton variant="text" width="80%" height={15} animation="wave" />
                                     </div>
-                                    <div className={`column ${styles.columnLabelTotal}`}>
+                                    <div className={`flex flex-col ${styles.columnLabelTotal}`}>
                                         <Skeleton variant="text" width="80%" height={15} animation="wave" />
                                     </div>
-                                    <div className={`column ${styles.columnLabelStatus}`}>
+                                    <div className={`flex flex-col ${styles.columnLabelStatus}`}>
                                         <Skeleton variant="text" width="80%" height={15} animation="wave" />
                                     </div>
-                                    <div className={`column ${styles.columnLabelAction}`}>
+                                    <div className={`flex flex-col ${styles.columnLabelAction}`}>
                                         <Skeleton variant="text" width="80%" height={15} animation="wave" />
                                     </div>
                                 </div>

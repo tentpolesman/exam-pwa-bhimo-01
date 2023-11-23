@@ -165,7 +165,7 @@ const DropFile = ({
     ]);
 
     return (
-        <div className="column">
+        <div className="flex flex-col">
             {
                 title && title !== '' ? (<Typography variant="label" type="semiBold" color={error ? 'red' : 'default'}>{title}</Typography>)
                     : null
@@ -186,7 +186,7 @@ const DropFile = ({
                 }
             </div>
             <Typography color={error ? 'red' : 'default'}>{label}</Typography>
-            <div className="column">
+            <div className="flex flex-col">
                 {
                     (showListFile && value && value.length > 0)
                         ? value.map((file, index) => (<Typography key={index}>{file.name}</Typography>))
