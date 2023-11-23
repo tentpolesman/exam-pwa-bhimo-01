@@ -14,7 +14,7 @@ const ImageLoader = () => {
 
     return (
         <img
-            className="section-image-loader"
+            className="section-image-loader w-[60px] h-[60px]"
             src={loaderImage}
             alt={loaderImage}
         />
@@ -28,6 +28,7 @@ const Backdrop = ({ open }) => (
         'z-50',
         'w-[100%]',
         'h-[100%]',
+        'left-0',
         'bg-slate-950/50',
         'top-0',
         'flex',
