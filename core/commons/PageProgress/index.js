@@ -61,8 +61,8 @@ const PageProgressLoader = () => {
         <>
             {show ? (
                 <div className={cx(wrapperClasses)}>
-                    <div className={cx('w-full', 'bg-primary-100', 'h-1.5')}>
-                        <div className={cx('bg-pwa-primary', 'h-1.5')} style={{ width: `${progress}%`, transition: '1s ease-in-out' }} />
+                    <div className={cx('w-full', 'bg-neutral-100', 'h-1')}>
+                        <div className={cx('bg-neutral-200', 'h-1')} style={{ width: `${progress}%`, transition: '1s ease-in-out' }} />
                     </div>
                 </div>
             ) : null}
