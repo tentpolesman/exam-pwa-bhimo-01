@@ -1,26 +1,24 @@
 /* eslint-disable radix */
 import Button from '@common_button';
 import CheckBox from '@common_forms/Checkbox';
+import CircularProgress from '@common_circularprogress';
 import useStyles from '@common_filterdialog/style';
 import CheckBoxColor from '@common_forms/CheckBoxColor';
 import CheckBoxSize from '@common_forms/CheckBoxSize';
-import Loading from '@common_loaders';
 import RadioGroup from '@common_radio';
 import RangeSlider from '@common_rangeslider';
 import Typography from '@common_typography';
 import { getSeller } from '@core_modules/catalog/services/graphql';
-import { useTranslation } from 'next-i18next';
 import AppBar from '@material-ui/core/AppBar';
 import Dialog from '@material-ui/core/Dialog';
 import IconButton from '@material-ui/core/IconButton';
 import Slide from '@material-ui/core/Slide';
 import CloseIcon from '@material-ui/icons/Close';
-import React from 'react';
+import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
+import React from 'react';
 
-const Transition = React.forwardRef((props, ref) => (
-    <Slide direction="up" ref={ref} {...props} />
-));
+const Transition = React.forwardRef((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
 const FilterDialog = (props) => {
     const {
@@ -31,7 +29,7 @@ const FilterDialog = (props) => {
         elastic = false,
         loading = false,
         sortByData = [],
-        getValue = () => { },
+        getValue = () => {},
         filterValue = {},
         defaultSort,
     } = props;
@@ -147,28 +145,12 @@ const FilterDialog = (props) => {
     }, [dataSeller, sellerId]);
 
     return (
-        <Dialog
-            fullScreen
-            open={open}
-            TransitionComponent={Transition}
-            onClose={setOpen}
-        >
+        <Dialog fullScreen open={open} TransitionComponent={Transition} onClose={setOpen}>
             <AppBar className={styles.appBar}>
-                <IconButton
-                    className={styles.btnClose}
-                    edge="start"
-                    onClick={setOpen}
-                    aria-label="close"
-                >
+                <IconButton className={styles.btnClose} edge="start" onClick={setOpen} aria-label="close">
                     <CloseIcon className={styles.iconClose} />
                 </IconButton>
-                <Typography
-                    variant="label"
-                    type="bold"
-                    align="center"
-                    letter="uppercase"
-                    className={styles.title}
-                >
+                <Typography variant="label" type="bold" align="center" letter="uppercase" className={styles.title}>
                     {t('common:title:shortFilter')}
                 </Typography>
             </AppBar>
@@ -183,7 +165,7 @@ const FilterDialog = (props) => {
                         />
                     </div>
                 )}
-                {loading ? <Loading size="20px" /> : null}
+                {loading ? <CircularProgress size="regular" /> : null}
                 {data.map((itemFilter, idx) => {
                     const ItemValueByLabel = [];
                     // eslint-disable-next-line no-plusplus
@@ -194,8 +176,12 @@ const FilterDialog = (props) => {
                         });
                     }
                     if (itemFilter.field !== 'attribute_set_id' && itemFilter.field !== 'seller_name') {
-                        if (itemFilter.field === 'cat' || itemFilter.field === 'category_id'
-                        || itemFilter.field === 'etalase' || (itemFilter.field === 'seller_id' && router.route.includes('seller'))) {
+                        if (
+                            itemFilter.field === 'cat'
+                            || itemFilter.field === 'category_id'
+                            || itemFilter.field === 'etalase'
+                            || (itemFilter.field === 'seller_id' && router.route.includes('seller'))
+                        ) {
                             return <span key={idx} />;
                         }
 
@@ -220,14 +206,12 @@ const FilterDialog = (props) => {
                                         label={itemFilter.label}
                                         maxValue={itemFilter.maxprice}
                                         value={priceRange}
-                                        onChange={
-                                            itemProps.priceRangeChange
-                                            || setPriceRange
-                                        }
+                                        onChange={itemProps.priceRangeChange || setPriceRange}
                                     />
                                 </div>
                             );
-                        } if (itemFilter.field === 'size') {
+                        }
+                        if (itemFilter.field === 'size') {
                             return (
                                 <div className={styles[idx < data.length - 1 ? 'fieldContainer' : 'fieldContainerLast']} key={idx}>
                                     <CheckBox
@@ -241,7 +225,8 @@ const FilterDialog = (props) => {
                                     />
                                 </div>
                             );
-                        } if (itemFilter.field === 'color') {
+                        }
+                        if (itemFilter.field === 'color') {
                             return (
                                 <div className={styles[idx < data.length - 1 ? 'fieldContainer' : 'fieldContainerLast']} key={idx}>
                                     <CheckBox
@@ -268,16 +253,15 @@ const FilterDialog = (props) => {
                                         flex="column"
                                         onChange={(val) => setCheckedFilter(itemFilter.field, val)}
                                     />
-                                )
-                                    : (
-                                        <RadioGroup
-                                            name={itemFilter.field}
-                                            label={itemFilter.label || ''}
-                                            valueData={itemFilter.value || []}
-                                            value={selectedFilter[itemFilter.field]}
-                                            onChange={(value) => setSelectedFilter(itemFilter.field, value)}
-                                        />
-                                    )}
+                                ) : (
+                                    <RadioGroup
+                                        name={itemFilter.field}
+                                        label={itemFilter.label || ''}
+                                        valueData={itemFilter.value || []}
+                                        value={selectedFilter[itemFilter.field]}
+                                        onChange={(value) => setSelectedFilter(itemFilter.field, value)}
+                                    />
+                                )}
                             </div>
                         );
                     }
@@ -286,11 +270,7 @@ const FilterDialog = (props) => {
             </div>
 
             <div className={styles.footer}>
-                <Button
-                    variant="outlined"
-                    className={styles.btnSave}
-                    onClick={handleClear}
-                >
+                <Button variant="outlined" className={styles.btnSave} onClick={handleClear}>
                     {t('common:button:clear')}
                 </Button>
                 <Button className={styles.btnSave} onClick={handleSave}>

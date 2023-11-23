@@ -1,19 +1,17 @@
-import { useState } from 'react';
+import Button from '@common_button';
+import CircularProgress from '@common_circularprogress';
+import Typography from '@common_typography';
+import useStyles from '@core_modules/checkout/pages/default/components/summary/style';
+import { formatPrice } from '@helper_currency';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
-import Button from '@common_button';
-import Typography from '@common_typography';
-import { formatPrice } from '@helper_currency';
-import checkStyles from '@core_modules/checkout/pages/default/components/style';
-import useStyles from '@core_modules/checkout/pages/default/components/summary/style';
+import { useState } from 'react';
 
 const SummaryView = (props) => {
     const styles = useStyles();
-    const checkoutStyles = checkStyles();
     const {
         handlePlaceOrder, loading, data, total, t, disabled,
     } = props;
@@ -56,12 +54,7 @@ const SummaryView = (props) => {
             </div>
             <Button onClick={handlePlaceOrder} className={styles.btnSave} disabled={loading || disabled}>
                 {t('checkout:placeOrder')}
-                {loading && (
-                    <CircularProgress
-                        className={checkoutStyles.mediumCircular}
-                        size={24}
-                    />
-                )}
+                {loading && <CircularProgress />}
             </Button>
         </div>
     );
