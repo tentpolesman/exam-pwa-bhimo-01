@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 import TableRow from '@material-ui/core/TableRow';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import TableCell from '@material-ui/core/TableCell';
-import ConfirmationDelete from '@common_confirmdialog';
+import Dialog from '@common_dialog';
 import useStyles from '@core_modules/customer/pages/address/components/style';
 
 const TableAddress = (props) => {
@@ -45,7 +45,7 @@ const TableAddress = (props) => {
     };
     return (
         <>
-            <ConfirmationDelete
+            <Dialog
                 open={openDelete}
                 handleCancel={() => setOpenDelete(!openDelete)}
                 handleYes={handleRemoveAddress}
