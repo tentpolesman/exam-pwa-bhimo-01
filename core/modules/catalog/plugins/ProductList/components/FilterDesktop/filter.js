@@ -6,7 +6,7 @@
 import React from 'react';
 import Typography from '@common_typography';
 import Button from '@common_button';
-import CheckBox from '@common_forms/Checkbox';
+import CheckBox from '@common_forms/CheckBox';
 import CheckBoxColor from '@common_forms/CheckBoxColor';
 import CheckBoxSize from '@common_forms/CheckBoxSize';
 import RadioGroup from '@common_radio';
@@ -57,10 +57,10 @@ const GenerateFilter = React.memo((props) => {
         }, 1000);
     };
 
-    React.useEffect(() =>{
+    React.useEffect(() =>
         // clear timeout when the component unmounts
-        return () => clearTimeout(timeRef.current);
-    },[])
+        () => clearTimeout(timeRef.current),
+    []);
 
     const ItemValueByLabel = React.useMemo(() => {
         const itemValue = [];

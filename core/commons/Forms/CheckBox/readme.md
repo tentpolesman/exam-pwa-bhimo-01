@@ -7,7 +7,7 @@ Lists a list of checkboxes
 
 **1. Import module to your component**
 ```node
-import CheckBox from '@common_forms/Checkbox';
+import CheckBox from '@common_forms/CheckBox';
 ```
 **2. Place CheckBox component**
 
