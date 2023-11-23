@@ -9,7 +9,7 @@ import Layout from '@layout_customer';
 import Button from '@common_button';
 import Divider from '@material-ui/core/Divider';
 import DropFile from '@common_dropfile';
-import CheckBox from '@common_forms/Checkbox';
+import CheckBox from '@common_forms/CheckBox';
 import Router from 'next/router';
 import { requestRma } from '@core_modules/rma/services/graphql';
 import useStyles from './styles';
