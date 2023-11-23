@@ -9,7 +9,7 @@
 
 import { useApolloClient, useReactiveVar } from '@apollo/client';
 import { storeConfigVar } from '@root/core/services/graphql/cache';
-// import classNames from 'classnames';
+import cx from 'classnames';
 import Cookies from 'js-cookie';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
@@ -60,7 +60,7 @@ const font = localFont({
             weight: '700',
         },
     ],
-    variable: '--font-inter' // set the font css variable name, which we refer in tailwind.config.js
+    variable: '--font-inter', // set the font css variable name, which we refer in tailwind.config.js
 });
 
 // const GlobalPromoMessage = dynamic(() => import('@core_modules/theme/components/globalPromo'), { ssr: false });
@@ -322,7 +322,7 @@ const Layout = (props) => {
     };
 
     const generateClasses = () => {
-        let classes = `main-app main-app-v1-sticky-not-homepage ${font.variable} font-sans`;
+        let classes = `main-app main-app-v1-sticky-not-homepage ${font.variable} font-sans !font-pwa-default`;
         if (pageConfig.bottomNav && storeConfig?.pwa?.mobile_navigation === 'bottom_navigation' && storeConfig?.pwa?.enabler_footer_mobile) {
             classes += ' mb-[60px]';
         } else {
@@ -356,11 +356,31 @@ const Layout = (props) => {
             const pwaConfig = frontendCache.pwa;
 
             const stylesheet = document.createElement('style');
+            const fontStylesheet = document.createElement('link');
+            const fontStylesheetHeading = document.createElement('link');
 
             if (pwaConfig) {
+                if (pwaConfig.default_font && pwaConfig.default_font !== '0') {
+                    fontStylesheet.href = `https://fonts.googleapis.com/css2?family=${pwaConfig.default_font.replace(
+                        ' ',
+                        '-',
+                    )}:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&display=swap`;
+                    fontStylesheet.id = 'font-stylesheet-id';
+                    fontStylesheet.rel = 'stylesheet';
+                }
+                if (pwaConfig.heading_font && pwaConfig.heading_font !== '0') {
+                    fontStylesheetHeading.href = `https://fonts.googleapis.com/css2?family=${pwaConfig.heading_font.replace(
+                        ' ',
+                        '-',
+                    )}:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&display=swap`;
+                    fontStylesheetHeading.id = 'font-stylesheet-id';
+                    fontStylesheetHeading.rel = 'stylesheet';
+                }
                 stylesheet.innerHTML = frontendConfig(pwaConfig);
                 stylesheet.id = 'frontend-options-stylesheet';
                 if (!document.getElementById('frontend-options-stylesheet') && !document.getElementById('font-stylesheet-id')) {
+                    document.head.appendChild(fontStylesheet);
+                    document.head.appendChild(fontStylesheetHeading);
                     document.head.appendChild(stylesheet);
                 }
             }
@@ -524,7 +544,7 @@ const Layout = (props) => {
                 <PopupInstallAppMobile appName={appName} installMessage={installMessage} />
             ) : null} */}
             {allowHeaderCheckout && (
-                <header ref={refHeader} className={`${font.variable} font-sans`}>
+                <header ref={refHeader} className={cx(font.variable, 'font-sans', '!font-pwa-default')}>
                     {/* {typeof window !== 'undefined' && storeConfig.global_promo && storeConfig.global_promo.enable && (
                         <GlobalPromoMessage
                             t={t}
@@ -599,7 +619,7 @@ const Layout = (props) => {
             {/* END CHAT FEATURES */}
 
             {withLayoutFooter && (
-                <footer className={`sm:mt-[50px] ${font.variable} font-sans`} ref={refFooter}>
+                <footer className={cx('sm:mt-[50px]', font.variable, 'font-sans', '!font-pwa-default')} ref={refFooter}>
                     {/* {!deviceType?.isMobile ? (
                         <div className="hidden-mobile">
                             {footer ? <Footer storeConfig={storeConfig} t={t} /> : null}

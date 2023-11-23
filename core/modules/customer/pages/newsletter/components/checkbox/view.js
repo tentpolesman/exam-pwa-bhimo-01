@@ -1,4 +1,4 @@
-import Checkbox from '@common_checkbox';
+import Checkbox from '@common_forms/Checkbox';
 
 const CheckboxView = ({
     t, data, value, onChange,

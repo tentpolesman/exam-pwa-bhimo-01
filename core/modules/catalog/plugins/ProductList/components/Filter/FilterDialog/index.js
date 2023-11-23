@@ -1,6 +1,6 @@
 /* eslint-disable radix */
 import Button from '@common_button';
-import CheckBox from '@common_checkbox';
+import CheckBox from '@common_forms/Checkbox';
 import CheckBoxColor from '@common_forms/CheckBoxColor';
 import CheckBoxSize from '@common_forms/CheckBoxSize';
 import Loading from '@common_loaders';

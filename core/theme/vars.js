@@ -28,8 +28,11 @@ export const COLORS = {
     neutral: {
         50: '#F3F4F6',
         100: '#E0E2E7',
+        150: '#A5AAB3',
         200: '#6B7280',
+        250: '#515A69',
         300: '#374151',
+        350: '#2B3544',
         400: '#1F2937',
         500: '#030712',
         white: '#FFFFFF',
@@ -87,6 +90,8 @@ export const FONT_SIZE = {
 };
 export const FONT_FAMILY = {
     sans: ['var(--font-inter)'],
+    'pwa-default': ['var(--font-pwa-default_font)', 'var(--font-inter)'],
+    'pwa-heading': ['var(--font-pwa-heading_font)', 'var(--font-inter)'],
 };
 export const SPACING = {
     'space-2': '2px',
