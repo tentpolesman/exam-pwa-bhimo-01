@@ -1,6 +1,6 @@
 /* eslint-disable radix */
 import Button from '@common_button';
-import CheckBox from '@common_forms/Checkbox';
+import CheckBox from '@common_forms/CheckBox';
 import CircularProgress from '@common_circularprogress';
 import useStyles from '@common_filterdialog/style';
 import CheckBoxColor from '@common_forms/CheckBoxColor';

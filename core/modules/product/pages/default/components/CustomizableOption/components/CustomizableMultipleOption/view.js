@@ -1,5 +1,5 @@
 import React from 'react';
-import CheckBox from '@common_forms/Checkbox';
+import CheckBox from '@common_forms/CheckBox';
 import Typography from '@common_typography';
 
 const ViewCustomizableMultipleOption = ({

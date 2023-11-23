@@ -5,7 +5,7 @@ import Typography from '@common_typography';
 import cx from 'classnames';
 import { useEffect, useState } from 'react';
 
-const Checkbox = (props) => {
+const CheckBox = (props) => {
     const {
         label = '',
         data = [],
@@ -130,4 +130,4 @@ const Checkbox = (props) => {
     );
 };
 
-export default Checkbox;
+export default CheckBox;
