@@ -1,7 +1,8 @@
 {
     "variant": "Varian",
     "home": {
-        "logoName": "LOGO"
+        "logoName": "LOGO",
+        "title": "Beranda"
     },
     "product": {
         "title_product": "Nama Produk",

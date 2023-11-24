@@ -2,99 +2,103 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { useState, useEffect } from 'react';
+import React from 'react';
+import cx from 'classnames';
 import Link from 'next/link';
-import Breadcrumbs from '@material-ui/core/Breadcrumbs';
-import makeStyles from '@material-ui/core/styles/makeStyles';
-import Chip from '@material-ui/core/Chip';
-import Typography from '@common_typography';
-import NavigateNext from '@material-ui/icons/NavigateNext';
+import Typography from '@common_typography/index';
+import { useTranslation } from 'next-i18next';
+import { COLORS } from '@theme_vars';
 import { setResolver, getResolver } from '@helper_localstorage';
 
-const useStyles = makeStyles({
-    root: {
-        '& a': {
-            cursor: 'pointer',
-        },
-
-        '& p': {
-            marginLeft: 0,
-        },
-        marginBottom: 20,
-    },
-});
-
 const handleClick = async (url, id) => {
-    const urlResolver = getResolver();
-    urlResolver[url] = {
-        type: 'CATEGORY',
-        id,
-    };
-    await setResolver(urlResolver);
-};
-
-const ItemBreadcrub = ({
-    label, link, active, id,
-}) => {
-    if (link) {
-        return (
-            <Link href={`${link}`} passHref onClick={() => handleClick(link, id)}>
-                <Chip size="small" label={label} color={active ? 'secondary' : 'default'} />
-            </Link>
-        );
+    if (id) {
+        const urlResolver = getResolver();
+        urlResolver[url] = {
+            type: 'CATEGORY',
+            id,
+        };
+        await setResolver(urlResolver);
     }
-
-    return (
-        <Chip size="small" label={label} color={active ? 'secondary' : 'default'} />
-    );
 };
 
-const CustomBreadcrumb = ({ data = [], variant = 'text' }) => {
-    const styles = useStyles();
-    const [dataToMap, setDataToMap] = useState([]);
-
-    useEffect(() => setDataToMap(data), []);
-
-    return (
-        <Breadcrumbs separator={<NavigateNext fontSize="small" />} className={styles.root}>
-            <Link href="/" className={styles.home}>
-                <Typography variant="p">Home</Typography>
-            </Link>
-            {variant === 'chip' ? dataToMap.map(({
-                label, link, active, id,
-            }, index) => (
-                <ItemBreadcrub
-                    key={index}
-                    label={label}
-                    link={link}
-                    active={active}
-                    id={id}
-                />
-            ))
-                : dataToMap.map(({
-                    label, link, active, id,
-                }, index) => {
-                    if (link) {
-                        return (
-                            <Link
-                                href={link}
-                                onClick={index === data.length - 1 ? () => {} : () => handleClick(link, id)}
-                                key={index}
-                            >
-                                <Typography variant="p" type={active ? 'bold' : 'regular'}>{label}</Typography>
-                            </Link>
-                        );
-                    }
-                    return (
-                        <Typography variant="p" type={active ? 'bold' : 'regular'}>{label}</Typography>
-                    );
-                })}
-        </Breadcrumbs>
-    );
-};
-
-const BreadcrumbsComp = (props) => (
-    <CustomBreadcrumb {...props} />
+const ItemBreadcrumb = ({
+    icon,
+    id,
+    url,
+    label,
+    labelStyle,
+    seperate,
+}) => (
+    <div className={cx(
+        'section-breadcrumb-item',
+        'flex',
+        'items-center',
+    )}
+    >
+        {
+            icon && (
+                <span className="material-symbols-outlined text-[18px] mr-[4px]">
+                    {icon}
+                </span>
+            )
+        }
+        <Link href={url} passHref onClick={() => handleClick(url, id)}>
+            <Typography
+                variant="bd-2b"
+                style={labelStyle}
+                className={cx('text-sm', 'whitespace-nowrap')}
+            >
+                {label}
+            </Typography>
+            {
+                seperate && <Typography variant="bd-2b" className="mx-[10px]">/</Typography>
+            }
+        </Link>
+    </div>
 );
 
-export default BreadcrumbsComp;
+const Breadcrumbs = ({
+    data = [],
+    withHome = true,
+}) => {
+    const { t } = useTranslation(['common']);
+    return (
+        <div className={cx(
+            'section-breadcrumb',
+            'flex',
+            'items-center',
+            'mb-[10px]',
+            'overflow-x-auto',
+        )}
+        >
+            {
+                withHome && (
+                    <ItemBreadcrumb
+                        key="breadcrumb-home"
+                        icon="home"
+                        url="/"
+                        label={t('common:home:title')}
+                        seperate={data?.length > 0}
+                    />
+                )
+            }
+            {
+                data && data.map((item, index) => {
+                    const isActive = item?.active || false;
+                    return (
+                        <ItemBreadcrumb
+                            key={`breadcrumb-${index}-${item?.id}`}
+                            id={item?.id}
+                            url={item?.link}
+                            label={item?.label}
+                            labelStyle={isActive && { color: COLORS.neutral[200] }}
+                            seperate={!isActive}
+                        />
+                    );
+                })
+            }
+        </div>
+    );
+};
+
+export default Breadcrumbs;
