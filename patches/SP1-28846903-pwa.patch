@@ -1142,13 +1142,13 @@ index 3ea2cdd57..419d9f5b2 100644
          } else {
              isLogin = allcookie.isLogin || 0;
              customerData = allcookie[custDataNameCookie];
--            lastPathNoAuth = req.session && typeof req.session !== 'undefined'
--                && req.session.lastPathNoAuth && typeof req.session.lastPathNoAuth !== 'undefined'
--                ? req.session.lastPathNoAuth
+-            lastPathNoAuth = req.cookies && typeof req.cookies !== 'undefined'
+-                && req.cookies.lastPathNoAuth && typeof req.cookies.lastPathNoAuth !== 'undefined'
+-                ? req.cookies.lastPathNoAuth
 -                : '/customer/account';
 +            lastPathNoAuth =
-+                req.session && typeof req.session !== 'undefined' && req.session.lastPathNoAuth && typeof req.session.lastPathNoAuth !== 'undefined'
-+                    ? req.session.lastPathNoAuth
++                req.cookies && typeof req.cookies !== 'undefined' && req.cookies.lastPathNoAuth && typeof req.cookies.lastPathNoAuth !== 'undefined'
++                    ? req.cookies.lastPathNoAuth
 +                    : '/customer/account';
          }
          isLogin = parseInt(isLogin);
@@ -1389,7 +1389,7 @@ index 3b13c85dd..8b149d494 100644
      const { token } = req.body;
 -    const { topic } = fcm;
 -    const keyserver = `key=${fcm.FCM_KEY_SERVER}`;
-     if (req.session.fcm_token !== token) {
+     if (req.cookies.fcm_token !== token) {
 -        fetch(`https://iid.googleapis.com/iid/v1/${token}/rel/topics/${topic}`, {
 -            method: 'post',
 +        const query = `{
@@ -1411,7 +1411,7 @@ index 3b13c85dd..8b149d494 100644
              },
          })
 -            .then((data) => {
--                req.session.fcm_token = token;
+-                req.cookies.fcm_token = token;
 -                res.status(200).json({
 -                    status: 200,
 -                    message: 'success subscribe token',
@@ -1428,7 +1428,7 @@ index 3b13c85dd..8b149d494 100644
 +                    },
 +                })
 +                    .then((data) => {
-+                        req.session.fcm_token = token;
++                        req.cookies.fcm_token = token;
 +                        res.status(200).json({
 +                            status: 200,
 +                            message: 'success subscribe token',
@@ -2716,11 +2716,11 @@ index 419d9f5b2..3878fae72 100644
              isLogin = allcookie.isLogin || 0;
              customerData = allcookie[custDataNameCookie];
 -            lastPathNoAuth =
--                req.session && typeof req.session !== 'undefined' && req.session.lastPathNoAuth && typeof req.session.lastPathNoAuth !== 'undefined'
--                    ? req.session.lastPathNoAuth
+-                req.cookies && typeof req.cookies !== 'undefined' && req.cookies.lastPathNoAuth && typeof req.cookies.lastPathNoAuth !== 'undefined'
+-                    ? req.cookies.lastPathNoAuth
 -                    : '/customer/account';
-+            lastPathNoAuth = req.session && typeof req.session !== 'undefined' && req.session.lastPathNoAuth && typeof req.session.lastPathNoAuth !== 'undefined'
-+                ? req.session.lastPathNoAuth
++            lastPathNoAuth = req.cookies && typeof req.cookies !== 'undefined' && req.cookies.lastPathNoAuth && typeof req.cookies.lastPathNoAuth !== 'undefined'
++                ? req.cookies.lastPathNoAuth
 +                : '/customer/account';
          }
          isLogin = parseInt(isLogin);
@@ -3109,7 +3109,7 @@ index 7bc78d0b8..464e17ed3 100644
      const { token } = req.body;
 +    const topic = process.env.FCM_TOPIC;
 +    const keyserver = `key=${process.env.FCM_KEY_SERVER}`;
-     if (req.session.fcm_token !== token) {
+     if (req.cookies.fcm_token !== token) {
 -        const query = `{
 -            storeConfig {
 -                swift_server {
@@ -3142,7 +3142,7 @@ index 7bc78d0b8..464e17ed3 100644
 -                    },
 -                })
 -                    .then((data) => {
--                        req.session.fcm_token = token;
+-                        req.cookies.fcm_token = token;
 -                        res.status(200).json({
 -                            status: 200,
 -                            message: 'success subscribe token',
@@ -3150,7 +3150,7 @@ index 7bc78d0b8..464e17ed3 100644
 -                    })
 -                    .catch((err) => res.status(500).json(err));
 +            .then((data) => {
-+                req.session.fcm_token = token;
++                req.cookies.fcm_token = token;
 +                res.status(200).json({
 +                    status: 200,
 +                    message: 'success subscribe token',

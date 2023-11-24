@@ -265,15 +265,15 @@ const Login = (props) => {
                 variables: data,
             })
                 .then(async (res) => {
-                    let token = '';
+                    let message = '';
                     if (formOtp == 'otp') {
-                        token = res.data.internalGenerateCustomerTokenOtp.token;
+                        message = res.data.internalGenerateCustomerTokenOtp.message;
                     } else if (formOtp == 'password') {
-                        token = res.data.internalGenerateCustomerToken.token;
+                        message = res.data.internalGenerateCustomerToken.message;
                     } else if (formOtp == 'phoneEmail') {
-                        token = res.data.internalGenerateCustomerTokenCustom.token;
+                        message = res.data.internalGenerateCustomerTokenCustom.message;
                     }
-                    if (token) {
+                    if (message) {
                         setLogin(1, expired);
                         await setIsLogin(1);
                     }
