@@ -1,6 +1,4 @@
-import {
-    BREAKPOINTS, COLORS, FONT_FAMILY, FONT_SIZE, LETTER_SPACING, LINE_HEIGHT, SPACING,
-} from './core/theme/vars';
+import { BREAKPOINTS, COLORS, FONT_FAMILY, FONT_SIZE, LETTER_SPACING, LINE_HEIGHT, SPACING } from './core/theme/vars';
 
 // full list https://github.com/tailwindlabs/tailwindcss/blob/master/stubs/config.full.js
 /** @type {import('tailwindcss').Config} */
@@ -32,32 +30,10 @@ module.exports = {
                     button_disabled_background: 'var(--color-pwa-button_disabled_background_color)',
                 },
                 // END store config value
-                primary: {
-                    ...COLORS.primary,
-                    DEFAULT: COLORS.primary[300],
-                },
-                secondary: {
-                    ...COLORS.secondary,
-                    DEFAULT: COLORS.secondary[400],
-                },
-                neutral: {
-                    ...COLORS.neutral,
-                    DEFAULT: COLORS.neutral[400],
-                },
-                accent: {
-                    eucalyptus: {
-                        ...COLORS.accent.eucalyptus,
-                        DEFAULT: COLORS.accent.eucalyptus[300],
-                    },
-                    saffron_mango: {
-                        ...COLORS.accent.saffron_mango,
-                        DEFAULT: COLORS.accent.saffron_mango[300],
-                    },
-                    red_orange: {
-                        ...COLORS.accent.red_orange,
-                        DEFAULT: COLORS.accent.red_orange[200],
-                    },
-                },
+                primary: COLORS.primary,
+                secondary: COLORS.secondary,
+                neutral: COLORS.neutral,
+                accent: COLORS.accent,
             },
             letterSpacing: LETTER_SPACING,
             lineHeight: LINE_HEIGHT,
@@ -65,12 +41,9 @@ module.exports = {
             fontFamily: FONT_FAMILY,
             spacing: SPACING,
             boxShadow: {
-                'sm-300-inset': `0px 0px 1px 0px #${COLORS.neutral[200]}40 inset`,
-                'sm-300': `0px 3px 5px 0px #${COLORS.neutral[200]}26`,
-                'md-300-inset': `0px 0px 1px 0px #${COLORS.neutral[200]}40 inset`,
-                'md-300': `0px 8px 12px 0px #${COLORS.neutral[200]}26`,
-                'lg-300-inset': `0px 0px 1px 0px #${COLORS.neutral[200]}47 inset`,
-                'lg-300': `0px 10px 18px 0px #${COLORS.neutral[200]}26`,
+                'sm-300': `0px 0px 1px 0px ${COLORS.neutral[200]}40 inset, 0px 3px 5px 0px ${COLORS.neutral[200]}26`,
+                'md-500': `0px 0px 1px 0px ${COLORS.neutral[200]}40 inset, 0px 8px 12px 0px ${COLORS.neutral[200]}26`,
+                'lg-700': `0px 0px 1px 0px ${COLORS.neutral[200]}47 inset, 0px 10px 18px 0px ${COLORS.neutral[200]}26`,
             },
         },
         screens: {

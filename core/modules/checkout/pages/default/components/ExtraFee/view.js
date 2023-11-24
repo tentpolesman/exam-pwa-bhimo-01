@@ -3,7 +3,7 @@
 import React from 'react';
 import Typography from '@common_typography';
 import Radio from '@common_forms/Radio';
-import Select from '@common_select';
+import Select from '@common_forms/Select';
 import Checkbox from '@common_forms/CheckBox';
 import { formatPrice } from '@helper_currency';
 import Skeleton from '@material-ui/lab/Skeleton';

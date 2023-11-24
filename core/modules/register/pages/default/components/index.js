@@ -1,6 +1,6 @@
 import Button from '@common_button';
 import PasswordField from '@common_password';
-import Select from '@common_select';
+import Select from '@common_forms/Select';
 import TextField from '@common_textfield';
 import Typography from '@common_typography';
 import useStyles from '@core_modules/register/pages/default/components/style';

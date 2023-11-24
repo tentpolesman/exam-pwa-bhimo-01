@@ -8,7 +8,7 @@
 
 import TextField from '@common_forms/TextField';
 import Image from '@common_image';
-import Select from '@common_select';
+import Select from '@common_forms/Select';
 import Typography from '@common_typography';
 import useStyles from '@core_modules/product/plugins/OptionItem/AwGiftCardProduct/styles';
 import DateDayJs from '@date-io/dayjs';

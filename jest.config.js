@@ -96,7 +96,6 @@ module.exports = {
         '^@common_password': ['<rootDir>/src/commons/Password', '<rootDir>/core/commons/Password'],
         '^@common_radio': ['<rootDir>/src/commons/Radio', '<rootDir>/core/commons/Radio'],
         '^@common_rangeslider': ['<rootDir>/src/commons/RangeSlider', '<rootDir>/core/commons/RangeSlider'],
-        '^@common_select': ['<rootDir>/src/commons/Select', '<rootDir>/core/commons/Select'],
         '^@common_textfield': ['<rootDir>/src/commons/TextField', '<rootDir>/core/commons/TextField'],
         '^@common_carousel': ['<rootDir>/src/commons/carousel', '<rootDir>/core/commons/carousel'],
 
@@ -120,7 +119,6 @@ module.exports = {
         '^@common_password/(.*)$': ['<rootDir>/src/commons/Password/$1', '<rootDir>/core/commons/Password/$1'],
         '^@common_radio/(.*)$': ['<rootDir>/src/commons/Radio/$1', '<rootDir>/core/commons/Radio/$1'],
         '^@common_rangeslider/(.*)$': ['<rootDir>/src/commons/RangeSlider/$1', '<rootDir>/core/commons/RangeSlider/$1'],
-        '^@common_select/(.*)$': ['<rootDir>/src/commons/Select/$1', '<rootDir>/core/commons/Select/$1'],
         '^@common_textfield/(.*)$': ['<rootDir>/src/commons/TextField/$1', '<rootDir>/core/commons/TextField/$1'],
         '^@common_carousel/(.*)$': ['<rootDir>/src/commons/carousel/$1', '<rootDir>/core/commons/carousel/$1'],
 

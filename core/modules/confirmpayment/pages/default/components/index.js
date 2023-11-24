@@ -1,5 +1,5 @@
 import TextField from '@common_textfield';
-import Select from '@common_select';
+import Select from '@common_forms/Select';
 import DropFile from '@common_dropfile';
 import Button from '@common_button';
 import Typography from '@common_typography';
