@@ -1,7 +1,8 @@
 {
     "variant": "Variant",
     "home": {
-        "logoName": "LOGO"
+        "logoName": "LOGO",
+        "title": "Home"
     },
     "product": {
         "titleProduct": "Product Name",
