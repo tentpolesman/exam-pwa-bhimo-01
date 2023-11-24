@@ -77,8 +77,10 @@ const TextField = (props) => {
                     onFocus={() => setIsFocus(true)}
                     onBlur={() => setIsFocus(false)}
                     {...inputProps}
-                    className={cx('pr-[16px]', 'py-[10px]', 'w-full', 'rounded-lg', 'focus:outline-0', 'placeholder:text-neutral-200', {
+                    className={cx('pr-4', 'py-[10px]', 'w-full', 'rounded-lg', 'focus:outline-0', 'placeholder:text-neutral-200', {
                         'placeholder:!text-neutral-400': isFocus,
+                        '!pl-4': !leftIcon,
+                        '!pr-0': rightIcon,
                     })}
                 />
                 {rightIcon ? (
