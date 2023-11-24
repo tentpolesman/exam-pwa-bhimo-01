@@ -1,6 +1,6 @@
 import Button from '@common_button';
 import TextField from '@common_textfield';
-import Password from '@common_password';
+import Password from '@common_forms/Password';
 import Typography from '@common_typography';
 import useStyles from '@plugin_otp/style';
 

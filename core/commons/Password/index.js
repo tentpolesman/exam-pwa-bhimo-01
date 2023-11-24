@@ -9,7 +9,7 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import classNames from 'classnames';
 import Cookies from 'js-cookie';
 import { storeConfigNameCookie, passwordStrength } from '@config';
-import useStyles from '@common_password/style';
+import useStyles from '@common_forms/Password/style';
 
 const PasswordField = ({
     label = 'Password',

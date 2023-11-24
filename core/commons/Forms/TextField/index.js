@@ -15,7 +15,6 @@ const TextField = (props) => {
         iconProps = {},
         inputProps = {},
         type = 'text',
-        readOnly = false,
         ...restProps
     } = props;
 
@@ -23,7 +22,7 @@ const TextField = (props) => {
 
     const { displayHintText = false, hintType = '', hintText = '' } = hintProps;
     const {
-        leftIcon = '', leftIconClasses = '', rightIcon = '', rightIconClasses = '',
+        leftIcon = '', leftIconClasses = '', rightIcon = '', rightIconClasses = '', ...restIconProps
     } = iconProps;
 
     const generateRightIcon = () => {
@@ -110,6 +109,7 @@ const TextField = (props) => {
                             },
                             rightIconClasses,
                         )}
+                        {...restIconProps}
                     />
                 ) : null}
             </div>

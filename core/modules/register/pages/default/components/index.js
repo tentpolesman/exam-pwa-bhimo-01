@@ -1,5 +1,5 @@
 import Button from '@common_button';
-import PasswordField from '@common_password';
+import PasswordField from '@common_forms/Password';
 import Select from '@common_forms/Select';
 import TextField from '@common_textfield';
 import Typography from '@common_typography';
