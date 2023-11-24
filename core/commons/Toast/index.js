@@ -95,7 +95,7 @@ const Toast = ({
             {
                 close && (
                     <button type="button" className="section-toast-action flex items-center" onClick={setOpen}>
-                        <span class={cx('material-symbols-outlined', classNamesText)}>
+                        <span className={cx('material-symbols-outlined', classNamesText)}>
                             close
                         </span>
                     </button>
