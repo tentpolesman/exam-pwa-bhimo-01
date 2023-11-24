@@ -53,7 +53,7 @@ const Password = (props) => {
                 </Typography>
             ) : null}
             <TextField
-                className="password-field mt-2"
+                className="password-field mt-2 w-full"
                 type={show ? 'text' : 'password'}
                 iconProps={{
                     rightIcon: showVisible && show ? 'visibility' : showVisible ? 'visibility_off' : '',
