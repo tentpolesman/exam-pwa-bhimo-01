@@ -96,7 +96,6 @@
             "@common_rangeslider": ["src/commons/RangeSlider", "core/commons/RangeSlider"],
             "@common_select": ["src/commons/Select", "core/commons/Select"],
             "@common_textfield": ["src/commons/TextField", "core/commons/TextField"],
-            "@common_carousel": ["src/commons/Carousel", "core/commons/Carousel"],
 
             "@common_button/*": ["src/commons/Button/*", "core/commons/Button/*"],
             "@common_buttonqty/*": ["src/commons/ButtonQty/*", "core/commons/ButtonQty/*"],
@@ -126,7 +125,6 @@
             "@common_backdrop/*": ["src/commons/Backdrop/*", "core/commons/Backdrop/*"],
             "@common_pageprogress/*": ["src/commons/PageProgress/*", "core/commons/PageProgress/*"],
             "@common_slick/*": ["src/commons/Slick/*", "core/commons/Slick/*"],
-            "@common_slider/*": ["src/commons/Slider/*", "core/commons/Slider/*"],
             "@common_filterdialog": ["src/commons/FilterDialog", "core/commons/FilterDialog"],
             "@common_filterdialog/*": ["src/commons/FilterDialog/*", "core/commons/FilterDialog/*"],
             "@common_forms/*": ["src/commons/Forms/*", "core/commons/Forms/*"],

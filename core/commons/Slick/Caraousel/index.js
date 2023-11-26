@@ -4,9 +4,6 @@
 import React, { useState } from 'react';
 import Slider from 'react-slick';
 import classNames from 'classnames';
-import LeftArrowIcon from '@material-ui/icons/ArrowBackIos';
-import RightArrowIcon from '@material-ui/icons/ArrowForwardIos';
-import useStyles from '@common_slick/Caraousel/style';
 
 const Caraousel = (props) => {
     const {
@@ -15,7 +12,6 @@ const Caraousel = (props) => {
         showArrow = true, Item, onReInit = () => {}, storeConfig = {}, ...other
     } = props;
 
-    const styles = useStyles();
     const [slideIndex, setIndex] = useState(0);
     const [count, setCount] = useState(0);
 
@@ -83,8 +79,11 @@ const Caraousel = (props) => {
         ],
     };
 
+    // eslint-disable-next-line max-len
+    const arrow = 'text-[1.5rem] bg-[rgba(255,255,255,0.5)] absolute flex flex-col justify-center items-center p-[10px] rouded-[5px] text-center pl-[10px] top-[calc(50%-1rem)] w-[40px] h-[40px] cursor-pointer hover:bg-pwa-primary hover:text-white xs:hidden';
+
     return (
-        <div className={classNames('carousel', styles.caraousel)}>
+        <div className={classNames('carousel', 'w-full h-full relative xs:max-w-[100vw] sm:h-auto')}>
             <Slider onInit={onReInit} ref={(slider) => sliderRef = slider} {...settings}>
                 {
                     data && data.length > 0 && data.map((item, key) => (
@@ -95,11 +94,13 @@ const Caraousel = (props) => {
             {
                 showArrow ? (
                     <>
-                        <div className={classNames(styles.arrow, styles.leftArrow)} onClick={handleLeftArrow}>
-                            <LeftArrowIcon fontSize="inherit" />
+                        <div className={classNames(arrow, 'left-[20px]')} onClick={handleLeftArrow}>
+                            <i class="fas fa-chevron-left" />
+
                         </div>
-                        <div className={classNames(styles.arrow, styles.rightArrow)} onClick={handleRightArrow}>
-                            <RightArrowIcon fontSize="inherit" />
+                        <div className={classNames(arrow, 'right-[20px]')} onClick={handleRightArrow}>
+                            <i class="fas fa-chevron-right" />
+
                         </div>
                     </>
                 ) : null
