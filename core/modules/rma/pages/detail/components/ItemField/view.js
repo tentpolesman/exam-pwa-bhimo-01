@@ -1,4 +1,4 @@
-import Select from '@common_select';
+import Select from '@common_forms/Select';
 import TableContainer from '@material-ui/core/TableContainer';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';

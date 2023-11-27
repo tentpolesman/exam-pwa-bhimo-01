@@ -1,48 +1,85 @@
-import React from 'react';
-import MenuItem from '@material-ui/core/MenuItem';
-import TextField from '@material-ui/core/TextField';
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+import TextField from '@common_forms/TextField';
 import Typography from '@common_typography';
-import classNames from 'classnames';
-import useStyles from '@common_forms/Select/style';
+import { COLORS } from '@theme_vars';
+import { useClickAway } from '@uidotdev/usehooks';
+import cx from 'classnames';
+import { useState } from 'react';
 
-const Select = ({
-    label = '', name = '', value = null, onChange = () => {},
-    options = [], helperText = 'Please Select', className = '',
-    error = false, errorMessage = '', showLabel = true, ...other
-}) => {
-    const styles = useStyles();
-    const rootClasss = classNames(styles.root, className);
+const Select = (props) => {
+    const {
+        label = '',
+        name = '',
+        value = '',
+        onChange = () => {},
+        options = [],
+        placeholder = 'Please Select',
+        className = '',
+        error = false,
+        errorMessage = '',
+        ...restProps
+    } = props;
+
+    const [open, setOpen] = useState(false);
+    const ref = useClickAway(() => {
+        setOpen(false);
+    });
+
     return (
-        <TextField
-            id={name}
-            select
-            label={showLabel && label}
-            name={name}
-            value={value}
-            onChange={onChange}
-            fullWidth
-            InputLabelProps={{
-                shrink: true,
-            }}
-            className={rootClasss}
-            {...other}
-            placeholder={helperText}
-            error={error}
-            helperText={error && (
-                <Typography variant="span" color={error ? 'red' : 'default'}>
-                    {errorMessage}
+        <div ref={ref} className={cx('relative', className)} {...restProps}>
+            {label ? (
+                <Typography variant="bd-2" className="uppercase">
+                    {label.replace(/_/g, ' ')}
                 </Typography>
-            )}
-        >
-            <MenuItem disabled selected>
-                {helperText}
-            </MenuItem>
-            {options.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                </MenuItem>
-            ))}
-        </TextField>
+            ) : null}
+            <TextField
+                className="cursor-pointer mt-2"
+                iconProps={{
+                    rightIcon: !open ? 'expand_more' : 'expand_less',
+                }}
+                inputProps={{
+                    readOnly: true,
+                    className: 'cursor-pointer',
+                    name,
+                }}
+                hintProps={{
+                    displayHintText: error,
+                    hintType: error ? 'error' : '',
+                    hintText: errorMessage,
+                }}
+                onClick={() => {
+                    setOpen(!open);
+                }}
+                value={value}
+                placeholder={placeholder}
+            />
+            {open && options?.length > 0 ? (
+                <div className={cx('w-full', 'flex', 'flex-col', 'py-3', 'px-4', 'shadow-md-500', 'cursor-pointer', 'bg-neutral-white', 'z-auto')}>
+                    {options.map((d, idx) => (
+                        <div
+                            key={idx}
+                            className="dropdown-item py-3 px-4 hover:bg-neutral-50"
+                            onClick={() => {
+                                onChange(d.value);
+                                setOpen(false);
+                            }}
+                        >
+                            <Typography variant="bd-2b" className="">
+                                {d.label}
+                            </Typography>
+                        </div>
+                    ))}
+                </div>
+            ) : null}
+            <style jsx>
+                {`
+                    .dropdown-item:hover > :global(span) {
+                        color: ${COLORS.primary.DEFAULT} !important;
+                    }
+                `}
+            </style>
+        </div>
     );
 };
 

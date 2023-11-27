@@ -18,7 +18,7 @@ this component use some dependency and **required**, so you need to install
 
 **1. Import module to your component**
 ```node
-import Password from '@common_password';
+import Password from '@common_forms/Password';
 ```
 
 or

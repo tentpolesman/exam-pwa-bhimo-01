@@ -1,6 +1,6 @@
 import React from 'react';
 import Typography from '@common_typography';
-import Select from '@common_select';
+import Select from '@common_forms/Select';
 import classNames from 'classnames';
 import useStyles from '@plugin_customizableitem/components/style';
 
