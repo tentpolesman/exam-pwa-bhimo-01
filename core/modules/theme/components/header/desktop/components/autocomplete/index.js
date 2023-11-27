@@ -10,9 +10,7 @@ import CommonTextField from '@common_forms/TextField';
 import Icon from '@common_icon';
 import Popover from '@common_popover';
 
-// next improvement using next image
-// import dynamic from 'next/dynamic';
-// import Image from 'next/image';
+import Image from 'next/image';
 
 let globalTimeout = null;
 
@@ -187,26 +185,15 @@ export default function AutocompleteSearch(props) {
                 <>
                     {type === 'product' ? (
                         <>
-                            {position === 0 ? <div className={cx('top-title', 'pb-4', 'uppercase', 'font-bold')}>Product</div> : null}
+                            {position === 0 ? <div className={cx('top-title', 'pt-2', 'pb-4', 'uppercase', 'font-bold')}>Product</div> : null}
                             <div
-                                className={cx(
-                                    'grid',
-                                    'xs:grid-cols-[64px_1fr]',
-                                    'md:grid-cols-[80px_1fr]',
-                                    'gap-x-2',
-                                    'py-4',
-                                    'border-t',
-                                    'border-neutral-100',
-                                    'hover:bg-neutral-50',
-                                    'hover:cursor-pointer',
-                                )}
+                                className={cx('grid', 'xs:grid-cols-[64px_1fr]', 'gap-x-2', 'py-4', 'hover:bg-neutral-50', 'hover:cursor-pointer')}
                                 key={key}
                                 onClick={() => handleOnClickItem(propsPopoverItem)}
                                 role="presentation"
                             >
                                 <div className="image-container">
-                                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                                    <img alt={name} src={small_image.url} />
+                                    <Image alt={name} src={small_image.url} width={64} height={64} />
                                 </div>
                                 <div className={cx('title-search-item', 'text-sm', 'uppercase')}>
                                     {`${name.substr(0, 47)}${name.length > 47 ? '...' : null}`}
@@ -222,9 +209,9 @@ export default function AutocompleteSearch(props) {
                     ) : null}
                     {type === 'category' ? (
                         <>
-                            {position === 0 ? <div className={cx('top-title', 'pb-4', 'uppercase', 'font-bold')}>Categories</div> : null}
+                            {position === 0 ? <div className={cx('top-title', 'pt-2', 'pb-4', 'uppercase', 'font-bold')}>Categories</div> : null}
                             <div
-                                className={cx('grid', 'py-4', 'border-t', 'border-neutral-100', 'hover:bg-neutral-50', 'hover:cursor-pointer')}
+                                className={cx('grid', 'py-4', 'hover:bg-neutral-50', 'hover:cursor-pointer')}
                                 key={key}
                                 onClick={() => handleOnClickItem(propsPopoverItem)}
                                 role="presentation"
@@ -238,16 +225,15 @@ export default function AutocompleteSearch(props) {
                     ) : null}
                     {type === 'seller' ? (
                         <>
-                            {position === 0 ? <div className={cx('top-title', 'pb-4', 'uppercase', 'font-bold')}>Seller</div> : null}
+                            {position === 0 ? <div className={cx('top-title', 'pt-2', 'pb-4', 'uppercase', 'font-bold')}>Seller</div> : null}
                             <div
-                                className={cx('grid', 'py-4', 'border-t', 'border-neutral-100', 'hover:bg-neutral-50', 'hover:cursor-pointer')}
+                                className={cx('grid', 'xs:grid-cols-[64px_1fr]', 'gap-x-2', 'py-4', 'hover:bg-neutral-50', 'hover:cursor-pointer')}
                                 key={key}
                                 onClick={() => handleOnClickItem(propsPopoverItem)}
                                 role="presentation"
                             >
                                 <div className="image-container">
-                                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                                    <img alt={name} src={logo} />
+                                    <Image alt={name} src={logo} width={64} height={64} />
                                 </div>
                                 <div className="title-search-item">{name}</div>
                                 <div className="address">{citySplit ? citySplit[0] : ''}</div>

@@ -41,8 +41,6 @@ const TextField = (props) => {
         return rightIcon;
     };
 
-    // controlled forms
-    // if (value) inputProps.value = value;
     if (onChange) inputProps.onChange = onChange;
     if (onKeyPress) inputProps.onKeyPress = onKeyPress;
     const { className: inputClassName, ...restInputProps } = inputProps;
@@ -87,7 +85,6 @@ const TextField = (props) => {
                         onBlur();
                     }}
                     value={value}
-                    // controlled forms
                     onChange={onChange}
                     className={cx(
                         'pr-4',

@@ -3,14 +3,11 @@
 /* eslint-disable react/require-default-props */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/forbid-prop-types */
-// import PropTypes from 'prop-types';
-import { useTranslation } from 'next-i18next';
-import React from 'react';
-
 import CommonTextField from '@common_forms/TextField';
-// import Icon from '@common_icon';
 import Popover from '@common_popover';
 import cx from 'classnames';
+import { useTranslation } from 'next-i18next';
+import React from 'react';
 
 const CustomAutocomplete = (props) => {
     const {
@@ -63,7 +60,6 @@ const CustomAutocomplete = (props) => {
     const PopoverContent = () => {
         const PopoverItem = (propsPopoverItem) => {
             let optionLabel;
-            // eslint-disable-next-line no-unused-vars
             let optionValue;
 
             if (useKey) {
@@ -85,7 +81,9 @@ const CustomAutocomplete = (props) => {
                     onClick={() => handleSelectItem(propsPopoverItem)}
                     role="presentation"
                 >
-                    <div className={cx('title-category', 'block', 'text-sm', 'uppercase')}>{optionLabel}</div>
+                    <div className={cx('title-category', 'block', 'text-sm', 'uppercase')} aria-current={optionValue}>
+                        {optionLabel}
+                    </div>
                 </div>
             );
         };

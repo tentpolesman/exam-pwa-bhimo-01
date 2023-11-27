@@ -2,9 +2,6 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable */
-// import TextField from '@material-ui/core/TextField';
-// import SearchIcon from '@material-ui/icons/Search';
-// import IconButton from '@material-ui/core/IconButton';
 import Image from '@common_image';
 import Menu from '@core_modules/theme/components/header/desktop/components/v1/mcategory';
 import dynamic from 'next/dynamic';
@@ -18,7 +15,6 @@ const ShoppingBagIcon = dynamic(() => import('@plugin_shoppingbag'));
 const NotificationBell = dynamic(() => import('@plugin_notificationbell'));
 // const DesktopInstallApp = dynamic(() => import('@core_modules/theme/components/custom-install-popup/desktop'), { ssr: false });
 const Autocomplete = dynamic(() => import('@core_modules/theme/components/header/desktop/components/autocomplete'), { ssr: false });
-// const OptionAutocomplete = dynamic(() => import('@core_modules/theme/components/header/desktop/components/autocomplete/view'), { ssr: false });
 const TopMenu = dynamic(() => import('@core_modules/theme/components/header/desktop/components/mtop'), { ssr: false });
 
 const ViewTopNavigation = (props) => {
@@ -87,19 +83,7 @@ const ViewTopNavigation = (props) => {
                                     </div>
                                 </div>
                                 <div className="header-middle__search">
-                                    <Autocomplete
-                                        setValue={setValue}
-                                        handleSearch={handleSearch}
-                                        // OptionsItem={OptionAutocomplete}
-                                        t={t}
-                                        storeConfig={storeConfig}
-                                    />
-                                    {/* <div className="search-icon"> */}
-                                    {/* <span className={cx('material-symbols-outlined')}>search</span> */}
-                                    {/* <IconButton disabled={value === ''} edge="start" onClick={searchByClick} aria-label="close">
-                                            <SearchIcon />
-                                        </IconButton> */}
-                                    {/* </div> */}
+                                    <Autocomplete setValue={setValue} handleSearch={handleSearch} t={t} storeConfig={storeConfig} />
                                 </div>
                             </div>
                         </div>

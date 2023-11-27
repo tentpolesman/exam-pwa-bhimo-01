@@ -31,7 +31,6 @@ const AddressView = (props) => {
         gmapKey,
         geocodingKey,
         enableSplitCity,
-        // getCountries,
         responCountries,
         getRegion,
         responRegion,
@@ -79,40 +78,6 @@ const AddressView = (props) => {
                 labelKey="full_name_locale"
                 useKey
             />
-            {/* Old Usage */}
-            {/* <CustomAutocomplete
-                className="addressForm-country-autoComplete"
-                id="country"
-                enableCustom={false}
-                mode="lazy"
-                value={formik.values.country}
-                onChange={async (e) => {
-                    formik.setFieldValue('country', e);
-                    formik.setFieldValue('region', '');
-                    formik.setFieldValue('city', '');
-                    formik.setFieldValue('district', '');
-                    formik.setFieldValue('village', '');
-                    formik.setFieldValue('postcode', '');
-                    if (e && e.id) {
-                        const state = { ...addressState };
-                        state.dropdown.region = null;
-                        state.dropdown.city = null;
-                        await setAddressState(state);
-                        getRegion({
-                            variables: {
-                                country_id: e.id,
-                            },
-                        });
-                    }
-                }}
-                loading={responCountries.loading}
-                options={responCountries && responCountries.data && responCountries.data.countries}
-                getOptions={getCountries}
-                name="country"
-                label={t('common:form:country')}
-                primaryKey="id"
-                labelKey="full_name_locale"
-            /> */}
         </div>
     );
 
