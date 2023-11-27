@@ -5,10 +5,11 @@
 // import TextField from '@material-ui/core/TextField';
 // import SearchIcon from '@material-ui/icons/Search';
 // import IconButton from '@material-ui/core/IconButton';
-import Link from 'next/link';
+import Image from '@common_image';
 import Menu from '@core_modules/theme/components/header/desktop/components/v1/mcategory';
 import dynamic from 'next/dynamic';
-import Image from '@common_image';
+import Link from 'next/link';
+import React from 'react';
 
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
@@ -16,7 +17,7 @@ const ProductCompareIcon = dynamic(() => import('@core_modules/catalog/plugins/P
 const ShoppingBagIcon = dynamic(() => import('@plugin_shoppingbag'));
 const NotificationBell = dynamic(() => import('@plugin_notificationbell'));
 // const DesktopInstallApp = dynamic(() => import('@core_modules/theme/components/custom-install-popup/desktop'), { ssr: false });
-// const Autocomplete = dynamic(() => import('@core_modules/theme/components/header/desktop/components/autocomplete'), { ssr: false });
+const Autocomplete = dynamic(() => import('@core_modules/theme/components/header/desktop/components/autocomplete'), { ssr: false });
 // const OptionAutocomplete = dynamic(() => import('@core_modules/theme/components/header/desktop/components/autocomplete/view'), { ssr: false });
 const TopMenu = dynamic(() => import('@core_modules/theme/components/header/desktop/components/mtop'), { ssr: false });
 
@@ -85,20 +86,21 @@ const ViewTopNavigation = (props) => {
                                         <ShoppingBagIcon withLink storeConfig={storeConfig} />
                                     </div>
                                 </div>
-                                {/* <div className="header-middle__search">
+                                <div className="header-middle__search">
                                     <Autocomplete
                                         setValue={setValue}
                                         handleSearch={handleSearch}
-                                        OptionsItem={OptionAutocomplete}
+                                        // OptionsItem={OptionAutocomplete}
                                         t={t}
                                         storeConfig={storeConfig}
                                     />
-                                    <div className="search-icon">
-                                        <IconButton disabled={value === ''} edge="start" onClick={searchByClick} aria-label="close">
+                                    {/* <div className="search-icon"> */}
+                                    {/* <span className={cx('material-symbols-outlined')}>search</span> */}
+                                    {/* <IconButton disabled={value === ''} edge="start" onClick={searchByClick} aria-label="close">
                                             <SearchIcon />
-                                        </IconButton>
-                                    </div>
-                                </div> */}
+                                        </IconButton> */}
+                                    {/* </div> */}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -132,7 +134,7 @@ const ViewTopNavigation = (props) => {
                             transition: top 1s ease;
                         }
                         #header-inner.header-inner {
-                        top: 0px;
+                            top: 0px;
                         }
                         .hidden-submenu {
                             display: none !important;

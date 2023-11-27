@@ -1,27 +1,30 @@
 /* eslint-disable no-unused-expressions */
-import Router from 'next/router';
+import { useApolloClient } from '@apollo/client';
+import { custDataNameCookie, features, modules } from '@config';
+import Content from '@core_modules/theme/components/header/desktop/components';
+import {
+    getCategories, getCustomer, getVesMenu, removeToken,
+} from '@core_modules/theme/services/graphql';
 import { removeIsLoginFlagging } from '@helper_auth';
 import { removeCartId } from '@helper_cartid';
-import Cookies from 'js-cookie';
 import { removeCookies } from '@helper_cookies';
-import { useApolloClient } from '@apollo/client';
 import { priceVar } from '@root/core/services/graphql/cache';
-import { localTotalCart, localCompare } from '@services/graphql/schema/local';
+import { localCompare, localTotalCart } from '@services/graphql/schema/local';
 import firebase from 'firebase/app';
-import {
-    custDataNameCookie,
-    features,
-    modules,
-} from '@config';
-import {
-    getCategories, getCustomer, removeToken, getVesMenu,
-} from '@core_modules/theme/services/graphql';
-import Content from '@core_modules/theme/components/header/desktop/components';
+import Cookies from 'js-cookie';
+import Router from 'next/router';
 
 const CoreTopNavigation = (props) => {
     const {
-        dataVesMenu: propsVesMenu, storeConfig, t, app_cookies, isLogin, showGlobalPromo,
-        enablePopupInstallation, installMessage, isHomepage,
+        dataVesMenu: propsVesMenu,
+        storeConfig,
+        t,
+        app_cookies,
+        isLogin,
+        showGlobalPromo,
+        enablePopupInstallation,
+        installMessage,
+        isHomepage,
     } = props;
     let data = propsVesMenu;
     let loading = !propsVesMenu;
@@ -50,11 +53,15 @@ const CoreTopNavigation = (props) => {
     const handleLogout = async () => {
         window.backdropLoader(true);
         if (features.firebase.config.apiKey && features.firebase.config.apiKey !== '') {
-            firebase.auth().signOut().then(() => {
-                // Sign-out successful.
-            }).catch(() => {
-                // An error happened.
-            });
+            firebase
+                .auth()
+                .signOut()
+                .then(() => {
+                    // Sign-out successful.
+                })
+                .catch(() => {
+                    // An error happened.
+                });
         }
         await deleteTokenGql()
             .then(() => {
@@ -77,7 +84,7 @@ const CoreTopNavigation = (props) => {
 
     const handleSearch = (ev) => {
         if (ev.key === 'Enter' && ev.target.value !== '') {
-            Router.push(`/catalogsearch/result?q=${encodeURIComponent(value)}`);
+            Router.push(`/catalogsearch/result?q=${encodeURIComponent(ev.target.value)}`);
         }
     };
 
