@@ -9,7 +9,8 @@ const Caraousel = (props) => {
     const {
         data = [], xs = 767, sm = 1024, md = 1200,
         slideXs = 1, slideSm = 3, slideMd = 4, slideLg = 6,
-        showArrow = true, Item, onReInit = () => {}, storeConfig = {}, ...other
+        showArrow = true, Item, onReInit = () => {}, storeConfig = {},
+        className = '', ...other
     } = props;
 
     const [slideIndex, setIndex] = useState(0);
@@ -80,10 +81,10 @@ const Caraousel = (props) => {
     };
 
     // eslint-disable-next-line max-len
-    const arrow = 'text-[1.5rem] bg-[rgba(255,255,255,0.5)] absolute flex flex-col justify-center items-center p-[10px] rouded-[5px] text-center pl-[10px] top-[calc(50%-1rem)] w-[40px] h-[40px] cursor-pointer hover:bg-pwa-primary hover:text-white xs:hidden';
+    const arrow = 'text-[1.5rem] bg-[rgba(255,255,255,0.5)] absolute hidden group-hover:flex flex-col justify-center items-center p-[10px] rouded-[5px] text-center pl-[10px] top-[calc(50%-1rem)] w-[40px] h-[40px] cursor-pointer hover:bg-pwa-primary hover:text-white xs:hidden';
 
     return (
-        <div className={classNames('carousel', 'w-full h-full relative xs:max-w-[100vw] sm:h-auto')}>
+        <div className={classNames('carousel', 'w-full h-full relative xs:max-w-[100vw] sm:h-auto group', className)}>
             <Slider onInit={onReInit} ref={(slider) => sliderRef = slider} {...settings}>
                 {
                     data && data.length > 0 && data.map((item, key) => (

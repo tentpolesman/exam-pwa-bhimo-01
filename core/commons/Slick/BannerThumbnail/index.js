@@ -32,6 +32,7 @@ const Banner = ({
     customProduct = '',
     children,
     storeConfig = {},
+    className = '',
 }) => {
     const [slideIndex, setIndex] = useState(0);
     const [count, setCount] = useState(0);
@@ -77,7 +78,7 @@ const Banner = ({
     const arrow = 'text-[1.5rem] bg-[rgba(255,255,255,0.5)] absolute flex flex-col justify-center items-center p-[10px] rouded-[5px] text-center pl-[10px] top-[calc(50%-1rem)] w-[40px] h-[40px] cursor-pointer hover:bg-pwa-primary hover:text-white xs:hidden';
 
     return (
-        <div className="sm:flex">
+        <div className={classNames('sm:flex', className)}>
             {thumbnail ? (
                 <div>
                     {data.map((item, id) => (

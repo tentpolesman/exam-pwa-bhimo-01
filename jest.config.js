@@ -98,7 +98,6 @@ module.exports = {
         '^@common_rangeslider': ['<rootDir>/src/commons/RangeSlider', '<rootDir>/core/commons/RangeSlider'],
         '^@common_select': ['<rootDir>/src/commons/Select', '<rootDir>/core/commons/Select'],
         '^@common_textfield': ['<rootDir>/src/commons/TextField', '<rootDir>/core/commons/TextField'],
-        '^@common_carousel': ['<rootDir>/src/commons/carousel', '<rootDir>/core/commons/carousel'],
 
         '^@common_button/(.*)$': ['<rootDir>/src/commons/Button/$1', '<rootDir>/core/commons/Button/$1'],
         '^@common_buttonqty/(.*)$': ['<rootDir>/src/commons/ButtonQty/$1', '<rootDir>/core/commons/ButtonQty/$1'],
@@ -132,7 +131,6 @@ module.exports = {
         '^@common_backdrop/(.*)$': ['<rootDir>/src/commons/Backdrop/$1', '<rootDir>/core/commons/Backdrop/$1'],
         '^@common_pageprogress/(.*)$': ['<rootDir>/src/commons/PageProgress/$1', '<rootDir>/core/commons/PageProgress/$1'],
         '^@common_slick/(.*)$': ['<rootDir>/src/commons/Slick/$1', '<rootDir>/core/commons/Slick/$1'],
-        '^@common_slider/(.*)$': ['<rootDir>/src/commons/Slider/$1', '<rootDir>/core/commons/Slider/$1'],
         '^@common_filterdialog': ['<rootDir>/src/commons/FilterDialog', '<rootDir>/core/commons/FilterDialog'],
         '^@common_filterdialog/(.*)$': ['<rootDir>/src/commons/FilterDialog/$1', '<rootDir>/core/commons/FilterDialog/$1'],
         '^@common_forms/(.*)$': ['<rootDir>/src/commons/Forms/$1', '<rootDir>/core/commons/Forms/$1'],

@@ -115,7 +115,6 @@
             "@common_rangeslider/*": ["src/commons/RangeSlider/*", "core/commons/RangeSlider/*"],
             "@common_select/*": ["src/commons/Select/*", "core/commons/Select/*"],
             "@common_textfield/*": ["src/commons/TextField/*", "core/commons/TextField/*"],
-            "@common_carousel/*": ["src/commons/carousel/*", "core/commons/Carousel/*"],
             
             "@common_image": ["src/commons/Image", "core/commons/Image"],
             "@common_image/*": ["src/commons/Image/*", "core/commons/Image/*"],
