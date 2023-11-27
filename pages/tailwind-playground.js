@@ -8,22 +8,28 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 // import Button from '@common_button';
 // import Typography from '@common_typography';
 // import TextField from '@common_forms/TextField';
-import Select from '@common_forms/Select';
+// import Select from '@common_forms/Select';
 // import Checkbox from '@common_forms/CheckBox';
 // import Radio from '@common_forms/Radio';
+// import TextField from '@common_textfield';
+import dynamic from 'next/dynamic';
 import { useState } from 'react';
+
+// const TextField = dynamic(() => import('@common_textfield'), { ssr: false });
+const PhoneInput = dynamic(() => import('@common_forms/PhoneInput'), { ssr: false });
 
 function Page(props) {
     const { t } = props;
     const [selected, setSelected] = useState();
+    // const [password, setPassword] = useState('');
 
-    const options = [
-        { label: 'select1', value: 'select1' },
-        { label: 'select2', value: 'select2' },
-    ];
+    // const options = [
+    //     { label: 'select1', value: 'select1' },
+    //     { label: 'select2', value: 'select2' },
+    // ];
 
     const handleChange = (value) => {
-        // console.log(value);
+        // console.log('value', value);
         setSelected(value);
     };
 
@@ -55,7 +61,12 @@ function Page(props) {
                     value={selected}
                     onChange={setSelected}
                 /> */}
-                <Select value={selected} onChange={handleChange} options={options} />
+                {/* <Select value={selected} onChange={handleChange} options={options} /> */}
+                {/* <Password value={password} onChange={handleChange} /> */}
+                <div className="flex flex-col">
+                    {/* <TextField type="phone" /> */}
+                    <PhoneInput value={selected} onChange={handleChange} />
+                </div>
             </div>
         </Layout>
     );

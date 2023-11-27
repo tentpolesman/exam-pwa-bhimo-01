@@ -7,6 +7,7 @@ import PasswordField from '@common_forms/Password';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Layout from '@layout_customer';
+import PhoneInput from '@common_forms/PhoneInput';
 
 import classNames from 'classnames';
 import { breakPointsUp } from '@helper_theme';
@@ -48,8 +49,7 @@ const ProfileForm = (props) => {
                 errorMessage={(formik.touched.lastName && formik.errors.lastName) || null}
             />
 
-            <TextField
-                type="phone"
+            <PhoneInput
                 label={t('common:form:phoneNumber')}
                 name="phonenumber"
                 value={formik.values.phonenumber}
@@ -66,8 +66,7 @@ const ProfileForm = (props) => {
                 )}
             />
             {!phoneIsWa && (
-                <TextField
-                    type="phone"
+                <PhoneInput
                     label={`${t('common:form:phoneNumber')} Whatsapp`}
                     name="whatsapp_number"
                     value={formik.values.whatsapp_number}

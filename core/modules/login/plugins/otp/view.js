@@ -1,6 +1,6 @@
 import Button from '@common_button';
-import TextField from '@common_textfield';
 import Password from '@common_forms/Password';
+import PhoneInput from '@common_forms/PhoneInput';
 import Typography from '@common_typography';
 import useStyles from '@plugin_otp/style';
 
@@ -14,8 +14,7 @@ const OtpView = (props) => {
         <div className={styles.root}>
             <div className={styles.componentContainer}>
                 <div className={styles.input}>
-                    <TextField
-                        type="phone"
+                    <PhoneInput
                         label={t('common:form:phoneNumber')}
                         fullWidth
                         {...phoneProps}
