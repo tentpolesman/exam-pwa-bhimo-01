@@ -12,6 +12,7 @@ import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import OtpBlock from '@plugin_otp';
 import classNames from 'classnames';
 import ReCAPTCHA from 'react-google-recaptcha';
+import PhoneInput from '@common_forms/PhoneInput';
 
 const RegisterView = ({
     t,
@@ -144,9 +145,8 @@ const RegisterView = ({
                             }}
                         />
                         {!phoneIsWa && (
-                            <TextField
+                            <PhoneInput
                                 id="register-waNumber-textfield"
-                                type="phone"
                                 label={`${t('common:form:phoneNumber')} Whatsapp`}
                                 name="whatsappNumber"
                                 value={formik.values.whatsappNumber}
