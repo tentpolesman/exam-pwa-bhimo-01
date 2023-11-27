@@ -2,14 +2,52 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable radix */
 import React from 'react';
-import classNames from 'classnames';
-import useStyles from '@common_buttonqty/style';
+import cx from 'classnames';
+
+const ButtonActionQty = ({
+    disabled,
+    onClick,
+    label,
+    className,
+}) => (
+    <button
+        type="button"
+        onClick={disabled ? () => {} : onClick}
+        className={
+            cx(
+                'section-button-qty-minus',
+                'p-[6px]',
+                'w-[32px]',
+                'h-[32px]',
+                'rounded-[6px]',
+                'flex',
+                'items-center',
+                'justify-center',
+                'gap-[24px]',
+                'duration-500',
+                'hover:bg-neutral-50 hover:text-primary-300',
+                disabled && 'text-neutral-150',
+                className,
+            )
+        }
+    >
+        {label}
+    </button>
+);
 
 const ButtonQty = ({
-    value = 1, onChange, max = 100, disabled = false,
+    value = 1,
+    onChange,
+    max = 100,
+    disabled = false,
+    width = 120,
+    classNameBtnMinus,
+    classNameBtnPlus,
+    classNameInput,
 }) => {
-    const styles = useStyles();
     const [localValue, setLocalValue] = React.useState(value);
+    const disabledMin = disabled || localValue === 1;
+    const disableMax = disabled || localValue === max;
 
     React.useEffect(() => {
         setLocalValue(value);
@@ -53,20 +91,53 @@ const ButtonQty = ({
             setLocalValue(parseInt(val, 0));
         }
     };
-    const disabledMin = disabled || localValue === 1;
-    const disableMax = disabled || localValue === max;
 
     return (
-        <div className={styles.box}>
-            <div className={classNames(styles.minus, disabledMin ? styles.disabled : '')} onClick={handleMinus}>-</div>
-            <input
-                disabled={disabled}
-                value={localValue}
-                className={classNames(styles.input, 'common-valueQty-input')}
-                type="number"
-                onChange={handleLocalChange}
+        <div
+            style={{
+                ...(width ? { width } : null),
+            }}
+            className={cx(
+                'section-button-qty',
+                'grid',
+                'grid grid-cols-3',
+                'justify-center',
+                'border-[1px]',
+                'rounded-[8px]',
+                'gap-[7px]',
+                'p-[4px]',
+            )}
+        >
+
+            <ButtonActionQty
+                className={cx('mx-auto', classNameBtnMinus)}
+                label="-"
+                disabled={disabledMin}
+                onClick={handleMinus}
             />
-            <div className={classNames(styles.plus, disableMax ? styles.disabled : '')} onClick={handlePlus}>+</div>
+            <input
+                type="number"
+                value={localValue}
+                disabled={disabled}
+                onChange={handleLocalChange}
+                className={
+                    cx(
+                        'section-btn-qty-input',
+                        'text-center',
+                        '!font-pwa-default',
+                        'h-[100%]',
+                        'w-[100%]',
+                        '[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none',
+                        classNameInput,
+                    )
+                }
+            />
+            <ButtonActionQty
+                className={cx('mx-auto', classNameBtnPlus)}
+                label="+"
+                onClick={handlePlus}
+                disabled={disableMax}
+            />
         </div>
     );
 };
