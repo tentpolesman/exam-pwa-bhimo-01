@@ -15,21 +15,21 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import dynamic from 'next/dynamic';
 import { useState } from 'react';
 
-const TextField = dynamic(() => import('@common_textfield'), { ssr: false });
+// const TextField = dynamic(() => import('@common_textfield'), { ssr: false });
 const PhoneInput = dynamic(() => import('@common_forms/PhoneInput'), { ssr: false });
 
 function Page(props) {
     const { t } = props;
     const [selected, setSelected] = useState();
-    const [password, setPassword] = useState('');
+    // const [password, setPassword] = useState('');
 
-    const options = [
-        { label: 'select1', value: 'select1' },
-        { label: 'select2', value: 'select2' },
-    ];
+    // const options = [
+    //     { label: 'select1', value: 'select1' },
+    //     { label: 'select2', value: 'select2' },
+    // ];
 
     const handleChange = (value) => {
-        console.log('value', value);
+        // console.log('value', value);
         setSelected(value);
     };
 
