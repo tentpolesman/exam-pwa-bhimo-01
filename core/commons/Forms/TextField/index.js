@@ -15,6 +15,8 @@ const TextField = (props) => {
         iconProps = {},
         inputProps = {},
         type = 'text',
+        onBlur = () => {},
+        onKeyPress = () => {},
         ...restProps
     } = props;
 
@@ -39,8 +41,8 @@ const TextField = (props) => {
         return rightIcon;
     };
 
-    if (value) inputProps.value = value;
     if (onChange) inputProps.onChange = onChange;
+    if (onKeyPress) inputProps.onKeyPress = onKeyPress;
     const { className: inputClassName, ...restInputProps } = inputProps;
 
     return (
@@ -78,7 +80,12 @@ const TextField = (props) => {
                     placeholder={placeholder}
                     disabled={disabled}
                     onFocus={() => setIsFocus(true)}
-                    onBlur={() => setIsFocus(false)}
+                    onBlur={() => {
+                        setIsFocus(false);
+                        onBlur();
+                    }}
+                    value={value}
+                    onChange={onChange}
                     className={cx(
                         'pr-4',
                         'py-[10px]',
