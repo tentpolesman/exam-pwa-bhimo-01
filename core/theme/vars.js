@@ -1,7 +1,7 @@
 export const MAX_WIDTH = '1440px';
 export const BREAKPOINTS = {
     xs: 0,
-    xm: 480, // reminder to delete this later
+    xm: 480, // reminder to review or delete this later
     sm: 576,
     md: 768,
     lg: 992,
@@ -11,14 +11,14 @@ export const BREAKPOINTS = {
 export const COLORS = {
     primary: {
         50: '#FFF4FD',
-        100: '#FFE8FC', // primary 50 -> 100
-        200: '#D73DB0',
-        300: '#FCABEB', // primary 100 -> 300
+        100: '#FFE8FC',
+        200: '#FED0F6',
+        300: '#FCABEB',
         400: '#F979DC',
         500: '#EE47C7',
         600: '#D227A7',
-        700: '#BE1F93', // primary 300 -> 700
-        800: '#8F196E', // primary 400 -> 800
+        700: '#BE1F93',
+        800: '#8F196E',
         900: '#751A59',
         get DEFAULT() {
             return this[700];
@@ -44,10 +44,10 @@ export const COLORS = {
         300: '#374151',
         350: '#2B3544',
         400: '#1F2937',
-        500: '#6B7280', // neutral 200 -> 500
+        500: '#6B7280',
         600: '#4B5563',
-        700: '#374151', // neutral 300 -> 700
-        800: '#1F2937', // neutral 400 -> 800
+        700: '#374151',
+        800: '#1F2937',
         900: '#111827',
         white: '#FFFFFF',
         black: '#000000',
@@ -102,8 +102,8 @@ export const COLORS = {
     },
 };
 export const LETTER_SPACING = {
-    densest: '-0.3px',
-    denser: '-0.2px',
+    tighter: '-0.3px',
+    tight: '-0.2px',
     normal: '0px',
     loose: '0.1px',
 };
