@@ -31,28 +31,28 @@ const Toast = ({
         };
     }, [open]);
 
-    let classNamesText = 'text-accent-eucalyptus-300';
+    let classNamesText = 'text-green-300';
     let classNamesToast = cx(
-        'bg-accent-eucalyptus-50',
-        'border-l-accent-eucalyptus-300',
-        'border-accent-eucalyptus-300',
+        'bg-green-50',
+        'border-l-green-300',
+        'border-green-300',
     );
 
     if (variant === 'warning') {
-        classNamesText = 'text-accent-saffron_mango-300';
+        classNamesText = 'text-yellow-300';
         classNamesToast = cx(
-            'bg-accent-saffron_mango-50',
-            'border-l-accent-saffron_mango-300',
-            'border-accent-saffron_mango-300',
+            'bg-yellow-50',
+            'border-l-yellow-300',
+            'border-yellow-300',
         );
     }
 
     if (variant === 'error') {
-        classNamesText = 'text-accent-red_orange-300';
+        classNamesText = 'text-red-300';
         classNamesToast = cx(
-            'bg-accent-red_orange-50',
-            'border-l-accent-red_orange-300',
-            'border-accent-red_orange-300',
+            'bg-red-50',
+            'border-l-red-300',
+            'border-red-300',
         );
     }
 

@@ -37,9 +37,9 @@ const TextArea = (props) => {
                     {
                         '!border-primary-200': isFocus && !hintType,
                         '!bg-neutral-50 border-none placeholder:!text-neutral-100': disabled,
-                        '!border-accent-red_orange hover:!border-accent-red_orange': hintType === 'error',
-                        '!border-accent-saffron_mango': hintType === 'warning',
-                        '!border-accent-eucalyptus-200': hintType === 'success',
+                        '!border-red hover:!border-red': hintType === 'error',
+                        '!border-yellow': hintType === 'warning',
+                        '!border-green-200': hintType === 'success',
                     },
                     inputClassName,
                 )}
@@ -51,9 +51,9 @@ const TextArea = (props) => {
                 <Typography
                     variant="bd-2b"
                     className={cx('my-2', {
-                        '!text-accent-red_orange': hintType === 'error',
-                        '!text-accent-saffron_mango': hintType === 'warning',
-                        '!text-accent-eucalyptus-200': hintType === 'success',
+                        '!text-red': hintType === 'error',
+                        '!text-yellow': hintType === 'warning',
+                        '!text-green-200': hintType === 'success',
                     })}
                 >
                     {hintText}
