@@ -10,14 +10,18 @@ export const BREAKPOINTS = {
 
 export const COLORS = {
     primary: {
-        50: '#FFE8FC',
-        100: '#FCABEB',
+        50: '#FFF4FD',
+        100: '#FFE8FC', // primary 50 -> 100
         200: '#D73DB0',
-        300: '#BE1F93',
-        400: '#8F196E',
-        500: '#4E0437',
+        300: '#FCABEB', // primary 100 -> 300
+        400: '#F979DC',
+        500: '#EE47C7',
+        600: '#D227A7',
+        700: '#BE1F93', // primary 300 -> 700
+        800: '#8F196E', // primary 400 -> 800
+        900: '#751A59',
         get DEFAULT() {
-            return this[300];
+            return this[700];
         },
     },
     secondary: {
@@ -32,53 +36,68 @@ export const COLORS = {
         },
     },
     neutral: {
-        50: '#F3F4F6',
+        50: '#F9FAFB',
         100: '#E0E2E7',
         150: '#A5AAB3',
-        200: '#6B7280',
+        200: '#E5E7EB',
         250: '#515A69',
         300: '#374151',
         350: '#2B3544',
         400: '#1F2937',
-        500: '#030712',
+        500: '#6B7280', // neutral 200 -> 500
+        600: '#4B5563',
+        700: '#374151', // neutral 300 -> 700
+        800: '#1F2937', // neutral 400 -> 800
+        900: '#111827',
         white: '#FFFFFF',
+        black: '#000000',
         get DEFAULT() {
-            return this[400];
+            return this[700];
         },
     },
-    accent: {
-        eucalyptus: {
-            50: '#ECFDF5',
-            100: '#D2F9E4',
-            200: '#38CF95',
-            300: '#08875D',
-            400: '#085D43',
-            500: '#032B20',
-            get DEFAULT() {
-                return this[300];
-            },
+    green: {
+        50: '#ECFDF5',
+        100: '#D1FAE5',
+        200: '#A7F3D0',
+        300: '#6EE7B7',
+        400: '#34D399',
+        500: '#10B981',
+        600: '#059669',
+        700: '#047857',
+        800: '#065F46',
+        900: '#064E3B',
+        get DEFAULT() {
+            return this[500];
         },
-        saffron_mango: {
-            50: '#FFF9EB',
-            100: '#FEEDC7',
-            200: '#FDC457',
-            300: '#FCA723',
-            400: '#DA6005',
-            500: '#79290E',
-            get DEFAULT() {
-                return this[300];
-            },
+    },
+    yellow: {
+        50: '#FFFBEB',
+        100: '#FEF3C7',
+        200: '#FDE68A',
+        300: '#FCD34D',
+        400: '#FBBF24',
+        500: '#F59E0B',
+        600: '#D97706',
+        700: '#B45309',
+        800: '#92400E',
+        900: '#78350F',
+        get DEFAULT() {
+            return this[500];
         },
-        red_orange: {
-            50: '#FFE9E9',
-            100: '#FF8D8D',
-            200: '#ED2A2A',
-            300: '#C60F0F',
-            400: '#871515',
-            500: '#4A0505',
-            get DEFAULT() {
-                return this[200];
-            },
+    },
+    red: {
+        50: '#FEF2F2',
+        100: '#FEE2E2',
+        200: '#FECACA',
+        300: '#FCA5A5',
+        400: '#F87171',
+        500: '#EF4444',
+        600: '#DC2626',
+        700: '#B91C1C',
+        800: '#991B1B',
+        900: '#7F1D1D',
+        get DEFAULT() {
+            return this[500];
         },
     },
     badge: {

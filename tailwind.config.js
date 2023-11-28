@@ -36,7 +36,6 @@ module.exports = {
                 primary: COLORS.primary,
                 secondary: COLORS.secondary,
                 neutral: COLORS.neutral,
-                accent: COLORS.accent,
             },
             letterSpacing: LETTER_SPACING,
             lineHeight: LINE_HEIGHT,
@@ -55,6 +54,11 @@ module.exports = {
             md: `${BREAKPOINTS.md}px`,
             lg: `${BREAKPOINTS.lg}px`,
             xl: `${BREAKPOINTS.xl}px`,
+        },
+        colors: {
+            red: COLORS.red,
+            yellow: COLORS.yellow,
+            green: COLORS.green,
         },
     },
     plugins: [

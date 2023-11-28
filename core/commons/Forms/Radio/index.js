@@ -131,7 +131,7 @@ const Radio = (props) => {
                     );
                 })}
             </div>
-            {error && <Typography className="text-accent-red_orange">{errorMessage}</Typography>}
+            {error && <Typography className="text-red">{errorMessage}</Typography>}
 
             {useLoadMore && data.length > 7 && more <= 7 && (
                 <a onClick={handleMore} className="mt-[10px] text-right cursor-pointer">

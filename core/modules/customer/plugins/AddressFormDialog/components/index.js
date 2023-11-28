@@ -1,16 +1,16 @@
 /* eslint-disable max-len */
+import CustomAutocomplete from '@common_autocomplete';
+import Button from '@common_button';
+import IcubeMapsAutocomplete from '@common_googlemaps_autocomplete';
+import Header from '@common_headermobile';
+import CustomTextField from '@common_textfield';
+import Typography from '@common_typography';
 import Checkbox from '@material-ui/core/Checkbox';
 import Dialog from '@material-ui/core/Dialog';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import IcubeMapsAutocomplete from '@common_googlemaps_autocomplete';
-import Header from '@common_headermobile';
-import Button from '@common_button';
 import TextField from '@material-ui/core/TextField';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import CustomTextField from '@common_textfield';
-import Typography from '@common_typography';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import CustomAutocomplete from '@common_autocomplete';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import useStyles from '@plugin_addressform/components/style';
 import classNames from 'classnames';
 
@@ -31,7 +31,6 @@ const AddressView = (props) => {
         gmapKey,
         geocodingKey,
         enableSplitCity,
-        getCountries,
         responCountries,
         getRegion,
         responRegion,
@@ -51,9 +50,7 @@ const AddressView = (props) => {
         <div className={styles.boxField}>
             <CustomAutocomplete
                 className="addressForm-country-autoComplete"
-                id="country"
                 enableCustom={false}
-                mode="lazy"
                 value={formik.values.country}
                 onChange={async (e) => {
                     formik.setFieldValue('country', e);
@@ -75,12 +72,11 @@ const AddressView = (props) => {
                     }
                 }}
                 loading={responCountries.loading}
-                options={responCountries && responCountries.data && responCountries.data.countries}
-                getOptions={getCountries}
+                itemOptions={responCountries && responCountries.data && responCountries.data.countries}
                 name="country"
-                label={t('common:form:country')}
                 primaryKey="id"
                 labelKey="full_name_locale"
+                useKey
             />
         </div>
     );
@@ -425,7 +421,16 @@ const AddressView = (props) => {
                             onChange={formik.handleChange}
                             error={!!(formik.touched.postcode && formik.errors.postcode)}
                             errorMessage={(formik.touched.postcode && formik.errors.postcode) || null}
-                            onFocus={(e) => { e.target.setAttribute('autocomplete', 'new-password'); e.target.setAttribute('autocorrect', 'false'); e.target.setAttribute('aria-autocomplete', 'both'); e.target.setAttribute('aria-haspopup', 'false'); e.target.setAttribute('spellcheck', 'off'); e.target.setAttribute('autocapitalize', 'off'); e.target.setAttribute('autofocus', ''); e.target.setAttribute('role', 'combobox'); }}
+                            onFocus={(e) => {
+                                e.target.setAttribute('autocomplete', 'new-password');
+                                e.target.setAttribute('autocorrect', 'false');
+                                e.target.setAttribute('aria-autocomplete', 'both');
+                                e.target.setAttribute('aria-haspopup', 'false');
+                                e.target.setAttribute('spellcheck', 'off');
+                                e.target.setAttribute('autocapitalize', 'off');
+                                e.target.setAttribute('autofocus', '');
+                                e.target.setAttribute('role', 'combobox');
+                            }}
                         />
                         {gmapKey ? (
                             <div className={styles.boxMap}>
@@ -468,7 +473,14 @@ const AddressView = (props) => {
                                     checked={formik.values.defaultShippingBilling}
                                     onChange={() => formik.setFieldValue('defaultShippingBilling', !formik.values.defaultShippingBilling)}
                                     name="defaultShippingBilling"
-                                    control={<Checkbox id="addressForm-addressDefault-checkbox" name="checkboxDefaultShippingBilling" color="primary" size="small" />}
+                                    control={(
+                                        <Checkbox
+                                            id="addressForm-addressDefault-checkbox"
+                                            name="checkboxDefaultShippingBilling"
+                                            color="primary"
+                                            size="small"
+                                        />
+                                    )}
                                     label={(
                                         <Typography variant="p" letter="capitalize" className="flex flex-row center">
                                             {t('customer:address:useDefault')}
@@ -500,7 +512,9 @@ const AddressView = (props) => {
                                     </div>
                                 )}
                             </div>
-                        ) : ''}
+                        ) : (
+                            ''
+                        )}
                         <div className={styles.wrapper}>
                             <Button
                                 className={classNames(addBtn, 'addressForm-saveAddress-btn')}

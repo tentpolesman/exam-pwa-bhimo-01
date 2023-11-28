@@ -27,13 +27,7 @@ module.exports = withPWA({
         appEnv: process.env.APP_ENV,
         rootDir: __dirname,
     },
-    webpack: (
-        config,
-        {
-            isServer,
-            webpack,
-        },
-    ) => {
+    webpack: (config, { isServer, webpack }) => {
         // Note: we provide webpack above so you should not `require` it
         // Perform customizations to webpack config
         // Important: return the modified config
