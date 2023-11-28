@@ -60,6 +60,7 @@ const Toast = ({
         <div
             role="alert"
             style={{
+                ...(!open ? { zIndex: -9999 } : null),
                 ...(position === 'bottom' ? (isXl ? { bottom: positionNumber, marginLeft: 'auto', marginRight: 'auto' } : { bottom: positionNumber }) : null),
                 ...(position === 'bottom-right' ? (isXl ? { bottom: positionNumber, marginLeft: 'auto' } : { bottom: positionNumber }) : null),
                 ...(position === 'bottom-left' ? (isXl ? { bottom: positionNumber, marginRight: 'auto' } : { bottom: positionNumber }) : null),
@@ -80,11 +81,11 @@ const Toast = ({
                     'justify-between',
                     'align-middle',
                     'rounded-[4px]',
-                    'lg:m-4 md:m-4 xs:m-4 xs:m-4',
+                    'lg:m-4 sm:m-4 xs:m-4',
                     'lg:max-w-md',
                     'items-center',
                     open && 'z-50 opacity-100',
-                    !open && 'z-0 opacity-0',
+                    !open && 'opacity-0',
                     classNamesToast,
                     className,
                 )
