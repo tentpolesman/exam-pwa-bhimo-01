@@ -1,4 +1,6 @@
-import { BREAKPOINTS, COLORS, FONT_FAMILY, FONT_SIZE, LETTER_SPACING, LINE_HEIGHT, SPACING } from './core/theme/vars';
+import {
+    BREAKPOINTS, COLORS, FONT_FAMILY, FONT_SIZE, LETTER_SPACING, LINE_HEIGHT, SPACING,
+} from './core/theme/vars';
 
 // full list https://github.com/tailwindlabs/tailwindcss/blob/master/stubs/config.full.js
 /** @type {import('tailwindcss').Config} */
@@ -28,6 +30,7 @@ module.exports = {
                     button_border_hover: 'var(--color-pwa-button_border_hover_color)',
                     button_disabled_text: 'var(--color-pwa-button_disabled_text_color)',
                     button_disabled_background: 'var(--color-pwa-button_disabled_background_color)',
+                    badge: COLORS.badge,
                 },
                 // END store config value
                 primary: COLORS.primary,

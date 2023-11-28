@@ -1,7 +1,8 @@
 /* eslint-disable camelcase */
 import React from 'react';
+import Badge from '@common_badge';
+import cx from 'classnames';
 import { useTranslation } from 'next-i18next';
-import useStyles from '@common_productlabel/style';
 
 const generateNew = ({ newFromDate, newToDate }) => {
     let showLabelNew = false;
@@ -56,31 +57,44 @@ const generateSale = ({
     return validSpecial;
 };
 
-const ProductLabel = (props) => {
-    const {
-        priceRange, specialFromDate, specialToDate, newFromDate, newToDate, config,
-    } = props;
+const ProductLabel = ({
+    config,
+    priceRange,
+    specialFromDate,
+    specialToDate,
+    newFromDate,
+    newToDate,
+    fontSizeBadge,
+}) => {
     const { t } = useTranslation(['common']);
-    const styles = useStyles();
     const showLabelNew = generateNew({ newFromDate, newToDate });
     const showSale = generateSale({ priceRange, specialFromDate, specialToDate });
+
     return (
-        <>
+        <div className="product-label">
             {
-                config.enabled && config.new.enabled && showLabelNew ? (
-                    <span className={styles.spanNew}>
-                        {t('common:title:new')}
-                    </span>
-                ) : null
+                (config.enabled && config.new.enabled && showLabelNew) && (
+                    <Badge
+                        bold
+                        secondary
+                        className={cx('product-label-new')}
+                        label={t('common:title:new')}
+                        fontSize={fontSizeBadge}
+                    />
+                )
             }
             {
-                config.enabled && config.sale.enabled && showSale ? (
-                    <span className={styles.spanSale}>
-                        {`${t('common:title:sale')}!`}
-                    </span>
-                ) : null
+                (config.enabled && config.sale.enabled && showSale) && (
+                    <Badge
+                        bold
+                        danger
+                        className={cx('product-label-sale', showLabelNew && 'mt-[4px]')}
+                        label={`${t('common:title:sale')}!`}
+                        fontSize={fontSizeBadge}
+                    />
+                )
             }
-        </>
+        </div>
     );
 };
 
