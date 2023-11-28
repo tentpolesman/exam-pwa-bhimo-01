@@ -94,7 +94,6 @@
             "@common_typography": ["src/commons/Typography", "core/commons/Typography"],
             "@common_password": ["src/commons/Password", "core/commons/Forms/Password"],
             "@common_rangeslider": ["src/commons/RangeSlider", "core/commons/RangeSlider"],
-            "@common_select": ["src/commons/Select", "core/commons/Select"],
             "@common_textfield": ["src/commons/TextField", "core/commons/TextField"],
             "@common_carousel": ["src/commons/Carousel", "core/commons/Carousel"],
 
@@ -114,7 +113,6 @@
             "@common_typography/*": ["src/commons/Typography/*", "core/commons/Typography/*"],
             "@common_password/*": ["src/commons/Password/*", "core/commons/Password/*"],
             "@common_rangeslider/*": ["src/commons/RangeSlider/*", "core/commons/RangeSlider/*"],
-            "@common_select/*": ["src/commons/Select/*", "core/commons/Select/*"],
             "@common_textfield/*": ["src/commons/TextField/*", "core/commons/TextField/*"],
             "@common_carousel/*": ["src/commons/carousel/*", "core/commons/Carousel/*"],
             

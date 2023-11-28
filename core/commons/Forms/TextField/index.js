@@ -13,14 +13,16 @@ const TextField = (props) => {
         label = '',
         hintProps = {},
         iconProps = {},
+        inputProps = {},
         type = 'text',
+        ...restProps
     } = props;
 
     const [isFocus, setIsFocus] = useState(false);
 
     const { displayHintText = false, hintType = '', hintText = '' } = hintProps;
     const {
-        leftIcon = '', leftIconClasses = '', rightIcon = '', rightIconClasses = '',
+        leftIcon = '', leftIconClasses = '', rightIcon = '', rightIconClasses = '', ...restIconProps
     } = iconProps;
 
     const generateRightIcon = () => {
@@ -37,12 +39,12 @@ const TextField = (props) => {
         return rightIcon;
     };
 
-    const inputProps = {};
     if (value) inputProps.value = value;
     if (onChange) inputProps.onChange = onChange;
+    const { className: inputClassName, ...restInputProps } = inputProps;
 
     return (
-        <div className="flex flex-col">
+        <div className="flex flex-col relative">
             {label ? (
                 <label className="mb-2">
                     <Typography variant="h4">{label}</Typography>
@@ -68,6 +70,7 @@ const TextField = (props) => {
                     },
                     className,
                 )}
+                {...restProps}
             >
                 {leftIcon ? <Icon icon={leftIcon} className={cx('pl-4', 'pr-[6px]', 'text-neutral-300', leftIconClasses)} /> : null}
                 <input
@@ -76,12 +79,21 @@ const TextField = (props) => {
                     disabled={disabled}
                     onFocus={() => setIsFocus(true)}
                     onBlur={() => setIsFocus(false)}
-                    {...inputProps}
-                    className={cx('pr-4', 'py-[10px]', 'w-full', 'rounded-lg', 'focus:outline-0', 'placeholder:text-neutral-200', {
-                        'placeholder:!text-neutral-400': isFocus,
-                        '!pl-4': !leftIcon,
-                        '!pr-0': rightIcon,
-                    })}
+                    className={cx(
+                        'pr-4',
+                        'py-[10px]',
+                        'w-full',
+                        'rounded-lg',
+                        'focus:outline-0',
+                        'placeholder:text-neutral-200',
+                        {
+                            'placeholder:!text-neutral-400': isFocus,
+                            '!pl-4': !leftIcon,
+                            '!pr-0': rightIcon,
+                        },
+                        inputClassName,
+                    )}
+                    {...restInputProps}
                 />
                 {rightIcon ? (
                     <Icon
@@ -97,13 +109,14 @@ const TextField = (props) => {
                             },
                             rightIconClasses,
                         )}
+                        {...restIconProps}
                     />
                 ) : null}
             </div>
             {displayHintText && hintType && hintText ? (
                 <Typography
                     variant="bd-2b"
-                    className={cx('mt-[6px]', {
+                    className={cx('absolute', '-bottom-[50%]', '-z-10', {
                         '!text-accent-red_orange': hintType === 'error',
                         '!text-accent-saffron_mango': hintType === 'warning',
                         '!text-accent-eucalyptus-200': hintType === 'success',

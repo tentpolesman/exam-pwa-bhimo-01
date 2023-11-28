@@ -16,6 +16,9 @@ export const COLORS = {
         300: '#BE1F93',
         400: '#8F196E',
         500: '#4E0437',
+        get DEFAULT() {
+            return this[300];
+        },
     },
     secondary: {
         50: '#F0EBFC',
@@ -24,6 +27,9 @@ export const COLORS = {
         300: '#643BB5',
         400: '#4D2F82',
         500: '#2C1457',
+        get DEFAULT() {
+            return this[400];
+        },
     },
     neutral: {
         50: '#F3F4F6',
@@ -36,6 +42,9 @@ export const COLORS = {
         400: '#1F2937',
         500: '#030712',
         white: '#FFFFFF',
+        get DEFAULT() {
+            return this[400];
+        },
     },
     accent: {
         eucalyptus: {
@@ -45,6 +54,9 @@ export const COLORS = {
             300: '#08875D',
             400: '#085D43',
             500: '#032B20',
+            get DEFAULT() {
+                return this[300];
+            },
         },
         saffron_mango: {
             50: '#FFF9EB',
@@ -53,6 +65,9 @@ export const COLORS = {
             300: '#FCA723',
             400: '#DA6005',
             500: '#79290E',
+            get DEFAULT() {
+                return this[300];
+            },
         },
         red_orange: {
             50: '#FFE9E9',
@@ -61,6 +76,9 @@ export const COLORS = {
             300: '#C60F0F',
             400: '#871515',
             500: '#4A0505',
+            get DEFAULT() {
+                return this[200];
+            },
         },
     },
 };

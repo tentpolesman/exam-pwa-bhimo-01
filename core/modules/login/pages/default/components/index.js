@@ -2,7 +2,7 @@
 /* eslint-disable no-nested-ternary */
 import React, { useEffect, useState } from 'react';
 import TextField from '@common_textfield';
-import PasswordField from '@common_password';
+import PasswordField from '@common_forms/Password';
 import Button from '@common_button';
 import Typography from '@common_typography';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
