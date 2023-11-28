@@ -13,7 +13,7 @@ const Badge = ({
     success,
     fontSize = 12,
 }) => {
-    let classNamesColor = softColor ? cx('bg-primary-50', 'text-primary-300') : cx('bg-primary-300', 'text-neutral-white');
+    let classNamesColor = softColor ? cx('bg-primary-50', 'text-primary-700') : cx('bg-primary-700', 'text-neutral-white');
     if (danger) {
         classNamesColor = softColor ? cx('bg-red-50', 'text-red-600') : cx('bg-red-600', 'text-neutral-white');
     }
