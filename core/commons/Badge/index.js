@@ -13,21 +13,21 @@ const Badge = ({
     success,
     fontSize = 12,
 }) => {
-    let classNamesColor = softColor ? cx('bg-pwa-badge-purple-50', 'text-primary-300') : cx('bg-primary-300', 'text-pwa-badge-purple-50');
+    let classNamesColor = softColor ? cx('bg-primary-50', 'text-primary-300') : cx('bg-primary-300', 'text-neutral-white');
     if (danger) {
-        classNamesColor = softColor ? cx('bg-pwa-badge-red-50', 'text-pwa-badge-red-600') : cx('bg-pwa-badge-red-600', 'text-white');
+        classNamesColor = softColor ? cx('bg-red-50', 'text-red-600') : cx('bg-red-600', 'text-neutral-white');
     }
     if (primary) {
-        classNamesColor = softColor ? cx('bg-pwa-badge-purple-50', 'text-primary-300') : cx('bg-primary-300', 'text-pwa-badge-purple-50');
+        classNamesColor = softColor ? cx('bg-primary-50', 'text-primary-700') : cx('bg-primary-700', 'text-neutral-white');
     }
     if (secondary) {
         classNamesColor = softColor ? cx('bg-neutral-50', 'text-neutral-300') : cx('bg-neutral-300', 'text-neutral-50');
     }
     if (warning) {
-        classNamesColor = softColor ? cx('bg-pwa-badge-yellow-50', 'text-pwa-badge-yellow-500') : cx('bg-pwa-badge-yellow-500', 'text-white');
+        classNamesColor = softColor ? cx('bg-yellow-50', 'text-yellow-500') : cx('bg-yellow-500', 'text-neutral-white');
     }
     if (success) {
-        classNamesColor = softColor ? cx('bg-pwa-badge-green-50', 'text-pwa-badge-green-600') : cx('bg-pwa-badge-green-600', 'text-white');
+        classNamesColor = softColor ? cx('bg-green-50', 'text-green-600') : cx('bg-green-600', 'text-neutral-white');
     }
     return (
         <div
