@@ -10,7 +10,7 @@ import CommonTextField from '@common_forms/TextField';
 import Icon from '@common_icon';
 import Popover from '@common_popover';
 
-import Image from 'next/image';
+import Image from '@common_image';
 
 let globalTimeout = null;
 
@@ -279,11 +279,6 @@ export default function AutocompleteSearch(props) {
                                 value: searchKeyword,
                             },
                         });
-                    }}
-                    onBlur={() => {
-                        setSearchKeyword('');
-                        setItem(null);
-                        setIsShow(false);
                     }}
                 />
             </Popover>
