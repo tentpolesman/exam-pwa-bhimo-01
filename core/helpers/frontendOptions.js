@@ -35,9 +35,9 @@ export const frontendConfig = (pwaConfig) => {
                 --color-pwa-secondary_color: ${secondary_color || COLORS.secondary[400]};
                 --color-pwa-background_color: ${background_color || COLORS.neutral.white};
 
-                --color-pwa-error_color: ${error_color || COLORS.accent.red_orange[200]};
-                --color-pwa-warning_msg_color: ${warning_msg_color || COLORS.accent.saffron_mango[300]};
-                --color-pwa-success_msg_color: ${success_msg_color || COLORS.accent.eucalyptus[300]};
+                --color-pwa-error_color: ${error_color || COLORS.red[200]};
+                --color-pwa-warning_msg_color: ${warning_msg_color || COLORS.yellow[300]};
+                --color-pwa-success_msg_color: ${success_msg_color || COLORS.green[300]};
 
                 --color-pwa-button_text_color: ${button_text_color || COLORS.neutral.white};
                 --color-pwa-button_disabled_text_color: ${button_disabled_text_color || COLORS.neutral[50]};
@@ -67,9 +67,9 @@ export const frontendConfig = (pwaConfig) => {
             --color-pwa-background_color: ${COLORS.neutral.white};
 
             // message styles
-            --color-pwa-error_color: ${COLORS.accent.red_orange[200]};
-            --color-pwa-warning_msg_color: ${COLORS.accent.saffron_mango[300]};
-            --color-pwa-success_msg_color: ${COLORS.accent.eucalyptus[300]};
+            --color-pwa-error_color: ${COLORS.red[200]};
+            --color-pwa-warning_msg_color: ${COLORS.yellow[300]};
+            --color-pwa-success_msg_color: ${COLORS.green[300]};
 
             // button styles
             --color-pwa-button_text_color: ${COLORS.neutral.white};
