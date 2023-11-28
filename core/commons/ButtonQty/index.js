@@ -15,7 +15,7 @@ const ButtonActionQty = ({
         onClick={disabled ? () => {} : onClick}
         className={
             cx(
-                'section-button-qty-minus',
+                'button-qty-minus',
                 'p-[6px]',
                 'w-[32px]',
                 'h-[32px]',
@@ -98,7 +98,7 @@ const ButtonQty = ({
                 ...(width ? { width } : null),
             }}
             className={cx(
-                'section-button-qty',
+                'button-qty',
                 'grid',
                 'grid grid-cols-3',
                 'justify-center',
@@ -122,7 +122,7 @@ const ButtonQty = ({
                 onChange={handleLocalChange}
                 className={
                     cx(
-                        'section-btn-qty-input',
+                        'btn-qty-input',
                         'text-center',
                         '!font-pwa-default',
                         'h-[100%]',
