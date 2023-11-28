@@ -36,7 +36,7 @@ const PhoneInput = (props) => {
                     'hover:border-primary-100',
                     'focus:border-0',
                     {
-                        '!border-accent-red_orange hover:!border-accent-red_orange': error,
+                        '!border-red hover:!border-red': error,
                     },
                 )}
                 numberInputProps={{
@@ -45,7 +45,7 @@ const PhoneInput = (props) => {
                 countrySelectComponent={CountrySelect}
             />
             {error && errorMessage ? (
-                <Typography variant="bd-2b" className={cx('my-2', '!text-accent-red_orange')}>
+                <Typography variant="bd-2b" className={cx('my-2', '!text-red')}>
                     {errorMessage}
                 </Typography>
             ) : null}

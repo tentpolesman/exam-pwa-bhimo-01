@@ -66,9 +66,9 @@ const TextField = (props) => {
                     {
                         '!border-primary-200': isFocus && !hintType,
                         '!bg-neutral-50 border-none placeholder:!text-neutral-100': disabled,
-                        '!border-accent-red_orange hover:!border-accent-red_orange': hintType === 'error',
-                        '!border-accent-saffron_mango': hintType === 'warning',
-                        '!border-accent-eucalyptus-200': hintType === 'success',
+                        '!border-red hover:!border-red': hintType === 'error',
+                        '!border-yellow': hintType === 'warning',
+                        '!border-green-200': hintType === 'success',
                     },
                     className,
                 )}
@@ -110,9 +110,9 @@ const TextField = (props) => {
                             'pl-[6px]',
                             'text-neutral-300',
                             {
-                                '!text-accent-red_orange-100': hintType === 'error',
-                                '!text-accent-saffron_mango-200': hintType === 'warning',
-                                '!text-accent-eucalyptus-200': hintType === 'success',
+                                '!text-red-100': hintType === 'error',
+                                '!text-yellow-200': hintType === 'warning',
+                                '!text-green-200': hintType === 'success',
                             },
                             rightIconClasses,
                         )}
@@ -124,9 +124,9 @@ const TextField = (props) => {
                 <Typography
                     variant="bd-2b"
                     className={cx('absolute', '-bottom-[50%]', '-z-10', {
-                        '!text-accent-red_orange': hintType === 'error',
-                        '!text-accent-saffron_mango': hintType === 'warning',
-                        '!text-accent-eucalyptus-200': hintType === 'success',
+                        '!text-red': hintType === 'error',
+                        '!text-yellow': hintType === 'warning',
+                        '!text-green-200': hintType === 'success',
                     })}
                 >
                     {hintText}

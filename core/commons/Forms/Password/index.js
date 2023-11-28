@@ -74,16 +74,16 @@ const Password = (props) => {
                         <div
                             className={cx('px-4 py-[10px] flex items-center', {
                                 '!bg-neutral-100': errorPaswd.status.toLocaleLowerCase() === 'no password',
-                                'bg-accent-red_orange-50': errorPaswd.status.toLocaleLowerCase() === 'weak',
-                                'bg-accent-saffron_mango': errorPaswd.status.toLocaleLowerCase() === 'medium',
-                                'bg-accent-eucalyptus-100': errorPaswd.status.toLocaleLowerCase().indexOf('strong') !== -1,
+                                'bg-red-50': errorPaswd.status.toLocaleLowerCase() === 'weak',
+                                'bg-yellow': errorPaswd.status.toLocaleLowerCase() === 'medium',
+                                'bg-green-100': errorPaswd.status.toLocaleLowerCase().indexOf('strong') !== -1,
                             })}
                         >
                             <Typography className="">{`Password Strength: ${errorPaswd.status}`}</Typography>
                         </div>
                     </div>
                     {errorPaswd?.message ? (
-                        <Typography className="text-accent-red_orange" color="red">
+                        <Typography className="text-red" color="red">
                             {errorPaswd.message}
                         </Typography>
                     ) : null}
