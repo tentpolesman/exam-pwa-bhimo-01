@@ -96,6 +96,7 @@
             "@common_rangeslider": ["src/commons/RangeSlider", "core/commons/RangeSlider"],
             "@common_textfield": ["src/commons/TextField", "core/commons/TextField"],
             "@common_carousel": ["src/commons/Carousel", "core/commons/Carousel"],
+            "@common_badge": ["src/commons/Badge", "core/commons/Badge"],
 
             "@common_button/*": ["src/commons/Button/*", "core/commons/Button/*"],
             "@common_buttonqty/*": ["src/commons/ButtonQty/*", "core/commons/ButtonQty/*"],
@@ -115,6 +116,7 @@
             "@common_rangeslider/*": ["src/commons/RangeSlider/*", "core/commons/RangeSlider/*"],
             "@common_textfield/*": ["src/commons/TextField/*", "core/commons/TextField/*"],
             "@common_carousel/*": ["src/commons/carousel/*", "core/commons/Carousel/*"],
+            "@common_badge/*": ["src/commons/Badge/*", "core/commons/Badge/*"],
             
             "@common_image": ["src/commons/Image", "core/commons/Image"],
             "@common_image/*": ["src/commons/Image/*", "core/commons/Image/*"],

@@ -81,6 +81,23 @@ export const COLORS = {
             },
         },
     },
+    badge: {
+        red: {
+            50: '#FEF2F2',
+            600: '#DC2626',
+        },
+        purple: {
+            50: '#FFF4FD',
+        },
+        yellow: {
+            50: '#FFFBEB',
+            500: '#F59E0B',
+        },
+        green: {
+            50: '#ECFDF5',
+            600: '#059669',
+        },
+    },
 };
 export const LETTER_SPACING = {
     densest: '-0.3px',
