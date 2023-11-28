@@ -43,9 +43,11 @@ module.exports = {
             fontFamily: FONT_FAMILY,
             spacing: SPACING,
             boxShadow: {
-                'sm-300': `0px 0px 1px 0px ${COLORS.neutral[200]}40 inset, 0px 3px 5px 0px ${COLORS.neutral[200]}26`,
-                'md-500': `0px 0px 1px 0px ${COLORS.neutral[200]}40 inset, 0px 8px 12px 0px ${COLORS.neutral[200]}26`,
-                'lg-700': `0px 0px 1px 0px ${COLORS.neutral[200]}47 inset, 0px 10px 18px 0px ${COLORS.neutral[200]}26`,
+                base: `0px 1px 2px 0px ${COLORS.neutral[900]}0F, 0px 1px 3px 0px ${COLORS.neutral[900]}1A`,
+                sm: `0px 1px 2px 0px ${COLORS.neutral[900]}0D`,
+                md: `0px 2px 4px -1px ${COLORS.neutral[900]}0F, 0px 4px 6px -1px ${COLORS.neutral[900]}1A`,
+                lg: `0px 4px 6px -2px ${COLORS.neutral[900]}0D, 0px 10px 15px -3px ${COLORS.neutral[900]}1A`,
+                xl: `0px 10px 10px -5px ${COLORS.neutral[900]}0A, 0px 20px 25px -5px ${COLORS.neutral[900]}1A`,
             },
         },
         screens: {

@@ -37,12 +37,14 @@ const Button = (props) => {
             onClick={onClick}
             disabled={disabled || loading}
             className={cx(
+                'group',
+                'hover:shadow-lg',
                 {
-                    'bg-pwa-button_background hover:bg-pwa-button_background_hover focus:shadow-primary-100 active:bg-primary-400':
+                    'bg-pwa-button_background hover:bg-pwa-button_background_hover focus:shadow-primary-300 active:bg-primary':
                         variant === 'primary',
-                    'bg-secondary hover:bg-secondary-300 focus:shadow-secondary-100 active:bg-secondary-500': variant === 'secondary',
+                    'bg-primary-100 hover:bg-primary-200 focus:shadow-primary-300 active:bg-primary-200': variant === 'secondary',
                     // eslint-disable-next-line max-len
-                    'bg-neutral-white hover:shadow-[0_10px_15px_-3px] hover:shadow-black/10 focus:shadow-primary-100 active:shadow-[0_1px_3px_0] active:shadow-black/10':
+                    'bg-neutral-white hover:shadow-lg focus:shadow-primary-300 active:shadow-primary-300 active:shadow-[0_0_0_4px]':
                         variant === 'tertiary',
                     'bg-neutral-white border border-black hover:opacity-50 focus:shadow-neutral-100 focus:border-none': variant === 'outlined',
                     'bg-neutral-100 hover:bg-neutral-100 hover:shadow-none focus:shadow-none active:bg-neutral-100 active:shadow-none':
@@ -54,10 +56,11 @@ const Button = (props) => {
             <Typography
                 variant={textVariants[size]}
                 className={cx('flex', 'items-center', {
-                    '!text-pwa-button_text': variant === 'primary' || variant === 'secondary',
-                    '!text-primary': variant === 'tertiary',
+                    '!text-pwa-button_text': variant === 'primary',
+                    '!text-primary': variant === 'secondary' || variant === 'tertiary',
                     '!text-black': variant === 'outlined',
                     '!text-neutral-white': disabled,
+                    'group-active:!text-neutral-white': variant === 'secondary',
                     'flex-row-reverse': icon && position === 'right',
                 })}
             >
