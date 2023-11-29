@@ -1,10 +1,10 @@
 /* eslint-disable camelcase */
 import React from 'react';
-import BundleProductTypePrice from '@common_priceformat/components/BundleProductTypePrice';
-import OtherProductTypePrice from '@common_priceformat/components/OtherProductTypePrice';
-import SimpleProductTypePrice from '@common_priceformat/components/SimpleProductTypePrice';
+import BundleProductTypePrice from '@common_priceformat/BundleProductTypePrice';
+import ProductTypePrice from '@common_priceformat/ProductTypePrice';
 import { useReactiveVar } from '@apollo/client';
 import { currencyVar } from '@root/core/services/graphql/cache';
+import { useTranslation } from 'next-i18next';
 
 /**
  * Price Generator Component
@@ -13,7 +13,7 @@ import { currencyVar } from '@root/core/services/graphql/cache';
  * @returns {object} [priceTiers] - tier prices from magento GQL
  */
 
-const Price = ({
+const PriceFormat = ({
     priceRange = {},
     priceTiers = [],
     productType = 'SimpleProduct',
@@ -21,24 +21,13 @@ const Price = ({
     isQuickView = false,
     ...other
 }) => {
+    const { t } = useTranslation(['common']);
     const currencyCache = useReactiveVar(currencyVar);
 
     if (!priceRange) {
-        return <>Invalid price</>;
+        return <div className="price-format-invalid">{t('common:label:invalidPrice')}</div>;
     }
 
-    if (productType === 'SimpleProduct') {
-        return (
-            <SimpleProductTypePrice
-                priceRange={priceRange}
-                priceTiers={priceTiers}
-                currencyCache={currencyCache}
-                isPdp={isPdp}
-                isQuickView={isQuickView}
-                {...other}
-            />
-        );
-    }
     if (productType === 'BundleProduct' || productType === 'AwGiftCardProduct') {
         return (
             <BundleProductTypePrice
@@ -51,7 +40,7 @@ const Price = ({
     }
 
     return (
-        <OtherProductTypePrice
+        <ProductTypePrice
             productType={productType}
             priceRange={priceRange}
             priceTiers={priceTiers}
@@ -63,4 +52,4 @@ const Price = ({
     );
 };
 
-export default Price;
+export default PriceFormat;
