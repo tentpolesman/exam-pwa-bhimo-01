@@ -58,6 +58,8 @@ const generateSale = ({
 };
 
 const ProductLabel = ({
+    className,
+    classNameBadge,
     config,
     priceRange,
     specialFromDate,
@@ -71,13 +73,13 @@ const ProductLabel = ({
     const showSale = generateSale({ priceRange, specialFromDate, specialToDate });
 
     return (
-        <div className="product-label">
+        <div className={cx('product-label', className)}>
             {
                 (config.enabled && config.new.enabled && showLabelNew) && (
                     <Badge
                         bold
                         secondary
-                        className={cx('product-label-new')}
+                        className={cx('product-label-new', classNameBadge)}
                         label={t('common:title:new')}
                         fontSize={fontSizeBadge}
                     />
@@ -88,7 +90,7 @@ const ProductLabel = ({
                     <Badge
                         bold
                         danger
-                        className={cx('product-label-sale', showLabelNew && 'mt-[4px]')}
+                        className={cx('product-label-sale', showLabelNew && 'mt-[4px]', classNameBadge)}
                         label={`${t('common:title:sale')}!`}
                         fontSize={fontSizeBadge}
                     />
