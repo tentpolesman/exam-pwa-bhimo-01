@@ -8,6 +8,7 @@ import Popover from '@common_popover';
 import cx from 'classnames';
 import { useTranslation } from 'next-i18next';
 import React from 'react';
+import MagnifyingGlassIcon from '@heroicons/react/24/outline/MagnifyingGlassIcon';
 
 const CustomAutocomplete = (props) => {
     const {
@@ -112,9 +113,9 @@ const CustomAutocomplete = (props) => {
                         handleAutocomplete(e);
                     }}
                     ref={inputRef}
-                    iconProps={{
-                        rightIcon: 'search',
-                        rightIconClasses: 'text-neutral-300',
+                    rightIcon={<MagnifyingGlassIcon />}
+                    rightIconProps={{
+                        className: 'text-neutral-300 h-10 w-10',
                     }}
                     disabled={disabled}
                     label={label}

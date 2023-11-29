@@ -2,14 +2,12 @@
     "compilerOptions": {
         "lib": [
             "dom",
-            "es2015",
-            "es2016",
-            "es6",
-            "es2017"
+            "ESNext"
         ],
-        "target": "es2017",
-        "module": "es6",
-        "allowSyntheticDefaultImports": true,
+        "target": "ES2020",
+        "module": "ESNext",
+        "moduleResolution": "node",
+        "jsx": "react",
         "baseUrl": ".",
         "paths": {
             "@config": ["swift.config.js"],
@@ -76,7 +74,6 @@
 
             "@hook/*": ["src/hooks/*", "core/hooks/*"],
 
-            "@common_icon": ["src/commons/Icon", "core/commons/Icon"],
             "@common_button": ["src/commons/Button", "core/commons/Button"],
             "@common_buttonqty": ["src/commons/ButtonQty", "core/commons/ButtonQty"],
             "@common_breadcrumb": ["src/commons/Breadcrumb", "core/commons/Breadcrumb"],

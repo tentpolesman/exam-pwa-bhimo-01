@@ -1,7 +1,8 @@
-import Icon from '@common_icon';
 import Typography from '@common_typography';
 import cx from 'classnames';
 import { useState } from 'react';
+import { ExclamationTriangleIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
+import propTypes from 'prop-types';
 
 const TextField = (props) => {
     const {
@@ -12,33 +13,52 @@ const TextField = (props) => {
         className = '',
         label = '',
         hintProps = {},
-        iconProps = {},
         inputProps = {},
         type = 'text',
         onBlur = () => {},
         onKeyPress = () => {},
+        leftIcon,
+        leftIconProps,
+        rightIcon,
+        rightIconProps,
         ...restProps
     } = props;
 
     const [isFocus, setIsFocus] = useState(false);
 
     const { displayHintText = false, hintType = '', hintText = '' } = hintProps;
-    const {
-        leftIcon = '', leftIconClasses = '', rightIcon = '', rightIconClasses = '', ...restIconProps
-    } = iconProps;
+    const { className: leftIconClasses, ...otherLeftIconProps } = leftIconProps;
+    const { className: rightIconClasses, ...otherRightIconProps } = rightIconProps;
 
     const generateRightIcon = () => {
+        const rightIconClassName = cx(
+            'pr-4',
+            'pl-[6px]',
+            'text-neutral-300',
+            'h-10',
+            'w-10',
+            {
+                '!text-red-100': hintType === 'error',
+                '!text-yellow-200': hintType === 'warning',
+                '!text-green-200': hintType === 'success',
+            },
+            rightIconClasses,
+        );
+
         if (hintType === 'error') {
-            return 'warning';
+            return <ExclamationTriangleIcon className={rightIconClassName} {...otherRightIconProps} />;
         }
         if (hintType === 'warning') {
-            return 'error';
+            return <ExclamationTriangleIcon className={rightIconClassName} {...otherRightIconProps} />;
         }
         if (hintType === 'success') {
-            return 'task_alt';
+            return <CheckCircleIcon className={rightIconClassName} {...otherRightIconProps} />;
         }
 
-        return rightIcon;
+        return React.cloneElement(rightIcon, {
+            className: rightIconClassName,
+            ...otherRightIconProps,
+        });
     };
 
     if (onChange) inputProps.onChange = onChange;
@@ -74,7 +94,9 @@ const TextField = (props) => {
                 )}
                 {...restProps}
             >
-                {leftIcon ? <Icon icon={leftIcon} className={cx('pl-4', 'pr-[6px]', 'text-neutral-300', leftIconClasses)} /> : null}
+                {leftIcon
+                    ? React.cloneElement(leftIcon, { className: cx('pl-4', 'pr-[6px]', 'text-neutral-300', leftIconClasses), ...otherLeftIconProps })
+                    : null}
                 <input
                     type={type}
                     placeholder={placeholder}
@@ -102,23 +124,7 @@ const TextField = (props) => {
                     )}
                     {...restInputProps}
                 />
-                {rightIcon ? (
-                    <Icon
-                        icon={generateRightIcon()}
-                        className={cx(
-                            'pr-4',
-                            'pl-[6px]',
-                            'text-neutral-300',
-                            {
-                                '!text-red-100': hintType === 'error',
-                                '!text-yellow-200': hintType === 'warning',
-                                '!text-green-200': hintType === 'success',
-                            },
-                            rightIconClasses,
-                        )}
-                        {...restIconProps}
-                    />
-                ) : null}
+                {rightIcon ? generateRightIcon() : null}
             </div>
             {displayHintText && hintType && hintText ? (
                 <Typography
@@ -134,6 +140,50 @@ const TextField = (props) => {
             ) : null}
         </div>
     );
+};
+
+TextField.propTypes = {
+    placeholder: propTypes.string,
+    disabled: propTypes.bool,
+    onChange: propTypes.func,
+    value: propTypes.string,
+    className: propTypes.string,
+    label: propTypes.string,
+    hintProps: propTypes.shape({
+        displayHintText: propTypes.bool,
+        hintType: propTypes.string,
+        hintText: propTypes.string,
+    }),
+    inputProps: propTypes.object,
+    type: propTypes.string,
+    onBlur: propTypes.func,
+    onKeyPress: propTypes.func,
+    leftIcon: propTypes.element,
+    leftIconProps: propTypes.object,
+    rightIcon: propTypes.element,
+    rightIconProps: propTypes.object,
+};
+
+TextField.defaultProps = {
+    placeholder: '',
+    disabled: false,
+    onChange: () => {},
+    value: '',
+    className: '',
+    label: '',
+    hintProps: {
+        displayHintText: false,
+        hintType: '',
+        hintText: '',
+    },
+    inputProps: {},
+    type: 'text',
+    onBlur: () => {},
+    onKeyPress: () => {},
+    leftIcon: '',
+    leftIconProps: {},
+    rightIcon: '',
+    rightIconProps: {},
 };
 
 export default TextField;
