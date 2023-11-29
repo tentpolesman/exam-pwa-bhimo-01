@@ -89,6 +89,7 @@ const AddressView = (props) => {
                     className="addressForm-province-autoComplete"
                     disabled={!formik.values.country}
                     options={addressState.dropdown.region}
+                    useLabel
                     getOptionLabel={(option) => (option.name ? option.name : '')}
                     id="controlled-region"
                     value={!formik.values.region ? null : formik.values.region}

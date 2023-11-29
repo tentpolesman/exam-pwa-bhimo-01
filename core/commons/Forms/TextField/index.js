@@ -17,6 +17,7 @@ const TextField = (props) => {
         type = 'text',
         onBlur = () => {},
         onKeyPress = () => {},
+        onFocusGoogleMap = false,
         ...restProps
     } = props;
 
@@ -79,7 +80,19 @@ const TextField = (props) => {
                     type={type}
                     placeholder={placeholder}
                     disabled={disabled}
-                    onFocus={() => setIsFocus(true)}
+                    onFocus={(e) => {
+                        setIsFocus(true);
+                        if (onFocusGoogleMap) {
+                            e.target.setAttribute('autocomplete', 'off');
+                            e.target.setAttribute('autocorrect', 'false');
+                            e.target.setAttribute('aria-autocomplete', 'both');
+                            e.target.setAttribute('aria-haspopup', 'false');
+                            e.target.setAttribute('spellcheck', 'off');
+                            e.target.setAttribute('autocapitalize', 'off');
+                            e.target.setAttribute('autofocus', '');
+                            e.target.setAttribute('role', 'combobox');
+                        }
+                    }}
                     onBlur={() => {
                         setIsFocus(false);
                         onBlur();

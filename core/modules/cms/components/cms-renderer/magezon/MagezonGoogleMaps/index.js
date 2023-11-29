@@ -1,49 +1,66 @@
 /* eslint-disable no-nested-ternary */
-import IcubeMaps from '@common_googlemaps';
+import IcubeMapsAutocomplete from '@common_googlemaps_autocomplete';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
 const MagezonGoogleMaps = (props) => {
     // prettier-ignore
     const {
-        infobox_background_color, infobox_opened, infobox_text_color, infobox_width,
-        items, map_draggable, map_height, map_scrollwheel,
-        map_type, map_ui, map_width, map_zoom,
-        storeConfig,
+        infobox_background_color, items, map_draggable, map_zoom, storeConfig,
     } = props;
 
-    const elementDimension = {
-        height:
-            map_height && map_height.toString().includes('%') ? map_height : map_height.toString().includes('px') ? map_height : `${map_height}px`,
-        width: map_width && map_width.toString().includes('%') ? map_width : map_width.toString().includes('px') ? map_width : `${map_width}px`,
-    };
     const gmapKey = (storeConfig || {}).icube_pinlocation_gmap_key;
+    const geocodingKey = (storeConfig || {}).icube_pinlocation_geocoding_key;
     const center = items.find((item) => item.center === '1') || items[0];
-    const defaultOptions = {
-        disableDefaultUI: map_ui,
-        scrollwheel: map_scrollwheel,
-        draggable: map_draggable,
-        mapTypeId: map_type,
-    };
-    const infoBoxStyles = {
-        width: `${infobox_width}px`,
-        color: infobox_text_color,
-    };
     const updatedItems = [...items.filter((item) => item.center !== '1'), center];
+
+    const [mapPosition, setMapPosition] = React.useState({
+        lat: parseFloat(center.lat),
+        lng: parseFloat(center.lng),
+    });
+
+    const handleDragPosition = (value) => {
+        setMapPosition(value);
+    };
+
+    const ValidationAddress = {
+        addressDetail: Yup.string(),
+        country: Yup.string().nullable(),
+        region: Yup.string().nullable(),
+        city: Yup.string().nullable(),
+    };
+
+    const InitialValue = {
+        addressDetail: '',
+        country: {
+            id: 'ID',
+            full_name_locale: 'Indonesia',
+        },
+        region: '',
+        city: '',
+    };
+
+    const formik = useFormik({
+        initialValues: InitialValue,
+        validationSchema: Yup.object().shape(ValidationAddress),
+        onSubmit: async () => {},
+    });
 
     return (
         <>
             <div className="mgz-google-maps">
                 {gmapKey && (
-                    <IcubeMaps
+                    <IcubeMapsAutocomplete
                         gmapKey={gmapKey}
-                        containerElement={<div style={{ ...elementDimension }} />}
-                        searchBox={false}
+                        geocodingKey={geocodingKey}
                         markers={updatedItems}
                         defaultZoom={map_zoom}
-                        defaultOptions={defaultOptions}
-                        infoBoxStyle={infoBoxStyles}
-                        infoBoxDefaultOpen={infobox_opened}
-                        secureUrl={storeConfig.secure_base_media_url}
-                        center={{ lat: parseFloat(center.lat), lng: parseFloat(center.lng) }}
+                        mapPosition={mapPosition}
+                        dragMarkerDone={handleDragPosition}
+                        markerIcon={storeConfig.secure_base_media_url}
+                        useCustomMarkerIcon={storeConfig.secure_base_media_url !== ''}
+                        markerDraggable={map_draggable}
+                        formik={formik}
                     />
                 )}
             </div>
