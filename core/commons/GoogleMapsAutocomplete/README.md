@@ -1,47 +1,6 @@
 # Description
 
-AutoComplete
-
-## How To Use
-
-**Sample Code**
-```node
-import { getCountries as getAllCountries } from '@core_modules/customer/services/graphql';
-import CommonAutocomplete from '@common_autocomplete';
-
-const Component = () => {
-    const [getCountries, responCountries] = getAllCountries();
-
-    React.useEffect(() => {
-        console.log(responCountries);
-    }, [responCountries]);
-
-    React.useEffect(() => {
-        getCountries();
-    }, []);
-
-    return (
-        <>
-            {responCountries && responCountries.data && responCountries.data.countries && (
-                <CommonAutocomplete
-                    value={sampleValue}
-                    onChange={setSampleValue}
-                    className="addressForm-country-autoComplete"
-                    enableCustom={false}
-                    loading={responCountries.loading}
-                    itemOptions={responCountries && responCountries.data && responCountries.data.countries}
-                    name="country"
-                    primaryKey="id"
-                    labelKey="full_name_locale"
-                    useKey
-                />
-            )}
-        </>
-    );
-}
-
-export default Component;
-```
+GoogleMapsAutocomplete
 
 ### Properties
 | Props       | Required | Description | Type |
