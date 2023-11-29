@@ -51,8 +51,8 @@ const Content = (props) => {
         );
     } else {
         const Config = {
-            title: 'PWA Homepage',
-            headerTitle: 'PWA Homepage',
+            title: storeConfig && storeConfig.store_name ? storeConfig.store_name : 'PWA Homepage',
+            headerTitle: storeConfig && storeConfig.store_name ? storeConfig.store_name : 'PWA Homepage',
             bottomNav: false,
             header: 'relative', // available values: "absolute", "relative", false (default)
         };
