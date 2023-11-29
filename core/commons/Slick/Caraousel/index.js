@@ -4,6 +4,8 @@
 import React, { useState } from 'react';
 import Slider from 'react-slick';
 import classNames from 'classnames';
+import ChevronLeft from '@heroicons/react/20/solid/ChevronLeftIcon';
+import ChevronRight from '@heroicons/react/20/solid/ChevronRightIcon';
 
 const Caraousel = (props) => {
     const {
@@ -81,7 +83,7 @@ const Caraousel = (props) => {
     };
 
     // eslint-disable-next-line max-len
-    const arrow = 'text-[1.5rem] bg-[rgba(255,255,255,0.5)] absolute hidden group-hover:flex flex-col justify-center items-center p-[10px] rouded-[5px] text-center pl-[10px] top-[calc(50%-1rem)] w-[40px] h-[40px] cursor-pointer hover:bg-pwa-primary hover:text-white xs:hidden';
+    const arrow = 'text-[1.5rem] bg-neutral-100 shadow-md absolute hidden group-hover:flex flex-col justify-center items-center p-[10px] rouded-[5px] text-center pl-[10px] top-[calc(50%-1rem)] w-[40px] h-[40px] cursor-pointer hover:bg-pwa-primary hover:text-white xs:hidden';
 
     return (
         <div className={classNames('carousel', 'w-full h-full relative xs:max-w-[100vw] sm:h-auto group', className)}>
@@ -96,12 +98,11 @@ const Caraousel = (props) => {
                 showArrow ? (
                     <>
                         <div className={classNames(arrow, 'left-[20px]')} onClick={handleLeftArrow}>
-                            <i class="fas fa-chevron-left" />
+                            <ChevronLeft className="w-6 h-6 text-primary" />
 
                         </div>
                         <div className={classNames(arrow, 'right-[20px]')} onClick={handleRightArrow}>
-                            <i class="fas fa-chevron-right" />
-
+                            <ChevronRight className="w-6 h-6 text-primary" />
                         </div>
                     </>
                 ) : null

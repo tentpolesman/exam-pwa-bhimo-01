@@ -70,7 +70,7 @@ const Dialog = dynamic(() => import('@common_dialog'), { ssr: false });
 // const GlobalPromoMessage = dynamic(() => import('@core_modules/theme/components/globalPromo'), { ssr: false });
 // const BottomNavigation = dynamic(() => import('@common_bottomnavigation'), { ssr: false });
 // const HeaderMobile = dynamic(() => import('@common_headermobile'), { ssr: false });
-const ScrollToTop = dynamic(() => import('@common_scrolltotop'), { ssr: false });
+// const ScrollToTop = dynamic(() => import('@common_scrolltotop'), { ssr: false });
 // const Footer = dynamic(() => import('@common_footer'), { ssr: false });
 // const RestrictionPopup = dynamic(() => import('@common_restrictionPopup'), { ssr: false });
 // const NewsletterPopup = dynamic(() => import('@core_modules/theme/components/newsletterPopup'), { ssr: false });
@@ -621,7 +621,7 @@ const Layout = (props) => {
                     <NewsletterPopup t={t} storeConfig={storeConfig} pageConfig={pageConfig} isLogin={isLogin} />
                 )} */}
                 {children}
-                <ScrollToTop {...props} />
+                {/* <ScrollToTop {...props} /> */}
             </main>
 
             {/* CHAT FEATURES */}

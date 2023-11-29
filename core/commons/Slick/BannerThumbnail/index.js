@@ -8,14 +8,14 @@
 import React, { useState } from 'react';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 import classNames from 'classnames';
-import IconButton from '@material-ui/core/IconButton';
-import Plus from '@material-ui/icons/Add';
-import Min from '@material-ui/icons/Minimize';
 import Slider from 'react-slick';
 import ImageSlide from '@common_slick/Banner/ImageSlider';
 import Image from '@common_image';
+import Plus from '@heroicons/react/24/outline/PlusIcon';
+import Min from '@heroicons/react/24/outline/MinusIcon';
+import Button from '@common_button';
 
-const Banner = ({
+const BannerThumbnail = ({
     data = [],
     height,
     width,
@@ -51,10 +51,10 @@ const Banner = ({
     };
 
     const classCarousel = (customClassCaraousel && customClassCaraousel !== '')
-        ? customClassCaraousel : 'w-full h-full relative md:w-[calc(100%-150px)]';
+        ? customClassCaraousel : 'relative md:w-[calc(100%-150px)] w-full h-full lg:w-full';
 
     const customProductCaraosel = (customProduct && customProduct !== '')
-        ? customProduct : 'w-[99%] h-auto xs:w-full sm:w-auto sm-h[calc(100vh-100px)]';
+        ? customProduct : 'w-[99%] h-auto xs:w-full sm:w-auto sm:h-[calc(100vh-100px)]';
 
     const settings = {
         // className: thumbnail ? 'slick-thumbnail' : 'slick-pwa',
@@ -123,12 +123,18 @@ const Banner = ({
                                         {({ zoomIn, zoomOut, ...rest }) => (
                                             <div>
                                                 <div className="flex flex-col absolute z-50">
-                                                    <IconButton className="m-10 bg-[#B4B4B4] text-[3rem]" onClick={() => zoomIn()}>
-                                                        <Plus color="inherit" fontSize="inherit" />
-                                                    </IconButton>
-                                                    <IconButton className="m-10 bg-[#B4B4B4] text-[3rem]" onClick={() => zoomOut()}>
-                                                        <Min color="inherit" fontSize="inherit" />
-                                                    </IconButton>
+                                                    <Button
+                                                        className="m-10 bg-[#B4B4B4] text-[3rem]"
+                                                        onClick={() => zoomIn()}
+                                                        icon={<Plus className="text-primary" />}
+                                                        iconOnly
+                                                    />
+                                                    <Button
+                                                        className="m-10 bg-[#B4B4B4] text-[3rem]"
+                                                        onClick={() => zoomOut()}
+                                                        icon={<Min className="text-primary" />}
+                                                        iconOnly
+                                                    />
                                                 </div>
                                                 <TransformComponent
                                                     wrapperStyle={{ width: '100%' }}
@@ -204,4 +210,4 @@ const Banner = ({
         </div>
     );
 };
-export default Banner;
+export default BannerThumbnail;
