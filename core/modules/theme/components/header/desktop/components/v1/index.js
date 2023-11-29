@@ -14,14 +14,8 @@ const ProductCompareIcon = dynamic(() => import('@core_modules/catalog/plugins/P
 const ShoppingBagIcon = dynamic(() => import('@plugin_shoppingbag'));
 const NotificationBell = dynamic(() => import('@plugin_notificationbell'));
 // const DesktopInstallApp = dynamic(() => import('@core_modules/theme/components/custom-install-popup/desktop'), { ssr: false });
-const GoogleMaps = dynamic(() => import('@common_googlemaps'), { ssr: false });
 const Autocomplete = dynamic(() => import('@core_modules/theme/components/header/desktop/components/autocomplete'), { ssr: false });
 const TopMenu = dynamic(() => import('@core_modules/theme/components/header/desktop/components/mtop'), { ssr: false });
-
-import RangeSlider from '@common_rangeslider';
-
-// import { useFormik } from 'formik';
-// import * as Yup from 'yup';
 
 const ViewTopNavigation = (props) => {
     const {
@@ -44,22 +38,6 @@ const ViewTopNavigation = (props) => {
         installMessage = 'Install',
         enablePopupInstallation = false,
     } = props;
-
-    const [mapPosition, setMapPosition] = React.useState({
-        lat: parseFloat(0),
-        lng: parseFloat(0),
-    });
-
-    const handleDragPosition = (value) => {
-        setMapPosition(value);
-    };
-
-    const [priceRange, setPriceRange] = React.useState([0, 0]);
-
-    const [price, setPrice] = React.useState([0, 100000]);
-
-    console.log('priceRange', priceRange);
-    console.log('price', price);
 
     return (
         <div id="header-inner">
@@ -120,30 +98,6 @@ const ViewTopNavigation = (props) => {
                         </div>
                     </div>
                 </div>
-                {/* <div>
-                    <GoogleMaps
-                        // gmapKey="AIzaSyDNnh0yPa2AS1_9rGdM_4UA_eBSQcQA5VU"
-                        gmapKey="AIzaSyBWQtbcH4fW9emnyYPAuFiZ6wVkV_SzmzE"
-                        // geocodingKey="AIzaSyBWQtbcH4fW9emnyYPAuFiZ6wVkV_SzmzE"
-                        // geocodingKey="AIzaSyDNnh0yPa2AS1_9rGdM_4UA_eBSQcQA5VU"
-                        // geocodingKey={geocodingKey}
-                        // markers={updatedItems}
-                        // defaultZoom={map_zoom}
-                        mapPosition={mapPosition}
-                        dragMarkerDone={handleDragPosition}
-                        // markerIcon={storeConfig.secure_base_media_url}
-                        // useCustomMarkerIcon={storeConfig.secure_base_media_url !== ''}
-                        // markerDraggable={map_draggable}
-                        // formik={formik}
-                        containerStyle={{
-                            width: '100%',
-                            height: '200px',
-                            marginTop: '1rem',
-                        }}
-                        mode="map-only"
-                    />
-                </div> */}
-                <div>{/* <RangeSlider label="Price" maxValue={120} value={price} onChange={setPriceRange} storeConfig={storeConfig} /> */}</div>
             </main>
             <style jsx>
                 {`
