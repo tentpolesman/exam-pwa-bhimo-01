@@ -48,11 +48,11 @@ export const frontendConfig = (pwaConfig) => {
                 --color-pwa-button_border_color: ${button_border_color || COLORS.primary.DEFAULT};
                 --color-pwa-button_border_hover_color: ${button_border_hover_color || COLORS.primary[100]};
 
-                --color-pwa-font_color: ${font_color || COLORS.neutral[500]};
+                --color-pwa-font_color: ${font_color || COLORS.neutral.DEFAULT};
                 --font-pwa-default_font: ${(default_font && default_font !== '0') || 'Inter'};
                 --font-pwa-heading_font: ${(heading_font && heading_font !== '0') || 'Inter'};
 
-                --color-pwa-link_color: ${link_color || COLORS.neutral[500]};
+                --color-pwa-link_color: ${link_color || COLORS.neutral.DEFAULT};
                 --color-pwa-link_hover_color: ${link_hover_color || COLORS.neutral.DEFAULT};
                 --font-pwa-link_font_decoration: ${link_font_decoration || 'underline'};
                 --font-pwa-link_font_hover_decoration: ${link_font_hover_decoration || 'underline'};
