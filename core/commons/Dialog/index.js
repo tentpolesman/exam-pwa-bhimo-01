@@ -32,7 +32,10 @@ const Dialog = ({
         >
             <div className={cx(
                 'section-dialog-container',
-                'lg:max-w-md',
+                'shadow-xl',
+                'sm:max-w-[328px]',
+                'md:max-w-[600px]',
+                'lg:max-w-[792px]',
                 'md:m-4 xs:m-4 xs:m-4',
                 'w-[100%]',
             )}
@@ -42,9 +45,14 @@ const Dialog = ({
                     title && (
                         <div className={cx(
                             'dialog-title',
-                            'bg-neutral-50',
+                            'bg-neutral-white',
+                            'text-neutral-300',
                             'rounded-t',
-                            'p-[16px]',
+                            'font-semibold',
+                            'text-[16px]',
+                            'px-[32px]',
+                            'pt-[32px]',
+                            'pb-[4px]',
                         )}
                         >
                             {title}
@@ -56,8 +64,13 @@ const Dialog = ({
                     content && (
                         <div className={cx(
                             'dialog-content',
+                            'bg-neutral-white',
+                            'text-neutral-600',
                             'bg-white',
-                            'p-[16px]',
+                            'pt-[4px]',
+                            'px-[32px]',
+                            'pb-[32px]',
+                            'text-[14px]',
                         )}
                         >
                             {content}
@@ -70,10 +83,15 @@ const Dialog = ({
                         <div className={cx(
                             'dialog-action',
                             'bg-white',
-                            'p-[16px]',
+                            'px-[24px]',
+                            'py-[16px]',
                             'rounded-b',
-                            'text-right',
-                            'border-t-[1px]',
+                            'xs:text-center',
+                            'sm:text-center',
+                            'md:text-right',
+                            'xs:flex sm:flex md:block',
+                            'gap-[16px]',
+                            'bg-neutral-100',
                         )}
                         >
                             {
@@ -81,7 +99,8 @@ const Dialog = ({
                                     <Button
                                         variant="outlined"
                                         onClick={negativeAction}
-                                        className="py-[8px]"
+                                        className="py-[12px] px-[22px] !border-0 xs:w-[50%] sm:w-[50%] md:w-auto"
+                                        classNameText="justify-center"
                                         {...positiveProps}
                                     >
                                         {negativeLabel}
@@ -92,7 +111,8 @@ const Dialog = ({
                                 positiveAction && (
                                     <Button
                                         onClick={positiveAction}
-                                        className="py-[8px] ml-[10px]"
+                                        className="py-[12px] px-[22px] border-0 xs:w-[50%] sm:w-[50%] md:w-auto md:ml-[16px]"
+                                        classNameText="justify-center"
                                         {...negativeProps}
                                     >
                                         {positiveLabel}

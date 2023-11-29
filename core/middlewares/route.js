@@ -123,7 +123,7 @@ const routeMiddleware = (params) => {
         const allow = availableRoute(pathname.trim().split('?')[0]);
         if (!allow) {
             if (typeof window !== 'undefined') {
-                window.location.href = getStoreHost(window.APP_ENV);
+                window.location.href = getStoreHost(getAppEnv());
             } else {
                 res.statusCode = 302;
                 res.setHeader('Location', getStoreHost(getAppEnv()));
@@ -133,7 +133,7 @@ const routeMiddleware = (params) => {
             const currentUrl = window.sessionStorage.getItem('currentUrl');
             const prevUrl = window.sessionStorage.getItem('prevUrl');
             if (destinationUrl === '/' && currentUrl === '/' && prevUrl === '/') {
-                window.location.href = getStoreHost(window.APP_ENV);
+                window.location.href = getStoreHost(getAppEnv());
             }
         }
     }

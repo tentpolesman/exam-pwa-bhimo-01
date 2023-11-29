@@ -27,8 +27,7 @@ import TextField from '@common_forms/TextField';
 | hintProps.displayHintText       | false    | set to display the hint text, defaults to false | bool |
 | hintProps.hintType       | false    | set the type of the hint, can choose from 'error', 'warning', 'success', and '', defaults to '' | string |
 | hintProps.hintText       | false    | set the text of the hint | string |
-| iconProps       | false    | set the props of button icon | obj |
-| iconProps.leftIcon       | false    | name of the left icon, refer to https://fonts.google.com/icons | string |
-| iconProps.leftIconClasses       | false    | additional classes for the left icon | string |
-| iconProps.rightIcon       | false    | name of the right icon, refer to https://fonts.google.com/icons | string |
-| iconProps.rightIconClasses       | false    | additional classes for the right icon | string |
+| leftIcon       | false    | Icon from [heroicon]("https://unpkg.com/browse/@heroicons/react@2.0.18/24/outline/") | element |
+| leftIconProps       | false    | additional object props for leftIcon like `className`, etc | object |
+| rightIcon       | false    | Icon from [heroicon]("https://unpkg.com/browse/@heroicons/react@2.0.18/24/outline/") | element |
+| rightIconProps      | false    | additional object props for leftIcon like `className`, etc | object |

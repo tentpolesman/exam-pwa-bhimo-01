@@ -17,7 +17,7 @@
     "generate-certs": "mkdir certs && openssl req -x509 -days 365 -newkey rsa:2048 -nodes -sha256 -keyout certs/privateKey.key -out certs/certificate.crt",
     "build": "concurrently \"yarn assets:build\" \"next build\"",
     "export": "next export",
-    "clean": "cross-env imraf ./.next ./out",
+    "clean": "cross-env rimraf ./.next ./out",
     "release": "cross-env otenv/config NODE_ENV=production npm run clean && npm run build && npm run export",
     "test": "jest --watch",
     "test:ci": "jest --ci"
@@ -31,6 +31,7 @@
     "@graphql-tools/schema": "^10.0.0",
     "@graphql-tools/stitch": "^9.0.3",
     "@graphql-tools/wrap": "^10.0.1",
+    "@heroicons/react": "^2.0.18",
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.49",

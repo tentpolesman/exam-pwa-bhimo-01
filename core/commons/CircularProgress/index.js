@@ -1,38 +1,35 @@
 import cx from 'classnames';
 
 const CircularProgress = (props) => {
-    const { className = {}, size = 'regular', color = 'primary' } = props;
+    const { className = {}, size = 'large', color = 'primary' } = props;
 
     let sizeClasses;
     let colorClasses;
 
     switch (size) {
     case 'small':
-        sizeClasses = 'text-sm';
-        break;
-    case 'regular':
-        sizeClasses = 'text-2md';
+        sizeClasses = 'w-[20px] h-[20px]';
         break;
     case 'large':
-        sizeClasses = 'text-xl';
+        sizeClasses = 'w-[44px] h-[44px]';
         break;
     default:
-        sizeClasses = 'w-5 h-5';
+        sizeClasses = 'w-[44px] h-[44px]';
         break;
     }
 
     switch (color) {
     case 'primary':
-        colorClasses = 'text-primary';
+        colorClasses = 'text-primary-700';
         break;
     case 'secondary':
-        colorClasses = 'text-secondary';
+        colorClasses = 'text-secondary-700';
         break;
     case 'neutral':
-        colorClasses = 'text-neutral';
+        colorClasses = 'text-neutral-700';
         break;
     default:
-        colorClasses = 'text-primary';
+        colorClasses = 'text-primary-700';
         break;
     }
 
@@ -53,15 +50,15 @@ const CircularProgress = (props) => {
                             rotate: 0deg;
                         }
                         25% {
-                            opacity: 0.75;
+                            opacity: 0.9;
                             rotate: 90deg;
                         }
                         50% {
-                            opacity: 0.5;
+                            opacity: 0.8;
                             rotate: 180deg;
                         }
                         75% {
-                            opacity: 0.75;
+                            opacity: 0.9;
                             rotate: 270deg;
                         }
                         100% {

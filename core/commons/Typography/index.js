@@ -18,13 +18,13 @@ const Typography = (props) => {
     }
 
     if (variant === 'h-xl') {
-        return <h5 {...propsExtra} className={cx('text-2xl', 'font-bold', 'leading-3xl', 'tracking-densest', classes)}>{children}</h5>;
+        return <h5 {...propsExtra} className={cx('text-2xl', 'font-bold', 'leading-3xl', 'tracking-tighter', classes)}>{children}</h5>;
     }
     if (variant === 'h1') {
-        return <h1 {...propsExtra} className={cx('text-xl', 'font-bold', 'leading-2xl', 'tracking-denser', classes)}>{children}</h1>;
+        return <h1 {...propsExtra} className={cx('text-xl', 'font-bold', 'leading-2xl', 'tracking-tight', classes)}>{children}</h1>;
     }
     if (variant === 'h2') {
-        return <h2 {...propsExtra} className={cx('text-lg', 'font-bold', 'leading-2xl', 'tracking-denser', classes)}>{children}</h2>;
+        return <h2 {...propsExtra} className={cx('text-lg', 'font-bold', 'leading-2xl', 'tracking-tight', classes)}>{children}</h2>;
     }
     if (variant === 'h3') {
         return <h3 {...propsExtra} className={cx('text-2md', 'font-semibold', 'leading-2lg', 'tracking-normal', classes)}>{children}</h3>;
@@ -39,6 +39,9 @@ const Typography = (props) => {
         return <span {...propsExtra} className={cx('text-2md', 'font-bold', 'leading-2lg', 'tracking-normal', classes)}>{children}</span>;
     }
     if (variant === 'bd-1a') {
+        return <span {...propsExtra} className={cx('text-2md', 'font-medium', 'leading-2lg', 'tracking-normal', classes)}>{children}</span>;
+    }
+    if (variant === 'bd-1b') {
         return <span {...propsExtra} className={cx('text-2md', 'font-normal', 'leading-2lg', 'tracking-normal', classes)}>{children}</span>;
     }
     if (variant === 'bd-2') {
@@ -57,7 +60,7 @@ const Typography = (props) => {
         return <span {...propsExtra} className={cx('text-sm', 'font-medium', 'leading-md', 'tracking-normal', classes)}>{children}</span>;
     }
     if (variant === 'bd-3b') {
-        return <span {...propsExtra} className={cx('text-sm', 'font-normal', 'leading-md', 'tracking-normal', classes)}>{children}</span>;
+        return <span {...propsExtra} className={cx('text-sm', 'font-light', 'leading-md', 'tracking-normal', classes)}>{children}</span>;
     }
     if (variant === 'p-1') {
         return <p {...propsExtra} className={cx('text-2md', 'font-normal', 'leading-xl', 'tracking-normal', classes)}>{children}</p>;

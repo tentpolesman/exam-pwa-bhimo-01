@@ -30,34 +30,12 @@ module.exports = {
                     button_border_hover: 'var(--color-pwa-button_border_hover_color)',
                     button_disabled_text: 'var(--color-pwa-button_disabled_text_color)',
                     button_disabled_background: 'var(--color-pwa-button_disabled_background_color)',
+                    badge: COLORS.badge,
                 },
                 // END store config value
-                primary: {
-                    ...COLORS.primary,
-                    DEFAULT: COLORS.primary[300],
-                },
-                secondary: {
-                    ...COLORS.secondary,
-                    DEFAULT: COLORS.secondary[400],
-                },
-                neutral: {
-                    ...COLORS.neutral,
-                    DEFAULT: COLORS.neutral[400],
-                },
-                accent: {
-                    eucalyptus: {
-                        ...COLORS.accent.eucalyptus,
-                        DEFAULT: COLORS.accent.eucalyptus[300],
-                    },
-                    saffron_mango: {
-                        ...COLORS.accent.saffron_mango,
-                        DEFAULT: COLORS.accent.saffron_mango[300],
-                    },
-                    red_orange: {
-                        ...COLORS.accent.red_orange,
-                        DEFAULT: COLORS.accent.red_orange[200],
-                    },
-                },
+                primary: COLORS.primary,
+                secondary: COLORS.secondary,
+                neutral: COLORS.neutral,
             },
             letterSpacing: LETTER_SPACING,
             lineHeight: LINE_HEIGHT,
@@ -65,12 +43,11 @@ module.exports = {
             fontFamily: FONT_FAMILY,
             spacing: SPACING,
             boxShadow: {
-                'sm-300-inset': `0px 0px 1px 0px #${COLORS.neutral[200]}40 inset`,
-                'sm-300': `0px 3px 5px 0px #${COLORS.neutral[200]}26`,
-                'md-300-inset': `0px 0px 1px 0px #${COLORS.neutral[200]}40 inset`,
-                'md-300': `0px 8px 12px 0px #${COLORS.neutral[200]}26`,
-                'lg-300-inset': `0px 0px 1px 0px #${COLORS.neutral[200]}47 inset`,
-                'lg-300': `0px 10px 18px 0px #${COLORS.neutral[200]}26`,
+                base: `0px 1px 2px 0px ${COLORS.neutral[900]}0F, 0px 1px 3px 0px ${COLORS.neutral[900]}1A`,
+                sm: `0px 1px 2px 0px ${COLORS.neutral[900]}0D`,
+                md: `0px 2px 4px -1px ${COLORS.neutral[900]}0F, 0px 4px 6px -1px ${COLORS.neutral[900]}1A`,
+                lg: `0px 4px 6px -2px ${COLORS.neutral[900]}0D, 0px 10px 15px -3px ${COLORS.neutral[900]}1A`,
+                xl: `0px 10px 10px -5px ${COLORS.neutral[900]}0A, 0px 20px 25px -5px ${COLORS.neutral[900]}1A`,
             },
         },
         screens: {
@@ -79,6 +56,11 @@ module.exports = {
             md: `${BREAKPOINTS.md}px`,
             lg: `${BREAKPOINTS.lg}px`,
             xl: `${BREAKPOINTS.xl}px`,
+        },
+        colors: {
+            red: COLORS.red,
+            yellow: COLORS.yellow,
+            green: COLORS.green,
         },
     },
     plugins: [

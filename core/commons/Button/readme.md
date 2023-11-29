@@ -27,7 +27,6 @@ import Button from '@common_button';
 | loading       | false    | set loading state, defaults to false | bool |
 | onClick       | false    | click handler | func |
 | size       | false    | size of the button, defaults to 'md' | string |
-| iconProps       | false    | set the props of button icon | obj |
-| iconProps.icon       | false    | name of the icon, refer to https://fonts.google.com/icons | string |
-| iconProps.position       | false    | position of the icon, defaults to 'right' | string |
-| iconProps.iconOnly       | false    | show icon only, defaults to false | bool |
+| icon | false | Icon from [heroicon]("https://unpkg.com/browse/@heroicons/react@2.0.18/24/outline/")  | element |
+|iconPosition | false | position of icon (left or right), default left | string |
+| iconOnly | false | render button icon only | bool |

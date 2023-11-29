@@ -28,12 +28,6 @@ const CheckBox = (props) => {
         }
     }, [useLoadMore, more, data]);
 
-    const labelVariant = {
-        sm: 'bd-2b',
-        md: 'bd-1a',
-        lg: 'bd-1',
-    };
-
     // handle load more and load less list data
     const handleMore = () => {
         setMore(more + 7);
@@ -92,15 +86,16 @@ const CheckBox = (props) => {
                                 'text-primary',
                                 'border-solid',
                                 'border-[1px]',
-                                'border-neutral-150',
-                                'hover:border-neutral-300',
+                                'border-neutral-400',
+                                'hover:border-primary',
+                                'hover:bg-primary-100',
                                 'focus:ring-0',
                                 'focus:border-primary',
                                 'focus:shadow-[0_0_0_4px]',
-                                'focus:shadow-primary-50',
+                                'focus:shadow-primary-100',
                                 'focus:ring-offset-0',
                                 {
-                                    'hover:border-neutral-150': disabled,
+                                    'hover:!border-neutral-400 hover:!bg-neutral-white': disabled,
                                     'w-5 h-5': size === 'md',
                                     'w-6 h-6': size === 'lg',
                                 },
@@ -111,7 +106,14 @@ const CheckBox = (props) => {
                             checked={selected.indexOf(item.value) !== -1}
                         />
                         <label>
-                            <Typography variant={labelVariant[size]}>{item.label}</Typography>
+                            <Typography
+                                variant="bd-1b"
+                                className={cx({
+                                    '!text-neutral-300': disabled,
+                                })}
+                            >
+                                {item.label}
+                            </Typography>
                         </label>
                     </div>
                 ))}

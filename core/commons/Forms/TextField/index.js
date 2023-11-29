@@ -1,7 +1,8 @@
-import Icon from '@common_icon';
 import Typography from '@common_typography';
 import cx from 'classnames';
 import { useState } from 'react';
+import { ExclamationTriangleIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
+import propTypes from 'prop-types';
 
 const TextField = (props) => {
     const {
@@ -12,40 +13,60 @@ const TextField = (props) => {
         className = '',
         label = '',
         hintProps = {},
-        iconProps = {},
+        inputProps = {},
         type = 'text',
+        onBlur = () => {},
+        onKeyPress = () => {},
+        leftIcon,
+        leftIconProps,
+        rightIcon,
+        rightIconProps,
+        onFocusGoogleMap = false,
+        ...restProps
     } = props;
 
     const [isFocus, setIsFocus] = useState(false);
 
     const { displayHintText = false, hintType = '', hintText = '' } = hintProps;
-    const {
-        leftIcon = '', leftIconClasses = '', rightIcon = '', rightIconClasses = '',
-    } = iconProps;
+    const { className: leftIconClasses, ...otherLeftIconProps } = leftIconProps;
+    const { className: rightIconClasses, ...otherRightIconProps } = rightIconProps;
 
     const generateRightIcon = () => {
+        const rightIconClassName = cx(
+            'pr-4',
+            'pl-[6px]',
+            'text-neutral-300',
+            'h-10',
+            'w-10',
+            {
+                '!text-red-600': hintType === 'error',
+                '!text-green': hintType === 'success',
+            },
+            rightIconClasses,
+        );
+
         if (hintType === 'error') {
-            return 'warning';
-        }
-        if (hintType === 'warning') {
-            return 'error';
+            return <ExclamationTriangleIcon className={rightIconClassName} {...otherRightIconProps} />;
         }
         if (hintType === 'success') {
-            return 'task_alt';
+            return <CheckCircleIcon className={rightIconClassName} {...otherRightIconProps} />;
         }
 
-        return rightIcon;
+        return React.cloneElement(rightIcon, {
+            className: rightIconClassName,
+            ...otherRightIconProps,
+        });
     };
 
-    const inputProps = {};
-    if (value) inputProps.value = value;
     if (onChange) inputProps.onChange = onChange;
+    if (onKeyPress) inputProps.onKeyPress = onKeyPress;
+    const { className: inputClassName, ...restInputProps } = inputProps;
 
     return (
-        <div className="flex flex-col">
+        <div className="flex flex-col relative">
             {label ? (
                 <label className="mb-2">
-                    <Typography variant="h4">{label}</Typography>
+                    <Typography>{label}</Typography>
                 </label>
             ) : null}
             <div
@@ -55,58 +76,72 @@ const TextField = (props) => {
                     'w-[320px]',
                     'bg-neutral-white',
                     'border-[1px]',
-                    'border-neutral-100',
+                    'border-neutral-300',
                     'rounded-lg',
                     'text-md',
-                    'hover:border-primary-100',
+                    'hover:border-neutral-400',
+                    'focus:border-primary focus:shadow-[0_0_0_4px] focus:shadow-primary-200',
                     {
-                        '!border-primary-200': isFocus && !hintType,
+                        '!border-primary': isFocus && !hintType,
                         '!bg-neutral-50 border-none placeholder:!text-neutral-100': disabled,
-                        '!border-accent-red_orange hover:!border-accent-red_orange': hintType === 'error',
-                        '!border-accent-saffron_mango': hintType === 'warning',
-                        '!border-accent-eucalyptus-200': hintType === 'success',
+                        '!border-red hover:!border-red focus:shadow-red-200': hintType === 'error',
+                        '!border-green hover:!border-green focus:shadow-green-100': hintType === 'success',
                     },
                     className,
                 )}
+                {...restProps}
             >
-                {leftIcon ? <Icon icon={leftIcon} className={cx('pl-4', 'pr-[6px]', 'text-neutral-300', leftIconClasses)} /> : null}
+                {leftIcon
+                    ? React.cloneElement(leftIcon, { className: cx('pl-4', 'pr-[6px]', 'text-neutral-300', leftIconClasses), ...otherLeftIconProps })
+                    : null}
                 <input
                     type={type}
                     placeholder={placeholder}
                     disabled={disabled}
-                    onFocus={() => setIsFocus(true)}
-                    onBlur={() => setIsFocus(false)}
-                    {...inputProps}
-                    className={cx('pr-4', 'py-[10px]', 'w-full', 'rounded-lg', 'focus:outline-0', 'placeholder:text-neutral-200', {
-                        'placeholder:!text-neutral-400': isFocus,
-                        '!pl-4': !leftIcon,
-                        '!pr-0': rightIcon,
-                    })}
+                    onFocus={(e) => {
+                        setIsFocus(true);
+                        if (onFocusGoogleMap) {
+                            e.target.setAttribute('autocomplete', 'off');
+                            e.target.setAttribute('autocorrect', 'false');
+                            e.target.setAttribute('aria-autocomplete', 'both');
+                            e.target.setAttribute('aria-haspopup', 'false');
+                            e.target.setAttribute('spellcheck', 'off');
+                            e.target.setAttribute('autocapitalize', 'off');
+                            e.target.setAttribute('autofocus', '');
+                            e.target.setAttribute('role', 'combobox');
+                        }
+                    }}
+                    onBlur={() => {
+                        setIsFocus(false);
+                        onBlur();
+                    }}
+                    value={value}
+                    onChange={onChange}
+                    className={cx(
+                        'pr-4',
+                        'py-[10px]',
+                        'w-full',
+                        'rounded-lg',
+                        'focus:outline-0',
+                        'placeholder:text-neutral-200',
+                        'text-neutral',
+                        {
+                            'placeholder:!text-neutral-400': isFocus,
+                            '!pl-4': !leftIcon,
+                            '!pr-0': rightIcon,
+                        },
+                        inputClassName,
+                    )}
+                    {...restInputProps}
                 />
-                {rightIcon ? (
-                    <Icon
-                        icon={generateRightIcon()}
-                        className={cx(
-                            'pr-4',
-                            'pl-[6px]',
-                            'text-neutral-300',
-                            {
-                                '!text-accent-red_orange-100': hintType === 'error',
-                                '!text-accent-saffron_mango-200': hintType === 'warning',
-                                '!text-accent-eucalyptus-200': hintType === 'success',
-                            },
-                            rightIconClasses,
-                        )}
-                    />
-                ) : null}
+                {rightIcon ? generateRightIcon() : null}
             </div>
             {displayHintText && hintType && hintText ? (
                 <Typography
                     variant="bd-2b"
-                    className={cx('mt-[6px]', {
-                        '!text-accent-red_orange': hintType === 'error',
-                        '!text-accent-saffron_mango': hintType === 'warning',
-                        '!text-accent-eucalyptus-200': hintType === 'success',
+                    className={cx('absolute', '-bottom-[50%]', '-z-10', {
+                        '!text-red': hintType === 'error',
+                        '!text-green': hintType === 'success',
                     })}
                 >
                     {hintText}
@@ -114,6 +149,50 @@ const TextField = (props) => {
             ) : null}
         </div>
     );
+};
+
+TextField.propTypes = {
+    placeholder: propTypes.string,
+    disabled: propTypes.bool,
+    onChange: propTypes.func,
+    value: propTypes.string,
+    className: propTypes.string,
+    label: propTypes.string,
+    hintProps: propTypes.shape({
+        displayHintText: propTypes.bool,
+        hintType: propTypes.string,
+        hintText: propTypes.string,
+    }),
+    inputProps: propTypes.object,
+    type: propTypes.string,
+    onBlur: propTypes.func,
+    onKeyPress: propTypes.func,
+    leftIcon: propTypes.element,
+    leftIconProps: propTypes.object,
+    rightIcon: propTypes.element,
+    rightIconProps: propTypes.object,
+};
+
+TextField.defaultProps = {
+    placeholder: '',
+    disabled: false,
+    onChange: () => {},
+    value: '',
+    className: '',
+    label: '',
+    hintProps: {
+        displayHintText: false,
+        hintType: '',
+        hintText: '',
+    },
+    inputProps: {},
+    type: 'text',
+    onBlur: () => {},
+    onKeyPress: () => {},
+    leftIcon: '',
+    leftIconProps: {},
+    rightIcon: '',
+    rightIconProps: {},
 };
 
 export default TextField;

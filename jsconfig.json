@@ -2,14 +2,12 @@
     "compilerOptions": {
         "lib": [
             "dom",
-            "es2015",
-            "es2016",
-            "es6",
-            "es2017"
+            "ESNext"
         ],
-        "target": "es2017",
-        "module": "es6",
-        "allowSyntheticDefaultImports": true,
+        "target": "ES2020",
+        "module": "ESNext",
+        "moduleResolution": "node",
+        "jsx": "react",
         "baseUrl": ".",
         "paths": {
             "@config": ["swift.config.js"],
@@ -76,7 +74,6 @@
 
             "@hook/*": ["src/hooks/*", "core/hooks/*"],
 
-            "@common_icon": ["src/commons/Icon", "core/commons/Icon"],
             "@common_button": ["src/commons/Button", "core/commons/Button"],
             "@common_buttonqty": ["src/commons/ButtonQty", "core/commons/ButtonQty"],
             "@common_breadcrumb": ["src/commons/Breadcrumb", "core/commons/Breadcrumb"],
@@ -85,7 +82,6 @@
             "@common_dropfile": ["src/commons/DropFile", "core/commons/DropFile"],
             "@common_googlemaps": ["src/commons/GoogleMaps", "core/commons/GoogleMaps"],
             "@common_autocomplete": ["src/commons/AutoComplete", "core/commons/AutoComplete"],
-            "@common_googlemaps_autocomplete": ["src/commons/GoogleMapsAutocomplete", "core/commons/GoogleMapsAutocomplete"],
             "@common_gridlist": ["src/commons/GridList", "core/commons/GridList"],
             "@common_priceformat": ["src/commons/PriceFormat", "core/commons/PriceFormat"],
             "@common_ratingstar": ["src/commons/RatingStar", "core/commons/RatingStar"],
@@ -93,9 +89,10 @@
             "@common_toast": ["src/commons/Toast", "core/commons/Toast"],
             "@common_typography": ["src/commons/Typography", "core/commons/Typography"],
             "@common_password": ["src/commons/Password", "core/commons/Forms/Password"],
+            "@common_popover": ["src/commons/Popover", "core/commons/Popover"],
             "@common_rangeslider": ["src/commons/RangeSlider", "core/commons/RangeSlider"],
-            "@common_select": ["src/commons/Select", "core/commons/Select"],
             "@common_textfield": ["src/commons/TextField", "core/commons/TextField"],
+            "@common_badge": ["src/commons/Badge", "core/commons/Badge"],
 
             "@common_button/*": ["src/commons/Button/*", "core/commons/Button/*"],
             "@common_buttonqty/*": ["src/commons/ButtonQty/*", "core/commons/ButtonQty/*"],
@@ -104,7 +101,6 @@
             "@common_dialog/*": ["src/commons/Dialog/*", "core/commons/Dialog/*"],
             "@common_dropfile/*": ["src/commons/DropFile/*", "core/commons/DropFile/*"],
             "@common_googlemaps/*": ["src/commons/GoogleMaps/*", "core/commons/GoogleMaps/*"],
-            "@common_googlemaps_autocomplete/*": ["src/commons/GoogleMapsAutocomplete/*", "core/commons/GoogleMapsAutocomplete/*"],
             "@common_gridlist/*": ["src/commons/GridList/*", "core/commons/GridList/*"],
             "@common_priceformat/*": ["src/commons/PriceFormat/*", "core/commons/PriceFormat/*"],
             "@common_ratingstar/*": ["src/commons/RatingStar/*", "core/commons/RatingStar/*"],
@@ -112,9 +108,10 @@
             "@common_toast/*": ["src/commons/Toast/*", "core/commons/Toast/*"],
             "@common_typography/*": ["src/commons/Typography/*", "core/commons/Typography/*"],
             "@common_password/*": ["src/commons/Password/*", "core/commons/Password/*"],
+            "@common_popover/*": ["src/commons/Popover/*", "core/commons/Popover/*"],
             "@common_rangeslider/*": ["src/commons/RangeSlider/*", "core/commons/RangeSlider/*"],
-            "@common_select/*": ["src/commons/Select/*", "core/commons/Select/*"],
             "@common_textfield/*": ["src/commons/TextField/*", "core/commons/TextField/*"],
+            "@common_badge/*": ["src/commons/Badge/*", "core/commons/Badge/*"],
             
             "@common_image": ["src/commons/Image", "core/commons/Image"],
             "@common_image/*": ["src/commons/Image/*", "core/commons/Image/*"],
