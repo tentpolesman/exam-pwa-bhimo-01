@@ -6,6 +6,8 @@ import { COLORS } from '@theme_vars';
 import { useClickAway } from '@uidotdev/usehooks';
 import cx from 'classnames';
 import { useState } from 'react';
+import ArrowUp from '@heroicons/react/24/outline/ChevronUpIcon';
+import ArrowDown from '@heroicons/react/24/outline/ChevronDownIcon';
 
 const Select = (props) => {
     const {
@@ -35,9 +37,7 @@ const Select = (props) => {
             ) : null}
             <TextField
                 className="cursor-pointer mt-2"
-                iconProps={{
-                    rightIcon: !open ? 'expand_more' : 'expand_less',
-                }}
+                rightIcon={!open ? <ArrowDown /> : <ArrowUp />}
                 inputProps={{
                     readOnly: true,
                     className: 'cursor-pointer',

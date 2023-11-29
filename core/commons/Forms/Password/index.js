@@ -6,6 +6,8 @@ import { passwordStrength, storeConfigNameCookie } from '@config';
 import cx from 'classnames';
 import Cookies from 'js-cookie';
 import { useState } from 'react';
+import EyeIcon from '@heroicons/react/24/outline/EyeIcon';
+import EyeSlashIcon from '@heroicons/react/24/outline/EyeSlashIcon';
 
 const Password = (props) => {
     const {
@@ -55,11 +57,8 @@ const Password = (props) => {
             <TextField
                 className="password-field mt-2 w-full"
                 type={show ? 'text' : 'password'}
-                iconProps={{
-                    rightIcon: showVisible && show ? 'visibility' : showVisible ? 'visibility_off' : '',
-                    rightIconClasses: showVisible ? 'cursor-pointer' : '',
-                    onClick: () => setShow(!show),
-                }}
+                rightIcon={showVisible && show ? <EyeIcon /> : showVisible ? <EyeSlashIcon /> : ''}
+                rightIconProps={{ className: showVisible ? 'cursor-pointer' : '', onClick: () => setShow(!show) }}
                 hintProps={{
                     displayHintText: error,
                     hintType: error ? 'error' : '',

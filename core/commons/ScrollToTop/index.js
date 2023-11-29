@@ -1,6 +1,7 @@
 import Button from '@common_button';
 import cx from 'classnames';
 import React from 'react';
+import ArrowUp from '@heroicons/react/24/outline/ChevronUpIcon';
 
 const ScrollTop = (props) => {
     const { storeConfig } = props;
@@ -53,10 +54,8 @@ const ScrollTop = (props) => {
     return (
         <div onClick={scrollTop} role="presentation" className={cx(classes)}>
             <Button
-                iconProps={{
-                    icon: 'keyboard_arrow_up',
-                    iconOnly: true,
-                }}
+                iconOnly
+                icon={<ArrowUp />}
                 variant="primary"
             />
         </div>

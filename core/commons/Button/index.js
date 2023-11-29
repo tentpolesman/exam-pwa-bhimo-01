@@ -1,6 +1,7 @@
 import cx from 'classnames';
 import Typography from '@common_typography';
-import Icon from '@common_icon';
+import ArrowPath from '@heroicons/react/24/outline/ArrowPathIcon';
+import propTypes from 'prop-types';
 
 const Button = (props) => {
     const {
@@ -12,9 +13,10 @@ const Button = (props) => {
         onClick = () => {},
         loading = false,
         size = 'md',
-        iconProps = {},
+        icon,
+        iconPosition: position,
+        iconOnly,
     } = props;
-    const { icon = '', position = 'right', iconOnly = false } = iconProps;
 
     const buttonSizes = {
         sm: `px-[16px] py-[8px] ${iconOnly ? '!p-[8px]' : ''}`,
@@ -65,21 +67,52 @@ const Button = (props) => {
                     'flex-row-reverse': icon && position === 'right',
                 })}
             >
-                {icon || loading ? (
-                    <Icon
-                        className={cx('material-symbols-outlined', {
+                {
+                    icon && loading ? (
+                        <ArrowPath className={cx('animate-spin w-6 h-6', {
                             'mr-[6px]': position !== 'right' && !iconOnly,
                             'ml-[6px]': position === 'right' && !iconOnly,
                             'text-lg': !iconOnly || (iconOnly && (size === 'sm' || size === 'md')),
-                            'animate-spin': loading,
                         })}
-                        icon={!loading ? icon : 'progress_activity'}
-                    />
-                ) : null}
+                        />
+                    ) : null
+                }
+                {icon || !loading ? React.cloneElement(icon, {
+                    className: cx('w-6 h-6', {
+                        'mr-[6px]': position !== 'right' && !iconOnly,
+                        'ml-[6px]': position === 'right' && !iconOnly,
+                    }),
+                }) : null}
                 {icon && iconOnly ? null : children}
             </Typography>
         </button>
     );
+};
+
+Button.propTypes = {
+    className: propTypes.string,
+    iconOnly: propTypes.bool,
+    variant: propTypes.oneOf(['primary', 'secondary', 'tertiary', 'outlined']),
+    children: propTypes.any,
+    disabled: propTypes.bool,
+    onClick: propTypes.func,
+    loading: propTypes.bool,
+    size: propTypes.oneOf(['xs', 'sm', 'md', 'lg', 'xl']),
+    icon: propTypes.element,
+    iconPosition: propTypes.oneOf(['left', 'right']),
+};
+
+Button.defaultProps = {
+    className: '',
+    iconOnly: false,
+    variant: 'primary',
+    children: '',
+    disabled: false,
+    onClick: () => {},
+    loading: false,
+    size: 'md',
+    icon: '',
+    iconPosition: 'left',
 };
 
 export default Button;
