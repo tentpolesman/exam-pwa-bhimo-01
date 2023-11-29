@@ -1,12 +1,10 @@
 /* eslint-disable no-nested-ternary */
-import IcubeMapsAutocomplete from '@common_googlemaps_autocomplete';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
+import GoogleMaps from '@common_googlemaps';
 
 const MagezonGoogleMaps = (props) => {
     // prettier-ignore
     const {
-        infobox_background_color, items, map_draggable, map_zoom, storeConfig,
+        infobox_background_color, items, map_draggable, map_width, map_height, map_zoom, storeConfig,
     } = props;
 
     const gmapKey = (storeConfig || {}).icube_pinlocation_gmap_key;
@@ -23,34 +21,16 @@ const MagezonGoogleMaps = (props) => {
         setMapPosition(value);
     };
 
-    const ValidationAddress = {
-        addressDetail: Yup.string(),
-        country: Yup.string().nullable(),
-        region: Yup.string().nullable(),
-        city: Yup.string().nullable(),
+    const elementDimension = {
+        width: map_width && map_width.toString().includes('%') ? map_width : `${map_width}px`,
+        height: map_height && map_height.toString().includes('%') ? map_height : `${map_height}px`,
     };
-
-    const InitialValue = {
-        addressDetail: '',
-        country: {
-            id: 'ID',
-            full_name_locale: 'Indonesia',
-        },
-        region: '',
-        city: '',
-    };
-
-    const formik = useFormik({
-        initialValues: InitialValue,
-        validationSchema: Yup.object().shape(ValidationAddress),
-        onSubmit: async () => {},
-    });
 
     return (
         <>
             <div className="mgz-google-maps">
                 {gmapKey && (
-                    <IcubeMapsAutocomplete
+                    <GoogleMaps
                         gmapKey={gmapKey}
                         geocodingKey={geocodingKey}
                         markers={updatedItems}
@@ -60,7 +40,8 @@ const MagezonGoogleMaps = (props) => {
                         markerIcon={storeConfig.secure_base_media_url}
                         useCustomMarkerIcon={storeConfig.secure_base_media_url !== ''}
                         markerDraggable={map_draggable}
-                        formik={formik}
+                        containerStyle={elementDimension}
+                        mode="map-only"
                     />
                 )}
             </div>

@@ -31,11 +31,11 @@ const mapLoad = (ref) => {
     refs.googleMap = ref;
 };
 
-const IcubeMapsAutocomplete = (props) => {
+const GoogleMaps = (props) => {
     const {
         gmapKey,
         geocodingKey,
-        formik,
+        formik = () => {},
         dragMarkerDone,
         defaultZoom = 17,
         mapPosition,
@@ -48,6 +48,7 @@ const IcubeMapsAutocomplete = (props) => {
             height: '250px',
             marginTop: '1rem',
         },
+        mode = 'map-only',
     } = props;
     const { t } = useTranslation(['common']);
 
@@ -79,7 +80,7 @@ const IcubeMapsAutocomplete = (props) => {
     // Set address detail fields value on formik when user select a location on autocomplete box
     const onPlaceChanged = () => {
         // const compareStreetName = () => {}
-        if (refs.autoComplete !== null) {
+        if (refs.autoComplete !== null && mode === 'location-search') {
             const { name, address_components, geometry } = refs.autoComplete.getPlace();
             const tempInputValue = formik.values.addressDetail;
             const street_name = address_components.filter((item) => item.types.includes('route'));
@@ -144,7 +145,7 @@ const IcubeMapsAutocomplete = (props) => {
 
     // Get a new coordinates bounds based on current address information input (village, district, city, region)
     useEffect(() => {
-        if (geocodingKey) {
+        if (formik && geocodingKey && mode === 'location-search') {
             // Check if selected country is Indonesia
             if (formik.values.country.full_name_locale === 'Indonesia') {
                 if (!!formik.values.village && !!formik.values.district && !!formik.values.city && !!formik.values.region) {
@@ -259,53 +260,55 @@ const IcubeMapsAutocomplete = (props) => {
                     });
             }
         }
-    }, [formik.values.village, formik.values.district, formik.values.city, formik.values.region, formik.values.country]);
+    }, [formik]);
 
     // Function to render the maps
     // eslint-disable-next-line arrow-body-style
     const renderMap = () => {
         return (
             <>
-                <Autocomplete
-                    onLoad={autoCompleteLoad}
-                    onPlaceChanged={onPlaceChanged}
-                    options={{
-                        // eslint-disable-next-line no-undef
-                        bounds: new google.maps.LatLngBounds(
+                {mode === 'location-search' ? (
+                    <Autocomplete
+                        onLoad={autoCompleteLoad}
+                        onPlaceChanged={onPlaceChanged}
+                        options={{
                             // eslint-disable-next-line no-undef
-                            new google.maps.LatLng(
-                                parseFloat(stateBounds.southwest.lat !== undefined ? stateBounds.southwest.lat : mapPosition.lat),
-                                parseFloat(stateBounds.southwest.lng !== undefined ? stateBounds.southwest.lng : mapPosition.lng),
+                            bounds: new google.maps.LatLngBounds(
+                                // eslint-disable-next-line no-undef
+                                new google.maps.LatLng(
+                                    parseFloat(stateBounds.southwest.lat !== undefined ? stateBounds.southwest.lat : mapPosition.lat),
+                                    parseFloat(stateBounds.southwest.lng !== undefined ? stateBounds.southwest.lng : mapPosition.lng),
+                                ),
+                                // eslint-disable-next-line no-undef
+                                new google.maps.LatLng(
+                                    parseFloat(stateBounds.northeast.lat !== undefined ? stateBounds.northeast.lat : mapPosition.lat),
+                                    parseFloat(stateBounds.northeast.lng !== undefined ? stateBounds.northeast.lng : mapPosition.lng),
+                                ),
                             ),
-                            // eslint-disable-next-line no-undef
-                            new google.maps.LatLng(
-                                parseFloat(stateBounds.northeast.lat !== undefined ? stateBounds.northeast.lat : mapPosition.lat),
-                                parseFloat(stateBounds.northeast.lng !== undefined ? stateBounds.northeast.lng : mapPosition.lng),
-                            ),
-                        ),
-                        strictBounds: !!geocodingKey,
-                    }}
-                >
-                    <TextField
-                        id="addressForm-addressDetail-textField"
-                        autoComplete="new-password"
-                        label={useLabel ? t('common:search:addressDetail') : null}
-                        placeholder={t('common:search:addressDetail')}
-                        inputProps={{
-                            name: 'addressDetail',
+                            strictBounds: !!geocodingKey,
                         }}
-                        hintProps={{
-                            displayHintText: !!(formik.touched.addressDetail && formik.errors.addressDetail),
-                            hintType: 'error',
-                            hintText: (formik.touched.addressDetail && formik.errors.addressDetail) || null,
-                        }}
-                        value={formik.values.addressDetail}
-                        onChange={(e) => {
-                            formik.handleChange(e);
-                        }}
-                        onFocusGoogleMap
-                    />
-                </Autocomplete>
+                    >
+                        <TextField
+                            id="addressForm-addressDetail-textField"
+                            autoComplete="new-password"
+                            label={useLabel ? t('common:search:addressDetail') : null}
+                            placeholder={t('common:search:addressDetail')}
+                            inputProps={{
+                                name: 'addressDetail',
+                            }}
+                            hintProps={{
+                                displayHintText: !!(formik.touched.addressDetail && formik.errors.addressDetail),
+                                hintType: 'error',
+                                hintText: (formik.touched.addressDetail && formik.errors.addressDetail) || null,
+                            }}
+                            value={formik.values.addressDetail}
+                            onChange={(e) => {
+                                formik.handleChange(e);
+                            }}
+                            onFocusGoogleMap
+                        />
+                    </Autocomplete>
+                ) : null}
                 <GoogleMap
                     id="google-maps-container"
                     mapContainerStyle={containerStyle}
@@ -352,4 +355,4 @@ const IcubeMapsAutocomplete = (props) => {
     return isLoaded ? renderMap() : <div>{t('common:form:mapLoading')}</div>;
 };
 
-export default IcubeMapsAutocomplete;
+export default GoogleMaps;
