@@ -5,6 +5,7 @@ import Icon from '@common_icon';
 const Button = (props) => {
     const {
         className = '',
+        classNameText,
         variant = 'primary',
         children,
         disabled = false,
@@ -55,7 +56,7 @@ const Button = (props) => {
         >
             <Typography
                 variant={textVariants[size]}
-                className={cx('flex', 'items-center', {
+                className={cx('flex', 'items-center', classNameText, {
                     '!text-pwa-button_text': variant === 'primary',
                     '!text-primary': variant === 'secondary' || variant === 'tertiary',
                     '!text-black': variant === 'outlined',

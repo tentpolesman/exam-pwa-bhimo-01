@@ -24,7 +24,7 @@ const routerServerMiddleware = function (req, res, next) {
     const allow = availableRoute(pathname.trim().split('?')[0]);
     if (!allow) {
         if (typeof window !== 'undefined') {
-            window.location.href = getStoreHost(window.APP_ENV);
+            window.location.href = getStoreHost(getAppEnv());
         } else {
             res.redirect(getStoreHost(getAppEnv()));
         }
