@@ -17,6 +17,7 @@ const TextField = (props) => {
         type = 'text',
         onBlur = () => {},
         onKeyPress = () => {},
+        onFocusGoogleMap = false,
         ...restProps
     } = props;
 
@@ -30,9 +31,6 @@ const TextField = (props) => {
     const generateRightIcon = () => {
         if (hintType === 'error') {
             return 'warning';
-        }
-        if (hintType === 'warning') {
-            return 'error';
         }
         if (hintType === 'success') {
             return 'task_alt';
@@ -49,7 +47,7 @@ const TextField = (props) => {
         <div className="flex flex-col relative">
             {label ? (
                 <label className="mb-2">
-                    <Typography variant="h4">{label}</Typography>
+                    <Typography>{label}</Typography>
                 </label>
             ) : null}
             <div
@@ -59,16 +57,16 @@ const TextField = (props) => {
                     'w-[320px]',
                     'bg-neutral-white',
                     'border-[1px]',
-                    'border-neutral-100',
+                    'border-neutral-300',
                     'rounded-lg',
                     'text-md',
-                    'hover:border-primary-100',
+                    'hover:border-neutral-400',
+                    'focus:border-primary focus:shadow-[0_0_0_4px] focus:shadow-primary-200',
                     {
-                        '!border-primary-200': isFocus && !hintType,
+                        '!border-primary': isFocus && !hintType,
                         '!bg-neutral-50 border-none placeholder:!text-neutral-100': disabled,
-                        '!border-red hover:!border-red': hintType === 'error',
-                        '!border-yellow': hintType === 'warning',
-                        '!border-green-200': hintType === 'success',
+                        '!border-red hover:!border-red focus:shadow-red-200': hintType === 'error',
+                        '!border-green hover:!border-green focus:shadow-green-100': hintType === 'success',
                     },
                     className,
                 )}
@@ -79,7 +77,19 @@ const TextField = (props) => {
                     type={type}
                     placeholder={placeholder}
                     disabled={disabled}
-                    onFocus={() => setIsFocus(true)}
+                    onFocus={(e) => {
+                        setIsFocus(true);
+                        if (onFocusGoogleMap) {
+                            e.target.setAttribute('autocomplete', 'off');
+                            e.target.setAttribute('autocorrect', 'false');
+                            e.target.setAttribute('aria-autocomplete', 'both');
+                            e.target.setAttribute('aria-haspopup', 'false');
+                            e.target.setAttribute('spellcheck', 'off');
+                            e.target.setAttribute('autocapitalize', 'off');
+                            e.target.setAttribute('autofocus', '');
+                            e.target.setAttribute('role', 'combobox');
+                        }
+                    }}
                     onBlur={() => {
                         setIsFocus(false);
                         onBlur();
@@ -93,6 +103,7 @@ const TextField = (props) => {
                         'rounded-lg',
                         'focus:outline-0',
                         'placeholder:text-neutral-200',
+                        'text-neutral',
                         {
                             'placeholder:!text-neutral-400': isFocus,
                             '!pl-4': !leftIcon,
@@ -110,9 +121,8 @@ const TextField = (props) => {
                             'pl-[6px]',
                             'text-neutral-300',
                             {
-                                '!text-red-100': hintType === 'error',
-                                '!text-yellow-200': hintType === 'warning',
-                                '!text-green-200': hintType === 'success',
+                                '!text-red-600': hintType === 'error',
+                                '!text-green': hintType === 'success',
                             },
                             rightIconClasses,
                         )}
@@ -125,8 +135,7 @@ const TextField = (props) => {
                     variant="bd-2b"
                     className={cx('absolute', '-bottom-[50%]', '-z-10', {
                         '!text-red': hintType === 'error',
-                        '!text-yellow': hintType === 'warning',
-                        '!text-green-200': hintType === 'success',
+                        '!text-green': hintType === 'success',
                     })}
                 >
                     {hintText}

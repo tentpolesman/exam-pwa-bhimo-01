@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 import CustomAutocomplete from '@common_autocomplete';
 import Button from '@common_button';
-import IcubeMapsAutocomplete from '@common_googlemaps_autocomplete';
+import GoogleMaps from '@common_googlemaps';
 import Header from '@common_headermobile';
 import CustomTextField from '@common_textfield';
 import Typography from '@common_typography';
@@ -89,6 +89,7 @@ const AddressView = (props) => {
                     className="addressForm-province-autoComplete"
                     disabled={!formik.values.country}
                     options={addressState.dropdown.region}
+                    useLabel
                     getOptionLabel={(option) => (option.name ? option.name : '')}
                     id="controlled-region"
                     value={!formik.values.region ? null : formik.values.region}
@@ -434,12 +435,13 @@ const AddressView = (props) => {
                         />
                         {gmapKey ? (
                             <div className={styles.boxMap}>
-                                <IcubeMapsAutocomplete
+                                <GoogleMaps
                                     gmapKey={gmapKey}
                                     geocodingKey={geocodingKey}
                                     formik={formik}
                                     mapPosition={mapPosition}
                                     dragMarkerDone={handleDragPosition}
+                                    mode="location-search"
                                 />
                             </div>
                         ) : (
