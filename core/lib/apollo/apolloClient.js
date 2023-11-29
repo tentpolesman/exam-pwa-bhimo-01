@@ -48,7 +48,7 @@ const link = new RetryLink().split(
     (operation) => operation.getContext().request === 'internal',
     new HttpLink({
         uri: uriInternal, // Server URL (must be absolute)
-        credentials: 'include', // Additional fetch() options like `credentials` or `headers`
+        credentials: 'same-origin', // Additional fetch() options like `credentials` or `headers`
         fetch,
     }),
     new HttpLink({
