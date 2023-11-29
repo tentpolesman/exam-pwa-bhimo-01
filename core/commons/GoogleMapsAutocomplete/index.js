@@ -9,12 +9,6 @@ import { capitalizeEachWord } from '@root/core/helpers/text';
 import { useTranslation } from 'next-i18next';
 import React, { useEffect, useState } from 'react';
 
-// Set map container size
-const containerStyle = {
-    width: '100%',
-    height: '230px',
-};
-
 // Set initial refs for google maps instance
 const refs = {
     marker: null,
@@ -49,6 +43,11 @@ const IcubeMapsAutocomplete = (props) => {
         markerDraggable = true,
         useCustomMarkerIcon = false,
         useLabel = false,
+        containerStyle = {
+            width: '100%',
+            height: '250px',
+            marginTop: '1rem',
+        },
     } = props;
     const { t } = useTranslation(['common']);
 
