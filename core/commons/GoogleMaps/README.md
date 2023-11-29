@@ -16,3 +16,4 @@ GoogleMapsAutocomplete
 | customMarkerIcon | optional | this field is `required` if `useCustomMarkerIcon` is `true` custom marker icon | string |
 | useLabel | optional | boolean to enable label | boolean |
 | containerStyle | optional | style for container | css (jsx) object |
+| mode | true | mode maps, `location-search` or `map-only` (default) | enum |
