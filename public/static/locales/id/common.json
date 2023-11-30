@@ -188,6 +188,8 @@
         "giftCard": "Gift card (hadiah)"
     },
     "label": {
-        "invalidPrice": "Harga tidak valid"
+        "invalidPrice": "Harga tidak valid",
+        "seeMore": "Lihat Selebihnya",
+        "seeLess": "Lihat Sedikitnya"
     }
 }

@@ -191,6 +191,8 @@
         "giftCard": "Gift card"
     },
     "label": {
-        "invalidPrice": "Invalid Price"
+        "invalidPrice": "Invalid Price",
+        "seeMore": "See More",
+        "seeLess": "See Less"
     }
 }
