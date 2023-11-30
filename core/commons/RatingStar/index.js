@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import StarIcon from '@heroicons/react/24/solid/StarIcon';
+import { COLORS } from '@theme_vars';
 import cx from 'classnames';
 
 // eslint-disable-next-line object-curly-newline
@@ -41,8 +42,8 @@ const RatingStar = ({ value = 1, maxvalue = 5, onChange = () => {}, disabled = t
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={cx(classes)}>
                             <defs>
                                 <linearGradient id="grad2">
-                                    <stop offset={`${(value - (ind - 1)) * 100}%`} stopColor="#FBBF24" />
-                                    <stop offset={`${(value - (ind - 1)) * 100}%`} stopColor="#E5E7EB" />
+                                    <stop offset={`${(value - (ind - 1)) * 100}%`} stopColor={COLORS.yellow[400]} />
+                                    <stop offset={`${(value - (ind - 1)) * 100}%`} stopColor={COLORS.neutral[200]} />
                                 </linearGradient>
                             </defs>
                             <path
