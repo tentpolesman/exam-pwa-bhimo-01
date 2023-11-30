@@ -2,13 +2,7 @@
 
 RatingStar is module commons to create view start rating
 
-this component use some dependency and **required**, so you need to install
-
-| Depedency   | Description | Type |
-| :---        | :---        |:---  |
-| `@material-ui/icons` | depedency icon UI from material ui <br/> link docs [here](https://material-ui.com/getting-started/installation/)| external dependency |
-
-## How To Install
+## How To Use
 
 **1. Import module to your component**
 ```node
@@ -35,4 +29,7 @@ import RatingStar from '{pathModule}/commons/RatingStar';
 | `value`       | true    | number value of range | `number` |
 | `maxValue`       | false    | max value of range | `number` |
 | `sizeIcon`       | false    | number size icon star | `number` |
+| `onChange` | optional | function to handle change value | `function` |
+| `disabled` | optional | disable component | `boolean` |
+| `miniSummary` | optional | show only one star | `boolean` |
 
