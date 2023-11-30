@@ -1,13 +1,10 @@
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable max-len */
+import Thumbor from '@common_image';
 import CmsPage from '@core_modules/cms/pages/default';
 import cx from 'classnames';
-import dynamic from 'next/dynamic';
-import Thumbor from '@common_image';
 
-const BannerSlider = dynamic(() => import('@core_modules/home/pages/default/components/Banner'));
-const FeaturedProducts = dynamic(() => import('@core_modules/home/pages/default/components/FeaturedProducts'));
-const CategoryList = dynamic(() => import('@core_modules/home/pages/default/components/CategoryList'));
+import Layout from '@layout';
 
 const Content = (props) => {
     let useCmsPage = {};
@@ -53,12 +50,16 @@ const Content = (props) => {
             </>
         );
     } else {
+        const Config = {
+            title: storeConfig && storeConfig.store_name ? storeConfig.store_name : 'PWA Homepage',
+            headerTitle: storeConfig && storeConfig.store_name ? storeConfig.store_name : 'PWA Homepage',
+            bottomNav: false,
+            header: 'relative', // available values: "absolute", "relative", false (default)
+        };
         content = (
-            <>
-                <BannerSlider {...other} storeConfig={storeConfig} />
-                <FeaturedProducts {...other} storeConfig={storeConfig} />
-                <CategoryList {...other} storeConfig={storeConfig} />
-            </>
+            <Layout {...props} pageConfig={Config} isCms={false} isHomepage>
+                <>You need to develop your own non-CMS component for Homepage.</>
+            </Layout>
         );
     }
 
