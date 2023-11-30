@@ -23,6 +23,15 @@ import RatingStar from '{pathModule}/commons/RatingStar';
 ....
 ```
 
+### NOTE
+Due to limitations on tailwind, you have to change this line of code if you want to change rating star color on partially filled star
+```node
+<stop offset={`${(value - (ind - 1)) * 100}%`} stopColor="#FBBF24" />
+<stop offset={`${(value - (ind - 1)) * 100}%`} stopColor="#E5E7EB" />
+```
+The first line are the active color, and the second line are the inactive color, other than that, you can just change the tailwind class for text color
+
+
 ### Properties
 | Props       | Required | Description | Type |
 | :---        | :---     | :---        |:---  |
