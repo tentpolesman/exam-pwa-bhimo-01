@@ -7,8 +7,7 @@ import React from 'react';
 import Typography from '@common_typography';
 import Button from '@common_button';
 import CheckBox from '@common_forms/CheckBox';
-import CheckBoxColor from '@common_forms/CheckBoxColor';
-import CheckBoxSize from '@common_forms/CheckBoxSize';
+import Swatch from '@common_forms/Swatch';
 import RadioGroup from '@common_forms/Radio';
 import RangeSlider from '@common_rangeslider';
 import useStyles from '@plugin_productlist/components/FilterDesktop/style';
@@ -98,6 +97,7 @@ const GenerateFilter = React.memo((props) => {
             return (
                 <div key={idx}>
                     <CheckBox
+                        type="color"
                         className={styles.checkboxCustom}
                         name={itemFilter.field}
                         noLabel
@@ -105,7 +105,7 @@ const GenerateFilter = React.memo((props) => {
                         data={ItemValueByLabel}
                         value={selectedFilter[itemFilter.field] ? selectedFilter[itemFilter.field].split(',') : []}
                         flex={itemProps.selectSizeFlex || 'row'}
-                        CustomItem={itemProps.selectColorItem || CheckBoxColor}
+                        CustomItem={itemProps.selectColorItem || Swatch}
                         onChange={(val) => checkedFilter(itemFilter.field, val)}
                     />
                 </div>
@@ -122,7 +122,7 @@ const GenerateFilter = React.memo((props) => {
                         data={ItemValueByLabel}
                         value={selectedFilter[itemFilter.field] ? selectedFilter[itemFilter.field].split(',') : []}
                         flex={itemProps.selectSizeFlex || 'row'}
-                        CustomItem={itemProps.selectSizeItem || CheckBoxSize}
+                        CustomItem={itemProps.selectSizeItem || Swatch}
                         onChange={(val) => checkedFilter(itemFilter.field, val)}
                     />
                 </div>

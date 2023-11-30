@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 
 const CheckBox = (props) => {
     const {
+        // type,
         label = '',
         data = [],
         value = [],
@@ -61,10 +62,8 @@ const CheckBox = (props) => {
                 </Typography>
             ) : null}
             <div className={cx('flex', 'flex-col', 'mt-2', checkboxGroupClasses)}>
-                {/*
-                Todo: review the usage
-
-                <CustomItem
+                {/* <CustomItem
+                    variant={type}
                     label={item.label ? item.label : item}
                     value={item.value ? item.value : item}
                     dataValues={selected}

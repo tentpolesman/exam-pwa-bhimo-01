@@ -186,5 +186,8 @@
         "storeCredit": "Kredit toko",
         "rewardPoint": "Poin reward",
         "giftCard": "Gift card (hadiah)"
+    },
+    "label": {
+        "invalidPrice": "Harga tidak valid"
     }
 }

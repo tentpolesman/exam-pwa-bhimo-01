@@ -189,5 +189,8 @@
         "storeCredit": "Store credit",
         "rewardPoint": "Reward point",
         "giftCard": "Gift card"
+    },
+    "label": {
+        "invalidPrice": "Invalid Price"
     }
 }
