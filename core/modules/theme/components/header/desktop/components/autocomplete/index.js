@@ -7,10 +7,12 @@ import Router from 'next/router';
 import React from 'react';
 
 import CommonTextField from '@common_forms/TextField';
-import Icon from '@common_icon';
 import Popover from '@common_popover';
 
 import Image from '@common_image';
+import BuildingStorefrontIcon from '@heroicons/react/24/outline/BuildingStorefrontIcon';
+
+import Magnify from '@heroicons/react/24/outline/MagnifyingGlassIcon';
 
 let globalTimeout = null;
 
@@ -200,7 +202,7 @@ export default function AutocompleteSearch(props) {
                                 </div>
                                 {seller_name && (
                                     <div className="info-seller">
-                                        <Icon icon="storefront" />
+                                        <BuildingStorefrontIcon />
                                         <div className="title-seller">{seller_name}</div>
                                     </div>
                                 )}
@@ -268,9 +270,9 @@ export default function AutocompleteSearch(props) {
                         handleAutocomplete(e);
                     }}
                     ref={inputRef}
-                    iconProps={{
-                        rightIcon: 'search',
-                        rightIconClasses: 'text-neutral-300',
+                    rightIcon={<Magnify />}
+                    rightIconProps={{
+                        className: 'w-10 h-10 text-neutral-300',
                     }}
                     onKeyPress={(e) => {
                         handleKeyPress({
