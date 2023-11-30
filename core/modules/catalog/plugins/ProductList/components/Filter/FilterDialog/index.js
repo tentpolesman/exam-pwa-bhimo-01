@@ -2,8 +2,7 @@
 import Button from '@common_button';
 import CheckBox from '@common_forms/CheckBox';
 import CircularProgress from '@common_circularprogress';
-import CheckBoxColor from '@common_forms/CheckBoxColor';
-import CheckBoxSize from '@common_forms/CheckBoxSize';
+import Swatch from '@common_forms/Swatch';
 import RadioGroup from '@common_forms/Radio';
 import RangeSlider from '@common_rangeslider';
 import Typography from '@common_typography';
@@ -167,12 +166,13 @@ const FilterDialog = (props) => {
                             return (
                                 <div className={styles[idx < data.length - 1 ? 'fieldContainer' : 'fieldContainerLast']} key={idx}>
                                     <CheckBox
+                                        type="color"
                                         name={itemFilter.field}
                                         label={itemFilter.label || t('catalog:title:color')}
                                         data={ItemValueByLabel}
                                         value={selectedFilter[itemFilter.field] ? selectedFilter[itemFilter.field].split(',') : []}
                                         flex={itemProps.selectSizeFlex || 'row'}
-                                        CustomItem={itemProps.selectColorItem || CheckBoxColor}
+                                        CustomItem={itemProps.selectColorItem || Swatch}
                                         onChange={(val) => setCheckedFilter(itemFilter.field, val)}
                                     />
                                 </div>
@@ -187,7 +187,7 @@ const FilterDialog = (props) => {
                                         data={ItemValueByLabel}
                                         value={selectedFilter[itemFilter.field] ? selectedFilter[itemFilter.field].split(',') : []}
                                         flex={itemProps.selectSizeFlex || 'row'}
-                                        CustomItem={itemProps.selectSizeItem || CheckBoxSize}
+                                        CustomItem={itemProps.selectSizeItem || Swatch}
                                         onChange={(val) => setCheckedFilter(itemFilter.field, val)}
                                     />
                                 </div>

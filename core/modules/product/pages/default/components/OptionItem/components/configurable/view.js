@@ -1,6 +1,4 @@
 import CustomRadio from '@common_forms/Radio';
-// import SelectColor from '@common_forms/SelectColor';
-// import SelectSize from '@common_forms/SelectSize';
 import Typography from '@common_typography';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';

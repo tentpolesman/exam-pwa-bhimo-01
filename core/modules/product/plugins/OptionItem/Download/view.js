@@ -1,7 +1,5 @@
 /* eslint-disable react/no-danger */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-// import SelectColor from '@common_forms/SelectColor';
-// import SelectSize from '@common_forms/SelectSize';
 // import { formatPrice } from '@helper_currency';
 
 import Footer from '@plugin_optionitem/components/Footer';
