@@ -6,6 +6,7 @@
 import Typography from '@common_typography';
 import cx from 'classnames';
 import { useEffect, useState } from 'react';
+import CheckIcon from '@heroicons/react/24/solid/CheckIcon';
 
 const Radio = (props) => {
     const {
@@ -27,6 +28,7 @@ const Radio = (props) => {
         storeConfig,
         size = 'md',
         customItemProps = {},
+        type = 'radio',
     } = props;
     const { radioGroupClasses = '', radioClasses = '' } = classNames;
     const [more, setMore] = useState(7);
@@ -93,38 +95,75 @@ const Radio = (props) => {
                         <div className="flex items-center mb-1">
                             <input
                                 type="radio"
-                                disabled={disabled}
+                                disabled={item.disabled || disabled}
                                 className={cx(
                                     'form-radio',
                                     'w-4',
                                     'h-4',
                                     'mr-2',
-                                    'text-primary',
                                     'border-solid',
                                     'border-[1px]',
-                                    'border-neutral-150',
-                                    'hover:border-neutral-300',
-                                    'hover:text-primary-200',
                                     'focus:ring-0',
                                     'focus:border-primary',
+                                    'text-primary',
                                     'focus:shadow-[0_0_0_4px]',
                                     'focus:shadow-primary-50',
                                     'focus:ring-offset-0',
                                     'checked:bg-[length:150%]',
+                                    'visible',
                                     {
-                                        'hover:!text-neutral-100 !border-neutral-150 checked:!bg-[length:0] checked:!text-neutral-100': disabled,
+                                        'border-neutral-300 text-neutral-300': !disabled,
                                         'w-5 h-5': size === 'md',
                                         'w-6 h-6': size === 'lg',
+                                        'invisible hidden': type === 'check',
                                     },
                                     radioClasses,
                                 )}
-                                name={name}
+                                name={item.name || name}
                                 ariaLabel={ariaLabel}
                                 value={item.value}
                                 checked={item.value === value}
                                 onChange={handleChange}
+                                id={item.id || `${name}-${index}`}
                             />
-                            <label>
+                            <label for={item.id || `${name}-${index}`} className="cursor-pointer flex items-center group">
+                                {type === 'check' ? (
+                                    item.value === value ? (
+                                        <div className={cx(
+                                            'w-4 h-4 mr-1',
+                                            'flex items-center justify-center',
+                                            'border-[1px] border-solid rounded-full border-primary',
+                                            'bg-primary',
+                                            {
+                                                'w-5 h-5': size === 'md',
+                                                'w-6 h-6': size === 'lg',
+                                            },
+                                        )}
+                                        >
+                                            <CheckIcon className={cx(
+                                                'w-3 h-3 font-bold text-neutral-100',
+                                                {
+                                                    'w-5 h-5': size === 'md',
+                                                    'w-6 h-6': size === 'lg',
+                                                },
+                                            )}
+                                            />
+                                        </div>
+                                    ) : (
+                                        <div className={cx(
+                                            'w-4 h-4 border-[1px] border-solid rounded-full mr-1',
+                                            'group-hover:bg-primary-200 group-hover:border-primary',
+                                            'group-focus:bg-primary-200 group-focus:border-primary',
+                                            {
+                                                'border-[#D1D5DB] bg-neutral-white': disabled || item.disabled,
+                                                'group-hover:bg-neutral-white group-hover:border-neutral-200': disabled || item.disabled,
+                                                'w-5 h-5': size === 'md',
+                                                'w-6 h-6': size === 'lg',
+                                            },
+                                        )}
+                                        />
+                                    )
+                                ) : null}
                                 <Typography variant={labelVariant[size]}>{item.label}</Typography>
                             </label>
                         </div>
