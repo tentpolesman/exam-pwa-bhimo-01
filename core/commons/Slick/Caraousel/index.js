@@ -4,18 +4,17 @@
 import React, { useState } from 'react';
 import Slider from 'react-slick';
 import classNames from 'classnames';
-import LeftArrowIcon from '@material-ui/icons/ArrowBackIos';
-import RightArrowIcon from '@material-ui/icons/ArrowForwardIos';
-import useStyles from '@common_slick/Caraousel/style';
+import ChevronLeft from '@heroicons/react/20/solid/ChevronLeftIcon';
+import ChevronRight from '@heroicons/react/20/solid/ChevronRightIcon';
 
 const Caraousel = (props) => {
     const {
         data = [], xs = 767, sm = 1024, md = 1200,
         slideXs = 1, slideSm = 3, slideMd = 4, slideLg = 6,
-        showArrow = true, Item, onReInit = () => {}, storeConfig = {}, ...other
+        showArrow = true, Item, onReInit = () => {}, storeConfig = {},
+        className = '', ...other
     } = props;
 
-    const styles = useStyles();
     const [slideIndex, setIndex] = useState(0);
     const [count, setCount] = useState(0);
 
@@ -83,8 +82,11 @@ const Caraousel = (props) => {
         ],
     };
 
+    // eslint-disable-next-line max-len
+    const arrow = 'text-[1.5rem] bg-neutral-100 shadow-md absolute hidden group-hover:flex flex-col justify-center items-center p-[10px] rouded-[5px] text-center pl-[10px] top-[calc(50%-1rem)] w-[40px] h-[40px] cursor-pointer hover:bg-pwa-primary hover:text-white xs:hidden';
+
     return (
-        <div className={classNames('carousel', styles.caraousel)}>
+        <div className={classNames('carousel', 'w-full h-full relative xs:max-w-[100vw] sm:h-auto group', className)}>
             <Slider onInit={onReInit} ref={(slider) => sliderRef = slider} {...settings}>
                 {
                     data && data.length > 0 && data.map((item, key) => (
@@ -95,11 +97,12 @@ const Caraousel = (props) => {
             {
                 showArrow ? (
                     <>
-                        <div className={classNames(styles.arrow, styles.leftArrow)} onClick={handleLeftArrow}>
-                            <LeftArrowIcon fontSize="inherit" />
+                        <div className={classNames(arrow, 'left-[20px]')} onClick={handleLeftArrow}>
+                            <ChevronLeft className="w-6 h-6 text-primary" />
+
                         </div>
-                        <div className={classNames(styles.arrow, styles.rightArrow)} onClick={handleRightArrow}>
-                            <RightArrowIcon fontSize="inherit" />
+                        <div className={classNames(arrow, 'right-[20px]')} onClick={handleRightArrow}>
+                            <ChevronRight className="w-6 h-6 text-primary" />
                         </div>
                     </>
                 ) : null

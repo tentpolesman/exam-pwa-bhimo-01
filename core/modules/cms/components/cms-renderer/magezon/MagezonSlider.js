@@ -11,10 +11,7 @@ import { getStoreHost } from '@helpers/config';
 import MagezonLink from '@core_modules/cms/components/cms-renderer/magezon/MagezonLink';
 import MagezonHeading from '@core_modules/cms/components/cms-renderer/magezon/MagezonHeading';
 import MagezonButton from '@core_modules/cms/components/cms-renderer/magezon/MagezonButton';
-import LeftArrowIcon from '@material-ui/icons/ChevronLeft';
-import RightArrowIcon from '@material-ui/icons/ChevronRight';
 import Image from '@common_image';
-import useStyles from '@common_slick/Banner/style';
 
 const VideoContent = (props) => {
     const {
@@ -67,7 +64,6 @@ const MagezonSliderContent = (props) => {
         link_type, slide_link, storeConfig, lazy, width, height,
     } = props;
     const mediaUrl = `${getStoreHost()}media`;
-    const styles = useStyles();
 
     return (
         <>
@@ -153,7 +149,7 @@ const MagezonSliderContent = (props) => {
                                     useContainer={false}
                                     storeConfig={storeConfig}
                                     lazy={lazy}
-                                    className={styles.imageSliderBackground}
+                                    className="flex w-full h-full"
                                 />
                             ) : (
                                 <MagezonLink link={slide_link}>
@@ -165,7 +161,7 @@ const MagezonSliderContent = (props) => {
                                         useContainer={false}
                                         storeConfig={storeConfig}
                                         lazy={lazy}
-                                        className={styles.imageSliderBackground}
+                                        className="flex w-full h-full"
                                     />
                                 </MagezonLink>
                             )
@@ -385,20 +381,20 @@ const MagezonSlider = (props) => {
                 {owl_nav && owl_nav_position.includes('top') && (
                     <div className="magezon-slider-nav-top-arrow">
                         <div className="magezon-slider-button-nav" onClick={() => sliderRef.slickPrev()}>
-                            <LeftArrowIcon />
+                            <i class="fas fa-chevron-left" />
                         </div>
                         <div className="magezon-slider-button-nav" onClick={() => sliderRef.slickNext()}>
-                            <RightArrowIcon />
+                            <i class="fas fa-chevron-right" />
                         </div>
                     </div>
                 )}
                 {owl_nav && owl_nav_position === 'center_split' && (
                     <div className="magezon-slider-nav-center-arrow">
                         <div className="magezon-slider-button-nav" onClick={() => sliderRef.slickPrev()}>
-                            <LeftArrowIcon />
+                            <i class="fas fa-chevron-left" />
                         </div>
                         <div className="magezon-slider-button-nav" onClick={() => sliderRef.slickNext()}>
-                            <RightArrowIcon />
+                            <i class="fas fa-chevron-right" />
                         </div>
                     </div>
                 )}
@@ -413,10 +409,10 @@ const MagezonSlider = (props) => {
                     {owl_nav && owl_nav_position.includes('bottom') && (
                         <div className="magezon-slider-nav-bottom-arrow">
                             <div className="magezon-slider-button-nav" onClick={() => sliderRef.slickPrev()}>
-                                <LeftArrowIcon />
+                                <i class="fas fa-chevron-left" />
                             </div>
                             <div className="magezon-slider-button-nav" onClick={() => sliderRef.slickNext()}>
-                                <RightArrowIcon />
+                                <i class="fas fa-chevron-right" />
                             </div>
                         </div>
                     )}
