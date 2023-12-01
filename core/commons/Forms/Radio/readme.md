@@ -38,3 +38,4 @@ import Radio from '@common_forms/Radio';
 | `CustomLabel`       | false    | custom radio group label | `components`||
 | `useLoadMore`       | false    | enable show / hide feature | `bool`| false |
 | `size`       | false    | size of the radio button | `md`|
+| `type`    | false | type of item radio `check` or `radio` | `string` | `radio` |

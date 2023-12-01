@@ -1,6 +1,7 @@
 import Typography from '@common_typography';
 import cx from 'classnames';
 import { useState } from 'react';
+import propTypes from 'prop-types';
 
 const TextArea = (props) => {
     const {
@@ -39,7 +40,7 @@ const TextArea = (props) => {
                         '!bg-neutral-50 border-none placeholder:!text-neutral-100': disabled,
                         '!border-red hover:!border-red': hintType === 'error',
                         '!border-yellow': hintType === 'warning',
-                        '!border-green-200': hintType === 'success',
+                        '!border-green': hintType === 'success',
                     },
                     inputClassName,
                 )}
@@ -53,7 +54,7 @@ const TextArea = (props) => {
                     className={cx('my-2', {
                         '!text-red': hintType === 'error',
                         '!text-yellow': hintType === 'warning',
-                        '!text-green-200': hintType === 'success',
+                        '!text-green': hintType === 'success',
                     })}
                 >
                     {hintText}
@@ -61,6 +62,43 @@ const TextArea = (props) => {
             ) : null}
         </div>
     );
+};
+
+TextArea.propTypes = {
+    placeholder: propTypes.string,
+    label: propTypes.string,
+    disabled: propTypes.bool,
+    value: propTypes.string.isRequired,
+    onChange: propTypes.func,
+    hintProps: propTypes.shape({
+        displayHintText: propTypes.bool,
+        hintType: propTypes.oneOf(['error', 'warning', 'success', '']),
+        hintText: propTypes.string,
+    }),
+    inputProps: propTypes.shape({
+        value: propTypes.string,
+        onChange: propTypes.func,
+        className: propTypes.string,
+    }),
+    className: propTypes.string,
+};
+
+TextArea.defaultProps = {
+    placeholder: '',
+    label: '',
+    disabled: false,
+    onChange: () => {},
+    hintProps: {
+        displayHintText: false,
+        hintType: '',
+        hintText: '',
+    },
+    inputProps: {
+        value: '',
+        onChange: () => {},
+        className: '',
+    },
+    className: '',
 };
 
 export default TextArea;

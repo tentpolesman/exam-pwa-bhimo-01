@@ -5,7 +5,9 @@
 import React, { useState } from 'react';
 import Slider from 'react-slick';
 import ImageSlide from '@common_slick/Banner/ImageSlider';
-import { PRIMARY } from '@root/core/theme/colors';
+import classNames from 'classnames';
+import ChevronLeft from '@heroicons/react/20/solid/ChevronLeftIcon';
+import ChevronRight from '@heroicons/react/20/solid/ChevronRightIcon';
 
 const Banner = ({
     data = [],
@@ -17,6 +19,7 @@ const Banner = ({
     showArrow = true,
     speed = 500,
     autoplaySpeed = 4000,
+    className = '',
     storeConfig = {},
 }) => {
     const [slideIndex, setIndex] = useState(0);
@@ -38,12 +41,13 @@ const Banner = ({
 
         if (data.length > 1) {
             if (isActive) {
-                dotItemProps.className = 'w-[10px] h-[10px] rounded-[100px] m-[5px] cursor-pointer';
-                dotItemProps.style = { backgroundColor: PRIMARY };
+                dotItemProps.className = 'w-[10px] h-[10px] m-[5px] cursor-pointer bg-primary-100 border-2 rounded-full border-pwa-primary';
             } else {
-                dotItemProps.className = 'w-[7px] h-[7px] rounded-[100px] m-[5px] cursor-pointer bg-white';
+                dotItemProps.className = 'w-[8px] h-[8px] m-[5px] cursor-pointer bg-neutral-white rounded-full';
             }
         }
+
+        dotItemProps.className += ' banner-slider-dots';
 
         return dotItemProps;
     };
@@ -70,7 +74,7 @@ const Banner = ({
     };
 
     return (
-        <div className="w-full h-full relative sm:h-auto">
+        <div className={classNames('w-full h-full relative sm:h-auto group', className)}>
             <Slider ref={(slider) => (sliderRef = slider)} {...settings}>
                 {data.map((item, key) => (
                     <ImageSlide
@@ -85,19 +89,25 @@ const Banner = ({
                     />
                 ))}
             </Slider>
-            {showArrow ? (
+            {showArrow && data.length > 1 ? (
                 <>
                     <div
-                        className="text-[1.5rem] bg-[rgba(255,255,255,0.5)] p-[10px] rounded flex flex-col justify-center items-center pl-[5px] w-[40px] h-[40px] cursor-pointer absolute top-[calc(50%-1rem)] left-[20px]"
+                        className={`
+                            text-[1.5rem] bg-neutral-100 p-[10px] rounded-[6px] flex-col justify-center items-center pl-[5px] w-[40px] h-[40px] cursor-pointer absolute top-[calc(50%-1rem)] left-[20px]
+                            z-10 hidden group-hover:flex banner-slider-left-arrow shadow-md
+                        `}
                         onClick={handleLeftArrow}
                     >
-                        <i class="fas fa-chevron-left" />
+                        <ChevronLeft className="w-6 h-6 text-primary" />
                     </div>
                     <div
-                        className="text-[1.5rem] bg-[rgba(255,255,255,0.5)] p-[10px] rounded flex flex-col justify-center items-center pl-[5px] w-[40px] h-[40px] cursor-pointer absolute top-[calc(50%-1rem)] right-[20px]"
+                        className={`
+                            text-[1.5rem] bg-neutral-100 p-[10px] rounded-[6px] flex-col justify-center items-center pl-[5px] w-[40px] h-[40px] cursor-pointer absolute top-[calc(50%-1rem)] right-[20px]
+                            z-10 hidden group-hover:flex banner-slider-right-arrow shadow-md
+                        `}
                         onClick={handleRightArrow}
                     >
-                        <i class="fas fa-chevron-right" />
+                        <ChevronRight className="w-6 h-6 text-primary" />
                     </div>
                 </>
             ) : null}

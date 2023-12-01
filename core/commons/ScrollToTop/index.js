@@ -6,13 +6,6 @@ import ArrowUp from '@heroicons/react/24/outline/ChevronUpIcon';
 const ScrollTop = (props) => {
     const { storeConfig } = props;
 
-    const classes = cx(
-        'fixed',
-        'bottom-space-16',
-        'right-space-16',
-        'z-1099',
-    );
-
     const [triger, setTriger] = React.useState(false);
     const maxHeigtToShow = 600;
 
@@ -52,7 +45,20 @@ const ScrollTop = (props) => {
     };
 
     return (
-        <div onClick={scrollTop} role="presentation" className={cx(classes)}>
+        <div
+            onClick={scrollTop}
+            role="presentation"
+            className={cx(
+                'fixed',
+                'bottom-space-16',
+                'right-space-16',
+                'z-1099',
+                'visible',
+                {
+                    'hidden invisible': !triger,
+                },
+            )}
+        >
             <Button
                 iconOnly
                 icon={<ArrowUp />}
