@@ -1,9 +1,12 @@
 /* eslint-disable react/forbid-prop-types */
-import Typography from '@common_typography';
+import React, { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
-import React, { useCallback, useMemo } from 'react';
 import { useTranslation } from 'next-i18next';
+import Typography from '@common_typography';
 import propTypes from 'prop-types';
+import Show from '@common_show';
+import CircularProgress from '@common_circularprogress';
+import cx from 'classnames';
 
 const toBase64 = (file) => new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -14,6 +17,8 @@ const toBase64 = (file) => new Promise((resolve, reject) => {
 
 const DropFile = ({
     label,
+    width = 509,
+    error = false,
     title,
     showListFile,
     acceptedFile,
@@ -21,16 +26,21 @@ const DropFile = ({
     multiple,
     handleDrop,
     getBase64,
-    error,
     dropValue,
     value,
     setValue,
     noStyle = false,
     maxWidth,
     maxHeight,
+    hintText,
+    loading,
 }) => {
     const { t } = useTranslation(['common']);
+    const [isInternalError, setIsInternalError] = React.useState(null);
     const [dropFile, setDropFile] = React.useState(dropValue);
+    const isError = error || isInternalError;
+    const isTempImageExists = showListFile && value && value?.length > 0;
+
     const checkImage = async (files) => {
         const promises = [];
         for (let index = 0; index < files.length; index += 1) {
@@ -64,7 +74,9 @@ const DropFile = ({
     const onDrop = useCallback(async (files) => {
         if (files && files.length > 0) {
             const errorImage = await checkImage(files);
-            if (!errorImage) {
+            if (errorImage) {
+                setIsInternalError(errorImage);
+            } else {
                 if (multiple) {
                     setDropFile([...dropFile, ...files]);
                     if (setValue) setValue([...dropFile, ...files]);
@@ -73,19 +85,15 @@ const DropFile = ({
                     if (setValue) setValue([files[0]]);
                 }
                 handleDrop(files);
-            } else {
-                window.toastMessage({
-                    open: true,
-                    text: errorImage,
-                    variant: 'error',
-                });
             }
         }
         // Do something with the files
     }, []);
+
     const onDropAccepted = async (files) => {
         // eslint-disable-next-line array-callback-return
         let filebase64 = [];
+        setIsInternalError(null);
         for (let ind = 0; ind < files.length; ind += 1) {
             // eslint-disable-next-line no-await-in-loop
             const baseCode = await toBase64(files[ind]);
@@ -103,96 +111,126 @@ const DropFile = ({
         }
     };
 
-    const messageError = `${t('common:fileUpload:reject') + acceptedFile}& max file ${maxSize / 1000000}Mb`;
-
     const {
         getRootProps,
         getInputProps,
         isDragActive,
-        isDragAccept,
         isDragReject,
         open,
     } = useDropzone({
         onDrop,
         accept: acceptedFile,
         onDropAccepted,
-        onDropRejected: () => window.toastMessage({
-            open: true,
-            text: messageError,
-            variant: 'error',
-        }),
+        onDropRejected: () => {
+            const messageError = `${t('common:fileUpload:reject') + acceptedFile}& max file ${maxSize / 1000000}Mb`;
+            setIsInternalError(messageError);
+        },
         maxSize,
     });
-
-    const baseStyle = {
-        flex: 1,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        padding: '20px',
-        breturnWidth: 2,
-        breturnRadius: 2,
-        breturnColor: '#eeeeee',
-        breturnStyle: 'dashed',
-        backgroundColor: '#fafafa',
-        color: '#bdbdbd',
-        outline: 'none',
-        transition: 'breturn .24s ease-in-out',
-        cursor: 'pointer',
-    };
-
-    const activeStyle = {
-        breturnColor: '#2196f3',
-    };
-
-    const acceptStyle = {
-        breturnColor: '#00e676',
-    };
-
-    const rejectStyle = {
-        breturnColor: '#ff1744',
-    };
-
-    const style = useMemo(() => ({
-        ...baseStyle,
-        ...(isDragActive ? activeStyle : {}),
-        ...(isDragAccept ? acceptStyle : {}),
-        ...(isDragReject ? rejectStyle : {}),
-    }), [
-        isDragActive,
-        isDragReject,
-        isDragAccept,
-    ]);
 
     return (
         <div className="flex flex-col">
             {
-                title && title !== '' ? (<Typography variant="label" type="semiBold" color={error ? 'red' : 'default'}>{title}</Typography>)
-                    : null
+                title && (
+                    <Typography variant="h4" color={error ? 'red' : 'default'} className="mb-[12px]">
+                        {title}
+                    </Typography>
+                )
             }
-            <div {...getRootProps({ style: noStyle ? {} : style })}>
-                <input {...getInputProps()} />
-                {
-                    noStyle && (
-                        <button type="button" onClick={open}>
-                            Choose file
-                        </button>
+            <div
+                style={{
+                    ...(width ? { width } : null),
+                }}
+                className={
+                    cx(
+                        'px-[20px] py-[16px] rounded-[8px] cursor-pointer flex items-center',
+                        loading && 'justify-between',
+                        !isTempImageExists && 'border-[1px] border-neutral-400 border-dashed justify-center text-center',
+                        isError && 'border-red-600 text-red-600 text-center',
+                        isTempImageExists && 'border-[1px] border-neutral-100 bg-neutral-100 text-left justify-between',
                     )
                 }
-                {
-                    !noStyle && isDragActive
-                        ? <p>{t('common:fileUpload:dragActive')}</p>
-                        : !noStyle && <p>{t('common:fileUpload:dragNonActive')}</p>
-                }
+            >
+
+                <div {...getRootProps()}>
+                    <input {...getInputProps()} />
+                    <Show when={!isTempImageExists && noStyle}>
+                        <button type="button" onClick={open}>
+                            <Typography
+                                variant="bd-2b"
+                                className={cx()}
+                            >
+                                {t('common:label:chooseFile')}
+                            </Typography>
+                        </button>
+                    </Show>
+                    <Show when={!isTempImageExists && !noStyle}>
+                        <div className="container-dnd-active flex items-center">
+                            <Typography
+                                variant="bd-2b"
+                                className={cx('flex items-center justify-center', isError && 'border-red-600 text-red-600')}
+                            >
+                                <span className={cx('material-symbols-outlined', 'mr-[8px]', 'text-[20px]')}>
+                                    cloud_upload
+                                </span>
+                                {isDragActive ? t('common:fileUpload:dragActive') : t('common:fileUpload:dragNonActive')}
+                            </Typography>
+                        </div>
+                    </Show>
+
+                    {/* SHOW FILES NAME */}
+                    <Show when={isTempImageExists}>
+                        <div className="container-dnd-file flex items-center">
+                            <span className={cx('material-symbols-outlined', 'mr-[8px]', 'text-neutral-700', 'text-[20px]')}>
+                                image
+                            </span>
+                            <div className="flex flex-col items-center">
+                                {value?.map((file, index) => (<Typography variant="bd-2b" key={index}>{file.name}</Typography>))}
+                            </div>
+                        </div>
+                    </Show>
+                    <Show when={!isTempImageExists && isDragActive}>
+                        <div className="container-dnd-file flex flex-col items-center">
+                            <div className="flex flex-col items-center">
+                                {
+                                    showListFile && dropFile.length > 0 && dropFile.map(
+                                        (file, index) => (
+                                            <Typography variant="bd-2b" key={index}>{file.name}</Typography>
+                                        ),
+                                    )
+                                }
+                            </div>
+                        </div>
+                    </Show>
+                </div>
+
+                <Show when={isTempImageExists && loading}>
+                    <CircularProgress className="flex justify-center items-center" size="small" />
+                </Show>
+                <Show when={isTempImageExists && !loading}>
+                    <button
+                        type="button"
+                        className="flex items-center justify-center z-50"
+                        onClick={() => {
+                            setValue([]);
+                            setDropFile([]);
+                        }}
+                    >
+                        <span className={cx('material-symbols-outlined', 'text-neutral-600', 'text-[20px]')}>
+                            close
+                        </span>
+                    </button>
+                </Show>
             </div>
-            <Typography color={error ? 'red' : 'default'}>{label}</Typography>
-            <div className="flex flex-col">
-                {
-                    (showListFile && value && value.length > 0)
-                        ? value.map((file, index) => (<Typography key={index}>{file.name}</Typography>))
-                        : showListFile && dropFile.length > 0 && dropFile.map((file, index) => (<Typography key={index}>{file.name}</Typography>))
-                }
-            </div>
+
+            {/* SHOW ERROR */}
+            <Show when={isDragReject || isInternalError !== null || error}>
+                <Typography variant="bd-2b" className="mt-[12px]" color="text-red-600">{error ? label : isInternalError}</Typography>
+            </Show>
+            {/* SHOW HINTS */}
+            <Show when={hintText}>
+                <Typography variant="bd-2b" className="mt-[12px]" color="text-neutral-600">{hintText}</Typography>
+            </Show>
         </div>
     );
 };

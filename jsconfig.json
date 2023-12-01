@@ -93,6 +93,7 @@
             "@common_rangeslider": ["src/commons/RangeSlider", "core/commons/RangeSlider"],
             "@common_textfield": ["src/commons/TextField", "core/commons/TextField"],
             "@common_badge": ["src/commons/Badge", "core/commons/Badge"],
+            "@common_show": ["src/commons/Show", "core/commons/Show"],
 
             "@common_button/*": ["src/commons/Button/*", "core/commons/Button/*"],
             "@common_buttonqty/*": ["src/commons/ButtonQty/*", "core/commons/ButtonQty/*"],
@@ -159,6 +160,7 @@
             "@common_footer/*": ["src/modules/theme/components/footer/desktop/*", "core/modules/theme/components/footer/desktop/*"],
             "@common_productlabel/*": ["src/commons/ProductLabel/*", "core/commons/ProductLabel/*"],
             "@common_optionconfigurable/*": ["src/commons/OptionConfigurable/*", "core/commons/OptionConfigurable/*"],
+            "@common_show/*": ["src/commons/Show/*", "core/commons/Show/*"],
 
             "@plugin_summary": ["src/modules/cart/plugins/Summary", "core/modules/cart/plugins/Summary"],
             "@plugin_summary/*": ["src/modules/cart/plugins/Summary/*", "core/modules/cart/plugins/Summary/*"],

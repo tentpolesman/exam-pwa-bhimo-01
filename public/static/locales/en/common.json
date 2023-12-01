@@ -109,8 +109,8 @@
     },
     "fileUpload": {
         "reject": "Cannot upload, Files must be a type ",
-        "dragActive": "Drop the files here ...",
-        "dragNonActive": "Drag drop some files here, or click to select file",
+        "dragActive": "Drop the files here",
+        "dragNonActive": "Drop or Drag files here",
         "maxSizeImage": "Maximum size image "
     },
     "menu": {
@@ -193,6 +193,8 @@
     "label": {
         "invalidPrice": "Invalid Price",
         "seeMore": "See More",
-        "seeLess": "See Less"
+        "seeLess": "See Less",
+        "chooseFile": "Choose File",
+        "pleaseWait": "Please Wait"
     }
 }
