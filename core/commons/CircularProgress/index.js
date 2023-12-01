@@ -14,7 +14,7 @@ const CircularProgress = (props) => {
         sizeClasses = 'text-[44px]';
         break;
     default:
-        sizeClasses = 'text-[44px]';
+        sizeClasses = 'text-[20px]';
         break;
     }
 
