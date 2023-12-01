@@ -108,8 +108,8 @@
     },
     "fileUpload": {
         "reject": "Tidak dapat mengupload, file harus ber type  ",
-        "dragActive": "Taruh file kesini ...",
-        "dragNonActive": "Tarik dan taruh file kesini, atau klik untuk pilih file",
+        "dragActive": "Tarik file kesini",
+        "dragNonActive": "Pilih atau tarik file disini",
         "maxSizeImage": "Maksimal ukuran gambar "
     },
     "menu": {
@@ -188,6 +188,10 @@
         "giftCard": "Gift card (hadiah)"
     },
     "label": {
-        "invalidPrice": "Harga tidak valid"
+        "invalidPrice": "Harga tidak valid",
+        "seeMore": "Lihat Selebihnya",
+        "seeLess": "Lihat Sedikitnya",
+        "chooseFile": "Pilih File",
+        "pleaseWait": "Mohon Menunggu"
     }
 }

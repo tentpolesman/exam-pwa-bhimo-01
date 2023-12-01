@@ -182,6 +182,7 @@ const FilterDialog = (props) => {
                             return (
                                 <div className={styles[idx < data.length - 1 ? 'fieldContainer' : 'fieldContainerLast']} key={idx}>
                                     <CheckBox
+                                        type="size"
                                         name={itemFilter.field}
                                         label={itemFilter.label || t('catalog:title:size')}
                                         data={ItemValueByLabel}
