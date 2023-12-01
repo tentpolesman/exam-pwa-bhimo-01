@@ -20,9 +20,9 @@ import TagManager from 'react-gtm-module';
 import { basePath, custDataNameCookie, debuging, features, modules } from '@config';
 import { createCompareList } from '@core_modules/product/services/graphql';
 // import useStyles from '@core_modules/theme/layout/style';
-import { getAppEnv } from '@helpers/env';
 import { getHost } from '@helper_config';
 import { getCookies, setCookies } from '@helper_cookies';
+import { getAppEnv } from '@helpers/env';
 // import { breakPointsDown, breakPointsUp } from '@helper_theme';
 // import crypto from 'crypto';
 // import Fab from '@material-ui/core/Fab';
@@ -31,11 +31,11 @@ import { getCookies, setCookies } from '@helper_cookies';
 // import PopupInstallAppMobile from '@core_modules/theme/components/custom-install-popup/mobile';
 // import Copyright from '@core_modules/theme/components/footer/desktop/components/copyright';
 import { getCountCart } from '@core_modules/theme/services/graphql';
-import { frontendConfig } from '@helpers/frontendOptions';
 import { getCartId } from '@helper_cartid';
+import { frontendConfig } from '@helpers/frontendOptions';
 import { localTotalCart } from '@services/graphql/schema/local';
-import Script from 'next/script';
 import localFont from 'next/font/local';
+import Script from 'next/script';
 
 /**
  * Set font family using nextjs helper,
@@ -338,7 +338,7 @@ const Layout = (props) => {
     };
 
     const generateClasses = () => {
-        let classes = `main-app main-app-v1-sticky-not-homepage ${font.variable} font-sans !font-pwa-default`;
+        let classes = `tablet:min-h-[calc(100vh-435px)] tablet:mt-[140px] tablet:max-w-[768px] desktop:min-h[calc(100vh-435px)] desktop:mt-[140px] desktop:max-w-[1200px] desktop:w-[97%] main-app-v1-sticky-not-homepage ${font.variable} font-sans !font-pwa-default`;
         if (pageConfig.bottomNav && storeConfig?.pwa?.mobile_navigation === 'bottom_navigation' && storeConfig?.pwa?.enabler_footer_mobile) {
             classes += ' mb-[60px]';
         } else {
