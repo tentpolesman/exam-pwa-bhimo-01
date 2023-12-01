@@ -9,6 +9,8 @@ import Content from '@core_modules/catalog/pages/category/components';
 const ErrorView = dynamic(() => import('@core_modules/error/pages/default'), { ssr: false });
 const SkeletonView = dynamic(() => import('@core_modules/catalog/pages/category/components/Skeleton'), { ssr: false });
 
+// SSR Not Working
+
 const Page = (props) => {
     const {
         categoryId, storeConfig: configStore, pageConfig = {}, ...other
@@ -62,7 +64,7 @@ const Page = (props) => {
         return <ErrorView statusCode={404} {...props} />;
     }
     return (
-        <Layout {...props} pageConfig={config} data={category} isPlp>
+        <Layout {...props} pageConfig={pageConfig} data={null} isPlp>
             <Content categoryId={categoryId} data={data} {...other} storeConfig={storeConfig} />
         </Layout>
     );

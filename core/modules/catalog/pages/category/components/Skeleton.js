@@ -1,16 +1,13 @@
 import Skeleton from '@common_skeleton';
 import ProductListSkeleton from '@plugin_productlist/components/ProductListSkeleton';
-import useStyles from '@core_modules/catalog/pages/category/components/style';
 
 const SkeletonCategory = (props) => {
-    const styles = useStyles();
-
     const { drawer_filter_on_desktop_enable } = props;
 
     const className = drawer_filter_on_desktop_enable ? 'xs:basis-full lg:basis-10/12' : 'xs:basis-full lg:basis-full';
 
     return (
-        <div className={styles.container}>
+        <div className="w-full h-full flex flex-col">
             <Skeleton
                 variant="rect"
                 xsStyle={{ width: '100vw', height: '60vw' }}

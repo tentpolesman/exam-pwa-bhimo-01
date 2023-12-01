@@ -1,6 +1,6 @@
 import dynamic from 'next/dynamic';
 
-const CategoryPage = dynamic(() => import('@core_modules/catalog/pages/category'));
+const CategoryPage = dynamic(() => import('@core_modules/catalog/pages/category/core'));
 const ProductPage = dynamic(() => import('@core_modules/product/pages/default'));
 const CmsPage = dynamic(() => import('@core_modules/cms/pages/default'));
 const Error = dynamic(() => import('@core_modules/error/pages/default'));
