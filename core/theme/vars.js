@@ -6,9 +6,6 @@ export const BREAKPOINTS = {
     md: 768,
     lg: 992,
     xl: 1200,
-    mobile: 0,
-    tablet: 768,
-    desktop: 1200,
 };
 
 export const COLORS = {

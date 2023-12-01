@@ -56,9 +56,9 @@ module.exports = {
             md: `${BREAKPOINTS.md}px`,
             lg: `${BREAKPOINTS.lg}px`,
             xl: `${BREAKPOINTS.xl}px`,
-            mobile: `${BREAKPOINTS.mobile}px`,
-            tablet: `${BREAKPOINTS.tablet}px`,
-            desktop: `${BREAKPOINTS.desktop}px`,
+            mobile: `${BREAKPOINTS.xs}px`,
+            tablet: `${BREAKPOINTS.md}px`,
+            desktop: `${BREAKPOINTS.xl}px`,
         },
         colors: {
             red: COLORS.red,
