@@ -1,20 +1,20 @@
 import cx from 'classnames';
 
 const CircularProgress = (props) => {
-    const { className = {}, size = 'large', color = 'primary' } = props;
+    const { className = {}, size = 'small', color = 'primary' } = props;
 
     let sizeClasses;
     let colorClasses;
 
     switch (size) {
     case 'small':
-        sizeClasses = 'w-[20px] h-[20px]';
+        sizeClasses = 'text-[20px]';
         break;
     case 'large':
-        sizeClasses = 'w-[44px] h-[44px]';
+        sizeClasses = 'text-[44px]';
         break;
     default:
-        sizeClasses = 'w-[44px] h-[44px]';
+        sizeClasses = 'text-[44px]';
         break;
     }
 
