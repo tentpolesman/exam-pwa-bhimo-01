@@ -338,7 +338,7 @@ const Layout = (props) => {
     };
 
     const generateClasses = () => {
-        let classes = `tablet:min-h-[calc(100vh-435px)] tablet:mt-[140px] tablet:max-w-[768px] desktop:min-h[calc(100vh-435px)] desktop:mt-[140px] desktop:max-w-[1200px] desktop:w-[97%] main-app-v1-sticky-not-homepage ${font.variable} font-sans !font-pwa-default`;
+        let classes = `tablet:min-h-[calc(100vh-435px)] tablet:mt-[140px] tablet:max-w-[768px] desktop:min-h[calc(100vh-435px)] desktop:mt-[140px] desktop:max-w-[1200px] main-app-v1-sticky-not-homepage ${font.variable} font-sans !font-pwa-default`;
         if (pageConfig.bottomNav && storeConfig?.pwa?.mobile_navigation === 'bottom_navigation' && storeConfig?.pwa?.enabler_footer_mobile) {
             classes += ' mb-[60px]';
         } else {
