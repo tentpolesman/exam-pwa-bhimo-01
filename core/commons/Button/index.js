@@ -2,6 +2,7 @@ import cx from 'classnames';
 import Typography from '@common_typography';
 import ArrowPath from '@heroicons/react/24/outline/ArrowPathIcon';
 import propTypes from 'prop-types';
+import Show from '@common_show';
 
 const Button = (props) => {
     const {
@@ -67,23 +68,27 @@ const Button = (props) => {
                     'flex-row-reverse': icon && position === 'right',
                 })}
             >
-                {
-                    icon && loading ? (
-                        <ArrowPath className={cx('animate-spin w-6 h-6', {
-                            'mr-[6px]': position !== 'right' && !iconOnly,
-                            'ml-[6px]': position === 'right' && !iconOnly,
-                            'text-lg': !iconOnly || (iconOnly && (size === 'sm' || size === 'md')),
-                        })}
-                        />
-                    ) : null
-                }
-                {icon || !loading ? React.cloneElement(icon, {
-                    className: cx('w-6 h-6', {
+                <Show when={icon && loading}>
+                    <ArrowPath className={cx('animate-spin w-6 h-6', {
                         'mr-[6px]': position !== 'right' && !iconOnly,
                         'ml-[6px]': position === 'right' && !iconOnly,
-                    }),
-                }) : null}
-                {icon && iconOnly ? null : children}
+                        'text-lg': !iconOnly || (iconOnly && (size === 'sm' || size === 'md')),
+                    })}
+                    />
+                </Show>
+                <Show when={icon && !loading}>
+                    {
+                        React.cloneElement(icon, {
+                            className: cx('w-6 h-6', {
+                                'mr-[6px]': position !== 'right' && !iconOnly,
+                                'ml-[6px]': position === 'right' && !iconOnly,
+                            }),
+                        })
+                    }
+                </Show>
+                <Show when={!icon && !iconOnly}>
+                    {children}
+                </Show>
             </Typography>
         </button>
     );
