@@ -22,11 +22,10 @@ const AsLowAsText = () => {
     const { t } = useTranslation(['common']);
     return (
         <Typography
-            variant="span"
-            className={cx('price-text')}
+            variant="bd-2b"
+            className={cx('price-text', 'text-neutral-500')}
         >
-            {t('common:price:asLowAs')}
-            {' '}
+            {` ${t('common:price:asLowAs')} `}
         </Typography>
     );
 };
@@ -36,10 +35,9 @@ const StartingAt = () => {
     return (
         <Typography
             variant="span"
-            className={cx('price-text')}
+            className={cx('price-text', 'text-neutral-500')}
         >
-            {t('common:price:startFrom')}
-            {' '}
+            {` ${t('common:price:startFrom')} `}
         </Typography>
     );
 };
@@ -70,12 +68,12 @@ const SimpleProductTypePrice = ({
 
     if (productType === 'GroupedProduct' && !isPdp && !isQuickView) {
         return (
-            <>
+            <div className="price-case-grouped">
                 <StartingAt />
                 <Typography variant="span" className={cx('price-text')}>
                     {formatPrice(finalPrice.value + otherPrice, finalPrice.currency, currencyCache)}
                 </Typography>
-            </>
+            </div>
         );
     }
 
@@ -87,55 +85,57 @@ const SimpleProductTypePrice = ({
             // case 1: if has no discount
             if (regularPrice.value === finalPrice.value) {
                 return (
-                    <>
+                    <div className="price-case-1">
                         {/* case 1 */}
-                        <Typography variant="span" className={cx('price-text')}>
+                        <Typography variant={isSm ? 'bd-2' : 'h2'} className={cx('price-text')}>
                             {formatPrice(finalPrice.value + otherPrice, finalPrice.currency, currencyCache)}
                         </Typography>
                         {!isPdp && !isQuickView && (
-                            <>
+                            <div>
                                 <AsLowAsText />
-                                <Typography variant="span" className={cx('price-text')}>
+                                <Typography variant={isSm ? 'bd-3b' : 'bd-2b'} className={cx('price-text')}>
                                     {formatPrice(lowestPriceTier.final_price.value + otherPrice, lowestPriceTier.final_price.currency, currencyCache)}
                                 </Typography>
-                            </>
+                            </div>
                         )}
-                    </>
+                    </div>
                 );
             }
             // case 2: if final price is lowest than lowest tier price
             if (finalPrice.value < lowestPriceTier.final_price.value) {
                 return (
-                    <>
+                    <div className="price-case-2">
                         {/* case 2 */}
-                        <Typography variant="span" className={cx('price-text')}>
-                            <strike>{formatPrice(regularPrice.value + otherPrice, regularPrice.currency, currencyCache)}</strike>
-                        </Typography>
-                        <Typography variant="span" className={cx('price-text')}>
+                        <Typography variant={isSm ? 'bd-2' : 'h2'} className={cx('price-text')}>
                             {formatPrice(finalPrice.value + otherPrice, finalPrice.currency, currencyCache)}
                         </Typography>
-                    </>
+                        <Typography variant={isSm ? 'bd-3b' : 'bd-2b'} className={cx('price-text')}>
+                            <strike>{formatPrice(regularPrice.value + otherPrice, regularPrice.currency, currencyCache)}</strike>
+                        </Typography>
+                    </div>
                 );
             }
             // case 3: if final price is higher than lowest tier price
             return (
-                <>
+                <div className="price-case-3">
                     {/* case 3 */}
-                    <Typography variant="span" className={cx('price-text')}>
-                        <strike>{formatPrice(regularPrice.value + otherPrice, regularPrice.currency, currencyCache)}</strike>
-                    </Typography>
-                    <Typography variant="span" className={cx('price-text')}>
-                        {formatPrice(finalPrice.value + otherPrice, finalPrice.currency, currencyCache)}
-                    </Typography>
+                    <div className="flex flex-col">
+                        <Typography variant={isSm ? 'bd-2' : 'h2'} className={cx('price-text')}>
+                            {formatPrice(finalPrice.value + otherPrice, finalPrice.currency, currencyCache)}
+                        </Typography>
+                        <Typography variant={isSm ? 'bd-3b' : 'bd-2b'} className={cx('price-text')}>
+                            <strike>{formatPrice(regularPrice.value + otherPrice, regularPrice.currency, currencyCache)}</strike>
+                        </Typography>
+                    </div>
                     {!isPdp && !isQuickView && (
                         <>
                             <AsLowAsText />
-                            <Typography variant="span" className={cx('price-text')}>
+                            <Typography variant={isSm ? 'bd-3b' : 'bd-2b'} className={cx('price-text')}>
                                 {formatPrice(lowestPriceTier.final_price.value + otherPrice, lowestPriceTier.final_price.currency, currencyCache)}
                             </Typography>
                         </>
                     )}
-                </>
+                </div>
             );
         }
 
@@ -145,64 +145,67 @@ const SimpleProductTypePrice = ({
         // case 4: if there is no discount and has tier price
         if (regularPrice.value === finalPrice.value) {
             return (
-                <>
+                <div className="price-case-4">
                     {/* case 4 */}
-                    <Typography variant="span" className={cx('price-text')}>
-                        <strike>{formatPrice(regularPrice.value + otherPrice, regularPrice.currency, currencyCache)}</strike>
-                    </Typography>
-                    <Typography variant="span" className={cx('price-text')}>
+                    <Typography variant={isSm ? 'bd-2' : 'h2'} className={cx('price-text')}>
                         {formatPrice(firstTierPrice.final_price.value + otherPrice, firstTierPrice.final_price.currency, currencyCache)}
                     </Typography>
-                </>
+                    <Typography variant={isSm ? 'bd-3b' : 'bd-2b'} className={cx('price-text')}>
+                        <strike>{formatPrice(regularPrice.value + otherPrice, regularPrice.currency, currencyCache)}</strike>
+                    </Typography>
+                </div>
             );
         }
         // case 5: if final price is lower than tier price
         if (finalPrice.value < firstTierPrice.final_price.value) {
             return (
-                <>
+                <div className="price-case-5">
                     {/* case 5 */}
-                    <Typography variant="span" className={cx('price-text')}>
-                        <strike>{formatPrice(regularPrice.value + otherPrice, regularPrice.currency, currencyCache)}</strike>
-                    </Typography>
-                    <Typography variant="span" className={cx('price-text')}>
+                    <Typography variant={isSm ? 'bd-2' : 'h2'} className={cx('price-text')}>
                         {formatPrice(finalPrice.value + otherPrice, finalPrice.currency, currencyCache)}
                     </Typography>
-                </>
+                    <Typography variant={isSm ? 'bd-3b' : 'bd-2b'} className={cx('price-text')}>
+                        <strike>{formatPrice(regularPrice.value + otherPrice, regularPrice.currency, currencyCache)}</strike>
+                    </Typography>
+                </div>
             );
         }
         // case 6: if tier price is lower than final price and tier price qty is 1
         if (firstTierPrice.quantity === 1 || finalPrice.value === firstTierPrice.final_price.value) {
             return (
-                <>
+                <div className="price-case-6">
                     {/* case 6 */}
-                    <Typography variant="span" className={cx('price-text')}>
-                        <strike>{formatPrice(regularPrice.value + otherPrice, regularPrice.currency, currencyCache)}</strike>
-                    </Typography>
-                    <Typography variant="span" className={cx('price-text')}>
+                    <Typography variant={isSm ? 'bd-2' : 'h2'} className={cx('price-text')}>
                         {formatPrice(firstTierPrice.final_price.value + otherPrice, firstTierPrice.final_price.currency, currencyCache)}
                     </Typography>
-                </>
+                    <Typography variant={isSm ? 'bd-3b' : 'bd-2b'} className={cx('price-text')}>
+                        <strike>{formatPrice(regularPrice.value + otherPrice, regularPrice.currency, currencyCache)}</strike>
+                    </Typography>
+                </div>
             );
         }
+
         // case 7: if tier price is lower than final price but tier price qty > 1
         return (
-            <>
+            <div className="price-case-7">
                 {/* case 7 */}
-                <Typography variant="span" className={cx('price-text')}>
-                    <strike>{formatPrice(regularPrice.value + otherPrice, regularPrice.currency, currencyCache)}</strike>
-                </Typography>
-                <Typography variant="span" className={cx('price-text')}>
-                    {formatPrice(finalPrice.value + otherPrice, finalPrice.currency, currencyCache)}
-                </Typography>
+                <div className="flex flex-col">
+                    <Typography variant={isSm ? 'bd-2' : 'h2'} className={cx('price-text')}>
+                        {formatPrice(finalPrice.value + otherPrice, finalPrice.currency, currencyCache)}
+                    </Typography>
+                    <Typography variant={isSm ? 'bd-3b' : 'bd-2b'} className={cx('price-text')}>
+                        <strike>{formatPrice(regularPrice.value + otherPrice, regularPrice.currency, currencyCache)}</strike>
+                    </Typography>
+                </div>
                 {!isPdp && !isQuickView && (
                     <>
                         <AsLowAsText />
-                        <Typography variant="span" className={cx('price-text')}>
+                        <Typography variant={isSm ? 'bd-3b' : 'bd-2b'} className={cx('price-text')}>
                             {formatPrice(firstTierPrice.final_price.value + otherPrice, firstTierPrice.final_price.currency, currencyCache)}
                         </Typography>
                     </>
                 )}
-            </>
+            </div>
         );
     }
 
@@ -214,7 +217,7 @@ const SimpleProductTypePrice = ({
         return (
             <Typography
                 variant={isSm ? 'bd-2b' : 'h2'}
-                className={cx('price-text', 'text-neutral-400')}
+                className={cx('price-text', 'text-neutral-400', 'price-case-8')}
             >
                 {formatPrice(finalPrice.value + otherPrice, finalPrice.currency, currencyCache)}
             </Typography>
@@ -222,7 +225,7 @@ const SimpleProductTypePrice = ({
     }
     // case 9: if has discount
     return (
-        <div className={cx('price-text-discount', 'inline-flex', 'flex-col')}>
+        <div className={cx('price-case-9 price-text-discount', 'inline-flex', 'flex-col')}>
             {/* case 9 */}
             <Typography
                 variant={isSm ? 'bd-2' : 'h2'}
