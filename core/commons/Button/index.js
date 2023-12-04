@@ -116,7 +116,7 @@ Button.defaultProps = {
     onClick: () => {},
     loading: false,
     size: 'md',
-    icon: '',
+    icon: <></>,
     iconPosition: 'left',
 };
 

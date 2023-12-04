@@ -1,17 +1,16 @@
 /* eslint-disable react/no-danger */
 import React from 'react';
 import Router from 'next/router';
-import classNames from 'classnames';
-import Typography from '@common_typography';
 import Product from '@plugin_productlist';
 import { getStoreHost } from '@helpers/config';
 import { getAppEnv } from '@root/core/helpers/env';
-import useStyles from '@core_modules/catalog/pages/category/components/style';
 import CmsRenderer from '@core_modules/cms/components/cms-renderer';
 import BreadcrumbView from '@common_breadcrumb';
-import TabView from '@common_tabs';
+// import TabView from '@common_tabs';
 import BannerView from '@common_image';
 import { MAX_WIDTH } from '@theme_vars';
+import Typography from '@common/Typography';
+import cx from 'classnames';
 
 // sementara di comment dlu, untuk custom filter memakai aggregations product
 // import { getFilter } from '../../../services/graphql';
@@ -27,8 +26,7 @@ const categoryTabs = (category) => {
 const CategoryPage = ({
     data, storeConfig, t, ...other
 }) => {
-    const styles = useStyles();
-    const [value] = React.useState(0);
+    // const [value] = React.useState(0);
     const categoryList = data?.categoryList[0];
 
     /** function to handle option category in filter */
@@ -99,6 +97,8 @@ const CategoryPage = ({
         );
     }, [categoryList]);
 
+    const hasContent = dataCategory && dataCategory?.banner?.length > 0 && (dataCategory.banner[0].image || dataCategory.banner[0].description);
+
     return (
         <>
             <style jsx>
@@ -109,46 +109,42 @@ const CategoryPage = ({
                     }
                 `}
             </style>
-            <div className={styles.container}>
-                <div className={classNames(styles.breadcrumbs, 'hidden-mobile')}>
-                    <BreadcrumbView data={dataCategory.breadcrumb} />
-                </div>
-                <div className={classNames(styles.breadcrumbs, 'hidden-desktop')}>
-                    <BreadcrumbView data={dataCategory.breadcrumb} />
-                </div>
-                <Typography variant="h1" className={styles.categoryName}>
-                    {categoryList.name}
+
+            <div className="w-full h-full flex flex-col px-4 py-5 lg:px-10">
+                <BreadcrumbView data={dataCategory.breadcrumb || []} />
+                <Typography
+                    variant="h1"
+                    className={cx('pt-5 lg:text-[40px] pb-10', {
+                        'pb-4': hasContent,
+                    })}
+                >
+                    {categoryList.name || ''}
                 </Typography>
-                <div className={styles.headContainer} style={{ width: '100%', height: 'auto' }}>
-                    {dataCategory.banner.length > 0 && dataCategory.url !== ''
-                        ? (
-                            <BannerView
-                                src={dataCategory.url}
-                                style={{ width: '100%', height: 'auto' }}
-                                lazy={false}
-                                width={MAX_WIDTH.replace('px', '')}
-                                storeConfig={storeConfig}
-                            />
-                        ) : null}
+                <div className="flex flex-col w-full mb-8">
+                    <div className="relative w-full h-full">
+                        {dataCategory.banner.length > 0 && dataCategory.url !== ''
+                            ? (
+                                <BannerView
+                                    src={dataCategory.url}
+                                    style={{ width: '100%', height: 'auto' }}
+                                    lazy={false}
+                                    width={MAX_WIDTH.replace('px', '')}
+                                    storeConfig={storeConfig}
+                                />
+                            ) : null}
+                    </div>
+                    {dataCategory.banner.length > 0 && dataCategory.banner[0] && dataCategory.banner[0]?.description && (
+                        <CmsRenderer content={dataCategory.banner[0].description} storeConfig={storeConfig} />
+                    )}
+                    {/* <div className="lg:hidden">
+                        <TabView
+                            data={categoryTabs(categoryList?.children)}
+                            onChange={handleChange}
+                            value={value}
+                        />
+                    </div> */}
                 </div>
-                {dataCategory.banner.length > 0 && dataCategory.banner[0] && dataCategory.banner[0]?.description && (
-                    <CmsRenderer content={dataCategory.banner[0].description} storeConfig={storeConfig} />
-                )}
-                <div className="hidden-desktop">
-                    <TabView
-                        data={categoryTabs(categoryList?.children)}
-                        onChange={handleChange}
-                        value={value}
-                    />
-                </div>
-                {
-                    categoryList
-                    && (categoryList.display_mode === 'PRODUCTS_AND_PAGE' || categoryList.display_mode === 'PAGE')
-                    && categoryList.cms_block
-                    && (
-                        <CmsRenderer content={categoryList.cms_block.content} storeConfig={storeConfig} />
-                    )
-                }
+
                 {
                     categoryList
                     && (!categoryList.display_mode || categoryList.display_mode === 'PRODUCTS_AND_PAGE' || categoryList.display_mode === 'PRODUCTS')

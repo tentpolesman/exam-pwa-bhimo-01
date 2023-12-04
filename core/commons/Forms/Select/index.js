@@ -20,8 +20,13 @@ const Select = (props) => {
         className = '',
         error = false,
         errorMessage = '',
+        inputProps = {},
+        textFiledProps = {},
         ...restProps
     } = props;
+
+    const { className: inputPropsClass, ...restInputProps } = inputProps;
+    const { className: textFiledClass, ...restTextFiledProps } = textFiledProps;
 
     const [open, setOpen] = useState(false);
     const ref = useClickAway(() => {
@@ -31,17 +36,18 @@ const Select = (props) => {
     return (
         <div ref={ref} className={cx('relative', className)} {...restProps}>
             {label ? (
-                <Typography variant="bd-2" className="uppercase">
+                <Typography variant="bd-2 mb-2" className="uppercase">
                     {label.replace(/_/g, ' ')}
                 </Typography>
             ) : null}
             <TextField
-                className="cursor-pointer mt-2"
+                className={cx('cursor-pointer', textFiledClass || '')}
                 rightIcon={!open ? <ArrowDown /> : <ArrowUp />}
                 inputProps={{
                     readOnly: true,
-                    className: 'cursor-pointer',
+                    className: (cx('cursor-pointer', inputPropsClass || '')),
                     name,
+                    ...restInputProps,
                 }}
                 hintProps={{
                     displayHintText: error,
@@ -53,6 +59,7 @@ const Select = (props) => {
                 }}
                 value={value}
                 placeholder={placeholder}
+                {...restTextFiledProps}
             />
             {open && options?.length > 0 ? (
                 <div className={cx('w-full', 'flex', 'flex-col', 'py-3', 'px-4', 'shadow-md', 'cursor-pointer', 'bg-neutral-white', 'z-auto')}>
