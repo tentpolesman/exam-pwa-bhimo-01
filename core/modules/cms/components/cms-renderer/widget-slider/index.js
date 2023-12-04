@@ -1,15 +1,6 @@
-import React from 'react';
-import { withTranslation } from 'next-i18next';
-
-import BannerSliderSkeleton from '@core_modules/home/pages/default/components/Skeleton/BannerSkeleton';
-import BannerView from '@core_modules/home/pages/default/components/Banner/view';
 import BannerSlider from '@core_modules/home/pages/default/components/Banner';
-import ErrorInfo from '@core_modules/home/pages/default/components/ErrorInfo';
+import React from 'react';
 
-const WidgetSlider = (props) => {
-    const { ...other } = props;
+const WidgetSlider = (props) => <BannerSlider {...props} />;
 
-    return <BannerSlider BannerSliderSkeleton={BannerSliderSkeleton} BannerView={BannerView} ErrorInfo={ErrorInfo} {...other} />;
-};
-
-export default withTranslation()(WidgetSlider);
+export default WidgetSlider;
