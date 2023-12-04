@@ -189,9 +189,9 @@ TextField.defaultProps = {
     type: 'text',
     onBlur: () => {},
     onKeyPress: () => {},
-    leftIcon: <></>,
+    leftIcon: undefined,
     leftIconProps: {},
-    rightIcon: <></>,
+    rightIcon: undefined,
     rightIconProps: {},
 };
 
