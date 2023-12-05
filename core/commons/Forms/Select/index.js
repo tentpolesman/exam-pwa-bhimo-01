@@ -62,7 +62,7 @@ const Select = (props) => {
                 {...restTextFiledProps}
             />
             {open && options?.length > 0 ? (
-                <div className={cx('w-full', 'flex', 'flex-col', 'py-3', 'px-4', 'shadow-md', 'cursor-pointer', 'bg-neutral-white', 'z-auto')}>
+                <div className={cx('w-full', 'flex', 'flex-col', 'py-3', 'px-4', 'shadow-md', 'cursor-pointer', 'bg-neutral-white', 'z-50')}>
                     {options.map((d, idx) => (
                         <div
                             key={idx}

@@ -2,6 +2,8 @@ import {
     BREAKPOINTS, COLORS, FONT_FAMILY, FONT_SIZE, LETTER_SPACING, LINE_HEIGHT, SPACING,
 } from './core/theme/vars';
 
+const plugin = require('tailwindcss/plugin');
+
 // full list https://github.com/tailwindlabs/tailwindcss/blob/master/stubs/config.full.js
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -70,6 +72,17 @@ module.exports = {
         // eslint-disable-next-line global-require
         require('@tailwindcss/forms')({
             strategy: 'class',
+        }),
+        plugin(({ addUtilities }) => {
+            addUtilities({
+                '.scrollbar-none': {
+                    '-ms-overflow-style': 'none',
+                    'scrollbar-width': 'none',
+                },
+                '.scrollbar-none::-webkit-scrollbar': {
+                    display: 'none',
+                },
+            });
         }),
     ],
 };

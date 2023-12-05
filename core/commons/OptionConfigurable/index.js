@@ -1,73 +1,37 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import classNames from 'classnames';
-import Typograpy from '@common_typography';
-import { GRAY_PRIMARY, PRIMARY } from '@theme_color';
-import useStyles from '@common_optionconfigurable/style';
+import Swatch from '@common/Forms/Swatch';
 
 const SelectOption = (props) => {
     const {
-        value, selected, onChange, className = '', disabled = false, thumbnail, content = '',
-        labelClassName = '',
+        value, selected, onChange, className = '', disabled = false, thumbnail, content,
+        variant: customVariant,
     } = props;
-    const styles = useStyles();
-    const containerStyle = selected && !disabled
-        ? classNames(
-            styles.container,
-            content.toLowerCase() === 'black' || content.toLowerCase() === '#000000' ? styles.borderedSecondary : styles.bordered,
-            className,
-        )
-        : classNames(styles.container, className);
-    const labelStyle = selected
-        ? classNames(styles.label, styles.labelActive, labelClassName)
-        : classNames(styles.label, labelClassName);
-    let customStyle = {
-        border: `1px solid ${selected ? PRIMARY : GRAY_PRIMARY}`,
-    };
-    let childContent = <Typograpy className={labelStyle}>{content}</Typograpy>;
+
+    let variant = 'text';
     if (content.includes('#')) {
-        customStyle = {
-            backgroundColor: content,
-        };
-        if (content === '#ffffff') {
-            customStyle.border = `1px solid ${selected ? PRIMARY : GRAY_PRIMARY}`;
-        }
-        childContent = '';
+        variant = 'color';
     }
 
-    if (content.includes('https')) {
-        customStyle = {
-            backgroundImage: `url(${content})`,
-            backgroundRepeat: 'no-repeat',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-        };
-        childContent = '';
-    }
-
-    if (thumbnail && thumbnail !== '') {
-        customStyle = {
-            backgroundImage: `url(${thumbnail})`,
-            backgroundRepeat: 'no-repeat',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-        };
-        childContent = '';
-    }
-
-    if (!content.includes('https') && !content.includes('#') && content.length > 2) {
-        const newWidth = ((content.length - 2) * 10) + 30;
-        customStyle.width = `${newWidth}px`;
+    if (content.includes('https') || (thumbnail && thumbnail !== '')) {
+        variant = 'image';
     }
 
     const handleChange = () => {
         // eslint-disable-next-line no-unused-expressions
         !disabled && onChange(value);
     };
+
     return (
-        <div style={customStyle} className={containerStyle} onClick={handleChange}>
-            {disabled ? <div className={styles.disabledBox} /> : childContent}
-        </div>
+        <Swatch
+            disabled={disabled}
+            variant={customVariant || variant}
+            checked={selected}
+            value={content}
+            onClick={handleChange}
+            label={(thumbnail && thumbnail !== '') ? thumbnail : content}
+            className={className}
+        />
     );
 };
 

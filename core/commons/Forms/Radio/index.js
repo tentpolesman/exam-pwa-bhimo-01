@@ -7,6 +7,7 @@ import Typography from '@common_typography';
 import cx from 'classnames';
 import { useEffect, useState } from 'react';
 import CheckIcon from '@heroicons/react/24/solid/CheckIcon';
+import propTypes from 'prop-types';
 
 const Radio = (props) => {
     const {
@@ -184,6 +185,56 @@ const Radio = (props) => {
             )}
         </div>
     );
+};
+
+Radio.propTypes = {
+    data: propTypes.array,
+    onChange: propTypes.func,
+    value: propTypes.string,
+    name: propTypes.string,
+    ariaLabel: propTypes.string,
+    label: propTypes.string,
+    CustomItem: propTypes.func,
+    className: propTypes.oneOfType([propTypes.string, propTypes.object]),
+    classNames: propTypes.shape({
+        radioGroupClasses: propTypes.oneOfType([propTypes.string, propTypes.object]),
+        radioClasses: propTypes.oneOfType([propTypes.string, propTypes.object]),
+    }),
+    error: propTypes.bool,
+    errorMessage: propTypes.string,
+    disabled: propTypes.bool,
+    CustomLabel: propTypes.func,
+    useLoadMore: propTypes.bool,
+    ComponentOptional: propTypes.func,
+    storeConfig: propTypes.object,
+    size: propTypes.oneOf(['sm', 'md', 'lg']),
+    customItemProps: propTypes.object,
+    type: propTypes.oneOf(['check', 'radio']),
+};
+
+Radio.defaultProps = {
+    data: [],
+    onChange: () => {},
+    value: '',
+    name: 'radio',
+    ariaLabel: 'radio',
+    label: '',
+    CustomItem: false,
+    className: {},
+    classNames: {
+        radioGroupClasses: '',
+        radioClasses: '',
+    },
+    error: false,
+    errorMessage: '',
+    disabled: false,
+    CustomLabel: false,
+    useLoadMore: false,
+    ComponentOptional: () => {},
+    storeConfig: {},
+    size: 'md',
+    customItemProps: {},
+    type: 'radio',
 };
 
 export default Radio;

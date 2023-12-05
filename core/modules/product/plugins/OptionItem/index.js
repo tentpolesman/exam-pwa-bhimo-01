@@ -1,8 +1,10 @@
-import ConfigurableOption from '@plugin_optionitem/ConfigurableOption';
-import SimpleOption from '@plugin_optionitem/SimpleProduct';
-import VirtualOption from '@plugin_optionitem/Virtual';
-import DownloadOption from '@plugin_optionitem/Download';
-import BundleOption from '@plugin_optionitem/BundleOption';
+import dynamic from 'next/dynamic';
+
+const ConfigurableOption = dynamic(() => import('@plugin_optionitem/ConfigurableOption'), { ssr: false });
+const SimpleOption = dynamic(() => import('@plugin_optionitem/SimpleProduct'), { ssr: false });
+const VirtualOption = dynamic(() => import('@plugin_optionitem/Virtual'), { ssr: false });
+const DownloadOption = dynamic(() => import('@plugin_optionitem/Download'), { ssr: false });
+const BundleOption = dynamic(() => import('@plugin_optionitem/BundleOption'), { ssr: false });
 
 const OptionItem = (props) => {
     const {

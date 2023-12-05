@@ -309,6 +309,38 @@ const ProductList = (props) => {
     };
 
     /**
+     * function handleLoadMore for infinite loop
+     */
+    const handleLoadMore = async () => {
+        setFilterSaved(false);
+        const pageTemp = data.products.items.length / (parseInt(storeConfig?.pwa?.page_size, 10) || 10) + 1;
+        try {
+            if (fetchMore && typeof fetchMore !== 'undefined') {
+                setLoadmore(true);
+                fetchMore({
+                    query: Schema.getProduct({ ...config, currentPage: pageTemp }, router),
+                    variables: {
+                        pageSize,
+                        currentPage: pageTemp,
+                    },
+                    context,
+                    updateQuery: (previousResult, { fetchMoreResult }) => {
+                        setLoadmore(false);
+                        return {
+                            products: {
+                                ...fetchMoreResult.products,
+                                items: [...previousResult.products.items, ...fetchMoreResult.products.items],
+                            },
+                        };
+                    },
+                });
+            }
+        } catch (error) {
+            setLoadmore(false);
+        }
+    };
+
+    /**
      * use effect set page size
      */
     React.useEffect(() => {
@@ -361,6 +393,7 @@ const ProductList = (props) => {
         totalCount,
         handleChangePage,
         isPagination,
+        handleLoadMore,
     };
 
     if (loadingAgg) {
