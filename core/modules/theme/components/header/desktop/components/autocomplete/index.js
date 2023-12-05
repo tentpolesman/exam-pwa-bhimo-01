@@ -6,7 +6,7 @@ import { useTranslation } from 'next-i18next';
 import Router from 'next/router';
 import React from 'react';
 
-import CommonTextField from '@common_forms/TextField';
+import TextField from '@common_forms/TextField';
 import Popover from '@common_popover';
 
 import Image from '@common_image';
@@ -262,7 +262,7 @@ export default function AutocompleteSearch(props) {
     return (
         <>
             <Popover content={<PopoverContent />} open={isShow} setOpen={setIsShow}>
-                <CommonTextField
+                <TextField
                     value={searchKeyword}
                     placeholder={placeholder || t('common:search:title')}
                     onChange={(e) => {
@@ -272,7 +272,7 @@ export default function AutocompleteSearch(props) {
                     ref={inputRef}
                     rightIcon={<Magnify />}
                     rightIconProps={{
-                        className: 'w-10 h-10 text-neutral-300',
+                        className: 'w-10 h-10 text-neutral-300 bg-neutral-100 rounded-r-lg rounded-l-none',
                     }}
                     onKeyPress={(e) => {
                         handleKeyPress({
@@ -281,6 +281,10 @@ export default function AutocompleteSearch(props) {
                                 value: searchKeyword,
                             },
                         });
+                    }}
+                    className="desktop:w-[560px]"
+                    inputProps={{
+                        className: 'placeholder:text-neutral-400 bg-neutral-100 rounded-r-none rounded-l-lg pl-4',
                     }}
                 />
             </Popover>

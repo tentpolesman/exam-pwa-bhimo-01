@@ -3,12 +3,12 @@
 /* eslint-disable react/require-default-props */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/forbid-prop-types */
-import CommonTextField from '@common_forms/TextField';
+import TextField from '@common_forms/TextField';
 import Popover from '@common_popover';
+import MagnifyingGlassIcon from '@heroicons/react/24/outline/MagnifyingGlassIcon';
 import cx from 'classnames';
 import { useTranslation } from 'next-i18next';
 import React from 'react';
-import MagnifyingGlassIcon from '@heroicons/react/24/outline/MagnifyingGlassIcon';
 
 const CustomAutocomplete = (props) => {
     const {
@@ -16,7 +16,6 @@ const CustomAutocomplete = (props) => {
         label,
         labelKey,
         loading,
-        name,
         onChange,
         value,
         primaryKey,
@@ -33,7 +32,6 @@ const CustomAutocomplete = (props) => {
     const [open, setOpen] = React.useState(false);
 
     const [filteredItem, setFilteredItem] = React.useState(itemOptions);
-    const inputRef = React.useRef(null);
 
     const handleAutocomplete = (e) => {
         if (e.target.value !== '') {
@@ -105,21 +103,19 @@ const CustomAutocomplete = (props) => {
     return (
         <div cx={className}>
             <Popover content={enableCustom ? <CustomPopover /> : <PopoverContent />} open={open && !loading} setOpen={setOpen}>
-                <CommonTextField
+                <TextField
                     value={value}
                     placeholder={placeholder || t('common:search:title')}
                     onChange={(e) => {
                         onChange(e.target.value);
                         handleAutocomplete(e);
                     }}
-                    ref={inputRef}
                     rightIcon={<MagnifyingGlassIcon />}
                     rightIconProps={{
                         className: 'text-neutral-300 h-10 w-10',
                     }}
                     disabled={disabled}
                     label={label}
-                    name={name}
                 />
             </Popover>
         </div>
