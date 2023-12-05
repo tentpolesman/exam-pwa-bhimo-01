@@ -1,7 +1,6 @@
-/* eslint-disable consistent-return */
 import gqlService from '@core_modules/home/service/graphql';
 import BannerSliderSkeleton from '@core_modules/home/pages/default/components/Skeleton/BannerSkeleton';
-import BannerView from '@core_modules/home/pages/default/components/Banner/view';
+import Banner from '@common_slick/Banner';
 import ErrorInfo from '@core_modules/home/pages/default/components/ErrorInfo';
 import { useMemo } from 'react';
 
@@ -11,9 +10,10 @@ const BannerSlider = (props) => {
     const { loading, data, error } = gqlService.getSlider({
         skip: !storeConfig,
         variables: {
-            input: slider_id === undefined
-                ? { title: storeConfig?.pwa?.banner_slider_title }
-                : { id: typeof slider_id === 'string' ? parseInt(slider_id, 10) : slider_id },
+            input:
+                slider_id === undefined
+                    ? { title: storeConfig?.pwa?.banner_slider_title }
+                    : { id: typeof slider_id === 'string' ? parseInt(slider_id, 10) : slider_id },
         },
     });
 
@@ -26,6 +26,7 @@ const BannerSlider = (props) => {
                 video: image.video,
             }));
         }
+        return null;
     }, [data?.slider]);
 
     if (loading && !data) {
@@ -39,9 +40,9 @@ const BannerSlider = (props) => {
     }
     if (data && data.slider) {
         return (
-            <>
-                <BannerView logoUrl={logoUrl} images={bannerImages} storeConfig={storeConfig} />
-            </>
+            <div className="w-full" id="home-banner">
+                {bannerImages && bannerImages.length && <Banner data={bannerImages} storeConfig={storeConfig} />}
+            </div>
         );
     }
 
