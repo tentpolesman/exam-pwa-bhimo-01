@@ -18,6 +18,8 @@ const Button = (props) => {
         iconPosition: position,
         iconOnly,
         textProps = {},
+        iconProps = {},
+        customChildren,
         ...restProps
     } = props;
 
@@ -37,6 +39,13 @@ const Button = (props) => {
 
     const classes = cx('focus:shadow-[0_0_0_4px]', 'rounded-md', buttonSizes[size], className);
 
+    const { className: classIcon, ...resIconProps } = iconProps;
+
+    const primaryClass = `
+    bg-pwa-button_background hover:bg-pwa-button_background_hover focus:shadow-primary-300 active:bg-primary
+    disabled:bg-neutral-200 disabled:text-neutral-400 disabled:hover:shadow-none
+    disabled:focus:shadow-none disabled:active:bg-neutral-200 disabled:active:shadow-none`;
+
     return (
         <button
             type="button"
@@ -45,6 +54,7 @@ const Button = (props) => {
             className={cx(
                 'group',
                 'hover:shadow-lg',
+                variant === 'primary' && primaryClass,
                 {
                     'bg-pwa-button_background hover:bg-pwa-button_background_hover focus:shadow-primary-300 active:bg-primary': variant === 'primary',
                     'bg-primary-100 hover:bg-primary-200 focus:shadow-primary-300 active:bg-primary-200': variant === 'secondary',
@@ -52,8 +62,6 @@ const Button = (props) => {
                     'bg-neutral-white hover:shadow-lg focus:shadow-primary-300 active:shadow-primary-300 active:shadow-[0_0_0_4px]':
                         variant === 'tertiary',
                     'bg-neutral-white border border-black hover:opacity-50 focus:shadow-neutral-100 focus:border-none': variant === 'outlined',
-                    'bg-neutral-100 hover:bg-neutral-100 hover:shadow-none focus:shadow-none active:bg-neutral-100 active:shadow-none':
-                        disabled || loading,
                 },
                 classes,
             )}
@@ -61,14 +69,20 @@ const Button = (props) => {
         >
             <Typography
                 variant={textVariants[size]}
-                className={cx('flex', 'items-center', 'justify-center',{
-                    '!text-pwa-button_text': variant === 'primary',
-                    '!text-primary': variant === 'secondary' || variant === 'tertiary',
-                    '!text-black': variant === 'outlined',
-                    '!text-neutral-white': disabled,
-                    'group-active:!text-neutral-white': variant === 'secondary',
-                    'flex-row-reverse': icon && position === 'right',
-                }, classNameText)}
+                className={cx(
+                    'flex',
+                    'items-center',
+                    'justify-center',
+                    {
+                        '!text-pwa-button_text': variant === 'primary',
+                        '!text-primary': variant === 'secondary' || variant === 'tertiary',
+                        '!text-black': variant === 'outlined',
+                        '!text-neutral-white': disabled,
+                        'group-active:!text-neutral-white': variant === 'secondary',
+                        'flex-row-reverse': icon && position === 'right',
+                    },
+                    classNameText,
+                )}
                 {...textProps}
             >
                 <Show when={icon && loading}>
@@ -82,14 +96,20 @@ const Button = (props) => {
                 </Show>
                 <Show when={icon && !loading}>
                     {icon ? React.cloneElement(icon, {
-                        className: cx('w-6 h-6', {
-                            'mr-[6px]': position !== 'right' && !iconOnly,
-                            'ml-[6px]': position === 'right' && !iconOnly,
-                        }),
+                        className: cx(
+                            'w-6 h-6',
+                            {
+                                'mr-[6px]': position !== 'right' && !iconOnly,
+                                'ml-[6px]': position === 'right' && !iconOnly,
+                            },
+                            classIcon,
+                        ),
+                        ...resIconProps,
                     }) : null}
                 </Show>
-                <Show when={!icon && !iconOnly}>{children}</Show>
+                <Show when={!iconOnly}>{children}</Show>
             </Typography>
+            {customChildren && customChildren}
         </button>
     );
 };

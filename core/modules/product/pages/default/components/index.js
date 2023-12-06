@@ -5,6 +5,7 @@
 import Breadcrumb from '@common_breadcrumb';
 import Typography from '@common_typography';
 import { features, modules } from '@config';
+import { getPriceFromList } from '@core_modules/product/helpers/getPrice';
 import ListReviews from '@core_modules/product/pages/default/components/ListReviews';
 import ModalPopupImage from '@core_modules/product/pages/default/components/ModalPopupImage';
 import OptionItem from '@core_modules/product/pages/default/components/OptionItem';
@@ -15,16 +16,15 @@ import { getHost } from '@helper_config';
 import { formatPrice } from '@helper_currency';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
-import ChatIcon from '@material-ui/icons/Chat';
 import Link from '@material-ui/core/Link';
+import ChatIcon from '@material-ui/icons/Chat';
 import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
 import Favorite from '@material-ui/icons/Favorite';
 import FavoriteBorderOutlined from '@material-ui/icons/FavoriteBorderOutlined';
 import ShareOutlined from '@material-ui/icons/ShareOutlined';
+import Skeleton from '@material-ui/lab/Skeleton';
 import classNames from 'classnames';
 import dynamic from 'next/dynamic';
-import { getPriceFromList } from '@core_modules/product/helpers/getPrice';
-import Skeleton from '@material-ui/lab/Skeleton';
 import React from 'react';
 
 const Button = dynamic(() => import('@common_button'), { ssr: true });
@@ -527,7 +527,7 @@ const ProductPage = (props) => {
                 <div className={classNames(styles.tabs, 'xs:basis-full lg:basis-full hidden-mobile')}>
                     <TabsView
                         {...props}
-                        dataInfo={expandData}
+                        data={expandData}
                         smartProductTabs={
                             smartProductTabs || {
                                 tab_2: {
