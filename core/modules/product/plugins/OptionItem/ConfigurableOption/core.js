@@ -10,8 +10,10 @@ import ProductByVariant, { generateAvailableCombination, generateValue, handleSe
 import Router from 'next/router';
 import React from 'react';
 import TagManager from 'react-gtm-module';
+import View from '@plugin_optionitem/ConfigurableOption/view';
+import propTypes from 'prop-types';
 
-const OptionsItemConfig = (props) => {
+const ConfigurableOptionCore = (props) => {
     const {
         setBanner = () => {},
         setPrice = () => {},
@@ -24,7 +26,6 @@ const OptionsItemConfig = (props) => {
         setStockStatus = () => {},
         stockStatus = '',
         handleAddToCart: CustomAddToCart,
-        View,
         loading: customLoading,
         setLoading: setCustomLoading,
         checkCustomizableOptionsValue,
@@ -44,7 +45,7 @@ const OptionsItemConfig = (props) => {
         __typename, sku, media_gallery, image, price_range, price_tiers, small_image, name, categories, url_key, stock_status, review, sale,
     } = data;
 
-    const reviewValue = parseInt(review?.rating_summary, 0) / 20;
+    const reviewValue = parseInt(review?.rating_summary, 10) / 20;
     const [selectConfigurable, setSelectConfigurable] = React.useState({});
     const [selectedProduct, setSelectedProduct] = React.useState({});
     const [qty, setQty] = React.useState(1);
@@ -418,7 +419,7 @@ const OptionsItemConfig = (props) => {
             handleAddToCart={handleAddToCart}
             setQty={setQty}
             t={t}
-            loading={loading || configProduct.loading}
+            loading={loading}
             disabled={!selectedProduct || !selectedProduct.sku || stockStatus === 'OUT_OF_STOCK'}
             isGrid={isGrid}
             disableItem={stock_status === 'OUT_OF_STOCK'}
@@ -427,4 +428,45 @@ const OptionsItemConfig = (props) => {
     );
 };
 
-export default OptionsItemConfig;
+ConfigurableOptionCore.propTypes = {
+    setBanner: propTypes.func,
+    setPrice: propTypes.func,
+    t: propTypes.func.isRequired,
+    data: propTypes.object.isRequired,
+    dataPrice: propTypes.array.isRequired,
+    setOpen: propTypes.func,
+    ConfigurableView: propTypes.func,
+    Footer: propTypes.func,
+    setStockStatus: () => {},
+    stockStatus: '',
+    handleAddToCart: propTypes.func,
+    loading: propTypes.bool,
+    setLoading: propTypes.func,
+    checkCustomizableOptionsValue: propTypes.func,
+    errorCustomizableOptions: propTypes.object,
+    customizableOptions: propTypes.object,
+    handleSelecteProduct: () => {},
+    isGrid: propTypes.bool,
+    noValidate: false,
+};
+
+ConfigurableOptionCore.defaultProps = {
+    setBanner: () => {},
+    setPrice: () => {},
+    setOpen: () => {},
+    ConfigurableView: () => <></>,
+    Footer: () => <></>,
+    setStockStatus: () => {},
+    stockStatus: '',
+    handleAddToCart: () => {},
+    loading: false,
+    setLoading: () => {},
+    checkCustomizableOptionsValue: () => {},
+    errorCustomizableOptions: {},
+    customizableOptions: {},
+    handleSelecteProduct: () => {},
+    isGrid: false,
+    noValidate: false,
+};
+
+export default ConfigurableOptionCore;

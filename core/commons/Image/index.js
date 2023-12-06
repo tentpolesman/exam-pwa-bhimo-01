@@ -6,6 +6,7 @@ import { getHost, getHostProd } from '@helpers/config';
 import React, { useEffect, useState, useCallback } from 'react';
 import { BREAKPOINTS } from '@theme_vars';
 import Head from 'next/head';
+import cx from 'classnames';
 
 function gcd(a, b) {
     return (b === 0) ? a : gcd(b, a % b);
@@ -207,7 +208,7 @@ const CustomImage = ({
                 <img
                     data-pagespeed-no-defer={!lazy}
                     style={styleImage}
-                    className={`img ${className}`}
+                    className={cx('img', className)}
                     src={getImageFallbackUrl(imgSource)}
                     alt={alt}
                     // width={width !== 0 && desktop ? width : widthMobile}

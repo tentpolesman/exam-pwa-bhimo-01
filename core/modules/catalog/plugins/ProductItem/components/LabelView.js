@@ -1,5 +1,4 @@
 import Label from '@common_productlabel';
-import useStyles from '@plugin_productitem/style';
 
 const LabelView = (props) => {
     const {
@@ -7,9 +6,8 @@ const LabelView = (props) => {
         price_range, special_from_date, special_to_date, spesificProduct,
         storeConfig = {},
     } = props;
-    const styles = useStyles();
     return (
-        <div className={isGrid ? styles.badgesNewSales : styles.badgesNewSalesList}>
+        <div className="absolute top-0 left-0 right-1 rounded z-[1] flex flex-row justify-between w-full p-4">
             <Label
                 productType={__typename}
                 newFromDate={new_from_date}

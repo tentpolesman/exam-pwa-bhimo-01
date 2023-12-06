@@ -78,7 +78,7 @@ const ProductLabel = ({
                 (config.enabled && config.new.enabled && showLabelNew) && (
                     <Badge
                         bold
-                        secondary
+                        success
                         className={cx('product-label-new', classNameBadge)}
                         label={t('common:title:new')}
                         fontSize={fontSizeBadge}

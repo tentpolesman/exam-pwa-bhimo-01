@@ -9,11 +9,7 @@ import { setResolver, getResolver } from '@helper_localstorage';
 import { getSessionStorage, setSessionStorage } from '@helpers/sessionstorage';
 import classNames from 'classnames';
 import ConfigurableOpt from '@plugin_optionitem';
-import Favorite from '@material-ui/icons/Favorite';
-import FavoriteBorderOutlined from '@material-ui/icons/FavoriteBorderOutlined';
-import Button from '@material-ui/core/IconButton';
 import { addWishlist, getDetailProduct, getDetailProductPrice } from '@core_modules/catalog/services/graphql';
-import useStyles from '@plugin_productitem/style';
 import { addProductsToCompareList } from '@core_modules/product/services/graphql';
 import { getCustomerUid } from '@core_modules/productcompare/service/graphql';
 import { localCompare } from '@services/graphql/schema/local';
@@ -24,6 +20,20 @@ import WeltpixelLabel from '@plugin_productitem/components/WeltpixelLabel';
 import TagManager from 'react-gtm-module';
 import { priceVar } from '@root/core/services/graphql/cache';
 import dynamic from 'next/dynamic';
+import Link from 'next/link';
+
+import ImageProductView from '@plugin_productitem/components/Image';
+import DetailProductView from '@plugin_productitem/components/Detail';
+import LabelView from '@plugin_productitem/components/LabelView';
+import PriceFormat from '@common_priceformat';
+import { getPriceFromList } from '@core_modules/product/helpers/getPrice';
+import Button from '@common/Button';
+import Typography from '@common/Typography';
+
+import CartIcon from '@heroicons/react/24/outline/ShoppingCartIcon';
+import HeartIcon from '@heroicons/react/24/outline/HeartIcon';
+import CompareIcon from '@heroicons/react/24/outline/ArrowsRightLeftIcon';
+import EyeIcon from '@heroicons/react/24/outline/EyeIcon';
 
 const CustomizableOption = dynamic(() => import('@plugin_customizableitem'));
 
@@ -33,9 +43,6 @@ const ProductItem = (props) => {
         url_key = '',
         categorySelect,
         review,
-        ImageProductView,
-        DetailProductView,
-        LabelView,
         className = '',
         enableAddToCart,
         enableOption,
@@ -43,10 +50,13 @@ const ProductItem = (props) => {
         isGrid = true,
         catalogList,
         weltpixel_labels,
+        enablePrice = true,
+        enableWishlist,
         ...other
     } = props;
-    const { storeConfig = {} } = props;
-    const styles = useStyles();
+    const {
+        storeConfig = {}, __typename, price_range, price_tiers, special_from_date, special_to_date,
+    } = props;
     const router = useRouter();
     const { t } = useTranslation(['catalog', 'common']);
     const [feed, setFeed] = React.useState(false);
@@ -127,9 +137,7 @@ const ProductItem = (props) => {
         storeConfig.pwa || {},
     );
 
-    const [getProductPrice, { data: dataPrice, loading: loadPrice, error: errorPrice }] = getDetailProductPrice(
-        storeConfig.pwa || {},
-    );
+    const [getProductPrice, { data: dataPrice, loading: loadPrice, error: errorPrice }] = getDetailProductPrice(storeConfig.pwa || {});
 
     // cache price
     const cachePrice = useReactiveVar(priceVar);
@@ -389,6 +397,96 @@ const ProductItem = (props) => {
     const showAddToCart = typeof enableAddToCart !== 'undefined' ? enableAddToCart : storeConfig?.pwa?.add_to_cart_enable;
     const showOption = typeof enableOption !== 'undefined' ? enableOption : storeConfig?.pwa?.configurable_options_enable;
     const showQuickView = typeof enableQuickView !== 'undefined' ? enableQuickView : storeConfig?.pwa?.quick_view_enable;
+    const showWishlist = typeof enableWishlist !== 'undefined' ? enableWishlist : modules.wishlist.enabled;
+
+    const priceData = getPriceFromList(dataPrice, id);
+    const generatePrice = (priceDataItem = []) => {
+        // handle if loading price
+
+        if (loadPrice) {
+            return (
+                <div className="mgz-single-product-price">
+                    <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-full mb-4" />
+                    {' '}
+                </div>
+            );
+        }
+
+        let priceProduct = {
+            priceRange: spesificProduct.price_range ? spesificProduct.price_range : price_range,
+            // eslint-disable-next-line camelcase
+            priceTiers: spesificProduct.price_tiers ? spesificProduct.price_tiers : price_tiers,
+            productType: __typename,
+            specialFromDate: special_from_date,
+            specialToDate: special_to_date,
+        };
+        if (priceDataItem && priceDataItem.length > 0 && !loadPrice && !errorPrice) {
+            priceProduct = {
+                priceRange: spesificProduct.price_range ? spesificProduct.price_range : priceDataItem[0].price_range,
+                priceTiers: spesificProduct.price_tiers ? spesificProduct.price_tiers : priceDataItem[0].price_tiers,
+                // eslint-disable-next-line no-underscore-dangle
+                productType: priceDataItem[0].__typename,
+                specialFromDate: priceDataItem[0].special_from_date,
+                specialToDate: priceDataItem[0].special_to_date,
+            };
+        }
+
+        return (
+            <div className="product-item-price">
+                {priceProduct && <PriceFormat {...priceProduct} specialFromDate={special_from_date} specialToDate={special_to_date} />}
+            </div>
+        );
+    };
+
+    const CustomerFooter = (params) => {
+        const { loading, disabled, handleAddToCart } = params;
+        return (
+            <div className="flex flex-col gap-2 tablet:gap-4">
+                {enablePrice && generatePrice(priceData)}
+                <div className="hidden tablet:flex desktop:flex flex-row justify-between items-center w-full">
+                    {showAddToCart && (
+                        <Button
+                            iconProps={{ className: 'w-4 h-4 hidden desktop:flex' }}
+                            icon={<CartIcon className="text-neutral-white" />}
+                            disabled={disabled}
+                            onClick={handleAddToCart}
+                            loading={loading}
+                        >
+                            <Typography color="white" className="font-normal text-sm">
+                                Add To Cart
+                            </Typography>
+                        </Button>
+                    )}
+                    {(showWishlist || enableProductCompare) && (
+                        <div className="flex-row gap-1 hidden tablet:flex desktop:flex">
+                            {showWishlist && (
+                                <Button
+                                    iconOnly
+                                    icon={<HeartIcon />}
+                                    iconProps={{ className: feed ? '!w-4 !h-4 text-white' : '!w-4 !h-4' }}
+                                    variant={feed ? 'primary' : 'outlined'}
+                                    className="w-10 h-10 border-neutral-200"
+                                    classNameText="!w-4 !h-4"
+                                    onClick={() => handleFeed(props)}
+                                />
+                            )}
+                            {enableProductCompare && (
+                                <Button
+                                    iconOnly
+                                    icon={<CompareIcon />}
+                                    iconProps={{ className: '!w-4 !h-4' }}
+                                    variant="outlined"
+                                    className="w-10 h-10 border-neutral-200"
+                                    onClick={() => handleSetCompareList(props)}
+                                />
+                            )}
+                        </div>
+                    )}
+                </div>
+            </div>
+        );
+    };
+
     if (isGrid) {
         return (
             <>
@@ -398,9 +496,7 @@ const ProductItem = (props) => {
                         onClose={() => setOpenQuickView(false)}
                         data={
                             // eslint-disable-next-line no-underscore-dangle
-                            dataDetailProduct?.__typename === 'AwGiftCardProduct'
-                                ? dataDetailProduct
-                                : dataDetailProduct?.products
+                            dataDetailProduct?.__typename === 'AwGiftCardProduct' ? dataDetailProduct : dataDetailProduct?.products
                         }
                         dataPrice={getPrice()}
                         loadPrice={loadPrice}
@@ -412,20 +508,38 @@ const ProductItem = (props) => {
                     />
                 )}
                 <div
-                    className={classNames(styles.itemContainer, 'item-product', className, showQuickView ? styles.quickView : '')}
+                    className={classNames(
+                        'w-full inline-block h-full overflow-hidden relative cursor-pointer',
+                        'shadow rounded-lg p-2 lg:p-4',
+                        className,
+                    )}
                     id="catalog-item-product"
                 >
                     {storeConfig?.pwa?.label_enable && LabelView ? (
                         <LabelView t={t} {...other} isGrid={isGrid} spesificProduct={spesificProduct} />
                     ) : null}
-                    <div className={styles.imgItem}>
+                    <div className="w-full relative group">
                         {storeConfig?.pwa?.label_enable && storeConfig?.pwa?.label_weltpixel_enable && (
                             <WeltpixelLabel t={t} weltpixel_labels={weltpixel_labels} categoryLabel />
                         )}
                         {showQuickView && (
-                            <button className="btn-quick-view" type="button" onClick={handleQuickView}>
-                                Quick View
-                            </button>
+                            <Button
+                                onClick={handleQuickView}
+                                icon={<EyeIcon />}
+                                iconProps={{
+                                    className: 'w-3 h-3 !text-neutral-800 mr-[0px] desktop:mr-[6px]',
+                                }}
+                                classNameText="text-sm !text-neutral-800 justify-center"
+                                className={classNames(
+                                    '!bg-neutral-50 shadow-sm desktop:shadow-md desktop:invisible',
+                                    'desktop:group-hover:visible',
+                                    'absolute bottom-1 left-1 w-7 px-0 desktop:px-3 py-0 desktop:py-2',
+                                    'desktop:left-1/2 desktop:bottom-4 desktop:-translate-x-1/2 z-[2] desktop:w-32',
+                                )}
+                                size="sm"
+                            >
+                                <span className="hidden desktop:flex">Quick View</span>
+                            </Button>
                         )}
                         <ImageProductView
                             t={t}
@@ -435,13 +549,14 @@ const ProductItem = (props) => {
                             {...other}
                         />
                     </div>
-                    <div className={styles.detailItem}>
+                    <div className="h-auto pt-4 relative flex flex-col gap-4">
                         <DetailProductView
                             t={t}
                             urlKey={url_key}
                             catalogList={catalogList}
                             {...DetailProps}
                             {...other}
+                            Pricing={(enablePrice && !showOption) && generatePrice(priceData)}
                         />
                         {modules.product.customizableOptions.enabled && (
                             <CustomizableOption
@@ -458,42 +573,43 @@ const ProductItem = (props) => {
                             />
                         )}
                         {showOption ? (
-                            <ConfigurableOpt
-                                enableBundle={false}
-                                enableDownload={false}
-                                t={t}
-                                data={{
-                                    ...other,
-                                    url_key,
-                                    review,
-                                }}
-                                dataPrice={getPrice()}
-                                showQty={false}
-                                catalogList={catalogList}
-                                handleSelecteProduct={setSpesificProduct}
-                                showAddToCart={showAddToCart}
-                                propsItem={{
-                                    className: styles.itemConfigurable,
-                                }}
-                                customStyleBtnAddToCard={styles.customBtnAddToCard}
-                                labelAddToCart="Add to cart"
-                                isGrid={isGrid}
-                                {...other}
-                                customizableOptions={customizableOptions}
-                                setCustomizableOptions={setCustomizableOptions}
-                                errorCustomizableOptions={errorCustomizableOptions}
-                                checkCustomizableOptionsValue={checkCustomizableOptionsValue}
-                            />
+                            <div className="hidden tablet:flex desktop:flex flex-col gap-2 tablet:gap-4">
+                                <ConfigurableOpt
+                                    t={t}
+                                    data={{
+                                        ...other,
+                                        url_key,
+                                        review,
+                                    }}
+                                    dataPrice={getPrice()}
+                                    showQty={false}
+                                    catalogList={catalogList}
+                                    handleSelecteProduct={setSpesificProduct}
+                                    showAddToCart={showAddToCart}
+                                    propsItem={{
+                                        className: 'w-5 h-5',
+                                    }}
+                                    labelAddToCart="Add to cart"
+                                    isGrid={isGrid}
+                                    {...other}
+                                    customizableOptions={customizableOptions}
+                                    setCustomizableOptions={setCustomizableOptions}
+                                    errorCustomizableOptions={errorCustomizableOptions}
+                                    checkCustomizableOptionsValue={checkCustomizableOptionsValue}
+                                    CustomFooter={<CustomerFooter />}
+                                    showWishlist={showWishlist}
+                                    enableProductCompare={enableProductCompare}
+                                    enableBundle={false}
+                                    enableDownload={false}
+                                />
+                            </div>
                         ) : null}
                     </div>
                 </div>
             </>
         );
     }
-    // eslint-disable-next-line react/destructuring-assignment
-    const showWishlist = typeof props.enableWishlist !== 'undefined' ? props.enableWishlist : modules.wishlist.enabled;
-    const classFeedActive = classNames(styles.iconFeed, styles.iconActive);
-    const FeedIcon = feed ? <Favorite className={classFeedActive} /> : <FavoriteBorderOutlined className={styles.iconFeed} />;
+
     return (
         <>
             {openQuickView && showQuickView && (
@@ -502,9 +618,7 @@ const ProductItem = (props) => {
                     onClose={() => setOpenQuickView(false)}
                     data={
                         // eslint-disable-next-line no-underscore-dangle
-                        dataDetailProduct?.__typename === 'AwGiftCardProduct'
-                            ? dataDetailProduct
-                            : dataDetailProduct?.products
+                        dataDetailProduct?.__typename === 'AwGiftCardProduct' ? dataDetailProduct : dataDetailProduct?.products
                     }
                     dataPrice={getPrice()}
                     loadPrice={loadPrice}
@@ -513,11 +627,18 @@ const ProductItem = (props) => {
                     weltpixel_labels={weltpixel_labels}
                 />
             )}
-            <div className={classNames(styles.listContainer, className, showQuickView ? styles.quickView : '')}>
-                <div className="flex flex-row start-xs">
-                    <div className="xs:basis-6/12 sm:basis-1/2 md:basis-4/12 lg:basis-3/12">
+            <div
+                className={classNames(
+                    'w-full inline-block h-full overflow-hidden relative cursor-pointer',
+                    'shadow rounded-lg p-2 tablet:p-4',
+                    'min-h-[144px] tablet:min-h-max',
+                    className,
+                )}
+            >
+                <div className="flex flex-row gap-4 tablet:gap-6 start-xs">
+                    <div className="basis-auto">
                         <div
-                            className={styles.listImgItem}
+                            className="relative max-w-full group"
                             style={{
                                 width: storeConfig?.pwa?.image_product_width,
                                 height: storeConfig?.pwa?.image_product_height,
@@ -530,9 +651,23 @@ const ProductItem = (props) => {
                                 <WeltpixelLabel t={t} weltpixel_labels={weltpixel_labels} categoryLabel />
                             )}
                             {showQuickView && (
-                                <button className="btn-quick-view" type="button" onClick={handleQuickView}>
-                                    Quick View
-                                </button>
+                                <Button
+                                    onClick={handleQuickView}
+                                    icon={<EyeIcon />}
+                                    iconProps={{
+                                        className: 'w-3 h-3 !text-neutral-800 mr-[0px] desktop:mr-[6px]',
+                                    }}
+                                    classNameText="text-sm !text-neutral-800 justify-center"
+                                    className={classNames(
+                                        '!bg-neutral-50 shadow-sm desktop:shadow-md desktop:invisible',
+                                        'desktop:group-hover:visible',
+                                        'absolute bottom-1 left-1 w-7 px-0 desktop:px-3 py-0 desktop:py-2',
+                                        'desktop:left-2 desktop:bottom-2 z-[2] desktop:w-32',
+                                    )}
+                                    size="sm"
+                                >
+                                    <span className="hidden desktop:flex">Quick View</span>
+                                </Button>
                             )}
                             <ImageProductView
                                 t={t}
@@ -540,19 +675,33 @@ const ProductItem = (props) => {
                                 spesificProduct={spesificProduct}
                                 urlKey={url_key}
                                 {...other}
+                                className={classNames(
+                                    '!w-[114px] !h-[114px]',
+                                    'tablet:!w-[320px] tablet:!h-[320px]',
+                                    'desktop:!w-[250px] desktop:!h-[250px] overflow-hidden',
+                                )}
+                                classContainer={classNames(
+                                    '!w-[114px] !h-[114px]',
+                                    'tablet:!w-[320px] tablet:!h-[320px]',
+                                    'desktop:!w-[250px] desktop:!h-[250px] overflow-hidden',
+                                )}
                             />
                         </div>
                     </div>
-                    <div className="xs:basis-6/12 sm:basis-1/2 md:basis-8/12 lg:basis-9/12">
-                        <div className="flex flex-row start-xs">
-                            <div className="xs:basis-full sm:basis-full md:basis-1/2 lg:basis-1/2">
-                                <DetailProductView t={t} {...DetailProps} {...other} enableWishlist={false} urlKey={url_key} />
-                            </div>
-                            <div className="xs:basis-full sm:basis-full md:basis-1/2 lg:basis-1/2">
-                                {showOption ? (
+                    <div className="basis-full">
+                        <div className="flex flex-col gap-4 start-xs h-full justify-between">
+                            <DetailProductView
+                                t={t}
+                                {...DetailProps}
+                                {...other}
+                                enableWishlist={false}
+                                urlKey={url_key}
+                                showShortDescription
+                                Pricing={(enablePrice && !showOption) && generatePrice(priceData)}
+                            />
+                            {showOption ? (
+                                <div className={classNames('hidden tablet:flex flex-col justify-between h-full gap-2 lg:gap-4')}>
                                     <ConfigurableOpt
-                                        enableBundle={false}
-                                        enableDownload={false}
                                         t={t}
                                         data={{
                                             ...other,
@@ -564,25 +713,33 @@ const ProductItem = (props) => {
                                         catalogList={catalogList}
                                         handleSelecteProduct={setSpesificProduct}
                                         showAddToCart={showAddToCart}
-                                        propsItem={{
-                                            className: styles.itemConfigurable,
-                                        }}
-                                        customStyleBtnAddToCard={styles.customBtnAddToCard}
                                         labelAddToCart="Add to cart"
                                         isGrid={isGrid}
                                         {...other}
+                                        CustomFooter={<CustomerFooter />}
+                                        showWishlist={showWishlist}
+                                        enableProductCompare={enableProductCompare}
+                                        enableBundle={false}
+                                        enableDownload={false}
                                     />
-                                ) // eslint-disable-next-line indent
-                                : null}
+                                </div>
+                            ) : null}
+                            <div className="flex tablet:hidden w-full">
+                                <Link
+                                    href="/[...slug]"
+                                    as={`/${url_key}`}
+                                    className="w-full"
+                                    onClick={() => handleClick(props)}
+                                    id="plugin-productTitle-typography"
+                                >
+                                    <Button variant="primary" className="w-full text-" classNameText="justify-center text-[0.75rem]">
+                                        Add To Cart
+                                    </Button>
+                                </Link>
                             </div>
                         </div>
                     </div>
                 </div>
-                {showWishlist && (
-                    <Button className={styles.btnFeed} onClick={handleFeed}>
-                        {FeedIcon}
-                    </Button>
-                )}
             </div>
         </>
     );
