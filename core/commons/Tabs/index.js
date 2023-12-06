@@ -5,7 +5,7 @@ import React from 'react';
 
 const Tabs = (props) => {
     const {
-        data = [], onChange = () => { }, allItems = true, tabPanel = false, expandData = [], ListReviews = null, smartProductTabs = {},
+        data = [], onChange = () => { }, allItems = true, tabHasContent = false,
     } = props;
 
     const [activeTabs, setActiveTabs] = React.useState(0);
@@ -42,14 +42,14 @@ const Tabs = (props) => {
                 )}
             >
                 <ul className="flex -mb-px">
-                    {!tabPanel && allItems ? (
+                    {!tabHasContent && allItems ? (
                         <li className="me-2">
                             <a href="#" className={cx(tabClasses, tabActive, 'default-active', 'min-w-[100px]')}>
                                 All Items
                             </a>
                         </li>
                     ) : null}
-                    {!tabPanel
+                    {data
                         && data.map((item, index) => {
                             if (index === 0) {
                                 return (
@@ -57,15 +57,19 @@ const Tabs = (props) => {
                                         <a
                                             href="#"
                                             className={
-                                                !tabPanel && allItems
+                                                !tabHasContent && allItems
                                                     ? cx(tabClasses, 'default-allitems')
                                                     : cx(tabClasses, tabActive, 'default-active')
                                             }
                                             onClick={() => {
-                                                onChange(index);
+                                                if (tabHasContent) {
+                                                    handleTabSwitch(index);
+                                                } else {
+                                                    onChange(index);
+                                                }
                                             }}
                                         >
-                                            {item.name}
+                                            {item.title}
                                         </a>
                                     </li>
                                 );
@@ -79,99 +83,17 @@ const Tabs = (props) => {
                                             onChange(index);
                                         }}
                                     >
-                                        {item.name}
-                                    </a>
-                                </li>
-                            );
-                        })}
-                    {/* PDP Tabs */}
-                    {tabPanel
-                        && expandData
-                        && expandData.length > 0
-                        && expandData.map((item, index) => {
-                            if (index === 0) {
-                                return (
-                                    <li className="me-2" key={index}>
-                                        <a
-                                            href="#"
-                                            className={
-                                                activeTabs === index
-                                                    ? cx(tabClasses, tabActive, 'default-active')
-                                                    : cx(tabClasses, 'default-allitems')
-                                            }
-                                            onClick={() => {
-                                                handleTabSwitch(index);
-                                            }}
-                                        >
-                                            {item.title}
-                                        </a>
-                                    </li>
-                                );
-                            }
-                            return (
-                                <li className="me-2" key={index}>
-                                    <a
-                                        href="#"
-                                        className={
-                                            activeTabs === index ? cx(tabClasses, tabActive, 'default-active') : cx(tabClasses, 'default-allitems')
-                                        }
-                                        onClick={() => {
-                                            handleTabSwitch(index);
-                                        }}
-                                    >
                                         {item.title}
                                     </a>
                                 </li>
                             );
                         })}
-                    {tabPanel && ListReviews && (
-                        <li className="me-2" key={expandData.length}>
-                            <a
-                                href="#"
-                                className={
-                                    activeTabs === expandData.length
-                                        ? cx(tabClasses, tabActive, 'default-active')
-                                        : cx(tabClasses, 'default-allitems')
-                                }
-                                onClick={() => {
-                                    handleTabSwitch(expandData.length);
-                                }}
-                            >
-                                Reviews
-                            </a>
-                        </li>
-                    )}
-                    {tabPanel
-                        && expandData
-                        && Object.values(smartProductTabs).map((item, index) => {
-                            if (item.label) {
-                                return (
-                                    <li className="me-2" key={expandData.length + index + 1}>
-                                        <a
-                                            href="#"
-                                            className={
-                                                activeTabs === expandData.length
-                                                    ? cx(tabClasses, tabActive, 'default-active')
-                                                    : cx(tabClasses, 'default-allitems')
-                                            }
-                                            onClick={() => {
-                                                handleTabSwitch(expandData.length + index + 1);
-                                            }}
-                                        >
-                                            Reviews
-                                        </a>
-                                    </li>
-                                );
-                            }
-                            return null;
-                        })}
-                    {/* PDP Tabs */}
                 </ul>
             </div>
-            {/* PDP Tabs Content */}
-            {tabPanel && expandData && (
+
+            {tabHasContent && data && (
                 <div className={cx('tab-content-wrapper', 'relative', 'pt-[10px]')}>
-                    {expandData.map((item, index) => {
+                    {data.map((item, index) => {
                         if (item.type === 'html') {
                             return (
                                 <div
@@ -181,9 +103,20 @@ const Tabs = (props) => {
                                     key={index}
                                 >
                                     <div className={cx('description-html', 'text-2md')}>
-                                        {/* eslint-disable-next-line react/no-danger */}
-                                        {item.content ? <span dangerouslySetInnerHTML={{ __html: item.content }} /> : null}
+                                        {item.content ? <CmsRenderer content={item.content} /> : null}
                                     </div>
+                                </div>
+                            );
+                        }
+                        if (item.type === 'react-component') {
+                            return (
+                                <div
+                                    className={cx('tab-content', {
+                                        hidden: activeTabs !== index,
+                                    })}
+                                    key={index}
+                                >
+                                    {item.content ? item.content : null}
                                 </div>
                             );
                         }
@@ -194,47 +127,15 @@ const Tabs = (props) => {
                                 })}
                                 key={index}
                             >
-                                <ul className="grid grid-cols-2">
-                                    {item.content.map((val, idx) => (
-                                        <li className={cx('grid', 'grid-cols-1', 'py-2')} key={idx}>
-                                            <span className="text-2md font-bold">{val.label}</span>
-                                            <span className="text-2md">{val.value}</span>
-                                        </li>
-                                    ))}
-                                </ul>
+                                <div className={cx('description-html', 'text-2md')}>
+                                    {/* eslint-disable-next-line react/no-danger */}
+                                    {item.content ? <span dangerouslySetInnerHTML={{ __html: item.content }} /> : null}
+                                </div>
                             </div>
                         );
                     })}
-                    {ListReviews && (
-                        <div
-                            className={cx('tab-content', {
-                                hidden: activeTabs !== expandData.length,
-                            })}
-                            key={expandData.length}
-                        >
-                            {ListReviews}
-                        </div>
-                    )}
-                    {
-                        smartProductTabs && Object.values(smartProductTabs).map((val, idx) => {
-                            if (val.label) {
-                                return (
-                                    <div
-                                        className={cx('tab-content', {
-                                            hidden: activeTabs !== expandData.length + idx + 1,
-                                        })}
-                                        key={expandData.length + idx + 1}
-                                    >
-                                        <CmsRenderer content={val.content} />
-                                    </div>
-                                );
-                            }
-                            return null;
-                        })
-                    }
                 </div>
             )}
-            {/* PDP Tabs Content */}
             <style jsx>
                 {`
                     .tabs-wrapper::-webkit-scrollbar {
