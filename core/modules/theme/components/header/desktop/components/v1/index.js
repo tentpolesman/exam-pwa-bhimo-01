@@ -4,11 +4,16 @@
 /* eslint-disable */
 import Image from '@common_image';
 import Menu from '@core_modules/theme/components/header/desktop/components/v1/mcategory';
+import cx from 'classnames';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import React from 'react';
 
+import Typography from '@common_typography';
+
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import DevicePhoneMobileIcon from '@heroicons/react/24/solid/DevicePhoneMobileIcon';
+import UserIcon from '@heroicons/react/24/solid/UserIcon';
 
 const ProductCompareIcon = dynamic(() => import('@core_modules/catalog/plugins/ProductCompare'));
 const ShoppingBagIcon = dynamic(() => import('@plugin_shoppingbag'));
@@ -39,19 +44,78 @@ const ViewTopNavigation = (props) => {
         enablePopupInstallation = false,
     } = props;
 
+    const installAppRef = React.useRef(null);
+
+    console.log(installAppRef.current);
+
     return (
         <div id="header-inner">
-            <div className="flex flex-row header-top">
+            {/* <div className="flex flex-row header-top">
                 <main style={{ width: '97%' }}>
-                    {/* {enablePopupInstallation ? <DesktopInstallApp appName={appName} installMessage={installMessage} /> : null} */}
+                    {enablePopupInstallation ? <DesktopInstallApp appName={appName} installMessage={installMessage} /> : null}
                     <TopMenu t={t} isLogin={isLogin} data={customer} handleLogout={handleLogout} app_cookies={app_cookies} />
                 </main>
-            </div>
-            <main style={{ width: '100%', maxWidth: 'unset' }}>
+            </div> */}
+            <main>
                 <div className="header-main">
-                    <div className="header-middle">
-                        <div className="header-middle__left">
-                            <div className="box header-middle__logo">
+                    <div
+                        id="top-header"
+                        className={cx(
+                            'top-header',
+                            'mobile:max-desktop:hidden',
+                            'tablet:pt-0',
+                            'tablet:pb-3',
+                            'tablet:border-b-[1.5px]',
+                            'tablet:border-b-neutral-300',
+                        )}
+                        ref={installAppRef}
+                    >
+                        <div
+                            className={cx(
+                                'top-header__statusicon__left-section__account',
+                                'mt-3',
+                                'grid grid-cols-[75%_12.5%_12.5%]',
+                                'tablet:max-w-[768px] desktop:max-w-[1200px]',
+                                'm-[0_auto]',
+                            )}
+                        >
+                            <div className={cx('popup-installation')}>
+                                <DevicePhoneMobileIcon className={cx('w-[20px]', 'text-neutral-600', 'inline-block')} />
+                                <Typography variant="bd-2b" className={cx('inline-block', 'pl-2')}>
+                                    Download Apps
+                                </Typography>
+                            </div>
+                            <div className={cx('confirmation-payment-menu')}>
+                                <Typography variant="bd-2b" className={cx('inline-block', 'pl-2')}>
+                                    Confirm Payment
+                                </Typography>
+                            </div>
+                            <div className={cx('tracking-order-menu')}>
+                                <Typography variant="bd-2b" className={cx('inline-block', 'pl-2')}>
+                                    Tracking Order
+                                </Typography>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        className={cx(
+                            'middle-header',
+                            'mobile:max-desktop:hidden',
+                            'tablet:border-b-[1.5px]',
+                            'tablet:border-b-neutral-300',
+                            'tablet:py-4',
+                        )}
+                    >
+                        <div
+                            className={cx(
+                                'middle-header__wrapper',
+                                'tablet:max-w-[768px] desktop:max-w-[1200px]',
+                                'm-[0_auto]',
+                                'grid',
+                                'grid-cols-[1fr_2fr_1fr]',
+                            )}
+                        >
+                            <div className={cx('middle-header__logo', 'w-[120px]')}>
                                 <Link href="/" legacyBehavior>
                                     <a>
                                         <Image
@@ -66,15 +130,16 @@ const ViewTopNavigation = (props) => {
                                     </a>
                                 </Link>
                             </div>
-                        </div>
-                        <div className="header-middle__right">
-                            <div className="box">
-                                <div className="header-middle__icons">
+                            <div className={cx('middle-header__search')}>
+                                <Autocomplete setValue={setValue} handleSearch={handleSearch} t={t} storeConfig={storeConfig} />
+                            </div>
+                            <div className={cx('middle-header__statusicon', 'grid', 'grid-cols-2')}>
+                                <div className={cx('middle-header__statusicon__left-section', 'grid', 'grid-cols-3')}>
                                     <div className="notification">
                                         <NotificationBell withLink />
                                     </div>
                                     {modules.productcompare.enabled && (
-                                        <div className="shopping-bag">
+                                        <div className="product-compare">
                                             <ProductCompareIcon withLink isLogin={isLogin} />
                                         </div>
                                     )}
@@ -82,18 +147,22 @@ const ViewTopNavigation = (props) => {
                                         <ShoppingBagIcon withLink storeConfig={storeConfig} />
                                     </div>
                                 </div>
-                                <div className="header-middle__search">
-                                    <Autocomplete setValue={setValue} handleSearch={handleSearch} t={t} storeConfig={storeConfig} />
+                                <div className={cx('middle-header__statusicon__right-section', 'border-l-[1.5px]', 'border-l-neutral-300')}>
+                                    <div className={cx('middle-header__statusicon__right-section__account', 'pl-2', 'mt-3')}>
+                                        <UserIcon className={cx('w-[24px]', 'text-neutral-600', 'inline-block')} />
+                                        <Typography variant="bd-2b" className={cx('inline-block', 'pl-2')}>
+                                            Login/Register
+                                        </Typography>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div className="header-middle">
-                        <div id="submenu" className="header-middle__center">
-                            <div className="flex flex-row menu-category">
-                                <div className="xs:basis-full menu-middle">
-                                    {loading ? null : <Menu vesMenuConfig={vesMenuConfig} data={data} storeConfig={storeConfig} />}
-                                </div>
+                    <div className={cx('bottom-header', 'tablet:max-w-[768px] desktop:max-w-[1200px]', 'm-[0_auto]', 'mobile:max-desktop:hidden')}>
+                        <div className="flex flex-row menu-category">
+                            <div className="xs:basis-full menu-middle">
+                                {loading ? null : <Menu vesMenuConfig={vesMenuConfig} data={data} storeConfig={storeConfig} />}
+                                {console.log(data)}
                             </div>
                         </div>
                     </div>
@@ -102,18 +171,18 @@ const ViewTopNavigation = (props) => {
             <style jsx>
                 {`
                     .header-main {
-                        max-width: 1440px;
-                        width: 97%;
                         margin: 0 auto;
                     }
                     @media (min-width: 768px) {
                         #header-inner {
+                            position: relative;
+                            z-index: 1100;
                             ${storeConfig && storeConfig.pwa && storeConfig.pwa.enabler_sticky_header
                                 ? 'position: fixed;'
                                 : 'position: relative; z-index: 1100;'}
                             width: 100%;
                             background: white;
-                            z-index: 3;
+                            z-index: 999;
                             top: ${showGlobalPromo ? '45px' : '0'};
                             transition: top 1s ease;
                         }
@@ -220,6 +289,6 @@ const ViewTopNavigation = (props) => {
             </style>
         </div>
     );
-};
+};;;;;;;;;;;;;
 
 export default ViewTopNavigation;
