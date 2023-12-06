@@ -1,4 +1,4 @@
-import MagezonIcon from '@core_modules/cms/components/cms-renderer/magezon/MagezoneIcon';
+import MagezonIcon from '@core_modules/cms/components/cms-renderer/magezon/MagezonIcon';
 import useStyles from '@core_modules/cms/components/cms-renderer/magezon/style';
 import classnames from 'classnames';
 

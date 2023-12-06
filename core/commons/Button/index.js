@@ -7,7 +7,7 @@ import Show from '@common_show';
 const Button = (props) => {
     const {
         className = '',
-        classNameText,
+        classNameText = '',
         variant = 'primary',
         children,
         disabled = false,
@@ -17,6 +17,8 @@ const Button = (props) => {
         icon,
         iconPosition: position,
         iconOnly,
+        textProps = {},
+        ...restProps
     } = props;
 
     const buttonSizes = {
@@ -55,17 +57,19 @@ const Button = (props) => {
                 },
                 classes,
             )}
+            {...restProps}
         >
             <Typography
                 variant={textVariants[size]}
-                className={cx('flex', 'items-center', classNameText, {
+                className={cx('flex', 'items-center', 'justify-center',{
                     '!text-pwa-button_text': variant === 'primary',
                     '!text-primary': variant === 'secondary' || variant === 'tertiary',
                     '!text-black': variant === 'outlined',
                     '!text-neutral-white': disabled,
                     'group-active:!text-neutral-white': variant === 'secondary',
                     'flex-row-reverse': icon && position === 'right',
-                })}
+                }, classNameText)}
+                {...textProps}
             >
                 <Show when={icon && loading}>
                     <ArrowPath
@@ -98,7 +102,7 @@ Button.propTypes = {
     disabled: propTypes.bool,
     onClick: propTypes.func,
     loading: propTypes.bool,
-    size: propTypes.oneOf(['xs', 'sm', 'md', 'lg', 'xl']),
+    size: propTypes.oneOf(['sm', 'md', 'lg', 'xl']),
     icon: propTypes.element,
     iconPosition: propTypes.oneOf(['left', 'right']),
 };

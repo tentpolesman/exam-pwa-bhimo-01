@@ -17,7 +17,7 @@ const MagezonText = dynamic(() => import('@core_modules/cms/components/cms-rende
 const MagezonButton = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonButton'));
 const MagezonRawHtml = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonRawHtml'), { ssr: false });
 const MagezonWidget = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonWidget'), { ssr: false });
-const MagezonIcon = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezoneIcon'), { ssr: false });
+const MagezonIcon = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonIcon'), { ssr: false });
 const MagezonIconList = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonIconList'), { ssr: false });
 const MagezonSeparator = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonSeparator'), { ssr: false });
 const MagezonEmpty = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonEmpty'), { ssr: false });
@@ -59,6 +59,7 @@ const MagezonTabs = dynamic(() => import('@core_modules/cms/components/cms-rende
 
 const MagezonElement = (props) => {
     const {
+        align,
         type,
         content,
         animation_in,
@@ -346,6 +347,7 @@ const MagezonElement = (props) => {
             <style jsx>
                 {`
                     .mgz-element {
+                        ${align ? `text-align: ${align};` : ''}
                         position: relative;
                         width: 100%;
                         ${background_color ? `background-color: ${background_color};` : ''}
