@@ -13,7 +13,7 @@ import CircularProgress from '@common/CircularProgress';
 
 import { getLocalStorage } from '@root/core/helpers/localstorage';
 
-import DrawerFilter from './DrawerFilter';
+import DrawerFilter from '@common_drawer';
 
 const ViewProductList = (props) => {
     const {
@@ -75,7 +75,16 @@ const ViewProductList = (props) => {
 
     return (
         <div className="flex flex-row gap-4 w-full">
-            <DrawerFilter open={openDrawerFilter} handleClose={handleCloseDrawetFilter} />
+            <DrawerFilter
+                open={openDrawerFilter}
+                handleClose={handleCloseDrawetFilter}
+            >
+                <div className="px-6 py-4">
+                    <h2 className="text-lg font-semibold">Drawer</h2>
+                    <p className="text-gray-500">This is a drawer.</p>
+                    <Button onClick={handleCloseDrawetFilter}>Close</Button>
+                </div>
+            </DrawerFilter>
             <div className="hidden desktop:inline-flex flex-col lg:basis-1/4">
                 <div className="mb-5 h-[36px] border-neutral-100 border-b-[1px]">
                     <Typography variant="h3" className="text-base basis-full">

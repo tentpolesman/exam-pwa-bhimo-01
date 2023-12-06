@@ -161,6 +161,8 @@
             "@common_productlabel/*": ["src/commons/ProductLabel/*", "core/commons/ProductLabel/*"],
             "@common_optionconfigurable/*": ["src/commons/OptionConfigurable/*", "core/commons/OptionConfigurable/*"],
             "@common_show/*": ["src/commons/Show/*", "core/commons/Show/*"],
+            "@common_drawer": ["src/commons/Drawer", "core/commons/Drawer"],
+            "@common_drawer/*": ["src/commons/Drawer/*", "core/commons/Drawer/*"],
 
             "@plugin_summary": ["src/modules/cart/plugins/Summary", "core/modules/cart/plugins/Summary"],
             "@plugin_summary/*": ["src/modules/cart/plugins/Summary/*", "core/modules/cart/plugins/Summary/*"],
