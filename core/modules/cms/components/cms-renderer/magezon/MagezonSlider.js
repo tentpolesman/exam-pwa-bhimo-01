@@ -457,10 +457,50 @@ const MagezonSlider = (props) => {
                                 owl_nav_position === 'center_split',
                         })}
                     >
-                        <div className="magezon-slider--button-nav-item cursor-pointer pointer-events-auto" onClick={() => sliderRef.slickPrev()}>
+                        <div
+                            className={cx(
+                                'magezon-slider--button-nav-item',
+                                'cursor-pointer',
+                                'pointer-events-auto',
+                                'text-[1.5rem]',
+                                'bg-neutral-100',
+                                'p-[10px]',
+                                'rounded-[6px]',
+                                'flex-col',
+                                'justify-center',
+                                'items-center',
+                                'w-[40px]',
+                                'h-[40px]',
+                                'cursor-pointer',
+                                'hidden',
+                                'group-hover:flex',
+                                'shadow-md',
+                            )}
+                            onClick={() => sliderRef.slickPrev()}
+                        >
                             <ChevronLeft className="w-6 h-6 text-primary" />
                         </div>
-                        <div className="magezon-slider--button-nav-item cursor-pointer pointer-events-auto" onClick={() => sliderRef.slickNext()}>
+                        <div
+                            className={cx(
+                                'magezon-slider--button-nav-item',
+                                'cursor-pointer',
+                                'pointer-events-auto',
+                                'text-[1.5rem]',
+                                'bg-neutral-100',
+                                'p-[10px]',
+                                'rounded-[6px]',
+                                'flex-col',
+                                'justify-center',
+                                'items-center',
+                                'w-[40px]',
+                                'h-[40px]',
+                                'cursor-pointer',
+                                'hidden',
+                                'group-hover:flex',
+                                'shadow-md',
+                            )}
+                            onClick={() => sliderRef.slickNext()}
+                        >
                             <ChevronRight className="w-6 h-6 text-primary" />
                         </div>
                     </div>
