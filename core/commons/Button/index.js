@@ -2,6 +2,7 @@ import cx from 'classnames';
 import Typography from '@common_typography';
 import ArrowPath from '@heroicons/react/24/outline/ArrowPathIcon';
 import propTypes from 'prop-types';
+import Show from '@common_show';
 
 const Button = (props) => {
     const {
@@ -53,6 +54,7 @@ const Button = (props) => {
                 'hover:shadow-lg',
                 variant === 'primary' && primaryClass,
                 {
+                    'bg-pwa-button_background hover:bg-pwa-button_background_hover focus:shadow-primary-300 active:bg-primary': variant === 'primary',
                     'bg-primary-100 hover:bg-primary-200 focus:shadow-primary-300 active:bg-primary-200': variant === 'secondary',
                     // eslint-disable-next-line max-len
                     'bg-neutral-white hover:shadow-lg focus:shadow-primary-300 active:shadow-primary-300 active:shadow-[0_0_0_4px]':
@@ -79,26 +81,25 @@ const Button = (props) => {
                     },
                 )}
             >
-                {
-                    loading ? (
-                        <ArrowPath className={cx('animate-spin w-6 h-6', {
+                <Show when={icon && loading}>
+                    <ArrowPath
+                        className={cx('animate-spin w-6 h-6', {
                             'mr-[6px]': position !== 'right' && !iconOnly,
                             'ml-[6px]': position === 'right' && !iconOnly,
                             'text-lg': !iconOnly || (iconOnly && (size === 'sm' || size === 'md')),
                         })}
-                        />
-                    ) : null
-                }
-                {icon && !loading ? React.cloneElement(icon, {
-                    className: cx(
-                        'w-6 h-6',
-                        position !== 'right' && !iconOnly && 'mr-[6px]',
-                        position === 'right' && !iconOnly && 'ml-[6px]',
-                        classIcon,
-                    ),
-                    ...resIconProps,
-                }) : null}
-                {icon && iconOnly ? null : children}
+                    />
+                </Show>
+                <Show when={icon && !loading}>
+                    {icon ? React.cloneElement(icon, {
+                        className: cx('w-6 h-6', {
+                            'mr-[6px]': position !== 'right' && !iconOnly,
+                            'ml-[6px]': position === 'right' && !iconOnly,
+                        }),
+                        ...resIconProps,
+                    }) : null}
+                </Show>
+                <Show when={!icon && !iconOnly}>{children}</Show>
             </Typography>
             {customChildren && customChildren}
         </button>
@@ -127,7 +128,7 @@ Button.defaultProps = {
     onClick: () => {},
     loading: false,
     size: 'md',
-    icon: <></>,
+    icon: undefined,
     iconPosition: 'left',
 };
 

@@ -1,8 +1,8 @@
 import Typography from '@common_typography';
+import { CheckCircleIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import cx from 'classnames';
-import { useState } from 'react';
-import { ExclamationTriangleIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
 import propTypes from 'prop-types';
+import { useState } from 'react';
 
 const TextField = (props) => {
     const {
@@ -189,9 +189,9 @@ TextField.defaultProps = {
     type: 'text',
     onBlur: () => {},
     onKeyPress: () => {},
-    leftIcon: <></>,
+    leftIcon: undefined,
     leftIconProps: {},
-    rightIcon: <></>,
+    rightIcon: undefined,
     rightIconProps: {},
 };
 

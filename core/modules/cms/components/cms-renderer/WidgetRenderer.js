@@ -4,7 +4,6 @@ import parse, { domToReact } from 'html-react-parser';
 import dynamic from 'next/dynamic';
 
 const WidgetSlider = dynamic(() => import('@core_modules/cms/components/cms-renderer/widget-slider'));
-const WidgetView = dynamic(() => import('@core_modules/cms/components/cms-renderer/view'));
 const ImageRenderer = dynamic(() => import('@core_modules/cms/components/cms-renderer/image-renderer'));
 const Newsletter = dynamic(() => import('@plugin_newsletter'));
 const WidgetListProduct = dynamic(() => import('@core_modules/cms/components/cms-renderer/widget-list-product'));
@@ -21,7 +20,7 @@ const DOM_NAME = 'pwa';
 
 const WidgetRenderer = (props) => {
     const { content, storeConfig } = props;
-    const updatedContent = content.includes('widget') ? content.replace('<p>', '').replace('{{widget', '<pwa').slice(0, -4).concat('/>') : content;
+    const updatedContent = content.includes('widget') ? content.replace('<p>', '').replace('{{widget', '<pwa').replace('}}', '/>') : content;
 
     React.useEffect(() => {
         const coll = document.getElementsByClassName('collapsible');
@@ -68,6 +67,7 @@ const WidgetRenderer = (props) => {
 
                 if (domNode.name === DOM_NAME && domNode.attribs) {
                     const propsWidget = domNode.attribs;
+                    
                     switch (domNode.attribs.type) {
                         case TYPE_PWA_SLIDER:
                             return <WidgetSlider {...propsWidget} storeConfig={storeConfig} />;
@@ -100,12 +100,7 @@ const WidgetRenderer = (props) => {
     };
     /* eslint-enable */
 
-    /**
-     * other props
-     */
-    const propsOther = { WidgetComponent };
-
-    return <WidgetView {...props} {...propsOther} />;
+    return <WidgetComponent {...props} />;
 };
 
 const notRenderIf = (prevProps, nextProps) => prevProps.content === nextProps.content;
