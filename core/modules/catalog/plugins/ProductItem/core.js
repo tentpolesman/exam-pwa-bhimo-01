@@ -527,16 +527,18 @@ const ProductItem = (props) => {
                                 onClick={handleQuickView}
                                 icon={<EyeIcon />}
                                 iconProps={{
-                                    className: 'w-3 h-3 !text-neutral-800',
+                                    className: 'w-3 h-3 !text-neutral-800 mr-[0px] desktop:mr-[6px]',
                                 }}
-                                classNameText="text-sm !text-neutral-800"
+                                classNameText="text-sm !text-neutral-800 justify-center"
                                 className={classNames(
-                                    '!bg-neutral-50 !shadow-md invisible',
-                                    'group-hover:visible absolute bottom-4 left-1/2 -translate-x-1/2 z-[2] w-32',
+                                    '!bg-neutral-50 shadow-sm desktop:shadow-md desktop:invisible',
+                                    'desktop:group-hover:visible',
+                                    'absolute bottom-1 left-1 w-7 px-0 desktop:px-3 py-0 desktop:py-2',
+                                    'desktop:left-1/2 desktop:bottom-4 desktop:-translate-x-1/2 z-[2] desktop:w-32',
                                 )}
                                 size="sm"
                             >
-                                Quick View
+                                <span className="hidden desktop:flex">Quick View</span>
                             </Button>
                         )}
                         <ImageProductView
@@ -545,11 +547,17 @@ const ProductItem = (props) => {
                             spesificProduct={spesificProduct}
                             urlKey={url_key}
                             {...other}
-                            Pricing={(enablePrice && !showOption) && generatePrice(priceData)}
                         />
                     </div>
                     <div className="h-auto pt-4 relative flex flex-col gap-4">
-                        <DetailProductView t={t} urlKey={url_key} catalogList={catalogList} {...DetailProps} {...other} />
+                        <DetailProductView
+                            t={t}
+                            urlKey={url_key}
+                            catalogList={catalogList}
+                            {...DetailProps}
+                            {...other}
+                            Pricing={(enablePrice && !showOption) && generatePrice(priceData)}
+                        />
                         {modules.product.customizableOptions.enabled && (
                             <CustomizableOption
                                 price={price}
@@ -596,7 +604,6 @@ const ProductItem = (props) => {
                                 />
                             </div>
                         ) : null}
-                        <div className="flex tablet:hidden">{enablePrice && generatePrice(priceData)}</div>
                     </div>
                 </div>
             </>
@@ -628,7 +635,7 @@ const ProductItem = (props) => {
                     className,
                 )}
             >
-                <div className="flex flex-row start-xs">
+                <div className="flex flex-row gap-4 tablet:gap-6 start-xs">
                     <div className="basis-auto">
                         <div
                             className="relative max-w-full group"
@@ -648,16 +655,18 @@ const ProductItem = (props) => {
                                     onClick={handleQuickView}
                                     icon={<EyeIcon />}
                                     iconProps={{
-                                        className: 'w-3 h-3 !text-neutral-800',
+                                        className: 'w-3 h-3 !text-neutral-800 mr-[0px] desktop:mr-[6px]',
                                     }}
-                                    classNameText="text-sm !text-neutral-800"
+                                    classNameText="text-sm !text-neutral-800 justify-center"
                                     className={classNames(
-                                        '!bg-neutral-50 !shadow-md invisible',
-                                        'group-hover:visible absolute bottom-4 left-1/2 -translate-x-1/2 z-[2] w-32',
+                                        '!bg-neutral-50 shadow-sm desktop:shadow-md desktop:invisible',
+                                        'desktop:group-hover:visible',
+                                        'absolute bottom-1 left-1 w-7 px-0 desktop:px-3 py-0 desktop:py-2',
+                                        'desktop:left-2 desktop:bottom-2 z-[2] desktop:w-32',
                                     )}
                                     size="sm"
                                 >
-                                    Quick View
+                                    <span className="hidden desktop:flex">Quick View</span>
                                 </Button>
                             )}
                             <ImageProductView

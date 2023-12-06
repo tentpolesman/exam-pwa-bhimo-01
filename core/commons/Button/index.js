@@ -70,7 +70,6 @@ const Button = (props) => {
                 className={cx(
                     'flex',
                     'items-center',
-                    classNameText,
                     {
                         'text-pwa-button_text': variant === 'primary',
                         'text-primary': variant === 'secondary' || variant === 'tertiary',
@@ -79,6 +78,8 @@ const Button = (props) => {
                         'group-active:!text-neutral-white': variant === 'secondary',
                         'flex-row-reverse': icon && position === 'right',
                     },
+
+                    classNameText,
                 )}
             >
                 <Show when={icon && loading}>
@@ -95,11 +96,12 @@ const Button = (props) => {
                         className: cx('w-6 h-6', {
                             'mr-[6px]': position !== 'right' && !iconOnly,
                             'ml-[6px]': position === 'right' && !iconOnly,
-                        }),
+                        },
+                        classIcon),
                         ...resIconProps,
                     }) : null}
                 </Show>
-                <Show when={!icon && !iconOnly}>{children}</Show>
+                <Show when={!iconOnly}>{children}</Show>
             </Typography>
             {customChildren && customChildren}
         </button>

@@ -8,11 +8,12 @@ import Typography from '@common/Typography';
 import cx from 'classnames';
 
 import ProductItem from '@plugin_productitem';
+import PaginationSection from '@plugin_productlist/components/PaginationSection';
+import CircularProgress from '@common/CircularProgress';
 
 import { getLocalStorage } from '@root/core/helpers/localstorage';
 
 import DrawerFilter from './DrawerFilter';
-import PaginationSection from './PaginationSection';
 
 const ViewProductList = (props) => {
     const {
@@ -90,7 +91,7 @@ const ViewProductList = (props) => {
                             variant="outlined"
                             icon={<FilterIcon />}
                             iconPosition="left"
-                            className="desktop:hidden h-[36px] flex items-center py-1 px-2 desktop:py-[8px] desktop:px-[12px] border-neutral-200"
+                            className="desktop:hidden h-[36px] flex items-center !py-0 !px-2 desktop:py-[8px] desktop:px-[12px] border-neutral-200"
                             classNameText="text-neutral"
                             onClick={handleOpenDrawerFilter}
                         >
@@ -100,10 +101,10 @@ const ViewProductList = (props) => {
                             variant="outlined"
                             icon={isGrid ? <GridIcon /> : <ListIcon />}
                             iconPosition="right"
-                            className="h-[36px] flex items-center py-1 px-2 desktop:py-[8px] desktop:px-[12px] border-neutral-200"
+                            className="h-[36px] flex items-center py-1 px-1 desktop:py-[8px] desktop:px-[12px] border-neutral-200"
                             classNameText="text-neutral"
                             onClick={handleSetGrid}
-                            iconProps={{ className: 'ml-0 tablet:ml-[6px]' }}
+                            iconProps={{ className: '!ml-0 tablet:!ml-[6px]' }}
                         >
                             <Typography className="hidden tablet:inline">View As</Typography>
                         </Button>
@@ -113,7 +114,7 @@ const ViewProductList = (props) => {
                         placeholder="Sort By"
                         className="h-[36px]"
                         textFiledProps={{
-                            className: 'h-[36px] !w-[100px] tablet:!w-[117px] pl-2 mt-0',
+                            className: 'h-[36px] !w-[auto] max-w-[110px] tablet:!w-[117px] ml-2 mt-0',
                         }}
                         inputProps={{
                             className: 'h-[34px] placeholder:!text-neutral',
@@ -126,6 +127,19 @@ const ViewProductList = (props) => {
                         : 'grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1'
                 }
                 >
+                    {
+                        loading
+                            && [1, 2, 3, 4, 5, 6, 7, 8, 9].map((key) => (
+                                <div className="w-auto h-auto p-2" key={key}>
+                                    <div className="flex flex-col gap-2 tablet:gap-2 animate-pulse">
+                                        <div className="h-[250px] w-auto bg-neutral-100" />
+                                        <div className="h-5 w-full bg-neutral-100" />
+                                        <div className="h-4 w-3/4 bg-neutral-100" />
+                                    </div>
+                                </div>
+                            ))
+
+                    }
                     {
                         !loadList && products.items && products.items.map((item, key) => (
                             <div className="w-auto h-auto" key={key}>
@@ -148,13 +162,16 @@ const ViewProductList = (props) => {
                     ? renderEmptyMessage(products.items.length, loading)
                     : null}
                 <div className={cx(
-                    'w-full text-center p-5',
+                    'w-full p-5 flex justify-center',
                     !loadmore ? 'hidden' : '',
                 )}
                 >
-                    <Typography align="center" variant="span" type="bold" letter="uppercase" color="gray">
-                        Loading
-                    </Typography>
+                    <div className="flex flex-row">
+                        <CircularProgress size="small" className="mr-2" />
+                        <Typography align="center" variant="span" type="bold" letter="uppercase" color="gray">
+                            Loading...
+                        </Typography>
+                    </div>
                 </div>
                 { isPagination && <PaginationSection {...props} /> }
             </div>

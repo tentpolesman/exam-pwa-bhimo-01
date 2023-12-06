@@ -1,4 +1,6 @@
 import cx from 'classnames';
+import propTypes from 'prop-types';
+import ArrowPath from '@heroicons/react/24/outline/ArrowPathIcon';
 
 const CircularProgress = (props) => {
     const { className = {}, size = 'small', color = 'primary' } = props;
@@ -8,13 +10,13 @@ const CircularProgress = (props) => {
 
     switch (size) {
     case 'small':
-        sizeClasses = 'text-[20px]';
+        sizeClasses = 'w-[20px] h-[20px]';
         break;
     case 'large':
-        sizeClasses = 'text-[44px]';
+        sizeClasses = 'w-[44px] h-[44px]';
         break;
     default:
-        sizeClasses = 'text-[20px]';
+        sizeClasses = 'w-[20px] h-[20px]';
         break;
     }
 
@@ -37,7 +39,7 @@ const CircularProgress = (props) => {
 
     return (
         <div className={cx(className)}>
-            <span className={cx(classes, 'material-symbols-outlined')}>progress_activity</span>
+            <ArrowPath className={cx(classes, 'animate-spin')} />
             <style jsx>
                 {`
                     .animate-spin-with-opacity {
@@ -70,6 +72,18 @@ const CircularProgress = (props) => {
             </style>
         </div>
     );
+};
+
+CircularProgress.propTypes = {
+    className: propTypes.oneOfType([propTypes.string, propTypes.object]),
+    size: propTypes.oneOf(['small', 'large', 'medium']),
+    color: propTypes.oneOf(['primary', 'secondary', 'neutral', 'default']),
+};
+
+CircularProgress.defaultProps = {
+    className: {},
+    size: 'small',
+    color: 'primary',
 };
 
 export default CircularProgress;
