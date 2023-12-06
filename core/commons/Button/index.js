@@ -7,7 +7,7 @@ import Show from '@common_show';
 const Button = (props) => {
     const {
         className = '',
-        classNameText,
+        classNameText = '',
         variant = 'primary',
         children,
         disabled = false,
@@ -17,8 +17,10 @@ const Button = (props) => {
         icon,
         iconPosition: position,
         iconOnly,
+        textProps = {},
         iconProps = {},
         customChildren,
+        ...restProps
     } = props;
 
     const buttonSizes = {
@@ -63,24 +65,25 @@ const Button = (props) => {
                 },
                 classes,
             )}
+            {...restProps}
         >
             <Typography
                 variant={textVariants[size]}
-                color="primary"
                 className={cx(
                     'flex',
                     'items-center',
+                    'justify-center',
                     {
-                        'text-pwa-button_text': variant === 'primary',
-                        'text-primary': variant === 'secondary' || variant === 'tertiary',
-                        'text-black': variant === 'outlined',
-                        '!text-neutral-400': disabled,
+                        '!text-pwa-button_text': variant === 'primary',
+                        '!text-primary': variant === 'secondary' || variant === 'tertiary',
+                        '!text-black': variant === 'outlined',
+                        '!text-neutral-white': disabled,
                         'group-active:!text-neutral-white': variant === 'secondary',
                         'flex-row-reverse': icon && position === 'right',
                     },
-
                     classNameText,
                 )}
+                {...textProps}
             >
                 <Show when={icon && loading}>
                     <ArrowPath
@@ -93,11 +96,14 @@ const Button = (props) => {
                 </Show>
                 <Show when={icon && !loading}>
                     {icon ? React.cloneElement(icon, {
-                        className: cx('w-6 h-6', {
-                            'mr-[6px]': position !== 'right' && !iconOnly,
-                            'ml-[6px]': position === 'right' && !iconOnly,
-                        },
-                        classIcon),
+                        className: cx(
+                            'w-6 h-6',
+                            {
+                                'mr-[6px]': position !== 'right' && !iconOnly,
+                                'ml-[6px]': position === 'right' && !iconOnly,
+                            },
+                            classIcon,
+                        ),
                         ...resIconProps,
                     }) : null}
                 </Show>
@@ -116,7 +122,7 @@ Button.propTypes = {
     disabled: propTypes.bool,
     onClick: propTypes.func,
     loading: propTypes.bool,
-    size: propTypes.oneOf(['xs', 'sm', 'md', 'lg', 'xl']),
+    size: propTypes.oneOf(['sm', 'md', 'lg', 'xl']),
     icon: propTypes.element,
     iconPosition: propTypes.oneOf(['left', 'right']),
 };

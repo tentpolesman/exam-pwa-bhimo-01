@@ -8,7 +8,7 @@
 import Typography from '@common_typography';
 import Heading from '@core_modules/cms/components/cms-renderer/magezon/components/commons/heading';
 import { Accordion, AccordionDetails, AccordionSummary } from '@core_modules/cms/components/cms-renderer/magezon/MagezonCategories/accordion';
-import MagezonIcon from '@core_modules/cms/components/cms-renderer/magezon/MagezoneIcon';
+import MagezonIcon from '@core_modules/cms/components/cms-renderer/magezon/MagezonIcon';
 import MagezonSection from '@core_modules/cms/components/cms-renderer/magezon/MagezonSection';
 import AddIcon from '@material-ui/icons/Add';
 import DetailsIcon from '@material-ui/icons/Details';

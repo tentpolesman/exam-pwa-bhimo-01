@@ -1,4 +1,4 @@
-import MagezonIcon from '@core_modules/cms/components/cms-renderer/magezon/MagezoneIcon';
+import MagezonIcon from '@core_modules/cms/components/cms-renderer/magezon/MagezonIcon';
 import MagezonLink from '@core_modules/cms/components/cms-renderer/magezon/MagezonLink';
 
 const MagezonSocialIcons = (props) => {
