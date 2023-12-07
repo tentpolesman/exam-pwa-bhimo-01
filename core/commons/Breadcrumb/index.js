@@ -6,6 +6,7 @@ import React from 'react';
 import cx from 'classnames';
 import Link from 'next/link';
 import Typography from '@common_typography/index';
+import { HomeIcon } from '@heroicons/react/24/outline';
 import { useTranslation } from 'next-i18next';
 import { COLORS } from '@theme_vars';
 import { setResolver, getResolver } from '@helper_localstorage';
@@ -23,6 +24,7 @@ const handleClick = async (url, id) => {
 
 const ItemBreadcrumb = ({
     icon,
+    iconOnly,
     id,
     url,
     label,
@@ -35,30 +37,26 @@ const ItemBreadcrumb = ({
         'items-center',
     )}
     >
-        {
-            icon && (
-                <span className="material-symbols-outlined text-[18px] mr-[4px]">
-                    {icon}
-                </span>
-            )
-        }
-        <Link href={url} passHref onClick={() => handleClick(url, id)}>
+
+        <Link href={url} onClick={() => handleClick(url, id)}>
             <Typography
                 variant="bd-2b"
                 style={labelStyle}
-                className={cx('text-sm', 'whitespace-nowrap')}
+                className={cx('text-sm', 'whitespace-nowrap', 'flex', 'items-center')}
             >
-                {label}
+                {iconOnly && icon }
+                {!iconOnly && label}
+                {
+                    seperate && <Typography variant="bd-2b" className="mx-[10px]" color="text-neutral-400">/</Typography>
+                }
             </Typography>
-            {
-                seperate && <Typography variant="bd-2b" className="mx-[10px]">/</Typography>
-            }
         </Link>
     </div>
 );
 
-const Breadcrumbs = ({
+const Breadcrumb = ({
     data = [],
+    iconHomeOnly,
     withHome = true,
 }) => {
     const { t } = useTranslation(['common']);
@@ -74,8 +72,9 @@ const Breadcrumbs = ({
             {
                 withHome && (
                     <ItemBreadcrumb
+                        iconOnly={iconHomeOnly}
                         key="breadcrumb-home"
-                        icon="home"
+                        icon={<HomeIcon className="h-[18px] w-[18px]" />}
                         url="/"
                         label={t('common:home:title')}
                         seperate={data?.length > 0}
@@ -91,7 +90,7 @@ const Breadcrumbs = ({
                             id={item?.id}
                             url={item?.link}
                             label={item?.label}
-                            labelStyle={isActive && { color: COLORS.neutral[200] }}
+                            labelStyle={isActive ? { color: COLORS.neutral[600] } : { color: COLORS.neutral[400] }}
                             seperate={!isActive}
                         />
                     );
@@ -101,4 +100,4 @@ const Breadcrumbs = ({
     );
 };
 
-export default Breadcrumbs;
+export default Breadcrumb;
