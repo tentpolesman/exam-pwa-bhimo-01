@@ -75,7 +75,7 @@ const MagezonButton = (props) => {
                         ${button_color ? `color: ${button_color} !important;` : ''}
                         ${button_font_size ? `font-size: ${button_font_size} !important;` : ''}
                     }
-                    .mgz-button:hover :global(.mgz-button--text) {
+                    .mgz-button :global(button:hover .mgz-button--text) {
                         ${button_hover_color ? `color: ${button_hover_color} !important;` : ''}
                     }
                     .mgz-button :global(.magezon-icon) {
@@ -93,7 +93,7 @@ const MagezonButton = (props) => {
                             background-size: 200% 100%;
                         ` : ''}
                     }
-                    .mgz-button:hover :global(button) {
+                    .mgz-button :global(button:hover) {
                         transition: all .2s ease-in-out;
                         ${button_hover_background_color ? `background-color: ${button_hover_background_color} !important;` : ''}
                         ${button_hover_border_color ? `border-color: ${button_hover_border_color} !important;` : ''}
