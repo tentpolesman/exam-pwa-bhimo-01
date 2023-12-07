@@ -3,7 +3,7 @@ import React from 'react';
 import useStyles from '@core_modules/cms/components/cms-renderer/magezon/style';
 import Typography from '@common_typography';
 import Link from 'next/link';
-import MagezonIcon from '@core_modules/cms/components/cms-renderer/magezon/MagezoneIcon';
+import MagezonIcon from '@core_modules/cms/components/cms-renderer/magezon/MagezonIcon';
 
 const PricingTable = (props) => {
     const {

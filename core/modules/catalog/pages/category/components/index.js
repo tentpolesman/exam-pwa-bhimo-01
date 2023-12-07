@@ -110,17 +110,18 @@ const CategoryPage = ({
                 `}
             </style>
 
-            <div className="w-full h-full flex flex-col px-4 py-5 lg:px-10">
+            <div className="w-full h-full flex flex-col px-4 py-5 desktop:px-10">
                 <BreadcrumbView data={dataCategory.breadcrumb || []} />
                 <Typography
                     variant="h1"
-                    className={cx('pt-5 lg:text-[40px] pb-10', {
-                        'pb-4': hasContent,
-                    })}
+                    className={cx(
+                        'pt-5 text-lg tablet:text-[30px] desktop:text-[40px] pb-5 desktop:pb-10',
+                        !hasContent && 'pb-0 desktop:pb-4',
+                    )}
                 >
                     {categoryList.name || ''}
                 </Typography>
-                <div className="flex flex-col w-full mb-8">
+                <div className="flex flex-col w-full mb-4 desktop:mb-8">
                     <div className="relative w-full h-full">
                         {dataCategory.banner.length > 0 && dataCategory.url !== ''
                             ? (

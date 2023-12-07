@@ -1,7 +1,7 @@
 /* eslint-disable no-nested-ternary */
 
 import Typography from '@common_typography';
-import MagezonIcon from '@core_modules/cms/components/cms-renderer/magezon/MagezoneIcon';
+import MagezonIcon from '@core_modules/cms/components/cms-renderer/magezon/MagezonIcon';
 
 const CounterBarText = (props) => {
     const {

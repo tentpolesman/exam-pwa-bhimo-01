@@ -1,5 +1,5 @@
 import React from 'react';
-import MagezonIcon from '@core_modules/cms/components/cms-renderer/magezon/MagezoneIcon';
+import MagezonIcon from '@core_modules/cms/components/cms-renderer/magezon/MagezonIcon';
 import Typography from '@common_typography';
 
 const NumberLayout = (props) => {

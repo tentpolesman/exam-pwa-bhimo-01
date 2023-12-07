@@ -8,7 +8,7 @@ import MuiTab from '@material-ui/core/Tab';
 import MuiTabs from '@material-ui/core/Tabs';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useState } from 'react';
-import MagezonIcon from '../MagezoneIcon';
+import MagezonIcon from '@core_modules/cms/components/cms-renderer/magezon/MagezonIcon';
 
 const TabPanel = (props) => {
     const { elements, value, index, storeConfig, hide_empty_tab } = props;

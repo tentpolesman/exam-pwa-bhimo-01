@@ -37,7 +37,7 @@ const MagezonColumn = (props) => {
         padding_bottom,
         padding_left,
     } = props;
-    let classColumn = 'mgz-column flex flex-column ';
+    let classColumn = 'mgz-column flex flex-col ';
     if (xs_size && xs_size !== '') classColumn += `${getFlexBasisTailwind(xs_size, 'xs')} `;
     if (sm_size && sm_size !== '') classColumn += `${getFlexBasisTailwind(sm_size, 'sm')} `;
     if (md_size && md_size !== '') classColumn += `${getFlexBasisTailwind(md_size, 'md')} `;

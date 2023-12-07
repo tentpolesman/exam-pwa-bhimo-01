@@ -3,6 +3,7 @@
 /* eslint-disable jsx-a11y/interactive-supports-focus */
 import React from 'react';
 import cx from 'classnames';
+import CloseIcon from '@heroicons/react/24/outline/XCircleIcon';
 
 const Swatch = ({
     variant = 'text',
@@ -11,43 +12,68 @@ const Swatch = ({
     value = '',
     dataValues = [],
     onChange = () => {},
+    checked: selected = false,
+    className = '',
+    style: customStyle = {},
+    ...others
 }) => {
     const isColor = variant === 'color';
-    const checked = dataValues.indexOf(value) !== -1;
+    const isImage = variant === 'image';
+    const checked = dataValues && dataValues.length > 0 ? dataValues.indexOf(value) !== -1 : selected;
 
     const handleChange = () => {
         onChange(value);
     };
 
-    if (isColor) {
+    let style = { background: '#FFFFFF' };
+    if (isColor && label) {
+        style = { background: label };
+    }
+
+    if (isImage && label) {
+        style = {
+            backgroundImage: `url(${label})`,
+            backgroundRepeat: 'no-repeat',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+        };
+    }
+
+    if (isColor || isImage) {
         return (
-            <div
-                key="swatches-color-selector"
-                role="button"
-                style={{
-                    ...(label ? { backgroundColor: label } : '#fff'),
-                }}
-                onClick={handleChange}
-                className={cx(
-                    'swatcher-color',
-                    'border-[1px]',
-                    checked ? 'border-primary-700' : 'border-neutral-400',
-                    disabled && 'border-yellow-400',
-                    'flex',
-                    'justify-center',
-                    'items-center',
-                    'rounded-[999px]',
-                    'h-[34px]',
-                    'w-[34px]',
-                )}
+            <div className={cx(
+                'p-[1px]',
+                'rounded-full',
+                checked ? 'border-[1px] border-primary-700' : '',
+                disabled ? 'border-yellow-400 opacity-40' : 'hover:border-[1px] hover:border-primary-700',
+            )}
             >
-                {
-                    disabled && (
-                        <span className={cx('material-symbols-outlined', 'text-red-600')}>
-                            close
-                        </span>
-                    )
-                }
+                <div
+                    key="swatches-color-selector"
+                    role="button"
+                    style={{
+                        ...style,
+                        ...customStyle,
+                    }}
+                    onClick={handleChange}
+                    className={cx(
+                        'swatcher-color',
+                        'flex',
+                        'justify-center',
+                        'items-center',
+                        'rounded-[999px] border-[1px] border-neutral-400',
+                        'h-[30px]',
+                        'w-[30px]',
+                        className,
+                    )}
+                    {...others}
+                >
+                    {
+                        disabled && (
+                            <CloseIcon className="text-neutral-white" />
+                        )
+                    }
+                </div>
             </div>
         );
     }
@@ -57,8 +83,10 @@ const Swatch = ({
             key="swatches-text-selector"
             role="button"
             className={cx(
-                !disabled ? (checked ? 'border-primary-700 text-primary-700' : 'border-neutral-200 text-neutral-700') : '',
+                !disabled ? (checked ? 'border-primary-700 text-primary-700 bg-primary-50' : 'border-neutral-200 text-neutral-700') : '',
+                !disabled ? 'hover:border-primary-700 hover:text-primary-700 hover:bg-primary-50' : '',
                 disabled && 'bg-neutral-50 border-neutral-200 text-neutral-200',
+                'text-md',
                 'swatches-text',
                 'border-[1px]',
                 'rounded-[6px]',
@@ -66,7 +94,11 @@ const Swatch = ({
                 'relative',
                 'uppercase',
                 'text-center',
+                'max-w-[200px]',
+                'truncate',
+                className,
             )}
+            {...others}
         >
             {label}
         </div>

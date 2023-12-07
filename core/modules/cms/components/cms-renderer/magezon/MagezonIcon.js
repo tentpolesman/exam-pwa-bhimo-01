@@ -1,4 +1,3 @@
-import React from 'react';
 import MagezonLink from '@core_modules/cms/components/cms-renderer/magezon/MagezonLink';
 import classnames from 'classnames';
 
@@ -34,7 +33,7 @@ const MagezonIcon = (props) => {
                 {`
                     .magezon-icon :global(i) {
                         position: absolute;
-                        color: ${icon_color || '#000000'};
+                        color: ${icon_color || 'var(--color-pwa-button_text_color)'};
                         transform: translate(-50%, -50%);
                         top: 50%;
                         left: 50%;
@@ -53,9 +52,6 @@ const MagezonIcon = (props) => {
                     }
                     .magezon-icon :global(.magezon-icon-inner:hover i) {
                         color: ${icon_hover_color};
-                    }
-                    .magezon-icon-size-undefined {
-                        display: inline-flex;
                     }
                     .magezon-icon-size-xs :global(.magezon-icon-inner) {
                         width: 2.5em;

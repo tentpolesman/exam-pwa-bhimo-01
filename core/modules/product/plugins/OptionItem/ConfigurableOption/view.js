@@ -11,35 +11,54 @@ const ConfigurableView = (props) => {
     const {
         loading, disabled, showQty = true, handleAddToCart, qty, setQty,
         t, options, selectConfigurable, showAddToCart = true, isGrid = true,
-        showSwatches = true, customPos = false,
+        showSwatches = true, customPos = false, CustomFooter,
         ...other
     } = props;
     const updatedOptions = customPos ? [...options].sort((a, b) => a.options.position - b.options.position) : options;
 
     return (
         <>
-            {showSwatches && updatedOptions.map((item, index) => (
-                <Item
-                    key={index}
-                    option={item.options}
-                    selected={selectConfigurable}
-                    value={item.value}
-                    isGrid={isGrid}
-                    {...other}
-                    className={`product-configurableOption-${item.options.label}`}
-                />
-            ))}
-            <Footer
-                loading={loading}
-                disabled={disabled}
-                showQty={showQty}
-                handleAddToCart={handleAddToCart}
-                qty={qty}
-                setQty={setQty}
-                t={t}
-                showAddToCart={showAddToCart}
-                {...other}
-            />
+            <div className="flex flex-col gap-2 tablet:gap-4">
+                {showSwatches && updatedOptions.map((item, index) => (
+                    <Item
+                        key={index}
+                        option={item.options}
+                        selected={selectConfigurable}
+                        value={item.value}
+                        isGrid={isGrid}
+                        {...other}
+                        className={`product-configurableOption-${item.options.label}`}
+                    />
+                ))}
+            </div>
+            {
+                React.isValidElement(CustomFooter)
+                    ? React.cloneElement(CustomFooter, {
+                        ...other,
+                        loading,
+                        disabled,
+                        showQty,
+                        handleAddToCart,
+                        qty,
+                        setQty,
+                        t,
+                        showAddToCart,
+                    })
+                    : (
+                        <Footer
+                            loading={loading}
+                            disabled={disabled}
+                            showQty={!showQty}
+                            handleAddToCart={handleAddToCart}
+                            qty={qty}
+                            setQty={setQty}
+                            t={t}
+                            showAddToCart={!showAddToCart}
+                            {...other}
+                        />
+                    )
+            }
+
         </>
     );
 };
