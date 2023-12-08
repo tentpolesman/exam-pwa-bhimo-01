@@ -10,7 +10,14 @@ const useMediaQuery = () => {
     const isXs = size.width >= BREAKPOINTS.xs && size.width < BREAKPOINTS.sm;
 
     return {
-        isXl, isLg, isMd, isSm, isXs,
+        isXl,
+        isLg,
+        isMd,
+        isSm,
+        isXs,
+        isMobile: isXs,
+        isTablet: isMd,
+        isDesktop: isXl,
     };
 };
 

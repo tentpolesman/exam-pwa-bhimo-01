@@ -46,7 +46,7 @@ const Dialog = ({
                         <div className={cx(
                             'dialog-title',
                             'bg-neutral-white',
-                            'text-neutral-300',
+                            'text-neutral-700',
                             'rounded-t',
                             'font-semibold',
                             'text-[16px]',

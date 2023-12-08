@@ -1,13 +1,19 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
+import React from 'react';
 import CmsRenderer from '@core_modules/cms/components/cms-renderer';
 import cx from 'classnames';
-import React from 'react';
+import { useTranslation } from 'next-i18next';
 
 const Tabs = (props) => {
     const {
-        data = [], onChange = () => { }, allItems = true, tabHasContent = false,
+        data = [],
+        onChange = () => { },
+        allItems = true,
+        tabHasContent = false,
+        tabHasContentClass,
     } = props;
 
+    const { t } = useTranslation(['common']);
     const [activeTabs, setActiveTabs] = React.useState(0);
 
     const tabClasses = cx(
@@ -45,7 +51,7 @@ const Tabs = (props) => {
                     {!tabHasContent && allItems ? (
                         <li className="me-2">
                             <a href="#" className={cx(tabClasses, tabActive, 'default-active', 'min-w-[100px]')}>
-                                All Items
+                                {t('common:label:allItems')}
                             </a>
                         </li>
                     ) : null}
@@ -92,8 +98,8 @@ const Tabs = (props) => {
             </div>
 
             {tabHasContent && data && (
-                <div className={cx('tab-content-wrapper', 'relative', 'pt-[10px]')}>
-                    {data.map((item, index) => {
+                <div className={cx('tab-content-wrapper', 'relative', 'pt-[10px]', tabHasContentClass)}>
+                    {data?.map((item, index) => {
                         if (item.type === 'html') {
                             return (
                                 <div
