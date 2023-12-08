@@ -22,6 +22,7 @@ const TextField = (props) => {
         rightIcon,
         rightIconProps,
         onFocusGoogleMap = false,
+        classWrapper = '',
         ...restProps
     } = props;
 
@@ -63,7 +64,7 @@ const TextField = (props) => {
     const { className: inputClassName, ...restInputProps } = inputProps;
 
     return (
-        <div className="flex flex-col relative">
+        <div className={cx('flex flex-col relative', classWrapper)}>
             {label ? (
                 <label className="mb-2">
                     <Typography>{label}</Typography>

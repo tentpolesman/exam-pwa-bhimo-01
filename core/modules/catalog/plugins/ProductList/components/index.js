@@ -1,28 +1,40 @@
 import Button from '@common/Button';
-import Select from '@common/Forms/Select';
 import React, { useCallback, useEffect, useState } from 'react';
 import GridIcon from '@heroicons/react/24/outline/Squares2X2Icon';
 import ListIcon from '@heroicons/react/24/outline/Bars3BottomLeftIcon';
 import FilterIcon from '@heroicons/react/24/outline/AdjustmentsHorizontalIcon';
+import XMarkIcon from '@heroicons/react/24/solid/XMarkIcon';
 import Typography from '@common/Typography';
 import cx from 'classnames';
+import dynamic from 'next/dynamic';
 
 import ProductItem from '@plugin_productitem';
 import PaginationSection from '@plugin_productlist/components/PaginationSection';
 import CircularProgress from '@common/CircularProgress';
 
-import { getLocalStorage } from '@root/core/helpers/localstorage';
+import { getLocalStorage, setLocalStorage } from '@root/core/helpers/localstorage';
 
 import DrawerFilter from '@common_drawer';
+import Sorting from './Shorting';
+
+const Filter = dynamic(() => import('@plugin_productlist/components/Filter'));
 
 const ViewProductList = (props) => {
     const {
         loading, loadmore, products, categoryPath, price, loadPrice,
         handleLoadMore, isPagination, renderEmptyMessage,
+        customFilter, aggregations, defaultSort, query, setFiltervalue,
+        config, onChangeCategory, dataTabs, onChangeTabs,
         ...other
     } = props;
-    const [isGrid, setIsGrid] = useState('true');
-    const handleSetGrid = () => setIsGrid(!isGrid);
+
+    const { t, storeConfig } = props;
+
+    const [isGrid, setIsGrid] = useState(true);
+    const handleSetGrid = () => {
+        setLocalStorage('isGrid', !isGrid);
+        setIsGrid(!isGrid);
+    };
 
     const [openDrawerFilter, setOpenDrawerFilter] = useState(false);
     const handleOpenDrawerFilter = () => setOpenDrawerFilter(true);
@@ -52,11 +64,6 @@ const ViewProductList = (props) => {
         }
     }, [isExceedingOffset]);
 
-    // const setGrid = async (state) => {
-    //     setLocalStorage('isGrid', state);
-    //     setIsGrid(state);
-    // };
-
     useEffect(() => {
         window.addEventListener('scroll', handleScroll);
         return () => {
@@ -74,15 +81,41 @@ const ViewProductList = (props) => {
     const loadList = isPagination ? (loadmore || loading) : loading;
 
     return (
-        <div className="flex flex-row gap-4 w-full">
+        <div className="flex flex-row gap-4 desktop:gap-6 w-full">
             <DrawerFilter
                 open={openDrawerFilter}
                 handleClose={handleCloseDrawetFilter}
             >
-                <div className="px-6 py-4">
-                    <h2 className="text-lg font-semibold">Drawer</h2>
-                    <p className="text-gray-500">This is a drawer.</p>
-                    <Button onClick={handleCloseDrawetFilter}>Close</Button>
+                <div className="px-6 py-4 flex flex-col">
+                    <div className="mb-5 min-h-[36px] border-neutral-100 border-b-[1px] flex items-center justify-between pb-3">
+                        <Typography variant="h3" className="text-base font-semibold basis-full">
+                            Shipping Options
+                        </Typography>
+                        <Button
+                            iconOnly
+                            icon={<XMarkIcon />}
+                            variant="tertiary"
+                            onClick={handleCloseDrawetFilter}
+                            iconProps={{ className: '!text-neutral-900' }}
+                            className="!p-0"
+                        />
+                    </div>
+                    <Filter
+                        filter={customFilter || aggregations}
+                        defaultSort={JSON.stringify(defaultSort)}
+                        filterValue={query}
+                        setFiltervalue={setFiltervalue}
+                        isSearch={!!config.search}
+                        products={products}
+                        renderEmptyMessage={renderEmptyMessage}
+                        loading={loading}
+                        tabs={dataTabs}
+                        t={t}
+                        onChangeTabs={onChangeTabs}
+                        storeConfig={storeConfig}
+                        autoReload={false}
+                        onSave={handleCloseDrawetFilter}
+                    />
                 </div>
             </DrawerFilter>
             <div className="hidden desktop:inline-flex flex-col lg:basis-1/4">
@@ -91,7 +124,22 @@ const ViewProductList = (props) => {
                         Shipping Options
                     </Typography>
                 </div>
-                <div className="w-full bg-neutral-200 h-screen" />
+                <div className="w-fullh-screen">
+                    <Filter
+                        filter={customFilter || aggregations}
+                        defaultSort={JSON.stringify(defaultSort)}
+                        filterValue={query}
+                        setFiltervalue={setFiltervalue}
+                        isSearch={!!config.search}
+                        products={products}
+                        renderEmptyMessage={renderEmptyMessage}
+                        loading={loading}
+                        tabs={dataTabs}
+                        t={t}
+                        onChangeTabs={onChangeTabs}
+                        storeConfig={storeConfig}
+                    />
+                </div>
             </div>
             <div className="basis-full desktop:basis-3/4 flex flex-col">
                 <div className="flex flex-row items-center align-middle justify-between mb-5">
@@ -118,22 +166,20 @@ const ViewProductList = (props) => {
                             <Typography className="hidden tablet:inline">View As</Typography>
                         </Button>
                     </div>
-                    <Select
-                        options={[{ label: 'Tes', value: 'test' }]}
-                        placeholder="Sort By"
-                        className="h-[36px]"
-                        textFiledProps={{
-                            className: 'h-[36px] !w-[auto] max-w-[110px] tablet:!w-[117px] ml-2 mt-0',
-                        }}
-                        inputProps={{
-                            className: 'h-[34px] placeholder:!text-neutral',
-                        }}
+                    <Sorting
+                        filter={customFilter || aggregations}
+                        defaultSort={JSON.stringify(defaultSort)}
+                        filterValue={query}
+                        setFiltervalue={setFiltervalue}
+                        isSearch={!!config.search}
                     />
                 </div>
                 <div className={
-                    isGrid
-                        ? 'grid gap-2 tablet:gap-4 grid-cols-2 tablet:grid-cols-3 desktop:grid-cols-3'
-                        : 'grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1'
+                    cx(
+                        isGrid
+                            ? 'grid gap-2 tablet:gap-4 grid-cols-2 tablet:grid-cols-3 desktop:grid-cols-3'
+                            : 'grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1',
+                    )
                 }
                 >
                     {

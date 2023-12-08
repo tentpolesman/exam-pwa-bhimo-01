@@ -1,8 +1,3 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable radix */
-/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable no-unused-vars */
 import React from 'react';
 import Typography from '@common_typography';
 import Button from '@common_button';
@@ -10,9 +5,8 @@ import CheckBox from '@common_forms/CheckBox';
 import Swatch from '@common_forms/Swatch';
 import RadioGroup from '@common_forms/Radio';
 import RangeSlider from '@common_rangeslider';
-import useStyles from '@plugin_productlist/components/FilterDesktop/style';
 
-const noRender = (prevProps, nextProps) => true;
+const noRender = () => true;
 
 let globalTimeout = null;
 
@@ -32,8 +26,8 @@ const GenerateFilter = React.memo((props) => {
         onChangeTabs,
         idx,
         storeConfig,
+        autoReload = true,
     } = props;
-    const styles = useStyles();
     const timeRef = React.useRef(null);
 
     const checkedFilter = (field, value) => {
@@ -41,9 +35,11 @@ const GenerateFilter = React.memo((props) => {
             clearTimeout(timeRef.current);
         }
         setCheckedFilter(field, value);
-        timeRef.current = setTimeout(() => {
-            handleSave();
-        }, 1000);
+        if (autoReload) {
+            timeRef.current = setTimeout(() => {
+                handleSave();
+            }, 1000);
+        }
     };
 
     const selectFilter = (field, value) => {
@@ -51,9 +47,11 @@ const GenerateFilter = React.memo((props) => {
             clearTimeout(globalTimeout);
         }
         setSelectedFilter(field, value);
-        globalTimeout = setTimeout(() => {
-            handleSave();
-        }, 1000);
+        if (autoReload) {
+            globalTimeout = setTimeout(() => {
+                handleSave();
+            }, 1000);
+        }
     };
 
     React.useEffect(() =>
@@ -76,20 +74,23 @@ const GenerateFilter = React.memo((props) => {
     if (itemFilter.field !== 'attribute_set_id') {
         if (itemFilter.field === 'price') {
             const price = priceRange;
-            price[1] = price[1] || parseInt(itemFilter.value[itemFilter.value.length - 1].value);
+            price[1] = price[1] || parseInt(itemFilter.value[itemFilter.value.length - 1].value, 10);
             return (
-                <div key={idx} style={{ width: '100%' }}>
+                <div key={idx} className="flex flex-col w-full gap-5">
                     <RangeSlider
                         noLabel
                         label={itemFilter.label}
-                        maxValue={parseInt(itemFilter.value[itemFilter.value.length - 1].value)}
+                        maxValue={parseInt(itemFilter.value[itemFilter.value.length - 1].value, 10)}
                         value={price}
                         onChange={itemProps.priceRangeChange || setPriceRange}
                         storeConfig={storeConfig}
+                        disableInput
                     />
-                    <Button className={styles.btnSavePrice} onClick={handleSave}>
-                        {t('catalog:button:save')}
-                    </Button>
+                    <div className="hidden desktop:flex justify-end">
+                        <Button onClick={handleSave}>
+                            {t('catalog:button:save')}
+                        </Button>
+                    </div>
                 </div>
             );
         }
@@ -98,10 +99,12 @@ const GenerateFilter = React.memo((props) => {
                 <div key={idx}>
                     <CheckBox
                         type="color"
-                        className={styles.checkboxCustom}
+                        classNames={{
+                            checkboxGroupClasses: '!flex-wrap',
+                        }}
                         name={itemFilter.field}
                         noLabel
-                        label={itemFilter.label || t('catalog:title:color')}
+                        label={false}
                         data={ItemValueByLabel}
                         value={selectedFilter[itemFilter.field] ? selectedFilter[itemFilter.field].split(',') : []}
                         flex={itemProps.selectSizeFlex || 'row'}
@@ -115,10 +118,12 @@ const GenerateFilter = React.memo((props) => {
             return (
                 <div key={idx}>
                     <CheckBox
-                        className={styles.checkboxCustom}
                         name={itemFilter.field}
+                        classNames={{
+                            checkboxGroupClasses: '!flex-wrap gap-2',
+                        }}
                         noLabel
-                        label={itemFilter.label || t('catalog:title:size')}
+                        label={false}
                         data={ItemValueByLabel}
                         value={selectedFilter[itemFilter.field] ? selectedFilter[itemFilter.field].split(',') : []}
                         flex={itemProps.selectSizeFlex || 'row'}
@@ -130,15 +135,23 @@ const GenerateFilter = React.memo((props) => {
         }
         if ((itemFilter.field === 'cat' || itemFilter.field === 'category_id') && !isSearch) {
             return (
-                <div className={styles.listCategoryWrapper}>
+                <div className="flex flex-col gap-2">
                     {itemFilter.value.map((val, ids) => {
                         if (val !== 'attribute_set_id') {
                             return (
-                                <span onClick={(e) => onChangeTabs(e, ids + 1)} className={styles.listCategory} key={ids}>
-                                    <Typography variant="span" letter="capitalize">
-                                        {`${val.label.replace(/_/g, ' ')} (${val.count})`}
+                                <button
+                                    onClick={(e) => onChangeTabs(e, ids + 1)}
+                                    className="border-none flex flex-row justify-between items-center"
+                                    key={ids}
+                                    type="button"
+                                >
+                                    <Typography className="font-normal" variant="span" letter="capitalize">
+                                        {`${val.label.replace(/_/g, ' ')} `}
                                     </Typography>
-                                </span>
+                                    <Typography className="font-normal" color="text-neutral-400" variant="span" letter="capitalize">
+                                        {`(${val.count})`}
+                                    </Typography>
+                                </button>
                             );
                         }
                         return null;
@@ -146,29 +159,32 @@ const GenerateFilter = React.memo((props) => {
                 </div>
             );
         }
-        if ((itemFilter.field === 'cat' || itemFilter.field === 'category_id') && !isSearch) {
+        if ((itemFilter.field === 'cat' || itemFilter.field === 'category_id') && isSearch) {
             return <span key={idx} />;
         }
+
+        if (itemFilter.field === 'category_uid') return null;
         return (
             <div key={idx}>
                 {elastic ? (
                     <CheckBox
                         field={itemFilter.field}
                         noLabel
-                        label={itemFilter.label || ''}
+                        label={false}
                         data={ItemValueByLabel}
                         value={selectedFilter[itemFilter.field] ? selectedFilter[itemFilter.field].split(',') : []}
-                        flex="column"
+                        flex="row"
                         onChange={(val) => checkedFilter(itemFilter.field, val)}
                     />
                 ) : (
                     <RadioGroup
                         noLabel
                         name={itemFilter.field}
-                        label={itemFilter.label || ''}
+                        label={false}
                         data={itemFilter.value || []}
                         value={selectedFilter[itemFilter.field]}
                         onChange={(value) => selectFilter(itemFilter.field, value)}
+                        className="flex-row"
                     />
                 )}
             </div>

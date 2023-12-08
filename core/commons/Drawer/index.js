@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import React from 'react';
+import React, { useEffect } from 'react';
 import propTypes from 'prop-types';
 import cx from 'classnames';
 
@@ -17,6 +17,14 @@ const Drawer = ({
     if (position === 'bottom') {
         classPosition = 'fixed bottom-0 left-0 z-20 h-96 translate-y-full w-full';
     }
+
+    useEffect(() => {
+        if (open) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style = '';
+        }
+    }, [open]);
 
     return (
         <>

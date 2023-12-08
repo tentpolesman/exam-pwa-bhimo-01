@@ -34,6 +34,7 @@ import CartIcon from '@heroicons/react/24/outline/ShoppingCartIcon';
 import HeartIcon from '@heroicons/react/24/outline/HeartIcon';
 import CompareIcon from '@heroicons/react/24/outline/ArrowsRightLeftIcon';
 import EyeIcon from '@heroicons/react/24/outline/EyeIcon';
+import EyeSolidIcon from '@heroicons/react/24/solid/EyeIcon';
 
 const CustomizableOption = dynamic(() => import('@plugin_customizableitem'));
 
@@ -523,23 +524,37 @@ const ProductItem = (props) => {
                             <WeltpixelLabel t={t} weltpixel_labels={weltpixel_labels} categoryLabel />
                         )}
                         {showQuickView && (
-                            <Button
-                                onClick={handleQuickView}
-                                icon={<EyeIcon />}
-                                iconProps={{
-                                    className: 'w-3 h-3 !text-neutral-800 mr-[0px] desktop:mr-[6px]',
-                                }}
-                                classNameText="text-sm !text-neutral-800 justify-center"
-                                className={classNames(
-                                    '!bg-neutral-50 shadow-sm desktop:shadow-md desktop:invisible',
-                                    'desktop:group-hover:visible',
-                                    'absolute bottom-1 left-1 w-7 px-0 desktop:px-3 py-0 desktop:py-2',
-                                    'desktop:left-1/2 desktop:bottom-4 desktop:-translate-x-1/2 z-[2] desktop:w-32',
-                                )}
-                                size="sm"
-                            >
-                                <span className="hidden desktop:flex">Quick View</span>
-                            </Button>
+                            <>
+                                <Button
+                                    onClick={handleQuickView}
+                                    icon={<EyeIcon />}
+                                    iconProps={{
+                                        className: 'w-3 h-3 !text-neutral-800 mr-[6px]',
+                                    }}
+                                    classNameText="text-sm !text-neutral-800 justify-center"
+                                    className={classNames(
+                                        '!bg-neutral-50 shadow-md invisible',
+                                        'desktop:group-hover:visible',
+                                        'absolute px-3 py-2',
+                                        'left-1/2 bottom-4 -translate-x-1/2 z-[2] w-32',
+                                    )}
+                                    size="sm"
+                                >
+                                    Quick View
+                                </Button>
+                                <Button
+                                    iconOnly
+                                    icon={<EyeSolidIcon />}
+                                    iconProps={{
+                                        className: 'w-3 h-3 !text-neutral-800',
+                                    }}
+                                    className={classNames(
+                                        'desktop:hidden',
+                                        '!bg-neutral-50 shadow-md',
+                                        'absolute bottom-2 left-2 z-[2] !p-1 tablet:!p-2',
+                                    )}
+                                />
+                            </>
                         )}
                         <ImageProductView
                             t={t}
@@ -651,23 +666,37 @@ const ProductItem = (props) => {
                                 <WeltpixelLabel t={t} weltpixel_labels={weltpixel_labels} categoryLabel />
                             )}
                             {showQuickView && (
-                                <Button
-                                    onClick={handleQuickView}
-                                    icon={<EyeIcon />}
-                                    iconProps={{
-                                        className: 'w-3 h-3 !text-neutral-800 mr-[0px] desktop:mr-[6px]',
-                                    }}
-                                    classNameText="text-sm !text-neutral-800 justify-center"
-                                    className={classNames(
-                                        '!bg-neutral-50 shadow-sm desktop:shadow-md desktop:invisible',
-                                        'desktop:group-hover:visible',
-                                        'absolute bottom-1 left-1 w-7 px-0 desktop:px-3 py-0 desktop:py-2',
-                                        'desktop:left-2 desktop:bottom-2 z-[2] desktop:w-32',
-                                    )}
-                                    size="sm"
-                                >
-                                    <span className="hidden desktop:flex">Quick View</span>
-                                </Button>
+                                <>
+                                    <Button
+                                        onClick={handleQuickView}
+                                        icon={<EyeIcon />}
+                                        iconProps={{
+                                            className: 'w-3 h-3 !text-neutral-800 mr-[6px]',
+                                        }}
+                                        classNameText="text-sm !text-neutral-800 justify-center"
+                                        className={classNames(
+                                            '!bg-neutral-50 shadow-md invisible',
+                                            'desktop:group-hover:visible',
+                                            'absolute px-3 py-2',
+                                            'desktop:left-2 desktop:bottom-2 z-[2] desktop:w-32',
+                                        )}
+                                        size="sm"
+                                    >
+                                        Quick View
+                                    </Button>
+                                    <Button
+                                        iconOnly
+                                        icon={<EyeSolidIcon />}
+                                        iconProps={{
+                                            className: 'w-3 h-3 !text-neutral-800',
+                                        }}
+                                        className={classNames(
+                                            'desktop:hidden',
+                                            '!bg-neutral-50 shadow-md',
+                                            'absolute bottom-2 left-2 z-[2] !p-1 tablet:!p-2',
+                                        )}
+                                    />
+                                </>
                             )}
                             <ImageProductView
                                 t={t}

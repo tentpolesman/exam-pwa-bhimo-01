@@ -1,52 +1,54 @@
-import Typography from '@common_typography';
+import Accordion from '@common/Accordion';
+import cx from 'classnames';
+import GenerateFilter from '@core_modules/catalog/plugins/ProductList/components/Filter/GenerateFilter';
 import Button from '@common_button';
-import Tune from '@material-ui/icons/Tune';
-import AppsIcon from '@material-ui/icons/Apps';
-import ListAltIcon from '@material-ui/icons/ListAlt';
-import useStyles from '@plugin_productlist/components/style';
 
 const FilterView = (props) => {
     const {
-        products, t, setOpenFilter, setGrid,
+        isSearch, filter = [], handleSave, handleReset,
     } = props;
-    const styles = useStyles();
+
     return (
-        <div className={styles.filterContainer}>
-            <div className={styles.leftWrapperFilter}>
+        <div className={cx(
+            'flex flex-col gap-8 w-full relative desktop:max-w-[280px] overflow-y-scroll overflow-x-hidden max-h-screen scrollbar-none pb-[50%]',
+        )}
+        >
+            {
+                filter && filter.length > 0 && filter.map((itemFilter, key) => {
+                    if ((itemFilter.field === 'cat' || itemFilter.field === 'attribute_set_id') && !isSearch) {
+                        return <span key={key} />;
+                    }
+                    if (itemFilter.field === 'indexed_attributes' || itemFilter.field === 'category_uid') {
+                        return null;
+                    }
+                    return (
+                        <Accordion label={itemFilter.label || ''} open key={key}>
+                            <GenerateFilter
+                                itemFilter={itemFilter}
+                                idx={key}
+                                {...props}
+                            />
+                        </Accordion>
+                    );
+                })
+            }
+
+            <div className="flex flex-col gap-4 w-full desktop:hidden fixed bottom-0 left-0 p-4 bg-neutral-white shadow-inner z-10">
                 <Button
-                    variant="text"
-                    customRootStyle={{ width: 'fit-content' }}
-                    className={styles.btnFilter}
-                    onClick={() => setGrid(true)}
+                    onClick={handleReset}
+                    className="w-full"
+                    classNameText="justify-center"
+                    variant="tertiary"
                 >
-                    <AppsIcon className={styles.iconGrid} />
+                    Reset Filter
                 </Button>
                 <Button
-                    variant="text"
-                    customRootStyle={{ width: 'fit-content' }}
-                    className={styles.btnFilter}
-                    onClick={() => setGrid(false)}
+                    onClick={handleSave}
+                    className="w-full"
+                    classNameText="justify-center"
                 >
-                    <ListAltIcon className={styles.iconList} />
+                    View Results
                 </Button>
-                <Typography variant="p" type="regular" className={styles.countProductText}>
-                    {products.total_count}
-                    {' '}
-                    {t('catalog:product:name')}
-                </Typography>
-            </div>
-            <div className={styles.filterBtnContainer}>
-                <Button
-                    variant="text"
-                    customRootStyle={{ width: 'fit-content' }}
-                    className={styles.btnFilter}
-                    onClick={() => setOpenFilter(true)}
-                >
-                    <Tune className={styles.iconFilter} />
-                </Button>
-                <Typography type="bold" variant="span" letter="capitalize">
-                    {t('catalog:title:shortFilter')}
-                </Typography>
             </div>
         </div>
     );
