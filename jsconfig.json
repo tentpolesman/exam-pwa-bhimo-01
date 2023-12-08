@@ -145,6 +145,11 @@
             "@common_footer": ["src/modules/theme/components/footer/desktop", "core/modules/theme/components/footer/desktop"],
             "@common_productlabel": ["src/commons/ProductLabel", "core/commons/ProductLabel"],
             "@common_optionconfigurable": ["src/commons/OptionConfigurable", "core/commons/OptionConfigurable"],
+            "@common_imageslider": ["src/commons/ImageSlider", "core/commons/ImageSlider"],
+            "@common_divider": ["src/commons/Divider", "core/commons/Divider"],
+            "@common_stockstatus": ["src/commons/StockStatus", "core/commons/StockStatus"],
+            "@common_share": ["src/commons/Share", "core/commons/Share"],
+            "@common_containerscroll": ["src/commons/ContainerScroll", "core/commons/ContainerScroll"],
 
             "@common_navigation/*": ["src/commons/Navigation/*", "core/commons/Navigation/*"],
             "@common_spancategory/*": ["src/commons/SpanCategory/*", "core/commons/SpanCategory/*"],
@@ -163,6 +168,11 @@
             "@common_show/*": ["src/commons/Show/*", "core/commons/Show/*"],
             "@common_drawer": ["src/commons/Drawer", "core/commons/Drawer"],
             "@common_drawer/*": ["src/commons/Drawer/*", "core/commons/Drawer/*"],
+            "@common_imageslider/*": ["src/commons/ImageSlider/*", "core/commons/ImageSlider/*"],
+            "@common_divider/*": ["src/commons/Divider/*", "core/commons/Divider/*"],
+            "@common_stockstatus/*": ["src/commons/StockStatus/*", "core/commons/StockStatus/*"],
+            "@common_share/*": ["src/commons/Share/*", "core/commons/Share/*"],
+            "@common_containerscroll/*": ["src/commons/ContainerScroll/*", "core/commons/ContainerScroll/*"],
 
             "@plugin_summary": ["src/modules/cart/plugins/Summary", "core/modules/cart/plugins/Summary"],
             "@plugin_summary/*": ["src/modules/cart/plugins/Summary/*", "core/modules/cart/plugins/Summary/*"],
@@ -170,7 +180,6 @@
             "@plugin_shoppingbag/*": ["src/modules/cart/plugins/ShoppingBag/*", "core/modules/cart/plugins/ShoppingBag/*"],
             "@plugin_minicart": ["src/modules/cart/plugins/mini", "core/modules/cart/plugins/mini"],
             "@plugin_minicart/*": ["src/modules/cart/plugins/mini/*", "core/modules/cart/plugins/mini/*"],
-
             
             "@plugin_gimmickbanner": ["src/modules/cart/plugins/GimmickBanner", "core/modules/cart/plugins/GimmickBanner"],
             "@plugin_gimmickbanner/*": ["src/modules/cart/plugins/GimmickBanner/*", "core/modules/cart/plugins/GimmickBanner/*"],
@@ -179,7 +188,6 @@
             "@plugin_productlist/*": ["src/modules/catalog/plugins/ProductList/*", "core/modules/catalog/plugins/ProductList/*"],
             "@plugin_productitem": ["src/modules/catalog/plugins/ProductItem", "core/modules/catalog/plugins/ProductItem"],
             "@plugin_productitem/*": ["src/modules/catalog/plugins/ProductItem/*", "core/modules/catalog/plugins/ProductItem/*"],
-
             
             "@plugin_paypalbutton": ["src/modules/paypal/plugins/PaypalButton", "core/modules/paypal/plugins/PaypalButton"],
             "@plugin_paypalbutton/*": ["src/modules/paypal/plugins/PaypalButton/*", "core/modules/paypal/plugins/PaypalButton/*"],

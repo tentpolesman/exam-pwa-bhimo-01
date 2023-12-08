@@ -40,7 +40,6 @@ const CustomImage = ({
     preload = false,
     ...other
 }) => {
-    // console.log('deviceType', deviceType);
     const enable = storeConfig && storeConfig.pwa && storeConfig.pwa.thumbor_enable;
     const useHttpsOrHttp = storeConfig && storeConfig.pwa && storeConfig.pwa.thumbor_https_http;
     const thumborUrl = storeConfig && storeConfig.pwa && storeConfig.pwa.thumbor_url;

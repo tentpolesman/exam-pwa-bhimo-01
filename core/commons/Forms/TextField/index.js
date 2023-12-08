@@ -4,7 +4,7 @@ import cx from 'classnames';
 import propTypes from 'prop-types';
 import { useState } from 'react';
 
-const TextField = (props) => {
+const TextField = React.forwardRef((props, ref) => {
     const {
         placeholder = '',
         disabled = false,
@@ -96,6 +96,7 @@ const TextField = (props) => {
                     ? React.cloneElement(leftIcon, { className: cx('pl-4', 'pr-[6px]', 'text-neutral-300', leftIconClasses), ...otherLeftIconProps })
                     : null}
                 <input
+                    ref={ref}
                     type={type}
                     placeholder={placeholder}
                     disabled={disabled}
@@ -150,7 +151,7 @@ const TextField = (props) => {
             ) : null}
         </div>
     );
-};
+});
 
 TextField.propTypes = {
     placeholder: propTypes.string,

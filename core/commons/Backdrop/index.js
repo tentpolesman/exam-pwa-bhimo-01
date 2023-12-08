@@ -22,21 +22,25 @@ const ImageLoader = () => {
 };
 
 const Backdrop = ({ open }) => (
-    <div className={cx(
-        'section-backdrop',
-        'fixed',
-        'z-50',
-        'w-[100%]',
-        'h-[100%]',
-        'left-0',
-        'bg-slate-950/50',
-        'top-0',
-        'flex',
-        'justify-center',
-        'items-center',
-        open && 'visible',
-        !open && 'hidden',
-    )}
+    <div
+        style={{
+            zIndex: 999,
+            backgroundColor: 'rgba(0,0,0, 0.5)',
+        }}
+        className={cx(
+            'section-backdrop',
+            'fixed',
+            'z-50',
+            'w-[100%]',
+            'h-[100%]',
+            'left-0',
+            'top-0',
+            'flex',
+            'justify-center',
+            'items-center',
+            open && 'visible',
+            !open && 'hidden',
+        )}
     >
         <ImageLoader />
     </div>

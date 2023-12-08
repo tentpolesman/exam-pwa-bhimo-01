@@ -1,5 +1,5 @@
 /* eslint-disable consistent-return */
-import React, { memo } from 'react';
+import React, { memo, useMemo } from 'react';
 import parse, { domToReact } from 'html-react-parser';
 import dynamic from 'next/dynamic';
 
@@ -20,7 +20,22 @@ const DOM_NAME = 'pwa';
 
 const WidgetRenderer = (props) => {
     const { content, storeConfig } = props;
-    const updatedContent = content.includes('widget') ? content.replace('<p>', '').replace('{{widget', '<pwa').replace('}}', '/>') : content;
+    const widgetContent = useMemo(() => {
+        if (content.includes('widget')) {
+            const newWidgetContent = content.replace('<p>', '').replace('{{widget', '<pwa');
+            let lastOccurenceIndex;
+            if (newWidgetContent.endsWith('}}')) {
+                lastOccurenceIndex = newWidgetContent.lastIndexOf('}}');
+            }
+
+            // handles pwa-catalog-products-list differently because the string it outputs is different
+            if (newWidgetContent.indexOf(TYPE_PWA_PRODUCT) !== -1 && newWidgetContent.endsWith('"}}')) {
+                lastOccurenceIndex = newWidgetContent.lastIndexOf('"}}');
+            }
+            return `${newWidgetContent.substring(0, lastOccurenceIndex)}/>`;
+        }
+        return content;
+    }, []);
 
     React.useEffect(() => {
         const coll = document.getElementsByClassName('collapsible');
@@ -59,7 +74,7 @@ const WidgetRenderer = (props) => {
      */
     /* eslint-disable */
     const WidgetComponent = () => {
-        return parse(updatedContent, {
+        return parse(widgetContent, {
             replace: (domNode) => {
                 if (domNode.name === 'img') {
                     return <ImageRenderer storeConfig={storeConfig} domNode={domNode} />;
@@ -67,7 +82,7 @@ const WidgetRenderer = (props) => {
 
                 if (domNode.name === DOM_NAME && domNode.attribs) {
                     const propsWidget = domNode.attribs;
-                    
+
                     switch (domNode.attribs.type) {
                         case TYPE_PWA_SLIDER:
                             return <WidgetSlider {...propsWidget} storeConfig={storeConfig} />;
