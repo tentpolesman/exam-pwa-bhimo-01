@@ -23,7 +23,7 @@ const Caraousel = (props) => {
                         key={key}
                         {...item}
                         storeConfig={storeConfig}
-                        className="[&:not(:first-child)]:mx-3 carousel-item"
+                        className="[&:not(:last-child)]:mr-3 carousel-item"
                         {...other}
                     />
                 ))}
