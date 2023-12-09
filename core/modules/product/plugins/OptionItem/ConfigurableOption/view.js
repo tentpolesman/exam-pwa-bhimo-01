@@ -16,6 +16,15 @@ const ConfigurableView = (props) => {
     } = props;
     const updatedOptions = customPos ? [...options].sort((a, b) => a.options.position - b.options.position) : options;
 
+    if (loading) {
+        return (
+            <div className="flex flex-col w-full h-auto gap-2">
+                <div className="h-4 bg-neutral-100 animate-pulse rounded-full dark:bg-gray-700 w-full" />
+                <div className="h-4 bg-neutral-100 animate-pulse rounded-full dark:bg-gray-700 w-full" />
+            </div>
+        );
+    }
+
     return (
         <>
             <div className="flex flex-col gap-2 tablet:gap-4">

@@ -6,11 +6,13 @@ import Button from '@common_button';
 const FilterView = (props) => {
     const {
         isSearch, filter = [], handleSave, handleReset,
+        scrollContent = true, t,
     } = props;
 
     return (
         <div className={cx(
-            'flex flex-col gap-8 w-full relative desktop:max-w-[280px] overflow-y-scroll overflow-x-hidden max-h-screen scrollbar-none pb-[50%]',
+            'flex flex-col gap-8 w-full relative desktop:max-w-[280px] overflow-y-scroll overflow-x-hidden scrollbar-none pb-[50%]',
+            scrollContent ? ' max-h-screen' : 'h-full',
         )}
         >
             {
@@ -22,7 +24,7 @@ const FilterView = (props) => {
                         return null;
                     }
                     return (
-                        <Accordion label={itemFilter.label || ''} open key={key}>
+                        <Accordion label={itemFilter.label ? itemFilter.label.replace(/_/g, ' ') : ''} open key={key}>
                             <GenerateFilter
                                 itemFilter={itemFilter}
                                 idx={key}
@@ -40,14 +42,14 @@ const FilterView = (props) => {
                     classNameText="justify-center"
                     variant="tertiary"
                 >
-                    Reset Filter
+                    {t('catalog:filter:reset')}
                 </Button>
                 <Button
                     onClick={handleSave}
                     className="w-full"
                     classNameText="justify-center"
                 >
-                    View Results
+                    {t('catalog:filter:viewResult')}
                 </Button>
             </div>
         </div>

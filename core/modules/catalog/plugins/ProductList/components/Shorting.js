@@ -45,7 +45,7 @@ export const generateCatalogSorting = (isSearch) => {
 
 const Sorting = (props) => {
     const {
-        isSearch, defaultSort, filterValue, setFiltervalue,
+        isSearch, defaultSort, filterValue, setFiltervalue, t,
     } = props;
     const sortByData = React.useMemo(() => generateCatalogSorting(isSearch), []);
 
@@ -53,24 +53,31 @@ const Sorting = (props) => {
     const [selectedFilter] = React.useState(filterValue);
 
     const handleChange = (event) => {
-        setValue(value);
         const savedData = {
             selectedFilter,
         };
         if (value !== '') {
             savedData.sort = event;
+            setValue(event);
         }
 
         setFiltervalue(savedData);
     };
+
+    const shortingValue = sortByData.filter((item) => item.value === value);
+
     return (
         <Select
             options={sortByData}
             onChange={handleChange}
-            placeholder="Sort By"
+            placeholder={t('catalog:title:short')}
             className="h-[36px]"
+            value={shortingValue && shortingValue.length > 0 ? shortingValue[0].label : ''}
             textFiledProps={{
-                className: 'h-[36px] !w-[auto] max-w-[110px] tablet:!w-[117px] ml-2 mt-0',
+                className: 'h-[36px] !w-[auto] ml-2 mt-0',
+                rightIconProps: {
+                    className: '!text-neutral',
+                },
             }}
             inputProps={{
                 className: 'h-[34px] placeholder:!text-neutral',

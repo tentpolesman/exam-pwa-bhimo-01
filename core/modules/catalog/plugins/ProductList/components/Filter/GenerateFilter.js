@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Typography from '@common_typography';
 import Button from '@common_button';
 import CheckBox from '@common_forms/CheckBox';
@@ -64,12 +64,16 @@ const GenerateFilter = React.memo((props) => {
         // eslint-disable-next-line no-plusplus
         for (let index = 0; index < itemFilter.value.length; index++) {
             itemValue.push({
-                label: itemFilter.value[index].label,
+                label: itemFilter.value[index].label === '__other_docs'
+                    ? t('catalog:filter:others')
+                    : itemFilter.value[index].label.replace(/_/g, ' '),
                 value: itemFilter.value[index].label,
             });
         }
         return itemValue;
     }, [itemFilter?.value]);
+
+    const [openMore, setOpenMore] = useState(false);
 
     if (itemFilter.field !== 'attribute_set_id') {
         if (itemFilter.field === 'price') {
@@ -95,28 +99,76 @@ const GenerateFilter = React.memo((props) => {
             );
         }
         if (itemFilter.field === 'color') {
+            let dataColor = ItemValueByLabel.map((item) => ({ ...item, className: 'w-[34px] h-[34px]' }));
+            const othersColor = [];
+            if (ItemValueByLabel.length > 6) {
+                dataColor = [];
+                for (let index = 0; index < ItemValueByLabel.length; index += 1) {
+                    const colors = {
+                        ...ItemValueByLabel[index],
+                        className: 'w-[34px] h-[34px]',
+                    };
+                    if (index < 6) {
+                        dataColor.push(colors);
+                    } else {
+                        othersColor.push(colors);
+                    }
+                }
+            }
+
             return (
-                <div key={idx}>
+                <div key={idx} className="flex flex-col gap-2">
                     <CheckBox
                         type="color"
                         classNames={{
-                            checkboxGroupClasses: '!flex-wrap',
+                            checkboxGroupClasses: '!flex-wrap gap-2',
                         }}
                         name={itemFilter.field}
                         noLabel
                         label={false}
-                        data={ItemValueByLabel}
+                        data={openMore ? [...dataColor, ...othersColor] : dataColor}
                         value={selectedFilter[itemFilter.field] ? selectedFilter[itemFilter.field].split(',') : []}
                         flex={itemProps.selectSizeFlex || 'row'}
                         CustomItem={itemProps.selectColorItem || Swatch}
                         onChange={(val) => checkedFilter(itemFilter.field, val)}
                     />
+                    {
+                        othersColor.length > 0 && (
+                            <Button
+                                variant="tertiary"
+                                onClick={() => setOpenMore(!openMore)}
+                                classNameText="!justify-start"
+                                className="!p-0 !shadow-none"
+                            >
+                                <span className="text-neutral-900 hover:text-primary underline">
+                                    {
+                                        openMore
+                                            ? `-${t('catalog:filter:lessMore')}`
+                                            : `+${t('catalog:filter:showMore')}`
+                                    }
+                                </span>
+                            </Button>
+                        )
+                    }
                 </div>
             );
         }
         if (itemFilter.field === 'size') {
+            let dataSize = ItemValueByLabel;
+            const othersSize = [];
+            if (ItemValueByLabel.length > 6) {
+                dataSize = [];
+                for (let index = 0; index < ItemValueByLabel.length; index += 1) {
+                    const colors = ItemValueByLabel[index];
+                    if (index < 6) {
+                        dataSize.push(colors);
+                    } else {
+                        othersSize.push(colors);
+                    }
+                }
+            }
             return (
-                <div key={idx}>
+                <div key={idx} className="flex flex-col gap-2">
                     <CheckBox
                         name={itemFilter.field}
                         classNames={{
@@ -124,12 +176,30 @@ const GenerateFilter = React.memo((props) => {
                         }}
                         noLabel
                         label={false}
-                        data={ItemValueByLabel}
+                        data={openMore ? [...dataSize, ...othersSize] : dataSize}
                         value={selectedFilter[itemFilter.field] ? selectedFilter[itemFilter.field].split(',') : []}
                         flex={itemProps.selectSizeFlex || 'row'}
                         CustomItem={itemProps.selectSizeItem || Swatch}
                         onChange={(val) => checkedFilter(itemFilter.field, val)}
                     />
+                    {
+                        othersSize.length > 0 && (
+                            <Button
+                                variant="tertiary"
+                                onClick={() => setOpenMore(!openMore)}
+                                classNameText="!justify-start"
+                                className="!p-0 !shadow-none"
+                            >
+                                <span className="text-neutral-900 hover:text-primary underline">
+                                    {
+                                        openMore
+                                            ? `-${t('catalog:filter:lessMore')}`
+                                            : `+${t('catalog:filter:showMore')}`
+                                    }
+                                </span>
+                            </Button>
+                        )
+                    }
                 </div>
             );
         }
@@ -164,29 +234,112 @@ const GenerateFilter = React.memo((props) => {
         }
 
         if (itemFilter.field === 'category_uid') return null;
+
+        if (!elastic) {
+            let itemFilters = itemFilter.value || [];
+            const othersFilters = [];
+            if (itemFilter.value.length > 6) {
+                itemFilters = [];
+                for (let index = 0; index < itemFilter.value.length; index += 1) {
+                    const item = itemFilter.value[index];
+                    if (index < 6) {
+                        itemFilters.push(item);
+                    } else {
+                        othersFilters.push(item);
+                    }
+                }
+            }
+
+            return (
+                <div className="flex flex-col gap-2">
+                    {
+                        openMore ? (
+                            <RadioGroup
+                                noLabel
+                                name={itemFilter.field.replace(/_/g, ' ')}
+                                label={false}
+                                data={[...itemFilters, ...othersFilters]}
+                                value={selectedFilter[itemFilter.field]}
+                                onChange={(value) => selectFilter(itemFilter.field, value)}
+                            />
+                        ) : (
+                            <RadioGroup
+                                noLabel
+                                name={itemFilter.field.replace(/_/g, ' ')}
+                                label={false}
+                                data={itemFilters}
+                                value={selectedFilter[itemFilter.field]}
+                                onChange={(value) => selectFilter(itemFilter.field, value)}
+                            />
+                        )
+                    }
+
+                    {
+                        othersFilters.length > 0 && (
+                            <Button
+                                variant="tertiary"
+                                onClick={() => setOpenMore(!openMore)}
+                                classNameText="!justify-start"
+                                className="!p-0 !shadow-none"
+                            >
+                                <span className="text-neutral-900 hover:text-primary underline">
+                                    {
+                                        openMore
+                                            ? `-${t('catalog:filter:lessMore')}`
+                                            : `+${t('catalog:filter:showMore')}`
+                                    }
+                                </span>
+                            </Button>
+                        )
+                    }
+                </div>
+            );
+        }
+
+        let itemFilters = itemFilter.value || [];
+
+        const othersFilters = [];
+
+        if (itemFilter.value && itemFilter.value.length > 6) {
+            itemFilters = [];
+            for (let index = 0; index < itemFilter.value.length; index += 1) {
+                const item = itemFilter.value[index];
+                if (index < 6) {
+                    itemFilters.push(item);
+                } else {
+                    othersFilters.push(item);
+                }
+            }
+        }
         return (
-            <div key={idx}>
-                {elastic ? (
-                    <CheckBox
-                        field={itemFilter.field}
-                        noLabel
-                        label={false}
-                        data={ItemValueByLabel}
-                        value={selectedFilter[itemFilter.field] ? selectedFilter[itemFilter.field].split(',') : []}
-                        flex="row"
-                        onChange={(val) => checkedFilter(itemFilter.field, val)}
-                    />
-                ) : (
-                    <RadioGroup
-                        noLabel
-                        name={itemFilter.field}
-                        label={false}
-                        data={itemFilter.value || []}
-                        value={selectedFilter[itemFilter.field]}
-                        onChange={(value) => selectFilter(itemFilter.field, value)}
-                        className="flex-row"
-                    />
-                )}
+            <div key={idx} className="flex flex-col gap-2">
+                <RadioGroup
+                    noLabel
+                    name={itemFilter.field.replace(/_/g, ' ')}
+                    label={false}
+                    data={openMore ? [...itemFilters, ...othersFilters] : itemFilters}
+                    value={selectedFilter[itemFilter.field]}
+                    onChange={(value) => selectFilter(itemFilter.field, value)}
+                    className="flex-row"
+                />
+                {
+                    othersFilters.length > 0 && (
+                        <Button
+                            variant="tertiary"
+                            onClick={() => setOpenMore(!openMore)}
+                            classNameText="!justify-start"
+                            className="!p-0 !shadow-none"
+                        >
+                            <span className="text-neutral-900 hover:text-primary underline">
+                                {
+                                    openMore
+                                        ? `-${t('catalog:filter:lessMore')}`
+                                        : `+${t('catalog:filter:showMore')}`
+                                }
+                            </span>
+                        </Button>
+                    )
+                }
             </div>
         );
     }

@@ -150,6 +150,7 @@
             "@common_stockstatus": ["src/commons/StockStatus", "core/commons/StockStatus"],
             "@common_share": ["src/commons/Share", "core/commons/Share"],
             "@common_containerscroll": ["src/commons/ContainerScroll", "core/commons/ContainerScroll"],
+            "@common_acccordion": ["src/commons/Accordion", "core/commons/Accordion"],
 
             "@common_navigation/*": ["src/commons/Navigation/*", "core/commons/Navigation/*"],
             "@common_spancategory/*": ["src/commons/SpanCategory/*", "core/commons/SpanCategory/*"],

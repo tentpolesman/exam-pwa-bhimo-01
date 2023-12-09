@@ -45,8 +45,8 @@ const Drawer = ({
                     'z-50 bg-neutral-white',
                     {
                         'translate-x-0': (open && position === 'left'),
-                        'translate-x-0.5': (open && position === 'right'),
-                        '-translate-y-0.5': (open && position === 'bottom'),
+                        '-translate-x-0.5': (open && position === 'right'),
+                        'translate-y-0.5': (open && position === 'bottom'),
                     },
                     className,
                 )

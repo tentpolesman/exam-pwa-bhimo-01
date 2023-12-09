@@ -89,7 +89,7 @@ const ViewProductList = (props) => {
                 <div className="px-6 py-4 flex flex-col">
                     <div className="mb-5 min-h-[36px] border-neutral-100 border-b-[1px] flex items-center justify-between pb-3">
                         <Typography variant="h3" className="text-base font-semibold basis-full">
-                            Shipping Options
+                            {t('catalog:filter:title')}
                         </Typography>
                         <Button
                             iconOnly
@@ -120,8 +120,8 @@ const ViewProductList = (props) => {
             </DrawerFilter>
             <div className="hidden desktop:inline-flex flex-col lg:basis-1/4">
                 <div className="mb-5 h-[36px] border-neutral-100 border-b-[1px]">
-                    <Typography variant="h3" className="text-base basis-full">
-                        Shipping Options
+                    <Typography variant="h3" className="text-base basis-full capitalize">
+                        {t('catalog:filter:title')}
                     </Typography>
                 </div>
                 <div className="w-fullh-screen">
@@ -138,6 +138,7 @@ const ViewProductList = (props) => {
                         t={t}
                         onChangeTabs={onChangeTabs}
                         storeConfig={storeConfig}
+                        scrollContent={false}
                     />
                 </div>
             </div>
@@ -152,7 +153,7 @@ const ViewProductList = (props) => {
                             classNameText="text-neutral"
                             onClick={handleOpenDrawerFilter}
                         >
-                            Filters
+                            Filter
                         </Button>
                         <Button
                             variant="outlined"
@@ -163,7 +164,9 @@ const ViewProductList = (props) => {
                             onClick={handleSetGrid}
                             iconProps={{ className: '!ml-0 tablet:!ml-[6px]' }}
                         >
-                            <Typography className="hidden tablet:inline">View As</Typography>
+                            <Typography className="hidden tablet:inline">
+                                {t('catalog:filter:viewAs')}
+                            </Typography>
                         </Button>
                     </div>
                     <Sorting
@@ -172,6 +175,7 @@ const ViewProductList = (props) => {
                         filterValue={query}
                         setFiltervalue={setFiltervalue}
                         isSearch={!!config.search}
+                        t={t}
                     />
                 </div>
                 <div className={

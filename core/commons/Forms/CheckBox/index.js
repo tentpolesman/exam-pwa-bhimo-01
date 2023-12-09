@@ -18,7 +18,7 @@ const CheckBox = (props) => {
         classNames = {},
         useLoadMore = false,
         size = 'md',
-        flex,
+        flex = 'col',
     } = props;
 
     const { t } = useTranslation(['common']);

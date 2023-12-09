@@ -38,6 +38,8 @@ const Radio = (props) => {
     useEffect(() => {
         if (useLoadMore) {
             setMappedData(data?.slice(0, more));
+        } else {
+            setMappedData(data);
         }
     }, [useLoadMore, more, data]);
 
