@@ -6,27 +6,25 @@ import cx from 'classnames';
 import React from 'react';
 
 const Caraousel = (props) => {
-    const {
-        data = [],
-        showArrow = true,
-        Item,
-        storeConfig = {},
-        className = '',
-        ...other
-    } = props;
+    const { data = [], showArrow = true, Item, storeConfig = {}, className = '', ...other } = props;
 
     return (
-        <div className={cx('carousel', 'w-full', 'h-full', 'relative', 'xs:max-w-[100vw]', 'sm:h-auto group', className)}>
+        <div className={cx('carousel', className)}>
             <ContainerScroll itemsLength={data.length} showArrow={showArrow}>
-                {data?.length > 0 && data.map((item, key) => (
-                    <Item
-                        key={key}
-                        {...item}
-                        storeConfig={storeConfig}
-                        className="[&:not(:last-child)]:mr-3 carousel-item"
-                        {...other}
-                    />
-                ))}
+                {data?.length > 0 &&
+                    data.map((item, key) => (
+                        <Item
+                            className="carousel-item [&:not(:last-child)]:mr-4 !max-w-[288px]"
+                            key={key}
+                            {...item}
+                            storeConfig={storeConfig}
+                            imageProps={{
+                                className: 'desktop:!w-64 desktop:!h-64',
+                                classContainer: 'desktop:!w-64 desktop:!h-64',
+                            }}
+                            {...other}
+                        />
+                    ))}
             </ContainerScroll>
             <style jsx>
                 {`

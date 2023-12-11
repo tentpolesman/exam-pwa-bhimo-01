@@ -52,6 +52,7 @@ const ProductItem = (props) => {
         weltpixel_labels,
         enablePrice = true,
         enableWishlist,
+        imageProps = {},
         ...other
     } = props;
     const {
@@ -510,7 +511,7 @@ const ProductItem = (props) => {
                 <div
                     className={classNames(
                         'w-full inline-block h-full overflow-hidden relative cursor-pointer',
-                        'shadow rounded-lg p-2 lg:p-4',
+                        'shadow-base rounded-lg p-2 lg:p-4',
                         className,
                     )}
                     id="catalog-item-product"
@@ -518,7 +519,7 @@ const ProductItem = (props) => {
                     {storeConfig?.pwa?.label_enable && LabelView ? (
                         <LabelView t={t} {...other} isGrid={isGrid} spesificProduct={spesificProduct} />
                     ) : null}
-                    <div className="w-full relative group">
+                    <div className="w-full relative group overflow-hidden">
                         {storeConfig?.pwa?.label_enable && storeConfig?.pwa?.label_weltpixel_enable && (
                             <WeltpixelLabel t={t} weltpixel_labels={weltpixel_labels} categoryLabel />
                         )}
@@ -547,9 +548,10 @@ const ProductItem = (props) => {
                             spesificProduct={spesificProduct}
                             urlKey={url_key}
                             {...other}
+                            {...imageProps}
                         />
                     </div>
-                    <div className="h-auto pt-4 relative flex flex-col gap-4">
+                    <div className="h-auto pt-4 relative flex flex-col gap-4 overflow-hidden">
                         <DetailProductView
                             t={t}
                             urlKey={url_key}

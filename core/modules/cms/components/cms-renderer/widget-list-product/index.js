@@ -1,3 +1,4 @@
+/* eslint-disable operator-linebreak */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable guard-for-in */
 /* eslint-disable no-plusplus */
@@ -12,6 +13,7 @@ import ProductItem from '@plugin_productitem';
 import ErrorMessage from '@plugin_productlist/components/ErrorMessage';
 import React, { useMemo } from 'react';
 import { useTranslation } from 'next-i18next';
+import ProductList from '@plugin_productlist/components';
 
 /**
  * [CONSTANT] variable
@@ -20,7 +22,9 @@ const TEMPLATE_SLIDER = 'slider';
 const TEMPLATE_GRID = 'grid';
 
 const WidgetListProduct = (props) => {
-    const { template, products_count, conditions_encoded } = props;
+    const {
+        template, products_count, conditions_encoded, storeConfig,
+    } = props;
     const { t } = useTranslation();
 
     /**
@@ -40,31 +44,16 @@ const WidgetListProduct = (props) => {
         });
     }, []);
 
-    if (!loadingDrawerFilterOnDesktop
-        && dataDrawerFilterOnDesktop
-        && dataDrawerFilterOnDesktop.storeConfig
-        && dataDrawerFilterOnDesktop.storeConfig.pwa) {
+    if (
+        !loadingDrawerFilterOnDesktop &&
+        dataDrawerFilterOnDesktop &&
+        dataDrawerFilterOnDesktop.storeConfig &&
+        dataDrawerFilterOnDesktop.storeConfig.pwa
+    ) {
         drawerFilterOnDesktop = {
             ...dataDrawerFilterOnDesktop.storeConfig.pwa,
         };
     }
-    /**
-     * [METHOD] on reinit trigger when all data has been rendered, hide skeleton
-     */
-    const onReInit = () => {
-        if (document.getElementsByClassName('widget-product-list')) {
-            const elms = document.getElementsByClassName('widget-product-list');
-            for (let i = 0; i < elms.length; i++) {
-                elms[i].className = 'full-width widget-product-list';
-            }
-        }
-        if (document.getElementsByClassName('widget-product-list-skeleton')) {
-            const elms = document.getElementsByClassName('widget-product-list-skeleton');
-            for (let i = 0; i < elms.length; i++) {
-                elms[i].className = 'full-width widget-product-list-skeleton hide';
-            }
-        }
-    };
 
     /**
      * [TEMPLATE] type slider
@@ -93,13 +82,7 @@ const WidgetListProduct = (props) => {
         return (
             <>
                 <div className={classProductList}>
-                    <Carousel
-                        onReInit={onReInit}
-                        enableQuickView={false}
-                        data={dataItems}
-                        Item={ProductItem}
-                        slideLg={dataItems?.length > 10 ? 6 : 4}
-                    />
+                    <Carousel enableQuickView={false} data={dataItems} Item={ProductItem} storeConfig={storeConfig} />
                 </div>
             </>
         );
@@ -112,12 +95,23 @@ const WidgetListProduct = (props) => {
         return (
             <>
                 <div className={classProductList}>
-                    <GridList
-                        data={dataItems}
-                        ItemComponent={ProductItem}
-                        className="grid"
-                        gridItemProps={{ xs: 6, sm: 4, md: drawerFilterOnDesktop.drawer_filter_on_desktop_enable ? 3 : 2 }}
-                    />
+                    <div className="flex gap-4 flex-wrap">
+                        {dataItems?.length > 0 &&
+                            dataItems.map((item, key) => (
+                                <div className="!max-w-[288px]" key={key}>
+                                    <ProductItem
+                                        isGrid
+                                        storeConfig={storeConfig}
+                                        t={t}
+                                        {...item}
+                                        imageProps={{
+                                            className: 'desktop:!w-64 desktop:!h-64',
+                                            classContainer: 'desktop:!w-64 desktop:!h-64',
+                                        }}
+                                    />
+                                </div>
+                            ))}
+                    </div>
                 </div>
             </>
         );
