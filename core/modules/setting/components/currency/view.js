@@ -1,60 +1,27 @@
-import React, { useRef } from 'react';
-import Popover from '@material-ui/core/Popover';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import Button from '@material-ui/core/Button';
-import Skeleton from '@material-ui/lab/Skeleton';
+import cx from 'classnames';
+import React from 'react';
 
-import { makeStyles } from '@material-ui/core/styles';
+import Button from '@common_button';
+import Popover from '@common_popover';
+import Skeleton from '@common_skeleton';
+import Typography from '@common_typography';
 
-/**
- * useStyle
- */
-const useStyles = makeStyles(() => ({
-    listItemText: {
-        fontSize: '.6rem', // Insert your required size
-        textTransform: 'uppercase',
-    },
-}));
+import ChevronDownIcon from '@heroicons/react/24/outline/ChevronDownIcon';
 
 const ViewSwitcherCurrency = (props) => {
     const {
-        t, title, id, open, anchorEl, currencyState, handleClick, handleClose, setDefaultCurrency, loading, app_cookies,
+        t, currencyState, setDefaultCurrency, loading, app_cookies, open, setOpen,
     } = props;
     const cookies_currency = app_cookies?.cookies_currency;
-    const classes = useStyles();
-    const buttonRef = useRef();
-    const anchorOrigin = { vertical: 'bottom', horizontal: 'right' };
-    const transforOrigin = { vertical: 'top', horizontal: 'right' };
-    const styleTitle = { fontSize: 12, textTransform: 'uppercase' };
-    const styleButton = { fontFamily: 'Montserrat', padding: '0px', fontSize: title ? '12px' : '1em' };
 
     const isEmptyCookiesCurrency = currencyState === undefined || currencyState === null;
-    /**
-     * loading state
-     */
-    if (loading && isEmptyCookiesCurrency) {
-        return (
-            <div>
-                {title && <Skeleton style={{ padding: 0 }} variant="rect" width={100} height={10} />}
-                <Skeleton style={{ display: 'inline-block', padding: 0 }} variant="rect" width={100} height={10} />
-            </div>
-        );
-    }
 
-    /**
-     * not loading && check data
-     */
     if (!loading && currencyState !== null) {
         if (currencyState.exchange_rates.length <= 1) {
             return null;
         }
     }
 
-    /**
-     * default currency
-     */
     let finalDefaultCurrency = '';
     if (currencyState !== null) {
         finalDefaultCurrency = currencyState.default_display_currency_code;
@@ -63,62 +30,85 @@ const ViewSwitcherCurrency = (props) => {
         finalDefaultCurrency = currencyObject.default_display_currency_code;
     }
 
-    /**
-     * rendering
-     */
-    return (
-        <div>
-            {!isEmptyCookiesCurrency && (
-                <div>
-                    {/* [CURRENCY] TITLE */}
-                    {title && (
-                        <div>
-                            <strong style={styleTitle}>{title}</strong>
-                        </div>
-                    )}
-
-                    {/* [CURRENCY] BUTTON */}
-                    <Button ref={buttonRef} onClick={handleClick} style={styleButton}>
-                        {t('common:setting:currency')}
-                        :&nbsp;
-                        <strong>{finalDefaultCurrency}</strong>
-                    </Button>
-
-                    {/* [CURRENCY] LIST */}
-                    <Popover
-                        id={id}
-                        open={open}
-                        anchorEl={anchorEl}
-                        onClose={handleClose}
-                        anchorOrigin={anchorOrigin}
-                        transformOrigin={transforOrigin}
-                        container={buttonRef.current}
-                    >
-                        <List component="nav">
-                            {currencyState !== null
-                        && currencyState.exchange_rates.map((item, index) => {
-                            const { currency_to } = item;
+    const PopoverContent = () => {
+        if (!isEmptyCookiesCurrency) {
+            return (
+                <ul className={cx('currency-list__wrapper')}>
+                    {currencyState !== null
+                        && currencyState.exchange_rates.map((currency_item, index) => {
+                            const { currency_to } = currency_item;
                             const currency_default = currencyState === null ? '' : currencyState.default_display_currency_code;
                             const isCurrent = currency_to === currency_default;
                             const default_display_currency_code = currency_to;
-                            const default_currency_rate = item.rate;
+                            const default_currency_rate = currency_item.rate;
                             return isCurrent ? null : (
-                                <ListItem
-                                    button
+                                // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions
+                                <li
                                     key={`currency-${index}`}
-                                    onClick={() => setDefaultCurrency({ default_display_currency_code, default_currency_rate })}
+                                    className={cx(
+                                        'currency-list__item',
+                                        'py-2',
+                                        'px-2',
+                                        'text-center',
+                                        'hover:cursor-pointer',
+                                        'hover:bg-neutral-100',
+                                        'group',
+                                    )}
+                                    onClick={() =>
+                                        setDefaultCurrency({
+                                            default_display_currency_code,
+                                            default_currency_rate,
+                                        })}
                                 >
-                                    <ListItemText
-                                        classes={{ primary: classes.listItemText }}
-                                        primary={`${t('common:setting:changeto')} ${currency_to}`}
-                                    />
-                                </ListItem>
+                                    <Typography className={cx('currency-list__text', 'group-hover:text-primary-700')}>
+                                        {`${t('common:setting:changeto')} ${currency_to}`}
+                                    </Typography>
+                                </li>
                             );
                         })}
-                        </List>
-                    </Popover>
-                </div>
-            )}
+                </ul>
+            );
+        }
+        return null;
+    };
+
+    if (!loading && !isEmptyCookiesCurrency) {
+        return (
+            <Popover
+                content={<PopoverContent />}
+                open={open}
+                setOpen={setOpen}
+                className={cx('top-[120%]', 'p-0')}
+                wrapperClassName={cx('self-end')}
+                wrapperId="top-header__content--currency-language-changer-menu__currency-switcher"
+            >
+                <Button
+                    className={cx(
+                        'm-2',
+                        'mr-0',
+                        '!px-0',
+                        '!py-0',
+                        'hover:shadow-none',
+                        'focus:shadow-none',
+                        'active:shadow-none',
+                        'active:shadow-none',
+                    )}
+                    onClick={() => setOpen(!open)}
+                    icon={<ChevronDownIcon />}
+                    iconProps={{ className: cx('text-neutral-700', 'w-[20px]', 'h-[20px]') }}
+                    iconPosition="right"
+                    variant="tertiary"
+                    classNameText={cx('!text-neutral-700')}
+                >
+                    <Typography>{`${t('common:setting:currency')}: ${finalDefaultCurrency}`}</Typography>
+                </Button>
+            </Popover>
+        );
+    }
+
+    return (
+        <div>
+            <Skeleton width={128} />
         </div>
     );
 };

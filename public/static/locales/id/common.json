@@ -9,7 +9,7 @@
         "name": "Produk"
     },
     "search": {
-        "title": "Cari",
+        "title": "Apa yang anda cari?",
         "mainTitle": "Koleksi terbaru",
         "backTitle": "kembali ke produk",
         "location": "Cari Lokasi",
@@ -44,7 +44,7 @@
     },
     "cart": {
         "myCart": "Cart Saya",
-        "cardTotal": "Cart Subtotal",
+        "cardTotal": "Subtotal",
         "deleteSuccess": "Hapus item cart berhasil",
         "deleteFailed": "Hapus item cart gagal",
         "updateSuccess": "Update item cart berhasil",

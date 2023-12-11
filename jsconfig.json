@@ -93,6 +93,7 @@
             "@common_rangeslider": ["src/commons/RangeSlider", "core/commons/RangeSlider"],
             "@common_textfield": ["src/commons/TextField", "core/commons/TextField"],
             "@common_badge": ["src/commons/Badge", "core/commons/Badge"],
+            "@common_badgecounter": ["src/commons/BadgeCounter", "core/commons/BadgeCounter"],
             "@common_show": ["src/commons/Show", "core/commons/Show"],
 
             "@common_button/*": ["src/commons/Button/*", "core/commons/Button/*"],
@@ -113,6 +114,7 @@
             "@common_rangeslider/*": ["src/commons/RangeSlider/*", "core/commons/RangeSlider/*"],
             "@common_textfield/*": ["src/commons/TextField/*", "core/commons/TextField/*"],
             "@common_badge/*": ["src/commons/Badge/*", "core/commons/Badge/*"],
+            "@common_badgecounter/*": ["src/commons/BadgeCounter/*", "core/commons/BadgeCounter/*"],
             
             "@common_image": ["src/commons/Image", "core/commons/Image"],
             "@common_image/*": ["src/commons/Image/*", "core/commons/Image/*"],

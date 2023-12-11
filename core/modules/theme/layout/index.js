@@ -63,11 +63,11 @@ const font = localFont({
     variable: '--font-inter', // set the font css variable name, which we refer in tailwind.config.js
 });
 
-const HeaderDesktop = dynamic(() => import('@common_headerdesktop'), { ssr: true });
+const Header = dynamic(() => import('@common_headerdesktop'), { ssr: true });
 const Toast = dynamic(() => import('@common_toast'), { ssr: false });
 const Backdrop = dynamic(() => import('@common_backdrop'), { ssr: false });
 const Dialog = dynamic(() => import('@common_dialog'), { ssr: false });
-// const GlobalPromoMessage = dynamic(() => import('@core_modules/theme/components/globalPromo'), { ssr: false });
+const GlobalPromoMessage = dynamic(() => import('@core_modules/theme/components/globalPromo'), { ssr: false });
 // const BottomNavigation = dynamic(() => import('@common_bottomnavigation'), { ssr: false });
 // const HeaderMobile = dynamic(() => import('@common_headermobile'), { ssr: false });
 const ScrollToTop = dynamic(() => import('@common_scrolltotop'), { ssr: false });
@@ -125,7 +125,7 @@ const Layout = (props) => {
         negativeLabel: null,
         negativeAction: null,
     });
-    
+
     const [state, setState] = useState({
         toastMessage: {
             open: false,
@@ -141,6 +141,7 @@ const Layout = (props) => {
 
     const [restrictionCookies, setRestrictionCookies] = useState(false);
     const [showGlobalPromo, setShowGlobalPromo] = React.useState(enablePromo);
+    const [deviceWidth, setDeviceWidth] = React.useState(0);
     const [setCompareList] = createCompareList();
     const frontendCache = useReactiveVar(storeConfigVar);
 
@@ -181,7 +182,7 @@ const Layout = (props) => {
 
     const handlerDialog = (params) => {
         setDialog({ ...dialog, ...params });
-    }
+    };
 
     const handleCloseMessage = () => {
         setState({
@@ -318,17 +319,6 @@ const Layout = (props) => {
         // setMainMinimumHeight(refFooter.current.clientHeight + refHeader.current.clientHeight);
     }, []);
 
-    // const desktop = breakPointsUp('md');
-
-    // const ipadUp = breakPointsUp('sm');
-    // const ipadDown = breakPointsDown('md');
-
-    // const ipadLUp = breakPointsUp('md');
-    // const ipadLDown = breakPointsDown('lg');
-
-    // const ipad = !!(ipadUp && ipadDown);
-    // const ipadL = !!(ipadLUp && ipadLDown);
-
     const styles = {
         marginBottom:
             pageConfig.bottomNav && storeConfig?.pwa?.mobile_navigation === 'bottom_navigation' && storeConfig?.pwa?.enabler_footer_mobile === true
@@ -338,7 +328,12 @@ const Layout = (props) => {
     };
 
     const generateClasses = () => {
-        let classes = `tablet:min-h-[calc(100vh-435px)] tablet:mt-[140px] tablet:max-w-[768px] desktop:min-h[calc(100vh-435px)] desktop:mt-[140px] desktop:max-w-[1200px] main-app-v1-sticky-not-homepage ${font.variable} font-sans !font-pwa-default`;
+        let classes = `tablet:min-h-[calc(100vh-435px)] tablet:mt-[130px] tablet:max-w-[768px] desktop:min-h[calc(100vh-435px)] desktop:mt-[140px] desktop:max-w-[1200px] ${font.variable} font-sans !font-pwa-default`;
+        if (showGlobalPromo) {
+            classes += 'tablet:mt-[12rem] desktop:mt-[14rem]';
+        } else {
+            classes += 'tablet:mt-[11rem] desktop:mt-[13rem]';
+        }
         if (pageConfig.bottomNav && storeConfig?.pwa?.mobile_navigation === 'bottom_navigation' && storeConfig?.pwa?.enabler_footer_mobile) {
             classes += ' mb-[60px]';
         } else {
@@ -402,6 +397,12 @@ const Layout = (props) => {
             }
         }
     }, [storeConfig]);
+
+    React.useEffect(() => {
+        if (typeof window !== 'undefined') {
+            setDeviceWidth(window.innerWidth);
+        }
+    }, []);
 
     // let classMain;
 
@@ -561,7 +562,7 @@ const Layout = (props) => {
             ) : null} */}
             {allowHeaderCheckout && (
                 <header ref={refHeader} className={cx(font.variable, 'font-sans', '!font-pwa-default')}>
-                    {/* {typeof window !== 'undefined' && storeConfig.global_promo && storeConfig.global_promo.enable && (
+                    {typeof window !== 'undefined' && storeConfig.global_promo && storeConfig.global_promo.enable && deviceWidth > 768 && (
                         <GlobalPromoMessage
                             t={t}
                             storeConfig={storeConfig}
@@ -570,8 +571,8 @@ const Layout = (props) => {
                             appName={appName}
                             installMessage={installMessage}
                         />
-                    )} */}
-                    <div className="hidden-mobile">
+                    )}
+                    {/* <div className="hidden-mobile">
                         {!deviceType?.isMobile && headerDesktop ? (
                             <HeaderDesktop
                                 storeConfig={storeConfig}
@@ -586,7 +587,22 @@ const Layout = (props) => {
                                 isHomepage={isHomepage}
                             />
                         ) : null}
-                    </div>
+                    </div> */}
+                    <Header
+                        t={t}
+                        pageConfig={pageConfig}
+                        storeConfig={storeConfig}
+                        isLogin={isLogin}
+                        app_cookies={app_cookies}
+                        showGlobalPromo={showGlobalPromo}
+                        enablePopupInstallation={showPopup}
+                        appName={appName}
+                        installMessage={installMessage}
+                        dataVesMenu={dataVesMenu}
+                        isHomepage={isHomepage}
+                        deviceType={deviceType}
+                        handleClosePromo={handleClosePromo}
+                    />
                     {/* <div className="hidden-desktop">
                         {React.isValidElement(CustomHeader) ? (
                             <>{React.cloneElement(CustomHeader, { pageConfig, ...headerProps })}</>
@@ -621,7 +637,7 @@ const Layout = (props) => {
                     <NewsletterPopup t={t} storeConfig={storeConfig} pageConfig={pageConfig} isLogin={isLogin} />
                 )} */}
                 {children}
-                <ScrollToTop {...props} />
+                <ScrollToTop deviceType={deviceType} showGlobalPromo={showGlobalPromo} {...props} />
             </main>
 
             {/* CHAT FEATURES */}
