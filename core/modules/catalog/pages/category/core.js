@@ -5,9 +5,9 @@ import { getCategory, getPwaConfig } from '@core_modules/catalog/services/graphq
 import generateSchemaOrg from '@core_modules/catalog/helpers/schema.org';
 import dynamic from 'next/dynamic';
 import Content from '@core_modules/catalog/pages/category/components';
+import Backdrop from '@common/Backdrop';
 
 const ErrorView = dynamic(() => import('@core_modules/error/pages/default'), { ssr: false });
-const SkeletonView = dynamic(() => import('@core_modules/catalog/pages/category/components/Skeleton'), { ssr: false });
 
 // SSR Not Working
 
@@ -52,10 +52,9 @@ const Page = (props) => {
         };
     }
     if (loading && !data) {
-        const pwaConfig = storeConfig?.pwa || {};
         return (
             <Layout {...props} pageConfig={config}>
-                <SkeletonView {...pwaConfig} />
+                <Backdrop open />
             </Layout>
         );
     }

@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
-import cx from 'classnames';
-import propTypes from 'prop-types';
 import React, { useEffect } from 'react';
+import propTypes from 'prop-types';
+import cx from 'classnames';
 
 const Drawer = ({
     open, handleClose, backdrop, position, backdropClass, className = '', children,
@@ -35,9 +35,9 @@ const Drawer = ({
                     'transition-all duration-500 transform shadow-lg',
                     'z-50 bg-neutral-white',
                     {
-                        'translate-x-0': open && position === 'left',
-                        '-translate-x-0.5': open && position === 'right',
-                        'translate-y-0.5': open && position === 'bottom',
+                        'translate-x-0': (open && position === 'left'),
+                        '-translate-x-0.5': (open && position === 'right'),
+                        'translate-y-0.5': (open && position === 'bottom'),
                     },
                     className,
                 )}

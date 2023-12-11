@@ -14,6 +14,13 @@ Dialog is components modal
 | `negativeLabel`   | `false`  | false | button label negative | `string` |
 | `negativeAction`  | `false`  | false | button action negative | `function` |
 | `negativeProps`   | `false`  | false | button props | `Button Props` |
+| `classWrapper`    | `false`  | false | custom class for wrapper dialog |    
+| `classContainer`    | `false`  | false | custom class for container dialog |  
+| `classContent`    | `false`  | false | custom class for content |   
+| `backdrop`    | `false`  | true | show hide backdrop dialog |   
+| `closeOnBackdrop`    | `false`  | false | close dialog if clicked backdrop |   
+| `onClose`    | `false`  | false | custom handling close dialog |   
+
 
 ### How to use
 ```

@@ -36,12 +36,10 @@ const ProductList = (props) => {
     const isPagination = storeConfig && storeConfig.pwa && storeConfig.pwa.product_listing_navigation !== 'infinite_scroll';
 
     let availableFilter = [];
-    let loadingAgg;
-    if (Object.keys(query).length > 0) {
-        const { data: agg, loading } = getProductAgragations();
-        loadingAgg = loading;
-        availableFilter = agg && agg.products ? agg.products.aggregations : [];
-    }
+    const { data: dataAgg } = getProductAgragations({
+        skip: !query || Object.keys(query).length === 0,
+    });
+    availableFilter = dataAgg && dataAgg.products ? dataAgg.products.aggregations : [];
 
     // cache price
     const cachePrice = useReactiveVar(priceVar);
@@ -395,11 +393,6 @@ const ProductList = (props) => {
         isPagination,
         handleLoadMore,
     };
-
-    if (loadingAgg) {
-        return <span />;
-    }
-
     return (
         <Content
             {...contentProps}
