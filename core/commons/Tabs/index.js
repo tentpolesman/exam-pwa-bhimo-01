@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import CmsRenderer from '@core_modules/cms/components/cms-renderer';
 import cx from 'classnames';
@@ -5,7 +6,17 @@ import React from 'react';
 
 const Tabs = (props) => {
     const {
-        data = [], onChange = () => { }, allItems = true, tabHasContent = false,
+        data = [],
+        onChange = () => {},
+        allItems = true,
+        tabHasContent = false,
+        tabWrapperClassName,
+        tabTitleWrapperClassName,
+        tabTitleClassName,
+        tabTitleActiveClassName,
+        tabTitleListClassName,
+        tabTitleListActiveClassName,
+        tabContentClassName,
     } = props;
 
     const [activeTabs, setActiveTabs] = React.useState(0);
@@ -18,9 +29,10 @@ const Tabs = (props) => {
         'hover:text-primary-700',
         'hover:border-b-2',
         'hover:border-primary-700',
+        tabTitleClassName,
     );
 
-    const tabActive = cx('border-b-2', 'border-primary-700', 'text-primary-700');
+    const tabActive = cx('border-b-2', 'border-primary-700', 'text-primary-700', tabTitleActiveClassName);
 
     const handleTabSwitch = (index) => {
         setActiveTabs(index);
@@ -39,12 +51,13 @@ const Tabs = (props) => {
                     'border-neutral-300',
                     'overflow-x-auto',
                     'pb-[0.5px]',
+                    tabWrapperClassName,
                 )}
             >
-                <ul className="flex -mb-px">
+                <ul className={cx('flex -mb-px', tabTitleWrapperClassName)}>
                     {!tabHasContent && allItems ? (
-                        <li className="me-2">
-                            <a href="#" className={cx(tabClasses, tabActive, 'default-active', 'min-w-[100px]')}>
+                        <li>
+                            <a href="#" className={cx('default-active', 'min-w-[100px]', tabClasses, tabActive)}>
                                 All Items
                             </a>
                         </li>
@@ -53,13 +66,15 @@ const Tabs = (props) => {
                         && data.map((item, index) => {
                             if (index === 0) {
                                 return (
-                                    <li className="me-2" key={index}>
+                                    <li className={cx(activeTabs === index ? tabTitleListActiveClassName : tabTitleListClassName)} key={index}>
                                         <a
                                             href="#"
                                             className={
                                                 !tabHasContent && allItems
                                                     ? cx(tabClasses, 'default-allitems')
-                                                    : cx(tabClasses, tabActive, 'default-active')
+                                                    : activeTabs === index
+                                                        ? cx(tabClasses, tabActive, 'default-active')
+                                                        : cx(tabClasses)
                                             }
                                             onClick={() => {
                                                 if (tabHasContent) {
@@ -75,12 +90,22 @@ const Tabs = (props) => {
                                 );
                             }
                             return (
-                                <li className="me-2" key={index}>
+                                <li className={cx(activeTabs === index ? tabTitleListActiveClassName : tabTitleListClassName)} key={index}>
                                     <a
                                         href="#"
-                                        className={cx(tabClasses)}
+                                        className={
+                                            !tabHasContent && allItems
+                                                ? cx(tabClasses, 'default-allitems')
+                                                : activeTabs === index
+                                                    ? cx(tabClasses, tabActive, 'default-active')
+                                                    : cx(tabClasses)
+                                        }
                                         onClick={() => {
-                                            onChange(index);
+                                            if (tabHasContent) {
+                                                handleTabSwitch(index);
+                                            } else {
+                                                onChange(index);
+                                            }
                                         }}
                                     >
                                         {item.title}
@@ -92,7 +117,7 @@ const Tabs = (props) => {
             </div>
 
             {tabHasContent && data && (
-                <div className={cx('tab-content-wrapper', 'relative', 'pt-[10px]')}>
+                <div className={cx('tab-content-wrapper', 'relative', 'pt-[10px]', tabContentClassName)}>
                     {data.map((item, index) => {
                         if (item.type === 'html') {
                             return (

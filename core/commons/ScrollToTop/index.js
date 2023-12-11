@@ -1,42 +1,91 @@
 import Button from '@common_button';
+import ArrowUp from '@heroicons/react/24/outline/ChevronUpIcon';
 import cx from 'classnames';
 import React from 'react';
-import ArrowUp from '@heroicons/react/24/outline/ChevronUpIcon';
 
 const ScrollTop = (props) => {
-    const { storeConfig } = props;
+    const { storeConfig, showGlobalPromo } = props;
 
-    const [triger, setTriger] = React.useState(false);
-    const maxHeigtToShow = 600;
+    const [trigger, setTrigger] = React.useState(false);
+    const maxHeightToShow = 200;
 
     React.useEffect(() => {
         if (typeof window !== 'undefined') {
-            const header = document.getElementById('header');
+            let lastScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
             const headerInner = document.getElementById('header-inner');
+            const desktopHeader = document.getElementsByClassName('desktop-header')[0];
+            const tabletHeader = document.getElementsByClassName('tablet-header')[0];
+
             const checkScrollTop = () => {
-                // handle show hide header
-                if (storeConfig && storeConfig.pwa && storeConfig.pwa.enabler_sticky_header && header) {
+                const globalPromo = document.getElementById('global-promo-message');
+                const scrollTopPosition = window.pageYOffset || document.documentElement.scrollTop;
+                if (storeConfig && storeConfig.pwa && storeConfig.pwa.enabler_sticky_header) {
                     if (window.pageYOffset > 100) {
-                        header.classList.add('header-small');
                         if (headerInner) {
-                            headerInner.classList.add('header-inner');
+                            if (desktopHeader) {
+                                if (showGlobalPromo && globalPromo) {
+                                    headerInner.classList.remove('top-[38px]');
+                                }
+                                if (scrollTopPosition > lastScrollTop) {
+                                    headerInner.classList.remove('top-[-43px]');
+                                    headerInner.classList.add('top-[-128px]');
+                                } else if (scrollTopPosition < lastScrollTop) {
+                                    headerInner.classList.remove('top-[-128px]');
+                                    headerInner.classList.add('top-[-43px]');
+                                }
+                                lastScrollTop = scrollTopPosition <= 0 ? 0 : scrollTopPosition;
+                            }
+                            if (tabletHeader) {
+                                if (showGlobalPromo && globalPromo) {
+                                    headerInner.classList.remove('top-[38px]');
+                                }
+                                headerInner.classList.add('top-[-43px]');
+                            }
+                        }
+                    } else if (window.pageYOffset > 0 && window.pageYOffset <= 100) {
+                        if (desktopHeader) {
+                            if (showGlobalPromo && globalPromo) {
+                                headerInner.classList.remove('top-[38px]');
+                                headerInner.classList.add('top-[-43px]');
+                            }
+                        }
+                        if (tabletHeader) {
+                            if (showGlobalPromo && globalPromo) {
+                                headerInner.classList.remove('top-[38px]');
+                                headerInner.classList.add('top-[-43px]');
+                            }
                         }
                     } else {
-                        header.classList.remove('header-small');
-                        if (headerInner) {
-                            headerInner.classList.remove('header-inner');
+                        if (desktopHeader) {
+                            if (scrollTopPosition === 0) {
+                                headerInner.classList.remove('top-[-43px]');
+                                headerInner.classList.remove('top-[-128px]');
+                                if (showGlobalPromo && globalPromo) {
+                                    headerInner.classList.add('top-[38px]');
+                                }
+                            }
+                            lastScrollTop = scrollTopPosition <= 0 ? 0 : scrollTopPosition;
+                        }
+                        if (tabletHeader) {
+                            if (scrollTopPosition === 0) {
+                                headerInner.classList.remove('top-[-43px]');
+                                if (showGlobalPromo && globalPromo) {
+                                    headerInner.classList.add('top-[38px]');
+                                }
+                            }
                         }
                     }
                 }
-                if (!triger && window.pageYOffset > maxHeigtToShow) {
-                    setTriger(true);
-                } else if (triger && window.pageYOffset < maxHeigtToShow) {
-                    setTriger(false);
+                if (!trigger && window.pageYOffset > maxHeightToShow) {
+                    setTrigger(true);
+                } else if (trigger && window.pageYOffset < maxHeightToShow) {
+                    setTrigger(false);
                 }
             };
             window.addEventListener('scroll', checkScrollTop);
         }
-    }, [window, triger]);
+    }, [window, trigger]);
 
     const scrollTop = () => {
         if (typeof window !== 'undefined') {
@@ -48,22 +97,11 @@ const ScrollTop = (props) => {
         <div
             onClick={scrollTop}
             role="presentation"
-            className={cx(
-                'fixed',
-                'bottom-space-16',
-                'right-space-16',
-                'z-1099',
-                'visible',
-                {
-                    'hidden invisible': !triger,
-                },
-            )}
+            className={cx('fixed', 'bottom-space-16', 'right-space-16', 'z-1099', 'visible', {
+                'hidden invisible': !trigger,
+            })}
         >
-            <Button
-                iconOnly
-                icon={<ArrowUp />}
-                variant="primary"
-            />
+            <Button className="!px-[10px]" iconOnly icon={<ArrowUp />} variant="primary" />
         </div>
     );
 };
