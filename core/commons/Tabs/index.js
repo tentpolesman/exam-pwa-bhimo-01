@@ -1,8 +1,9 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable jsx-a11y/anchor-is-valid */
+import React from 'react';
 import CmsRenderer from '@core_modules/cms/components/cms-renderer';
 import cx from 'classnames';
-import React from 'react';
+import { useTranslation } from 'next-i18next';
 
 const Tabs = (props) => {
     const {
@@ -19,6 +20,7 @@ const Tabs = (props) => {
         tabContentClassName,
     } = props;
 
+    const { t } = useTranslation(['common']);
     const [activeTabs, setActiveTabs] = React.useState(0);
 
     const tabClasses = cx(
@@ -58,7 +60,7 @@ const Tabs = (props) => {
                     {!tabHasContent && allItems ? (
                         <li>
                             <a href="#" className={cx('default-active', 'min-w-[100px]', tabClasses, tabActive)}>
-                                All Items
+                                {t('common:label:allItems')}
                             </a>
                         </li>
                     ) : null}

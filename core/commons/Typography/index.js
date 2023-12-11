@@ -104,6 +104,8 @@ Typography.propTypes = {
         'h5',
         'bd-1',
         'bd-1a',
+        'bd-1b',
+        'bd-1c',
         'bd-2',
         'bd-2a',
         'bd-2b',
