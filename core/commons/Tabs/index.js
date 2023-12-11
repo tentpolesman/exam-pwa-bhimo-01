@@ -13,9 +13,9 @@ const Tabs = (props) => {
         tabWrapperClassName,
         tabTitleWrapperClassName,
         tabTitleClassName,
+        tabTitleActiveClassName,
         tabTitleListClassName,
         tabTitleListActiveClassName,
-        tabTitleActiveClassName,
         tabContentClassName,
     } = props;
 

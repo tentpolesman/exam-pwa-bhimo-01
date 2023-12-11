@@ -30,8 +30,8 @@ You can see in `core\modules\product\pages\default\components\DesktopTabs\index.
 | `tabWrapperClassName` | optional | class name for tabs wrapper | `string` |
 | `tabTitleWrapperClassName` | optional | class name for tabs title wrapper | `string` |
 | `tabTitleClassName` | optional | class name for tabs title | `string` |
+| `tabTitleActiveClassName` | optional | class name for tabs title active | `string` |
 | `tabTitleListClassName` | optional | class name for tabs title list | `string` |
 | `tabTitleListActiveClassName` | optional | class name for tabs title list active | `string` |
-| `tabTitleActiveClassName` | optional | class name for tabs title active | `string` |
 | `tabContentClassName` | optional | class name for tabs content | `string` |
 
