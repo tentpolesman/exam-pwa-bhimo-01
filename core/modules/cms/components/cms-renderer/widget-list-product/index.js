@@ -3,17 +3,14 @@
 /* eslint-disable guard-for-in */
 /* eslint-disable no-plusplus */
 /* eslint-disable no-return-assign */
-import GridList from '@common_gridlist';
 import Carousel from '@common_slick/Caraousel';
 import SkeletonWidget from '@common_slick/Caraousel/Skeleton';
-import { drawerFilterOnDesktopConfig } from '@services/graphql/repository/pwa_config';
 import { generateQueries, getProductListConditions } from '@core_modules/cms/helpers/getProductListConditions';
 import { getProductList } from '@core_modules/cms/services/graphql';
 import ProductItem from '@plugin_productitem';
 import ErrorMessage from '@plugin_productlist/components/ErrorMessage';
 import React, { useMemo } from 'react';
 import { useTranslation } from 'next-i18next';
-import ProductList from '@plugin_productlist/components';
 
 /**
  * [CONSTANT] variable
@@ -35,25 +32,11 @@ const WidgetListProduct = (props) => {
     const [fetchProductList, { data, loading, error }] = getProductList();
     const dataItems = data?.products?.items || [];
 
-    let drawerFilterOnDesktop = {};
-    const { data: dataDrawerFilterOnDesktop, loading: loadingDrawerFilterOnDesktop } = drawerFilterOnDesktopConfig();
-
     React.useEffect(() => {
         fetchProductList({
             variables: { ...dataFilter, pageSize: parseInt(products_count, 10) },
         });
     }, []);
-
-    if (
-        !loadingDrawerFilterOnDesktop &&
-        dataDrawerFilterOnDesktop &&
-        dataDrawerFilterOnDesktop.storeConfig &&
-        dataDrawerFilterOnDesktop.storeConfig.pwa
-    ) {
-        drawerFilterOnDesktop = {
-            ...dataDrawerFilterOnDesktop.storeConfig.pwa,
-        };
-    }
 
     /**
      * [TEMPLATE] type slider
