@@ -9,7 +9,7 @@
         "name": "Produk"
     },
     "search": {
-        "title": "Cari",
+        "title": "Apa yang anda cari?",
         "mainTitle": "Koleksi terbaru",
         "backTitle": "kembali ke produk",
         "location": "Cari Lokasi",
@@ -44,13 +44,14 @@
     },
     "cart": {
         "myCart": "Cart Saya",
-        "cardTotal": "Cart Subtotal",
+        "cardTotal": "Subtotal",
         "deleteSuccess": "Hapus item cart berhasil",
         "deleteFailed": "Hapus item cart gagal",
         "updateSuccess": "Update item cart berhasil",
         "updateFailed": "Update item cart gagal",
         "emptyCart": "ANDA TIDAK MEMILIKI ITEM DI KERANJANG BELANJA ANDA.",
         "oos": "Stok habis",
+        "inStock": "Stok tersedia",
         "cartError": "Ada kesalahan di keranjang anda, silahkan bersihkan dan ulangi kembali"
     },
     "subtotal": "Subtotal",
@@ -192,6 +193,9 @@
         "seeMore": "Lihat Selebihnya",
         "seeLess": "Lihat Sedikitnya",
         "chooseFile": "Pilih File",
-        "pleaseWait": "Mohon Menunggu"
+        "pleaseWait": "Mohon Menunggu",
+        "addToWishlist": "Tambahkan Favorit",
+        "addToCompare": "Tambahkan Komparasi",
+        "allItems": "Semua Barang"
     }
 }

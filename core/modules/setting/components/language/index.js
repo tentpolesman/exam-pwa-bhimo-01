@@ -1,21 +1,20 @@
+/* eslint-disable max-len */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable no-return-assign */
-import React, { useState, useEffect, useRef } from 'react';
-import { withTranslation } from 'next-i18next';
 import { translation } from '@config';
-import cookies from 'js-cookie';
 import ViewLanguage from '@core_modules/setting/components/language/view';
 import { getStoreName } from '@core_modules/setting/services/graphql';
+import cookies from 'js-cookie';
+import { withTranslation } from 'next-i18next';
+import React, { useEffect, useRef, useState } from 'react';
 
 const COOKIES_APP_LANG = 'app_lang';
 const COOKIES_STORE_CODE = 'store_code_storage';
 
 const SwitcherLanguage = (props) => {
     const { i18n, onCallbackLanguage } = props;
-    const [anchorEl, setAnchorEl] = useState(null);
     const { data: remoteLang, loading: loadDataLang } = getStoreName();
-    const open = Boolean(anchorEl);
-    const id = open ? 'simple-popover' : undefined;
+    const [open, setOpen] = React.useState(false);
     const mount = useRef();
     const [lang, setLang] = useState({});
 
@@ -75,9 +74,7 @@ const SwitcherLanguage = (props) => {
                         setLang(getDataCookies);
                     }
                     if (storeCode !== undefined && loginAsCustomer) {
-                        const tempLang = (
-                            loginAsCustomer.value === 'en' || loginAsCustomer.value === 'id'
-                        ) ? loginAsCustomer.value : defaultLangFromDatabase;
+                        const tempLang = loginAsCustomer.value === 'en' || loginAsCustomer.value === 'id' ? loginAsCustomer.value : defaultLangFromDatabase;
                         const getDataCookies = {
                             label: loginAsCustomer.label,
                             value: tempLang,
@@ -93,42 +90,50 @@ const SwitcherLanguage = (props) => {
         }
         return () => (mount.current = false);
     }, [remoteLang]);
-
-    /**
-     * [METHOD] handle click popover
-     * @param {*} event
-     */
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    /**
-     * [METHOD] handle close popover
-     */
-    const handleClose = () => setAnchorEl(null);
-
     /**
      * [METHOD] on click language
      */
     const onClickLanguage = ({ item }) => {
-        const getDataSelect = item.value !== 'en' && item.value !== 'id' ? {
-            label: item.label,
-            value: translation.defaultLanguage,
-            storeCode: item.storeCode,
-        } : {
-            label: item.label,
-            value: item.value,
-            storeCode: item.storeCode,
-        };
+        const getDataSelect = item.value !== 'en' && item.value !== 'id'
+            ? {
+                label: item.label,
+                value: translation.defaultLanguage,
+                storeCode: item.storeCode,
+            }
+            : {
+                label: item.label,
+                value: item.value,
+                storeCode: item.storeCode,
+            };
         i18n.changeLanguage(getDataSelect.value);
         cookies.set(COOKIES_STORE_CODE, getDataSelect.storeCode);
         cookies.set(COOKIES_APP_LANG, getDataSelect);
         setLang(getDataSelect);
-        handleClose();
+        setOpen(false);
         setTimeout(() => {
             window.location.reload();
         }, 100);
     };
+
+    React.useEffect(() => {
+        if (window !== 'undefined' && open) {
+            const header = document.getElementById('header-inner');
+            const checkScrollTop = () => {
+                // handle show hide header
+                if (header) {
+                    if (
+                        document.getElementById('top-header__content--currency-language-changer-menu__language-switcher')
+                        && window.pageYOffset > 100
+                    ) {
+                        setOpen(false);
+                    }
+                }
+            };
+            window.addEventListener('scroll', checkScrollTop);
+        } else {
+            window.removeEventListener('scroll', () => {}, false);
+        }
+    }, [open, window]);
 
     if (remoteLang) {
         remoteLang.availableStores.map((item) => {
@@ -140,15 +145,12 @@ const SwitcherLanguage = (props) => {
             return null;
         });
         const propsOther = {
-            id,
             open,
-            anchorEl,
+            setOpen,
             dataLang,
             loadDataLang,
             lang,
             onCallbackLanguage,
-            handleClick,
-            handleClose,
             onClickLanguage,
         };
         return <ViewLanguage {...props} {...propsOther} remoteLang={remoteLang} />;

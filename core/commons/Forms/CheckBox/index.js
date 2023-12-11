@@ -18,6 +18,7 @@ const CheckBox = (props) => {
         classNames = {},
         useLoadMore = false,
         size = 'md',
+        flex = 'col',
     } = props;
 
     const { t } = useTranslation(['common']);
@@ -25,6 +26,12 @@ const CheckBox = (props) => {
     const [selected, setSelected] = React.useState(value);
     const [more, setMore] = React.useState(7);
     const dataItems = useLoadMore ? data?.slice(0, more) : data;
+
+    let flexClass = 'flex-col';
+
+    if (flex === 'row') {
+        flexClass = 'flex-row';
+    }
 
     // handle load more and load less list data
     const handleMore = () => {
@@ -56,7 +63,7 @@ const CheckBox = (props) => {
                     {label}
                 </Typography>
             ) : null}
-            <div className={cx('flex', 'flex-col', 'mt-2', checkboxGroupClasses)}>
+            <div className={cx('flex', flexClass, 'mt-2', checkboxGroupClasses)}>
                 {dataItems.map((item, idx) => {
                     if (CustomItem) {
                         return (

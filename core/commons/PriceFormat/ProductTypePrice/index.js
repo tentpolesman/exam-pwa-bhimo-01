@@ -2,6 +2,7 @@
 import React from 'react';
 import cx from 'classnames';
 import Typography from '@common_typography/index';
+import useMediaQuery from '@hook/useMediaQuery';
 import { formatPrice } from '@helper_currency';
 import { useTranslation } from 'next-i18next';
 
@@ -22,7 +23,7 @@ const AsLowAsText = () => {
     const { t } = useTranslation(['common']);
     return (
         <Typography
-            variant="bd-2b"
+            variant="bd-3b"
             className={cx('price-text', 'text-neutral-500')}
         >
             {` ${t('common:price:asLowAs')} `}
@@ -34,7 +35,7 @@ const StartingAt = () => {
     const { t } = useTranslation(['common']);
     return (
         <Typography
-            variant="span"
+            variant="bd-3b"
             className={cx('price-text', 'text-neutral-500')}
         >
             {` ${t('common:price:startFrom')} `}
@@ -43,7 +44,7 @@ const StartingAt = () => {
 };
 
 const SimpleProductTypePrice = ({
-    variant = 'md',
+    variant = 'lg',
     productType,
     priceRange,
     priceTiers,
@@ -60,7 +61,14 @@ const SimpleProductTypePrice = ({
     const nowTime = new Date(Date.now());
     const startTime = new Date(specialFromDate);
     const endTime = new Date(specialToDate);
-    const isSm = variant === 'sm';
+    const { isDesktop } = useMediaQuery();
+    const isVariantLg = variant === 'lg';
+    const priceVariantDesktopLabel = isVariantLg ? 'bd-1c' : 'bd-1a';
+    const priceVariantDesktopLabelSub = isVariantLg ? 'bd-2b' : 'bd-3b';
+    const priceVariantMobileLabel = isVariantLg ? 'h2' : 'bd-2';
+    const priceVariantMobileLabelSub = isVariantLg ? 'bd-2b' : 'bd-3b';
+    const priceLabelVariant = isDesktop ? priceVariantDesktopLabel : priceVariantMobileLabel;
+    const priceLabelSubVariant = isDesktop ? priceVariantDesktopLabelSub : priceVariantMobileLabelSub;
     let validSpecial = true;
     if (specialFromDate && specialToDate) {
         validSpecial = nowTime >= startTime && nowTime <= endTime;
@@ -70,7 +78,7 @@ const SimpleProductTypePrice = ({
         return (
             <div className="price-case-grouped">
                 <StartingAt />
-                <Typography variant="span" className={cx('price-text')}>
+                <Typography variant={priceLabelVariant} className={cx('price-text')}>
                     {formatPrice(finalPrice.value + otherPrice, finalPrice.currency, currencyCache)}
                 </Typography>
             </div>
@@ -87,13 +95,13 @@ const SimpleProductTypePrice = ({
                 return (
                     <div className="price-case-1">
                         {/* case 1 */}
-                        <Typography variant={isSm ? 'bd-2' : 'h2'} className={cx('price-text')}>
+                        <Typography variant={priceLabelVariant} className={cx('price-text')}>
                             {formatPrice(finalPrice.value + otherPrice, finalPrice.currency, currencyCache)}
                         </Typography>
                         {!isPdp && !isQuickView && (
                             <div>
                                 <AsLowAsText />
-                                <Typography variant={isSm ? 'bd-3b' : 'bd-2b'} className={cx('price-text')}>
+                                <Typography variant={priceLabelSubVariant} className={cx('price-text', 'text-neutral-600')}>
                                     {formatPrice(lowestPriceTier.final_price.value + otherPrice, lowestPriceTier.final_price.currency, currencyCache)}
                                 </Typography>
                             </div>
@@ -106,10 +114,10 @@ const SimpleProductTypePrice = ({
                 return (
                     <div className="price-case-2">
                         {/* case 2 */}
-                        <Typography variant={isSm ? 'bd-2' : 'h2'} className={cx('price-text')}>
+                        <Typography variant={priceLabelVariant} className={cx('price-text')}>
                             {formatPrice(finalPrice.value + otherPrice, finalPrice.currency, currencyCache)}
                         </Typography>
-                        <Typography variant={isSm ? 'bd-3b' : 'bd-2b'} className={cx('price-text')}>
+                        <Typography variant={priceLabelSubVariant} className={cx('price-text')}>
                             <strike>{formatPrice(regularPrice.value + otherPrice, regularPrice.currency, currencyCache)}</strike>
                         </Typography>
                     </div>
@@ -120,17 +128,17 @@ const SimpleProductTypePrice = ({
                 <div className="price-case-3">
                     {/* case 3 */}
                     <div className="flex flex-col">
-                        <Typography variant={isSm ? 'bd-2' : 'h2'} className={cx('price-text')}>
+                        <Typography variant={priceLabelVariant} className={cx('price-text')}>
                             {formatPrice(finalPrice.value + otherPrice, finalPrice.currency, currencyCache)}
                         </Typography>
-                        <Typography variant={isSm ? 'bd-3b' : 'bd-2b'} className={cx('price-text')}>
+                        <Typography variant={priceLabelSubVariant} className={cx('price-text')}>
                             <strike>{formatPrice(regularPrice.value + otherPrice, regularPrice.currency, currencyCache)}</strike>
                         </Typography>
                     </div>
                     {!isPdp && !isQuickView && (
                         <>
                             <AsLowAsText />
-                            <Typography variant={isSm ? 'bd-3b' : 'bd-2b'} className={cx('price-text')}>
+                            <Typography variant={priceLabelSubVariant} className={cx('price-text', 'text-neutral-600')}>
                                 {formatPrice(lowestPriceTier.final_price.value + otherPrice, lowestPriceTier.final_price.currency, currencyCache)}
                             </Typography>
                         </>
@@ -147,10 +155,10 @@ const SimpleProductTypePrice = ({
             return (
                 <div className="price-case-4">
                     {/* case 4 */}
-                    <Typography variant={isSm ? 'bd-2' : 'h2'} className={cx('price-text')}>
+                    <Typography variant={priceLabelVariant} className={cx('price-text')}>
                         {formatPrice(firstTierPrice.final_price.value + otherPrice, firstTierPrice.final_price.currency, currencyCache)}
                     </Typography>
-                    <Typography variant={isSm ? 'bd-3b' : 'bd-2b'} className={cx('price-text')}>
+                    <Typography variant={priceLabelSubVariant} className={cx('price-text')}>
                         <strike>{formatPrice(regularPrice.value + otherPrice, regularPrice.currency, currencyCache)}</strike>
                     </Typography>
                 </div>
@@ -161,10 +169,10 @@ const SimpleProductTypePrice = ({
             return (
                 <div className="price-case-5">
                     {/* case 5 */}
-                    <Typography variant={isSm ? 'bd-2' : 'h2'} className={cx('price-text')}>
+                    <Typography variant={priceLabelVariant} className={cx('price-text')}>
                         {formatPrice(finalPrice.value + otherPrice, finalPrice.currency, currencyCache)}
                     </Typography>
-                    <Typography variant={isSm ? 'bd-3b' : 'bd-2b'} className={cx('price-text')}>
+                    <Typography variant={priceLabelSubVariant} className={cx('price-text')}>
                         <strike>{formatPrice(regularPrice.value + otherPrice, regularPrice.currency, currencyCache)}</strike>
                     </Typography>
                 </div>
@@ -175,10 +183,10 @@ const SimpleProductTypePrice = ({
             return (
                 <div className="price-case-6">
                     {/* case 6 */}
-                    <Typography variant={isSm ? 'bd-2' : 'h2'} className={cx('price-text')}>
+                    <Typography variant={priceLabelVariant} className={cx('price-text')}>
                         {formatPrice(firstTierPrice.final_price.value + otherPrice, firstTierPrice.final_price.currency, currencyCache)}
                     </Typography>
-                    <Typography variant={isSm ? 'bd-3b' : 'bd-2b'} className={cx('price-text')}>
+                    <Typography variant={priceLabelSubVariant} className={cx('price-text')}>
                         <strike>{formatPrice(regularPrice.value + otherPrice, regularPrice.currency, currencyCache)}</strike>
                     </Typography>
                 </div>
@@ -190,17 +198,17 @@ const SimpleProductTypePrice = ({
             <div className="price-case-7">
                 {/* case 7 */}
                 <div className="flex flex-col">
-                    <Typography variant={isSm ? 'bd-2' : 'h2'} className={cx('price-text')}>
+                    <Typography variant={priceLabelVariant} className={cx('price-text')}>
                         {formatPrice(finalPrice.value + otherPrice, finalPrice.currency, currencyCache)}
                     </Typography>
-                    <Typography variant={isSm ? 'bd-3b' : 'bd-2b'} className={cx('price-text')}>
+                    <Typography variant={priceLabelSubVariant} className={cx('price-text')}>
                         <strike>{formatPrice(regularPrice.value + otherPrice, regularPrice.currency, currencyCache)}</strike>
                     </Typography>
                 </div>
                 {!isPdp && !isQuickView && (
                     <>
                         <AsLowAsText />
-                        <Typography variant={isSm ? 'bd-3b' : 'bd-2b'} className={cx('price-text')}>
+                        <Typography variant={priceLabelSubVariant} className={cx('price-text', 'text-neutral-600')}>
                             {formatPrice(firstTierPrice.final_price.value + otherPrice, firstTierPrice.final_price.currency, currencyCache)}
                         </Typography>
                     </>
@@ -216,7 +224,7 @@ const SimpleProductTypePrice = ({
     if (regularPrice.value === finalPrice.value) {
         return (
             <Typography
-                variant={isSm ? 'bd-2b' : 'h2'}
+                variant={priceLabelVariant}
                 className={cx('price-text', 'text-neutral-400', 'price-case-8')}
             >
                 {formatPrice(finalPrice.value + otherPrice, finalPrice.currency, currencyCache)}
@@ -228,7 +236,7 @@ const SimpleProductTypePrice = ({
         <div className={cx('price-case-9 price-text-discount', 'inline-flex', 'flex-col')}>
             {/* case 9 */}
             <Typography
-                variant={isSm ? 'bd-2' : 'h2'}
+                variant={priceLabelVariant}
                 className={cx('price-text', 'text-neutral-400')}
             >
                 {
@@ -239,7 +247,7 @@ const SimpleProductTypePrice = ({
             {
                 validSpecial && (
                     <Typography
-                        variant={isSm ? 'bd-3b' : 'bd-2b'}
+                        variant={priceLabelSubVariant}
                         className={cx('price-text')}
                     >
                         <strike>{formatPrice(regularPrice.value + otherPrice, regularPrice.currency, currencyCache)}</strike>

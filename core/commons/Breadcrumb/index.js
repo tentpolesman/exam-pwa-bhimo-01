@@ -58,6 +58,7 @@ const Breadcrumb = ({
     data = [],
     iconHomeOnly,
     withHome = true,
+    className,
 }) => {
     const { t } = useTranslation(['common']);
     return (
@@ -67,6 +68,7 @@ const Breadcrumb = ({
             'items-center',
             'mb-[10px]',
             'overflow-x-auto',
+            className,
         )}
         >
             {

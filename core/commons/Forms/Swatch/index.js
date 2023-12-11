@@ -43,7 +43,7 @@ const Swatch = ({
         return (
             <div className={cx(
                 'p-[1px]',
-                'rounded-full',
+                'rounded-full border-[1px] border-neutral-white',
                 checked ? 'border-[1px] border-primary-700' : '',
                 disabled ? 'border-yellow-400 opacity-40' : 'hover:border-[1px] hover:border-primary-700',
             )}

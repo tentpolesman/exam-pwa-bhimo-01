@@ -8,7 +8,8 @@
         "search": "Pencarian ...",
         "brand": "Brand",
         "category": "Kategory",
-        "searchResult": "Hasil pencarian"
+        "searchResult": "Hasil pencarian",
+        "quickView": "Tampilan Cepat"
     },
     "button": {
         "save": "Simpan",
@@ -20,5 +21,14 @@
     },
     "wishlist": {
         "addWithoutLogin": "Silahkan masuk untuk menambahkan produk ini ke wishlist"
+    },
+    "filter": {
+        "title": "Pilihan Belanja",
+        "viewAs": "Lihat Sebagai",
+        "showMore": "Tampilkan lebih banyak",
+        "lessMore": "Tampilkan lebih sedikit",
+        "others": "Lainya",
+        "reset": "Setel Ulang",
+        "viewResult": "Lihat Hasil"
     }
 }

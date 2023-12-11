@@ -34,6 +34,7 @@ import CartIcon from '@heroicons/react/24/outline/ShoppingCartIcon';
 import HeartIcon from '@heroicons/react/24/outline/HeartIcon';
 import CompareIcon from '@heroicons/react/24/outline/ArrowsRightLeftIcon';
 import EyeIcon from '@heroicons/react/24/outline/EyeIcon';
+import EyeSolidIcon from '@heroicons/react/24/solid/EyeIcon';
 
 const CustomizableOption = dynamic(() => import('@plugin_customizableitem'));
 
@@ -406,8 +407,8 @@ const ProductItem = (props) => {
 
         if (loadPrice) {
             return (
-                <div className="mgz-single-product-price">
-                    <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-full mb-4" />
+                <div className="w-full h-auto">
+                    <div className="h-4 bg-neutral-100 animate-pulse rounded-full dark:bg-gray-700 w-[75%]" />
                     {' '}
                 </div>
             );
@@ -454,7 +455,7 @@ const ProductItem = (props) => {
                             loading={loading}
                         >
                             <Typography color="white" className="font-normal text-sm">
-                                Add To Cart
+                                {t('common:button:addToCart')}
                             </Typography>
                         </Button>
                     )}
@@ -466,9 +467,8 @@ const ProductItem = (props) => {
                                     icon={<HeartIcon />}
                                     iconProps={{ className: feed ? '!w-4 !h-4 text-white' : '!w-4 !h-4' }}
                                     variant={feed ? 'primary' : 'outlined'}
-                                    className="w-10 h-10 border-neutral-200"
-                                    classNameText="!w-4 !h-4"
                                     onClick={() => handleFeed(props)}
+                                    className="!p-[10px] !border-neutral-200 hover:bg-primary"
                                 />
                             )}
                             {enableProductCompare && (
@@ -477,8 +477,8 @@ const ProductItem = (props) => {
                                     icon={<CompareIcon />}
                                     iconProps={{ className: '!w-4 !h-4' }}
                                     variant="outlined"
-                                    className="w-10 h-10 border-neutral-200"
                                     onClick={() => handleSetCompareList(props)}
+                                    className="!p-[10px] !border-neutral-200 hover:bg-primary"
                                 />
                             )}
                         </div>
@@ -524,23 +524,39 @@ const ProductItem = (props) => {
                             <WeltpixelLabel t={t} weltpixel_labels={weltpixel_labels} categoryLabel />
                         )}
                         {showQuickView && (
-                            <Button
-                                onClick={handleQuickView}
-                                icon={<EyeIcon />}
-                                iconProps={{
-                                    className: 'w-3 h-3 !text-neutral-800 mr-[0px] desktop:mr-[6px]',
-                                }}
-                                classNameText="text-sm !text-neutral-800 justify-center"
-                                className={classNames(
-                                    '!bg-neutral-50 shadow-sm desktop:shadow-md desktop:invisible',
-                                    'desktop:group-hover:visible',
-                                    'absolute bottom-1 left-1 w-7 px-0 desktop:px-3 py-0 desktop:py-2',
-                                    'desktop:left-1/2 desktop:bottom-4 desktop:-translate-x-1/2 z-[2] desktop:w-32',
-                                )}
-                                size="sm"
-                            >
-                                <span className="hidden desktop:flex">Quick View</span>
-                            </Button>
+                            <>
+                                <Button
+                                    onClick={handleQuickView}
+                                    icon={<EyeIcon />}
+                                    iconProps={{
+                                        className: 'w-3 h-3 !text-neutral-800 mr-[6px]',
+                                    }}
+                                    className={classNames(
+                                        '!bg-neutral-50 shadow-md invisible',
+                                        'desktop:group-hover:visible',
+                                        'absolute px-3 py-2',
+                                        'left-1/2 bottom-4 -translate-x-1/2 z-[2] w-32',
+                                    )}
+                                    size="sm"
+                                >
+                                    <span className="text-sm !text-neutral-900 justify-center">
+                                        {t('catalog:title:quickView')}
+                                    </span>
+                                </Button>
+                                <Button
+                                    onClick={handleQuickView}
+                                    iconOnly
+                                    icon={<EyeSolidIcon />}
+                                    iconProps={{
+                                        className: 'w-3 h-3 !text-neutral-800',
+                                    }}
+                                    className={classNames(
+                                        'desktop:hidden',
+                                        '!bg-neutral-50 shadow-md',
+                                        'absolute bottom-2 left-2 z-[2] !p-1 tablet:!p-2',
+                                    )}
+                                />
+                            </>
                         )}
                         <ImageProductView
                             t={t}
@@ -591,7 +607,7 @@ const ProductItem = (props) => {
                                     propsItem={{
                                         className: 'w-5 h-5',
                                     }}
-                                    labelAddToCart="Add to cart"
+                                    labelAddToCart={t('common:button:addToCart')}
                                     isGrid={isGrid}
                                     {...other}
                                     customizableOptions={customizableOptions}
@@ -625,8 +641,10 @@ const ProductItem = (props) => {
                     dataPrice={getPrice()}
                     loadPrice={loadPrice}
                     errorPrice={errorPrice}
+                    keyProduct={url_key}
                     t={t}
                     weltpixel_labels={weltpixel_labels}
+                    storeConfig={storeConfig}
                 />
             )}
             <div
@@ -653,23 +671,39 @@ const ProductItem = (props) => {
                                 <WeltpixelLabel t={t} weltpixel_labels={weltpixel_labels} categoryLabel />
                             )}
                             {showQuickView && (
-                                <Button
-                                    onClick={handleQuickView}
-                                    icon={<EyeIcon />}
-                                    iconProps={{
-                                        className: 'w-3 h-3 !text-neutral-800 mr-[0px] desktop:mr-[6px]',
-                                    }}
-                                    classNameText="text-sm !text-neutral-800 justify-center"
-                                    className={classNames(
-                                        '!bg-neutral-50 shadow-sm desktop:shadow-md desktop:invisible',
-                                        'desktop:group-hover:visible',
-                                        'absolute bottom-1 left-1 w-7 px-0 desktop:px-3 py-0 desktop:py-2',
-                                        'desktop:left-2 desktop:bottom-2 z-[2] desktop:w-32',
-                                    )}
-                                    size="sm"
-                                >
-                                    <span className="hidden desktop:flex">Quick View</span>
-                                </Button>
+                                <>
+                                    <Button
+                                        onClick={handleQuickView}
+                                        icon={<EyeIcon />}
+                                        iconProps={{
+                                            className: 'w-3 h-3 !text-neutral-800 mr-[6px]',
+                                        }}
+                                        className={classNames(
+                                            '!bg-neutral-50 shadow-md invisible',
+                                            'desktop:group-hover:visible',
+                                            'absolute px-3 py-2',
+                                            'desktop:left-2 desktop:bottom-2 z-[2] desktop:w-32',
+                                        )}
+                                        size="sm"
+                                    >
+                                        <span className="text-sm !text-neutral-900 justify-center">
+                                            {t('catalog:title:quickView')}
+                                        </span>
+                                    </Button>
+                                    <Button
+                                        iconOnly
+                                        onClick={handleQuickView}
+                                        icon={<EyeSolidIcon />}
+                                        iconProps={{
+                                            className: 'w-3 h-3 !text-neutral-800',
+                                        }}
+                                        className={classNames(
+                                            'desktop:hidden',
+                                            '!bg-neutral-50 shadow-md',
+                                            'absolute bottom-2 left-2 z-[2] !p-1 tablet:!p-2',
+                                        )}
+                                    />
+                                </>
                             )}
                             <ImageProductView
                                 t={t}
@@ -715,7 +749,7 @@ const ProductItem = (props) => {
                                         catalogList={catalogList}
                                         handleSelecteProduct={setSpesificProduct}
                                         showAddToCart={showAddToCart}
-                                        labelAddToCart="Add to cart"
+                                        labelAddToCart={t('common:button:addToCart')}
                                         isGrid={isGrid}
                                         {...other}
                                         CustomFooter={<CustomerFooter />}
@@ -735,7 +769,7 @@ const ProductItem = (props) => {
                                     id="plugin-productTitle-typography"
                                 >
                                     <Button variant="primary" className="w-full text-" classNameText="justify-center text-[0.75rem]">
-                                        Add To Cart
+                                        {t('common:button:addToCart')}
                                     </Button>
                                 </Link>
                             </div>
