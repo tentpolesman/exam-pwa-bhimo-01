@@ -8,36 +8,14 @@ import CmsRenderer from '@core_modules/cms/components/cms-renderer';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import getPath from '@helper_getpath';
 import { getResolver, setResolver } from '@helper_localstorage';
-import { PRIMARY, WHITE } from '@theme_color';
+// import { PRIMARY, WHITE } from '@theme_color';
 import 'animate.css';
 import cx from 'classnames';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import React, { useRef } from 'react';
-import css from 'styled-jsx/css';
 
 const MenuChildren = dynamic(() => import('@common_headerdesktop/components/v1/mcategoryChildren'), { ssr: false });
-
-const generateMenuStyles = (props) => {
-    const {
-        bg_color, color, bg_hover_color, hover_color, dropdown_bgcolor, dropdown_animation_time,
-    } = props;
-
-    return css.resolve`
-        a {
-            background-color: ${bg_color ? `${bg_color} !important` : WHITE};
-            color: ${color ? `${color} !important` : PRIMARY};
-        }
-        a:hover {
-            background-color: ${bg_hover_color ? `${bg_hover_color} !important` : '#F3F3F3'};
-            color: ${hover_color ? `${hover_color} !important` : '#FF0000'};
-        }
-        .mega-menu {
-            background-color: ${dropdown_bgcolor || WHITE};
-            animation-duration: ${dropdown_animation_time || '1'}s;
-        }
-    `;
-};
 
 const Menu = (props) => {
     const { data, storeConfig } = props;
@@ -103,7 +81,7 @@ const Menu = (props) => {
             <ul className="nav" role="menubar" id="header-nav-menubar">
                 {menu.map((val, idx) => {
                     if ((val.include_in_menu || storeConfig.pwa.ves_menu_enable) && val.name) {
-                        const { className, styles } = generateMenuStyles(val);
+                        // const { className, styles } = generateMenuStyles(val);
 
                         const linkEl = useRef(null);
                         const megaMenuRef = useRef(null);
@@ -148,9 +126,18 @@ const Menu = (props) => {
                             >
                                 {val.link && val.link !== '#' ? (
                                     <>
-                                        {val.before_html && <div dangerouslySetInnerHTML={{ __html: val.before_html }} />}
+                                        {val.before_html && (
+                                            <div
+                                                dangerouslySetInnerHTML={{
+                                                    __html: val.before_html,
+                                                }}
+                                            />
+                                        )}
                                         <Link
-                                            href={{ pathname: generatedLink[0], query: generatedLink[1] }}
+                                            href={{
+                                                pathname: generatedLink[0],
+                                                query: generatedLink[1],
+                                            }}
                                             as={generatedLink[1]}
                                             prefetch={false}
                                             legacyBehavior
@@ -171,27 +158,36 @@ const Menu = (props) => {
                                                         linkEl.current.innerHTML = linkEl.current.innerHTML.replace(val.hover_caret, val.caret);
                                                     }
                                                 }}
-                                                className={
-                                                    cx(
-                                                        className,
-                                                        'text-md',
-                                                        'font-normal',
-                                                        'leading-lg',
-                                                        'tracking-normal',
-                                                    )
-                                                }
+                                                className={cx(
+                                                    // className,
+                                                    'text-md',
+                                                    'font-normal',
+                                                    'leading-lg',
+                                                    'tracking-normal',
+                                                )}
                                             />
                                         </Link>
-                                        {val.after_html && <div dangerouslySetInnerHTML={{ __html: val.after_html }} />}
+                                        {val.after_html && (
+                                            <div
+                                                dangerouslySetInnerHTML={{
+                                                    __html: val.after_html,
+                                                }}
+                                            />
+                                        )}
                                     </>
                                 ) : (
-                                    <a href="#" dangerouslySetInnerHTML={{ __html: val.name }} />
+                                    <a
+                                        href="#"
+                                        dangerouslySetInnerHTML={{
+                                            __html: val.name,
+                                        }}
+                                    />
                                 )}
 
                                 {val.children.length > 0 ? (
                                     <div
                                         className={cx(
-                                            className,
+                                            // className,
                                             'mega-menu',
                                             'grid',
                                             'bg-neutral-white',
@@ -219,7 +215,7 @@ const Menu = (props) => {
                                         )}
                                     </div>
                                 ) : null}
-                                {styles}
+                                {/* {styles} */}
                             </li>
                         );
                     }
@@ -289,7 +285,7 @@ const Menu = (props) => {
                     .nav > li > a {
                         display: block;
                         line-height: 3.5;
-                        padding: 0 1.25em;
+                        padding: 0 1.25rem 0 0.25rem;
                         transition: all 0.3s ease;
                         z-index: 510;
                         position: relative;

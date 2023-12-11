@@ -23,17 +23,21 @@ const CoreTopNavigation = (props) => {
         isLogin,
         showGlobalPromo,
         enablePopupInstallation,
+        appName,
         installMessage,
         isHomepage,
+        deviceType,
     } = props;
     let data = propsVesMenu;
     let loading = !propsVesMenu;
+    const [deviceWidth, setDeviceWidth] = React.useState(0);
     if (!data && storeConfig && storeConfig.pwa) {
         const { data: dataVesMenu, loading: loadingVesMenu } = storeConfig.pwa.ves_menu_enable
             ? getVesMenu({
                 variables: {
                     alias: storeConfig.pwa.ves_menu_alias,
                 },
+                fetchPolicy: 'no-cache',
             })
             : getCategories();
         data = dataVesMenu;
@@ -49,6 +53,12 @@ const CoreTopNavigation = (props) => {
         }
     }
     const client = useApolloClient();
+
+    React.useEffect(() => {
+        if (typeof window !== 'undefined') {
+            setDeviceWidth(window.innerWidth);
+        }
+    }, []);
 
     const handleLogout = async () => {
         window.backdropLoader(true);
@@ -110,8 +120,11 @@ const CoreTopNavigation = (props) => {
             showGlobalPromo={showGlobalPromo}
             modules={modules}
             enablePopupInstallation={enablePopupInstallation}
+            appName={appName}
             installMessage={installMessage}
             isHomepage={isHomepage}
+            deviceType={deviceType}
+            deviceWidth={deviceWidth}
         />
     );
 };

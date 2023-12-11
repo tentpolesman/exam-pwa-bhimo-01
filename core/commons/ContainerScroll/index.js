@@ -19,10 +19,9 @@ const ContainerScroll = ({
     const containerRef = React.useRef(null);
     const isHorizontal = variant === 'horizontal';
     const isVertical = variant === 'vertical';
-
     const marginSize = 12;
     // calculates the width of the first child from the list rendered
-    const containerChildrenWidth = ((containerRef?.current?.children[0]?.clientWidth + marginSize) * slidesToScroll) || 0;
+    const [containerChildrenWidth, setContainerChildrenWidth] = React.useState(0);
 
     const onClickArrowLeft = () => {
         containerRef.current.scrollLeft -= containerChildrenWidth;
@@ -31,6 +30,12 @@ const ContainerScroll = ({
     const onClickArrowRight = () => {
         containerRef.current.scrollLeft += containerChildrenWidth;
     };
+
+    React.useEffect(() => {
+        if (containerRef?.current?.children?.length > 0) {
+            setContainerChildrenWidth((containerRef.current.children[0].clientWidth + marginSize) * slidesToScroll);
+        }
+    }, [containerRef]);
 
     return (
         <div

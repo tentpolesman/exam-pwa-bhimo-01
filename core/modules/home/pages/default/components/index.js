@@ -1,6 +1,6 @@
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable max-len */
-import Thumbor from '@common_image';
+// import Thumbor from '@common_image';
 import CmsPage from '@core_modules/cms/pages/default';
 import cx from 'classnames';
 
@@ -30,7 +30,7 @@ const Content = (props) => {
         };
     }
 
-    const logoUrl = `${props.storeConfig.secure_base_media_url}logo/${props.storeConfig.header_logo_src}`;
+    // const logoUrl = `${props.storeConfig.secure_base_media_url}logo/${props.storeConfig.header_logo_src}`;
 
     let content = '';
 
@@ -70,7 +70,7 @@ const Content = (props) => {
                 'flex flex-col justify-center items-center pb-[30px]': !useCms,
             })}
         >
-            {props.storeConfig && props.storeConfig.pwa && props.storeConfig.pwa.mobile_navigation !== 'burger_menu' && (
+            {/* {props.storeConfig && props.storeConfig.pwa && props.storeConfig.pwa.mobile_navigation !== 'burger_menu' && (
                 <div className="sm:max-md:w-screen w-full flex justify-center bg-neutral-50">
                     <div className="absolute z-[99] left-[50%] -translate-x-[50%] hidden-desktop">
                         <Thumbor
@@ -84,7 +84,7 @@ const Content = (props) => {
                         />
                     </div>
                 </div>
-            )}
+            )} */}
             {content}
         </div>
     );
