@@ -1,7 +1,5 @@
 import { modules } from '@config';
-import FormControl from '@material-ui/core/FormControl';
-import NativeSelect from '@material-ui/core/NativeSelect';
-import { makeStyles } from '@material-ui/core/styles';
+import Select from '@common/Forms/Select';
 
 export const generateCatalogSorting = (isSearch) => {
     let updatedSort;
@@ -45,60 +43,47 @@ export const generateCatalogSorting = (isSearch) => {
     return updatedSort;
 };
 
-const useStyles = makeStyles((theme) => ({
-    container: {
-        display: 'flex',
-        alignItems: 'center',
-        padding: '0 10px',
-    },
-    sortTitle: {
-        marginTop: '16px',
-        fontWeight: 'bold',
-    },
-    formControl: {
-        margin: theme.spacing(1),
-        minWidth: 120,
-    },
-    selectEmpty: {
-        marginTop: theme.spacing(2),
-    },
-}));
-
-const SortDesktop = (props) => {
+const Sorting = (props) => {
     const {
         isSearch, defaultSort, filterValue, setFiltervalue, t,
     } = props;
     const sortByData = React.useMemo(() => generateCatalogSorting(isSearch), []);
 
-    const classes = useStyles();
     const [value, setValue] = React.useState(defaultSort);
     const [selectedFilter] = React.useState(filterValue);
 
     const handleChange = (event) => {
-        setValue(event.target.value);
         const savedData = {
             selectedFilter,
         };
-        if (event.target.value !== '') {
-            savedData.sort = event.target.value;
+        if (value !== '') {
+            savedData.sort = event;
+            setValue(event);
         }
 
         setFiltervalue(savedData);
     };
+
+    const shortingValue = sortByData.filter((item) => item.value === value);
+
     return (
-        <div className={classes.container}>
-            <span className={classes.sortTitle}>{t('common:title:short')}</span>
-            <FormControl className={classes.formControl}>
-                <NativeSelect value={value} onChange={handleChange} name="sort" className={classes.selectEmpty}>
-                    {sortByData.map((val, idx) => (
-                        <option key={idx} value={val.value}>
-                            {val.label}
-                        </option>
-                    ))}
-                </NativeSelect>
-            </FormControl>
-        </div>
+        <Select
+            options={sortByData}
+            onChange={handleChange}
+            placeholder={t('catalog:title:short')}
+            className="h-[36px]"
+            value={shortingValue && shortingValue.length > 0 ? shortingValue[0].label : ''}
+            textFiledProps={{
+                className: 'h-[36px] !w-[auto] ml-2 mt-0',
+                rightIconProps: {
+                    className: '!text-neutral',
+                },
+            }}
+            inputProps={{
+                className: 'h-[34px] placeholder:!text-neutral',
+            }}
+        />
     );
 };
 
-export default SortDesktop;
+export default Sorting;

@@ -9,4 +9,5 @@ RangeSlider is module commons to create input price with slider
 | `onChange`    | true    | function to handle change value | `function` |
 | `value`    | true    | array value min and max number price, example `[10, 50]` its mean minimum price `10` and max price `50` | `array` |
 | `storeConfig`    | true    | storeConfig for currency | `object` |
+| `disableInput`    | false    | disable input range slider | `boolean` |
 

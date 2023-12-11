@@ -1,10 +1,13 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import { generateCatalogSorting } from '@plugin_productlist/components/FilterDesktop/sort';
+import { generateCatalogSorting } from '@plugin_productlist/components/Shorting';
+import FilterView from '@plugin_productlist/components/Filter/view';
+import propTypes from 'prop-types';
 
 const Filter = (props) => {
     const {
-        FilterModalView, FilterView, filterValue, isSearch, defaultSort, setFiltervalue, filter, storeConfig, ...other
+        filterValue, isSearch, defaultSort, setFiltervalue, filter, storeConfig,
+        onSave, ...other
     } = props;
     const sortByData = React.useMemo(() => generateCatalogSorting(isSearch), []);
     const [openFilter, setOpenFilter] = React.useState(false);
@@ -51,6 +54,11 @@ const Filter = (props) => {
         setFiltervalue({});
     };
 
+    const handleReset = () => {
+        router.push(`/${router.query.slug.join('/')}`);
+        onSave(null);
+    };
+
     const handleSave = () => {
         if (selectedFilter.priceRange) {
             delete selectedFilter.priceRange;
@@ -70,6 +78,7 @@ const Filter = (props) => {
         }
         setFiltervalue(savedData);
         setOpenFilter(!openFilter);
+        onSave(savedData);
     };
 
     const setCheckedFilter = (name, value) => {
@@ -92,26 +101,30 @@ const Filter = (props) => {
     };
 
     return (
-        <>
-            {FilterModalView ? (
-                <FilterModalView
-                    open={openFilter}
-                    setOpen={() => setOpenFilter(!openFilter)}
-                    {...props}
-                    {...ModalProps}
-                />
-            ) : null}
-
-            <FilterView
-                openFilter={openFilter}
-                setOpenFilter={setOpenFilter}
-                isSearch={isSearch}
-                filter={filter}
-                {...ModalProps}
-                {...other}
-            />
-        </>
+        <FilterView
+            openFilter={openFilter}
+            setOpenFilter={setOpenFilter}
+            isSearch={isSearch}
+            filter={filter}
+            handleReset={handleReset}
+            {...ModalProps}
+            {...other}
+        />
     );
+};
+
+Filter.propTypes = {
+    onSave: propTypes.func,
+    filterValue: propTypes.object.isRequired,
+    isSearch: propTypes.bool.isRequired,
+    defaultSort: propTypes.object.isRequired,
+    setFiltervalue: propTypes.func.isRequired,
+    filter: propTypes.array.isRequired,
+    storeConfig: propTypes.object.isRequired,
+};
+
+Filter.defaultProps = {
+    onSave: () => {},
 };
 
 export default Filter;

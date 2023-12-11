@@ -14,7 +14,6 @@ const TextField = React.forwardRef((props, ref) => {
         onChange = () => {},
         value = '',
         className = '',
-        classNameContainer = '',
         label = '',
         hintProps = {},
         inputProps = {},
@@ -26,6 +25,7 @@ const TextField = React.forwardRef((props, ref) => {
         rightIcon,
         rightIconProps,
         onFocusGoogleMap = false,
+        classWrapper = '',
         ...restProps
     } = props;
 
@@ -70,7 +70,7 @@ const TextField = React.forwardRef((props, ref) => {
     const { className: inputClassName, ...restInputProps } = inputProps;
 
     return (
-        <div className={cx('flex flex-col relative', classNameContainer)}>
+        <div className={cx('flex flex-col relative', classWrapper)}>
             {label ? (
                 <label className="mb-2">
                     <Typography>{label}</Typography>

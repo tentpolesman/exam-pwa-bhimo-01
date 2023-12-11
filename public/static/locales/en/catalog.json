@@ -8,7 +8,8 @@
         "search": "Search ...",
         "brand": "Brand",
         "category": "Category",
-        "searchResult": "Search result"
+        "searchResult": "Search result",
+        "quickView": "Quick View"
     },
     "button": {
         "save": "Save",
@@ -20,5 +21,15 @@
     },
     "wishlist": {
         "addWithoutLogin": "Please login to add this item to your wishlist"
+    },
+    "filter": {
+        "title": "Shopping options",
+        "viewAs": "View As",
+        "showMore": "Show more",
+        "lessMore": "Less more",
+        "others": "Others",
+        "reset": "Reset Filter",
+        "viewResult": "View Result"
     }
+
 }
