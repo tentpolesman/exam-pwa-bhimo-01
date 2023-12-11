@@ -31,6 +31,7 @@ const ViewTopNavigation = (props) => {
         deviceWidth,
         appName,
         installMessage,
+        deviceType,
     } = props;
 
     const [showGlobalPromo, setShowGlobalPromo] = React.useState(false);
