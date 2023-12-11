@@ -9,7 +9,7 @@
         "name": "Product"
     },
     "search": {
-        "title": "Search",
+        "title": "What are you looking for?",
         "mainTitle": "New in Collection",
         "backTitle": "back in stock sale",
         "location": "Search Location",
@@ -38,15 +38,15 @@
         "submit": "Submit",
         "viewAll": "View All",
         "close": "Close",
-        "goCheckout": "Go to checkout",
-        "viewandedit": "View and Edit",
+        "goCheckout": "Checkout",
+        "viewandedit": "View Cart",
         "addToCart": "Add To Cart",
         "allowCookies": "Allow Cookies",
         "simulateQrCode": "Simulate Qrcode Payment"
     },
     "cart": {
         "myCart": "My Cart",
-        "cardTotal": "Cart Subtotal",
+        "cardTotal": "Subtotal",
         "deleteSuccess": "Delete cart item success",
         "deleteFailed": "Delete cart item failed",
         "updateSuccess": "Update cart item success",
@@ -117,8 +117,8 @@
     "menu": {
         "confirmpayment": "Confirm Payment",
         "trackingorder": "Tracking Order",
-        "sign": "Sign In",
-        "register": "Create Account",
+        "sign": "Login",
+        "register": "Register",
         "account": "Account",
         "or": "or",
         "notification": "Notification",
