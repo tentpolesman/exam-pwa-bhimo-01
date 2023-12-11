@@ -69,7 +69,9 @@ const generateItemData = (product, category, seller, enableMultiseller) => {
 };
 
 export default function AutocompleteSearch(props) {
-    const { placeholder, handleSearch, storeConfig } = props;
+    const {
+        placeholder, handleSearch, storeConfig, deviceWidth,
+    } = props;
     const { t } = useTranslation(['common']);
     const [item, setItem] = React.useState(null);
     const [isShow, setIsShow] = React.useState(false);
@@ -247,7 +249,7 @@ export default function AutocompleteSearch(props) {
         };
 
         return (
-            <>
+            <div className={cx('px-4')}>
                 {isShow && searchKeyword.length !== 0 && (item === null || (typeof item === 'object' && item.length === 0)) ? (
                     <div className={cx('breadcrumbs', 'block', 'text-sm', 'text-neutral-200', 'uppercase', 'italic')}>
                         {t('common:error:notFound')}
@@ -255,24 +257,36 @@ export default function AutocompleteSearch(props) {
                 ) : (
                     item !== null && item.map((items, index) => <PopoverItem key={index} {...items} />)
                 )}
-            </>
+            </div>
         );
     };
 
     return (
-        <>
+        <div className={cx('mobile:max-tablet:flex', 'mobile:max-tablet:flex-row', 'mobile:max-tablet:justify-center', 'mobile:max-tablet:mt-2')}>
             <Popover content={<PopoverContent />} open={isShow} setOpen={setIsShow}>
                 <TextField
                     value={searchKeyword}
                     placeholder={placeholder || t('common:search:title')}
                     onChange={(e) => {
                         setSearchKeyword(e.target.value);
-                        handleAutocomplete(e);
+                        if (deviceWidth > 768) {
+                            handleAutocomplete(e);
+                        }
                     }}
                     ref={inputRef}
                     rightIcon={<Magnify />}
                     rightIconProps={{
-                        className: 'w-10 h-10 text-neutral-300 bg-neutral-100 rounded-r-lg rounded-l-none',
+                        className: cx(
+                            'tablet:max-desktop:w-[55px]',
+                            'tablet:max-desktop:h-[55px]',
+                            'desktop:w-[40px]',
+                            'desktop:h-[41px]',
+                            'text-neutral-600',
+                            'bg-neutral-100',
+                            'rounded-r-lg',
+                            'rounded-l-none',
+                            'tablet:max-desktop:py-[14px]',
+                        ),
                     }}
                     onKeyPress={(e) => {
                         handleKeyPress({
@@ -282,12 +296,14 @@ export default function AutocompleteSearch(props) {
                             },
                         });
                     }}
-                    className="desktop:w-[560px]"
+                    className="mobile:max-tablet:w-[87.5vw] tablet:max-desktop:w-[460px] desktop:w-[520px] border-none"
                     inputProps={{
-                        className: 'placeholder:text-neutral-400 bg-neutral-100 rounded-r-none rounded-l-lg pl-4',
+                        className:
+                            // eslint-disable-next-line max-len
+                            'placeholder:text-neutral-400 bg-neutral-100 rounded-r-none rounded-l-lg pl-4 py-[10px] tablet:max-desktop:w-[454px] tablet:max-desktop:h-[55px]',
                     }}
                 />
             </Popover>
-        </>
+        </div>
     );
 }
