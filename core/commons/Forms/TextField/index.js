@@ -1,16 +1,20 @@
 import Typography from '@common_typography';
-import { CheckCircleIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline';
-import cx from 'classnames';
+import Show from '@common_show';
 import propTypes from 'prop-types';
+import cx from 'classnames';
+import { CheckCircleIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import { useState } from 'react';
 
 const TextField = React.forwardRef((props, ref) => {
     const {
+        absolute = true,
+        multiline,
         placeholder = '',
         disabled = false,
         onChange = () => {},
         value = '',
         className = '',
+        classNameContainer = '',
         label = '',
         hintProps = {},
         inputProps = {},
@@ -27,7 +31,9 @@ const TextField = React.forwardRef((props, ref) => {
 
     const [isFocus, setIsFocus] = useState(false);
 
-    const { displayHintText = false, hintType = '', hintText = '' } = hintProps;
+    const {
+        className: hintClassName, displayHintText = false, hintType = '', hintText = '',
+    } = hintProps;
     const { className: leftIconClasses, ...otherLeftIconProps } = leftIconProps;
     const { className: rightIconClasses, ...otherRightIconProps } = rightIconProps;
 
@@ -41,6 +47,7 @@ const TextField = React.forwardRef((props, ref) => {
             {
                 '!text-red-600': hintType === 'error',
                 '!text-green': hintType === 'success',
+                '!text-neutral-400': hintType === 'info',
             },
             rightIconClasses,
         );
@@ -63,7 +70,7 @@ const TextField = React.forwardRef((props, ref) => {
     const { className: inputClassName, ...restInputProps } = inputProps;
 
     return (
-        <div className="flex flex-col relative">
+        <div className={cx('flex flex-col relative', classNameContainer)}>
             {label ? (
                 <label className="mb-2">
                     <Typography>{label}</Typography>
@@ -94,56 +101,108 @@ const TextField = React.forwardRef((props, ref) => {
                 {leftIcon
                     ? React.cloneElement(leftIcon, { className: cx('pl-4', 'pr-[6px]', 'text-neutral-300', leftIconClasses), ...otherLeftIconProps })
                     : null}
-                <input
-                    ref={ref}
-                    type={type}
-                    placeholder={placeholder}
-                    disabled={disabled}
-                    onFocus={(e) => {
-                        setIsFocus(true);
-                        if (onFocusGoogleMap) {
-                            e.target.setAttribute('autocomplete', 'off');
-                            e.target.setAttribute('autocorrect', 'false');
-                            e.target.setAttribute('aria-autocomplete', 'both');
-                            e.target.setAttribute('aria-haspopup', 'false');
-                            e.target.setAttribute('spellcheck', 'off');
-                            e.target.setAttribute('autocapitalize', 'off');
-                            e.target.setAttribute('autofocus', '');
-                            e.target.setAttribute('role', 'combobox');
-                        }
-                    }}
-                    onBlur={() => {
-                        setIsFocus(false);
-                        onBlur();
-                    }}
-                    value={value}
-                    onChange={onChange}
-                    className={cx(
-                        'pr-4',
-                        'py-[10px]',
-                        'w-full',
-                        'rounded-lg',
-                        'focus:outline-0',
-                        'placeholder:text-neutral-200',
-                        'text-neutral',
-                        {
-                            'placeholder:!text-neutral-400': isFocus,
-                            '!pl-4': !leftIcon,
-                            '!pr-0': rightIcon,
-                        },
-                        inputClassName,
-                    )}
-                    {...restInputProps}
-                />
+                <Show when={multiline}>
+                    <textarea
+                        ref={ref}
+                        type={type}
+                        placeholder={placeholder}
+                        disabled={disabled}
+                        onFocus={(e) => {
+                            setIsFocus(true);
+                            if (onFocusGoogleMap) {
+                                e.target.setAttribute('autocomplete', 'off');
+                                e.target.setAttribute('autocorrect', 'false');
+                                e.target.setAttribute('aria-autocomplete', 'both');
+                                e.target.setAttribute('aria-haspopup', 'false');
+                                e.target.setAttribute('spellcheck', 'off');
+                                e.target.setAttribute('autocapitalize', 'off');
+                                e.target.setAttribute('autofocus', '');
+                                e.target.setAttribute('role', 'combobox');
+                            }
+                        }}
+                        onBlur={() => {
+                            setIsFocus(false);
+                            onBlur();
+                        }}
+                        value={value}
+                        onChange={onChange}
+                        className={cx(
+                            'pr-4',
+                            'py-[10px]',
+                            'w-full',
+                            'rounded-lg',
+                            'focus:outline-0',
+                            'placeholder:text-neutral-200',
+                            'text-neutral',
+                            {
+                                'placeholder:!text-neutral-400': isFocus,
+                                '!pl-4': !leftIcon,
+                                '!pr-0': rightIcon,
+                            },
+                            inputClassName,
+                        )}
+                        {...restInputProps}
+                    >
+                        {value}
+                    </textarea>
+                </Show>
+                <Show when={!multiline}>
+                    <input
+                        ref={ref}
+                        type={type}
+                        placeholder={placeholder}
+                        disabled={disabled}
+                        onFocus={(e) => {
+                            setIsFocus(true);
+                            if (onFocusGoogleMap) {
+                                e.target.setAttribute('autocomplete', 'off');
+                                e.target.setAttribute('autocorrect', 'false');
+                                e.target.setAttribute('aria-autocomplete', 'both');
+                                e.target.setAttribute('aria-haspopup', 'false');
+                                e.target.setAttribute('spellcheck', 'off');
+                                e.target.setAttribute('autocapitalize', 'off');
+                                e.target.setAttribute('autofocus', '');
+                                e.target.setAttribute('role', 'combobox');
+                            }
+                        }}
+                        onBlur={() => {
+                            setIsFocus(false);
+                            onBlur();
+                        }}
+                        value={value}
+                        onChange={onChange}
+                        className={cx(
+                            'pr-4',
+                            'py-[10px]',
+                            'w-full',
+                            'rounded-lg',
+                            'focus:outline-0',
+                            'placeholder:text-neutral-200',
+                            'text-neutral',
+                            {
+                                'placeholder:!text-neutral-400': isFocus,
+                                '!pl-4': !leftIcon,
+                                '!pr-0': rightIcon,
+                            },
+                            inputClassName,
+                        )}
+                        {...restInputProps}
+                    />
+                </Show>
                 {rightIcon ? generateRightIcon() : null}
             </div>
             {displayHintText && hintType && hintText ? (
                 <Typography
                     variant="bd-2b"
-                    className={cx('absolute', '-bottom-[50%]', '-z-10', {
-                        '!text-red': hintType === 'error',
-                        '!text-green': hintType === 'success',
-                    })}
+                    className={cx(
+                        absolute && 'absolute -bottom-[50%] -z-10',
+                        {
+                            '!text-red': hintType === 'error',
+                            '!text-green': hintType === 'success',
+                            '!text-neutral-400': hintType === 'info',
+                        },
+                        hintClassName,
+                    )}
                 >
                     {hintText}
                 </Typography>
