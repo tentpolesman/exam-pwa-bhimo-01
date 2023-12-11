@@ -62,7 +62,7 @@ const ConfigurableView = (props) => {
                             qty={qty}
                             setQty={setQty}
                             t={t}
-                            showAddToCart={!showAddToCart}
+                            showAddToCart={showAddToCart}
                             {...other}
                         />
                     )

@@ -543,6 +543,7 @@ const ProductItem = (props) => {
                                     </span>
                                 </Button>
                                 <Button
+                                    onClick={handleQuickView}
                                     iconOnly
                                     icon={<EyeSolidIcon />}
                                     iconProps={{
@@ -638,8 +639,10 @@ const ProductItem = (props) => {
                     dataPrice={getPrice()}
                     loadPrice={loadPrice}
                     errorPrice={errorPrice}
+                    keyProduct={url_key}
                     t={t}
                     weltpixel_labels={weltpixel_labels}
+                    storeConfig={storeConfig}
                 />
             )}
             <div
@@ -687,6 +690,7 @@ const ProductItem = (props) => {
                                     </Button>
                                     <Button
                                         iconOnly
+                                        onClick={handleQuickView}
                                         icon={<EyeSolidIcon />}
                                         iconProps={{
                                             className: 'w-3 h-3 !text-neutral-800',
