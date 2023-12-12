@@ -53,7 +53,10 @@ const ProductItem = (props) => {
         weltpixel_labels,
         enablePrice = true,
         enableWishlist,
+        enableImage = true,
         imageProps = {},
+        enableProductCompare = true,
+        enableShortDescription = true,
         ...other
     } = props;
     const {
@@ -385,7 +388,6 @@ const ProductItem = (props) => {
     }, [dataDetailProduct]);
 
     const ratingValue = review && review.rating_summary ? parseInt(review.rating_summary, 10) / 20 : 0;
-    const enableProductCompare = modules.productcompare.enabled;
     const DetailProps = {
         spesificProduct,
         handleClick,
@@ -394,12 +396,13 @@ const ProductItem = (props) => {
         feed,
         id,
         handleSetCompareList,
-        enableProductCompare,
     };
     const showAddToCart = typeof enableAddToCart !== 'undefined' ? enableAddToCart : storeConfig?.pwa?.add_to_cart_enable;
     const showOption = typeof enableOption !== 'undefined' ? enableOption : storeConfig?.pwa?.configurable_options_enable;
     const showQuickView = typeof enableQuickView !== 'undefined' ? enableQuickView : storeConfig?.pwa?.quick_view_enable;
     const showWishlist = typeof enableWishlist !== 'undefined' ? enableWishlist : modules.wishlist.enabled;
+    const showProductCompare = enableProductCompare || modules.productcompare.enabled;
+    const showShortDescription = enableShortDescription;
 
     const priceData = getPriceFromList(dataPrice, id);
     const generatePrice = (priceDataItem = []) => {
@@ -459,7 +462,7 @@ const ProductItem = (props) => {
                             </Typography>
                         </Button>
                     )}
-                    {(showWishlist || enableProductCompare) && (
+                    {(showWishlist || showProductCompare) && (
                         <div className="flex-row gap-1 hidden tablet:flex desktop:flex">
                             {showWishlist && (
                                 <Button
@@ -471,7 +474,7 @@ const ProductItem = (props) => {
                                     className="!p-[10px] !border-neutral-200 hover:bg-primary"
                                 />
                             )}
-                            {enableProductCompare && (
+                            {showProductCompare && (
                                 <Button
                                     iconOnly
                                     icon={<CompareIcon />}
@@ -558,14 +561,16 @@ const ProductItem = (props) => {
                                 />
                             </>
                         )}
-                        <ImageProductView
-                            t={t}
-                            handleClick={() => handleClick(props)}
-                            spesificProduct={spesificProduct}
-                            urlKey={url_key}
-                            {...other}
-                            {...imageProps}
-                        />
+                        {enableImage ? (
+                            <ImageProductView
+                                t={t}
+                                handleClick={() => handleClick(props)}
+                                spesificProduct={spesificProduct}
+                                urlKey={url_key}
+                                {...other}
+                                {...imageProps}
+                            />
+                        ) : null}
                     </div>
                     <div className="h-auto pt-4 relative flex flex-col gap-4 overflow-hidden">
                         <DetailProductView
@@ -574,6 +579,7 @@ const ProductItem = (props) => {
                             catalogList={catalogList}
                             {...DetailProps}
                             {...other}
+                            showShortDescription={showShortDescription}
                             Pricing={(enablePrice && !showOption) && generatePrice(priceData)}
                         />
                         {modules.product.customizableOptions.enabled && (
@@ -590,38 +596,38 @@ const ProductItem = (props) => {
                                 url_key={url_key}
                             />
                         )}
-                        {showOption ? (
-                            <div className="hidden tablet:flex desktop:flex flex-col gap-2 tablet:gap-4">
-                                <ConfigurableOpt
-                                    t={t}
-                                    data={{
-                                        ...other,
-                                        url_key,
-                                        review,
-                                    }}
-                                    dataPrice={getPrice()}
-                                    showQty={false}
-                                    catalogList={catalogList}
-                                    handleSelecteProduct={setSpesificProduct}
-                                    showAddToCart={showAddToCart}
-                                    propsItem={{
-                                        className: 'w-5 h-5',
-                                    }}
-                                    labelAddToCart={t('common:button:addToCart')}
-                                    isGrid={isGrid}
-                                    {...other}
-                                    customizableOptions={customizableOptions}
-                                    setCustomizableOptions={setCustomizableOptions}
-                                    errorCustomizableOptions={errorCustomizableOptions}
-                                    checkCustomizableOptionsValue={checkCustomizableOptionsValue}
-                                    CustomFooter={<CustomerFooter />}
-                                    showWishlist={showWishlist}
-                                    enableProductCompare={enableProductCompare}
-                                    enableBundle={false}
-                                    enableDownload={false}
-                                />
-                            </div>
-                        ) : null}
+                        {/* {showOption ? (
+                        ) : null} */}
+                        <div className="hidden tablet:flex desktop:flex flex-col gap-2 tablet:gap-4">
+                            <ConfigurableOpt
+                                t={t}
+                                data={{
+                                    ...other,
+                                    url_key,
+                                    review,
+                                }}
+                                dataPrice={getPrice()}
+                                showQty={false}
+                                catalogList={catalogList}
+                                handleSelecteProduct={setSpesificProduct}
+                                showAddToCart={showAddToCart}
+                                propsItem={{
+                                    className: 'w-5 h-5',
+                                }}
+                                labelAddToCart={t('common:button:addToCart')}
+                                isGrid={isGrid}
+                                {...other}
+                                customizableOptions={customizableOptions}
+                                setCustomizableOptions={setCustomizableOptions}
+                                errorCustomizableOptions={errorCustomizableOptions}
+                                checkCustomizableOptionsValue={checkCustomizableOptionsValue}
+                                CustomFooter={<CustomerFooter />}
+                                showWishlist={showWishlist}
+                                enableProductCompare={showProductCompare}
+                                enableBundle={false}
+                                enableDownload={false}
+                            />
+                        </div>
                     </div>
                 </div>
             </>
@@ -705,23 +711,26 @@ const ProductItem = (props) => {
                                     />
                                 </>
                             )}
-                            <ImageProductView
-                                t={t}
-                                handleClick={() => handleClick(props)}
-                                spesificProduct={spesificProduct}
-                                urlKey={url_key}
-                                {...other}
-                                className={classNames(
-                                    '!w-[114px] !h-[114px]',
-                                    'tablet:!w-[320px] tablet:!h-[320px]',
-                                    'desktop:!w-[250px] desktop:!h-[250px] overflow-hidden',
-                                )}
-                                classContainer={classNames(
-                                    '!w-[114px] !h-[114px]',
-                                    'tablet:!w-[320px] tablet:!h-[320px]',
-                                    'desktop:!w-[250px] desktop:!h-[250px] overflow-hidden',
-                                )}
-                            />
+                            {enableImage ? (
+                                <ImageProductView
+                                    t={t}
+                                    handleClick={() => handleClick(props)}
+                                    spesificProduct={spesificProduct}
+                                    urlKey={url_key}
+                                    {...other}
+                                    className={classNames(
+                                        '!w-[114px] !h-[114px]',
+                                        'tablet:!w-[320px] tablet:!h-[320px]',
+                                        'desktop:!w-[250px] desktop:!h-[250px] overflow-hidden',
+                                    )}
+                                    classContainer={classNames(
+                                        '!w-[114px] !h-[114px]',
+                                        'tablet:!w-[320px] tablet:!h-[320px]',
+                                        'desktop:!w-[250px] desktop:!h-[250px] overflow-hidden',
+                                    )}
+                                    {...imageProps}
+                                />
+                            ) : null}
                         </div>
                     </div>
                     <div className="basis-full">
@@ -732,7 +741,7 @@ const ProductItem = (props) => {
                                 {...other}
                                 enableWishlist={false}
                                 urlKey={url_key}
-                                showShortDescription
+                                showShortDescription={showShortDescription}
                                 Pricing={(enablePrice && !showOption) && generatePrice(priceData)}
                             />
                             {showOption ? (
@@ -754,7 +763,7 @@ const ProductItem = (props) => {
                                         {...other}
                                         CustomFooter={<CustomerFooter />}
                                         showWishlist={showWishlist}
-                                        enableProductCompare={enableProductCompare}
+                                        enableProductCompare={showProductCompare}
                                         enableBundle={false}
                                         enableDownload={false}
                                     />
