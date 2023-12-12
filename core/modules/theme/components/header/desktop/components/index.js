@@ -28,11 +28,7 @@ const ViewTopNavigation = (props) => {
         }
     }
 
-    return (
-        <div>
-            {content}
-        </div>
-    );
+    return content;
 };
 
 export default ViewTopNavigation;
