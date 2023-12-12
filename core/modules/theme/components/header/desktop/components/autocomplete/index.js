@@ -262,7 +262,7 @@ export default function AutocompleteSearch(props) {
     };
 
     return (
-        <div className={cx('mobile:max-tablet:flex', 'mobile:max-tablet:flex-row', 'mobile:max-tablet:justify-center', 'mobile:max-tablet:mt-2')}>
+        <div className={cx('mobile:max-tablet:mt-2', 'flex', 'flex-row', 'justify-center')}>
             <Popover content={<PopoverContent />} open={isShow} setOpen={setIsShow}>
                 <TextField
                     value={searchKeyword}
@@ -279,8 +279,9 @@ export default function AutocompleteSearch(props) {
                         className: cx(
                             'tablet:max-desktop:w-[55px]',
                             'tablet:max-desktop:h-[55px]',
-                            'desktop:w-[40px]',
-                            'desktop:h-[41px]',
+                            'desktop:w-[51px]',
+                            'desktop:h-[53px]',
+                            'desktop:p-3',
                             'text-neutral-600',
                             'bg-neutral-100',
                             'rounded-r-lg',
@@ -296,11 +297,27 @@ export default function AutocompleteSearch(props) {
                             },
                         });
                     }}
-                    className="mobile:max-tablet:w-[87.5vw] tablet:max-desktop:w-[460px] desktop:w-[520px] border-none"
+                    className={cx(
+                        'mobile:max-tablet:w-[87.5vw]',
+                        'tablet:max-desktop:w-[100%]',
+                        'tablet:max-desktop:max-w-[480px]',
+                        'desktop:w-[560px]',
+                        'border-none',
+                    )}
                     inputProps={{
                         className:
                             // eslint-disable-next-line max-len
-                            'placeholder:text-neutral-400 bg-neutral-100 rounded-r-none rounded-l-lg pl-4 py-[10px] tablet:max-desktop:w-[454px] tablet:max-desktop:h-[55px]',
+                            cx(
+                                'placeholder:text-neutral-400',
+                                'bg-neutral-100',
+                                'rounded-r-none',
+                                'rounded-l-lg',
+                                'pl-4',
+                                'py-[10px]',
+                                'desktop:py-[16px]',
+                                'tablet:max-desktop:w-[454px]',
+                                'tablet:max-desktop:h-[55px]',
+                            ),
                     }}
                 />
             </Popover>

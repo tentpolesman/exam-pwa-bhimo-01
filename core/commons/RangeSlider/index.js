@@ -7,17 +7,35 @@ import cx from 'classnames';
 const RangeSlider = (props) => {
     const {
         disabled = false, onChange = () => {}, value = [0, 10], disableInput = false,
-        storeConfig,
+        storeConfig, minValue = 0, maxValue = 100, formatLabel,
     } = props;
-    const min = value[0];
-    const max = value[1];
+    let min = value[0];
+    if (typeof min === 'string') {
+        min = Number(min);
+    }
+    let max = value[1];
+    if (typeof max === 'string') {
+        max = Number(max);
+    }
     const [minVal, setMinVal] = React.useState(min);
     const [maxVal, setMaxVal] = React.useState(max);
     const minValRef = React.useRef(min);
     const maxValRef = React.useRef(max);
     const range = React.useRef(null);
 
-    const getPercent = React.useCallback((valueX) => Math.round(((valueX - min) / (max - min)) * 100), [min, max]);
+    const getPercent = React.useCallback((valueX) => Math.round(((valueX - minValue) / (maxValue - minValue)) * 100), [min, max, maxValue, minValue]);
+
+    React.useEffect(() => {
+        if (maxValue > 0) {
+            const minPercent = getPercent(minVal);
+            const maxPercent = getPercent(maxVal);
+
+            if (range.current) {
+                range.current.style.left = `${minPercent}%`;
+                range.current.style.width = `${maxPercent - minPercent}%`;
+            }
+        }
+    }, [maxValue, range]);
 
     React.useEffect(() => {
         const minPercent = getPercent(minVal);
@@ -47,7 +65,15 @@ const RangeSlider = (props) => {
                 <div className="flex flex-row justify-between items-center">
                     {
                         disableInput
-                            ? (<Typography>{formatPrice(minVal, storeConfig && storeConfig.base_currency_code)}</Typography>)
+                            ? (
+                                <Typography>
+                                    {
+                                        formatLabel && typeof formatLabel === 'function'
+                                            ? formatLabel(minVal)
+                                            : formatPrice(minVal, storeConfig && storeConfig.base_currency_code)
+                                    }
+                                </Typography>
+                            )
                             : (
                                 <TextField
                                     classWrapper="max-w-[45%]"
@@ -68,7 +94,15 @@ const RangeSlider = (props) => {
 
                     {
                         disableInput
-                            ? (<Typography>{formatPrice(maxVal, storeConfig && storeConfig.base_currency_code)}</Typography>)
+                            ? (
+                                <Typography>
+                                    {
+                                        formatLabel && typeof formatLabel === 'function'
+                                            ? formatLabel(maxVal)
+                                            : formatPrice(maxVal, storeConfig && storeConfig.base_currency_code)
+                                    }
+                                </Typography>
+                            )
                             : (
                                 <TextField
                                     classWrapper="max-w-[45%]"
@@ -96,8 +130,8 @@ const RangeSlider = (props) => {
 
                     <input
                         type="range"
-                        min={min}
-                        max={max}
+                        min={minValue}
+                        max={maxValue}
                         value={minVal}
                         onChange={(event) => {
                             const valueMin = Math.min(Number(event.target.value), maxVal - 1);
@@ -108,13 +142,13 @@ const RangeSlider = (props) => {
                         disabled={disabled}
                         className={cx('thumb', 'thumb--left', 'pointer-events-none', 'absolute', 'h-[0]', 'w-full', 'outline-none', 'z-[3]')}
                         style={{
-                            zIndex: minVal > max - 100 && '5',
+                            zIndex: minVal > maxValue - 100 && '5',
                         }}
                     />
                     <input
                         type="range"
-                        min={min}
-                        max={max}
+                        min={minValue}
+                        max={maxValue}
                         value={maxVal}
                         onChange={(event) => {
                             const valueMax = Math.max(Number(event.target.value), minVal + 1);

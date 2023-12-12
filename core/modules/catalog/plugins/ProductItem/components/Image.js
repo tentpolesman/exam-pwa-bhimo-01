@@ -29,8 +29,7 @@ const ImageDetail = (props) => {
                 }}
                 onClick={handleClick}
                 className={cx(
-                    '!w-[114px] !h-[114px] tablet:!w-[205px] tablet:!h-[205px] desktop:!w-[250px] desktop:!h-[250px] overflow-hidden',
-                    className,
+                    'overflow-hidden flex justify-center',
                 )}
             >
 

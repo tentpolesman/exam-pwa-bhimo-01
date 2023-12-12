@@ -438,7 +438,7 @@ ConfigurableOptionCore.propTypes = {
     setOpen: propTypes.func,
     ConfigurableView: propTypes.func,
     Footer: propTypes.func,
-    setStockStatus: () => {},
+    setStockStatus: propTypes.func,
     stockStatus: '',
     handleAddToCart: propTypes.func,
     loading: propTypes.bool,
@@ -446,7 +446,7 @@ ConfigurableOptionCore.propTypes = {
     checkCustomizableOptionsValue: propTypes.func,
     errorCustomizableOptions: propTypes.object,
     customizableOptions: propTypes.object,
-    handleSelecteProduct: () => {},
+    handleSelecteProduct: propTypes.func,
     isGrid: propTypes.bool,
     noValidate: false,
 };

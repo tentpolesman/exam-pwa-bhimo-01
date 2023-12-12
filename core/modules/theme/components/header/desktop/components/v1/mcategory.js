@@ -77,7 +77,7 @@ const Menu = (props) => {
         </svg>
   `;
     return (
-        <div className="menu-wrapper" role="navigation">
+        <nav className="menu-wrapper" role="navigation">
             <ul className="nav" role="menubar" id="header-nav-menubar">
                 {menu.map((val, idx) => {
                     if ((val.include_in_menu || storeConfig.pwa.ves_menu_enable) && val.name) {
@@ -440,7 +440,7 @@ const Menu = (props) => {
                     }
                 `}
             </style>
-        </div>
+        </nav>
     );
 };
 

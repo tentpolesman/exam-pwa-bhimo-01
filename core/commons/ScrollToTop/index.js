@@ -47,7 +47,7 @@ const ScrollTop = (props) => {
                         if (desktopHeader) {
                             if (showGlobalPromo && globalPromo) {
                                 headerInner.classList.remove('top-[38px]');
-                                headerInner.classList.add('top-[-43px]');
+                                headerInner.classList.add('top-[-128px]');
                             }
                         }
                         if (tabletHeader) {
