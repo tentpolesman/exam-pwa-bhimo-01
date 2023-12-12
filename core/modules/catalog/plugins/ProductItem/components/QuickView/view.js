@@ -3,7 +3,7 @@ import cx from 'classnames';
 import XMarkIcon from '@heroicons/react/24/solid/XMarkIcon';
 import Typography from '@common_typography';
 import RatingStar from '@common_ratingstar';
-import DesktopOptions from '@core_modules/product/pages/default/components/OptionItem/DesktopOptions';
+import OptionItem from '@core_modules/product/plugins/OptionItem';
 import Divider from '@common/Divider';
 import parse from 'html-react-parser';
 import Button from '@common/Button';
@@ -124,7 +124,7 @@ const QuickView = (props) => {
                                 <Divider />
                             </div>
                             <div className="flex flex-col gap-4">
-                                <DesktopOptions
+                                <OptionItem
                                     price={price}
                                     t={t}
                                     data={product}

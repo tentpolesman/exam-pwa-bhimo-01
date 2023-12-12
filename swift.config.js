@@ -73,6 +73,19 @@ const rollbar = {
     },
 };
 
+const imageSize = {
+    thumbnail: {
+        desktop: 78,
+        tablet: 78,
+        mobile: 78,
+    },
+    main: {
+        desktop: 533,
+        tablet: 352,
+        mobile: 329,
+    },
+};
+
 /* Dashboard */
 // identifiers for cmsBlocks in contact page
 const cmsSocialMediaLinkIdentifiers = 'pwa_socmed_links';
@@ -461,4 +474,5 @@ module.exports = {
     keyLocalStorage,
     requestTimeout,
     customerTokenKey,
+    imageSize,
 };

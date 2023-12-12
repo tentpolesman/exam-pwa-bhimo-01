@@ -26,7 +26,7 @@ import dynamic from 'next/dynamic';
 import { getHost } from '@helper_config';
 
 const Button = dynamic(() => import('@common_button'), { ssr: false });
-const Footer = dynamic(() => import('@plugin_optionitem/components/Footer'), { ssr: true });
+const OptionAction = dynamic(() => import('@core_modules/product/plugins/OptionItemAction'), { ssr: true });
 const MagezonElement = dynamic(() => import('@core_modules/cms/components/cms-renderer/index'), { ssr: false });
 
 const AwGiftCardProduct = (props) => {
@@ -298,7 +298,7 @@ const AwGiftCardProduct = (props) => {
                     )}
                 </form>
             </div>
-            <Footer
+            <OptionAction
                 loading={loading}
                 disabled={disabled}
                 showQty={showQty}
@@ -323,7 +323,7 @@ const AwGiftCardProduct = (props) => {
                             </div>
                             <Typography variant="h1">GIFT CARD</Typography>
                             <div className="gc-dialog-storelogo">
-                                <img
+                                <Image
                                     src={`${storeConfig?.secure_base_media_url}logo/${storeConfig?.header_logo_src}`}
                                     width={240}
                                     height={104}

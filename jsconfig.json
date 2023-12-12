@@ -149,7 +149,7 @@
             "@common_optionconfigurable": ["src/commons/OptionConfigurable", "core/commons/OptionConfigurable"],
             "@common_imageslider": ["src/commons/ImageSlider", "core/commons/ImageSlider"],
             "@common_divider": ["src/commons/Divider", "core/commons/Divider"],
-            "@common_stockstatus": ["src/commons/StockStatus", "core/commons/StockStatus"],
+            "@common_statusstock": ["src/commons/StatusStock", "core/commons/StatusStock"],
             "@common_share": ["src/commons/Share", "core/commons/Share"],
             "@common_containerscroll": ["src/commons/ContainerScroll", "core/commons/ContainerScroll"],
             "@common_acccordion": ["src/commons/Accordion", "core/commons/Accordion"],
@@ -173,7 +173,7 @@
             "@common_drawer/*": ["src/commons/Drawer/*", "core/commons/Drawer/*"],
             "@common_imageslider/*": ["src/commons/ImageSlider/*", "core/commons/ImageSlider/*"],
             "@common_divider/*": ["src/commons/Divider/*", "core/commons/Divider/*"],
-            "@common_stockstatus/*": ["src/commons/StockStatus/*", "core/commons/StockStatus/*"],
+            "@common_statusstock/*": ["src/commons/StatusStock/*", "core/commons/StatusStock/*"],
             "@common_share/*": ["src/commons/Share/*", "core/commons/Share/*"],
             "@common_containerscroll/*": ["src/commons/ContainerScroll/*", "core/commons/ContainerScroll/*"],
 
@@ -209,7 +209,9 @@
             "@plugin_customizableitem": ["src/modules/product/plugins/CustomizableOption", "core/modules/product/plugins/CustomizableOption"],
             "@plugin_customizableitem/*": ["src/modules/product/plugins/CustomizableOption/*", "core/modules/product/plugins/CustomizableOption/*"],
             "@plugin_rewardpointinfo": ["src/modules/rewardpoint/plugins/info", "core/modules/rewardpoint/plugins/info"],
-            "@plugin_rewardpointinfo/*": ["src/modules/rewardpoint/plugins/info/*", "core/modules/rewardpoint/plugins/info/*"]
+            "@plugin_rewardpointinfo/*": ["src/modules/rewardpoint/plugins/info/*", "core/modules/rewardpoint/plugins/info/*"],
+            "@plugin_productdetailaction": ["src/modules/product/plugins/ProductDetailAction", "core/modules/product/plugins/ProductDetailAction"],
+            "@plugin_productdetailaction/*": ["src/modules/product/plugins/ProductDetailAction/*", "core/modules/product/plugins/ProductDetailAction/*"]
         }
     },
     "exclude": ["node_modules"]

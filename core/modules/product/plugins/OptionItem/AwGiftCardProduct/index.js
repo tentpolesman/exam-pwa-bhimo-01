@@ -5,9 +5,7 @@ import View from '@plugin_optionitem/AwGiftCardProduct/view';
 
 const AwGiftCardProduct = (props) => {
     return (
-        <>
-            <Core {...props} View={View} />
-        </>
+        <Core {...props} View={View} />
     );
 };
 

@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 // import { formatPrice } from '@helper_currency';
 
-import Footer from '@plugin_optionitem/components/Footer';
+import OptionAction from '@core_modules/product/plugins/OptionItemAction';
 
 const Checkbox = ({
     val, handleOption, disabled,
@@ -44,7 +44,7 @@ const DownloadView = (props) => {
                 ))}
                 <br />
             </div>
-            <Footer
+            <OptionAction
                 loading={setLoading}
                 disabled={disabled}
                 showQty={showQty}

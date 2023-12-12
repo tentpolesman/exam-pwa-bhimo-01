@@ -8,6 +8,7 @@ const StockStatus = ({
     inStock = false,
     label,
     labelVariant = 'bd-2b',
+    className,
 }) => {
     const { t } = useTranslation(['common']);
     let labelFinal = label;
@@ -18,6 +19,7 @@ const StockStatus = ({
         <div className={cx(
             'stock-status',
             'flex items-center',
+            className,
         )}
         >
             <div
