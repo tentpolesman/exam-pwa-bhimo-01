@@ -419,10 +419,11 @@ const ConfigurableOptionCore = (props) => {
             handleAddToCart={handleAddToCart}
             setQty={setQty}
             t={t}
-            loading={loading}
+            loading={loading || configProduct.loading}
             disabled={!selectedProduct || !selectedProduct.sku || stockStatus === 'OUT_OF_STOCK'}
             isGrid={isGrid}
             disableItem={stock_status === 'OUT_OF_STOCK'}
+            stockStatus={stockStatus}
             {...other}
         />
     );
@@ -437,7 +438,7 @@ ConfigurableOptionCore.propTypes = {
     setOpen: propTypes.func,
     ConfigurableView: propTypes.func,
     Footer: propTypes.func,
-    setStockStatus: () => {},
+    setStockStatus: propTypes.func,
     stockStatus: '',
     handleAddToCart: propTypes.func,
     loading: propTypes.bool,
@@ -445,7 +446,7 @@ ConfigurableOptionCore.propTypes = {
     checkCustomizableOptionsValue: propTypes.func,
     errorCustomizableOptions: propTypes.object,
     customizableOptions: propTypes.object,
-    handleSelecteProduct: () => {},
+    handleSelecteProduct: propTypes.func,
     isGrid: propTypes.bool,
     noValidate: false,
 };

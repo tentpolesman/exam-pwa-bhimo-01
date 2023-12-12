@@ -1,35 +1,17 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable react/no-danger */
-import Button from '@common_button';
 import PriceFormat from '@common_priceformat';
-import RatingStar from '@common_ratingstar';
-import Banner from '@common_slick/BannerThumbnail';
 import Typography from '@common_typography';
-import DesktopOptions from '@core_modules/product/pages/default/components/OptionItem/DesktopOptions';
-import ItemShare from '@core_modules/product/pages/default/components/SharePopup/item';
 import { getSeller } from '@core_modules/theme/services/graphql';
-import { getHost } from '@helper_config';
 import { useTranslation } from 'next-i18next';
-import Avatar from '@material-ui/core/Avatar';
-import Box from '@material-ui/core/Box';
-import Dialog from '@material-ui/core/Dialog';
-import Grid from '@material-ui/core/Grid';
-import IconButton from '@material-ui/core/IconButton';
-import Link from '@material-ui/core/Link';
-import CloseIcon from '@material-ui/icons/Close';
-import useStyles from '@plugin_productitem/components/QuickView/style';
-import WeltpixelLabel from '@plugin_productitem/components/WeltpixelLabel';
-import classNames from 'classnames';
-import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { getPriceFromList } from '@core_modules/product/helpers/getPrice';
 import { formatPrice } from '@helper_currency';
 import Skeleton from '@material-ui/lab/Skeleton';
+import QuickView from './view';
 
-const QuickView = (props) => {
-    const styles = useStyles();
-    const route = useRouter();
+const QuickViewCore = (props) => {
     const { t } = useTranslation(['validate', 'common', 'product', 'catalog']);
     const {
         onClose, selectedValue, keyProduct, open, data, weltpixel_labels, storeConfig = {}, dataPrice = [], loadPrice, errorPrice,
@@ -43,7 +25,7 @@ const QuickView = (props) => {
 
     const product = data && data.items[productKey];
 
-    const reviewValue = parseInt(product?.review?.rating_summary, 10) / 20;
+    // const reviewValue = parseInt(product?.review?.rating_summary, 10) / 20;
 
     let enableMultiSeller = false;
     if (storeConfig) {
@@ -66,12 +48,12 @@ const QuickView = (props) => {
     }, [product]);
 
     let dataSeller;
-    let citySplit;
+    // let citySplit;
     if (enableMultiSeller && dSeller && dSeller.getSeller) {
         dataSeller = dSeller && dSeller.getSeller;
     }
     if (enableMultiSeller && dataSeller && dataSeller.length > 0) {
-        citySplit = dataSeller[0].city?.split(',');
+        // citySplit = dataSeller[0].city?.split(',');
     }
 
     // generate banner image
@@ -150,6 +132,7 @@ const QuickView = (props) => {
 
     const handleClose = () => {
         onClose(selectedValue);
+        document.body.style = '';
     };
 
     const priceData = getPriceFromList(dataPrice, product.id);
@@ -181,7 +164,7 @@ const QuickView = (props) => {
         return (
             <>
                 {
-                    priceProduct && <PriceFormat isQuickView {...priceProduct} additionalPrice={additionalPrice} />
+                    priceProduct && <PriceFormat isQuickViewCore {...priceProduct} additionalPrice={additionalPrice} />
                 }
             </>
         );
@@ -210,8 +193,8 @@ const QuickView = (props) => {
             };
         }
         return (
-            <div className={styles.titleContainer}>
-                <div className={styles.priceTiersContainer}>
+            <div className="flex flex-row justify-between items-center">
+                <div className="flex flex-col tablet:mb-4">
                     {
                         priceProduct.priceTiers.length > 0 && priceProduct.priceTiers.map((tiers, index) => {
                             const priceTiers = {
@@ -237,158 +220,39 @@ const QuickView = (props) => {
     };
 
     return (
-        <Dialog scroll="body" onClose={handleClose} fullWidth maxWidth="md" open={open}>
-            <div className={styles.modal}>
-                <IconButton className={styles.btnClose} onClick={handleClose}>
-                    <CloseIcon />
-                </IconButton>
-                <div className={classNames(styles.container, 'row')}>
-                    <div className={classNames(styles.headContainer, 'xs:basis-full lg:basis-1/2')}>
-                        <Banner
-                            data={banner}
-                            noLink
-                            thumbnail={false}
-                            showArrow
-                            autoPlay={false}
-                            width={600}
-                            height={1120}
-                            customClassCaraousel={styles.caraousel}
-                            storeConfig={storeConfig}
-                        >
-                            {storeConfig?.pwa?.label_enable && storeConfig?.pwa?.label_weltpixel_enable && (
-                                <WeltpixelLabel t={t} weltpixel_labels={weltpixel_labels} categoryLabel={false} />
-                            )}
-                        </Banner>
-                    </div>
-                    <div className={classNames(styles.body, 'xs:basis-full lg:basis-1/2')}>
-                        <div className={styles.titleContainer}>
-                            <div className={styles.titlePriceContainer}>
-                                <Typography
-                                    variant="title"
-                                    type="bold"
-                                    letter="capitalize"
-                                    className={classNames(styles.title, 'clear-margin-padding')}
-                                >
-                                    {product.name}
-                                </Typography>
-                                {// eslint-disable-next-line no-underscore-dangle
-                                    product.__typename !== 'AwGiftCardProduct' && generatePrice(priceData, price)
-                                }
-                            </div>
-                        </div>
-                        <div className={styles.titleContainer}>
-                            <div className={classNames('flex flex-row', styles.sku)}>
-                                <Typography className="clear-margin-padding" variant="p" type="regular" letter="capitalize">
-                                    SKU#:
-                                    {' '}
-                                </Typography>
-                                <Typography variant="p" type="bold" letter="none">
-                                    {product.sku || ''}
-                                </Typography>
-                            </div>
-                            <Typography variant="p" type="bold" letter="uppercase">
-                                {stockStatus.replace(/_/g, ' ') || ''}
-                            </Typography>
-                        </div>
-
-                        <div className={styles.titleContainer}>
-                            <div className={styles.ratingContainer}>
-                                <RatingStar value={reviewValue || 0} />
-                                <Typography variant="p" type="regular" letter="capitalize">
-                                    {product.review.reviews_count || 0}
-                                    {' '}
-                                    {t('product:review')}
-                                </Typography>
-                            </div>
-                        </div>
-
-                        <div className={styles.titleContainer}>
-                            {generateTiersPrice(priceData, price)}
-                        </div>
-                        {enableMultiSeller && dataSeller && dataSeller.length > 0 ? (
-                            <div className={styles.titleContainer}>
-                                <Grid container>
-                                    <Grid item xs={2}>
-                                        <Link href={`/seller/${dataSeller[0].id}`}>
-                                            <Avatar alt="Remy Sharp" src={dataSeller[0].logo} className={styles.imageContainer} variant="rounded" />
-                                        </Link>
-                                    </Grid>
-                                    <Grid item xs={10}>
-                                        <Link href={`/seller/${dataSeller[0].id}`}>
-                                            <Box>
-                                                <Typography variant="p" type="bold" letter="capitalize" size="14">
-                                                    {dataSeller[0].name}
-                                                </Typography>
-                                                <Typography variant="p" type="regular" letter="capitalize" size="14">
-                                                    {citySplit ? citySplit[0] : ''}
-                                                </Typography>
-                                            </Box>
-                                        </Link>
-                                    </Grid>
-                                </Grid>
-                            </div>
-                        ) : null}
-                        <div className="flex flex-row">
-                            {storeConfig?.pwa?.label_enable && storeConfig?.pwa?.label_weltpixel_enable && (
-                                <WeltpixelLabel t={t} weltpixel_labels={weltpixel_labels || []} categoryLabel={false} onDetailProduct />
-                            )}
-                        </div>
-
-                        <div className="hidden-desktop">
-                            {' '}
-                            <div className={styles.desc}>
-                                <Typography variant="span" type="regular" size="10">
-                                    {product.short_description.html ? (
-                                        <span dangerouslySetInnerHTML={{ __html: product.short_description.html }} />
-                                    ) : null}
-                                </Typography>
-                            </div>
-                        </div>
-                        <div className="hidden-mobile">
-                            <DesktopOptions
-                                price={price}
-                                t={t}
-                                data={product}
-                                dataPrice={dataPrice}
-                                priceData={priceData}
-                                setBanner={setBanner}
-                                setPrice={setPrice}
-                                setStockStatus={setStockStatus}
-                                setAdditionalPrice={setAdditionalPrice}
-                                customizableOptions={customizableOptions}
-                                setCustomizableOptions={setCustomizableOptions}
-                                errorCustomizableOptions={errorCustomizableOptions}
-                                checkCustomizableOptionsValue={checkCustomizableOptionsValue}
-                                additionalPrice={additionalPrice}
-                                handleSelecteProduct={setSpesificProduct}
-                            />
-                            <Button
-                                className={classNames(styles.btnGoToProduct)}
-                                color="primary"
-                                align="left"
-                                onClick={() => route.push(`/${product.url_key}`)}
-                            >
-                                <Typography align="center" type="bold" letter="uppercase" color="white" variant="inherit">
-                                    {t('product:goToProduct')}
-                                </Typography>
-                            </Button>
-                            <div className={styles.desktopShareIcon}>
-                                <Typography className={styles.shareTitle} variant="title">
-                                    {t('product:shareTitle')}
-                                </Typography>
-                                <ItemShare link={getHost() + route.asPath} />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </Dialog>
+        <QuickView
+            open={open}
+            handleClose={handleClose}
+            generatePrice={generatePrice}
+            generateTiersPrice={generateTiersPrice}
+            price={price}
+            priceData={priceData}
+            product={product}
+            t={t}
+            data={product}
+            dataPrice={dataPrice}
+            setBanner={setBanner}
+            setPrice={setPrice}
+            setStockStatus={setStockStatus}
+            stockStatus={stockStatus}
+            setAdditionalPrice={setAdditionalPrice}
+            customizableOptions={customizableOptions}
+            setCustomizableOptions={setCustomizableOptions}
+            errorCustomizableOptions={errorCustomizableOptions}
+            checkCustomizableOptionsValue={checkCustomizableOptionsValue}
+            additionalPrice={additionalPrice}
+            handleSelecteProduct={setSpesificProduct}
+            reviewValue
+            banner={banner}
+            weltpixel_labels={weltpixel_labels}
+            storeConfig={storeConfig}
+        />
     );
 };
 
-QuickView.propTypes = {
+QuickViewCore.propTypes = {
     onClose: PropTypes.func.isRequired,
     open: PropTypes.bool.isRequired,
 };
 
-export default QuickView;
+export default QuickViewCore;

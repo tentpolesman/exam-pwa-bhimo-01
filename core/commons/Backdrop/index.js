@@ -23,14 +23,12 @@ const ImageLoader = () => {
 
 const Backdrop = ({ open }) => (
     <div
-        style={{
-            zIndex: 999,
-            backgroundColor: 'rgba(0,0,0, 0.5)',
-        }}
         className={cx(
+            'z-[999]',
+            'bg-opacity-30',
+            'bg-neutral-800',
             'section-backdrop',
             'fixed',
-            'z-50',
             'w-[100%]',
             'h-[100%]',
             'left-0',

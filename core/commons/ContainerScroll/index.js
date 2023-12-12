@@ -7,20 +7,21 @@ import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 const ContainerScroll = ({
     variant = 'horizontal',
     className,
+    classNameContainer,
     children,
     maxHeight = '100%',
     maxWidth = '100%',
     showArrow,
     arrowSize = 10,
     slidesToScroll = 1,
+    style,
 }) => {
     const containerRef = React.useRef(null);
     const isHorizontal = variant === 'horizontal';
     const isVertical = variant === 'vertical';
-
     const marginSize = 12;
     // calculates the width of the first child from the list rendered
-    const containerChildrenWidth = ((containerRef?.current?.children[0]?.clientWidth + marginSize) * slidesToScroll) || 0;
+    const [containerChildrenWidth, setContainerChildrenWidth] = React.useState(0);
 
     const onClickArrowLeft = () => {
         containerRef.current.scrollLeft -= containerChildrenWidth;
@@ -30,12 +31,19 @@ const ContainerScroll = ({
         containerRef.current.scrollLeft += containerChildrenWidth;
     };
 
+    React.useEffect(() => {
+        if (containerRef?.current?.children?.length > 0) {
+            setContainerChildrenWidth((containerRef.current.children[0].clientWidth + marginSize) * slidesToScroll);
+        }
+    }, [containerRef]);
+
     return (
         <div
-            className={cx('container-scroll relative group')}
+            className={cx('container-scroll relative group', classNameContainer)}
             style={{
                 ...(maxHeight ? { maxHeight } : null),
                 ...(maxWidth ? { maxWidth } : null),
+                ...style,
             }}
         >
             <Show when={showArrow}>

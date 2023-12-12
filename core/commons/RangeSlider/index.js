@@ -1,17 +1,41 @@
+import TextField from '@common/Forms/TextField';
+import Typography from '@common/Typography';
 import { formatPrice } from '@helper_currency';
 import cx from 'classnames';
 
 // eslint-disable-next-line object-curly-newline
-const RangeSlider = ({ disabled = false, onChange = () => {}, value = [0, 10], storeConfig }) => {
-    const min = value[0];
-    const max = value[1];
+const RangeSlider = (props) => {
+    const {
+        disabled = false, onChange = () => {}, value = [0, 10], disableInput = false,
+        storeConfig, minValue = 0, maxValue = 100, formatLabel,
+    } = props;
+    let min = value[0];
+    if (typeof min === 'string') {
+        min = Number(min);
+    }
+    let max = value[1];
+    if (typeof max === 'string') {
+        max = Number(max);
+    }
     const [minVal, setMinVal] = React.useState(min);
     const [maxVal, setMaxVal] = React.useState(max);
     const minValRef = React.useRef(min);
     const maxValRef = React.useRef(max);
     const range = React.useRef(null);
 
-    const getPercent = React.useCallback((valueX) => Math.round(((valueX - min) / (max - min)) * 100), [min, max]);
+    const getPercent = React.useCallback((valueX) => Math.round(((valueX - minValue) / (maxValue - minValue)) * 100), [min, max, maxValue, minValue]);
+
+    React.useEffect(() => {
+        if (maxValue > 0) {
+            const minPercent = getPercent(minVal);
+            const maxPercent = getPercent(maxVal);
+
+            if (range.current) {
+                range.current.style.left = `${minPercent}%`;
+                range.current.style.width = `${maxPercent - minPercent}%`;
+            }
+        }
+    }, [maxValue, range]);
 
     React.useEffect(() => {
         const minPercent = getPercent(minVal);
@@ -34,80 +58,109 @@ const RangeSlider = ({ disabled = false, onChange = () => {}, value = [0, 10], s
 
     return (
         <>
-            <div className={cx('container', 'h-[100vh]', 'flex', 'items-center', 'justify-center')}>
-                <input
-                    type="range"
-                    min={min}
-                    max={max}
-                    value={minVal}
-                    onChange={(event) => {
-                        const valueMin = Math.min(Number(event.target.value), maxVal - 1);
-                        setMinVal(valueMin);
-                        onChange([valueMin, maxVal]);
-                        minValRef.current = valueMin;
-                    }}
-                    disabled={disabled}
-                    className={cx('thumb', 'thumb--left', 'pointer-events-none', 'absolute', 'h-[0]', 'w-[350px]', 'outline-none', 'z-[3]')}
-                    style={{
-                        zIndex: minVal > max - 100 && '5',
-                    }}
-                />
-                <input
-                    type="range"
-                    min={min}
-                    max={max}
-                    value={maxVal}
-                    onChange={(event) => {
-                        const valueMax = Math.max(Number(event.target.value), minVal + 1);
-                        setMaxVal(valueMax);
-                        onChange([minVal, valueMax]);
-                        maxValRef.current = valueMax;
-                    }}
-                    disabled={disabled}
-                    className={cx('thumb', 'thumb--right', 'pointer-events-none', 'absolute', 'h-[0]', 'w-[350px]', 'outline-none', 'z-[4]')}
-                />
+            <div className={cx(
+                'flex flex-col w-full gap-4',
+            )}
+            >
+                <div className="flex flex-row justify-between items-center">
+                    {
+                        disableInput
+                            ? (
+                                <Typography>
+                                    {
+                                        formatLabel && typeof formatLabel === 'function'
+                                            ? formatLabel(minVal)
+                                            : formatPrice(minVal, storeConfig && storeConfig.base_currency_code)
+                                    }
+                                </Typography>
+                            )
+                            : (
+                                <TextField
+                                    classWrapper="max-w-[45%]"
+                                    className="max-w-full"
+                                    value={minVal}
+                                    onChange={(event) => {
+                                        const valueMin = Math.min(Number(event.target.value), maxVal - 1);
+                                        setMinVal(valueMin);
+                                        onChange([valueMin, maxVal]);
+                                        minValRef.current = valueMin;
+                                    }}
+                                    disabled={disabled}
+                                />
+                            )
+                    }
 
-                <div className={cx('slider', 'relative', 'w-[350px]')}>
-                    <div className={cx('slider__track', 'absolute', 'rounded', 'h-[5px]', 'bg-neutral-200', 'w-[100%]', 'z-[1]')} />
-                    <div ref={range} className={cx('slider__range', 'absolute', 'rounded', 'h-[5px]', 'bg-primary-700', 'z-[2]')} />
-                    <div
-                        className={cx(
-                            'slider__left-value',
-                            'absolute',
-                            'text-neutral-black',
-                            'text-2md',
-                            'mt-[-70px]',
-                            'left-[0px]',
-                            'py-[8px]',
-                            'px-[10px]',
-                            'rounded',
-                            'border-2',
-                            'border-neutral-400',
-                            'min-w-[120px]',
-                        )}
-                    >
-                        {formatPrice(minVal, storeConfig && storeConfig.base_currency_code)}
-                    </div>
-                    <div className={cx('separator', 'absolute', 'text-neutral-black', 'text-2md', 'left-[auto]', 'right-[50%]', 'mt-[-60px]')}>-</div>
-                    <div
-                        className={cx(
-                            'slider__right-value',
-                            'absolute',
-                            'text-neutral-black',
-                            'text-2md',
-                            'mt-[-70px]',
-                            'right-[0px]',
-                            'py-[8px]',
-                            'px-[10px]',
-                            'rounded',
-                            'border-2',
-                            'border-neutral-400',
-                            'min-w-[120px]',
-                        )}
-                    >
-                        {formatPrice(maxVal, storeConfig && storeConfig.base_currency_code)}
-                    </div>
+                    { !disableInput && <span className="text-neutral-900 font-bold">-</span> }
+
+                    {
+                        disableInput
+                            ? (
+                                <Typography>
+                                    {
+                                        formatLabel && typeof formatLabel === 'function'
+                                            ? formatLabel(maxVal)
+                                            : formatPrice(maxVal, storeConfig && storeConfig.base_currency_code)
+                                    }
+                                </Typography>
+                            )
+                            : (
+                                <TextField
+                                    classWrapper="max-w-[45%]"
+                                    className="max-w-full"
+                                    value={maxVal}
+                                    onChange={(event) => {
+                                        const valueMax = Math.max(Number(event.target.value), minVal + 1);
+                                        setMaxVal(valueMax);
+                                        onChange([minVal, valueMax]);
+                                        maxValRef.current = valueMax;
+                                    }}
+                                    disabled={disabled}
+                                />
+                            )
+                    }
                 </div>
+
+                <div className={cx(
+                    'slider',
+                    'relative w-full',
+                )}
+                >
+                    <div className={cx('slider__track', 'absolute', 'rounded', 'h-[5px]', 'bg-neutral-200', 'w-[100%]', 'z-[1]')} />
+                    { !disabled && <div ref={range} className={cx('slider__range', 'absolute', 'rounded', 'h-[5px]', 'bg-primary-700', 'z-[2]')} /> }
+
+                    <input
+                        type="range"
+                        min={minValue}
+                        max={maxValue}
+                        value={minVal}
+                        onChange={(event) => {
+                            const valueMin = Math.min(Number(event.target.value), maxVal - 1);
+                            setMinVal(valueMin);
+                            onChange([valueMin, maxVal]);
+                            minValRef.current = valueMin;
+                        }}
+                        disabled={disabled}
+                        className={cx('thumb', 'thumb--left', 'pointer-events-none', 'absolute', 'h-[0]', 'w-full', 'outline-none', 'z-[3]')}
+                        style={{
+                            zIndex: minVal > maxValue - 100 && '5',
+                        }}
+                    />
+                    <input
+                        type="range"
+                        min={minValue}
+                        max={maxValue}
+                        value={maxVal}
+                        onChange={(event) => {
+                            const valueMax = Math.max(Number(event.target.value), minVal + 1);
+                            setMaxVal(valueMax);
+                            onChange([minVal, valueMax]);
+                            maxValRef.current = valueMax;
+                        }}
+                        disabled={disabled}
+                        className={cx('thumb', 'thumb--right', 'pointer-events-none', 'absolute', 'h-[0]', 'w-full', 'outline-none', 'z-[4]')}
+                    />
+                </div>
+
             </div>
             <style jsx>
                 {`

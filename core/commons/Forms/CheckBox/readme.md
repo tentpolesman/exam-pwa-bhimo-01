@@ -38,3 +38,4 @@ import CheckBox from '@common_forms/CheckBox';
 | `classNames`       | false    | allows setting additional element classes | `obj` | false |
 | `classNames.checkboxClasses`       | false    | set additional checkbox classes | `string` | '' |
 | `classNames.checkboxGroupClasses`       | false    | set additional classes for the container of the checkbox list, useful for when setting the flex layout of the checkbox | `string` | '' |
+| `flex`       | false    | flex direction to render list checkbox to `row` or `col` | `string` | `col` |

@@ -6,7 +6,6 @@ import { getStoreHost } from '@helpers/config';
 import { getAppEnv } from '@root/core/helpers/env';
 import CmsRenderer from '@core_modules/cms/components/cms-renderer';
 import BreadcrumbView from '@common_breadcrumb';
-// import TabView from '@common_tabs';
 import BannerView from '@common_image';
 import { MAX_WIDTH } from '@theme_vars';
 import Typography from '@common/Typography';
@@ -110,8 +109,8 @@ const CategoryPage = ({
                 `}
             </style>
 
-            <div className="w-full h-full flex flex-col px-4 py-5 desktop:px-10">
-                <BreadcrumbView data={dataCategory.breadcrumb || []} />
+            <div className="w-full h-full flex flex-col px-4 py-5 tablet:px-6 desktop:px-0 desktop:py-0">
+                <BreadcrumbView iconHomeOnly withHome data={dataCategory.breadcrumb || []} />
                 <Typography
                     variant="h1"
                     className={cx(
@@ -121,7 +120,7 @@ const CategoryPage = ({
                 >
                     {categoryList.name || ''}
                 </Typography>
-                <div className="flex flex-col w-full mb-4 desktop:mb-8">
+                <div className="flex flex-col w-full mb-4 desktop:mb-8 gap-4">
                     <div className="relative w-full h-full">
                         {dataCategory.banner.length > 0 && dataCategory.url !== ''
                             ? (
@@ -137,13 +136,9 @@ const CategoryPage = ({
                     {dataCategory.banner.length > 0 && dataCategory.banner[0] && dataCategory.banner[0]?.description && (
                         <CmsRenderer content={dataCategory.banner[0].description} storeConfig={storeConfig} />
                     )}
-                    {/* <div className="lg:hidden">
-                        <TabView
-                            data={categoryTabs(categoryList?.children)}
-                            onChange={handleChange}
-                            value={value}
-                        />
-                    </div> */}
+                    {categoryList.cms_block && categoryList.cms_block.content && (
+                        <CmsRenderer content={categoryList?.cms_block?.content} storeConfig={storeConfig} />
+                    )}
                 </div>
 
                 {

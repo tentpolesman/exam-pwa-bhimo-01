@@ -53,6 +53,7 @@
         "updateFailed": "Update cart item failed",
         "emptyCart": "YOU HAVE NO ITEMS IN YOUR SHOPPING CART.",
         "oos": "Out of stock",
+        "inStock": "In stock",
         "cartError": "Something error with your cart, please clear and try again"
     },
     "subtotal": "Subtotal",
@@ -195,6 +196,9 @@
         "seeMore": "See More",
         "seeLess": "See Less",
         "chooseFile": "Choose File",
-        "pleaseWait": "Please Wait"
+        "pleaseWait": "Please Wait",
+        "addToWishlist": "Add to Wishlist",
+        "addToCompare": "Add to Compare",
+        "allItems": "All Item"
     }
 }

@@ -91,7 +91,7 @@ const WidgetRenderer = (props) => {
                         case TYPE_PWA_PAGELINK:
                             return <WidgetPwaLink {...propsWidget} />;
                         case TYPE_PWA_PRODUCT:
-                            return <WidgetListProduct {...propsWidget} />;
+                            return <WidgetListProduct {...propsWidget} storeConfig={storeConfig} />;
                         case TYPE_PWA_NEWSLETTER:
                             return <Newsletter {...propsWidget} storeConfig={storeConfig} />;
                         default:
