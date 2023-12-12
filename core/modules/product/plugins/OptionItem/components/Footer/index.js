@@ -4,8 +4,6 @@ import classNames from 'classnames';
 import Typography from '@common_typography';
 import ButtonQty from '@common_buttonqty';
 
-import useStyles from '@plugin_optionitem/components/Footer/style';
-
 const Button = dynamic(() => import('@common_button'), { ssr: true });
 
 const ConfigurableView = (props) => {
@@ -24,40 +22,58 @@ const ConfigurableView = (props) => {
         customButton,
         customQty = false,
         freeItemsData,
+        showStockStatus,
+        stockStatus,
     } = props;
-    const styles = useStyles();
 
     if (customButton) {
         return customButton;
     }
 
     return (
-        <>
-            {showQty && (
-                <div className={classNames(styles.qty, 'product-OptionItem-qty')}>
-                    <Typography type="bold" variant="span">
-                        {t('common:title:qty')}
-                    </Typography>
-                    <ButtonQty value={qty} onChange={setQty} max={customQty ? freeItemsData.quantity : maxQty} disabled={disabled} />
+        <div className="flex flex-col gap-4">
+            { (showStockStatus && stockStatus) && (
+                <div className="flex flex-row gap-2 items-center">
+                    <div className={classNames(
+                        'w-3 h-3 rounded-full bg-green',
+                    )}
+                    />
+                    <Typography className="font-normal capitalize">{stockStatus.replace(/_/g, ' ').toLowerCase()}</Typography>
                 </div>
-            )}
-            {showAddToCart && (
-                <div className={styles.btnAddToCardContainer}>
+            ) }
+            <div className="flex flex-row gap-4 items-end">
+                {showQty && (
+                    <div className={classNames('flex flex-col gap-2', 'product-OptionItem-qty')}>
+                        <Typography className="font-normal" variant="span">
+                            {t('common:title:qty')}
+                        </Typography>
+                        <ButtonQty
+                            value={qty}
+                            onChange={setQty}
+                            max={customQty ? freeItemsData.quantity : maxQty}
+                            disabled={disabled}
+                            classNameInput="h-[38px]"
+                        />
+                    </div>
+                )}
+                {showAddToCart && (
                     <Button
                         id="plugin-addToCart-btn"
-                        className={classNames(styles.btnAddToCard, customStyleBtnAddToCard)}
+                        className={classNames(
+                            'w-full h-[48px]',
+                            customStyleBtnAddToCard,
+                        )}
+                        classNameText="justify-center"
                         color="primary"
                         onClick={handleAddToCart}
                         loading={loading}
                         disabled={disabled}
                     >
-                        <Typography align="center" type="bold" letter="uppercase" color="white" variant="inherit">
-                            {labelAddToCart || t('product:addToCart')}
-                        </Typography>
+                        {labelAddToCart || t('product:addToCart')}
                     </Button>
-                </div>
-            )}
-        </>
+                )}
+            </div>
+        </div>
     );
 };
 

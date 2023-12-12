@@ -13,7 +13,9 @@
     },
     "button": {
         "save": "Simpan",
-        "clear": "Bersihkan"
+        "clear": "Bersihkan",
+        "addToWishlist": "Tambahkan ke wishlist",
+        "addToCompare": "Tambahkan ke pembanding"
     },
     "product": {
         "title_product": "Nama produk",
