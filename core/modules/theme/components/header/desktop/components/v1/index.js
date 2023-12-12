@@ -12,7 +12,7 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import { features } from '@config';
 import { getCookies } from '@helper_cookies';
 
-const DesktopHeader = dynamic(() => import('@core_modules/theme/components/header/desktop/components/v1/adaptive/desktop'), { ssr: false });
+const DesktopHeader = dynamic(() => import('@core_modules/theme/components/header/desktop/components/v1/adaptive/desktop'), { ssr: true });
 const TabletHeader = dynamic(() => import('@core_modules/theme/components/header/desktop/components/v1/adaptive/tablet'), { ssr: false });
 const MobileHeader = dynamic(() => import('@core_modules/theme/components/header/desktop/components/v1/adaptive/mobile'), { ssr: false });
 
@@ -31,10 +31,11 @@ const ViewTopNavigation = (props) => {
         deviceWidth,
         appName,
         installMessage,
-        deviceType,
     } = props;
 
     const [showGlobalPromo, setShowGlobalPromo] = React.useState(false);
+
+    const [deviceType, setDeviceType] = React.useState({});
 
     React.useEffect(() => {
         if (storeConfig && storeConfig.global_promo) {
@@ -45,6 +46,22 @@ const ViewTopNavigation = (props) => {
             }
         }
     }, [storeConfig]);
+
+    React.useEffect(() => {
+        if (typeof window !== 'undefined') {
+            if (window.innerWidth < 1200) {
+                setDeviceType({
+                    isDesktop: false,
+                    isMobile: true,
+                });
+            } else {
+                setDeviceType({
+                    isDesktop: true,
+                    isMobile: false,
+                });
+            }
+        }
+    }, []);
 
     return (
         <div
@@ -71,7 +88,7 @@ const ViewTopNavigation = (props) => {
                             customer={customer}
                         />
                     )}
-                    {deviceType && deviceType.isMobile === true && deviceWidth && deviceWidth > 1200 ? (
+                    {deviceType && deviceType.isMobile === true && deviceWidth && deviceWidth > 768 && (
                         <TabletHeader
                             t={t}
                             storeConfig={storeConfig}
@@ -84,7 +101,8 @@ const ViewTopNavigation = (props) => {
                             handleLogout={handleLogout}
                             customer={customer}
                         />
-                    ) : (
+                    )}
+                    {deviceType && deviceType.isMobile === true && deviceWidth && deviceWidth < 768 && (
                         <MobileHeader
                             t={t}
                             storeConfig={storeConfig}
