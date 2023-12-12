@@ -139,14 +139,7 @@ const DesktopHeader = (props) => {
                 className={cx('middle-header', 'mobile:max-desktop:hidden', 'tablet:border-b-[1.5px]', 'tablet:border-b-neutral-300', 'tablet:py-4')}
             >
                 <div
-                    className={cx(
-                        'middle-header__wrapper',
-                        'm-[0_auto]',
-                        'grid',
-                        'grid-cols-[1fr_2fr_1fr]',
-                        'tablet:max-w-[768px] desktop:max-w-[1200px]',
-                        'm-[0_auto]',
-                    )}
+                    className={cx('middle-header__wrapper', 'm-[0_auto]', 'grid', 'grid-cols-[1fr_2fr_1fr]', 'desktop:max-w-[1200px]', 'm-[0_auto]')}
                 >
                     <div className={cx('middle-header__logo', 'w-[120px]')}>
                         <Link href="/" legacyBehavior>
@@ -166,17 +159,17 @@ const DesktopHeader = (props) => {
                     <div className={cx('middle-header__search')}>
                         <Autocomplete setValue={setValue} handleSearch={handleSearch} t={t} storeConfig={storeConfig} />
                     </div>
-                    <div className={cx('middle-header__statusicon', 'grid', 'grid-cols-[6fr_4fr]')}>
+                    <div className={cx('middle-header__statusicon', 'grid', 'grid-cols-[5fr_5fr]')}>
                         <div className={cx('middle-header__statusicon__left-section', 'grid', 'grid-cols-3')}>
-                            <div className="notification">
+                            <div className={cx('notification')}>
                                 <NotificationBell withLink />
                             </div>
                             {modules.productcompare.enabled && (
-                                <div className="product-compare">
+                                <div className={cx('product-compare')}>
                                     <ProductCompareIcon withLink isLogin={isLogin} />
                                 </div>
                             )}
-                            <div id="header-shoppingBag-icon" className="shopping-bag">
+                            <div id="header-shoppingBag-icon" className={cx('shopping-bag')}>
                                 <ShoppingBagIcon withLink storeConfig={storeConfig} />
                             </div>
                         </div>
