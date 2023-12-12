@@ -6,11 +6,9 @@ import Swatch from '@common_forms/Swatch';
 import RadioGroup from '@common_forms/Radio';
 import RangeSlider from '@common_rangeslider';
 
-const noRender = () => true;
-
 let globalTimeout = null;
 
-const GenerateFilter = React.memo((props) => {
+const GenerateFilter = (props) => {
     const {
         itemProps = {},
         elastic = false,
@@ -27,6 +25,7 @@ const GenerateFilter = React.memo((props) => {
         idx,
         storeConfig,
         autoReload = true,
+        maxPriceRange,
     } = props;
     const timeRef = React.useRef(null);
 
@@ -84,7 +83,7 @@ const GenerateFilter = React.memo((props) => {
                     <RangeSlider
                         noLabel
                         label={itemFilter.label}
-                        maxValue={parseInt(itemFilter.value[itemFilter.value.length - 1].value, 10)}
+                        maxValue={maxPriceRange}
                         value={price}
                         onChange={itemProps.priceRangeChange || setPriceRange}
                         storeConfig={storeConfig}
@@ -101,14 +100,14 @@ const GenerateFilter = React.memo((props) => {
         if (itemFilter.field === 'color') {
             let dataColor = ItemValueByLabel.map((item) => ({ ...item, className: 'w-[34px] h-[34px]' }));
             const othersColor = [];
-            if (ItemValueByLabel.length > 6) {
+            if (ItemValueByLabel.length > 12) {
                 dataColor = [];
                 for (let index = 0; index < ItemValueByLabel.length; index += 1) {
                     const colors = {
                         ...ItemValueByLabel[index],
                         className: 'w-[34px] h-[34px]',
                     };
-                    if (index < 6) {
+                    if (index < 12) {
                         dataColor.push(colors);
                     } else {
                         othersColor.push(colors);
@@ -140,11 +139,11 @@ const GenerateFilter = React.memo((props) => {
                                 classNameText="!justify-start"
                                 className="!p-0 !shadow-none"
                             >
-                                <span className="text-neutral-900 hover:text-primary underline">
+                                <span className="text-neutral-900 hover:text-primary underline capitalize">
                                     {
                                         openMore
-                                            ? `-${t('catalog:filter:lessMore')}`
-                                            : `+${t('catalog:filter:showMore')}`
+                                            ? `- ${t('catalog:filter:lessMore')}`
+                                            : `+ ${t('catalog:filter:showMore')}`
                                     }
                                 </span>
                             </Button>
@@ -156,11 +155,11 @@ const GenerateFilter = React.memo((props) => {
         if (itemFilter.field === 'size') {
             let dataSize = ItemValueByLabel;
             const othersSize = [];
-            if (ItemValueByLabel.length > 6) {
+            if (ItemValueByLabel.length > 12) {
                 dataSize = [];
                 for (let index = 0; index < ItemValueByLabel.length; index += 1) {
                     const colors = ItemValueByLabel[index];
-                    if (index < 6) {
+                    if (index < 12) {
                         dataSize.push(colors);
                     } else {
                         othersSize.push(colors);
@@ -190,11 +189,11 @@ const GenerateFilter = React.memo((props) => {
                                 classNameText="!justify-start"
                                 className="!p-0 !shadow-none"
                             >
-                                <span className="text-neutral-900 hover:text-primary underline">
+                                <span className="text-neutral-900 hover:text-primary underline capitalize">
                                     {
                                         openMore
-                                            ? `-${t('catalog:filter:lessMore')}`
-                                            : `+${t('catalog:filter:showMore')}`
+                                            ? `- ${t('catalog:filter:lessMore')}`
+                                            : `+ ${t('catalog:filter:showMore')}`
                                     }
                                 </span>
                             </Button>
@@ -261,6 +260,7 @@ const GenerateFilter = React.memo((props) => {
                                 data={[...itemFilters, ...othersFilters]}
                                 value={selectedFilter[itemFilter.field]}
                                 onChange={(value) => selectFilter(itemFilter.field, value)}
+                                className="!mb-0"
                             />
                         ) : (
                             <RadioGroup
@@ -270,6 +270,7 @@ const GenerateFilter = React.memo((props) => {
                                 data={itemFilters}
                                 value={selectedFilter[itemFilter.field]}
                                 onChange={(value) => selectFilter(itemFilter.field, value)}
+                                className="!mb-0"
                             />
                         )
                     }
@@ -282,11 +283,11 @@ const GenerateFilter = React.memo((props) => {
                                 classNameText="!justify-start"
                                 className="!p-0 !shadow-none"
                             >
-                                <span className="text-neutral-900 hover:text-primary underline">
+                                <span className="text-neutral-900 hover:text-primary underline capitalize">
                                     {
                                         openMore
-                                            ? `-${t('catalog:filter:lessMore')}`
-                                            : `+${t('catalog:filter:showMore')}`
+                                            ? `- ${t('catalog:filter:lessMore')}`
+                                            : `+ ${t('catalog:filter:showMore')}`
                                     }
                                 </span>
                             </Button>
@@ -320,7 +321,7 @@ const GenerateFilter = React.memo((props) => {
                     data={openMore ? [...itemFilters, ...othersFilters] : itemFilters}
                     value={selectedFilter[itemFilter.field]}
                     onChange={(value) => selectFilter(itemFilter.field, value)}
-                    className="flex-row"
+                    className="flex-row !mb-0"
                 />
                 {
                     othersFilters.length > 0 && (
@@ -330,11 +331,11 @@ const GenerateFilter = React.memo((props) => {
                             classNameText="!justify-start"
                             className="!p-0 !shadow-none"
                         >
-                            <span className="text-neutral-900 hover:text-primary underline">
+                            <span className="text-neutral-900 hover:text-primary underline capitalize">
                                 {
                                     openMore
-                                        ? `-${t('catalog:filter:lessMore')}`
-                                        : `+${t('catalog:filter:showMore')}`
+                                        ? `- ${t('catalog:filter:lessMore')}`
+                                        : `+ ${t('catalog:filter:showMore')}`
                                 }
                             </span>
                         </Button>
@@ -344,6 +345,6 @@ const GenerateFilter = React.memo((props) => {
         );
     }
     return null;
-}, noRender);
+};
 
 export default GenerateFilter;

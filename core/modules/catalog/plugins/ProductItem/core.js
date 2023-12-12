@@ -57,7 +57,7 @@ const ProductItem = (props) => {
         ...other
     } = props;
     const {
-        storeConfig = {}, __typename, price_range, price_tiers, special_from_date, special_to_date,
+        storeConfig = {}, __typename, price_range, price_tiers, special_from_date, special_to_date, stock_status,
     } = props;
     const router = useRouter();
     const { t } = useTranslation(['catalog', 'common']);
@@ -465,20 +465,26 @@ const ProductItem = (props) => {
                                 <Button
                                     iconOnly
                                     icon={<HeartIcon />}
-                                    iconProps={{ className: feed ? '!w-4 !h-4 text-white' : '!w-4 !h-4' }}
+                                    iconProps={{ className: feed ? '!w-4 !h-4 text-neutral-white' : '!w-4 !h-4 group-hover:text-neutral-white' }}
                                     variant={feed ? 'primary' : 'outlined'}
                                     onClick={() => handleFeed(props)}
-                                    className="!p-[10px] !border-neutral-200 hover:bg-primary"
+                                    className={classNames(
+                                        '!p-[10px] !border-neutral-200 hover:bg-primary group',
+                                        'hover:!shadow-none focus:!shadow-none hover:!opacity-100',
+                                    )}
                                 />
                             )}
                             {enableProductCompare && (
                                 <Button
                                     iconOnly
                                     icon={<CompareIcon />}
-                                    iconProps={{ className: '!w-4 !h-4' }}
+                                    iconProps={{ className: '!w-4 !h-4 group-hover:text-neutral-white' }}
                                     variant="outlined"
                                     onClick={() => handleSetCompareList(props)}
-                                    className="!p-[10px] !border-neutral-200 hover:bg-primary"
+                                    className={classNames(
+                                        '!p-[10px] !border-neutral-200 hover:bg-primary group',
+                                        'hover:!shadow-none focus:!shadow-none hover:!opacity-100',
+                                    )}
                                 />
                             )}
                         </div>
@@ -487,6 +493,8 @@ const ProductItem = (props) => {
             </div>
         );
     };
+
+    const isOos = stock_status === 'OUT_OF_STOCK';
 
     if (isGrid) {
         return (
@@ -511,16 +519,26 @@ const ProductItem = (props) => {
                 <div
                     className={classNames(
                         'w-full inline-block h-full overflow-hidden relative cursor-pointer',
-                        'shadow-base rounded-lg p-2 lg:p-4',
+                        'shadow rounded-lg p-2 lg:p-4',
+                        'desktop:hover:shadow-lg',
                         className,
                     )}
                     id="catalog-item-product"
                 >
-                    {storeConfig?.pwa?.label_enable && LabelView ? (
+                    {!isOos && storeConfig?.pwa?.label_enable && LabelView ? (
                         <LabelView t={t} {...other} isGrid={isGrid} spesificProduct={spesificProduct} />
                     ) : null}
+                    {isOos && (
+                        <div className="absolute top-3 left-3 rounded z-[1] flex flex-row justify-between w-full p-4">
+                            <div className="bg-neutral-350 rounded-[4px] px-2 py-1">
+                                <Typography color="text-neutral-white" className="font-normal text-[12px]">
+                                    {stock_status.replace(/_/g, ' ')}
+                                </Typography>
+                            </div>
+                        </div>
+                    )}
                     <div className="w-full relative group overflow-hidden">
-                        {storeConfig?.pwa?.label_enable && storeConfig?.pwa?.label_weltpixel_enable && (
+                        {!isOos && storeConfig?.pwa?.label_enable && storeConfig?.pwa?.label_weltpixel_enable && (
                             <WeltpixelLabel t={t} weltpixel_labels={weltpixel_labels} categoryLabel />
                         )}
                         {showQuickView && (
@@ -652,6 +670,7 @@ const ProductItem = (props) => {
                     'w-full inline-block h-full overflow-hidden relative cursor-pointer',
                     'shadow rounded-lg p-2 tablet:p-4',
                     'min-h-[144px] tablet:min-h-max',
+                    'desktop:hover:shadow-lg',
                     className,
                 )}
             >
@@ -664,11 +683,20 @@ const ProductItem = (props) => {
                                 height: storeConfig?.pwa?.image_product_height,
                             }}
                         >
-                            {storeConfig?.pwa?.label_enable && LabelView ? (
+                            {!isOos && storeConfig?.pwa?.label_enable && LabelView ? (
                                 <LabelView t={t} {...other} isGrid={isGrid} spesificProduct={spesificProduct} />
                             ) : null}
-                            {storeConfig?.pwa?.label_enable && storeConfig?.pwa?.label_weltpixel_enable && (
+                            {!isOos && storeConfig?.pwa?.label_enable && storeConfig?.pwa?.label_weltpixel_enable && (
                                 <WeltpixelLabel t={t} weltpixel_labels={weltpixel_labels} categoryLabel />
+                            )}
+                            {isOos && (
+                                <div className="absolute top-3 left-3 rounded z-[1] flex flex-row justify-between w-full">
+                                    <div className="bg-neutral-350 rounded-[4px] px-2 py-1">
+                                        <Typography color="text-neutral-white" className="font-normal text-[12px]">
+                                            {stock_status.replace(/_/g, ' ')}
+                                        </Typography>
+                                    </div>
+                                </div>
                             )}
                             {showQuickView && (
                                 <>
@@ -712,14 +740,14 @@ const ProductItem = (props) => {
                                 urlKey={url_key}
                                 {...other}
                                 className={classNames(
-                                    '!w-[114px] !h-[114px]',
+                                    '!w-[120px] !h-[120px]',
                                     'tablet:!w-[320px] tablet:!h-[320px]',
-                                    'desktop:!w-[250px] desktop:!h-[250px] overflow-hidden',
+                                    'desktop:!w-[320px] desktop:!h-[320px] overflow-hidden',
                                 )}
                                 classContainer={classNames(
-                                    '!w-[114px] !h-[114px]',
+                                    '!w-[120px] !h-[120px]',
                                     'tablet:!w-[320px] tablet:!h-[320px]',
-                                    'desktop:!w-[250px] desktop:!h-[250px] overflow-hidden',
+                                    'desktop:!w-[320px] desktop:!h-[320px] overflow-hidden',
                                 )}
                             />
                         </div>

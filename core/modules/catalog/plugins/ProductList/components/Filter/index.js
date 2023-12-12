@@ -14,6 +14,7 @@ const Filter = (props) => {
     const [selectedFilter, setFilter] = React.useState(filterValue);
     const [sort, setSort] = React.useState(filterValue.sort ? filterValue.sort : '');
     const [priceRange, setPriceRange] = React.useState([0, 0]);
+    const [maxPriceRange, setMaxPriceRange] = React.useState(0);
     const router = useRouter();
 
     // reset filter if route change
@@ -21,6 +22,19 @@ const Filter = (props) => {
         const pricerangelist = filter.filter((data) => data.field === 'price');
         // eslint-disable-next-line radix
         const pricerangelistmaxvalue = parseInt(pricerangelist[0]?.value[pricerangelist[0]?.value.length - 1].value) || 0;
+        setMaxPriceRange(pricerangelistmaxvalue);
+        let initPriceRange = [];
+
+        if (filterValue.priceRange) {
+            initPriceRange = filterValue.priceRange.split(',');
+            if (initPriceRange[0] === 'string') {
+                initPriceRange[0] = parseInt(initPriceRange[0], 10);
+            }
+
+            if (initPriceRange[1] === 'string') {
+                initPriceRange[1] = parseInt(initPriceRange[1], 10);
+            }
+        }
 
         setPriceRange(filterValue.priceRange ? filterValue.priceRange.split(',') : [0, pricerangelistmaxvalue]);
         setFilter(filterValue);
@@ -97,7 +111,17 @@ const Filter = (props) => {
     };
 
     const ModalProps = {
-        selectedFilter, setSelectedFilter, setCheckedFilter, handleSave, handleClear, sortByData, sort, setSort, priceRange, setPriceRange,
+        selectedFilter,
+        setSelectedFilter,
+        setCheckedFilter,
+        handleSave,
+        handleClear,
+        sortByData,
+        sort,
+        setSort,
+        priceRange,
+        setPriceRange,
+        maxPriceRange,
     };
 
     return (
