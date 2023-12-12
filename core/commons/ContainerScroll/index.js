@@ -7,12 +7,14 @@ import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 const ContainerScroll = ({
     variant = 'horizontal',
     className,
+    classNameContainer,
     children,
     maxHeight = '100%',
     maxWidth = '100%',
     showArrow,
     arrowSize = 10,
     slidesToScroll = 1,
+    style,
 }) => {
     const containerRef = React.useRef(null);
     const isHorizontal = variant === 'horizontal';
@@ -37,10 +39,11 @@ const ContainerScroll = ({
 
     return (
         <div
-            className={cx('container-scroll relative group')}
+            className={cx('container-scroll relative group', classNameContainer)}
             style={{
                 ...(maxHeight ? { maxHeight } : null),
                 ...(maxWidth ? { maxWidth } : null),
+                ...style,
             }}
         >
             <Show when={showArrow}>

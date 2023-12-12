@@ -53,6 +53,7 @@ const ProductItem = (props) => {
         weltpixel_labels,
         enablePrice = true,
         enableWishlist,
+        imageProps = {},
         ...other
     } = props;
     const {
@@ -581,9 +582,10 @@ const ProductItem = (props) => {
                             spesificProduct={spesificProduct}
                             urlKey={url_key}
                             {...other}
+                            {...imageProps}
                         />
                     </div>
-                    <div className="h-auto pt-4 relative flex flex-col gap-4">
+                    <div className="h-auto pt-4 relative flex flex-col gap-4 overflow-hidden">
                         <DetailProductView
                             t={t}
                             urlKey={url_key}
