@@ -4,24 +4,26 @@
 /* eslint-disable max-len */
 import React, { useState } from 'react';
 import Slider from 'react-slick';
-import ImageSlide from '@common_slick/Banner/ImageSlider';
+import ImageSlider from '@common_slick/Banner/ImageSlider';
 import classNames from 'classnames';
 import ChevronLeft from '@heroicons/react/20/solid/ChevronLeftIcon';
 import ChevronRight from '@heroicons/react/20/solid/ChevronRightIcon';
 
-const Banner = ({
-    data = [],
-    height,
-    width,
-    contentWidth = '',
-    autoPlay = true,
-    noLink = false,
-    showArrow = true,
-    speed = 500,
-    autoplaySpeed = 4000,
-    className = '',
-    storeConfig = {},
-}) => {
+const Banner = (props) => {
+    const {
+        data = [],
+        height,
+        width,
+        contentWidth = '',
+        autoPlay = true,
+        noLink = false,
+        showArrow = true,
+        speed = 500,
+        autoplaySpeed = 4000,
+        className = '',
+        storeConfig = {},
+    } = props;
+
     const [slideIndex, setIndex] = useState(0);
     const [count, setCount] = useState(0);
     let sliderRef = React.createRef();
@@ -77,7 +79,7 @@ const Banner = ({
         <div className={classNames('w-full h-full relative sm:h-auto group', className)}>
             <Slider ref={(slider) => (sliderRef = slider)} {...settings}>
                 {data.map((item, key) => (
-                    <ImageSlide
+                    <ImageSlider
                         storeConfig={storeConfig}
                         height={height}
                         width={width}
@@ -111,7 +113,7 @@ const Banner = ({
                     </div>
                 </>
             ) : null}
-            <div className="z-[2] flex flex-row justify-around absolute bottom-[33px] left-[50%] -translate-x-[50%] -translate-y-[50%]">
+            <div className="z-[2] flex justify-around items-center absolute bottom-[33px] left-[50%] -translate-x-[50%] -translate-y-[50%]">
                 {data.map((item, id) => (
                     <div {...generateDotItemProps(slideIndex === id)} key={id} onClick={() => sliderRef.slickGoTo(id)} />
                 ))}
