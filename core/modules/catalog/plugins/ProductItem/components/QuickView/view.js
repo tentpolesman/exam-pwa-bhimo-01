@@ -141,7 +141,7 @@ const QuickView = (props) => {
                                     additionalPrice={additionalPrice}
                                     handleSelecteProduct={setSpesificProduct}
                                     showAddToCart
-                                    showQty={false}
+                                    showQty
                                     labelAddToCart={t('common:button:addToCart')}
                                     showWishlist={false}
                                     enableProductCompare={false}

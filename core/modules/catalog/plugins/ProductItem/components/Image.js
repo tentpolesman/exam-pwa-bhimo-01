@@ -10,7 +10,7 @@ import cx from 'classnames';
 const ImageDetail = (props) => {
     const {
         handleClick, small_image, spesificProduct, urlKey, name, storeConfig = {},
-        classContainer = '', className = '',
+        classContainer = '', className = '', isGrid,
     } = props;
 
     let defaultWidth = storeConfig?.pwa?.image_product_width;
@@ -18,6 +18,13 @@ const ImageDetail = (props) => {
 
     if (typeof defaultWidth === 'string') defaultWidth = parseInt(defaultWidth, 10);
     if (typeof defaultHeight === 'string') defaultHeight = parseInt(defaultHeight, 10);
+
+    let classImage = '!w-[144px] !h-[144px] tablet:!w-[205px] tablet:!h-[205px] desktop:!w-[250px] desktop:!h-[250px]';
+
+    if (!isGrid) {
+        classImage = '!w-[120px] !h-[120px] tablet:!w-[320px] tablet:!h-[320px] desktop:!w-[320px] desktop:!h-[320px]';
+    }
+
     return (
         (
             <Link
@@ -40,11 +47,12 @@ const ImageDetail = (props) => {
                             ? small_image.url
                             : `${basePath}/assets/img/placeholder.png`}
                     className={cx(
-                        '!w-[114px] !h-[114px] tablet:!w-[205px] tablet:!h-[205px] desktop:!w-[250px] desktop:!h-[250px] overflow-hidden',
+                        classImage,
+                        'overflow-hidden',
                         className,
                     )}
                     classContainer={cx(
-                        '!w-[114px] !h-[114px] tablet:!w-[205px] tablet:!h-[205px] desktop:!w-[250px] desktop:!h-[250px]',
+                        classImage,
                         classContainer,
                     )}
                     styleContainer={{ padding: 0 }}

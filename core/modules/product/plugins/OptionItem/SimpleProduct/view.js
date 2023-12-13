@@ -12,20 +12,37 @@ const SimpleOptionView = ({
     disabled = false,
     showQty = true,
     showAddToCart = true,
+    CustomFooter,
     ...other
 }) => (
     <>
-        <Footer
-            loading={loading}
-            disabled={disabled}
-            showQty={showQty}
-            handleAddToCart={handleAddToCart}
-            qty={qty}
-            setQty={setQty}
-            t={t}
-            showAddToCart={showAddToCart}
-            {...other}
-        />
+        <div />
+        {
+            React.isValidElement(CustomFooter)
+                ? React.cloneElement(CustomFooter, {
+                    ...other,
+                    loading,
+                    disabled,
+                    showQty,
+                    handleAddToCart,
+                    qty,
+                    setQty,
+                    t,
+                    showAddToCart,
+                })
+                : (
+                    <Footer
+                        loading={loading}
+                        showQty={showQty}
+                        handleAddToCart={handleAddToCart}
+                        qty={qty}
+                        setQty={setQty}
+                        t={t}
+                        showAddToCart={showAddToCart}
+                        {...other}
+                    />
+                )
+        }
     </>
 );
 

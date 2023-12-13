@@ -11,11 +11,13 @@ import dynamic from 'next/dynamic';
 import ProductItem from '@plugin_productitem';
 import PaginationSection from '@plugin_productlist/components/PaginationSection';
 import CircularProgress from '@common/CircularProgress';
+import Show from '@common_show';
+import DrawerFilter from '@common_drawer';
 
 import { getLocalStorage, setLocalStorage } from '@root/core/helpers/localstorage';
 
-import DrawerFilter from '@common_drawer';
-import Sorting from './Shorting';
+import Sorting from '@plugin_productlist/components/Shorting';
+import ProductListSkeleton from '@plugin_productlist/components/ProductListSkeleton';
 
 const Filter = dynamic(() => import('@plugin_productlist/components/Filter'));
 
@@ -31,8 +33,8 @@ const ViewProductList = (props) => {
     const { t, storeConfig } = props;
 
     const [isGrid, setIsGrid] = useState(true);
-    const handleSetGrid = () => {
-        setLocalStorage('isGrid', !isGrid);
+    const handleSetGrid = (grid) => {
+        setLocalStorage('isGrid', grid);
         setIsGrid(!isGrid);
     };
 
@@ -45,21 +47,23 @@ const ViewProductList = (props) => {
     const handleScroll = useCallback(() => {
         // To get page offset of last user
         // const lastUserLoaded = document.querySelector(`.grid-item:last-child`);
-        const lastUserLoaded = document.querySelector('.latest-product-indicator');
-        if (lastUserLoaded) {
-            const lastUserLoadedOffset = lastUserLoaded.offsetTop + lastUserLoaded.clientHeight;
-            const pageOffset = window.pageYOffset + window.innerHeight;
+        if (!isPagination) {
+            const lastUserLoaded = document.querySelector('.latest-product-indicator');
+            if (lastUserLoaded) {
+                const lastUserLoadedOffset = lastUserLoaded.offsetTop + lastUserLoaded.clientHeight;
+                const pageOffset = window.pageYOffset + window.innerHeight;
 
-            if (pageOffset > lastUserLoadedOffset) {
-                setIsExceedingOffset(true);
-            } else {
-                setIsExceedingOffset(false);
+                if (pageOffset > lastUserLoadedOffset) {
+                    setIsExceedingOffset(true);
+                } else {
+                    setIsExceedingOffset(false);
+                }
             }
         }
-    }, []);
+    }, [isPagination]);
 
     React.useEffect(() => {
-        if (isExceedingOffset && !loadmore && products.items.length < products.total_count) {
+        if (isExceedingOffset && !loadmore && !isPagination && products.items.length < products.total_count) {
             handleLoadMore();
         }
     }, [isExceedingOffset]);
@@ -118,7 +122,7 @@ const ViewProductList = (props) => {
                     />
                 </div>
             </DrawerFilter>
-            <div className="hidden desktop:inline-flex flex-col lg:basis-1/4">
+            <div className="hidden desktop:inline-flex flex-col w-full desktop:max-w-[282px]">
                 <div className="mb-5 h-[36px] border-neutral-100 border-b-[1px]">
                     <Typography variant="h3" className="text-base basis-full capitalize">
                         {t('catalog:filter:title')}
@@ -142,7 +146,7 @@ const ViewProductList = (props) => {
                     />
                 </div>
             </div>
-            <div className="basis-full desktop:basis-3/4 flex flex-col">
+            <div className="basis-full w-full desktop:max-w-[895px] flex flex-col">
                 <div className="flex flex-row items-center align-middle justify-between mb-5">
                     <div className="flex flex-row items-center gap-2">
                         <Button
@@ -155,7 +159,7 @@ const ViewProductList = (props) => {
                         >
                             Filter
                         </Button>
-                        <Button
+                        {/* <Button
                             variant="outlined"
                             icon={isGrid ? <GridIcon /> : <ListIcon />}
                             iconPosition="right"
@@ -167,7 +171,45 @@ const ViewProductList = (props) => {
                             <Typography className="hidden tablet:inline">
                                 {t('catalog:filter:viewAs')}
                             </Typography>
-                        </Button>
+                        </Button> */}
+                        <div className={cx(
+                            'px-3 py-2 bg-neutral-white flex flex-row gap-3 items-center',
+                            'border rounded-md border-neutral-200',
+                            'h-max w-max',
+                        )}
+                        >
+                            <div className="hidden tablet:inline">
+                                <Typography className="font-semibold tex-md text-neutral">
+                                    {t('catalog:filter:viewAs')}
+                                </Typography>
+                            </div>
+                            <div className="grid grid-cols-2 gap-2">
+                                <Button
+                                    variant="plain"
+                                    iconOnly
+                                    icon={<ListIcon />}
+                                    iconProps={{
+                                        className: !isGrid
+                                            ? 'w-[20px] h-[20px] text-neutral-600'
+                                            : 'w-[20px] h-[20px] text-neutral-400 hover:text-primary',
+                                    }}
+                                    className="!p-0"
+                                    onClick={() => handleSetGrid(false)}
+                                />
+                                <Button
+                                    variant="plain"
+                                    iconOnly
+                                    icon={<GridIcon />}
+                                    iconProps={{
+                                        className: isGrid
+                                            ? 'w-[20px] h-[20px] text-neutral-600'
+                                            : 'w-[20px] h-[20px] text-neutral-400 hover:text-primary',
+                                    }}
+                                    className="!p-0"
+                                    onClick={() => handleSetGrid(true)}
+                                />
+                            </div>
+                        </div>
                     </div>
                     <Sorting
                         filter={customFilter || aggregations}
@@ -182,26 +224,19 @@ const ViewProductList = (props) => {
                     cx(
                         isGrid
                             ? 'grid gap-2 tablet:gap-4 grid-cols-2 tablet:grid-cols-3 desktop:grid-cols-3'
-                            : 'grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1',
+                            : 'grid grid-cols-1 gap-[10px] tablet:gap-10',
                     )
                 }
                 >
-                    {
-                        loading
-                            && [1, 2, 3, 4, 5, 6, 7, 8, 9].map((key) => (
-                                <div className="w-auto h-auto p-2" key={key}>
-                                    <div className="flex flex-col gap-2 tablet:gap-2 animate-pulse">
-                                        <div className="h-[250px] w-auto bg-neutral-100" />
-                                        <div className="h-5 w-full bg-neutral-100" />
-                                        <div className="h-4 w-3/4 bg-neutral-100" />
-                                    </div>
-                                </div>
-                            ))
-
-                    }
+                    <Show when={loading}>
+                        <ProductListSkeleton isGrid={isGrid} />
+                    </Show>
                     {
                         !loadList && products.items && products.items.map((item, key) => (
-                            <div className="w-auto h-auto" key={key}>
+                            <div
+                                className="w-auto h-auto"
+                                key={key}
+                            >
                                 <ProductItem
                                     categorySelect={categoryPath}
                                     isGrid={isGrid}
@@ -217,21 +252,23 @@ const ViewProductList = (props) => {
                 </div>
                 <div className="latest-product-indicator" />
 
-                {(products.items.length === products.total_count) || loading
+                {(products.items.length !== products.total_count) || !loading
                     ? renderEmptyMessage(products.items.length, loading)
                     : null}
-                <div className={cx(
-                    'w-full p-5 flex justify-center',
-                    !loadmore ? 'hidden' : '',
-                )}
-                >
-                    <div className="flex flex-row">
-                        <CircularProgress size="small" className="mr-2" />
-                        <Typography align="center" variant="span" type="bold" letter="uppercase" color="gray">
-                            Loading...
-                        </Typography>
+                <Show when={loadmore}>
+                    <div className={cx(
+                        'w-full p-5 flex justify-center',
+                    )}
+                    >
+                        <div className="flex flex-row">
+                            <CircularProgress size="small" className="mr-2" />
+                            <Typography align="center" variant="span" type="bold" letter="uppercase" color="gray">
+                                Loading...
+                            </Typography>
+                        </div>
                     </div>
-                </div>
+                </Show>
+
                 { isPagination && <PaginationSection {...props} /> }
             </div>
         </div>

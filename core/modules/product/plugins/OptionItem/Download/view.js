@@ -33,7 +33,7 @@ const DownloadView = (props) => {
     const {
         items, handleOption, disabled, loading,
         showQty = true, qty, setQty, handleAddToCart, t,
-        showAddToCart = true, ...other
+        showAddToCart = true, CustomFooter, ...other
     } = props;
     const setLoading = !(loading === 0 || loading === false);
     return (
@@ -44,17 +44,33 @@ const DownloadView = (props) => {
                 ))}
                 <br />
             </div>
-            <Footer
-                loading={setLoading}
-                disabled={disabled}
-                showQty={showQty}
-                handleAddToCart={handleAddToCart}
-                qty={qty}
-                setQty={setQty}
-                t={t}
-                showAddToCart={showAddToCart}
-                {...other}
-            />
+            {
+                React.isValidElement(CustomFooter)
+                    ? React.cloneElement(CustomFooter, {
+                        ...other,
+                        loading: setLoading,
+                        disabled,
+                        showQty,
+                        handleAddToCart,
+                        qty,
+                        setQty,
+                        t,
+                        showAddToCart,
+                    })
+                    : (
+                        <Footer
+                            loading={setLoading}
+                            disabled={disabled}
+                            showQty={showQty}
+                            handleAddToCart={handleAddToCart}
+                            qty={qty}
+                            setQty={setQty}
+                            t={t}
+                            showAddToCart={showAddToCart}
+                            {...other}
+                        />
+                    )
+            }
         </>
     );
 };

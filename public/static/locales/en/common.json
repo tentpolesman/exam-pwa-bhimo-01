@@ -135,7 +135,8 @@
         "feedSuccess": "Product success added to wishlist",
         "feedFailed": "Add to wishlist failed",
         "browserError": "Please change browsers or check cookie settings, javascript settings or others",
-        "restrictionCookies": "We use cookies to make your experience better. To comply with the new e-Privacy directive, we need to ask for your consent to set the cookies. Learn more."
+        "restrictionCookies": "We use cookies to make your experience better. To comply with the new e-Privacy directive, we need to ask for your consent to set the cookies. Learn more.",
+        "selectOptionFailed": "Please select product options first"
     },
     "newsletter": {
         "title": "SIGN UP NEWSLETTER",
