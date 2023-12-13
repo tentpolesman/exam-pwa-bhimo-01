@@ -189,6 +189,12 @@ const PageDetail = (props) => {
     const { loading, data, error } = getProduct(storeConfig, { ...productVariables });
 
     const isLoadingPDP = error || loading || !data;
+    let isError = false;
+    let errorMessage = '';
+    if (error?.graphQLErrors && error?.graphQLErrors?.length > 0) {
+        isError = true;
+        errorMessage = error?.graphQLErrors[0]?.message;
+    }
 
     const product = React.useMemo(() => {
         let productResult = {};
@@ -267,6 +273,16 @@ const PageDetail = (props) => {
         }
         return productByUrlResult;
     }, [product]);
+
+    if (isError) {
+        return (
+            <Layout pageConfig={{}} CustomHeader={CustomHeader ? <CustomHeader /> : <Header />} {...props}>
+                <div className="product-detail-error">
+                    {errorMessage}
+                </div>
+            </Layout>
+        );
+    }
 
     if (isLoadingPDP) {
         return (

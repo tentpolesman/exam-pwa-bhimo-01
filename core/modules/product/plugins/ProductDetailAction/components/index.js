@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 import Typography from '@common_typography';
 import ImageSlider from '@common_imageslider';
 import Show from '@common_show';
@@ -51,11 +52,11 @@ const ProductDetailAction = ({
     useReviewList,
     useProductTabs,
     useProductImagePreview,
-    handleOption,
-    openOption,
-    setOpenOption,
-    stockStatus,
+    useShareProduct,
     setStockStatus,
+    setAdditionalPrice,
+    setBanner,
+    reviewRef,
 }) => (
     <div className="plugin-product-detail-action desktop:px-[0px] tablet:px-[16px]">
         <div className={cx('product-detail-container', 'desktop:grid tablet:grid desktop:grid-cols-2 tablet:grid-cols-2', 'mt-[32px]')}>
@@ -90,47 +91,55 @@ const ProductDetailAction = ({
                         priceItem={price}
                     />
                 </Show>
-                <div className="flex mt-[12px]">
-                    <RatingStar value={reviewValue || 0} />
-                    <Typography variant="p-2" className="ml-[4px]">
-                        {`(${data.review.reviews_count || 0} ${t('product:review')})`}
-                    </Typography>
-                </div>
+                <Button
+                    variant="plain"
+                    className="!p-0 flex items-center"
+                    onClick={() => {
+                        reviewRef?.current?.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                >
+                    <div className="flex mt-[12px]">
+                        <RatingStar value={reviewValue || 0} />
+                        <Typography variant="p-2" className="ml-[4px]">
+                            {`(${data.review.reviews_count || 0} ${t('product:review')})`}
+                        </Typography>
+                    </div>
+                </Button>
                 <Divider className="my-[24px]" />
                 <CustomizableOption
                     showCustomizableOption={false}
                 />
-                <OptionItem
-                    t={t}
-                    dataPrice={dataPrice}
-                    handleSelecteProduct={setSpesificProduct}
-                    showQty
-                    showAddToCart
-                    showStockStatus={data?.stock_status}
-                    labelAddToCart={t('common:button:addToCart')}
-                    isGrid={false}
-                    customizableOptions={customizableOptions}
-                    setCustomizableOptions={setCustomizableOptions}
-                    errorCustomizableOptions={errorCustomizableOptions}
-                    checkCustomizableOptionsValue={checkCustomizableOptionsValue}
-                    showWishlist={false}
-                    enableProductCompare={enableProductCompare}
-                    enableBundle={false}
-                    enableDownload={false}
-                    handleOption={handleOption}
-                    openOption={openOption}
-                    setOpenOption={setOpenOption}
-                    stockStatus={stockStatus}
-                    setStockStatus={setStockStatus}
-                    data={{
-                        ...data,
-                        url_key: slug,
-                        review: data?.review,
-                    }}
-                    propsItem={{
-                        className: 'w-5 h-5',
-                    }}
-                />
+                <div className="flex flex-col gap-4 w-[100%]">
+                    <OptionItem
+                        price={price}
+                        t={t}
+                        dataPrice={dataPrice}
+                        priceData={priceData}
+                        setStockStatus={setStockStatus}
+                        setAdditionalPrice={setAdditionalPrice}
+                        customizableOptions={customizableOptions}
+                        setCustomizableOptions={setCustomizableOptions}
+                        errorCustomizableOptions={errorCustomizableOptions}
+                        checkCustomizableOptionsValue={checkCustomizableOptionsValue}
+                        additionalPrice={additionalPrice}
+                        handleSelecteProduct={setSpesificProduct}
+                        showAddToCart
+                        labelAddToCart={t('common:button:addToCart')}
+                        setBanner={setBanner}
+                        showWishlist={false}
+                        enableProductCompare={false}
+                        enableBundle={false}
+                        enableDownload={false}
+                        showStockStatus
+                        stockStatus={data?.stock_status || ''}
+                        storeConfig={storeConfig}
+                        data={{
+                            ...data,
+                            url_key: slug,
+                            review: data?.review,
+                        }}
+                    />
+                </div>
                 <Typography variant="p-2" className="mt-[24px]">
                     {data?.short_description?.html ? <CmsRenderer content={data?.short_description?.html} /> : null}
                 </Typography>
@@ -144,9 +153,11 @@ const ProductDetailAction = ({
                     )
                 }
                 >
-                    <div className={cx('porudct-detail-info-footer-share')}>
-                        <Share instagram={false} />
-                    </div>
+                    <Show when={useShareProduct}>
+                        <div className={cx('porudct-detail-info-footer-share')}>
+                            <Share instagram={false} />
+                        </div>
+                    </Show>
                     <div className={
                         cx(
                             'product-detail-info-footer-action',
@@ -199,6 +210,7 @@ const ProductDetailAction = ({
                 <ProductTabs
                     data={expandData}
                     tabHasContentClass="pt-[24px]"
+                    tabContentClassName="mt-[24px]"
                     smartProductTabs={
                         smartProductTabs || {
                             tab_2: {
@@ -212,11 +224,13 @@ const ProductDetailAction = ({
         </Show>
 
         <Show when={useReviewList}>
-            <div className={cx(
-                'product-list-review-container',
-                'mt-[48px]',
-                'desktop:px-[0px] tablet:px-[0px] mobile:px-[16px]',
-            )}
+            <div
+                ref={reviewRef}
+                className={cx(
+                    'product-list-review-container',
+                    'mt-[48px]',
+                    'desktop:px-[0px] tablet:px-[0px] mobile:px-[16px]',
+                )}
             >
                 <ReviewList
                     t={t}

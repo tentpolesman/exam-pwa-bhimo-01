@@ -57,7 +57,7 @@ const ConfigurableView = (props) => {
                         <OptionAction
                             loading={loading}
                             disabled={disabled}
-                            showQty={!showQty}
+                            showQty={showQty}
                             handleAddToCart={handleAddToCart}
                             qty={qty}
                             setQty={setQty}

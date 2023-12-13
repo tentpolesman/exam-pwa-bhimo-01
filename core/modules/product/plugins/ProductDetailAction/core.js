@@ -44,11 +44,13 @@ const ProductDetailAction = ({
     useReviewList = false,
     useProductTabs = false,
     useProductImagePreview = false,
+    useShareProduct = false,
     Content,
 }) => {
     const route = useRouter();
     const context = isLogin && isLogin === 1 ? { request: 'internal' } : {};
     const item = product.items[productKey];
+    const reviewRef = React.useRef(null);
 
     // cache currency
     const currencyCache = useReactiveVar(currencyVar);
@@ -480,11 +482,14 @@ const ProductDetailAction = ({
             useReviewList={useReviewList}
             useProductTabs={useProductTabs}
             useProductImagePreview={useProductImagePreview}
+            useShareProduct={useShareProduct}
             handleOption={handleOption}
             openOption={openOption}
             setOpenOption={setOpenOption}
             stockStatus={stockStatus}
             setStockStatus={setStockStatus}
+            setBanner={setBanner}
+            reviewRef={reviewRef}
             data={{
                 ...item,
                 weltpixel_labels,

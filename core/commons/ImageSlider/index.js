@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable no-nested-ternary */
 import cx from 'classnames';
 import Image from '@common_image';
 import Show from '@common_show';
@@ -8,7 +9,7 @@ import Button from '@common_button';
 import ContainerScroll from '@common_containerscroll';
 import useMediaQuery from '@hook/useMediaQuery';
 import { ArrowsPointingOutIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
-import { imageSize } from '@root/swift.config.js';
+import { modules } from '@root/swift.config.js';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 
 const ImageSlider = ({
@@ -28,8 +29,9 @@ const ImageSlider = ({
         isDesktop, isMobile, screen, screenWidth,
     } = useMediaQuery();
 
-    const thumbnailImage = imageSize.thumbnail[screen];
-    const mainImage = imageSize.main[screen];
+    const thumbnailImage = modules.product.imageSize.thumbnail[screen];
+    const mainImage = modules.product.imageSize.main[screen];
+    const mainImagePreview = modules.product.imageSize.main_preview[screen];
 
     const onSelectedImage = ({ index, item }) => {
         setIndexActive(index);
@@ -98,8 +100,8 @@ const ImageSlider = ({
             <Show when={imagePreview}>
                 <div
                     style={{
-                        width: isMobile ? '100%' : mainImage,
-                        height: isMobile ? '100%' : mainImage,
+                        width: isMobile ? '100%' : useZoom ? mainImagePreview : mainImage,
+                        height: isMobile ? '100%' : useZoom ? 'auto' : mainImage,
                     }}
                     className={
                         cx(
@@ -115,7 +117,7 @@ const ImageSlider = ({
                         onMouseEnter={() => setShowArrow(true)}
                         onMouseLeave={() => setShowArrow(false)}
                         style={{
-                            width: isMobile ? '100%' : mainImage,
+                            width: isMobile ? '100%' : useZoom ? mainImagePreview : mainImage,
                         }}
                         className={cx(
                             'container-image-slider-parent',
@@ -144,16 +146,16 @@ const ImageSlider = ({
                                                     cx('w-full h-full', 'rounded-[12px]', 'cursor-zoom-in', 'mx-auto')
                                                 }
                                                 styleContainer={{
-                                                    width: mainImage,
-                                                    height: mainImage,
+                                                    width: mainImagePreview,
+                                                    height: mainImagePreview,
                                                 }}
                                                 src={imagePreview?.imageUrl}
                                                 alt={imagePreview?.imageAlt ?? 'slider image preview'}
                                                 quality={80}
-                                                width={mainImage}
-                                                height={mainImage}
-                                                widthMobile={mainImage}
-                                                heightMobile={mainImage}
+                                                width={mainImagePreview}
+                                                height={mainImagePreview}
+                                                widthMobile={mainImagePreview}
+                                                heightMobile={mainImagePreview}
                                             />
                                         </div>
                                     </TransformComponent>
@@ -170,8 +172,8 @@ const ImageSlider = ({
                                     )
                                 }
                                 styleContainer={{
-                                    width: isMobile ? '100%' : mainImage,
-                                    height: isMobile ? '100%' : mainImage,
+                                    width: isMobile ? '100%' : useZoom ? mainImagePreview : mainImage,
+                                    height: isMobile ? '100%' : useZoom ? 'auto' : mainImage,
                                 }}
                                 src={imagePreview?.imageUrl}
                                 alt={imagePreview?.imageAlt ?? 'slider image preview'}
@@ -221,7 +223,10 @@ const ImageSlider = ({
                 <ContainerScroll
                     variant="horizontal"
                     maxWidth={detectAutoScreen && !isMobile ? mainImage : null}
-                    className={cx('image-slider-horizontal')}
+                    className={cx(
+                        'image-slider-horizontal',
+                        useZoom && 'desktop:mt-[24px] tablet:mt-[16px] mobile:mt-[16px]',
+                    )}
                     itemsLength={data?.length}
                     style={isMobile ? { width: screenWidth } : {}}
                 >
