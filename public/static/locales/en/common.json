@@ -42,7 +42,8 @@
         "viewandedit": "View Cart",
         "addToCart": "Add To Cart",
         "allowCookies": "Allow Cookies",
-        "simulateQrCode": "Simulate Qrcode Payment"
+        "simulateQrCode": "Simulate Qrcode Payment",
+        "submitReview": "Submit Review"
     },
     "cart": {
         "myCart": "My Cart",
@@ -78,7 +79,8 @@
         "select": "Select One",
         "addressDetail": "Address Detail",
         "mapError": "Cannot load map, please check your internet connection",
-        "mapLoading": "Loading map..."
+        "mapLoading": "Loading map...",
+        "maxChar": "Max. {{length}} Character"
     },
     "title": {
         "qty": "Quantity",
@@ -200,6 +202,12 @@
         "pleaseWait": "Please Wait",
         "addToWishlist": "Add to Wishlist",
         "addToCompare": "Add to Compare",
-        "allItems": "All Item"
+        "allItems": "All Item",
+        "egJohnDoe": "e.g John Doe",
+        "addReviewTitle": "Add Review Title",
+        "addReview": "Add Review",
+        "writeReview": "Write Review",
+        "detail": "Detail",
+        "moreInfo": "More Info"
     }
 }

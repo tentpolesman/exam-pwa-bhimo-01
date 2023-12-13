@@ -40,7 +40,8 @@
         "viewandedit": "Lihat dan Ubah",
         "addToCart": "Tambah ke Keranjang",
         "allowCookies": "Ijinkan Cookie",
-        "simulateQrCode": "Sumulasi Pembayaran Qrcode"
+        "simulateQrCode": "Sumulasi Pembayaran Qrcode",
+        "submitReview": "Kirim Ulasan"
     },
     "cart": {
         "myCart": "Cart Saya",
@@ -77,7 +78,8 @@
         "select": "Pilih Salah Satu",
         "addressDetail": "Detil Alamat",
         "mapError": "Tidak dapat memuat peta. Silahkan periksa koneksi internet anda.",
-        "mapLoading": "Memuat peta..."
+        "mapLoading": "Memuat peta...",
+        "maxChar": "Maksimal {{length}} Karakter"
     },
     "title": {
         "qty": "Jumlah",
@@ -197,6 +199,12 @@
         "pleaseWait": "Mohon Menunggu",
         "addToWishlist": "Tambahkan Favorit",
         "addToCompare": "Tambahkan Komparasi",
-        "allItems": "Semua Barang"
+        "allItems": "Semua Barang",
+        "egJohnDoe": "Contoh: John Doe",
+        "addReviewTitle": "Masukkan Judul Ulasan",
+        "addReview": "Masukkan Ulasan",
+        "writeReview": "Tulis Ulasan",
+        "detail": "Detail",
+        "moreInfo": "Info Selebihnya"
     }
 }

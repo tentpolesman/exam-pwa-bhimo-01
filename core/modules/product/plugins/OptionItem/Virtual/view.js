@@ -1,7 +1,7 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 
-const Footer = dynamic(() => import('@plugin_optionitem/components/Footer'), { ssr: true });
+const OptionAction = dynamic(() => import('@core_modules/product/plugins/OptionItemAction'), { ssr: true });
 
 const SimpleOptionView = ({
     qty = 1,
@@ -30,7 +30,8 @@ const SimpleOptionView = ({
                 showAddToCart,
             })
             : (
-                <Footer
+
+                <OptionAction
                     loading={loading}
                     disabled={disabled}
                     showQty={showQty}

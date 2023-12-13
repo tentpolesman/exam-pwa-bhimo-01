@@ -1,7 +1,7 @@
 import React from 'react';
 import Typography from '@common_typography';
 import classNames from 'classnames';
-import Footer from '@plugin_optionitem/components/Footer';
+import OptionAction from '@core_modules/product/plugins/OptionItemAction';
 import useStyles from '@plugin_optionitem/GroupedProduct/style';
 import Item from '@plugin_optionitem/GroupedProduct/Item';
 
@@ -36,7 +36,7 @@ const GroupedProductOptionView = ({
                     }
                 </div>
             ) : null }
-            <Footer
+            <OptionAction
                 loading={loading}
                 disabled={disabled}
                 showQty={false}
