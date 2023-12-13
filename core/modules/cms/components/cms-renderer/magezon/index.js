@@ -39,13 +39,11 @@ const MagezonPricingTable = dynamic(() => import('@core_modules/cms/components/c
 const MagezonImageGallery = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonImageGallery'), { ssr: false });
 const MagezonCategories = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonCategories'), { ssr: false });
 const MagezonContentSlider = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonContentSlider'), { ssr: false });
-const MagezonTestimonials = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonTestimonials'), { ssr: false });
 const MagezonRecentReviews = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonRecentReviews'), { ssr: false });
 const MagezonGoogleMaps = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonGoogleMaps'), { ssr: false });
 const MagezonProgressBar = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonProgressBar'), { ssr: false });
 const MagezonAccordion = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonAccordion'), { ssr: false });
 const MagezonSection = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonSection'), { ssr: false });
-const MagezonPageableContainer = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonPageableContainer'), { ssr: false });
 const MagezonProduct = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonProduct'));
 
 const MagezonInstagram = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonInstagramFeed'), { ssr: false });
@@ -298,9 +296,6 @@ const MagezonElement = (props) => {
         case 'product_slider':
             childrenContent = <MagezonProduct {...props} />;
             break;
-        case 'testimonials':
-            childrenContent = <MagezonTestimonials {...props} />;
-            break;
         case 'gmaps':
             childrenContent = <MagezonGoogleMaps {...props} />;
             break;
@@ -312,9 +307,6 @@ const MagezonElement = (props) => {
             break;
         case 'accordion':
             childrenContent = <MagezonAccordion {...props} />;
-            break;
-        case 'pageable_container':
-            childrenContent = <MagezonPageableContainer {...props} />;
             break;
         case 'tabs':
             childrenContent = <MagezonTabs {...props} />;
