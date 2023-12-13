@@ -5,7 +5,7 @@ const BadgeCounter = (props) => {
 
     return (
         <>
-            {children}
+            <button type="button">{children}</button>
             <div
                 className={cx(
                     'relative',
