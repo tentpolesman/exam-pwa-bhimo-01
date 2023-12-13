@@ -156,7 +156,7 @@ const Tabs = (props) => {
                             >
                                 <div className={cx('description-html', 'text-2md')}>
                                     {/* eslint-disable-next-line react/no-danger */}
-                                    {item.content ? <span dangerouslySetInnerHTML={{ __html: item.content }} /> : null}
+                                    {item.content ? <span dangerouslySetInnerHTML={{ __html: JSON.stringify(item?.content) }} /> : null}
                                 </div>
                             </div>
                         );

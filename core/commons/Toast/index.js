@@ -4,6 +4,7 @@ import React from 'react';
 import cx from 'classnames';
 import Typography from '@common_typography/index';
 import useMediaQuery from '@hook/useMediaQuery';
+import XMarkIcon from '@heroicons/react/24/solid/XMarkIcon';
 
 const Toast = ({
     open,
@@ -14,6 +15,7 @@ const Toast = ({
     position = 'bottom', // top or bottom
     positionNumber = 0,
     className,
+    classNameIcon,
     autoHideDuration = 3000,
 }) => {
     const timerRef = React.useRef(null);
@@ -97,9 +99,7 @@ const Toast = ({
             {
                 close && (
                     <button type="button" className="section-toast-action flex items-center" onClick={setOpen}>
-                        <span className={cx('material-symbols-outlined', classNamesText)}>
-                            close
-                        </span>
+                        <XMarkIcon className={classNameIcon} />
                     </button>
                 )
             }

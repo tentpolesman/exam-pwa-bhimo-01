@@ -22,6 +22,8 @@ const useMediaQuery = () => {
         isTablet: isMd,
         isDesktop: isXl,
         screen,
+        screenWidth: size?.width || 0,
+        screenHeight: size?.height || 0,
     };
 };
 
