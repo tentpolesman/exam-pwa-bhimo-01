@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import dynamic from 'next/dynamic';
 import classNames from 'classnames';
 import Typography from '@common_typography';
@@ -24,11 +24,19 @@ const ConfigurableView = (props) => {
         freeItemsData,
         showStockStatus,
         stockStatus,
+        __typename,
+        url_key,
     } = props;
+    const isSimpleOrConfigurable = __typename === 'SimpleProduct' || __typename === 'ConfigurableProduct';
+    const [internalLoading, setInternalLoading] = useState(false);
 
     if (customButton) {
         return customButton;
     }
+
+    const handleInternalLoading = () => {
+        setInternalLoading(true);
+    };
 
     return (
         <div className="flex flex-col gap-4">
@@ -60,16 +68,17 @@ const ConfigurableView = (props) => {
                     <Button
                         id="plugin-addToCart-btn"
                         className={classNames(
-                            'w-full h-[48px]',
+                            'w-full h-[48px] [&.button-link]:justify-center',
                             customStyleBtnAddToCard,
                         )}
                         classNameText="justify-center"
                         color="primary"
-                        onClick={handleAddToCart}
-                        loading={loading}
+                        onClick={isSimpleOrConfigurable ? handleAddToCart : handleInternalLoading}
+                        loading={(isSimpleOrConfigurable && loading) || internalLoading}
                         disabled={disabled}
+                        link={!isSimpleOrConfigurable && url_key ? url_key : ''}
                     >
-                        {labelAddToCart || t('product:addToCart')}
+                        {!isSimpleOrConfigurable ? t('product:viewItem') : labelAddToCart || t('product:addToCart')}
                     </Button>
                 )}
             </div>

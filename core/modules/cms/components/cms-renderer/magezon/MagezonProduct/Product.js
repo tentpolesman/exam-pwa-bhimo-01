@@ -7,6 +7,7 @@ import ProductItem from '@plugin_productitem';
 import ContainerScroll from '@common/ContainerScroll';
 import cx from 'classnames';
 import { generateGridItemClass } from '@helpers/style';
+import { BREAKPOINTS } from '@root/core/theme/vars';
 
 const Product = (props) => {
     const {
@@ -25,23 +26,18 @@ const Product = (props) => {
         product_wishlist,
         product_sku,
         product_display,
-        owl_item_xl, // slider
-        owl_item_lg,
-        owl_item_md,
-        owl_item_sm,
-        owl_item_xs,
-        item_xl, // grid
+        item_xl,
         item_lg,
         item_md,
         item_sm,
         item_xs,
-        owl_nav_position,
-        owl_slide_by,
-        owl_nav,
     } = props;
 
     const { storeConfig } = props;
     const { t } = useTranslation(['common', 'catalog']);
+    const isProductGrid = type === 'product_grid';
+    const isProductList = type === 'product_list';
+    const isSingleProduct = type === 'single_product';
 
     const productProps = {
         storeConfig,
@@ -55,15 +51,38 @@ const Product = (props) => {
         enablePrice: product_price,
         enableRating: product_review,
         enableProductName: product_name,
-    };
-    const productGridProps = {
-        className: cx('carousel-item', 'basis-[256px]', 'flex-shrink-0', {
-            [`${generateGridItemClass(owl_item_xl || item_xl, 'xl')}`]: owl_item_xl || item_xl,
-            [`${generateGridItemClass(owl_item_lg || item_lg, 'lg')}`]: owl_item_lg || item_lg,
-            [`${generateGridItemClass(owl_item_md || item_md, 'md')}`]: owl_item_md || item_md,
-            [`${generateGridItemClass(owl_item_sm || item_sm, 'sm')}`]: owl_item_sm || item_sm,
-            [`${generateGridItemClass(owl_item_xs || item_xs, 'xs')}`]: owl_item_xs || item_xs,
+        className: cx({
+            'desktop:carousel-item flex-shrink-0': !isSingleProduct,
+            'basis-[145px] tablet:basis-[190px] desktop:basis-[273px]': !isProductGrid && !isSingleProduct,
+            '[&:not(:last-child)]:mb-4': isProductList,
+            'desktop:!max-w-[273px]': isSingleProduct && product_display === 'grid',
+            [generateGridItemClass(item_xl, 'xl')]: isProductGrid && item_xl,
+            [generateGridItemClass(item_lg, 'lg')]: isProductGrid && item_lg,
+            [generateGridItemClass(item_md, 'md')]: isProductGrid && item_md,
+            [generateGridItemClass(item_sm, 'sm')]: isProductGrid && item_sm,
+            [generateGridItemClass(item_xs, 'xs')]: isProductGrid && item_xs,
+            '!h-[initial]': !isProductGrid,
         }),
+        imageProps: {
+            className: cx(
+                'product-image',
+                '!w-[136px]',
+                '!h-[136px]',
+                'tablet:!w-[194px]',
+                'tablet:!h-[194px]',
+                'desktop:!w-[242px]',
+                'desktop:!h-[242px]',
+            ),
+            classContainer: cx(
+                'product-image-container',
+                '!w-[136px]',
+                '!h-[136px]',
+                'desktop:!w-[242px]',
+                'desktop:!h-[242px]',
+                'tablet:!w-[194px]',
+                'tablet:!h-[194px]',
+            ),
+        },
     };
 
     let content = '';
@@ -99,12 +118,10 @@ const Product = (props) => {
     if (type === 'single_product' && data?.products?.items) {
         content = data?.products?.items[0] && (
             <ProductItem
+                //
                 {...data.products.items[0]}
                 {...productProps}
                 isGrid={product_display === 'grid'}
-                className={cx({
-                    '!max-w-[288px]': product_display === 'grid',
-                })}
             />
         );
     }
@@ -117,53 +134,85 @@ const Product = (props) => {
                 isGrid={false}
                 {...product}
                 {...productProps}
-                {...productGridProps}
             />
         ));
     }
 
     if (type === 'product_grid' && data?.products?.items) {
         content = (
-            <div className="flex gap-4 flex-wrap">
+            <div className="product-grid flex flex-wrap items-stretch -mx-2">
                 {data?.products?.items.map((product, index) => (
-                    <ProductItem
-                        //
-                        key={index}
-                        {...product}
-                        {...productProps}
-                        {...productGridProps}
-                    />
+                    <div className={cx('product-grid-item p-2', productProps.className)}>
+                        <ProductItem
+                            //
+                            key={index}
+                            {...product}
+                            {...productProps}
+                        />
+                    </div>
                 ))}
+                <style jsx>
+                    {`
+                        @media screen and (min-width: ${BREAKPOINTS.xl}px) {
+                            .product-grid-item {
+                                max-width: calc(100% / ${item_xl});
+                            }
+                            .product-grid-item :global(.product-image-container),
+                            .product-grid-item :global(img.product-image) {
+                                width: calc(242px * 4 / ${item_xl} - (0.1rem)) !important;
+                            }
+                        }
+                        @media screen and (min-width: ${BREAKPOINTS.lg}px) and (max-width: ${BREAKPOINTS.xl}px) {
+                            .product-grid-item {
+                                max-width: calc(100% / ${item_lg});
+                            }
+                            .product-grid-item :global(.product-image-container),
+                            .product-grid-item :global(img.product-image) {
+                                width: calc(242px * 4 / ${item_lg} - (0.1rem)) !important;
+                            }
+                        }
+                        @media screen and (min-width: ${BREAKPOINTS.md}px) and (max-width: ${BREAKPOINTS.lg}px) {
+                            .product-grid-item {
+                                max-width: calc(100% / ${item_md});
+                            }
+                            .product-grid-item :global(.product-image-container),
+                            .product-grid-item :global(img.product-image) {
+                                width: calc(194px * 4 / ${item_md} - (0.1rem)) !important;
+                            }
+                        }
+                        @media screen and (min-width: ${BREAKPOINTS.sm}px) and (max-width: ${BREAKPOINTS.md}px) {
+                            .product-grid-item {
+                                max-width: calc(100% / ${item_sm});
+                            }
+                            .product-grid-item :global(.product-image-container),
+                            .product-grid-item :global(img.product-image) {
+                                width: calc(194px * 4 / ${item_sm} - (0.1rem)) !important;
+                            }
+                        }
+                        @media screen and (min-width: ${BREAKPOINTS.xs}px) and (max-width: ${BREAKPOINTS.sm}px) {
+                            .product-grid-item {
+                                max-width: calc(100% / ${item_xs});
+                            }
+                            .product-grid-item :global(.product-image-container),
+                            .product-grid-item :global(img.product-image) {
+                                width: calc(136px * 4 / ${item_xs} - (0.1rem)) !important;
+                            }
+                        }
+                    `}
+                </style>
             </div>
         );
     }
 
     if (type === 'product_slider' && data?.products?.items) {
         content = (
-            <ContainerScroll
-                showArrow={owl_nav}
-                slidesToScroll={owl_slide_by}
-                arrowProps={{
-                    className: cx('!px-0', {
-                        '!static transform-none': owl_nav_position !== 'center_split',
-                        '!mb-1': owl_nav_position.indexOf('top') !== -1,
-                        '!mt-1 !order-3': owl_nav_position.indexOf('bottom') !== -1,
-                        '!justify-start': owl_nav_position.indexOf('left') !== -1,
-                        '!justify-end': owl_nav_position.indexOf('right') !== -1,
-                        '!justify-center': owl_nav_position === 'bottom_center',
-                    }),
-                    rightNavClassName: '!ml-1',
-                    leftNavClassName: '!mr-1',
-                }}
-                className="!gap-4"
-            >
+            <ContainerScroll showArrow className="!gap-4">
                 {data?.products?.items.map((product, index) => (
                     <ProductItem
                         //
                         key={index}
                         {...product}
                         {...productProps}
-                        {...productGridProps}
                     />
                 ))}
             </ContainerScroll>

@@ -524,6 +524,8 @@ const ProductItem = (props) => {
                         'w-full inline-block h-full overflow-hidden relative cursor-pointer',
                         'shadow rounded-lg p-2 lg:p-4',
                         'desktop:hover:shadow-lg',
+                        'flex',
+                        'flex-col',
                         className,
                     )}
                     id="catalog-item-product"
@@ -590,7 +592,7 @@ const ProductItem = (props) => {
                             />
                         ) : null}
                     </div>
-                    <div className="h-auto pt-4 relative flex flex-col gap-4 overflow-hidden">
+                    <div className="h-auto pt-4 relative flex flex-col gap-4 overflow-hidden flex-1 justify-between">
                         <DetailProductView
                             t={t}
                             urlKey={url_key}
@@ -600,52 +602,38 @@ const ProductItem = (props) => {
                             showShortDescription={showShortDescription}
                             Pricing={(enablePrice && !showOption) && generatePrice(priceData)}
                         />
-                        {modules.product.customizableOptions.enabled && (
-                            <CustomizableOption
-                                price={price}
-                                setPrice={setPrice}
-                                showCustomizableOption={showAddToCart}
-                                customizableOptions={customizableOptions}
-                                setCustomizableOptions={setCustomizableOptions}
-                                errorCustomizableOptions={errorCustomizableOptions}
-                                additionalPrice={additionalPrice}
-                                setAdditionalPrice={setAdditionalPrice}
-                                {...other}
-                                url_key={url_key}
-                            />
-                        )}
-                        {/* {showOption ? (
-                        ) : null} */}
-                        <div className="hidden tablet:flex desktop:flex flex-col gap-2 tablet:gap-4">
-                            <ConfigurableOpt
-                                t={t}
-                                data={{
-                                    ...other,
-                                    url_key,
-                                    review,
-                                }}
-                                dataPrice={getPrice()}
-                                showQty={false}
-                                catalogList={catalogList}
-                                handleSelecteProduct={setSpesificProduct}
-                                showAddToCart={showAddToCart}
-                                propsItem={{
-                                    className: 'w-5 h-5',
-                                }}
-                                labelAddToCart={t('common:button:addToCart')}
-                                isGrid={isGrid}
-                                {...other}
-                                customizableOptions={customizableOptions}
-                                setCustomizableOptions={setCustomizableOptions}
-                                errorCustomizableOptions={errorCustomizableOptions}
-                                checkCustomizableOptionsValue={checkCustomizableOptionsValue}
-                                CustomFooter={<CustomerFooter />}
-                                showWishlist={showWishlist}
-                                enableProductCompare={showProductCompare}
-                                enableBundle={false}
-                                enableDownload={false}
-                            />
-                        </div>
+                        {showOption ? (
+                            <div className="hidden tablet:flex desktop:flex flex-col gap-2 tablet:gap-4">
+                                <ConfigurableOpt
+                                    t={t}
+                                    data={{
+                                        ...other,
+                                        url_key,
+                                        review,
+                                    }}
+                                    dataPrice={getPrice()}
+                                    showQty={false}
+                                    catalogList={catalogList}
+                                    handleSelecteProduct={setSpesificProduct}
+                                    showAddToCart={showAddToCart}
+                                    propsItem={{
+                                        className: 'w-5 h-5',
+                                    }}
+                                    labelAddToCart={t('common:button:addToCart')}
+                                    isGrid={isGrid}
+                                    {...other}
+                                    customizableOptions={customizableOptions}
+                                    setCustomizableOptions={setCustomizableOptions}
+                                    errorCustomizableOptions={errorCustomizableOptions}
+                                    checkCustomizableOptionsValue={checkCustomizableOptionsValue}
+                                    CustomFooter={<CustomerFooter />}
+                                    showWishlist={showWishlist}
+                                    enableProductCompare={showProductCompare}
+                                    enableBundle={false}
+                                    enableDownload={false}
+                                />
+                            </div>
+                        ) : null}
                     </div>
                 </div>
             </>

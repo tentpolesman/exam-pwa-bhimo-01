@@ -280,6 +280,7 @@ const OptionsItemDownload = ({
             setQty={setQty}
             loading={loadingAdd | loading}
             disabled={stock_status === 'OUT_OF_STOCK'}
+            url_key={url_key}
         />
     );
 };
