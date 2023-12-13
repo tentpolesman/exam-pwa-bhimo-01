@@ -36,7 +36,10 @@ const Product = (props) => {
         item_sm,
         item_xs,
         owl_nav_position,
+        owl_slide_by,
+        owl_nav,
     } = props;
+
     const { storeConfig } = props;
     const { t } = useTranslation(['common', 'catalog']);
 
@@ -138,9 +141,10 @@ const Product = (props) => {
     if (type === 'product_slider' && data?.products?.items) {
         content = (
             <ContainerScroll
-                showArrow
+                showArrow={owl_nav}
+                slidesToScroll={owl_slide_by}
                 arrowProps={{
-                    className: cx('!opacity-100', '!px-0', {
+                    className: cx('!px-0', {
                         '!static transform-none': owl_nav_position !== 'center_split',
                         '!mb-1': owl_nav_position.indexOf('top') !== -1,
                         '!mt-1 !order-3': owl_nav_position.indexOf('bottom') !== -1,
