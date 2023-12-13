@@ -54,12 +54,12 @@ const Product = (props) => {
         enableProductName: product_name,
     };
     const productGridProps = {
-        className: cx('carousel-item', {
-            [generateGridItemClass(owl_item_xl || item_xl, 'xl')]: owl_item_xl || item_xl,
-            [generateGridItemClass(owl_item_lg || item_lg, 'lg')]: owl_item_lg || item_lg,
-            [generateGridItemClass(owl_item_md || item_md, 'md')]: owl_item_md || item_md,
-            [generateGridItemClass(owl_item_sm || item_sm, 'sm')]: owl_item_sm || item_sm,
-            [generateGridItemClass(owl_item_xs || item_xs, 'xs')]: owl_item_xs || item_xs,
+        className: cx('carousel-item', 'basis-[256px]', 'flex-shrink-0', {
+            [`${generateGridItemClass(owl_item_xl || item_xl, 'xl')} flex-shrink-0`]: owl_item_xl || item_xl,
+            [`${generateGridItemClass(owl_item_lg || item_lg, 'lg')} flex-shrink-0`]: owl_item_lg || item_lg,
+            [`${generateGridItemClass(owl_item_md || item_md, 'md')} flex-shrink-0`]: owl_item_md || item_md,
+            [`${generateGridItemClass(owl_item_sm || item_sm, 'sm')} flex-shrink-0`]: owl_item_sm || item_sm,
+            [`${generateGridItemClass(owl_item_xs || item_xs, 'xs')} flex-shrink-0`]: owl_item_xs || item_xs,
         }),
     };
 
