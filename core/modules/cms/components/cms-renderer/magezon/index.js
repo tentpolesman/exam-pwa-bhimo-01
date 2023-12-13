@@ -393,10 +393,9 @@ const MagezonElement = (props) => {
                         padding: 0px;
                     }
 
-                    @media screen and (min-width: 768px) {
-                        .mgz-element:not(.full_height) > .mgz-element-inner >.mgz-row > .mgz-column > * {
-                            padding: 10px;
-                        }
+                    .mgz-element:not(.full_height) > .mgz-element-inner >.mgz-row > .mgz-column > * {
+                        width: initial;
+                        padding: 10px;
                     }
 
                     @media screen and (max-width: 768px) {
