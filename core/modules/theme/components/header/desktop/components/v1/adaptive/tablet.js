@@ -31,7 +31,8 @@ const SwitcherCurrency = dynamic(() => import('@common_currency'), { ssr: false 
 const SwitcherLanguage = dynamic(() => import('@common_language'), { ssr: false });
 
 const TabletHeader = (props) => {
-    const { t, storeConfig, isLogin, setValue, handleSearch, dataVesMenu, loadingVesMenu, vesMenuConfig, handleLogout, customer } = props;
+    const { t, storeConfig, isLogin, setValue, handleSearch, dataVesMenu, loadingVesMenu, vesMenuConfig, handleLogout, customer, deviceWidth } =
+        props;
 
     const { modules } = config;
     const adminId = Cookies.get('admin_id');
@@ -236,7 +237,7 @@ const TabletHeader = (props) => {
                         </Link>
                     </div>
                     <div className={cx('middle-header-tablet__search')}>
-                        <Autocomplete setValue={setValue} handleSearch={handleSearch} t={t} storeConfig={storeConfig} />
+                        <Autocomplete setValue={setValue} handleSearch={handleSearch} t={t} storeConfig={storeConfig} deviceWidth={deviceWidth} />
                     </div>
                     <div className={cx('middle-header-tablet__statusicon')}>
                         <div className={cx('middle-header__statusicon', 'flex', 'flex-wrap', 'flex-column', 'justify-between')}>
