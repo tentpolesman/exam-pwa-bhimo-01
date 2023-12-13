@@ -1,7 +1,6 @@
 import { getCartId, setCartId } from '@helper_cartid';
 import { getLoginInfo } from '@helper_auth';
 import { modules } from '@config';
-import Router from 'next/router';
 import React from 'react';
 import TagManager from 'react-gtm-module';
 import { addVirtualProductToCart, getGuestCartId as queryGetGuestCartId, getCustomerCartId } from '@core_modules/product/services/graphql';
@@ -197,9 +196,6 @@ const CoreOptionsItemVirtual = ({
                     })
                     .catch((e) => {
                         const originalError = e.message.includes(':') ? e.message.split(':')[1] : e.message;
-                        if (e.message === "The product's required option(s) weren't entered. Make sure the options are entered and try again.") {
-                            Router.push(`/${url_key}`);
-                        }
                         setLoading(false);
                         window.toastMessage({
                             ...errorMessage,
@@ -229,6 +225,7 @@ const CoreOptionsItemVirtual = ({
             t={t}
             loading={loading}
             disabled={stock_status === 'OUT_OF_STOCK'}
+            url_key={url_key}
             {...other}
         />
     );

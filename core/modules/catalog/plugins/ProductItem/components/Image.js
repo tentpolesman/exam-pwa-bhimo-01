@@ -44,7 +44,7 @@ const ImageDetail = (props) => {
                         className,
                     )}
                     classContainer={cx(
-                        '!w-[114px] !h-[114px] tablet:!w-[205px] tablet:!h-[205px] desktop:!w-[250px] desktop:!h-[250px]',
+                        '!w-[114px] !h-[114px] tablet:!w-[205px] tablet:!h-[205px] desktop:w-[250px] desktop:h-[250px]',
                         classContainer,
                     )}
                     styleContainer={{ padding: 0 }}

@@ -1,5 +1,7 @@
-import React from 'react';
+/* eslint-disable no-nested-ternary */
 import MagezonColumn from '@core_modules/cms/components/cms-renderer/magezon/MagezonColumn';
+import cx from 'classnames';
+import React from 'react';
 
 const MagezonRow = (props) => {
     const {
@@ -27,21 +29,20 @@ const MagezonRow = (props) => {
         padding_bottom,
         padding_left,
     } = props;
-    let classRow = 'mgz-row flex flex-wrap ';
-
-    if (max_width && max_width !== '') classRow += 'mgz-element-row-max-width';
-
-    if (xs_hide) classRow += 'max-sm:hidden ';
-    if (sm_hide) classRow += 'max-md:hidden ';
-    if (md_hide) classRow += 'max-lg:hidden ';
-    if (lg_hide) classRow += 'max-xl:hidden ';
 
     return (
         <>
-            <div className={classRow}>
+            <div
+                className={cx('mgz-row', 'flex', 'flex-wrap', {
+                    'mgz-element-row-max-width': max_width && max_width !== '',
+                    'max-sm:hidden': xs_hide,
+                    'max-md:hidden': sm_hide,
+                    'max-lg:hidden': md_hide,
+                    'max-xl:hidden': lg_hide,
+                })}
+            >
                 {elements && elements.length > 0 && elements.map((item, key) => <MagezonColumn key={key} {...item} storeConfig={storeConfig} />)}
             </div>
-            {/* eslint-disable no-nested-ternary */}
             <style jsx>
                 {`
                     .mgz-row {
@@ -58,6 +59,11 @@ const MagezonRow = (props) => {
                         width: ${max_width}px;
                         max-width: 100%;
                         margin: ${content_align === 'left' ? 'auto 0 0 0' : content_align === 'center' ? 'auto' : '0 0 0 auto'};
+                    }
+                    .mgz-row :global(.mgz-element.inline-block) {
+                        width: initial;
+                        margin-left: -10px;
+                        margin-right: -10px;
                     }
                 `}
             </style>
