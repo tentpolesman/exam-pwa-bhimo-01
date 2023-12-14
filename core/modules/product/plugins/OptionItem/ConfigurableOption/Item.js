@@ -27,7 +27,10 @@ const ItemConfigurableView = (props) => {
             className="w-full overflow-x-scroll scrollbar-none !mb-0"
             label={false}
             classNames={{
-                radioGroupClasses: '!flex-row w-max gap-1 !mt-0',
+                radioGroupClasses: classNames(
+                    '!flex-row w-max gap-1 !mt-0',
+                    (error && (Object.keys(error).length > 0)) && 'mb-1',
+                ),
             }}
         />
     );

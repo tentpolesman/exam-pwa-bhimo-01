@@ -6,8 +6,8 @@ import { COLORS } from '@theme_vars';
 import { useClickAway } from '@uidotdev/usehooks';
 import cx from 'classnames';
 import { useState } from 'react';
-import ArrowUp from '@heroicons/react/24/outline/ChevronUpIcon';
-import ArrowDown from '@heroicons/react/24/outline/ChevronDownIcon';
+import ArrowUp from '@heroicons/react/24/solid/ChevronUpIcon';
+import ArrowDown from '@heroicons/react/24/solid/ChevronDownIcon';
 
 const Select = (props) => {
     const {

@@ -6,7 +6,7 @@ import React from 'react';
 import cx from 'classnames';
 import Link from 'next/link';
 import Typography from '@common_typography/index';
-import { HomeIcon } from '@heroicons/react/24/outline';
+import { HomeIcon } from '@heroicons/react/20/solid';
 import { useTranslation } from 'next-i18next';
 import { COLORS } from '@theme_vars';
 import { setResolver, getResolver } from '@helper_localstorage';
@@ -76,7 +76,7 @@ const Breadcrumb = ({
                     <ItemBreadcrumb
                         iconOnly={iconHomeOnly}
                         key="breadcrumb-home"
-                        icon={<HomeIcon className="h-[18px] w-[18px]" />}
+                        icon={<HomeIcon className="h-[18px] w-[18px] text-neutral-400" />}
                         url="/"
                         label={t('common:home:title')}
                         seperate={data?.length > 0}

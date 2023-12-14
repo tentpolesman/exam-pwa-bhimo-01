@@ -15,15 +15,15 @@ import propTypes from 'prop-types';
 
 const ConfigurableOptionCore = (props) => {
     const {
-        setBanner = () => {},
-        setPrice = () => {},
+        setBanner = undefined,
+        setPrice = undefined,
         t,
         data,
         dataPrice,
-        setOpen = () => {},
+        setOpen = undefined,
         ConfigurableView,
         Footer,
-        setStockStatus = () => {},
+        setStockStatus = undefined,
         stockStatus = '',
         handleAddToCart: CustomAddToCart,
         loading: customLoading,
@@ -31,7 +31,7 @@ const ConfigurableOptionCore = (props) => {
         checkCustomizableOptionsValue,
         errorCustomizableOptions,
         customizableOptions,
-        handleSelecteProduct = () => {},
+        handleSelecteProduct = undefined,
         isGrid,
         noValidate = false,
         ...other
@@ -363,6 +363,13 @@ const ConfigurableOptionCore = (props) => {
                         });
                 }
             }
+        } else {
+            window.toastMessage({
+                open: true,
+                text: t('common:message:selectOptionFailed'),
+                variant: 'warning',
+                autoHideDuration: 3000,
+            });
         }
     };
 
@@ -420,7 +427,7 @@ const ConfigurableOptionCore = (props) => {
             setQty={setQty}
             t={t}
             loading={loading || configProduct.loading}
-            disabled={!selectedProduct || !selectedProduct.sku || stockStatus === 'OUT_OF_STOCK'}
+            disabled={stockStatus === 'OUT_OF_STOCK'}
             isGrid={isGrid}
             disableItem={stock_status === 'OUT_OF_STOCK'}
             stockStatus={stockStatus}

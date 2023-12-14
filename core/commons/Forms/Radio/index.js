@@ -8,6 +8,7 @@ import cx from 'classnames';
 import { useEffect, useState } from 'react';
 import CheckIcon from '@heroicons/react/24/solid/CheckIcon';
 import propTypes from 'prop-types';
+import parser from 'html-react-parser';
 
 const Radio = (props) => {
     const {
@@ -168,7 +169,7 @@ const Radio = (props) => {
                                         />
                                     )
                                 ) : null}
-                                <Typography variant={labelVariant[size]}>{item.label}</Typography>
+                                <Typography variant={labelVariant[size]}>{parser(item.label)}</Typography>
                             </label>
                         </div>
                     );

@@ -98,6 +98,7 @@ const Swatch = ({
                 'truncate',
                 className,
             )}
+            onClick={handleChange}
             {...others}
         >
             {label}
