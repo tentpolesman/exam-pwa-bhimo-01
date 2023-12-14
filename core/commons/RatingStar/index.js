@@ -5,7 +5,15 @@ import { COLORS } from '@theme_vars';
 import cx from 'classnames';
 
 // eslint-disable-next-line object-curly-newline
-const RatingStar = ({ value = 1, maxvalue = 5, onChange = () => {}, disabled = true, sizeIcon = 'sm', miniSummary = false }) => {
+const RatingStar = ({
+    classContainer,
+    value = 1,
+    maxvalue = 5,
+    onChange = () => {},
+    disabled = true,
+    sizeIcon = 'sm',
+    miniSummary = false,
+}) => {
     const icon = [];
 
     const classes = cx('hover:cursor-pointer', {
@@ -68,7 +76,7 @@ const RatingStar = ({ value = 1, maxvalue = 5, onChange = () => {}, disabled = t
             }
         }
     }
-    return <div className={cx('flex', 'flex-row')}>{icon.map((Item) => Item)}</div>;
+    return <div className={cx('flex', 'flex-row', classContainer)}>{icon.map((Item) => Item)}</div>;
 };
 
 export default RatingStar;

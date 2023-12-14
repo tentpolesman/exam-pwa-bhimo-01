@@ -1,6 +1,8 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable react/destructuring-assignment */
-import React, { useEffect, useState } from 'react';
+/* eslint-disable no-console */
+/* eslint-disable no-unused-expressions */
+import React, { useEffect, useMemo, useState } from 'react';
 import { getReviews, addReview } from '@core_modules/product/services/graphql';
 import { useFormik } from 'formik';
 import Button from '@common_button';
@@ -10,6 +12,8 @@ import ReviewCardForm from '@core_modules/product/pages/default/components/Revie
 import Show from '@common_show';
 import Divider from '@common_divider';
 import Dialog from '@common_dialog';
+import useMediaQuery from '@hook/useMediaQuery';
+import PaginationSection from '@plugin_productlist/components/PaginationSection';
 import cx from 'classnames';
 import * as Schema from '@core_modules/product/services/graphql/schema';
 import * as Yup from 'yup';
@@ -23,12 +27,13 @@ const ReviewList = ({
     storeConfig,
     isLogin,
 }) => {
-    const [loadMore, setLoadMore] = React.useState(false);
+    const { isMobile } = useMediaQuery();
     const [openReviewForm, setOpenReviewForm] = React.useState(false);
     const [page, setPage] = React.useState(1);
+    const [, setIsClient] = useState(false);
     const [reviewParams] = React.useState({
         sku: dataProduct?.sku || '',
-        pageSize: 2,
+        pageSize: 5,
     });
     const guest_review = storeConfig?.allow_guests_to_write_product_reviews;
     const { loading, fetchMore, data } = getReviews(reviewParams);
@@ -40,6 +45,14 @@ const ReviewList = ({
         detail: Yup.string().required(t('product:validate:detail')),
         rating: Yup.string().required(t('product:validate:rating')).nullable(),
     });
+
+    let review = {};
+    review = data && data.getProductReviews
+        ? data.getProductReviews
+        : {
+            items: [],
+            totalCount: 0,
+        };
 
     const Formik = useFormik({
         initialValues: {
@@ -78,46 +91,62 @@ const ReviewList = ({
         setOpenReviewForm(true);
     };
 
-    const handleLoad = () => {
-        setLoadMore(true);
-        setPage(page + 1);
-        return fetchMore({
-            query: Schema.getReview(),
-            fetchPolicy: 'cache-and-network',
-            variables: {
-                sku: reviewParams.sku,
-                currentPage: page + 1,
-                pageSize: reviewParams.pageSize,
-            },
-            updateQuery: (previousResult, { fetchMoreResult }) => {
-                setLoadMore(false);
-                const prevItems = previousResult.getProductReviews;
-                const newItems = fetchMoreResult.getProductReviews;
-                return {
-                    getProductReviews: {
-                        // eslint-disable-next-line no-underscore-dangle
-                        __typename: newItems.__typename,
-                        totalCount: newItems.totalCount,
-                        message: prevItems.message,
-                        items: [...prevItems.items, ...newItems.items],
+    const handleChangePage = async (pageInput) => {
+        try {
+            if (fetchMore && typeof fetchMore !== 'undefined' && pageInput <= review.totalCount) {
+                setPage(pageInput);
+                return fetchMore({
+                    query: Schema.getReview(),
+                    fetchPolicy: 'cache-and-network',
+                    variables: {
+                        sku: reviewParams.sku,
+                        currentPage: pageInput,
+                        pageSize: reviewParams.pageSize,
                     },
-                };
-            },
-        });
+                    updateQuery: (previousResult, { fetchMoreResult }) => {
+                        const prevItems = previousResult.getProductReviews;
+                        const newItems = fetchMoreResult.getProductReviews;
+                        return {
+                            getProductReviews: {
+                                // eslint-disable-next-line no-underscore-dangle
+                                __typename: newItems.__typename,
+                                totalCount: newItems.totalCount,
+                                message: prevItems.message,
+                                // items: [...prevItems.items, ...newItems.items],
+                                items: [...newItems.items],
+                            },
+                        };
+                    },
+                });
+            }
+        } catch (error) {
+            console.log('[err] fetch review', error);
+        }
+        return null;
     };
 
-    let review = {};
-    review = data && data.getProductReviews
-        ? data.getProductReviews
-        : {
-            items: [],
-            totalCount: 0,
-        };
-
-    const [, setIsClient] = useState(false);
     useEffect(() => {
         setIsClient(true);
     }, [loading]);
+
+    const getReviewsCount = useMemo(() => {
+        let reviewCalculate = 0;
+        if (review?.items && review?.items?.length > 0) {
+            let totalReview = 0;
+            let totalReviewer = 0;
+            review?.items?.map((item) => {
+                const getRatings = item?.ratings;
+                getRatings?.map((itemRating) => {
+                    const getRatingValue = itemRating?.value;
+                    totalReview += getRatingValue;
+                    totalReviewer += 1;
+                });
+            });
+
+            reviewCalculate = totalReview / totalReviewer;
+        }
+        return reviewCalculate;
+    }, [review]);
 
     return (
         <div className={cx(
@@ -126,10 +155,29 @@ const ReviewList = ({
         >
             <Dialog
                 open={openReviewForm}
+                useCloseTitleButton
+                onClickCloseTitle={() => {
+                    setOpenReviewForm(false);
+                }}
+                classContainer={
+                    cx(
+                        isMobile && 'absolute bottom-0 !m-0 p-0',
+                    )
+                }
+                classContainerAction={
+                    cx(
+                        isMobile && 'rounded-b-[0px] bg-neutral-white !px-[16px]',
+                    )
+                }
+                classContent={
+                    cx(
+                        isMobile && 'pb-[0px]',
+                    )
+                }
                 title={t('common:label:writeReview')}
                 content={<ReviewCardForm t={t} Formik={Formik} />}
                 negativeLabel={t('common:button:cancel')}
-                negativeAction={() => {
+                negativeAction={isMobile ? null : () => {
                     setOpenReviewForm(false);
                 }}
                 positiveLabel={t('common:button:submitReview')}
@@ -149,9 +197,9 @@ const ReviewList = ({
                 </div>
                 <div className={cx('container-review-list-action', 'flex justify-between items-center', 'mb-[24px]')}>
                     <div className={cx('review-list-label-rating', 'flex items-center')}>
-                        <RatingStar value={review?.totalCount || 0} />
+                        <RatingStar value={getReviewsCount || 0} />
                         <Typography variant="p-2" className="ml-[6px]">
-                            {`(${(review?.totalCount) || 0} ${t('product:review')})`}
+                            {`(${(getReviewsCount) || 0} ${t('product:review')})`}
                         </Typography>
                     </div>
                     <Show when={isLogin === 1 || guest_review === '1'}>
@@ -166,7 +214,7 @@ const ReviewList = ({
             <Divider />
             <div className={cx('mt-[24px]')}>
                 {review && review.items.map((item, index) => <ReviewCard key={index} {...item} />)}
-                {review && review.totalCount > review.items.length && (
+                {/* {review && review.totalCount > review.items.length && (
                     <Button variant="outlined" onClick={handleLoad} disabled={loading || loadMore}>
                         {loadMore || loading ? (
                             <Typography variant="p-1">
@@ -178,7 +226,12 @@ const ReviewList = ({
                             </Typography>
                         )}
                     </Button>
-                )}
+                )} */}
+                <PaginationSection
+                    page={page}
+                    totalPage={review.totalCount / reviewParams.pageSize}
+                    handleChangePage={handleChangePage}
+                />
             </div>
         </div>
     );
