@@ -460,7 +460,7 @@ const ProductItem = (props) => {
                             </Typography>
                         </Button>
                     )}
-                    <Show when={showWishlist || enableProductCompare}>
+                    <Show when={showWishlist || showProductCompare}>
                         <div className="flex-row gap-1 hidden tablet:flex desktop:flex">
                             <Show when={showWishlist}>
                                 <Button
@@ -475,7 +475,7 @@ const ProductItem = (props) => {
                                     )}
                                 />
                             </Show>
-                            <Show when={enableProductCompare}>
+                            <Show when={showProductCompare}>
                                 <Button
                                     iconOnly
                                     icon={<CompareIcon />}

@@ -2,6 +2,7 @@
 import React from 'react';
 import Typography from '@common_typography';
 import { useTranslation } from 'next-i18next';
+import cx from 'classnames';
 
 const MagezonVideoPlayer = (props) => {
     const {
@@ -12,12 +13,6 @@ const MagezonVideoPlayer = (props) => {
         controls, autoplay, loop, mute,
     } = props;
     const { t } = useTranslation(['common']);
-
-    let classVideoPlayer = '';
-    if (xs_hide) classVideoPlayer += 'hidden-mobile ';
-    if (sm_hide) classVideoPlayer += 'hidden-sm ';
-    if (md_hide) classVideoPlayer += 'hidden-md ';
-    if (lg_hide) classVideoPlayer += 'hidden-lg ';
 
     const MgzVideoHeader = () => {
         if (title) {
@@ -76,13 +71,16 @@ const MagezonVideoPlayer = (props) => {
                 </div>
             );
         }
+
+        const additionalVideoProps = `${autoplay ? '&autoplay=1' : ''}${loop ? '&loop=1' : ''}${controls ? '&controls=1' : ''}${mute ? '&mute=1' : ''}`;
+
         if (video_type === 'vimeo') {
             videoId = videoLink.split('/');
-            videoLink = `https://player.vimeo.com/video/${videoId[3]}`;
+            videoLink = `https://player.vimeo.com/video/${videoId[3]}?${additionalVideoProps}`;
         }
         if (video_type === 'youtube') {
             const videoUrl = link && link.split('=')[1];
-            videoLink = `https://www.youtube.com/embed/${videoUrl}`;
+            videoLink = `https://www.youtube.com/embed/${videoUrl}?${additionalVideoProps}`;
         }
         return (
             <div className="mgz-video-content">
@@ -98,7 +96,12 @@ const MagezonVideoPlayer = (props) => {
 
     if (!disable_element) {
         return (
-            <div className={classVideoPlayer}>
+            <div className={cx('mgz-video-player', {
+                'max-sm:hidden': xs_hide,
+                'max-md:hidden': sm_hide,
+                'max-lg:hidden': md_hide,
+                'max-xl:hidden': lg_hide,
+            })}>
                 <MgzVideoHeader />
                 <MgzVideoPlayer />
                 <style jsx global>
