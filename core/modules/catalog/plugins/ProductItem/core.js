@@ -19,7 +19,6 @@ import ModalQuickView from '@plugin_productitem/components/QuickView';
 import WeltpixelLabel from '@plugin_productitem/components/WeltpixelLabel';
 import TagManager from 'react-gtm-module';
 import { priceVar } from '@root/core/services/graphql/cache';
-import dynamic from 'next/dynamic';
 import Link from 'next/link';
 
 import ImageProductView from '@plugin_productitem/components/Image';
@@ -35,8 +34,6 @@ import HeartIcon from '@heroicons/react/24/outline/HeartIcon';
 import CompareIcon from '@heroicons/react/24/outline/ArrowsRightLeftIcon';
 import EyeIcon from '@heroicons/react/24/outline/EyeIcon';
 import EyeSolidIcon from '@heroicons/react/24/solid/EyeIcon';
-
-const CustomizableOption = dynamic(() => import('@plugin_customizableitem'));
 
 const ProductItem = (props) => {
     const {
@@ -71,7 +68,6 @@ const ProductItem = (props) => {
     // Customizable Options
     const [customizableOptions, setCustomizableOptions] = React.useState([]);
     const [errorCustomizableOptions, setErrorCustomizableOptions] = React.useState([]);
-    const [additionalPrice, setAdditionalPrice] = React.useState(0);
 
     React.useEffect(() => {
         router.beforePopState(({ as }) => {
@@ -94,7 +90,7 @@ const ProductItem = (props) => {
         }
     }, [customizableOptions]);
 
-    const [price, setPrice] = React.useState({
+    const [price] = React.useState({
         priceRange: other.price_range,
         priceTiers: other.price_tiers,
         // eslint-disable-next-line no-underscore-dangle
@@ -631,6 +627,7 @@ const ProductItem = (props) => {
                                     enableProductCompare={showProductCompare}
                                     enableBundle={false}
                                     enableDownload={false}
+                                    isPlp
                                 />
                             </div>
                         ) : null}
@@ -781,6 +778,7 @@ const ProductItem = (props) => {
                                         enableProductCompare={showProductCompare}
                                         enableBundle={false}
                                         enableDownload={false}
+                                        isPlp
                                     />
                                 </div>
                             ) : null}

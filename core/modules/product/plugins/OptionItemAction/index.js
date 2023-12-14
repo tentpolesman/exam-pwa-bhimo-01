@@ -28,6 +28,7 @@ const OptionAction = (props) => {
         stockStatus,
         __typename,
         url_key,
+        isPlp = false,
     } = props;
     const isSimpleOrConfigurable = __typename === 'SimpleProduct' || __typename === 'ConfigurableProduct';
     const [internalLoading, setInternalLoading] = useState(false);
@@ -39,6 +40,15 @@ const OptionAction = (props) => {
     const handleInternalLoading = () => {
         setInternalLoading(true);
     };
+
+    const additionalProps = {};
+    if (isPlp) {
+        Object.assign(additionalProps, {
+            link: !isSimpleOrConfigurable && url_key ? url_key : '',
+            onClick: isSimpleOrConfigurable ? handleAddToCart : handleInternalLoading,
+            loading: (isSimpleOrConfigurable && loading) || internalLoading,
+        });
+    }
 
     return (
         <div className="flex flex-col gap-4">
@@ -63,18 +73,15 @@ const OptionAction = (props) => {
                 {showAddToCart && (
                     <Button
                         id="plugin-addToCart-btn"
-                        className={classNames(
-                            'w-full h-[48px] [&.button-link]:justify-center',
-                            customStyleBtnAddToCard,
-                        )}
+                        className={classNames('w-full h-[48px] [&.button-link]:justify-center', customStyleBtnAddToCard)}
                         classNameText="justify-center"
                         color="primary"
-                        onClick={isSimpleOrConfigurable ? handleAddToCart : handleInternalLoading}
-                        loading={(isSimpleOrConfigurable && loading) || internalLoading}
+                        onClick={handleAddToCart}
+                        loading={loading}
                         disabled={disabled}
-                        link={!isSimpleOrConfigurable && url_key ? url_key : ''}
+                        {...additionalProps}
                     >
-                        {!isSimpleOrConfigurable ? t('product:viewItem') : labelAddToCart || t('product:addToCart')}
+                        {(isPlp && !isSimpleOrConfigurable) ? t('product:viewItem') : labelAddToCart || t('product:addToCart')}
                     </Button>
                 )}
             </div>
