@@ -1,209 +1,231 @@
 /* eslint-disable operator-linebreak */
 import { generateQueries, getProductListConditions } from '@core_modules/cms/helpers/getProductListConditions';
-import { getProductList, getProductPrice } from '@core_modules/cms/services/graphql';
+import { getProductList } from '@core_modules/cms/services/graphql';
 import { useTranslation } from 'next-i18next';
-import Grid from '@material-ui/core/Grid';
-import React, {
-    useEffect, useMemo, useRef, useState,
-} from 'react';
-import { useRouter } from 'next/router';
-import { priceVar } from '@root/core/services/graphql/cache';
-import { useReactiveVar } from '@apollo/client';
-import dynamic from 'next/dynamic';
-
-const Skeleton = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonProduct/Skeleton'));
-const ProductSlider = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonProduct/Slider'));
-const SingleProduct = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonProduct/SingleProduct'));
-const ErrorMessage = dynamic(() => import('@plugin_productlist/components/ErrorMessage'));
+import { useEffect, useMemo } from 'react';
+import ProductItem from '@plugin_productitem';
+import ContainerScroll from '@common/ContainerScroll';
+import cx from 'classnames';
+import { generateGridItemClass } from '@helpers/style';
+import { BREAKPOINTS } from '@root/core/theme/vars';
 
 const Product = (props) => {
-    // prettier-ignore
     const {
-        type, condition, border_hover_color,
-        description, show_line,
-        line_color, line_position, line_width,
-        max_items, orer_by, product_addtocart, product_shortdescription,
-        product_compare, product_image, product_name,
-        product_price, product_review, product_swatches, product_wishlist, product_sku, product_display,
-        title, title_align, title_tag, title_color,
-        item_xl, item_lg, item_md, item_sm, item_xs,
-        ...rest
-    } = props;
-    const { storeConfig } = props;
-    const { t } = useTranslation(['common', 'catalog']);
-
-    const productProps = {
         type,
+        condition,
+        max_items,
+        orer_by,
         product_addtocart,
+        product_shortdescription,
         product_compare,
         product_image,
+        product_name,
         product_price,
         product_review,
         product_swatches,
         product_wishlist,
-        product_name,
-        product_shortdescription,
+        product_sku,
         product_display,
         item_xl,
         item_lg,
         item_md,
         item_sm,
         item_xs,
+    } = props;
+
+    const { storeConfig } = props;
+    const { t } = useTranslation(['common', 'catalog']);
+    const isProductGrid = type === 'product_grid';
+    const isProductList = type === 'product_list';
+    const isSingleProduct = type === 'single_product';
+
+    const productProps = {
         storeConfig,
+        enableQuickView: false,
+        enableImage: product_image,
+        enableAddToCart: product_addtocart,
+        enableOption: product_swatches,
+        enableWishlist: product_wishlist,
+        enableProductCompare: product_compare,
+        enableShortDescription: product_shortdescription,
+        enablePrice: product_price,
+        enableRating: product_review,
+        enableProductName: product_name,
+        className: cx({
+            'desktop:carousel-item flex-shrink-0': !isSingleProduct,
+            'basis-[145px] tablet:basis-[190px] desktop:basis-[273px]': !isProductGrid && !isSingleProduct,
+            '[&:not(:last-child)]:mb-4': isProductList,
+            'desktop:!max-w-[273px]': isSingleProduct && product_display === 'grid',
+            [generateGridItemClass(item_xl, 'xl')]: isProductGrid && item_xl,
+            [generateGridItemClass(item_lg, 'lg')]: isProductGrid && item_lg,
+            [generateGridItemClass(item_md, 'md')]: isProductGrid && item_md,
+            [generateGridItemClass(item_sm, 'sm')]: isProductGrid && item_sm,
+            [generateGridItemClass(item_xs, 'xs')]: isProductGrid && item_xs,
+            '!h-[initial]': !isProductGrid,
+        }),
+        imageProps: {
+            className: cx(
+                'product-image',
+                '!w-[136px]',
+                '!h-[136px]',
+                'tablet:!w-[194px]',
+                'tablet:!h-[194px]',
+                'desktop:!w-[242px]',
+                'desktop:!h-[242px]',
+            ),
+            classContainer: cx(
+                'product-image-container',
+                '!w-[136px]',
+                '!h-[136px]',
+                'desktop:!w-[242px]',
+                'desktop:!h-[242px]',
+                'tablet:!w-[194px]',
+                'tablet:!h-[194px]',
+            ),
+        },
     };
-    const router = useRouter();
+
     let content = '';
     const dataCondition = useMemo(() => getProductListConditions(condition), [condition]);
     const dataFilter = generateQueries(type, type === 'single_product' ? { sku: { eq: product_sku } } : dataCondition, orer_by);
-    // const context = type !== 'single_product' && dataFilter.sort.random ? { request: 'internal' } : {};
     const [fetchProductList, { data, loading, error }] = getProductList();
-    const [fetchProductPrice, { data: dataPrice, loading: loadingPrice, error: errorPrice }] = getProductPrice();
-    // cache price
-    const cachePrice = useReactiveVar(priceVar);
-    const magezonProductRef = useRef();
-    const [display, setDisplay] = useState(false);
 
-    const generateIdentifier = () => {
-        let identifier = `${router.asPath}-${title}`;
-        identifier = identifier.replace(/ /g, '-');
-        return identifier;
-    };
-
-    React.useEffect(() => {
+    useEffect(() => {
         fetchProductList({
             variables: { ...dataFilter, pageSize: max_items },
         });
     }, []);
 
-    React.useEffect(() => {
-        if (!cachePrice[generateIdentifier()]) {
-            fetchProductPrice({
-                variables: { ...dataFilter, pageSize: max_items },
+    useEffect(() => {
+        if (error) {
+            window.toastMessage({
+                open: true,
+                text: t('catalog:emptyProductSearchResult'),
+                variant: 'error',
+                position: 'bottom-right',
             });
         }
-    }, [data]);
-
-    React.useEffect(() => {
-        if (dataPrice) {
-            const identifier = generateIdentifier();
-            const dataTemp = cachePrice;
-            dataTemp[identifier] = dataPrice;
-            priceVar({
-                ...cachePrice,
-            });
-        }
-    }, [dataPrice]);
+    }, [error]);
 
     useEffect(() => {
-        const observer = new IntersectionObserver((entries) => {
-            if (entries?.length > 0 && entries[0].isIntersecting && !display) {
-                setDisplay(true);
-            }
-        });
-
-        if (magezonProductRef.current) {
-            observer.observe(magezonProductRef.current);
+        if (loading) {
+            window.backdropLoader(true);
+        } else {
+            window.backdropLoader(false);
         }
+    }, [loading]);
 
-        return () => observer.disconnect();
-    }, [magezonProductRef]);
-
-    const getPrice = () => {
-        let productPrice = [];
-
-        if (cachePrice[generateIdentifier()] && cachePrice[generateIdentifier()].products && cachePrice[generateIdentifier()].products.items) {
-            productPrice = cachePrice[generateIdentifier()].products.items;
-        } else if (dataPrice && dataPrice.products && dataPrice.products.items) {
-            productPrice = dataPrice.products.items;
-        }
-
-        return productPrice;
-    };
-
-    if (type === 'single_product' && data && data.products && data.products.items) {
+    if (type === 'single_product' && data?.products?.items) {
         content = data?.products?.items[0] && (
-            <SingleProduct
-                product={data.products.items[0]}
+            <ProductItem
+                //
+                {...data.products.items[0]}
                 {...productProps}
-                dataPrice={getPrice()}
-                loadingPrice={loadingPrice}
-                errorPrice={errorPrice}
+                isGrid={product_display === 'grid'}
             />
         );
     }
 
-    if (type === 'product_list' && data && data.products && data.products.items) {
+    if (type === 'product_list' && data?.products?.items) {
         content = data?.products?.items.map((product, index) => (
-            <SingleProduct
+            <ProductItem
+                //
                 key={index}
-                product={product}
+                isGrid={false}
+                {...product}
                 {...productProps}
-                dataPrice={getPrice()}
-                loadingPrice={loadingPrice}
-                errorPrice={errorPrice}
             />
         ));
     }
 
-    if (type === 'product_grid' && data && data.products && data.products.items) {
+    if (type === 'product_grid' && data?.products?.items) {
         content = (
-            <Grid container>
+            <div className="product-grid flex flex-wrap items-stretch -mx-2">
                 {data?.products?.items.map((product, index) => (
-                    <SingleProduct
-                        key={index}
-                        product={product}
-                        {...productProps}
-                        dataPrice={getPrice()}
-                        loadingPrice={loadingPrice}
-                        errorPrice={errorPrice}
-                    />
+                    <div className={cx('product-grid-item p-2', productProps.className)}>
+                        <ProductItem
+                            //
+                            key={index}
+                            {...product}
+                            {...productProps}
+                        />
+                    </div>
                 ))}
-            </Grid>
+                <style jsx>
+                    {`
+                        @media screen and (min-width: ${BREAKPOINTS.xl}px) {
+                            .product-grid-item {
+                                max-width: calc(100% / ${item_xl});
+                            }
+                            .product-grid-item :global(.product-image-container),
+                            .product-grid-item :global(img.product-image) {
+                                width: calc(242px * 4 / ${item_xl} - (0.1rem)) !important;
+                            }
+                        }
+                        @media screen and (min-width: ${BREAKPOINTS.lg}px) and (max-width: ${BREAKPOINTS.xl}px) {
+                            .product-grid-item {
+                                max-width: calc(100% / ${item_lg});
+                            }
+                            .product-grid-item :global(.product-image-container),
+                            .product-grid-item :global(img.product-image) {
+                                width: calc(242px * 4 / ${item_lg} - (0.1rem)) !important;
+                            }
+                        }
+                        @media screen and (min-width: ${BREAKPOINTS.md}px) and (max-width: ${BREAKPOINTS.lg}px) {
+                            .product-grid-item {
+                                max-width: calc(100% / ${item_md});
+                            }
+                            .product-grid-item :global(.product-image-container),
+                            .product-grid-item :global(img.product-image) {
+                                width: calc(194px * 4 / ${item_md} - (0.1rem)) !important;
+                            }
+                        }
+                        @media screen and (min-width: ${BREAKPOINTS.sm}px) and (max-width: ${BREAKPOINTS.md}px) {
+                            .product-grid-item {
+                                max-width: calc(100% / ${item_sm});
+                            }
+                            .product-grid-item :global(.product-image-container),
+                            .product-grid-item :global(img.product-image) {
+                                width: calc(194px * 4 / ${item_sm} - (0.1rem)) !important;
+                            }
+                        }
+                        @media screen and (min-width: ${BREAKPOINTS.xs}px) and (max-width: ${BREAKPOINTS.sm}px) {
+                            .product-grid-item {
+                                max-width: calc(100% / ${item_xs});
+                            }
+                            .product-grid-item :global(.product-image-container),
+                            .product-grid-item :global(img.product-image) {
+                                width: calc(136px * 4 / ${item_xs} - (0.1rem)) !important;
+                            }
+                        }
+                    `}
+                </style>
+            </div>
         );
     }
 
-    if (type === 'product_slider' && data && data.products && data.products.items) {
+    if (type === 'product_slider' && data?.products?.items) {
         content = (
-            <ProductSlider {...rest}>
+            <ContainerScroll showArrow className="!gap-4">
                 {data?.products?.items.map((product, index) => (
-                    <SingleProduct key={index} product={product} {...productProps} dataPrice={getPrice()} />
+                    <ProductItem
+                        //
+                        key={index}
+                        {...product}
+                        {...productProps}
+                    />
                 ))}
-            </ProductSlider>
+            </ContainerScroll>
         );
     }
 
     return (
         <>
-            <div className="mgz-product-content">{loading ? <Skeleton /> : content}</div>
-            {error && (
-                <>
-                    <div className="mgz-product-error">
-                        <ErrorMessage variant="warning" text={t('catalog:emptyProductSearchResult')} open />
-                    </div>
-                </>
-            )}
+            <div className="mgz-product-content">{!loading && !error ? content : null}</div>
             <style jsx>
                 {`
-                    .mgz-product-content > :global(div) {
-                        margin-bottom: 20px;
-                    }
-                    .mgz-product-content > :global(div:hover) {
-                        ${type !== 'product_grid' &&
-                        type !== 'product_slider' &&
-                        `
-                            box-shadow: 0px 20px 50px -20px rgb(0 0 0 / 50%) !important;
-                            border: 1px solid ${border_hover_color || '#ffffff'} !important;
-                        `}
-                    }
-                    .mgz-product-content :global(.mgz-single-product-card) {
-                        padding: 20px 0;
-                    }
-                    .mgz-product-content :global(.mgz-single-product-card img) {
-                        max-width: 100%;
-                        cursor: pointer;
-                    }
-                    .mgz-product-error {
-                        padding: 20px 0;
+                    .mgz-product-content :global(.carousel-item) {
+                        overflow: unset;
                     }
                 `}
             </style>

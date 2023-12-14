@@ -1,10 +1,10 @@
 /* eslint-disable camelcase */
-import React from 'react';
-import cx from 'classnames';
 import Typography from '@common_typography/index';
-import useMediaQuery from '@hook/useMediaQuery';
 import { formatPrice } from '@helper_currency';
+import useMediaQuery from '@hook/useMediaQuery';
+import cx from 'classnames';
 import { useTranslation } from 'next-i18next';
+import React from 'react';
 
 const getLowestTierPrice = (tier_price) => {
     let lowestTierPrice;
@@ -19,25 +19,19 @@ const getLowestTierPrice = (tier_price) => {
     return lowestTierPrice;
 };
 
-const AsLowAsText = () => {
+const AsLowAsText = (textClassName) => {
     const { t } = useTranslation(['common']);
     return (
-        <Typography
-            variant="bd-3b"
-            className={cx('price-text', 'text-neutral-500')}
-        >
+        <Typography variant="bd-3b" className={cx('price-text', 'text-neutral-500', textClassName)}>
             {` ${t('common:price:asLowAs')} `}
         </Typography>
     );
 };
 
-const StartingAt = () => {
+const StartingAt = (textClassName) => {
     const { t } = useTranslation(['common']);
     return (
-        <Typography
-            variant="bd-3b"
-            className={cx('price-text', 'text-neutral-500')}
-        >
+        <Typography variant="bd-3b" className={cx('price-text', 'text-neutral-500', textClassName)}>
             {` ${t('common:price:startFrom')} `}
         </Typography>
     );
@@ -54,6 +48,7 @@ const SimpleProductTypePrice = ({
     isPdp,
     isQuickView,
     additionalPrice = 0,
+    textClassName = '',
 }) => {
     const regularPrice = priceRange?.minimum_price?.regular_price || 0;
     const finalPrice = priceRange?.minimum_price?.final_price || 0;
@@ -77,8 +72,8 @@ const SimpleProductTypePrice = ({
     if (productType === 'GroupedProduct' && !isPdp && !isQuickView) {
         return (
             <div className="price-case-grouped">
-                <StartingAt />
-                <Typography variant={priceLabelVariant} className={cx('price-text')}>
+                <StartingAt textClassName={textClassName} />
+                <Typography variant={priceLabelVariant} className={cx('price-text', textClassName)}>
                     {formatPrice(finalPrice.value + otherPrice, finalPrice.currency, currencyCache)}
                 </Typography>
             </div>
@@ -95,13 +90,13 @@ const SimpleProductTypePrice = ({
                 return (
                     <div className="price-case-1">
                         {/* case 1 */}
-                        <Typography variant={priceLabelVariant} className={cx('price-text')}>
+                        <Typography variant={priceLabelVariant} className={cx('price-text', textClassName)}>
                             {formatPrice(finalPrice.value + otherPrice, finalPrice.currency, currencyCache)}
                         </Typography>
                         {!isPdp && !isQuickView && (
                             <div>
-                                <AsLowAsText />
-                                <Typography variant={priceLabelSubVariant} className={cx('price-text', 'text-neutral-600')}>
+                                <AsLowAsText textClassName={textClassName} />
+                                <Typography variant={priceLabelSubVariant} className={cx('price-text', 'text-neutral-600', textClassName)}>
                                     {formatPrice(lowestPriceTier.final_price.value + otherPrice, lowestPriceTier.final_price.currency, currencyCache)}
                                 </Typography>
                             </div>
@@ -114,10 +109,10 @@ const SimpleProductTypePrice = ({
                 return (
                     <div className="price-case-2">
                         {/* case 2 */}
-                        <Typography variant={priceLabelVariant} className={cx('price-text')}>
+                        <Typography variant={priceLabelVariant} className={cx('price-text', textClassName)}>
                             {formatPrice(finalPrice.value + otherPrice, finalPrice.currency, currencyCache)}
                         </Typography>
-                        <Typography variant={priceLabelSubVariant} className={cx('price-text')}>
+                        <Typography variant={priceLabelSubVariant} className={cx('price-text', textClassName)}>
                             <strike>{formatPrice(regularPrice.value + otherPrice, regularPrice.currency, currencyCache)}</strike>
                         </Typography>
                     </div>
@@ -128,17 +123,17 @@ const SimpleProductTypePrice = ({
                 <div className="price-case-3">
                     {/* case 3 */}
                     <div className="flex flex-col">
-                        <Typography variant={priceLabelVariant} className={cx('price-text')}>
+                        <Typography variant={priceLabelVariant} className={cx('price-text', textClassName)}>
                             {formatPrice(finalPrice.value + otherPrice, finalPrice.currency, currencyCache)}
                         </Typography>
-                        <Typography variant={priceLabelSubVariant} className={cx('price-text')}>
+                        <Typography variant={priceLabelSubVariant} className={cx('price-text', textClassName)}>
                             <strike>{formatPrice(regularPrice.value + otherPrice, regularPrice.currency, currencyCache)}</strike>
                         </Typography>
                     </div>
                     {!isPdp && !isQuickView && (
                         <>
-                            <AsLowAsText />
-                            <Typography variant={priceLabelSubVariant} className={cx('price-text', 'text-neutral-600')}>
+                            <AsLowAsText textClassName={textClassName} />
+                            <Typography variant={priceLabelSubVariant} className={cx('price-text', 'text-neutral-600', textClassName)}>
                                 {formatPrice(lowestPriceTier.final_price.value + otherPrice, lowestPriceTier.final_price.currency, currencyCache)}
                             </Typography>
                         </>
@@ -155,7 +150,7 @@ const SimpleProductTypePrice = ({
             return (
                 <div className="price-case-4">
                     {/* case 4 */}
-                    <Typography variant={priceLabelVariant} className={cx('price-text')}>
+                    <Typography variant={priceLabelVariant} className={cx('price-text', textClassName)}>
                         {formatPrice(firstTierPrice.final_price.value + otherPrice, firstTierPrice.final_price.currency, currencyCache)}
                     </Typography>
                     <Typography variant={priceLabelSubVariant} className={cx('price-text')}>
@@ -169,10 +164,10 @@ const SimpleProductTypePrice = ({
             return (
                 <div className="price-case-5">
                     {/* case 5 */}
-                    <Typography variant={priceLabelVariant} className={cx('price-text')}>
+                    <Typography variant={priceLabelVariant} className={cx('price-text', textClassName)}>
                         {formatPrice(finalPrice.value + otherPrice, finalPrice.currency, currencyCache)}
                     </Typography>
-                    <Typography variant={priceLabelSubVariant} className={cx('price-text')}>
+                    <Typography variant={priceLabelSubVariant} className={cx('price-text', textClassName)}>
                         <strike>{formatPrice(regularPrice.value + otherPrice, regularPrice.currency, currencyCache)}</strike>
                     </Typography>
                 </div>
@@ -183,10 +178,10 @@ const SimpleProductTypePrice = ({
             return (
                 <div className="price-case-6">
                     {/* case 6 */}
-                    <Typography variant={priceLabelVariant} className={cx('price-text')}>
+                    <Typography variant={priceLabelVariant} className={cx('price-text', textClassName)}>
                         {formatPrice(firstTierPrice.final_price.value + otherPrice, firstTierPrice.final_price.currency, currencyCache)}
                     </Typography>
-                    <Typography variant={priceLabelSubVariant} className={cx('price-text')}>
+                    <Typography variant={priceLabelSubVariant} className={cx('price-text', textClassName)}>
                         <strike>{formatPrice(regularPrice.value + otherPrice, regularPrice.currency, currencyCache)}</strike>
                     </Typography>
                 </div>
@@ -198,17 +193,17 @@ const SimpleProductTypePrice = ({
             <div className="price-case-7">
                 {/* case 7 */}
                 <div className="flex flex-col">
-                    <Typography variant={priceLabelVariant} className={cx('price-text')}>
+                    <Typography variant={priceLabelVariant} className={cx('price-text', textClassName)}>
                         {formatPrice(finalPrice.value + otherPrice, finalPrice.currency, currencyCache)}
                     </Typography>
-                    <Typography variant={priceLabelSubVariant} className={cx('price-text')}>
+                    <Typography variant={priceLabelSubVariant} className={cx('price-text', textClassName)}>
                         <strike>{formatPrice(regularPrice.value + otherPrice, regularPrice.currency, currencyCache)}</strike>
                     </Typography>
                 </div>
                 {!isPdp && !isQuickView && (
                     <>
-                        <AsLowAsText />
-                        <Typography variant={priceLabelSubVariant} className={cx('price-text', 'text-neutral-600')}>
+                        <AsLowAsText textClassName={textClassName} />
+                        <Typography variant={priceLabelSubVariant} className={cx('price-text', 'text-neutral-600', textClassName)}>
                             {formatPrice(firstTierPrice.final_price.value + otherPrice, firstTierPrice.final_price.currency, currencyCache)}
                         </Typography>
                     </>
@@ -223,10 +218,7 @@ const SimpleProductTypePrice = ({
     // case 8: if there is no discount
     if (regularPrice.value === finalPrice.value) {
         return (
-            <Typography
-                variant={priceLabelVariant}
-                className={cx('price-text', 'text-neutral-400', 'price-case-8')}
-            >
+            <Typography variant={priceLabelVariant} className={cx('price-text', 'text-neutral-400', 'price-case-8', textClassName)}>
                 {formatPrice(finalPrice.value + otherPrice, finalPrice.currency, currencyCache)}
             </Typography>
         );
@@ -235,25 +227,16 @@ const SimpleProductTypePrice = ({
     return (
         <div className={cx('price-case-9 price-text-discount', 'inline-flex', 'flex-col')}>
             {/* case 9 */}
-            <Typography
-                variant={priceLabelVariant}
-                className={cx('price-text', 'text-neutral-400')}
-            >
-                {
-                    validSpecial ? formatPrice(finalPrice.value + otherPrice, finalPrice.currency, currencyCache)
-                        : formatPrice(regularPrice.value + otherPrice, regularPrice.currency, currencyCache)
-                }
+            <Typography variant={priceLabelVariant} className={cx('price-text', 'text-neutral-400', textClassName)}>
+                {validSpecial
+                    ? formatPrice(finalPrice.value + otherPrice, finalPrice.currency, currencyCache)
+                    : formatPrice(regularPrice.value + otherPrice, regularPrice.currency, currencyCache)}
             </Typography>
-            {
-                validSpecial && (
-                    <Typography
-                        variant={priceLabelSubVariant}
-                        className={cx('price-text')}
-                    >
-                        <strike>{formatPrice(regularPrice.value + otherPrice, regularPrice.currency, currencyCache)}</strike>
-                    </Typography>
-                )
-            }
+            {validSpecial && (
+                <Typography variant={priceLabelSubVariant} className={cx('price-text', textClassName)}>
+                    <strike>{formatPrice(regularPrice.value + otherPrice, regularPrice.currency, currencyCache)}</strike>
+                </Typography>
+            )}
         </div>
     );
 };

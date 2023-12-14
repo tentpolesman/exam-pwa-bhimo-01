@@ -400,6 +400,207 @@ export const getColSpanTailwind = (basis = 0, mediaQuery = '') => {
     return '';
 };
 
+export const generateGridItemClass = (basis = 0, mediaQuery = '') => {
+    if (!mediaQuery || mediaQuery === '') {
+        switch (basis) {
+        case 12:
+            return '!basis-1/12';
+        case 11:
+            return '!basis-1/11';
+        case 10:
+            return '!basis-1/10';
+        case 9:
+            return '!basis-1/9';
+        case 8:
+            return '!basis-1/8';
+        case 7:
+            return '!basis-1/7';
+        case 6:
+            return '!basis-1/6';
+        case 5:
+            return '!basis-1/5';
+        case 4:
+            return '!basis-1/4';
+        case 3:
+            return '!basis-1/3';
+        case 2:
+            return '!basis-1/2';
+        case 1:
+            return '!basis-1/1';
+
+        default:
+            break;
+        }
+    }
+
+    // XL Basis
+    if (mediaQuery && mediaQuery === 'xl') {
+        switch (basis) {
+        case 12:
+            return 'xl:!basis-1/12';
+        case 11:
+            return 'xl:!basis-1/11';
+        case 10:
+            return 'xl:!basis-1/10';
+        case 9:
+            return 'xl:!basis-1/9';
+        case 8:
+            return 'xl:!basis-1/8';
+        case 7:
+            return 'xl:!basis-1/7';
+        case 6:
+            return 'xl:!basis-1/6';
+        case 5:
+            return 'xl:!basis-1/5';
+        case 4:
+            return 'xl:!basis-1/4';
+        case 3:
+            return 'xl:!basis-1/3';
+        case 2:
+            return 'xl:!basis-1/2';
+        case 1:
+            return 'xl:!basis-1/1';
+
+        default:
+            break;
+        }
+    }
+
+    // LG Basis
+    if (mediaQuery && mediaQuery === 'lg') {
+        switch (basis) {
+        case 12:
+            return 'lg:!basis-1/12';
+        case 11:
+            return 'lg:!basis-1/11';
+        case 10:
+            return 'lg:!basis-1/10';
+        case 9:
+            return 'lg:!basis-1/9';
+        case 8:
+            return 'lg:!basis-1/8';
+        case 7:
+            return 'lg:!basis-1/7';
+        case 6:
+            return 'lg:!basis-1/6';
+        case 5:
+            return 'lg:!basis-1/5';
+        case 4:
+            return 'lg:!basis-1/4';
+        case 3:
+            return 'lg:!basis-1/3';
+        case 2:
+            return 'lg:!basis-1/2';
+        case 1:
+            return 'lg:!basis-1/1';
+
+        default:
+            break;
+        }
+    }
+
+    // MD Basis
+    if (mediaQuery && mediaQuery === 'md') {
+        switch (basis) {
+        case 12:
+            return 'md:!basis-1/12';
+        case 11:
+            return 'md:!basis-1/11';
+        case 10:
+            return 'md:!basis-1/10';
+        case 9:
+            return 'md:!basis-1/9';
+        case 8:
+            return 'md:!basis-1/8';
+        case 7:
+            return 'md:!basis-1/7';
+        case 6:
+            return 'md:!basis-1/6';
+        case 5:
+            return 'md:!basis-1/5';
+        case 4:
+            return 'md:!basis-1/4';
+        case 3:
+            return 'md:!basis-1/3';
+        case 2:
+            return 'md:!basis-1/2';
+        case 1:
+            return 'md:!basis-1/1';
+
+        default:
+            break;
+        }
+    }
+
+    // SM Basis
+    if (mediaQuery && mediaQuery === 'sm') {
+        switch (basis) {
+        case 12:
+            return 'sm:!basis-1/12';
+        case 11:
+            return 'sm:!basis-1/11';
+        case 10:
+            return 'sm:!basis-1/10';
+        case 9:
+            return 'sm:!basis-1/9';
+        case 8:
+            return 'sm:!basis-1/8';
+        case 7:
+            return 'sm:!basis-1/7';
+        case 6:
+            return 'sm:!basis-1/6';
+        case 5:
+            return 'sm:!basis-1/5';
+        case 4:
+            return 'sm:!basis-1/4';
+        case 3:
+            return 'sm:!basis-1/3';
+        case 2:
+            return 'sm:!basis-1/2';
+        case 1:
+            return 'sm:!basis-1/1';
+
+        default:
+            break;
+        }
+    }
+
+    // XS Basis
+    if (mediaQuery && mediaQuery === 'xs') {
+        switch (basis) {
+        case 12:
+            return 'xs:!basis-1/12';
+        case 11:
+            return 'xs:!basis-1/11';
+        case 10:
+            return 'xs:!basis-1/10';
+        case 9:
+            return 'xs:!basis-1/9';
+        case 8:
+            return 'xs:!basis-1/8';
+        case 7:
+            return 'xs:!basis-1/7';
+        case 6:
+            return 'xs:!basis-1/6';
+        case 5:
+            return 'xs:!basis-1/5';
+        case 4:
+            return 'xs:!basis-1/4';
+        case 3:
+            return 'xs:!basis-1/3';
+        case 2:
+            return 'xs:!basis-1/2';
+        case 1:
+            return 'xs:!basis-1/1';
+
+        default:
+            break;
+        }
+    }
+
+    return '';
+};
+
 export default {
     getFlexBasisTailwind,
 };

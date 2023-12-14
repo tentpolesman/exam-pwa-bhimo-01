@@ -8,6 +8,7 @@ import React from 'react';
 
 import TextField from '@common_forms/TextField';
 import Popover from '@common_popover';
+import PriceFormat from '@common_priceformat';
 
 import Image from '@common_image';
 import BuildingStorefrontIcon from '@heroicons/react/24/outline/BuildingStorefrontIcon';
@@ -181,7 +182,7 @@ export default function AutocompleteSearch(props) {
             if (breadcrumbs) {
                 for (let i = 0; i < breadcrumbs.length; i++) {
                     const element = breadcrumbs[i];
-                    breadcrumbsText += `${element.category_name} > `;
+                    breadcrumbsText += `${element.category_name} / `;
                 }
             }
 
@@ -189,9 +190,11 @@ export default function AutocompleteSearch(props) {
                 <>
                     {type === 'product' ? (
                         <>
-                            {position === 0 ? <div className={cx('top-title', 'pt-2', 'pb-4', 'uppercase', 'font-bold')}>Product</div> : null}
+                            {position === 0 ? (
+                                <div className={cx('top-title', 'py-2', 'normal-case', 'font-semibold', 'leading-5', 'text-md')}>Products</div>
+                            ) : null}
                             <div
-                                className={cx('grid', 'xs:grid-cols-[64px_1fr]', 'gap-x-2', 'py-4', 'hover:bg-neutral-50', 'hover:cursor-pointer')}
+                                className={cx('grid', 'xs:grid-cols-[48px_1fr]', 'gap-x-2', 'py-2', 'hover:bg-neutral-50', 'hover:cursor-pointer')}
                                 key={key}
                                 onClick={() => handleOnClickItem(propsPopoverItem)}
                                 role="presentation"
@@ -199,10 +202,16 @@ export default function AutocompleteSearch(props) {
                                 <div className="image-container">
                                     <Image alt={name} src={small_image.url} width={64} height={64} />
                                 </div>
-                                <div className={cx('title-search-item', 'text-sm', 'uppercase')}>
-                                    {`${name.substr(0, 47)}${name.length > 47 ? '...' : null}`}
+                                <div className={cx('title-search-item', 'text-md', 'normal-case', 'leading-5', 'font-[500]')}>
+                                    {name.length > 47 ? `${name.substr(0, 47)}...` : `${name}`}
+                                    <br />
+                                    <PriceFormat
+                                        priceRange={sharedProp.price.priceRange}
+                                        priceTiers={sharedProp.price.priceTiers}
+                                        textClassName={cx('!text-sm', '!leading-4', '!font-normal', '!text-neutral-500')}
+                                    />
                                 </div>
-                                {seller_name && (
+                                {seller_name && enableMultiseller && (
                                     <div className="info-seller">
                                         <BuildingStorefrontIcon />
                                         <div className="title-seller">{seller_name}</div>
@@ -213,34 +222,37 @@ export default function AutocompleteSearch(props) {
                     ) : null}
                     {type === 'category' ? (
                         <>
-                            {position === 0 ? <div className={cx('top-title', 'pt-2', 'pb-4', 'uppercase', 'font-bold')}>Categories</div> : null}
+                            {position === 0 ? (
+                                <div className={cx('top-title', 'py-2', 'normal-case', 'font-semibold', 'leading-5', 'text-md')}>Categories</div>
+                            ) : null}
                             <div
-                                className={cx('grid', 'py-4', 'hover:bg-neutral-50', 'hover:cursor-pointer')}
+                                className={cx('grid', 'py-2', 'hover:bg-neutral-50', 'hover:cursor-pointer')}
                                 key={key}
                                 onClick={() => handleOnClickItem(propsPopoverItem)}
                                 role="presentation"
                             >
-                                <div className={cx('breadcrumbs', 'block', 'text-sm', 'text-neutral-200', 'uppercase', 'italic')}>
+                                <div className={cx('breadcrumbs', 'block', 'text-md', 'text-neutral-400')}>
                                     {breadcrumbsText}
+                                    <div className="title-category inline-block text-md !text-neutral-600">{name}</div>
                                 </div>
-                                <div className="title-category block text-sm uppercase">{name}</div>
                             </div>
                         </>
                     ) : null}
                     {type === 'seller' ? (
                         <>
-                            {position === 0 ? <div className={cx('top-title', 'pt-2', 'pb-4', 'uppercase', 'font-bold')}>Seller</div> : null}
+                            {position === 0 ? (
+                                <div className={cx('top-title', 'py-2', 'normal-case', 'font-semibold', 'leading-5', 'text-md')}>Merchants</div>
+                            ) : null}
                             <div
-                                className={cx('grid', 'xs:grid-cols-[64px_1fr]', 'gap-x-2', 'py-4', 'hover:bg-neutral-50', 'hover:cursor-pointer')}
+                                className={cx('grid', 'xs:grid-cols-[48px_1fr]', 'gap-x-2', 'py-2', 'hover:bg-neutral-50', 'hover:cursor-pointer')}
                                 key={key}
                                 onClick={() => handleOnClickItem(propsPopoverItem)}
                                 role="presentation"
                             >
                                 <div className="image-container">
-                                    <Image alt={name} src={logo} width={64} height={64} />
+                                    <Image alt={name} src={logo} width={48} height={48} />
                                 </div>
-                                <div className="title-search-item">{name}</div>
-                                <div className="address">{citySplit ? citySplit[0] : ''}</div>
+                                <div className="seller-info">{`${name} - ${citySplit ? citySplit[0] : ''}`}</div>
                             </div>
                         </>
                     ) : null}

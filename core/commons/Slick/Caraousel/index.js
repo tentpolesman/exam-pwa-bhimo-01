@@ -12,7 +12,7 @@ const Caraousel = (props) => {
 
     return (
         <div className={cx('carousel', className)}>
-            <ContainerScroll itemsLength={data.length} showArrow={showArrow}>
+            <ContainerScroll showArrow={showArrow}>
                 {data?.length > 0 && data.map((item, key) => (
                     <Item
                         className="carousel-item [&:not(:last-child)]:mr-4 !max-w-[288px]"

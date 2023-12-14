@@ -1,10 +1,10 @@
 /* eslint-disable camelcase */
-import React from 'react';
+import { useReactiveVar } from '@apollo/client';
 import BundleProductTypePrice from '@common_priceformat/BundleProductTypePrice';
 import ProductTypePrice from '@common_priceformat/ProductTypePrice';
-import { useReactiveVar } from '@apollo/client';
 import { currencyVar } from '@root/core/services/graphql/cache';
 import { useTranslation } from 'next-i18next';
+import React from 'react';
 
 /**
  * Price Generator Component
@@ -19,6 +19,7 @@ const PriceFormat = ({
     productType = 'SimpleProduct',
     isPdp = false,
     isQuickView = false,
+    textClassName = '',
     ...other
 }) => {
     const { t } = useTranslation(['common']);
@@ -34,6 +35,7 @@ const PriceFormat = ({
                 priceRange={priceRange}
                 priceTiers={priceTiers}
                 currencyCache={currencyCache}
+                textClassName={textClassName}
                 {...other}
             />
         );
@@ -47,6 +49,7 @@ const PriceFormat = ({
             currencyCache={currencyCache}
             isPdp={isPdp}
             isQuickView={isQuickView}
+            textClassName={textClassName}
             {...other}
         />
     );

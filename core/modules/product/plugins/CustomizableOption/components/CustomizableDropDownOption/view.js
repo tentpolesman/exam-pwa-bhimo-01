@@ -20,10 +20,10 @@ const ViewCustomizableDropDownOption = ({
                         name={title}
                         label={(
                             <>
-                                <Typography variant="title" type="bold" letter="uppercase">
+                                <Typography className="uppercase font-bold">
                                     {title.replace(/_/g, ' ')}
                                     {' '}
-                                    {required && <Typography color="red" type="bold" variant="label">*</Typography>}
+                                    {required && <Typography className="font-bold text-red">*</Typography>}
                                 </Typography>
                             </>
                         )}
@@ -31,12 +31,15 @@ const ViewCustomizableDropDownOption = ({
                         onChange={onChange}
                         error={error}
                         errorMessage={error}
+                        textFiledProps={{
+                            className: '!w-full',
+                        }}
                     />
                 )
             }
             {
                 error && error !== '' && (
-                    <Typography color="red">{error}</Typography>
+                    <Typography className="text-red">{error}</Typography>
                 )
             }
         </div>

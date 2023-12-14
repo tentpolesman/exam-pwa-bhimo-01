@@ -43,7 +43,7 @@ const OptionsItemDownload = ({
         cartId = getCartId();
     }
 
-    const reviewValue = parseInt(review.rating_summary, 0) / 20;
+    const reviewValue = parseInt(review.rating_summary, 10) / 20;
     const [addCartDownload] = addDownloadProductToCart();
     const [getGuestCartId] = queryGetGuestCartId();
     const [items, setItems] = React.useState([]);
@@ -280,6 +280,7 @@ const OptionsItemDownload = ({
             setQty={setQty}
             loading={loadingAdd | loading}
             disabled={stock_status === 'OUT_OF_STOCK'}
+            url_key={url_key}
         />
     );
 };

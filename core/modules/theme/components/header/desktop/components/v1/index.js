@@ -86,6 +86,7 @@ const ViewTopNavigation = (props) => {
                             vesMenuConfig={vesMenuConfig}
                             handleLogout={handleLogout}
                             customer={customer}
+                            deviceWidth={deviceWidth}
                         />
                     )}
                     {deviceType && deviceType.isMobile === true && deviceWidth && deviceWidth > 768 && (
@@ -100,6 +101,7 @@ const ViewTopNavigation = (props) => {
                             vesMenuConfig={vesMenuConfig}
                             handleLogout={handleLogout}
                             customer={customer}
+                            deviceWidth={deviceWidth}
                         />
                     )}
                     {deviceType && deviceType.isMobile === true && deviceWidth && deviceWidth < 768 && (

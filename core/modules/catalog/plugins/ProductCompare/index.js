@@ -1,14 +1,9 @@
 /* eslint-disable react/require-default-props */
-import propTypes from 'prop-types';
+import WithLinkView from '@core_modules/catalog/plugins/ProductCompare/components/WithLink';
 import Core from '@core_modules/catalog/plugins/ProductCompare/core';
-import WihtLinkView from '@core_modules/catalog/plugins/ProductCompare/components/WithLink';
+import propTypes from 'prop-types';
 
-const ShoppingBag = (props) => (
-    <Core
-        WihtLinkView={WihtLinkView}
-        {...props}
-    />
-);
+const ShoppingBag = (props) => <Core WithLinkView={WithLinkView} {...props} />;
 
 ShoppingBag.propTypes = {
     withLink: propTypes.bool,

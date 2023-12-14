@@ -7,8 +7,10 @@ import Link from 'next/link';
 import React from 'react';
 import cx from 'classnames';
 
-import parse from 'html-react-parser';
 import Show from '@common/Show';
+import dynamic from 'next/dynamic';
+
+const CmsRenderer = dynamic(() => import('@core_modules/cms/components/cms-renderer'));
 
 const Detail = (props) => {
     const {
@@ -23,6 +25,7 @@ const Detail = (props) => {
         short_description,
         Pricing,
         isGrid = true,
+        enableProductName = true,
     } = props;
     const showRating = typeof enableRating !== 'undefined' ? enableRating : storeConfig?.pwa?.rating_enable;
     const enableMultiSeller = storeConfig.enable_oms_multiseller === '1';
@@ -53,19 +56,23 @@ const Detail = (props) => {
                     </Typography>
                 </div>
             </Show>
-            <Link href="/[...slug]" as={`/${urlKey}`} className="w-full" onClick={() => handleClick(props)} id="plugin-productTitle-typography">
-                <Typography
-                    className={cx(
-                        'font-medium line-clamp-2 mb-[6px] capitalize',
-                        isGrid && 'text-[14px] tablet:text-[16px]',
-                        !isGrid && 'text-sm tablet:text-[16px]',
-                    )}
-                >
-                    {name}
-                </Typography>
-            </Link>
+            <Show when={enableProductName}>
+                <Link href="/[...slug]" as={`/${urlKey}`} className="w-full" onClick={() => handleClick(props)} id="plugin-productTitle-typography">
+                    <Typography
+                        className={cx(
+                            'font-medium line-clamp-2 mb-[6px] capitalize',
+                            isGrid && 'text-[14px] tablet:text-[16px]',
+                            !isGrid && 'text-sm tablet:text-[16px]',
+                        )}
+                    >
+                        {name}
+                    </Typography>
+                </Link>
+            </Show>
             <Show when={showShortDescription && shortDescription}>
-                <div className="hidden tablet:flex line-clamp-2 text-md text-neutral-500 leading-5">{parse(shortDescription)}</div>
+                <div className="hidden tablet:flex line-clamp-2 text-md text-neutral-500 leading-5">
+                    <CmsRenderer content={shortDescription} />
+                </div>
             </Show>
 
             <Show when={showRating}>

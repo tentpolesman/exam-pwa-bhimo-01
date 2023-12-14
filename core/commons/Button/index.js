@@ -142,12 +142,14 @@ const Button = (props) => {
                 target={linkTarget || '_self'}
                 passHref={linkPassHref}
                 className={cx(
+                    'button-link',
                     'group',
                     'flex items-center',
                     !isDisableOrLoading && styleClass[variant].button,
                     isDisableOrLoading && styleClass.disabled.button,
                     classes,
                 )}
+                onClick={onClick}
             >
                 <ButtonContent />
                 {customChildren && customChildren}

@@ -35,10 +35,13 @@ const Select = (props) => {
 
     return (
         <div ref={ref} className={cx('relative', open ? 'z-50' : '', className)} {...restProps}>
-            {label ? (
+            {label && typeof label === 'string' ? (
                 <Typography variant="bd-2 mb-2" className="uppercase">
                     {label.replace(/_/g, ' ')}
                 </Typography>
+            ) : null}
+            {label && typeof label === 'object' ? (
+                label
             ) : null}
             <TextField
                 className={cx('cursor-pointer', textFiledClass || '')}

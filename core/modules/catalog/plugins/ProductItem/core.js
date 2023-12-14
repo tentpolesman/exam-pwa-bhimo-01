@@ -19,7 +19,6 @@ import ModalQuickView from '@plugin_productitem/components/QuickView';
 import WeltpixelLabel from '@plugin_productitem/components/WeltpixelLabel';
 import TagManager from 'react-gtm-module';
 import { priceVar } from '@root/core/services/graphql/cache';
-import dynamic from 'next/dynamic';
 
 import ImageProductView from '@plugin_productitem/components/Image';
 import DetailProductView from '@plugin_productitem/components/Detail';
@@ -37,8 +36,6 @@ import EyeSolidIcon from '@heroicons/react/20/solid/EyeIcon';
 import Show from '@common/Show';
 import Badge from '@common/Badge';
 
-const CustomizableOption = dynamic(() => import('@plugin_customizableitem'));
-
 const ProductItem = (props) => {
     const {
         id,
@@ -54,7 +51,10 @@ const ProductItem = (props) => {
         weltpixel_labels,
         enablePrice = true,
         enableWishlist,
+        enableImage = true,
         imageProps = {},
+        enableProductCompare = true,
+        enableShortDescription = true,
         ...other
     } = props;
     const {
@@ -69,7 +69,6 @@ const ProductItem = (props) => {
     // Customizable Options
     const [customizableOptions, setCustomizableOptions] = React.useState([]);
     const [errorCustomizableOptions, setErrorCustomizableOptions] = React.useState([]);
-    const [additionalPrice, setAdditionalPrice] = React.useState(0);
 
     React.useEffect(() => {
         router.beforePopState(({ as }) => {
@@ -92,7 +91,7 @@ const ProductItem = (props) => {
         }
     }, [customizableOptions]);
 
-    const [price, setPrice] = React.useState({
+    const [price] = React.useState({
         priceRange: other.price_range,
         priceTiers: other.price_tiers,
         // eslint-disable-next-line no-underscore-dangle
@@ -386,7 +385,6 @@ const ProductItem = (props) => {
     }, [dataDetailProduct]);
 
     const ratingValue = review && review.rating_summary ? parseInt(review.rating_summary, 10) / 20 : 0;
-    const enableProductCompare = modules.productcompare.enabled;
     const DetailProps = {
         spesificProduct,
         handleClick,
@@ -395,12 +393,13 @@ const ProductItem = (props) => {
         feed,
         id,
         handleSetCompareList,
-        enableProductCompare,
     };
     const showAddToCart = typeof enableAddToCart !== 'undefined' ? enableAddToCart : storeConfig?.pwa?.add_to_cart_enable;
     const showOption = typeof enableOption !== 'undefined' ? enableOption : storeConfig?.pwa?.configurable_options_enable;
     const showQuickView = typeof enableQuickView !== 'undefined' ? enableQuickView : storeConfig?.pwa?.quick_view_enable;
     const showWishlist = typeof enableWishlist !== 'undefined' ? enableWishlist : modules.wishlist.enabled;
+    const showProductCompare = enableProductCompare || modules.productcompare.enabled;
+    const showShortDescription = enableShortDescription;
 
     const priceData = getPriceFromList(dataPrice, id);
     const generatePrice = (priceDataItem = []) => {
@@ -524,6 +523,8 @@ const ProductItem = (props) => {
                         'shadow border border-neutral-100 rounded-lg p-2 lg:p-4',
                         'desktop:hover:shadow-lg',
                         'min-w-[160px] tablet:max-w-[230px] desktop:min-w-[288px] desktop:max-w-full',
+                        'flex',
+                        'flex-col',
                         className,
                     )}
                     id="catalog-item-product"
@@ -588,40 +589,29 @@ const ProductItem = (props) => {
                                 />
                             </>
                         )}
-                        <ImageProductView
-                            t={t}
-                            handleClick={() => handleClick(props)}
-                            spesificProduct={spesificProduct}
-                            urlKey={url_key}
-                            {...other}
-                            {...imageProps}
-                            isGrid={isGrid}
-                        />
+                        <Show when={enableImage}>
+                            <ImageProductView
+                                t={t}
+                                handleClick={() => handleClick(props)}
+                                spesificProduct={spesificProduct}
+                                urlKey={url_key}
+                                {...other}
+                                {...imageProps}
+                                isGrid={isGrid}
+                            />
+                        </Show>
                     </div>
-                    <div className="h-auto pt-4 relative flex flex-col gap-4 overflow-hidden">
+                    <div className="h-auto pt-4 relative flex flex-col gap-4 overflow-hidden flex-1 justify-between">
                         <DetailProductView
                             t={t}
                             urlKey={url_key}
                             catalogList={catalogList}
                             {...DetailProps}
                             {...other}
+                            showShortDescription={showShortDescription}
                             Pricing={(enablePrice && !showOption) && generatePrice(priceData)}
                             isGrid={isGrid}
                         />
-                        {modules.product.customizableOptions.enabled && (
-                            <CustomizableOption
-                                price={price}
-                                setPrice={setPrice}
-                                showCustomizableOption={showAddToCart}
-                                customizableOptions={customizableOptions}
-                                setCustomizableOptions={setCustomizableOptions}
-                                errorCustomizableOptions={errorCustomizableOptions}
-                                additionalPrice={additionalPrice}
-                                setAdditionalPrice={setAdditionalPrice}
-                                {...other}
-                                url_key={url_key}
-                            />
-                        )}
                         {showOption ? (
                             <div className="hidden tablet:flex desktop:flex flex-col gap-2 tablet:gap-4">
                                 <ConfigurableOpt
@@ -648,7 +638,7 @@ const ProductItem = (props) => {
                                     checkCustomizableOptionsValue={checkCustomizableOptionsValue}
                                     CustomFooter={<CustomerFooter />}
                                     showWishlist={showWishlist}
-                                    enableProductCompare={enableProductCompare}
+                                    enableProductCompare={showProductCompare}
                                     enableBundle={false}
                                     enableDownload={false}
                                 />
@@ -752,14 +742,16 @@ const ProductItem = (props) => {
                                 />
                             </>
                         )}
-                        <ImageProductView
-                            t={t}
-                            handleClick={() => handleClick(props)}
-                            spesificProduct={spesificProduct}
-                            urlKey={url_key}
-                            {...other}
-                            isGrid={isGrid}
-                        />
+                        <Show when={enableImage}>
+                            <ImageProductView
+                                t={t}
+                                handleClick={() => handleClick(props)}
+                                spesificProduct={spesificProduct}
+                                urlKey={url_key}
+                                {...other}
+                                isGrid={isGrid}
+                            />
+                        </Show>
                     </div>
                 </div>
                 <div className="basis-full h-full">

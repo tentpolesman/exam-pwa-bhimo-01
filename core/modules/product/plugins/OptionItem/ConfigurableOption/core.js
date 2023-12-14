@@ -431,6 +431,7 @@ const ConfigurableOptionCore = (props) => {
             isGrid={isGrid}
             disableItem={stock_status === 'OUT_OF_STOCK'}
             stockStatus={stockStatus}
+            url_key={url_key}
             {...other}
         />
     );
