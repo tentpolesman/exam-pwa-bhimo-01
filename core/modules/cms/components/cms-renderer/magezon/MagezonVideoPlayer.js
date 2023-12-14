@@ -13,6 +13,7 @@ const MagezonVideoPlayer = (props) => {
         controls, autoplay, loop, mute,
     } = props;
     const { t } = useTranslation(['common']);
+    const additionalVideoProps = `${autoplay ? '&autoplay=1' : ''}${loop ? '&loop=1' : ''}${controls ? '&controls=1' : ''}${mute ? '&mute=1' : ''}`;
 
     const MgzVideoHeader = () => {
         if (title) {
@@ -72,8 +73,6 @@ const MagezonVideoPlayer = (props) => {
             );
         }
 
-        const additionalVideoProps = `${autoplay ? '&autoplay=1' : ''}${loop ? '&loop=1' : ''}${controls ? '&controls=1' : ''}${mute ? '&mute=1' : ''}`;
-
         if (video_type === 'vimeo') {
             videoId = videoLink.split('/');
             videoLink = `https://player.vimeo.com/video/${videoId[3]}?${additionalVideoProps}`;
@@ -96,12 +95,14 @@ const MagezonVideoPlayer = (props) => {
 
     if (!disable_element) {
         return (
-            <div className={cx('mgz-video-player', {
-                'max-sm:hidden': xs_hide,
-                'max-md:hidden': sm_hide,
-                'max-lg:hidden': md_hide,
-                'max-xl:hidden': lg_hide,
-            })}>
+            <div
+                className={cx('mgz-video-player', {
+                    'max-sm:hidden': xs_hide,
+                    'max-md:hidden': sm_hide,
+                    'max-lg:hidden': md_hide,
+                    'max-xl:hidden': lg_hide,
+                })}
+            >
                 <MgzVideoHeader />
                 <MgzVideoPlayer />
                 <style jsx global>
