@@ -15,6 +15,7 @@ const ContainerScroll = ({
     arrowSize = 10,
     slidesToScroll = 1,
     style,
+    arrowProps = {},
 }) => {
     const containerRef = React.useRef(null);
     const isHorizontal = variant === 'horizontal';
@@ -22,6 +23,8 @@ const ContainerScroll = ({
     const marginSize = 12;
     // calculates the width of the first child from the list rendered
     const [containerChildrenWidth, setContainerChildrenWidth] = React.useState(0);
+
+    const { leftNavClassName = '', rightNavClassName = '' } = arrowProps;
 
     const onClickArrowLeft = () => {
         containerRef.current.scrollLeft -= containerChildrenWidth;
@@ -39,7 +42,7 @@ const ContainerScroll = ({
 
     return (
         <div
-            className={cx('container-scroll relative group', classNameContainer)}
+            className={cx('container-scroll flex flex-col relative group h-auto', classNameContainer)}
             style={{
                 ...(maxHeight ? { maxHeight } : null),
                 ...(maxWidth ? { maxWidth } : null),
@@ -56,12 +59,22 @@ const ContainerScroll = ({
                         'group-hover:opacity-100',
                         'z-[1]',
                         'pointer-events-none',
+                        'order-0',
+                        arrowProps.className || '',
                     )}
                 >
-                    <Button variant="tertiary" className="container-scroll-arrow-left !px-[10px] pointer-events-auto" onClick={onClickArrowLeft}>
+                    <Button
+                        variant="tertiary"
+                        className={cx('container-scroll-arrow-left', '!px-[10px]', 'pointer-events-auto', leftNavClassName)}
+                        onClick={onClickArrowLeft}
+                    >
                         <ChevronLeftIcon style={{ width: arrowSize, height: arrowSize }} />
                     </Button>
-                    <Button variant="tertiary" className="container-scroll-arrow-right !px-[10px] pointer-events-auto" onClick={onClickArrowRight}>
+                    <Button
+                        variant="tertiary"
+                        className={cx('container-scroll-arrow-right', '!px-[10px]', 'pointer-events-auto', rightNavClassName)}
+                        onClick={onClickArrowRight}
+                    >
                         <ChevronRightIcon style={{ width: arrowSize, height: arrowSize }} />
                     </Button>
                 </div>
@@ -77,8 +90,8 @@ const ContainerScroll = ({
                     'container-scroll-data',
                     'relative',
                     'scrollbar-none',
-                    'p-1',
-                    '-m-1',
+                    'p-4',
+                    '-m-4',
                     isHorizontal && 'overflow-x-auto flex scroll-smooth',
                     isVertical && 'overflow-y-auto',
                     className,

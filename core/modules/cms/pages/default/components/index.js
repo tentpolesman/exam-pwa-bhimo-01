@@ -18,7 +18,7 @@ const CmsPage = (props) => {
     if (onlyCms) return <CmsRenderer {...other} t={t} content={data.cmsPage.content} storeConfig={storeConfig} />;
 
     return (
-        <div className="cms-container">
+        <div className="cms-container xs:max-md:p-4">
             {/* eslint-disable-next-line react/no-danger */}
             <h4 className="title center" dangerouslySetInnerHTML={{ __html: data.cmsPage.title }} />
             <CmsRenderer {...other} t={t} content={data.cmsPage.content} storeConfig={storeConfig} />

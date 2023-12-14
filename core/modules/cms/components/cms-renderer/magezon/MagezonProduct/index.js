@@ -12,7 +12,6 @@ const MagezonProduct = (props) => {
         description, show_line,
         line_color, line_position, line_width,
         title, title_align, title_tag, title_color,
-        // ...rest
     } = props;
     const showLineClass = show_line ? 'mgz-product-heading-line' : '';
     const linePosClass = show_line && line_position === 'bottom' ? 'mgz-product-heading-line--bottom' : '';

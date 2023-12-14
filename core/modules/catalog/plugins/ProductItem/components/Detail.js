@@ -5,8 +5,9 @@ import RatingStar from '@common_ratingstar';
 import Typography from '@common_typography';
 import Link from 'next/link';
 import React from 'react';
+import dynamic from 'next/dynamic';
 
-import parse from 'html-react-parser';
+const CmsRenderer = dynamic(() => import('@core_modules/cms/components/cms-renderer'));
 
 const Detail = (props) => {
     const {
@@ -20,6 +21,7 @@ const Detail = (props) => {
         showShortDescription = false,
         short_description,
         Pricing,
+        enableProductName = true,
     } = props;
     const showRating = typeof enableRating !== 'undefined' ? enableRating : storeConfig?.pwa?.rating_enable;
     const enableMultiSeller = storeConfig.enable_oms_multiseller === '1';
@@ -46,25 +48,28 @@ const Detail = (props) => {
                     </Typography>
                 </div>
             )}
-            <Link
-                href="/[...slug]"
-                as={`/${urlKey}`}
-                className="w-full"
-                onClick={() => handleClick(props)}
-                id="plugin-productTitle-typography"
-            >
-
-                <Typography
-                    className="font-medium line-clamp-2 mb-[6px] capitalize"
+            {enableProductName ? (
+                <Link
+                    href="/[...slug]"
+                    as={`/${urlKey}`}
+                    className="w-full"
+                    onClick={() => handleClick(props)}
+                    id="plugin-productTitle-typography"
                 >
-                    {name}
-                </Typography>
-            </Link>
+
+                    <Typography
+                        className="font-medium line-clamp-2 mb-[6px] capitalize"
+                    >
+                        {name}
+                    </Typography>
+                </Link>
+            ) : null}
+
             {
                 showShortDescription && shortDescription && (
 
                     <div className="hidden tablet:flex line-clamp-2 text-md text-neutral-500 leading-5">
-                        {parse(shortDescription)}
+                        <CmsRenderer content={shortDescription} />
                     </div>
                 )
             }
