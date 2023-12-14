@@ -136,7 +136,8 @@
         "feedSuccess": "Produk berhasil di tambahkan ke wishlist",
         "feedFailed": "Tambah wishlist gagal",
         "browserError": "Silahkan ganti browser atau cek setingan cookies, javascript atau lainnya",
-        "restrictionCookies": "Kami menggunakan cookie untuk membuat pengalaman Anda lebih baik. Untuk mematuhi arahan e-Privacy yang baru, kami perlu meminta persetujuan Anda untuk menyetel cookie. Pelajari lebih lanjut."
+        "restrictionCookies": "Kami menggunakan cookie untuk membuat pengalaman Anda lebih baik. Untuk mematuhi arahan e-Privacy yang baru, kami perlu meminta persetujuan Anda untuk menyetel cookie. Pelajari lebih lanjut.",
+        "selectOptionFailed": "Silahkan pilih opsi produk terlebih dahulu"
     },
     "newsletter": {
         "title": "DAFTAR NEWSLETTER",

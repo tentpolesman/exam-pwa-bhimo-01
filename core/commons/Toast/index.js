@@ -23,9 +23,11 @@ const Toast = ({
 
     React.useEffect(() => {
         if (open) {
-            timerRef.current = setTimeout(() => {
-                setOpen();
-            }, autoHideDuration);
+            if (autoHideDuration && autoHideDuration > 0) {
+                timerRef.current = setTimeout(() => {
+                    setOpen();
+                }, autoHideDuration);
+            }
         }
 
         return () => {

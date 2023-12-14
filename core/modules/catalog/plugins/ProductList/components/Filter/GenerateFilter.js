@@ -261,6 +261,9 @@ const GenerateFilter = (props) => {
                                 value={selectedFilter[itemFilter.field]}
                                 onChange={(value) => selectFilter(itemFilter.field, value)}
                                 className="!mb-0"
+                                classNames={{
+                                    radioGroupClasses: 'gap-2',
+                                }}
                             />
                         ) : (
                             <RadioGroup
@@ -271,6 +274,9 @@ const GenerateFilter = (props) => {
                                 value={selectedFilter[itemFilter.field]}
                                 onChange={(value) => selectFilter(itemFilter.field, value)}
                                 className="!mb-0"
+                                classNames={{
+                                    radioGroupClasses: 'gap-2',
+                                }}
                             />
                         )
                     }
@@ -322,6 +328,9 @@ const GenerateFilter = (props) => {
                     value={selectedFilter[itemFilter.field]}
                     onChange={(value) => selectFilter(itemFilter.field, value)}
                     className="flex-row !mb-0"
+                    classNames={{
+                        radioGroupClasses: 'gap-2',
+                    }}
                 />
                 {
                     othersFilters.length > 0 && (

@@ -19,7 +19,6 @@ import ModalQuickView from '@plugin_productitem/components/QuickView';
 import WeltpixelLabel from '@plugin_productitem/components/WeltpixelLabel';
 import TagManager from 'react-gtm-module';
 import { priceVar } from '@root/core/services/graphql/cache';
-import Link from 'next/link';
 
 import ImageProductView from '@plugin_productitem/components/Image';
 import DetailProductView from '@plugin_productitem/components/Detail';
@@ -33,7 +32,9 @@ import CartIcon from '@heroicons/react/24/outline/ShoppingCartIcon';
 import HeartIcon from '@heroicons/react/24/outline/HeartIcon';
 import CompareIcon from '@heroicons/react/24/outline/ArrowsRightLeftIcon';
 import EyeIcon from '@heroicons/react/24/outline/EyeIcon';
-import EyeSolidIcon from '@heroicons/react/24/solid/EyeIcon';
+import EyeSolidIcon from '@heroicons/react/20/solid/EyeIcon';
+import Show from '@common/Show';
+import Badge from '@common/Badge';
 
 const ProductItem = (props) => {
     const {
@@ -452,15 +453,16 @@ const ProductItem = (props) => {
                             disabled={disabled}
                             onClick={handleAddToCart}
                             loading={loading}
+                            className="!py-0 w-full h-[38px] desktop:h-[40px] tablet:max-w-[116px] desktop:max-w-max justify-center"
                         >
                             <Typography color="white" className="font-normal text-sm">
                                 {t('common:button:addToCart')}
                             </Typography>
                         </Button>
                     )}
-                    {(showWishlist || showProductCompare) && (
+                    <Show when={showWishlist || enableProductCompare}>
                         <div className="flex-row gap-1 hidden tablet:flex desktop:flex">
-                            {showWishlist && (
+                            <Show when={showWishlist}>
                                 <Button
                                     iconOnly
                                     icon={<HeartIcon />}
@@ -472,8 +474,8 @@ const ProductItem = (props) => {
                                         'hover:!shadow-none focus:!shadow-none hover:!opacity-100',
                                     )}
                                 />
-                            )}
-                            {showProductCompare && (
+                            </Show>
+                            <Show when={enableProductCompare}>
                                 <Button
                                     iconOnly
                                     icon={<CompareIcon />}
@@ -485,9 +487,9 @@ const ProductItem = (props) => {
                                         'hover:!shadow-none focus:!shadow-none hover:!opacity-100',
                                     )}
                                 />
-                            )}
+                            </Show>
                         </div>
-                    )}
+                    </Show>
                 </div>
             </div>
         );
@@ -518,29 +520,34 @@ const ProductItem = (props) => {
                 <div
                     className={classNames(
                         'w-full inline-block h-full overflow-hidden relative cursor-pointer',
-                        'shadow rounded-lg p-2 lg:p-4',
+                        'shadow border border-neutral-100 rounded-lg p-2 lg:p-4',
                         'desktop:hover:shadow-lg',
+                        'min-w-[160px] tablet:max-w-[230px] desktop:min-w-[288px] desktop:max-w-full',
                         'flex',
                         'flex-col',
                         className,
                     )}
                     id="catalog-item-product"
                 >
-                    {!isOos && storeConfig?.pwa?.label_enable && LabelView ? (
-                        <LabelView t={t} {...other} isGrid={isGrid} spesificProduct={spesificProduct} />
-                    ) : null}
-                    {isOos && (
-                        <div className="absolute top-3 left-3 rounded z-[1] flex flex-row justify-between w-full p-4">
-                            <div className="bg-neutral-350 rounded-[4px] px-2 py-1">
-                                <Typography color="text-neutral-white" className="font-normal text-[12px]">
-                                    {stock_status.replace(/_/g, ' ')}
-                                </Typography>
-                            </div>
-                        </div>
-                    )}
                     <div className="w-full relative group overflow-hidden">
                         {!isOos && storeConfig?.pwa?.label_enable && storeConfig?.pwa?.label_weltpixel_enable && (
                             <WeltpixelLabel t={t} weltpixel_labels={weltpixel_labels} categoryLabel />
+                        )}
+
+                        {!isOos && storeConfig?.pwa?.label_enable && LabelView ? (
+                            <LabelView t={t} {...other} isGrid={isGrid} spesificProduct={spesificProduct} />
+                        ) : null}
+                        {isOos && (
+                            <div className={classNames(
+                                'absolute top-2 tablet:top-3 left-2 tablet:left-3 z-10',
+                            )}
+                            >
+                                <Badge
+                                    bold
+                                    label={stock_status.replace(/_/g, ' ')}
+                                    className="bg-neutral text-white !text-xs tablet:!text-sm"
+                                />
+                            </div>
                         )}
                         {showQuickView && (
                             <>
@@ -567,17 +574,22 @@ const ProductItem = (props) => {
                                     iconOnly
                                     icon={<EyeSolidIcon />}
                                     iconProps={{
-                                        className: 'w-3 h-3 !text-neutral-800',
+                                        className: classNames(
+                                            'w-[20px] !h-[20px] !text-neutral-800',
+                                            'absolute left-1/2 top-1/2 -translate-x-[50%] -translate-y-[50%]',
+                                        ),
                                     }}
+                                    classNameText="relative"
                                     className={classNames(
-                                        'desktop:hidden',
+                                        'desktop:hidden w-7 h-7',
                                         '!bg-neutral-50 shadow-md',
-                                        'absolute bottom-2 left-2 z-[2] !p-1 tablet:!p-2',
+                                        'absolute bottom-2 left-2 z-[2]',
+                                        '!p-[6px]',
                                     )}
                                 />
                             </>
                         )}
-                        {enableImage ? (
+                        <Show when={enableImage}>
                             <ImageProductView
                                 t={t}
                                 handleClick={() => handleClick(props)}
@@ -585,8 +597,9 @@ const ProductItem = (props) => {
                                 urlKey={url_key}
                                 {...other}
                                 {...imageProps}
+                                isGrid={isGrid}
                             />
-                        ) : null}
+                        </Show>
                     </div>
                     <div className="h-auto pt-4 relative flex flex-col gap-4 overflow-hidden flex-1 justify-between">
                         <DetailProductView
@@ -597,6 +610,7 @@ const ProductItem = (props) => {
                             {...other}
                             showShortDescription={showShortDescription}
                             Pricing={(enablePrice && !showOption) && generatePrice(priceData)}
+                            isGrid={isGrid}
                         />
                         {showOption ? (
                             <div className="hidden tablet:flex desktop:flex flex-col gap-2 tablet:gap-4">
@@ -658,143 +672,129 @@ const ProductItem = (props) => {
             )}
             <div
                 className={classNames(
-                    'w-full inline-block h-full overflow-hidden relative cursor-pointer',
-                    'shadow rounded-lg p-2 tablet:p-4',
-                    'min-h-[144px] tablet:min-h-max',
+                    'flex flex-row gap-2 tablet:gap-4',
+                    'w-full overflow-hidden relative cursor-pointer',
+                    'shadow  border border-neutral-100 rounded-lg p-2 tablet:p-4',
+                    'h-full min-h-[136px] tablet:min-h-max',
                     'desktop:hover:shadow-lg',
                     className,
                 )}
             >
-                <div className="flex flex-row gap-4 tablet:gap-6 start-xs">
-                    <div className="basis-auto">
-                        <div
-                            className="relative max-w-full group"
-                            style={{
-                                width: storeConfig?.pwa?.image_product_width,
-                                height: storeConfig?.pwa?.image_product_height,
-                            }}
-                        >
-                            {!isOos && storeConfig?.pwa?.label_enable && LabelView ? (
-                                <LabelView t={t} {...other} isGrid={isGrid} spesificProduct={spesificProduct} />
-                            ) : null}
-                            {!isOos && storeConfig?.pwa?.label_enable && storeConfig?.pwa?.label_weltpixel_enable && (
-                                <WeltpixelLabel t={t} weltpixel_labels={weltpixel_labels} categoryLabel />
-                            )}
-                            {isOos && (
-                                <div className="absolute top-3 left-3 rounded z-[1] flex flex-row justify-between w-full">
-                                    <div className="bg-neutral-350 rounded-[4px] px-2 py-1">
-                                        <Typography color="text-neutral-white" className="font-normal text-[12px]">
-                                            {stock_status.replace(/_/g, ' ')}
-                                        </Typography>
-                                    </div>
-                                </div>
-                            )}
-                            {showQuickView && (
-                                <>
-                                    <Button
-                                        onClick={handleQuickView}
-                                        icon={<EyeIcon />}
-                                        iconProps={{
-                                            className: 'w-3 h-3 !text-neutral-800 mr-[6px]',
-                                        }}
-                                        className={classNames(
-                                            '!bg-neutral-50 shadow-md invisible',
-                                            'desktop:group-hover:visible',
-                                            'absolute px-3 py-2',
-                                            'desktop:left-2 desktop:bottom-2 z-[2] desktop:w-32',
-                                        )}
-                                        size="sm"
-                                    >
-                                        <span className="text-sm !text-neutral-900 justify-center">
-                                            {t('catalog:title:quickView')}
-                                        </span>
-                                    </Button>
-                                    <Button
-                                        iconOnly
-                                        onClick={handleQuickView}
-                                        icon={<EyeSolidIcon />}
-                                        iconProps={{
-                                            className: 'w-3 h-3 !text-neutral-800',
-                                        }}
-                                        className={classNames(
-                                            'desktop:hidden',
-                                            '!bg-neutral-50 shadow-md',
-                                            'absolute bottom-2 left-2 z-[2] !p-1 tablet:!p-2',
-                                        )}
-                                    />
-                                </>
-                            )}
-                            {enableImage ? (
-                                <ImageProductView
-                                    t={t}
-                                    handleClick={() => handleClick(props)}
-                                    spesificProduct={spesificProduct}
-                                    urlKey={url_key}
-                                    {...other}
+                <div className="basis-auto h-full">
+                    <div
+                        className="relative max-w-full group h-max"
+                        style={{
+                            width: storeConfig?.pwa?.image_product_width,
+                            height: storeConfig?.pwa?.image_product_height,
+                        }}
+                    >
+                        {!isOos && storeConfig?.pwa?.label_enable && LabelView ? (
+                            <LabelView t={t} {...other} isGrid={isGrid} spesificProduct={spesificProduct} />
+                        ) : null}
+                        {!isOos && storeConfig?.pwa?.label_enable && storeConfig?.pwa?.label_weltpixel_enable && (
+                            <WeltpixelLabel t={t} weltpixel_labels={weltpixel_labels} categoryLabel />
+                        )}
+                        {isOos && (
+                            <div className="absolute top-2 tablet:top-3 left-2 tablet:left-3 z-10">
+                                <Badge
+                                    bold
+                                    label={stock_status.replace(/_/g, ' ')}
+                                    className="bg-neutral text-white !text-xs tablet:!text-sm"
+                                />
+                            </div>
+                        )}
+                        {showQuickView && (
+                            <>
+                                <Button
+                                    onClick={handleQuickView}
+                                    icon={<EyeIcon />}
+                                    iconProps={{
+                                        className: 'w-3 h-3 !text-neutral-800 mr-[6px]',
+                                    }}
                                     className={classNames(
-                                        '!w-[120px] !h-[120px]',
-                                        'tablet:!w-[320px] tablet:!h-[320px]',
-                                        'desktop:!w-[320px] desktop:!h-[320px] overflow-hidden',
+                                        '!bg-neutral-50 shadow-md invisible',
+                                        'desktop:group-hover:visible',
+                                        'absolute px-3 py-2',
+                                        'desktop:left-2 desktop:bottom-2 z-[2] desktop:w-32',
                                     )}
-                                    classContainer={classNames(
-                                        '!w-[120px] !h-[120px]',
-                                        'tablet:!w-[320px] tablet:!h-[320px]',
-                                        'desktop:!w-[320px] desktop:!h-[320px] overflow-hidden',
+                                    size="sm"
+                                >
+                                    <span className="text-sm !text-neutral-900 justify-center">
+                                        {t('catalog:title:quickView')}
+                                    </span>
+                                </Button>
+                                <Button
+                                    iconOnly
+                                    onClick={handleQuickView}
+                                    icon={<EyeSolidIcon />}
+                                    iconProps={{
+                                        className: classNames(
+                                            'w-[20px] !h-[20px] !text-neutral-800',
+                                            'absolute left-1/2 top-1/2 -translate-x-[50%] -translate-y-[50%]',
+                                        ),
+                                    }}
+                                    classNameText="relative"
+                                    className={classNames(
+                                        'desktop:hidden w-7 h-7',
+                                        '!bg-neutral-50 shadow-md',
+                                        'absolute bottom-2 left-2 z-[2]',
+                                        '!p-[6px]',
                                     )}
                                 />
-                            ) : null}
-                        </div>
-                    </div>
-                    <div className="basis-full">
-                        <div className="flex flex-col gap-4 start-xs h-full justify-between">
-                            <DetailProductView
+                            </>
+                        )}
+                        <Show when={enableImage}>
+                            <ImageProductView
                                 t={t}
-                                {...DetailProps}
-                                {...other}
-                                enableWishlist={false}
+                                handleClick={() => handleClick(props)}
+                                spesificProduct={spesificProduct}
                                 urlKey={url_key}
-                                showShortDescription={showShortDescription}
-                                Pricing={(enablePrice && !showOption) && generatePrice(priceData)}
+                                {...other}
+                                isGrid={isGrid}
                             />
-                            {showOption ? (
-                                <div className={classNames('hidden tablet:flex flex-col justify-between h-full gap-2 lg:gap-4')}>
-                                    <ConfigurableOpt
-                                        t={t}
-                                        data={{
-                                            ...other,
-                                            url_key,
-                                            review,
-                                        }}
-                                        dataPrice={getPrice()}
-                                        showQty={false}
-                                        catalogList={catalogList}
-                                        handleSelecteProduct={setSpesificProduct}
-                                        showAddToCart={showAddToCart}
-                                        labelAddToCart={t('common:button:addToCart')}
-                                        isGrid={isGrid}
-                                        {...other}
-                                        CustomFooter={<CustomerFooter />}
-                                        showWishlist={showWishlist}
-                                        enableProductCompare={showProductCompare}
-                                        enableBundle={false}
-                                        enableDownload={false}
-                                        isPlp
-                                    />
-                                </div>
-                            ) : null}
-                            <div className="flex tablet:hidden w-full">
-                                <Link
-                                    href="/[...slug]"
-                                    as={`/${url_key}`}
-                                    className="w-full"
-                                    onClick={() => handleClick(props)}
-                                    id="plugin-productTitle-typography"
-                                >
-                                    <Button variant="primary" className="w-full text-" classNameText="justify-center text-[0.75rem]">
-                                        {t('common:button:addToCart')}
-                                    </Button>
-                                </Link>
+                        </Show>
+                    </div>
+                </div>
+                <div className="basis-full h-full">
+                    <div className="flex flex-col gap-4 start-xs h-full justify-between">
+                        <DetailProductView
+                            t={t}
+                            {...DetailProps}
+                            {...other}
+                            enableWishlist={false}
+                            urlKey={url_key}
+                            showShortDescription
+                            Pricing={(enablePrice && !showOption) && generatePrice(priceData)}
+                            isGrid={isGrid}
+                        />
+                        {showOption ? (
+                            <div className={classNames('hidden tablet:flex flex-col justify-between h-full gap-2 lg:gap-4')}>
+                                <ConfigurableOpt
+                                    t={t}
+                                    data={{
+                                        ...other,
+                                        url_key,
+                                        review,
+                                    }}
+                                    dataPrice={getPrice()}
+                                    showQty={false}
+                                    catalogList={catalogList}
+                                    handleSelecteProduct={setSpesificProduct}
+                                    showAddToCart={showAddToCart}
+                                    labelAddToCart={t('common:button:addToCart')}
+                                    isGrid={isGrid}
+                                    {...other}
+                                    CustomFooter={<CustomerFooter />}
+                                    showWishlist={showWishlist}
+                                    enableProductCompare={showProductCompare}
+                                    enableBundle={false}
+                                    enableDownload={false}
+                                    isPlp
+                                />
                             </div>
+                        ) : null}
+                        <div className="flex tablet:hidden">
+                            {generatePrice(priceData)}
                         </div>
                     </div>
                 </div>

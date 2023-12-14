@@ -8,19 +8,17 @@ const WithLink = (props) => {
 
     return (
         <BadgeCounter value={cartData}>
-            <button type="button">
-                <ShoppingCartIcon
-                    className={cx(
-                        'mobile:max-tablet:w-[20px]',
-                        'tablet:w-[24px]',
-                        'text-neutral-600',
-                        'mobile:max-tablet:mt-4',
-                        'tablet:mt-3',
-                        'hover:cursor-pointer',
-                    )}
-                    onClick={handleLink}
-                />
-            </button>
+            <ShoppingCartIcon
+                className={cx(
+                    'mobile:max-tablet:w-[20px]',
+                    'tablet:w-[24px]',
+                    'text-neutral-600',
+                    'mobile:max-tablet:mt-4',
+                    'tablet:mt-3',
+                    'hover:cursor-pointer',
+                )}
+                onClick={handleLink}
+            />
         </BadgeCounter>
     );
 };

@@ -1,7 +1,9 @@
+import React from 'react';
 import Accordion from '@common/Accordion';
 import cx from 'classnames';
 import GenerateFilter from '@core_modules/catalog/plugins/ProductList/components/Filter/GenerateFilter';
 import Button from '@common_button';
+import Divider from '@common_divider';
 
 const FilterView = (props) => {
     const {
@@ -11,7 +13,7 @@ const FilterView = (props) => {
 
     return (
         <div className={cx(
-            'flex flex-col gap-8 w-full relative desktop:max-w-[280px] overflow-y-scroll overflow-x-hidden scrollbar-none pb-[50%]',
+            'flex flex-col gap-5 w-full relative desktop:max-w-[280px] overflow-y-scroll overflow-x-hidden scrollbar-none pb-[50%]',
             scrollContent ? ' max-h-screen' : 'h-full',
         )}
         >
@@ -24,13 +26,21 @@ const FilterView = (props) => {
                         return null;
                     }
                     return (
-                        <Accordion label={itemFilter.label ? itemFilter.label.replace(/_/g, ' ') : ''} open key={key}>
-                            <GenerateFilter
-                                itemFilter={itemFilter}
-                                idx={key}
-                                {...props}
-                            />
-                        </Accordion>
+                        <React.Fragment
+                            key={key}
+                        >
+                            <Accordion
+                                label={itemFilter.label ? itemFilter.label.replace(/_/g, ' ') : ''}
+                                open
+                            >
+                                <GenerateFilter
+                                    itemFilter={itemFilter}
+                                    idx={key}
+                                    {...props}
+                                />
+                            </Accordion>
+                            <Divider />
+                        </React.Fragment>
                     );
                 })
             }

@@ -40,8 +40,8 @@ const Badge = ({
                     'px-[8px]',
                     'py-[4px]',
                     bold && 'font-bold',
-                    className,
                     classNamesColor,
+                    className,
                 )
             }
         >
