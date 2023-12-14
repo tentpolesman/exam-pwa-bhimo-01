@@ -545,7 +545,7 @@ const ProductItem = (props) => {
                                 <Badge
                                     bold
                                     label={stock_status.replace(/_/g, ' ')}
-                                    className="bg-neutral text-white !text-xs tablet:!text-sm"
+                                    className="!bg-neutral text-white !text-xs tablet:!text-sm"
                                 />
                             </div>
                         )}
@@ -601,7 +601,7 @@ const ProductItem = (props) => {
                             />
                         </Show>
                     </div>
-                    <div className="h-auto pt-4 relative flex flex-col gap-4 overflow-hidden flex-1 justify-between">
+                    <div className="pt-4 relative flex flex-col gap-4 flex-1">
                         <DetailProductView
                             t={t}
                             urlKey={url_key}
@@ -613,7 +613,7 @@ const ProductItem = (props) => {
                             isGrid={isGrid}
                         />
                         {showOption ? (
-                            <div className="hidden tablet:flex desktop:flex flex-col gap-2 tablet:gap-4">
+                            <div className="hidden tablet:flex desktop:flex flex-col gap-2 tablet:gap-4 h-full justify-between">
                                 <ConfigurableOpt
                                     t={t}
                                     data={{
@@ -699,7 +699,7 @@ const ProductItem = (props) => {
                                 <Badge
                                     bold
                                     label={stock_status.replace(/_/g, ' ')}
-                                    className="bg-neutral text-white !text-xs tablet:!text-sm"
+                                    className="!bg-neutral text-white !text-xs tablet:!text-sm"
                                 />
                             </div>
                         )}

@@ -69,8 +69,8 @@ const Detail = (props) => {
                     </Typography>
                 </Link>
             </Show>
-            <Show when={showShortDescription && shortDescription}>
-                <div className="hidden tablet:flex line-clamp-2 text-md text-neutral-500 leading-5">
+            <Show when={showShortDescription && shortDescription && !isGrid}>
+                <div className="hidden tablet:flex !line-clamp-2 text-md text-neutral-500 leading-5">
                     <CmsRenderer content={shortDescription} />
                 </div>
             </Show>
