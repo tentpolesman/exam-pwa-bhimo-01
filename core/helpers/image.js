@@ -7,7 +7,7 @@ export const generateThumborUrl = (
     enable,
     useHttpsOrHttp,
     thumborUrl,
-    quality = 100,
+    quality = 80,
     endpoint,
     blur,
     format = 'webp',
