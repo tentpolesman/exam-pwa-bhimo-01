@@ -641,6 +641,7 @@ const ProductItem = (props) => {
                                     enableProductCompare={showProductCompare}
                                     enableBundle={false}
                                     enableDownload={false}
+                                    isPlp
                                 />
                             </div>
                         ) : null}
@@ -785,9 +786,10 @@ const ProductItem = (props) => {
                                     {...other}
                                     CustomFooter={<CustomerFooter />}
                                     showWishlist={showWishlist}
-                                    enableProductCompare={enableProductCompare}
+                                    enableProductCompare={showProductCompare}
                                     enableBundle={false}
                                     enableDownload={false}
+                                    isPlp
                                 />
                             </div>
                         ) : null}
