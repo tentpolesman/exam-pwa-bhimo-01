@@ -22,21 +22,17 @@ const MagezonIcon = (props) => {
 
     return (
         <div className={classnames(classIcon, sizeClasses)}>
-            <div className="wrapperIcon">
-                <MagezonLink link={customUrl} link_target={link_target}>
-                    <div className="magezon-icon-inner">
-                        <i className={iconRes} />
-                    </div>
-                </MagezonLink>
-            </div>
+            {/* <div className="wrapperIcon"> */}
+            <MagezonLink link={customUrl} link_target={link_target}>
+                <div className="magezon-icon-inner">
+                    <i className={iconRes} />
+                </div>
+            </MagezonLink>
+            {/* </div> */}
             <style jsx>
                 {`
                     .magezon-icon :global(i) {
-                        position: absolute;
                         color: ${icon_color || 'var(--color-pwa-button_text_color)'};
-                        transform: translate(-50%, -50%);
-                        top: 50%;
-                        left: 50%;
                     }
                     .magezon-icon :global(.magezon-icon-inner) {
                         position: relative;
@@ -68,11 +64,11 @@ const MagezonIcon = (props) => {
                         font-size: 1.6em;
                     }
                     .magezon-icon-size-md :global(.magezon-icon-inner) {
-                        width: 4em;
-                        height: 4em;
+                        width: 1.5rem;
+                        height: 1.5rem;
                     }
                     .magezon-icon-size-md :global(i) {
-                        font-size: 2.15em;
+                        font-size: 1.5rem;
                     }
                     .magezon-icon-size-lg :global(.magezon-icon-inner) {
                         width: 5em;

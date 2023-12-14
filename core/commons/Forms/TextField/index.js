@@ -1,8 +1,8 @@
-import Typography from '@common_typography';
 import Show from '@common_show';
-import propTypes from 'prop-types';
-import cx from 'classnames';
+import Typography from '@common_typography';
 import { CheckCircleIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline';
+import cx from 'classnames';
+import propTypes from 'prop-types';
 import { useState } from 'react';
 
 const TextField = React.forwardRef((props, ref) => {
@@ -13,6 +13,7 @@ const TextField = React.forwardRef((props, ref) => {
         disabled = false,
         onChange = () => {},
         value = '',
+        name = '',
         className = '',
         label = '',
         hintProps = {},
@@ -91,7 +92,7 @@ const TextField = React.forwardRef((props, ref) => {
                     {
                         '!border-primary': isFocus && !hintType,
                         '!bg-neutral-50 border-none placeholder:!text-neutral-100': disabled,
-                        '!border-red hover:!border-red focus:shadow-red-200': hintType === 'error',
+                        '!border-red hover:!border-red focus:shadow-red-200': displayHintText && hintType === 'error',
                         '!border-green hover:!border-green focus:shadow-green-100': hintType === 'success',
                     },
                     className,
@@ -125,6 +126,7 @@ const TextField = React.forwardRef((props, ref) => {
                             onBlur();
                         }}
                         value={value}
+                        name={name}
                         onChange={onChange}
                         className={cx(
                             'pr-4',
@@ -170,6 +172,7 @@ const TextField = React.forwardRef((props, ref) => {
                             onBlur();
                         }}
                         value={value}
+                        name={name}
                         onChange={onChange}
                         className={cx(
                             'pr-4',

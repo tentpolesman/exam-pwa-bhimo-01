@@ -1,11 +1,11 @@
 /* eslint-disable max-len */
 /* eslint-disable react/no-unknown-property */
-import React from 'react';
 import generateCustomCssAnimation from '@core_modules/cms/helpers/magezonCustomCssAnimationGenerator';
-import dynamic from 'next/dynamic';
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import 'open-iconic/font/css/open-iconic-bootstrap.css';
 import 'animate.css';
+import dynamic from 'next/dynamic';
+import 'open-iconic/font/css/open-iconic-bootstrap.css';
+import React from 'react';
 
 const MagezonSlider = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonSlider'), { ssr: false });
 const MagezonCaraousel = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonCaraousel'), { ssr: false });
