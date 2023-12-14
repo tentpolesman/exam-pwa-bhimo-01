@@ -9,6 +9,7 @@ const Newsletter = dynamic(() => import('@plugin_newsletter'));
 const WidgetListProduct = dynamic(() => import('@core_modules/cms/components/cms-renderer/widget-list-product'));
 const WidgetListBrand = dynamic(() => import('@core_modules/cms/components/cms-renderer/widget-list-brand'));
 const WidgetPwaLink = dynamic(() => import('@core_modules/cms/components/cms-renderer/widget-link-pwa'));
+const LinkRenderer = dynamic(() => import('@core_modules/cms/components/cms-renderer/LinkRenderer'));
 
 const TYPE_PWA_SLIDER = 'pwa-slider';
 const TYPE_PWA_FEATURED = 'pwa-featured-brands';
@@ -78,6 +79,9 @@ const WidgetRenderer = (props) => {
             replace: (domNode) => {
                 if (domNode.name === 'img') {
                     return <ImageRenderer storeConfig={storeConfig} domNode={domNode} />;
+                }
+                if (domNode.name === 'a' && domNode.attribs?.href) {
+                    return <LinkRenderer domNode={domNode} />
                 }
 
                 if (domNode.name === DOM_NAME && domNode.attribs) {

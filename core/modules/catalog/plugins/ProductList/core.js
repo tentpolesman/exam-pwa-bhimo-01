@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import propTypes from 'prop-types';
 import { useRouter } from 'next/router';
 import getQueryFromPath from '@helper_generatequery';
@@ -181,7 +181,9 @@ const ProductList = (props) => {
 
     const context = (isLogin && isLogin === 1) || (config.sort && config.sort.key === 'random') ? { request: 'internal' } : {};
 
-    const { loading, data, fetchMore } = getProduct(
+    const {
+        loading, data, fetchMore, error: errorGetProduct,
+    } = getProduct(
         config,
         {
             variables: {
@@ -370,6 +372,17 @@ const ProductList = (props) => {
         }
     }, [data]);
 
+    useEffect(() => {
+        if (errorGetProduct || errorPrice) {
+            setLoadmore(false);
+            window.toastMessage({
+                variant: 'error',
+                text: t('catalog:emptyProductSearchResult'),
+                open: true,
+            });
+        }
+    }, [errorGetProduct, errorPrice]);
+
     const contentProps = {
         loadmore,
         loading,
@@ -392,6 +405,7 @@ const ProductList = (props) => {
         handleChangePage,
         isPagination,
         handleLoadMore,
+        errorGetProduct,
     };
     return (
         <Content

@@ -42,6 +42,7 @@ const AwGiftCardProduct = (props) => {
         showAddToCart = true,
         formik,
         storeConfig,
+        CustomFooter,
         ...other
     } = props;
     const [open, setOpen] = useState(false);
@@ -298,17 +299,33 @@ const AwGiftCardProduct = (props) => {
                     )}
                 </form>
             </div>
-            <OptionAction
-                loading={loading}
-                disabled={disabled}
-                showQty={showQty}
-                handleAddToCart={handleAddToCart}
-                qty={qty}
-                setQty={setQty}
-                t={t}
-                showAddToCart={showAddToCart}
-                {...other}
-            />
+            {
+                React.isValidElement(CustomFooter)
+                    ? React.cloneElement(CustomFooter, {
+                        ...other,
+                        loading,
+                        disabled,
+                        showQty,
+                        handleAddToCart,
+                        qty,
+                        setQty,
+                        t,
+                        showAddToCart,
+                    })
+                    : (
+                        <OptionAction
+                            loading={loading}
+                            disabled={disabled}
+                            showQty={showQty}
+                            handleAddToCart={handleAddToCart}
+                            qty={qty}
+                            setQty={setQty}
+                            t={t}
+                            showAddToCart={showAddToCart}
+                            {...other}
+                        />
+                    )
+            }
             <Dialog open={open} onClose={handleCloseDialog} fullWidth>
                 <DialogTitle classes={{ root: styles.root }} onClose={handleCloseDialog}>
                     <IconButton onClick={handleCloseDialog}>

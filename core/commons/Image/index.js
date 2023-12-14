@@ -208,7 +208,7 @@ const CustomImage = ({
                     data-pagespeed-no-defer={!lazy}
                     style={styleImage}
                     className={cx('img', className)}
-                    src={getImageFallbackUrl(imgSource)}
+                    src={imgSource}
                     alt={alt}
                     // width={width !== 0 && desktop ? width : widthMobile}
                     // height={height !== 0 && desktop ? height : heightMobile}

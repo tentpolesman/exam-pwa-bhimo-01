@@ -5,26 +5,45 @@ const OptionAction = dynamic(() => import('@core_modules/product/plugins/OptionI
 
 const SimpleOptionView = ({
     qty = 1,
-    setQty = () => { },
-    handleAddToCart = () => { },
+    setQty = () => {},
+    handleAddToCart = () => {},
     t,
     loading = false,
     disabled = false,
     showQty = true,
     showAddToCart = true,
+    CustomFooter,
     ...other
 }) => (
-    <OptionAction
-        loading={loading}
-        disabled={disabled}
-        showQty={showQty}
-        handleAddToCart={handleAddToCart}
-        qty={qty}
-        setQty={setQty}
-        t={t}
-        showAddToCart={showAddToCart}
-        {...other}
-    />
+    <>
+        <div />
+        {React.isValidElement(CustomFooter)
+            ? React.cloneElement(CustomFooter, {
+                ...other,
+                loading,
+                disabled,
+                showQty,
+                handleAddToCart,
+                qty,
+                setQty,
+                t,
+                showAddToCart,
+            })
+            : (
+
+                <OptionAction
+                    loading={loading}
+                    disabled={disabled}
+                    showQty={showQty}
+                    handleAddToCart={handleAddToCart}
+                    qty={qty}
+                    setQty={setQty}
+                    t={t}
+                    showAddToCart={showAddToCart}
+                    {...other}
+                />
+            )}
+    </>
 );
 
 export default SimpleOptionView;

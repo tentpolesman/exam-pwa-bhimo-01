@@ -71,16 +71,16 @@ const Sorting = (props) => {
             options={sortByData}
             onChange={handleChange}
             placeholder={t('catalog:title:short')}
-            className="h-[36px]"
+            className="h-[38px]"
             value={shortingValue && shortingValue.length > 0 ? shortingValue[0].label : ''}
             textFiledProps={{
-                className: 'h-[36px] !w-[auto] ml-2 mt-0',
+                className: 'h-[38px] !border-neutral-200 tablet:h-auto !w-[auto] ml-2 tablet:-mt-[1px]',
                 rightIconProps: {
-                    className: '!text-neutral',
+                    className: '!text-neutral-600',
                 },
             }}
             inputProps={{
-                className: 'h-[34px] placeholder:!text-neutral',
+                className: 'h-[34px] !font-semibold placeholder:!text-neutral placeholder:!font-semibold',
             }}
         />
     );

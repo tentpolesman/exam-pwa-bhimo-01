@@ -26,7 +26,7 @@ const ButtonActionQty = ({
                 'gap-[24px]',
                 'duration-500',
                 'hover:bg-neutral-50 hover:text-primary-300',
-                disabled && 'text-neutral-150',
+                disabled && 'text-neutral-300 hover:text-neutral-300 cursor-default',
                 className,
             )
         }
@@ -106,6 +106,7 @@ const ButtonQty = ({
                 'rounded-[8px]',
                 'gap-[7px]',
                 'p-[4px]',
+                disabled && 'border-neutral-200',
             )}
         >
 
@@ -125,9 +126,11 @@ const ButtonQty = ({
                         'btn-qty-input',
                         'text-center',
                         '!font-pwa-default',
+                        'bg-neutral-white focus:outline-none',
                         'h-[100%]',
                         'w-[100%]',
                         '[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none',
+                        'disabled:text-neutral-300',
                         classNameInput,
                     )
                 }
