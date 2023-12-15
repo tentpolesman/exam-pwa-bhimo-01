@@ -51,7 +51,7 @@ const Product = (props) => {
         enablePrice: product_price,
         enableRating: product_review,
         enableProductName: product_name,
-        className: cx({
+        className: cx('min-w-[145px] tablet:min-w-[190px] desktop:min-w-[273px]', {
             'desktop:carousel-item flex-shrink-0': !isSingleProduct,
             'basis-[145px] tablet:basis-[190px] desktop:basis-[273px]': !isProductGrid && !isSingleProduct,
             '[&:not(:last-child)]:mb-4': isProductList,
@@ -134,6 +134,7 @@ const Product = (props) => {
                 isGrid={false}
                 {...product}
                 {...productProps}
+                preload={index === 0}
             />
         ));
     }
@@ -148,6 +149,7 @@ const Product = (props) => {
                             key={index}
                             {...product}
                             {...productProps}
+                            preload={index === 0}
                         />
                     </div>
                 ))}
@@ -213,6 +215,7 @@ const Product = (props) => {
                         key={index}
                         {...product}
                         {...productProps}
+                        preload={index === 0}
                     />
                 ))}
             </ContainerScroll>

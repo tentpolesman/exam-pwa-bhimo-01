@@ -249,6 +249,7 @@ const MagezonSliderContent = (props) => {
                                 useContainer={false}
                                 storeConfig={storeConfig}
                                 lazy={lazy}
+                                preload={!lazy}
                                 className="flex w-full h-full"
                             />
                         ) : (
@@ -261,6 +262,7 @@ const MagezonSliderContent = (props) => {
                                     useContainer={false}
                                     storeConfig={storeConfig}
                                     lazy={lazy}
+                                    preload={!lazy}
                                     className="flex w-full h-full"
                                 />
                             </MagezonLink>
@@ -529,10 +531,10 @@ const MagezonSlider = (props) => {
                     {items.map((item, id) => (
                         <div
                             key={id}
-                            className={cx('magezon-slider--dot-nav-item', 'cursor-pointer', 'rounded-full', 'shadow-base', {
+                            className={cx('magezon-slider--dot-nav-item', 'cursor-pointer', 'rounded-full', 'shadow-base', 'w-3', 'h-3', 'mx-[6px]', {
                                 'magezon-slider--dot-nav-item-active': slideIdx === id,
-                                'w-[10px] h-[10px] m-[5px] bg-primary-100 border-2 border-pwa-primary': slideIdx === id,
-                                'w-[8px] h-[8px] m-[5px] bg-neutral-white': slideIdx !== id,
+                                'bg-primary-100 !shadow-[0_0_0_3px] !shadow-primary': slideIdx === id,
+                                'bg-neutral-white': slideIdx !== id,
                             })}
                             onClick={() => sliderRef.slickGoTo(id)}
                         />
@@ -604,7 +606,10 @@ const MagezonSlider = (props) => {
                         display: flex;
                         align-items: center;
                         justify-content: center;
-                        transition: opacity 0.3s ease-in-out, background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+                        transition:
+                            opacity 0.3s ease-in-out,
+                            background-color 0.3s ease-in-out,
+                            color 0.3s ease-in-out;
                     }
                     .magezon-slider--button-nav-item :global(svg) {
                         color: ${owl_color};

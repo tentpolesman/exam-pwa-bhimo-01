@@ -55,6 +55,7 @@ const ProductItem = (props) => {
         imageProps = {},
         enableProductCompare = true,
         enableShortDescription = true,
+        preload,
         ...other
     } = props;
     const {
@@ -598,6 +599,7 @@ const ProductItem = (props) => {
                                 {...other}
                                 {...imageProps}
                                 isGrid={isGrid}
+                                preload={preload}
                             />
                         </Show>
                     </div>
@@ -751,6 +753,7 @@ const ProductItem = (props) => {
                                 urlKey={url_key}
                                 {...other}
                                 isGrid={isGrid}
+                                preload={preload}
                             />
                         </Show>
                     </div>
