@@ -1,6 +1,6 @@
+import CmsRenderer from '@core_modules/cms/components/cms-renderer';
 import Alert from '@material-ui/lab/Alert';
 import { MAX_WIDTH } from '@theme_vars';
-import WidgetRenderer from '@core_modules/cms/components/cms-renderer/WidgetRenderer';
 import { useEffect, useRef, useState } from 'react';
 
 const FooterView = (props) => {
@@ -34,21 +34,30 @@ const FooterView = (props) => {
 
     return (
         <div className="cms-container wrapper-footer" ref={footerRef}>
-            {!loading && display
-                ? <WidgetRenderer content={data.cmsBlocks.items[0].content} storeConfig={storeConfig} />
-                : null}
+            {!loading && display ? <CmsRenderer content={data.cmsBlocks.items[0].content} storeConfig={storeConfig} /> : null}
             <style jsx global>
                 {`
                     .wrapper-footer {
                         background-color: #fff;
-                        padding : 0;
+                        padding: 0;
                         margin-top: 40px;
+                    }
+                    @media screen and (max-width: 767px) {
+                        .wrapper-footer #footer-bottom {
+                            padding-top: 48px;
+                            padding-left: 16px;
+                            padding-bottom: 48px;
+                            padding-right: 16px;
+                        }
+                        .wrapper-footer #footer-bottom .footer-subtitle p {
+                            padding-top: 32px !important;
+                        }
                     }
                     .container-footer {
                         display: flex;
                         margin-top: 40px;
-                        max-width : ${MAX_WIDTH};
-                        margin : 0 auto;
+                        max-width: ${MAX_WIDTH};
+                        margin: 0 auto;
                     }
                     .container-footer * {
                         letter-spacing: 0.03em;
@@ -70,10 +79,13 @@ const FooterView = (props) => {
                     }
 
                     body:not(.device-touch) .social-icons {
-                        transition: all .3s ease;
+                        transition: all 0.3s ease;
                     }
 
-                    a.social-icons, a.social-icons:active, a.social-icons:visited, a.social-icons:hover {
+                    a.social-icons,
+                    a.social-icons:active,
+                    a.social-icons:visited,
+                    a.social-icons:hover {
                         text-decoration: none;
                     }
 
@@ -109,9 +121,9 @@ const FooterView = (props) => {
                     }
 
                     body:not(.device-touch) .social-icons i {
-                        -webkit-transition: all .3s ease;
-                        -o-transition: all .3s ease;
-                        transition: all .3s ease;
+                        -webkit-transition: all 0.3s ease;
+                        -o-transition: all 0.3s ease;
+                        transition: all 0.3s ease;
                     }
 
                     .social-icons i {
@@ -128,36 +140,42 @@ const FooterView = (props) => {
                         margin-top: 10px;
                     }
 
-                    .si-facebook:hover, .si-colored.si-facebook {
+                    .si-facebook:hover,
+                    .si-colored.si-facebook {
                         background-color: #3b5998 !important;
                     }
 
-                    .si-twitter:hover, .si-colored.si-twitter {
+                    .si-twitter:hover,
+                    .si-colored.si-twitter {
                         background-color: #00acee !important;
                     }
 
-                    .si-linkedin:hover, .si-colored.si-linkedin {
+                    .si-linkedin:hover,
+                    .si-colored.si-linkedin {
                         background-color: #0e76a8 !important;
                     }
 
-                    .si-instagram:hover, .si-colored.si-instagram {
+                    .si-instagram:hover,
+                    .si-colored.si-instagram {
                         background-color: #3f729b !important;
                     }
 
-                    .si-pinterest:hover, .si-colored.si-pinterest {
+                    .si-pinterest:hover,
+                    .si-colored.si-pinterest {
                         background-color: #c8232c !important;
                     }
 
-                    .si-youtube:hover, .si-colored.si-youtube {
+                    .si-youtube:hover,
+                    .si-colored.si-youtube {
                         background-color: #c4302b !important;
                     }
 
-                    .si-vimeo:hover, .si-colored.si-vimeo {
+                    .si-vimeo:hover,
+                    .si-colored.si-vimeo {
                         background-color: #86c9ef !important;
                     }
 
                     .social-icons i:last-child {
-                        
                         color: #fff;
                     }
 
@@ -234,7 +252,7 @@ const FooterView = (props) => {
                         margin-top: 10px;
                         float: right;
                     }
-                    
+
                     .footer-v1-content .border-v1 .social-icons-v1 .social-icons {
                         margin: 0;
                     }
@@ -245,7 +263,7 @@ const FooterView = (props) => {
                         }
 
                         .footer-v1 .footer-title:after {
-                            content: "";
+                            content: '';
                             width: 40%;
                             height: 1px;
                             display: block;
@@ -262,8 +280,6 @@ const FooterView = (props) => {
                         }
                     }
 
-                
-
                     .footer-v2 {
                         max-width: 100%;
                         margin: 0 auto;
@@ -279,7 +295,7 @@ const FooterView = (props) => {
                         font-size: 12px;
                         line-height: 2em;
                         text-transform: uppercase;
-                        letter-spacing: .2em;
+                        letter-spacing: 0.2em;
                         font-weight: 400;
                         padding: 10px;
                     }
@@ -299,7 +315,7 @@ const FooterView = (props) => {
                         font-size: 12px;
                         line-height: 2em;
                         text-transform: uppercase;
-                        letter-spacing: .2em;
+                        letter-spacing: 0.2em;
                         font-weight: 400;
                         padding: 10px;
                         cursor: pointer;
@@ -317,7 +333,7 @@ const FooterView = (props) => {
                         -ms-user-select: none;
                         user-select: none;
                     }
-                    
+
                     .footer-v2 .accordionTitle + .accordionContent {
                         display: none;
                         opacity: 0;
@@ -325,7 +341,7 @@ const FooterView = (props) => {
                         height: 0;
                         overflow: hidden;
                     }
-                    
+
                     .footer-v2 .accordionTitle.is-open + .accordionContent {
                         display: block;
                         opacity: 1;
@@ -400,8 +416,7 @@ const FooterView = (props) => {
                         }
                     }
 
-
-                    .w  {
+                    .w {
                         background: #232323;
                         color: #ccc;
                         float: left;
@@ -462,7 +477,7 @@ const FooterView = (props) => {
                         list-style: none none;
                     }
 
-                    .footer-v3 ul>li {
+                    .footer-v3 ul > li {
                         margin: 0;
                     }
 
@@ -470,8 +485,10 @@ const FooterView = (props) => {
                         padding: 0;
                     }
 
-                    .w ul li a, .w ul li a:visited, .w ul li a:hover {
-                        color: #ccc!important;
+                    .w ul li a,
+                    .w ul li a:visited,
+                    .w ul li a:hover {
+                        color: #ccc !important;
                     }
 
                     .footer-v3 .newsletter-subscribe .newsletter-container {
@@ -492,7 +509,7 @@ const FooterView = (props) => {
                         background-color: #232323;
                         border: #fff 1px solid;
                         border-radius: 1px;
-                        transition-duration: .3s;
+                        transition-duration: 0.3s;
                         transition-property: background-color;
                         letter-spacing: 0px;
                     }
@@ -593,7 +610,7 @@ const FooterView = (props) => {
                         background-color: #232323;
                         border: #fff 1px solid;
                         border-radius: 1px;
-                        transition-duration: .3s;
+                        transition-duration: 0.3s;
                         transition-property: background-color;
                         letter-spacing: 0px;
                     }
@@ -620,7 +637,7 @@ const FooterView = (props) => {
                         margin-bottom: 5px;
                     }
 
-                    .footer-v5 ul>li {
+                    .footer-v5 ul > li {
                         margin-bottom: 5px;
                     }
 
@@ -648,7 +665,7 @@ const FooterView = (props) => {
                     }
 
                     .footer-v5 .white-lnk {
-                        color: #ccc!important;
+                        color: #ccc !important;
                     }
 
                     .footer-v5 a:hover {
@@ -658,8 +675,8 @@ const FooterView = (props) => {
                     }
 
                     .footer-v5 .underline {
-                        text-decoration: underline!important;
-                        color: #cccccc!important;
+                        text-decoration: underline !important;
+                        color: #cccccc !important;
                     }
 
                     .footer-v5 .underline:hover {
@@ -726,7 +743,7 @@ const FooterView = (props) => {
                         }
 
                         .footer-v5 .accordionTitle:after {
-                            content: "+";
+                            content: '+';
                             font-size: 1rem;
                             position: absolute;
                             right: 0;
@@ -739,7 +756,7 @@ const FooterView = (props) => {
                         }
 
                         .footer-v5 .accordionTitle.is-open:after {
-                            content: "-";
+                            content: '-';
                         }
 
                         .footer-v5 .accordionTitle {
@@ -749,11 +766,11 @@ const FooterView = (props) => {
                             -ms-user-select: none;
                             user-select: none;
                         }
-                        
+
                         .footer-v5 .accordionTitle + .accordionContent {
                             display: none;
                         }
-                        
+
                         .footer-v5 .accordionTitle.is-open + .accordionContent {
                             display: block;
                         }
@@ -791,7 +808,6 @@ const FooterView = (props) => {
                             margin: 0 auto;
                         }
                     }
-
                 `}
             </style>
         </div>
