@@ -10,6 +10,7 @@ import BannerView from '@common_image';
 import { MAX_WIDTH } from '@theme_vars';
 import Typography from '@common/Typography';
 import cx from 'classnames';
+import Show from '@common/Show';
 
 // sementara di comment dlu, untuk custom filter memakai aggregations product
 // import { getFilter } from '../../../services/graphql';
@@ -136,9 +137,14 @@ const CategoryPage = ({
                     {dataCategory.banner.length > 0 && dataCategory.banner[0] && dataCategory.banner[0]?.description && (
                         <CmsRenderer content={dataCategory.banner[0].description} storeConfig={storeConfig} />
                     )}
-                    {categoryList.cms_block && categoryList.cms_block.content && (
+                    <Show when={
+                        categoryList
+                        && (categoryList.display_mode === 'PRODUCTS_AND_PAGE' || categoryList.display_mode === 'PAGE')
+                        && categoryList.cms_block
+                    }
+                    >
                         <CmsRenderer content={categoryList?.cms_block?.content} storeConfig={storeConfig} />
-                    )}
+                    </Show>
                 </div>
 
                 {

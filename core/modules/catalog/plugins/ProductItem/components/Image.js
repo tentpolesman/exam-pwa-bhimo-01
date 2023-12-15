@@ -10,7 +10,7 @@ import cx from 'classnames';
 const ImageDetail = (props) => {
     const {
         handleClick, small_image, spesificProduct, urlKey, name, storeConfig = {},
-        classContainer = '', className = '', isGrid,
+        classContainer = '', className = '', isGrid, preloadImage = false,
     } = props;
 
     let defaultWidth = storeConfig?.pwa?.image_product_width;
@@ -62,6 +62,7 @@ const ImageDetail = (props) => {
                     alt={small_image && small_image.url ? small_image.label : name}
                     storeConfig={storeConfig}
                     lazy
+                    preload={preloadImage}
                 />
 
             </Link>

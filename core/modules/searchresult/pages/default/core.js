@@ -3,10 +3,11 @@ import { useRouter } from 'next/router';
 import getQueryFromPath from '@helper_generatequery';
 import { getHost } from '@helper_config';
 import PropTypes from 'prop-types';
+import Content from '@core_modules/searchresult/components';
 
 const SearchResult = (props) => {
     const router = useRouter();
-    const { storeConfig, Content } = props;
+    const { storeConfig } = props;
     const { query } = getQueryFromPath(router);
     const schemaOrg = [
         {

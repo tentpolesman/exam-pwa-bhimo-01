@@ -26,7 +26,7 @@ const ViewProductList = (props) => {
         loading, loadmore, products, categoryPath, price, loadPrice,
         handleLoadMore, isPagination, renderEmptyMessage,
         customFilter, aggregations, defaultSort, query, setFiltervalue,
-        config, onChangeCategory, dataTabs, onChangeTabs,
+        config, onChangeCategory, dataTabs, onChangeTabs, page,
         ...other
     } = props;
 
@@ -84,6 +84,8 @@ const ViewProductList = (props) => {
 
     const loadList = isPagination ? (loadmore || loading) : loading;
 
+    const checkEmpty = products.items.length === 0;
+
     return (
         <div className="flex flex-row gap-4 desktop:gap-6 w-full">
             <DrawerFilter
@@ -122,104 +124,103 @@ const ViewProductList = (props) => {
                     />
                 </div>
             </DrawerFilter>
-            <div className="hidden desktop:inline-flex flex-col w-full desktop:max-w-[282px]">
-                <div className="mb-5 h-[36px] border-neutral-100 border-b-[1px]">
-                    <Typography variant="h3" className="text-base basis-full capitalize">
-                        {t('catalog:filter:title')}
-                    </Typography>
+            <Show when={loading}>
+                <div className="hidden desktop:inline-flex flex-col w-full desktop:max-w-[282px]">
+                    <div className="w-full bg-neutral-100 h-screen" />
                 </div>
-                <div className="w-fullh-screen">
-                    <Filter
-                        filter={customFilter || aggregations}
-                        defaultSort={JSON.stringify(defaultSort)}
-                        filterValue={query}
-                        setFiltervalue={setFiltervalue}
-                        isSearch={!!config.search}
-                        products={products}
-                        renderEmptyMessage={renderEmptyMessage}
-                        loading={loading}
-                        tabs={dataTabs}
-                        t={t}
-                        onChangeTabs={onChangeTabs}
-                        storeConfig={storeConfig}
-                        scrollContent={false}
-                    />
+            </Show>
+            <Show when={!checkEmpty && !loading}>
+                <div className="hidden desktop:inline-flex flex-col w-full desktop:max-w-[282px]">
+                    <div className="mb-5 h-[36px] border-neutral-100 border-b-[1px]">
+                        <Typography variant="h3" className="text-base basis-full capitalize">
+                            {t('catalog:filter:title')}
+                        </Typography>
+                    </div>
+                    <div className="w-fullh-screen">
+                        <Filter
+                            filter={customFilter || aggregations}
+                            defaultSort={JSON.stringify(defaultSort)}
+                            filterValue={query}
+                            setFiltervalue={setFiltervalue}
+                            isSearch={!!config.search}
+                            products={products}
+                            renderEmptyMessage={renderEmptyMessage}
+                            loading={loading}
+                            tabs={dataTabs}
+                            t={t}
+                            onChangeTabs={onChangeTabs}
+                            storeConfig={storeConfig}
+                            scrollContent={false}
+                        />
+                    </div>
                 </div>
-            </div>
+            </Show>
             <div className="basis-full w-full desktop:max-w-[895px] flex flex-col">
-                <div className="flex flex-row items-center align-middle justify-between mb-5">
-                    <div className="flex flex-row items-center gap-2">
-                        <Button
-                            variant="outlined"
-                            icon={<FilterIcon />}
-                            iconPosition="left"
-                            className="desktop:hidden h-[36px] flex items-center !py-0 !px-2 desktop:py-[8px] desktop:px-[12px] border-neutral-200"
-                            classNameText="text-neutral"
-                            onClick={handleOpenDrawerFilter}
-                        >
-                            Filter
-                        </Button>
-                        {/* <Button
-                            variant="outlined"
-                            icon={isGrid ? <GridIcon /> : <ListIcon />}
-                            iconPosition="right"
-                            className="h-[36px] flex items-center py-1 px-1 desktop:py-[8px] desktop:px-[12px] border-neutral-200"
-                            classNameText="text-neutral"
-                            onClick={handleSetGrid}
-                            iconProps={{ className: '!ml-0 tablet:!ml-[6px]' }}
-                        >
-                            <Typography className="hidden tablet:inline">
-                                {t('catalog:filter:viewAs')}
-                            </Typography>
-                        </Button> */}
-                        <div className={cx(
-                            'px-3 py-2 bg-neutral-white flex flex-row gap-3 items-center',
-                            'border rounded-md border-neutral-200',
-                            'h-max w-max',
-                        )}
-                        >
-                            <div className="hidden tablet:inline">
-                                <Typography className="font-semibold tex-md text-neutral">
-                                    {t('catalog:filter:viewAs')}
-                                </Typography>
-                            </div>
-                            <div className="grid grid-cols-2 gap-2">
-                                <Button
-                                    variant="plain"
-                                    iconOnly
-                                    icon={<ListIcon />}
-                                    iconProps={{
-                                        className: !isGrid
-                                            ? 'w-[20px] h-[20px] text-neutral-600'
-                                            : 'w-[20px] h-[20px] text-neutral-400 hover:text-primary',
-                                    }}
-                                    className="!p-0"
-                                    onClick={() => handleSetGrid(false)}
-                                />
-                                <Button
-                                    variant="plain"
-                                    iconOnly
-                                    icon={<GridIcon />}
-                                    iconProps={{
-                                        className: isGrid
-                                            ? 'w-[20px] h-[20px] text-neutral-600'
-                                            : 'w-[20px] h-[20px] text-neutral-400 hover:text-primary',
-                                    }}
-                                    className="!p-0"
-                                    onClick={() => handleSetGrid(true)}
-                                />
+                <Show when={!checkEmpty && !loading}>
+                    <div className="flex flex-row items-center align-middle justify-between mb-5">
+                        <div className="flex flex-row items-center gap-2">
+                            <Button
+                                variant="outlined"
+                                icon={<FilterIcon />}
+                                iconPosition="left"
+                                className={cx(
+                                    'desktop:hidden h-[36px] flex items-center',
+                                    '!py-0 !px-2 desktop:py-[8px] desktop:px-[12px] border-neutral-200',
+                                )}
+                                classNameText="text-neutral"
+                                onClick={handleOpenDrawerFilter}
+                            >
+                                Filter
+                            </Button>
+                            <div className={cx(
+                                'px-3 py-2 bg-neutral-white flex flex-row gap-3 items-center',
+                                'border rounded-md border-neutral-200',
+                                'h-max w-max',
+                            )}
+                            >
+                                <div className="hidden tablet:inline">
+                                    <Typography className="font-semibold tex-md text-neutral">
+                                        {t('catalog:filter:viewAs')}
+                                    </Typography>
+                                </div>
+                                <div className="grid grid-cols-2 gap-2">
+                                    <Button
+                                        variant="plain"
+                                        iconOnly
+                                        icon={<ListIcon />}
+                                        iconProps={{
+                                            className: !isGrid
+                                                ? 'w-[20px] h-[20px] text-neutral-600'
+                                                : 'w-[20px] h-[20px] text-neutral-400 hover:text-primary',
+                                        }}
+                                        className="!p-0"
+                                        onClick={() => handleSetGrid(false)}
+                                    />
+                                    <Button
+                                        variant="plain"
+                                        iconOnly
+                                        icon={<GridIcon />}
+                                        iconProps={{
+                                            className: isGrid
+                                                ? 'w-[20px] h-[20px] text-neutral-600'
+                                                : 'w-[20px] h-[20px] text-neutral-400 hover:text-primary',
+                                        }}
+                                        className="!p-0"
+                                        onClick={() => handleSetGrid(true)}
+                                    />
+                                </div>
                             </div>
                         </div>
+                        <Sorting
+                            filter={customFilter || aggregations}
+                            defaultSort={JSON.stringify(defaultSort)}
+                            filterValue={query}
+                            setFiltervalue={setFiltervalue}
+                            isSearch={!!config.search}
+                            t={t}
+                        />
                     </div>
-                    <Sorting
-                        filter={customFilter || aggregations}
-                        defaultSort={JSON.stringify(defaultSort)}
-                        filterValue={query}
-                        setFiltervalue={setFiltervalue}
-                        isSearch={!!config.search}
-                        t={t}
-                    />
-                </div>
+                </Show>
                 <div className={
                     cx(
                         isGrid
@@ -243,6 +244,7 @@ const ViewProductList = (props) => {
                                     catalogList
                                     price={price}
                                     loadPrice={loadPrice}
+                                    preloadImage={page === 1}
                                     {...other}
                                     {...item}
                                 />
@@ -252,7 +254,7 @@ const ViewProductList = (props) => {
                 </div>
                 <div className="latest-product-indicator" />
 
-                {(products.items.length !== products.total_count) || !loading
+                {checkEmpty
                     ? renderEmptyMessage(products.items.length, loading)
                     : null}
                 <Show when={loadmore}>

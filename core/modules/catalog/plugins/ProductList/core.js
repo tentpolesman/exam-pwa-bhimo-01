@@ -129,7 +129,7 @@ const ProductList = (props) => {
         router.push(`/${url_path || '[...slug]'}`, encodeURI(`${path}${queryParams ? `?${queryParams}` : ''}`));
         setPage(1);
     };
-    if (catId !== 0) {
+    if (catId && catId !== 0) {
         config.filter.push({
             type: 'category_id',
             value: catId,
@@ -178,7 +178,6 @@ const ProductList = (props) => {
         };
         config = generateConfig(query, config, elastic, availableFilter);
     }
-
     const context = (isLogin && isLogin === 1) || (config.sort && config.sort.key === 'random') ? { request: 'internal' } : {};
 
     const {
