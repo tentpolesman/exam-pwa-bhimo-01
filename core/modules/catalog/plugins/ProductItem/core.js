@@ -446,7 +446,7 @@ const ProductItem = (props) => {
         return (
             <div className="flex flex-col gap-2 tablet:gap-4">
                 {enablePrice && generatePrice(priceData)}
-                <div className="hidden tablet:flex desktop:flex flex-row justify-between items-center w-full">
+                <div className="hidden tablet:flex desktop:flex flex-row gap-1 justify-between items-center w-full">
                     {showAddToCart && (
                         <Button
                             iconProps={{ className: 'w-4 h-4 hidden desktop:flex' }}
@@ -454,7 +454,10 @@ const ProductItem = (props) => {
                             disabled={disabled}
                             onClick={handleAddToCart}
                             loading={loading}
-                            className="!py-0 w-full h-[38px] desktop:h-[40px] tablet:max-w-[116px] desktop:max-w-max justify-center"
+                            className={classNames(
+                                '!py-0 w-max h-[38px] desktop:h-[40px] tablet:max-w-[116px] desktop:max-w-max justify-center',
+                                'hover:shadow-[0_0_0_4px] hover:shadow-primary-300',
+                            )}
                         >
                             <Typography color="white" className="font-normal text-sm">
                                 {t('common:button:addToCart')}
