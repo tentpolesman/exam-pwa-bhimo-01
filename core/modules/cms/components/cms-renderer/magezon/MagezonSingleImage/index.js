@@ -204,10 +204,6 @@ const MagezonSingleImage = (props) => {
             {overlay_color && <div className="mgz-img-over mgz-img-overlay" />}
             <style jsx>
                 {`
-                    .magezon-image :global(.image-container),
-                    .magezon-image :global(.mgz-single-image) {
-                        width: 100% !important;
-                    }
                     .mgz-img-content {
                         text-align: ${content_align};
                         background-color: ${content_background};
