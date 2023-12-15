@@ -17,6 +17,7 @@ Dialog is components modal
 | `classWrapper`    | `false`  | false | custom class for wrapper dialog |    
 | `classContainer`    | `false`  | false | custom class for container dialog |  
 | `classContent`    | `false`  | false | custom class for content |   
+| `classWrapperTitle`    | `false`  | false | custom class for wrapper title |   
 | `backdrop`    | `false`  | true | show hide backdrop dialog |   
 | `closeOnBackdrop`    | `false`  | false | close dialog if clicked backdrop |   
 | `onClose`    | `false`  | false | custom handling close dialog |   

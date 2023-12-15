@@ -62,15 +62,31 @@ const ProductDetailAction = ({
     setShowShortDesc,
     reviewRef,
     isMobile,
+    classContainer,
+    classContentWrapper,
+    useRelatedProduct = true,
+    imageSliderProps = {},
+    classImageSliderWrapper,
 }) => (
     <div className="plugin-product-detail-action desktop:px-[0px] tablet:px-[16px]">
-        <div className={cx('product-detail-container', 'desktop:grid tablet:grid desktop:grid-cols-2 tablet:grid-cols-2', 'mt-[32px]')}>
-            <div className={cx('product-detail-slider')}>
+        <div className={cx(
+            'product-detail-container',
+            'desktop:grid tablet:grid desktop:grid-cols-2 tablet:grid-cols-2',
+            'mt-[32px]',
+            classContainer,
+        )}
+        >
+            <div className={cx(
+                'product-detail-slider',
+                classImageSliderWrapper,
+            )}
+            >
                 <ImageSlider
                     useZoom={false}
                     data={banner}
                     storeConfig={storeConfig}
                     onClickZoomImage={useProductImagePreview && enablePopupImage ? handleOpenImageDetail : null}
+                    {...imageSliderProps}
                 />
             </div>
             <div className={cx(
@@ -80,6 +96,7 @@ const ProductDetailAction = ({
                 'desktop:px-[0px] tablet:px-[0px] mobile:px-[16px]',
                 'desktop:flex tablet:flex desktop:flex-col tablet:flex-col',
                 'items-start',
+                classContentWrapper,
             )}
             >
                 <Typography variant="h1" className="first-letter:uppercase mb-[12px] desktop:mt-[0px] tablet:mt-[0px] mobile:mt-[24px]">
@@ -356,7 +373,9 @@ const ProductDetailAction = ({
                 />
             </Dialog>
         </Show>
-        <ProductRelated t={t} dataProduct={data} isLogin={isLogin} storeConfig={storeConfig} />
+        <Show when={useRelatedProduct}>
+            <ProductRelated t={t} dataProduct={data} isLogin={isLogin} storeConfig={storeConfig} />
+        </Show>
     </div>
 );
 

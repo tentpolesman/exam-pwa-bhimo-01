@@ -159,26 +159,37 @@ const ViewProductList = (props) => {
                 <Show when={!checkEmpty && !loading}>
                     <div className="flex flex-row items-center align-middle justify-between mb-5">
                         <div className="flex flex-row items-center gap-2">
-                            <Button
-                                variant="outlined"
-                                icon={<FilterIcon />}
-                                iconPosition="left"
-                                className={cx(
-                                    'desktop:hidden h-[36px] flex items-center',
-                                    '!py-0 !px-2 desktop:py-[8px] desktop:px-[12px] border-neutral-200',
-                                )}
-                                classNameText="text-neutral"
-                                onClick={handleOpenDrawerFilter}
+                            <div className={cx(
+                                'px-3 py-2 bg-neutral-white flex flex-row gap-3 items-center',
+                                'border rounded-md border-neutral-200',
+                                'h-max w-max desktop:hidden',
+                            )}
                             >
-                                Filter
-                            </Button>
+                                <Button
+                                    variant="plain"
+                                    icon={<FilterIcon />}
+                                    iconPosition="left"
+                                    iconProps={{
+                                        className: 'w-[20px] h-[20px]',
+                                    }}
+                                    className={cx(
+                                        '!p-0',
+                                    )}
+                                    classNameText="text-neutral"
+                                    onClick={handleOpenDrawerFilter}
+                                >
+                                    <Typography className="font-semibold tex-md text-neutral">
+                                        Filter
+                                    </Typography>
+                                </Button>
+                            </div>
                             <div className={cx(
                                 'px-3 py-2 bg-neutral-white flex flex-row gap-3 items-center',
                                 'border rounded-md border-neutral-200',
                                 'h-max w-max',
                             )}
                             >
-                                <div className="hidden tablet:inline">
+                                <div className="hidden tablet:flex">
                                     <Typography className="font-semibold tex-md text-neutral">
                                         {t('catalog:filter:viewAs')}
                                     </Typography>
