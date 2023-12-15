@@ -61,7 +61,7 @@ const MagezonSingleImage = (props) => {
     let classes = 'magezon-image';
     let classImage = 'mgz-single-image';
     let classContent = 'mgz-img-content';
-    let classContainer = '';
+    let classContainer = 'image-container';
     if (xs_hide) classes += 'hidden-mobile ';
     if (sm_hide) classes += 'hidden-sm ';
     if (md_hide) classes += 'hidden-md ';
@@ -204,11 +204,9 @@ const MagezonSingleImage = (props) => {
             {overlay_color && <div className="mgz-img-over mgz-img-overlay" />}
             <style jsx>
                 {`
-                    @media (min-width: 768px) and (max-width: 991px) {
-                        .magezon-image :global(.mgz-single-image) {
-                            width: 95vw;
-                            max-height: 100%;
-                        }
+                    .magezon-image :global(.image-container),
+                    .magezon-image :global(.mgz-single-image) {
+                        width: 100% !important;
                     }
                     .mgz-img-content {
                         text-align: ${content_align};
@@ -232,9 +230,11 @@ const MagezonSingleImage = (props) => {
                         font-weight: ${description_font_weight};
                         font-size: ${description_font_size};
                     }
-                    .magezon-img-outline {
-                        border: ${image_border_width} ${image_border_style} ${image_border_color};
-                        border-radius: ${image_border_radius || '0px'};
+                    .magezon-img-outline :global(img) {
+                        ${image_border_style ? `border-style: ${image_border_style};` : ''}
+                        ${image_border_color ? `border-color: ${image_border_color};` : ''}
+                        ${image_border_radius ? `border-radius: ${image_border_radius.replace('px', '')}px;` : ''}
+                        ${image_border_width ? `border-width: ${image_border_width.replace('px', '')}px;` : ''}
                     }
                     .magezon-image :global(.mgz-single-image) {
                         border-radius: ${image_border_radius || '0px'};

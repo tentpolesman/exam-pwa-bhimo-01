@@ -60,11 +60,6 @@ const MagezonRow = (props) => {
                         max-width: 100%;
                         margin: ${content_align === 'left' ? 'auto 0 0 0' : content_align === 'center' ? 'auto' : '0 0 0 auto'};
                     }
-                    .mgz-row :global(.mgz-element.inline-block) {
-                        width: initial;
-                        margin-left: -10px;
-                        margin-right: -10px;
-                    }
                 `}
             </style>
         </>
