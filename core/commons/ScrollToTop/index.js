@@ -20,8 +20,9 @@ const ScrollTop = (props) => {
             const checkScrollTop = () => {
                 const globalPromo = document.getElementById('global-promo-message');
                 const scrollTopPosition = window.pageYOffset || document.documentElement.scrollTop;
+
                 if (storeConfig && storeConfig.pwa && storeConfig.pwa.enabler_sticky_header) {
-                    if (window.pageYOffset > 100) {
+                    if (window.pageYOffset > 200) {
                         if (headerInner) {
                             if (desktopHeader) {
                                 if (showGlobalPromo && globalPromo) {
@@ -39,21 +40,20 @@ const ScrollTop = (props) => {
                             if (tabletHeader) {
                                 if (showGlobalPromo && globalPromo) {
                                     headerInner.classList.remove('top-[38px]');
+                                    headerInner.classList.add('top-[-43px]');
                                 }
                                 headerInner.classList.add('top-[-43px]');
                             }
                         }
-                    } else if (window.pageYOffset > 0 && window.pageYOffset <= 100) {
+                    } else if (window.pageYOffset > 0 && window.pageYOffset <= 200) {
                         if (desktopHeader) {
                             if (showGlobalPromo && globalPromo) {
                                 headerInner.classList.remove('top-[38px]');
-                                headerInner.classList.add('top-[-128px]');
                             }
                         }
                         if (tabletHeader) {
                             if (showGlobalPromo && globalPromo) {
                                 headerInner.classList.remove('top-[38px]');
-                                headerInner.classList.add('top-[-43px]');
                             }
                         }
                     } else {
@@ -77,9 +77,9 @@ const ScrollTop = (props) => {
                         }
                     }
                 }
-                if (!trigger && window.pageYOffset > maxHeightToShow) {
+                if (!trigger && window.pageYOffset > maxHeightToShow && window.innerWidth > 768) {
                     setTrigger(true);
-                } else if (trigger && window.pageYOffset < maxHeightToShow) {
+                } else if (trigger && window.pageYOffset < maxHeightToShow && window.innerWidth > 768) {
                     setTrigger(false);
                 }
             };
