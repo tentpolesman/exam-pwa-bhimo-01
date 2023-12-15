@@ -10,7 +10,7 @@ import cx from 'classnames';
 const ImageDetail = (props) => {
     const {
         handleClick, small_image, spesificProduct, urlKey, name, storeConfig = {},
-        classContainer = '', className = '', isGrid, preloadImage = false,
+        classContainer = '', className = '', isGrid, lazy = true, preload = false,
     } = props;
 
     let defaultWidth = modules?.catalog?.productListing?.imageSize?.width;
@@ -61,8 +61,8 @@ const ImageDetail = (props) => {
                     quality={80}
                     alt={small_image && small_image.url ? small_image.label : name}
                     storeConfig={storeConfig}
-                    lazy
-                    preload={preloadImage}
+                    lazy={lazy}
+                    preload={preload}
                 />
 
             </Link>

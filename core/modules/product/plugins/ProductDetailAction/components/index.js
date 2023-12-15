@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-expressions */
 /* eslint-disable max-len */
 import Typography from '@common_typography';
-import ImageSlider from '@common_imageslider';
 import Show from '@common_show';
 import Divider from '@common_divider';
 import Share from '@common_share';
@@ -11,10 +10,12 @@ import ReviewList from '@core_modules/product/pages/default/components/ReviewLis
 import Dialog from '@common_dialog';
 import CmsRenderer from '@core_modules/cms/components/cms-renderer';
 import ProductRelated from '@core_modules/product/pages/default/components/ProductRelated';
+import ProductUpsell from '@core_modules/product/pages/default/components/ProductUpsell';
 import dynamic from 'next/dynamic';
 import cx from 'classnames';
 import { HeartIcon, ArrowsRightLeftIcon } from '@heroicons/react/24/outline';
 
+const ImageSlider = dynamic(() => import('@common_imageslider'), { ssr: true });
 const RatingStar = dynamic(() => import('@common_ratingstar'), { ssr: true });
 const ProductTabs = dynamic(() => import('@core_modules/product/pages/default/components/ProductTabs'), { ssr: false });
 const ProductTabsAccordion = dynamic(() => import('@core_modules/product/pages/default/components/ProductTabsAccordion'), { ssr: false });
@@ -55,6 +56,8 @@ const ProductDetailAction = ({
     useProductTabs,
     useProductImagePreview,
     useShareProduct,
+    useProductRelated,
+    useProductUpsell,
     setStockStatus,
     setAdditionalPrice,
     setBanner,
@@ -64,9 +67,14 @@ const ProductDetailAction = ({
     isMobile,
     classContainer,
     classContentWrapper,
-    useRelatedProduct = true,
     imageSliderProps = {},
     classImageSliderWrapper,
+    handleOption,
+    setPrice,
+    currencyCode,
+    currencyCache,
+    openOption,
+    setOpenOption,
 }) => (
     <div className="plugin-product-detail-action desktop:px-[0px] tablet:px-[16px]">
         <div className={cx(
@@ -163,7 +171,7 @@ const ProductDetailAction = ({
                     variant="plain"
                     className="!p-0 flex items-center"
                     onClick={() => {
-                            reviewRef?.current?.scrollIntoView({ behavior: 'smooth' });
+                        reviewRef?.current?.scrollIntoView({ behavior: 'smooth' });
                     }}
                 >
                     <div className="flex mt-[12px]">
@@ -196,11 +204,15 @@ const ProductDetailAction = ({
                         setBanner={setBanner}
                         showWishlist={false}
                         enableProductCompare={false}
-                        enableBundle={false}
-                        enableDownload={false}
                         showStockStatus
                         stockStatus={data?.stock_status || ''}
                         storeConfig={storeConfig}
+                        handleOption={handleOption}
+                        setPrice={setPrice}
+                        currencyCode={currencyCode}
+                        currencyCache={currencyCache}
+                        openOption={openOption}
+                        setOpenOption={setOpenOption}
                         data={{
                             ...data,
                             url_key: slug,
@@ -373,8 +385,21 @@ const ProductDetailAction = ({
                 />
             </Dialog>
         </Show>
-        <Show when={useRelatedProduct}>
-            <ProductRelated t={t} dataProduct={data} isLogin={isLogin} storeConfig={storeConfig} />
+        <Show when={useProductRelated}>
+            <ProductRelated
+                t={t}
+                dataProduct={data}
+                isLogin={isLogin}
+                storeConfig={storeConfig}
+            />
+        </Show>
+        <Show when={useProductUpsell}>
+            <ProductUpsell
+                t={t}
+                dataProduct={data}
+                isLogin={isLogin}
+                storeConfig={storeConfig}
+            />
         </Show>
     </div>
 );

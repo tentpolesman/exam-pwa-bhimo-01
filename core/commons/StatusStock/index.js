@@ -12,7 +12,7 @@ const StockStatus = ({
 }) => {
     const { t } = useTranslation(['common']);
     let labelFinal = label;
-    if (inStock && !label) {
+    if (!label) {
         labelFinal = inStock ? t('common:cart:inStock') : t('common:cart:oos');
     }
     return (

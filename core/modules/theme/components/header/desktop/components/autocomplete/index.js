@@ -14,6 +14,7 @@ import Image from '@common_image';
 import BuildingStorefrontIcon from '@heroicons/react/24/outline/BuildingStorefrontIcon';
 
 import Magnify from '@heroicons/react/24/outline/MagnifyingGlassIcon';
+import XMarkIcon from '@heroicons/react/24/outline/XMarkIcon';
 
 let globalTimeout = null;
 
@@ -70,9 +71,7 @@ const generateItemData = (product, category, seller, enableMultiseller) => {
 };
 
 export default function AutocompleteSearch(props) {
-    const {
-        placeholder, handleSearch, storeConfig, deviceWidth,
-    } = props;
+    const { placeholder, handleSearch, storeConfig } = props;
     const { t } = useTranslation(['common']);
     const [item, setItem] = React.useState(null);
     const [isShow, setIsShow] = React.useState(false);
@@ -263,9 +262,7 @@ export default function AutocompleteSearch(props) {
         return (
             <div className={cx('px-4')}>
                 {isShow && searchKeyword.length !== 0 && (item === null || (typeof item === 'object' && item.length === 0)) ? (
-                    <div className={cx('breadcrumbs', 'block', 'text-sm', 'text-neutral-200', 'uppercase', 'italic')}>
-                        {t('common:error:notFound')}
-                    </div>
+                    <div className={cx('breadcrumbs', 'block', 'text-sm', 'text-neutral-500', 'uppercase', 'py-4')}>{t('common:error:notFound')}</div>
                 ) : (
                     item !== null && item.map((items, index) => <PopoverItem key={index} {...items} />)
                 )}
@@ -274,19 +271,17 @@ export default function AutocompleteSearch(props) {
     };
 
     return (
-        <div className={cx('mobile:max-tablet:mt-2', 'flex', 'flex-row', 'justify-center')}>
+        <div className={cx('mobile:max-tablet:mt-2', 'mobile:max-tablet:pb-3', 'flex', 'flex-row', 'justify-center')}>
             <Popover content={<PopoverContent />} open={isShow} setOpen={setIsShow}>
                 <TextField
                     value={searchKeyword}
                     placeholder={placeholder || t('common:search:title')}
                     onChange={(e) => {
                         setSearchKeyword(e.target.value);
-                        if (deviceWidth > 768) {
-                            handleAutocomplete(e);
-                        }
+                        handleAutocomplete(e);
                     }}
                     ref={inputRef}
-                    rightIcon={<Magnify />}
+                    rightIcon={searchKeyword === '' ? <Magnify /> : <XMarkIcon />}
                     rightIconProps={{
                         className: cx(
                             'tablet:max-desktop:w-[55px]',
@@ -299,7 +294,13 @@ export default function AutocompleteSearch(props) {
                             'rounded-r-lg',
                             'rounded-l-none',
                             'tablet:max-desktop:py-[14px]',
+                            'hover:cursor-pointer',
                         ),
+                        onClick: () => {
+                            setSearchKeyword('');
+                            setIsShow(false);
+                            setItem(null);
+                        },
                     }}
                     onKeyPress={(e) => {
                         handleKeyPress({

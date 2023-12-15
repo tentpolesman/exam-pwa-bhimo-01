@@ -20,16 +20,13 @@ import config from '@config';
 import Cookies from 'js-cookie';
 import TagManager from 'react-gtm-module';
 
-import '@fortawesome/fontawesome-free/css/all.min.css';
 import MagnifyingGlassIcon from '@heroicons/react/24/outline/MagnifyingGlassIcon';
 import Bars3Icon from '@heroicons/react/24/solid/Bars3Icon';
 import XMarkIcon from '@heroicons/react/24/solid/XMarkIcon';
 
 const Autocomplete = dynamic(() => import('@core_modules/theme/components/header/desktop/components/autocomplete'), { ssr: false });
 const ShoppingBagIcon = dynamic(() => import('@plugin_shoppingbag'), { ssr: true });
-const SwitcherCurrency = dynamic(() => import('@common_currency'), { ssr: false });
-const SwitcherLanguage = dynamic(() => import('@common_language'), { ssr: false });
-const GlobalPromoMessage = dynamic(() => import('@core_modules/theme/components/globalPromo'), { ssr: false });
+const GlobalPromoMessage = dynamic(() => import('@core_modules/theme/components/globalPromo'), { ssr: true });
 
 const TabletMobile = (props) => {
     const {
@@ -42,7 +39,6 @@ const TabletMobile = (props) => {
         loadingVesMenu,
         vesMenuConfig,
         handleLogout,
-        customer,
         showGlobalPromo,
         handleClosePromo,
         appName,
@@ -145,64 +141,68 @@ const TabletMobile = (props) => {
         <div
             className={cx('mobile-header', 'mobile:max-tablet:block', 'tablet:hidden', 'transition-all', 'delay-100', 'duration-500', 'ease-in-out')}
         >
+            <div
+                className={cx(
+                    'float-header-mobile__content--popup-installation',
+                    'py-3',
+                    'px-4',
+                    'flex',
+                    'flex-row',
+                    'gap-x-[10px]',
+                    'fixed',
+                    'bottom-0',
+                    'z-[1050]',
+                    'w-[100vw]',
+                    'bg-neutral-white',
+                )}
+                id="popup-mobile__install"
+            >
+                <div className={cx('install_image', 'basis-10', 'shrink-0', 'flex', 'items-center', 'justify-center')}>
+                    <img src="/assets/img/mobile_install_logo.png" width={30} height={32} />
+                </div>
+                <div className={cx('install_info', 'basis-full')}>
+                    <Typography variant="bd-3a" className={cx('text-neutral-700', 'block')}>
+                        {appName}
+                    </Typography>
+                    <Typography variant="bd-3a" className={cx('text-[12px]', 'text-neutral-500', 'text-xs', 'font-normal', 'leading-sm')}>
+                        {installMessage}
+                    </Typography>
+                </div>
+                <div className={cx('install_button', 'flex', 'items-center')}>
+                    <Button
+                        className={cx(
+                            'm-0',
+                            'hover:shadow-none',
+                            'focus:shadow-none',
+                            'active:shadow-none',
+                            'active:shadow-none',
+                            'px-4',
+                            'py-[5px]',
+                        )}
+                        onClick={handleClickInstallApp}
+                        variant="primary"
+                        id="btn-install__mobile"
+                    >
+                        <Typography className={cx('!text-neutral-white')}>Install</Typography>
+                    </Button>
+                    <Button
+                        className={cx('m-0', '!px-0', '!pl-1', 'hover:shadow-none', 'focus:shadow-none', 'active:shadow-none', 'active:shadow-none')}
+                        onClick={() => {
+                            closePopup();
+                        }}
+                        icon={<XMarkIcon />}
+                        iconProps={{ className: cx('text-neutral-700', 'w-[20px]', 'h-[20px]') }}
+                        iconOnly
+                        variant="tertiary"
+                        classNameText={cx('!text-neutral-700')}
+                    />
+                </div>
+            </div>
             <div id="top-header-mobile" className={cx('top-header__mobile', 'py-[1px]')}>
                 <div
                     id="top-header__content"
                     className={cx('top-header-mobile__content', 'mobile:max-tablet:max-w-[100%] tablet:hidden', 'm-[0_auto]')}
                 >
-                    <div
-                        className={cx('top-header-mobile__content--popup-installation', 'py-3', 'px-4', 'flex', 'flex-row', 'gap-x-[10px]')}
-                        id="popup-mobile__install"
-                    >
-                        <div className={cx('install_image', 'basis-10', 'shrink-0', 'flex', 'items-center', 'justify-center')}>
-                            <img src="/assets/img/mobile_install_logo.png" width={30} height={32} />
-                        </div>
-                        <div className={cx('install_info', 'basis-full')}>
-                            <Typography variant="bd-3a" className={cx('text-neutral-700', 'block')}>
-                                {appName}
-                            </Typography>
-                            <Typography variant="bd-3a" className={cx('text-[12px]', 'text-neutral-500', 'text-xs', 'font-normal', 'leading-sm')}>
-                                {installMessage}
-                            </Typography>
-                        </div>
-                        <div className={cx('install_button', 'flex', 'items-center')}>
-                            <Button
-                                className={cx(
-                                    'm-0',
-                                    'hover:shadow-none',
-                                    'focus:shadow-none',
-                                    'active:shadow-none',
-                                    'active:shadow-none',
-                                    'px-4',
-                                    'py-[5px]',
-                                )}
-                                onClick={handleClickInstallApp}
-                                variant="primary"
-                                id="btn-install__mobile"
-                            >
-                                <Typography className={cx('!text-neutral-white')}>Install</Typography>
-                            </Button>
-                            <Button
-                                className={cx(
-                                    'm-0',
-                                    '!px-0',
-                                    '!pl-1',
-                                    'hover:shadow-none',
-                                    'focus:shadow-none',
-                                    'active:shadow-none',
-                                    'active:shadow-none',
-                                )}
-                                onClick={() => {
-                                    closePopup();
-                                }}
-                                icon={<XMarkIcon />}
-                                iconProps={{ className: cx('text-neutral-700', 'w-[20px]', 'h-[20px]') }}
-                                iconOnly
-                                variant="tertiary"
-                                classNameText={cx('!text-neutral-700')}
-                            />
-                        </div>
-                    </div>
                     {showGlobalPromo ? (
                         <div className={cx('top-header-mobile__content--global-promo')}>
                             <GlobalPromoMessage

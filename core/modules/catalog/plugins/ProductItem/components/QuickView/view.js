@@ -50,7 +50,7 @@ const QuickView = (props) => {
                             useProductImagePreview={false}
                             useShareProduct
                             classContainer="!mt-0 gap-4 tablet:gap-6"
-                            useRelatedProduct={false}
+                            useProductRelated={false}
                             imageSliderProps={{
                                 detectAutoScreen: false,
                                 horizontalThumbnail: true,

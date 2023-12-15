@@ -19,7 +19,6 @@ import config from '@config';
 import Cookies from 'js-cookie';
 import TagManager from 'react-gtm-module';
 
-import '@fortawesome/fontawesome-free/css/all.min.css';
 import DevicePhoneMobileIcon from '@heroicons/react/24/solid/DevicePhoneMobileIcon';
 import UserIcon from '@heroicons/react/24/solid/UserIcon';
 
@@ -32,11 +31,10 @@ const SwitcherCurrency = dynamic(() => import('@common_currency'), { ssr: false 
 const SwitcherLanguage = dynamic(() => import('@common_language'), { ssr: false });
 
 const DesktopHeader = (props) => {
-    const { t, storeConfig, isLogin, setValue, handleSearch, dataVesMenu, loadingVesMenu, vesMenuConfig, handleLogout, customer, deviceWidth } =
-        props;
+    const { t, storeConfig, isLogin, setValue, handleSearch, dataVesMenu, loadingVesMenu, vesMenuConfig, handleLogout, deviceWidth } = props;
 
     const { modules } = config;
-    const adminId = Cookies.get('admin_id');
+    // const adminId = Cookies.get('admin_id');
     const router = useRouter();
 
     const handleClickInstallApp = () => {

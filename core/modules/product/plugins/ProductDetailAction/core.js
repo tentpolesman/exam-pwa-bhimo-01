@@ -46,6 +46,8 @@ const ProductDetailAction = ({
     useProductTabs = false,
     useProductImagePreview = false,
     useShareProduct = false,
+    useProductRelated = false,
+    useProductUpsell = false,
     Content,
     ...other
 }) => {
@@ -53,6 +55,7 @@ const ProductDetailAction = ({
     const { isDesktop, isTablet, isMobile } = useMediaQuery();
     const context = isLogin && isLogin === 1 ? { request: 'internal' } : {};
     const item = product.items[productKey];
+    const currencyCode = item?.price_range?.minimum_price?.regular_price?.currency || 'USD';
     const reviewRef = React.useRef(null);
 
     // cache currency
@@ -232,7 +235,7 @@ const ProductDetailAction = ({
                     eventLabel: item.name,
                     label: item.name,
                     ecommerce: {
-                        currencyCode: item.price_range.minimum_price.regular_price.currency || 'USD',
+                        currencyCode,
                         add: {
                             products: [
                                 {
@@ -450,8 +453,7 @@ const ProductDetailAction = ({
 
     // eslint-disable-next-line no-underscore-dangle
     const isAwGiftCard = item.__typename === 'AwGiftCardProduct';
-    const priceData = getPriceFromList(dataPrice, item?.id || null);
-
+    const priceData = getPriceFromList(dataPrice?.products?.items, item?.id || null);
     return (
         <Content
             isLogin={isLogin}
@@ -503,6 +505,10 @@ const ProductDetailAction = ({
             reviewRef={reviewRef}
             showShortDesc={showShortDesc}
             setShowShortDesc={setShowShortDesc}
+            setPrice={setPrice}
+            currencyCode={currencyCode}
+            useProductRelated={useProductRelated}
+            useProductUpsell={useProductUpsell}
             data={{
                 ...item,
                 weltpixel_labels,
