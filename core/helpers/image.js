@@ -7,7 +7,7 @@ export const generateThumborUrl = (
     enable,
     useHttpsOrHttp,
     thumborUrl,
-    quality = 100,
+    quality = 80,
     endpoint,
     blur,
     format = 'webp',
@@ -19,7 +19,7 @@ export const generateThumborUrl = (
             if (source.indexOf(domain) === -1) {
                 const thumborEndpoint = endpoint ? `/${endpoint}` : '';
                 const thumborBlur = blur ? `:blur(${blur})` : '';
-                const params = `/unsafe${thumborEndpoint}/${width}x${height}/filters:format(${format}):quality(${quality})${thumborBlur}/`;
+                const params = `/unsafe${thumborEndpoint}/${width * 2}x${height * 2}/filters:format(${format}):quality(${quality})${thumborBlur}/`;
 
                 if (!useHttpsOrHttp) {
                     if (source.includes('http')) {
