@@ -7,7 +7,7 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'open-iconic/font/css/open-iconic-bootstrap.css';
 import 'animate.css';
 
-const MagezonSlider = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonSlider'), { ssr: false });
+const MagezonSlider = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonSlider'));
 const MagezonCaraousel = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonCaraousel'), { ssr: false });
 const MagezonColumn = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonColumn'));
 const MagezonRow = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonRow'));
