@@ -10,7 +10,7 @@ import ChevronDownIcon from '@heroicons/react/24/outline/ChevronDownIcon';
 
 const ViewSwitcherCurrency = (props) => {
     const {
-        t, currencyState, setDefaultCurrency, loading, app_cookies, open, setOpen,
+        currencyState, setDefaultCurrency, loading, app_cookies, open, setOpen,
     } = props;
     const cookies_currency = app_cookies?.cookies_currency;
 
@@ -60,9 +60,7 @@ const ViewSwitcherCurrency = (props) => {
                                             default_currency_rate,
                                         })}
                                 >
-                                    <Typography className={cx('currency-list__text', 'group-hover:text-primary-700')}>
-                                        {`${t('common:setting:changeto')} ${currency_to}`}
-                                    </Typography>
+                                    <Typography className={cx('currency-list__text', 'group-hover:text-primary-700')}>{`${currency_to}`}</Typography>
                                 </li>
                             );
                         })}
@@ -100,7 +98,7 @@ const ViewSwitcherCurrency = (props) => {
                     variant="tertiary"
                     classNameText={cx('!text-neutral-700')}
                 >
-                    <Typography>{`${t('common:setting:currency')}: ${finalDefaultCurrency}`}</Typography>
+                    <Typography>{`${finalDefaultCurrency}`}</Typography>
                 </Button>
             </Popover>
         );
