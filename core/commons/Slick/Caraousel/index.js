@@ -15,7 +15,7 @@ const Caraousel = (props) => {
             <ContainerScroll showArrow={showArrow}>
                 {data?.length > 0 && data.map((item, key) => (
                     <Item
-                        className="carousel-item [&:not(:last-child)]:mr-4 !max-w-[288px]"
+                        className="carousel-item [&:not(:last-child)]:mr-4 !max-w-[288px] !h-[initial]"
                         key={key}
                         {...item}
                         storeConfig={storeConfig}

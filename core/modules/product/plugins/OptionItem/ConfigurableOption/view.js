@@ -5,7 +5,7 @@ import dynamic from 'next/dynamic';
 // import Footer from '@plugin_optionitem/components/Footer';
 
 const Item = dynamic(() => import('@plugin_optionitem/ConfigurableOption/Item'), { ssr: true });
-const OptionAction = dynamic(() => import('@core_modules/product/plugins/OptionItemAction'), { ssr: true });
+const OptionItemAction = dynamic(() => import('@core_modules/product/plugins/OptionItemAction'), { ssr: true });
 
 const ConfigurableView = (props) => {
     const {
@@ -54,7 +54,7 @@ const ConfigurableView = (props) => {
                         showAddToCart,
                     })
                     : (
-                        <OptionAction
+                        <OptionItemAction
                             loading={loading}
                             disabled={disabled}
                             showQty={showQty}

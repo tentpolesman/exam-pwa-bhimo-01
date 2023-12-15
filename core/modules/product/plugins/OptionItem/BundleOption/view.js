@@ -6,10 +6,10 @@ import MuiAccordionSummary from '@material-ui/core/AccordionSummary';
 import MuiAccordionDetails from '@material-ui/core/AccordionDetails';
 import Typography from '@common_typography';
 
-import useStyles from '@plugin_optionitem/BundleOption/style';
+import useStyles from '@core_modules/product/plugins/OptionItem/BundleOption/style';
 
 const Button = dynamic(() => import('@common_button'), { ssr: false });
-const Customize = dynamic(() => import('@plugin_optionitem/BundleOption/components/customize'), { ssr: true });
+const Customize = dynamic(() => import('@core_modules/product/plugins/OptionItem/BundleOption/components/customize'), { ssr: true });
 
 const Accordion = withStyles(
     {
