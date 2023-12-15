@@ -56,6 +56,8 @@ const ProductDetailAction = ({
     useProductTabs,
     useProductImagePreview,
     useShareProduct,
+    useProductRelated,
+    useProductUpsell,
     setStockStatus,
     setAdditionalPrice,
     setBanner,
@@ -367,18 +369,22 @@ const ProductDetailAction = ({
                 />
             </Dialog>
         </Show>
-        <ProductRelated
-            t={t}
-            dataProduct={data}
-            isLogin={isLogin}
-            storeConfig={storeConfig}
-        />
-        <ProductUpsell
-            t={t}
-            dataProduct={data}
-            isLogin={isLogin}
-            storeConfig={storeConfig}
-        />
+        <Show when={useProductRelated}>
+            <ProductRelated
+                t={t}
+                dataProduct={data}
+                isLogin={isLogin}
+                storeConfig={storeConfig}
+            />
+        </Show>
+        <Show when={useProductUpsell}>
+            <ProductUpsell
+                t={t}
+                dataProduct={data}
+                isLogin={isLogin}
+                storeConfig={storeConfig}
+            />
+        </Show>
     </div>
 );
 
