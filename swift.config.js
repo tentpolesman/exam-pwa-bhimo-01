@@ -250,6 +250,10 @@ const modules = {
                 featured: true,
                 free: true,
             },
+            imageSize: {
+                width: 250,
+                height: 250,
+            },
         },
     },
     confirmpayment: {

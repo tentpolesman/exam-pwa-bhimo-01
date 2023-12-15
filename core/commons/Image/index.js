@@ -31,7 +31,7 @@ const CustomImage = ({
     styleContainer: initStyleContainer = {},
     className = '',
     alt = 'Image',
-    quality = 100,
+    quality = 80,
     // style = {},
     lazy = true,
     storeConfig = {},
@@ -70,8 +70,10 @@ const CustomImage = ({
             draftHeightMobile *= 3;
         }
     } else {
-        // if dimension is not set, generate default draft with dimension width 5px, auto height
-        draftWidthMobile = 5;
+        // if dimension is not set, generate default draft with dimension width 3px, auto height
+        draftWidth = 3;
+        draftHeight = 0;
+        draftWidthMobile = 3;
         draftHeightMobile = 0;
     }
     const draft = generateThumborUrl(src, draftWidth, draftHeight, enable, useHttpsOrHttp, thumborUrl, 70, 'full-fit-in', 70);
@@ -116,6 +118,7 @@ const CustomImage = ({
 
     const onLoad = useCallback((event) => {
         event.target.classList.add('loaded');
+        event.target.classList.remove('has-error');
     }, []);
 
     const onError = useCallback((event) => {
