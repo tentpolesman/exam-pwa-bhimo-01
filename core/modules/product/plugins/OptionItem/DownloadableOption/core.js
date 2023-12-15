@@ -16,7 +16,7 @@ import {
 } from '@core_modules/product/services/graphql';
 
 const OptionsItemDownload = ({
-    setOpen,
+    setOpenOption,
     setPrice,
     t,
     data,
@@ -65,7 +65,7 @@ const OptionsItemDownload = ({
         }
     }, [downloadProduct.data]);
 
-    const handleOption = (id, price_value) => {
+    const handleOptionDownloadable = (id, price_value) => {
         const initPrice = priceData[0]?.price_range?.minimum_price?.regular_price?.value;
         let final_price_sum = initPrice || 0;
         const selectedOption = handleSelectedDownload(selectDownloadable, id, price_value);
@@ -94,6 +94,10 @@ const OptionsItemDownload = ({
             update: true,
         };
         setPrice(final_price_value);
+    };
+
+    const handleOptionAll = () => {
+
     };
 
     const addToCart = async () => {
@@ -243,7 +247,7 @@ const OptionsItemDownload = ({
                         open: true,
                     });
                     setLoadingAdd(false);
-                    setOpen(false);
+                    if (setOpenOption) setOpenOption(false);
                 })
                 .catch((e) => {
                     const originalError = e.message.includes(':') ? e.message.split(':')[1] : e.message;
@@ -274,13 +278,15 @@ const OptionsItemDownload = ({
         <View
             items={items}
             handleAddToCart={handleAddToCart}
-            handleOption={handleOption}
+            handleOptionAll={handleOptionAll}
+            handleOptionDownloadable={handleOptionDownloadable}
             t={t}
             qty={qty}
             setQty={setQty}
             loading={loadingAdd | loading}
             disabled={stock_status === 'OUT_OF_STOCK'}
             url_key={url_key}
+            {...other}
         />
     );
 };

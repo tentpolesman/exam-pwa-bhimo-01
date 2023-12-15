@@ -1,7 +1,7 @@
 /* eslint-disable arrow-body-style */
 
-import Core from '@plugin_optionitem/AwGiftCardProduct/core';
-import View from '@plugin_optionitem/AwGiftCardProduct/view';
+import Core from '@core_modules/product/plugins/OptionItem/AwGiftCardOption/core';
+import View from '@core_modules/product/plugins/OptionItem/AwGiftCardOption/view';
 
 const AwGiftCardProduct = (props) => {
     return (

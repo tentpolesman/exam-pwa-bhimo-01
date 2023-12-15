@@ -1,5 +1,5 @@
-import Core from '@plugin_optionitem/BundleOption/core';
-import View from '@plugin_optionitem/BundleOption/view';
+import Core from '@core_modules/product/plugins/OptionItem/BundleOption/core';
+import View from '@core_modules/product/plugins/OptionItem/BundleOption/view';
 
 const SimpleOptionItem = (props) => (
     <Core

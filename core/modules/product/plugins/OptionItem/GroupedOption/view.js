@@ -1,9 +1,9 @@
 import React from 'react';
 import Typography from '@common_typography';
 import classNames from 'classnames';
-import OptionAction from '@core_modules/product/plugins/OptionItemAction';
-import useStyles from '@plugin_optionitem/GroupedProduct/style';
-import Item from '@plugin_optionitem/GroupedProduct/Item';
+import OptionItemAction from '@core_modules/product/plugins/OptionItemAction';
+import useStyles from '@core_modules/product/plugins/OptionItem/GroupedOption/style';
+import Item from '@core_modules/product/plugins/OptionItem/GroupedOption/Item';
 
 const GroupedProductOptionView = ({
     t, loading, disabled,
@@ -36,7 +36,7 @@ const GroupedProductOptionView = ({
                     }
                 </div>
             ) : null }
-            <OptionAction
+            <OptionItemAction
                 loading={loading}
                 disabled={disabled}
                 showQty={false}

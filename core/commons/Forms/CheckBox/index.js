@@ -8,17 +8,22 @@ import { useTranslation } from 'next-i18next';
 
 const CheckBox = (props) => {
     const {
+        variant = 'multiple',
         type,
         label = '',
+        checked,
         data = [],
         value = [],
         CustomItem, // todo: readd this, need to review first
         disabled = false,
         onChange = () => {},
+        onClick = () => {},
         classNames = {},
         useLoadMore = false,
         size = 'md',
         flex = 'col',
+        children,
+        ...other
     } = props;
 
     const { t } = useTranslation(['common']);
@@ -26,6 +31,7 @@ const CheckBox = (props) => {
     const [selected, setSelected] = React.useState(value);
     const [more, setMore] = React.useState(7);
     const dataItems = useLoadMore ? data?.slice(0, more) : data;
+    const isVariantSingle = variant === 'single';
 
     let flexClass = 'flex-col';
 
@@ -43,18 +49,63 @@ const CheckBox = (props) => {
     };
 
     React.useEffect(() => {
-        if (value) setSelected(value);
+        if (value && !isVariantSingle) {
+            setSelected(value);
+        }
     }, [value]);
 
     const setCheckedFilter = (v) => {
-        if (selected.indexOf(v) !== -1) {
-            selected.splice(selected.indexOf(v), 1);
-        } else {
-            selected.push(v);
+        if (!isVariantSingle) {
+            if (selected.indexOf(v) !== -1) {
+                selected.splice(selected.indexOf(v), 1);
+            } else {
+                selected.push(v);
+            }
+            onChange(selected);
+            setSelected([...selected]);
         }
-        onChange(selected);
-        setSelected([...selected]);
     };
+
+    if (isVariantSingle) {
+        return (
+            <div className="">
+                <input
+                    {...other}
+                    type="checkbox"
+                    disabled={disabled}
+                    value={value}
+                    onChange={onChange}
+                    onClick={onClick}
+                    checked={checked}
+                    className={cx(
+                        'form-checkbox',
+                        'w-4',
+                        'h-4',
+                        'mr-2',
+                        'rounded-[4px]',
+                        'text-primary',
+                        'border-solid',
+                        'border-[1px]',
+                        'border-neutral-400',
+                        'hover:border-primary',
+                        'hover:bg-primary-100',
+                        'focus:ring-0',
+                        'focus:border-primary',
+                        'focus:shadow-[0_0_0_4px]',
+                        'focus:shadow-primary-100',
+                        'focus:ring-offset-0',
+                        {
+                            'hover:!border-neutral-400 hover:!bg-neutral-white': disabled,
+                            'w-5 h-5': size === 'md',
+                            'w-6 h-6': size === 'lg',
+                        },
+                        checkboxClasses,
+                    )}
+                />
+                {children}
+            </div>
+        );
+    }
 
     return (
         <div className="flex flex-col">
