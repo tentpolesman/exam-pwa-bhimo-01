@@ -29,7 +29,7 @@ import { getAppEnv } from '@helpers/env';
 // import ChatIcon from '@material-ui/icons/Chat';
 
 // import PopupInstallAppMobile from '@core_modules/theme/components/custom-install-popup/mobile';
-// import Copyright from '@core_modules/theme/components/footer/desktop/components/copyright';
+import Copyright from '@core_modules/theme/components/footer/desktop/components/copyright';
 import { getCountCart } from '@core_modules/theme/services/graphql';
 import { getCartId } from '@helper_cartid';
 import { frontendConfig } from '@helpers/frontendOptions';
@@ -71,7 +71,7 @@ const GlobalPromoMessage = dynamic(() => import('@core_modules/theme/components/
 // const BottomNavigation = dynamic(() => import('@common_bottomnavigation'), { ssr: false });
 // const HeaderMobile = dynamic(() => import('@common_headermobile'), { ssr: false });
 const ScrollToTop = dynamic(() => import('@common_scrolltotop'), { ssr: false });
-// const Footer = dynamic(() => import('@common_footer'), { ssr: false });
+const Footer = dynamic(() => import('@common_footer'), { ssr: true });
 // const RestrictionPopup = dynamic(() => import('@common_restrictionPopup'), { ssr: false });
 // const NewsletterPopup = dynamic(() => import('@core_modules/theme/components/newsletterPopup'), { ssr: false });
 // const RecentlyViewed = dynamic(() => import('@core_modules/theme/components/recentlyViewed'), { ssr: false });
@@ -555,7 +555,6 @@ const Layout = (props) => {
                     href={canonicalUrl.substring(0, canonicalUrl.indexOf('?') !== -1 ? canonicalUrl.indexOf('?') : canonicalUrl.length)}
                 />
                 {preloadImages && Object.values(preloadImages).map((_image, idx) => <link rel="preload" as="image" href={_image} key={idx} />)}
-                {/* {showPopup && <script src="/install.js" defer />} */}
             </Head>
             {/* {showPopup && storeConfig && storeConfig.pwa && storeConfig.pwa.header_version !== 'v2' ? (
                 <PopupInstallAppMobile appName={appName} installMessage={installMessage} />
@@ -660,7 +659,9 @@ const Layout = (props) => {
             {/* END CHAT FEATURES */}
 
             {withLayoutFooter && (
-                <footer className={cx('sm:mt-[50px]', font.variable, 'font-sans', '!font-pwa-default')} ref={refFooter}>
+                <footer className={cx('!block', 'sm:mt-[50px]', font.variable, 'font-sans', '!font-pwa-default')} ref={refFooter}>
+                    {footer ? <Footer storeConfig={storeConfig} t={t} /> : null}
+                    <Copyright storeConfig={storeConfig} t={t} />
                     {/* {!deviceType?.isMobile ? (
                         <div className="hidden-mobile">
                             {footer ? <Footer storeConfig={storeConfig} t={t} /> : null}
@@ -671,8 +672,8 @@ const Layout = (props) => {
                         <div className="hidden-desktop" style={{ ...footerMobile }}>
                             <Footer storeConfig={storeConfig} t={t} />
                         </div>
-                    ) : null} */}
-                    {/* {!deviceType?.isMobile ? null : storeConfig && storeConfig.pwa && storeConfig.pwa.mobile_navigation === 'bottom_navigation' ? (
+                    ) : null}
+                    {!deviceType?.isMobile ? null : storeConfig && storeConfig.pwa && storeConfig.pwa.mobile_navigation === 'bottom_navigation' ? (
                         <BottomNavigation active={pageConfig.bottomNav} storeConfig={storeConfig} />
                     ) : null} */}
                 </footer>
@@ -691,6 +692,7 @@ const Layout = (props) => {
                 />
             )} */}
             <Script src="/install.js" defer />
+            {/* <Script src="https://kit.fontawesome.com/47555a0cec.js" defer /> */}
         </>
     );
 };

@@ -21,7 +21,7 @@ import React from 'react';
 import { features } from '@config';
 import { getHost } from '@helper_config';
 
-const ItemShare = dynamic(() => import('@core_modules/product/pages/default/components/SharePopup/item'), { ssr: false });
+// const ItemShare = dynamic(() => import('@core_modules/product/pages/default/components/SharePopup/item'), { ssr: false });
 
 // CHAT FEATURES IMPORT
 
@@ -156,7 +156,7 @@ const SellerInfo = (props) => {
                             </Typography>
                         </div>
                         <div className={styles.address}>
-                            <ItemShare link={link} />
+                            {/* <ItemShare link={link} /> */}
                         </div>
                     </DialogContentText>
                 </DialogContent>

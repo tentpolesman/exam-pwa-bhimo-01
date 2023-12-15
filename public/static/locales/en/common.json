@@ -208,6 +208,9 @@
         "addReview": "Add Review",
         "writeReview": "Write Review",
         "detail": "Detail",
-        "moreInfo": "More Info"
+        "moreInfo": "More Info",
+        "shareToYourFriend": "Share to your friend and family!",
+        "showMore": "Show More",
+        "showLess": "Show Less"
     }
 }

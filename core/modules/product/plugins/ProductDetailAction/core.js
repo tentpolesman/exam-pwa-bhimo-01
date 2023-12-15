@@ -2,6 +2,7 @@
 /* eslint-disable radix */
 import cx from 'classnames';
 import TagManager from 'react-gtm-module';
+import useMediaQuery from '@hook/useMediaQuery';
 import { useQuery, useReactiveVar } from '@apollo/client';
 import { debuging, features, modules } from '@config';
 import { getPriceFromList } from '@core_modules/product/helpers/getPrice';
@@ -48,6 +49,7 @@ const ProductDetailAction = ({
     Content,
 }) => {
     const route = useRouter();
+    const { isDesktop, isTablet, isMobile } = useMediaQuery();
     const context = isLogin && isLogin === 1 ? { request: 'internal' } : {};
     const item = product.items[productKey];
     const reviewRef = React.useRef(null);
@@ -103,12 +105,15 @@ const ProductDetailAction = ({
                 type: 'react-component',
                 content: (
                     <ul className="grid grid-cols-2">
-                        {item.more_info.map((val, idx) => (
-                            <li className={cx('grid', 'grid-cols-1', 'py-2')} key={idx}>
-                                <span className="text-2md font-bold">{val.label}</span>
-                                <span className="text-2md">{val.value}</span>
-                            </li>
-                        ))}
+                        {item.more_info.map((val, idx) => {
+                            const isEmpty = val.value.includes('-- Please Select --');
+                            return (
+                                <li className={cx('grid', 'grid-cols-1', 'py-2')} key={idx}>
+                                    <span className="text-2md font-bold">{val.label}</span>
+                                    <span className="text-2md">{isEmpty ? '-' : val.value}</span>
+                                </li>
+                            );
+                        })}
                     </ul>
                 ),
             },
@@ -174,6 +179,8 @@ const ProductDetailAction = ({
     const [openOption, setOpenOption] = React.useState(false);
     const [stockStatus, setStockStatus] = React.useState(item.stock_status);
     const [wishlist, setWishlist] = React.useState(false);
+    // Show More Short Desc
+    const [showShortDesc, setShowShortDesc] = React.useState(false);
 
     const [additionalPrice, setAdditionalPrice] = React.useState(0);
     const [price, setPrice] = React.useState({
@@ -447,6 +454,9 @@ const ProductDetailAction = ({
     return (
         <Content
             isLogin={isLogin}
+            isDesktop={isDesktop}
+            isTablet={isTablet}
+            isMobile={isMobile}
             enableProductCompare={enableProductCompare}
             enableWishlist={enableWishlist}
             t={t}
@@ -490,6 +500,8 @@ const ProductDetailAction = ({
             setStockStatus={setStockStatus}
             setBanner={setBanner}
             reviewRef={reviewRef}
+            showShortDesc={showShortDesc}
+            setShowShortDesc={setShowShortDesc}
             data={{
                 ...item,
                 weltpixel_labels,

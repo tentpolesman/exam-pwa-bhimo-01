@@ -22,6 +22,7 @@ const ProductPage = (props) => {
                 useReviewList
                 useProductTabs
                 useProductImagePreview
+                useShareProduct
                 {...props}
             />
         </div>

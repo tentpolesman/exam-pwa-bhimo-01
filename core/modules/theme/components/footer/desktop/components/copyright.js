@@ -1,34 +1,21 @@
 import Backdrop from '@common_backdrop';
-import Alert from '@material-ui/lab/Alert';
+import Badge from '@common_badge';
+import { useTranslation } from 'next-i18next';
+
+import cx from 'classnames';
 
 const Copyright = (props) => {
-    const {
-        t, loading, error, storeConfig,
-    } = props;
+    const { loading, error, storeConfig } = props;
+    const { t } = useTranslation(['common']);
+
     if (error) {
-        return (
-            <Alert className="m-15" severity="error">
-                {t('common:error:fetchError')}
-            </Alert>
-        );
+        return <Badge danger>{t('common:error:fetchError')}</Badge>;
     }
     if (loading) return <Backdrop open={loading} />;
+
     return (
-        <div className="copyright">
-            <span>{storeConfig.copyright}</span>
-            <style jsx global>
-                {`
-                    .copyright {
-                        text-align: center;
-                        background-color: #6e716e;
-                        padding: 10px;
-                    }
-                    .copyright span {
-                        color: #ffffff;
-                        letter-spacing: 0.03em;
-                    }
-                `}
-            </style>
+        <div className={cx('copyright', 'text-center', 'p-[10px]', 'bg-neutral-100')}>
+            <span className={cx('text-md', 'font-normal', 'leading-5', 'text-neutral-500')}>{storeConfig.copyright}</span>
         </div>
     );
 };
