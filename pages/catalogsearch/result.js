@@ -6,7 +6,7 @@ export async function getServerSideProps(ctx) {
     return {
         props: {
             ...(await serverSideTranslations(ctx.locale, ['common', 'catalog', 'validate', 'login'])),
-            token: ctx.req && ctx.req.cookies ? ctx.req.cookies[customerTokenKey] : '',
+            token: (ctx.req && ctx.req.cookies && ctx.req.cookies[customerTokenKey]) ? ctx.req.cookies[customerTokenKey] : '',
         },
     };
 }

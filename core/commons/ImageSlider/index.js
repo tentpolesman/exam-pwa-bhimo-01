@@ -219,6 +219,9 @@ const ImageSlider = ({
     verticalThumbnail,
     detectAutoScreen = true,
     useZoom = true,
+    imageProps = {},
+    customStyleImageWrapper = {},
+    customStyleImageContainer = {},
 }) => {
     const [imagePreview, setImagePreview] = React.useState(null);
     const [indexActive, setIndexActive] = React.useState(0);
@@ -316,6 +319,7 @@ const ImageSlider = ({
                     style={{
                         width: isMobile ? '100%' : useZoom ? mainImagePreview : mainImage,
                         height: isMobile ? '100%' : useZoom ? 'auto' : mainImage,
+                        ...customStyleImageWrapper,
                     }}
                     className={
                         cx(
@@ -334,6 +338,7 @@ const ImageSlider = ({
                         onMouseLeave={() => setShowArrow(false)}
                         style={{
                             width: isMobile ? '100%' : useZoom ? mainImagePreview : mainImage,
+                            ...customStyleImageContainer,
                         }}
                         className={cx(
                             'container-image-slider-parent',
@@ -361,6 +366,7 @@ const ImageSlider = ({
                                 storeConfig={storeConfig}
                                 onClickImagePreviewArrowRight={onClickImagePreviewArrowRight}
                                 onClickImagePreviewArrowLeft={onClickImagePreviewArrowLeft}
+                                {...imageProps}
                             />
                         </Show>
 
