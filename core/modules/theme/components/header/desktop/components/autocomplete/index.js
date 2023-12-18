@@ -1,3 +1,4 @@
+/* eslint-disable object-curly-newline */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable no-plusplus */
 import { getCategoryByName, getProduct, getSellerByName } from '@core_modules/theme/services/graphql';
@@ -71,7 +72,7 @@ const generateItemData = (product, category, seller, enableMultiseller) => {
 };
 
 export default function AutocompleteSearch(props) {
-    const { placeholder, handleSearch, storeConfig } = props;
+    const { placeholder, handleSearch, storeConfig, popoverProps = {}, textfieldProps = {} } = props;
     const { t } = useTranslation(['common']);
     const [item, setItem] = React.useState(null);
     const [isShow, setIsShow] = React.useState(false);
@@ -111,6 +112,7 @@ export default function AutocompleteSearch(props) {
                 if (!loading && !lCategory && !called && !cCategory) {
                     actGetProduct();
                     actGetCategory();
+
                     if (enableMultiseller) {
                         if (!cSeller) {
                             actGetSeller();
@@ -272,7 +274,7 @@ export default function AutocompleteSearch(props) {
 
     return (
         <div className={cx('mobile:max-tablet:mt-2', 'mobile:max-tablet:pb-3', 'flex', 'flex-row', 'justify-center')}>
-            <Popover content={<PopoverContent />} open={isShow} setOpen={setIsShow}>
+            <Popover content={<PopoverContent />} open={isShow} setOpen={setIsShow} {...popoverProps}>
                 <TextField
                     value={searchKeyword}
                     placeholder={placeholder || t('common:search:title')}
@@ -316,6 +318,7 @@ export default function AutocompleteSearch(props) {
                         'tablet:max-desktop:max-w-[480px]',
                         'desktop:w-[560px]',
                         'border-none',
+                        textfieldProps?.className || '',
                     )}
                     inputProps={{
                         className:

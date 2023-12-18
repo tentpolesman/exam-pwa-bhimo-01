@@ -80,6 +80,12 @@ const MagezonElement = (props) => {
         border_top_right_radius,
         border_bottom_left_radius,
         border_bottom_right_radius,
+        border_style,
+        border_top_width,
+        border_right_width,
+        border_left_width,
+        border_bottom_width,
+        background_position,
     } = props;
     const { base_media_url } = storeConfig;
     let childrenContent;
@@ -295,6 +301,12 @@ const MagezonElement = (props) => {
                         ${border_top_right_radius ? `border-top-right-radius: ${border_top_right_radius || 0}px;` : ''}
                         ${border_bottom_left_radius ? `border-bottom-left-radius: ${border_bottom_left_radius || 0}px;` : ''}
                         ${border_bottom_right_radius ? `border-bottom-right-radius: ${border_bottom_left_radius || 0}px;` : ''}
+                        ${border_style ? `border-style: ${border_style};` : ''}
+                        ${background_position ? `background-position: ${background_position?.split('-').join(' ')};` : ''}
+                        ${border_top_width ? `border-top-width: ${border_top_width || 0}px;` : ''}
+                        ${border_right_width ? `border-right-width: ${border_right_width || 0}px;` : ''}
+                        ${border_bottom_width ? `border-bottom-width: ${border_bottom_width || 0}px;` : ''}
+                        ${border_left_width ? `border-left-width: ${border_left_width || 0}px;` : ''}
                     }
                     @media screen and (max-width: 360px) {
                         .full_height {
