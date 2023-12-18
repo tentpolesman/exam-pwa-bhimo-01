@@ -2,8 +2,6 @@ import React from 'react';
 import PriceFormat from '@common_priceformat';
 import Typography from '@common_typography';
 
-import useStyles from '@core_modules/product/plugins/OptionItem/GroupedOption/style';
-
 const ItemGrouped = ({
     max = 10000,
     disabled = false,
@@ -11,7 +9,6 @@ const ItemGrouped = ({
     itemsCart = {},
     setItemsCart = () => {},
 }) => {
-    const styles = useStyles();
     const [localValue, setLocalValue] = React.useState(itemsCart[product.sku] || 0);
 
     const handleLocalChange = (event) => {
@@ -35,8 +32,8 @@ const ItemGrouped = ({
     };
 
     return (
-        <div className={styles.item}>
-            <div className={styles.itemName}>
+        <div className="flex flex-row items-center justify-between min-h-max py-2 border-b-[2px] border-b-neutral-100">
+            <div className="flex flex-col">
                 <Typography>{product.name}</Typography>
                 <PriceFormat
                     priceRange={product.price_range}
@@ -56,7 +53,7 @@ const ItemGrouped = ({
                     )
                     : (
                         <input
-                            className={styles.inputQty}
+                            className="min-h-[20px] max-w-[50px] tablet:max-w[60px] tablet:min-h-[30px] text-center"
                             type="number"
                             onChange={handleLocalChange}
                             readOnly={disabled}

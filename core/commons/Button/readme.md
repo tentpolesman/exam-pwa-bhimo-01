@@ -30,3 +30,4 @@ import Button from '@common_button';
 | icon | false | Icon from [heroicon]("https://unpkg.com/browse/@heroicons/react@2.0.18/24/outline/")  | element |
 |iconPosition | false | position of icon (left or right), default left | string |
 | iconOnly | false | render button icon only | bool |
+|linkProps | false | additional next/link props to provide button variant link | object|

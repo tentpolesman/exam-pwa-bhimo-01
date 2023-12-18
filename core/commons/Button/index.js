@@ -24,6 +24,7 @@ const Button = (props) => {
         iconOnly,
         textProps = {},
         iconProps = {},
+        linkProps = {},
         customChildren,
         underline,
         ...restProps
@@ -150,6 +151,7 @@ const Button = (props) => {
                     classes,
                 )}
                 onClick={onClick}
+                {...linkProps}
             >
                 <ButtonContent />
                 {customChildren && customChildren}

@@ -75,7 +75,7 @@ const ProductLabel = ({
     return (
         <div className={cx('product-label', className)}>
             {
-                (config.enabled && config.new.enabled && showLabelNew) && (
+                (config.enable && config.new.enable && showLabelNew) && (
                     <Badge
                         bold
                         success
@@ -86,7 +86,7 @@ const ProductLabel = ({
                 )
             }
             {
-                (config.enabled && config.sale.enabled && showSale) && (
+                (config.enable && config.sale.enable && showSale) && (
                     <Badge
                         bold
                         danger

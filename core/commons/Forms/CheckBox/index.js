@@ -125,6 +125,7 @@ const CheckBox = (props) => {
                                 value={item.value ? item.value : item}
                                 dataValues={selected}
                                 onChange={(val) => !disabled && setCheckedFilter(val)}
+                                disabled={item.disabled || disabled}
                                 {...item}
                             />
                         );
@@ -133,7 +134,7 @@ const CheckBox = (props) => {
                         <div key={idx} className="flex items-center mb-1">
                             <input
                                 type="checkbox"
-                                disabled={disabled}
+                                disabled={item.disabled || disabled}
                                 className={cx(
                                     'form-checkbox',
                                     'w-4',

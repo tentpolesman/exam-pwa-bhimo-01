@@ -10,6 +10,7 @@ import useStyles from '@core_modules/product/plugins/OptionItem/BundleOption/sty
 
 const Button = dynamic(() => import('@common_button'), { ssr: false });
 const Customize = dynamic(() => import('@core_modules/product/plugins/OptionItem/BundleOption/components/customize'), { ssr: true });
+const OptionItemAction = dynamic(() => import('@core_modules/product/plugins/OptionItemAction'), { ssr: true });
 
 const Accordion = withStyles(
     {
@@ -67,12 +68,39 @@ const BundleView = (props) => {
     const {
         t, data, items, changeQty, generateBundlePrice, selectOptions,
         handleAddToCart, loading, disabled, customButton, currencyCache,
+        CustomFooter, isPlp, ...other
     } = props;
     const [open, setOpen] = React.useState(false || (typeof window !== 'undefined' && window.innerWidth <= 768));
     const styles = useStyles();
 
     if (customButton) {
         return customButton;
+    }
+
+    if (isPlp) {
+        return (
+            <>
+                <div />
+                {React.isValidElement(CustomFooter)
+                    ? React.cloneElement(CustomFooter, {
+                        ...other,
+                        loading,
+                        disabled,
+                        handleAddToCart,
+                        t,
+                    })
+                    : (
+                        <OptionItemAction
+                            loading={loading}
+                            disabled={disabled}
+                            showQty={false}
+                            handleAddToCart={handleAddToCart}
+                            t={t}
+                            {...other}
+                        />
+                    )}
+            </>
+        );
     }
 
     return (

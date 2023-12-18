@@ -87,6 +87,7 @@ const OptionsItemsBundle = (props) => {
         loading: customLoading,
         setLoading: setCustomLoading,
         customButton,
+        ...other
     } = props;
 
     // cache currency
@@ -277,6 +278,7 @@ const OptionsItemsBundle = (props) => {
             disabled={stock_status === 'OUT_OF_STOCK'}
             customButton={customButton}
             currencyCache={currencyCache}
+            {...other}
         />
     );
 };

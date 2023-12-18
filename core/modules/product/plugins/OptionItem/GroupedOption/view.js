@@ -2,8 +2,8 @@ import React from 'react';
 import Typography from '@common_typography';
 import classNames from 'classnames';
 import OptionItemAction from '@core_modules/product/plugins/OptionItemAction';
-import useStyles from '@core_modules/product/plugins/OptionItem/GroupedOption/style';
 import Item from '@core_modules/product/plugins/OptionItem/GroupedOption/Item';
+import Show from '@common/Show';
 
 const GroupedProductOptionView = ({
     t, loading, disabled,
@@ -12,14 +12,19 @@ const GroupedProductOptionView = ({
     optionsData = [],
     itemsCart,
     setItemsCart,
+    isPlp,
+    CustomFooter,
     ...other
-}) => {
-    const styles = useStyles();
-    return (
-        <div className={styles.container}>
-            { (!loadData && optionsData.length > 0) ? (
-                <div className={styles.itemsBox}>
-                    <div className={classNames(styles.item, styles.header)}>
+}) => (
+    <>
+        <div className="flex flex-col">
+            <Show when={!isPlp && (!loadData && optionsData.length > 0)}>
+                <div className="flex flex-col mb-7">
+                    <div className={classNames(
+                        'flex flex-row items-center justify-between min-h-[50px] border-b-[2px] border-b-neutral-100 py-2',
+                        'border-b-primary',
+                    )}
+                    >
                         <Typography type="bold">{t('common:product:titleProduct')}</Typography>
                         <Typography type="bold">{t('common:title:shortQty')}</Typography>
                     </div>
@@ -35,18 +40,27 @@ const GroupedProductOptionView = ({
                         ))
                     }
                 </div>
-            ) : null }
-            <OptionItemAction
-                loading={loading}
-                disabled={disabled}
-                showQty={false}
-                handleAddToCart={handleAddToCart}
-                t={t}
-                showAddToCart
-                {...other}
-            />
+            </Show>
         </div>
-    );
-};
+
+        {React.isValidElement(CustomFooter)
+            ? React.cloneElement(CustomFooter, {
+                ...other,
+                loading,
+                disabled,
+                handleAddToCart,
+                t,
+            })
+            : (
+                <OptionItemAction
+                    loading={loading}
+                    disabled={disabled}
+                    handleAddToCart={handleAddToCart}
+                    t={t}
+                    {...other}
+                />
+            )}
+    </>
+);
 
 export default GroupedProductOptionView;

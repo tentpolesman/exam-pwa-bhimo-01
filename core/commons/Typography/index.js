@@ -45,7 +45,7 @@ const Typography = (props) => {
         return <span {...propsExtra} className={cx('text-2md', 'font-normal', 'leading-2lg', 'tracking-normal', classes)}>{children}</span>;
     }
     if (variant === 'bd-1c') {
-        return <span {...propsExtra} className={cx('text-xl', 'font-medium', 'leading-xl', 'tracking-normal', classes)}>{children}</span>;
+        return <span {...propsExtra} className={cx('text-lg', 'font-medium', 'leading-xl', 'tracking-normal', classes)}>{children}</span>;
     }
     if (variant === 'bd-2') {
         return <span {...propsExtra} className={cx('text-md', 'font-bold', 'leading-lg', 'tracking-normal', classes)}>{children}</span>;
