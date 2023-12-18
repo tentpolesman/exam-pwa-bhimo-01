@@ -29,6 +29,7 @@ const ViewTopNavigation = (props) => {
         deviceWidth,
         appName,
         installMessage,
+        ...other
     } = props;
 
     const [showGlobalPromo, setShowGlobalPromo] = React.useState(false);
@@ -64,7 +65,7 @@ const ViewTopNavigation = (props) => {
     return (
         <div
             id="header-inner"
-            className={cx('z-[1100]', 'w-[100%]', 'transition-all', 'delay-100', 'duration-500', 'ease-in-out', 'top-0', 'bg-neutral-white', {
+            className={cx('z-[999]', 'w-[100%]', 'transition-all', 'delay-100', 'duration-500', 'ease-in-out', 'top-0', 'bg-neutral-white', {
                 '!fixed': storeConfig && storeConfig.pwa && storeConfig.pwa.enabler_sticky_header && deviceWidth >= 768,
                 '!relative': storeConfig && !storeConfig.pwa && !storeConfig.pwa.enabler_sticky_header,
                 'top-[38px]': showGlobalPromo && deviceWidth >= 768,
@@ -84,6 +85,7 @@ const ViewTopNavigation = (props) => {
                         handleLogout={handleLogout}
                         customer={customer}
                         deviceWidth={deviceWidth}
+                        {...other}
                     />
                     <TabletHeader
                         t={t}
@@ -97,6 +99,7 @@ const ViewTopNavigation = (props) => {
                         handleLogout={handleLogout}
                         customer={customer}
                         deviceWidth={deviceWidth}
+                        {...other}
                     />
                     <MobileHeader
                         t={t}
@@ -113,6 +116,7 @@ const ViewTopNavigation = (props) => {
                         deviceWidth={deviceWidth}
                         appName={appName}
                         installMessage={installMessage}
+                        {...other}
                     />
                 </div>
             </div>
@@ -124,15 +128,6 @@ const ViewTopNavigation = (props) => {
                     .menu-category {
                         width: fit-content;
                         display: block;
-                    }
-                    .global-promo {
-                        height: 45px;
-                        border-bottom: 1px solid #d6d6d6;
-                        display: flex;
-                        align-items: center;
-                        padding: 10px 0;
-                        margin: 0;
-                        background-color: red;
                     }
                 `}
             </style>

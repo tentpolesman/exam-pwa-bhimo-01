@@ -5,11 +5,9 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import CmsRenderer from '@core_modules/cms/components/cms-renderer';
-import '@fortawesome/fontawesome-free/css/all.min.css';
 import getPath from '@helper_getpath';
 import { getResolver, setResolver } from '@helper_localstorage';
 // import { PRIMARY, WHITE } from '@theme_color';
-import 'animate.css';
 import cx from 'classnames';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
@@ -21,7 +19,7 @@ const Menu = (props) => {
     const { data, storeConfig } = props;
 
     const cmsPages = storeConfig && storeConfig.cms_page ? storeConfig.cms_page.split(',') : [];
-    let menu = storeConfig.pwa.ves_menu_enable ? data?.vesMenu?.items : data?.categoryList[0].children;
+    let menu = storeConfig.pwa.ves_menu_enable ? data?.vesMenu?.items : data?.categories?.items[0]?.children;
     if (!menu) {
         menu = [];
     }
@@ -61,7 +59,7 @@ const Menu = (props) => {
         } else {
             urlResolver[link] = {
                 type: 'CATEGORY',
-                id: cat.id,
+                id: cat.uid,
             };
             await setResolver(urlResolver);
         }
@@ -75,7 +73,8 @@ const Menu = (props) => {
                 clip-rule="evenodd"
             />
         </svg>
-  `;
+    `;
+
     return (
         <nav className="menu-wrapper" role="navigation">
             <ul className="nav" role="menubar" id="header-nav-menubar">
@@ -85,6 +84,7 @@ const Menu = (props) => {
 
                         const linkEl = useRef(null);
                         const megaMenuRef = useRef(null);
+                        const refLi = useRef(null);
 
                         let prefix = '';
                         if (val.icon_classes !== '') {
@@ -111,6 +111,7 @@ const Menu = (props) => {
                                 key={idx}
                                 role="menuitem"
                                 id={`header-menuitem-${idx}`}
+                                ref={refLi}
                                 onMouseEnter={() => {
                                     if (megaMenuRef && val.dropdown_animation_in) {
                                         megaMenuRef.current.classList.add('animate__animated');
@@ -179,25 +180,15 @@ const Menu = (props) => {
                                     <a
                                         href="#"
                                         dangerouslySetInnerHTML={{
-                                            __html: val.name,
+                                            __html: prefix !== '' ? `${prefix}` : val.name,
                                         }}
                                     />
                                 )}
 
                                 {val.children.length > 0 ? (
                                     <div
-                                        className={cx(
-                                            // className,
-                                            'mega-menu',
-                                            'grid',
-                                            'bg-neutral-white',
-                                            'shadow-md',
-                                            'pt-4',
-                                            'tablet:w-[568px]',
-                                            'desktop:w-[1000px]',
-                                            'grid-cols-1',
-                                            'tablet:left-0',
-                                        )}
+                                        className={cx('mega-menu', 'grid', 'bg-neutral-white', 'shadow-md', 'grid-cols-1', 'rounded-lg')}
+                                        style={{ left: `${refLi.offsetLeft}px` }}
                                         aria-hidden="true"
                                         role="menu"
                                         ref={megaMenuRef}
@@ -273,7 +264,7 @@ const Menu = (props) => {
                         cursor: default;
                         display: inline-block;
                         position: relative;
-                        z-index: 500;
+                        z-index: 20;
                     }
 
                     /* menu list */
@@ -287,7 +278,7 @@ const Menu = (props) => {
                         line-height: 3.5;
                         padding: 0 1.25rem 0 0.25rem;
                         transition: all 0.3s ease;
-                        z-index: 510;
+                        z-index: 20;
                         position: relative;
                     }
                     .nav > li:hover > a + .pointer {
@@ -313,7 +304,7 @@ const Menu = (props) => {
                         height: 3.5em;
                         position: relative;
                         width: inherit;
-                        z-index: 510;
+                        z-index: 20;
                     }
                     .nav-search input[type='text'] {
                         background: #372f2b;
@@ -358,7 +349,6 @@ const Menu = (props) => {
                         transition: all 0s ease 0s;
                         visibility: hidden;
                         margin-left: 0%;
-                        min-height: 300px;
                     }
                     li:hover > .mega-menu {
                         opacity: 1;
@@ -373,14 +363,11 @@ const Menu = (props) => {
                             border-top: 5px solid #000000;
                             border-radius: 0 0 3px 3px;
                             opacity: 0;
-                            position: absolute;
                             transition: all 0s ease 0s;
                             visibility: hidden;
-                            width: 1000px;
                             left: 0;
                             padding: auto;
                             margin: auto;
-                            min-height: 300px;
                         }
                         li:hover > .mega-menu {
                             opacity: 1;
@@ -397,12 +384,6 @@ const Menu = (props) => {
                         }
                     }
 
-                    @media (min-width: 1600px) {
-                        .mega-menu {
-                            width: 1200px;
-                        }
-                    }
-
                     /* menu content */
                     .nav-column a {
                         color: #000000 !important;
@@ -413,12 +394,12 @@ const Menu = (props) => {
                         padding: 7px;
                     }
                     .nav-column a:hover {
-                        color: #000000 !important;
+                        color: #be1f93 !important;
                     }
 
                     .nav-column .active {
-                        color: #000000 !important;
-                        background: #dcdcdc;
+                        color: #be1f93 !important;
+                        background: #ffffff;
                     }
                     .nav-column h3 {
                         color: #372f2b;
