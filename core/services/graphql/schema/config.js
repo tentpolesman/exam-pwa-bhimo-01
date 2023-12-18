@@ -1,45 +1,58 @@
 /* eslint-disable import/prefer-default-export */
 export const getCategories = `
-    {
-        categoryList {
+{
+    categories {
+        items {
+            uid
+            name
+            level
+            path
+            url_path
+            url_key
+            include_in_menu
             children_count
             children {
-                id
-                level
+                uid
                 name
+                level
                 path
                 url_path
                 url_key
                 include_in_menu
+                children_count
                 children {
-                    id
-                    level
+                    uid
                     name
+                    level
                     path
                     url_path
                     url_key
-                    image
-                    image_path
+                    include_in_menu
+                    children_count
                     children {
-                        id
-                        level
+                        uid
                         name
+                        level
                         path
                         url_path
                         url_key
+                        include_in_menu
+                        children_count
                         children {
-                            id
-                            level
+                            uid
                             name
+                            level
                             path
                             url_path
                             url_key
+                            include_in_menu
                         }
                     }
                 }
             }
         }
     }
+}
 `;
 
 export const getVesMenu = `

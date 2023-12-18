@@ -24,7 +24,6 @@ const ProductReview = (props) => {
     const {
         open, setOpen, reviewItem, t, storeConfig,
     } = props;
-    console.log('prodrev', storeConfig);
     const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
     if (reviewItem) {
         return (

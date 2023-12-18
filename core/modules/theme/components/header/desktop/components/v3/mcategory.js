@@ -4,19 +4,18 @@
 /* eslint-disable react/no-danger */
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useRef } from 'react';
-import { WHITE, PRIMARY } from '@theme_color';
-import getPath from '@helper_getpath';
-import { setResolver, getResolver } from '@helper_localstorage';
-import classNames from 'classnames';
-import Link from 'next/link';
-import dynamic from 'next/dynamic';
-import CmsRenderer from '@core_modules/cms/components/cms-renderer';
-import { makeStyles } from '@material-ui/core/styles';
-import { useRouter } from 'next/router';
-import '@fortawesome/fontawesome-free/css/all.min.css';
-import 'animate.css';
 import { basePath } from '@config';
+import CmsRenderer from '@core_modules/cms/components/cms-renderer';
+import getPath from '@helper_getpath';
+import { getResolver, setResolver } from '@helper_localstorage';
+import { makeStyles } from '@material-ui/core/styles';
+import { PRIMARY, WHITE } from '@theme_color';
+import 'animate.css';
+import classNames from 'classnames';
+import dynamic from 'next/dynamic';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import React, { useRef } from 'react';
 
 const MenuChildren = dynamic(() => import('@common_headerdesktop/components/v3/mcategoryChildren'), { ssr: false });
 

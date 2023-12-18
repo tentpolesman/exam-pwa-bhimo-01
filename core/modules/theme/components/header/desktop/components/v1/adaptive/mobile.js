@@ -24,7 +24,11 @@ import MagnifyingGlassIcon from '@heroicons/react/24/outline/MagnifyingGlassIcon
 import Bars3Icon from '@heroicons/react/24/solid/Bars3Icon';
 import XMarkIcon from '@heroicons/react/24/solid/XMarkIcon';
 
+import { getCategories } from '@core_modules/theme/services/graphql';
+
 const Autocomplete = dynamic(() => import('@core_modules/theme/components/header/desktop/components/autocomplete'), { ssr: false });
+const BurgerMenuCategories = dynamic(() => import('@core_modules/theme/components/header/desktop/components/burgermenu/categories'), { ssr: false });
+const BurgerMenuAccount = dynamic(() => import('@core_modules/theme/components/header/desktop/components/burgermenu/account/index'), { ssr: false });
 const ShoppingBagIcon = dynamic(() => import('@plugin_shoppingbag'), { ssr: true });
 const GlobalPromoMessage = dynamic(() => import('@core_modules/theme/components/globalPromo'), { ssr: true });
 
@@ -48,6 +52,8 @@ const TabletMobile = (props) => {
 
     const { modules } = config;
     const adminId = Cookies.get('admin_id');
+
+    const { data } = getCategories();
 
     const [isSearchShown, setIsSearchShown] = React.useState(false);
 
@@ -83,56 +89,12 @@ const TabletMobile = (props) => {
     const burgerMenuData = [
         {
             title: 'Menu',
-            content: <p className={cx('p-4')}>Reserved For Ves Menu</p>,
+            content: data && <BurgerMenuCategories data={data.categories.items[0].children} />,
             type: 'react-component',
         },
         {
             title: 'Account',
-            content: (
-                <>
-                    {!isLogin ? (
-                        <div className={cx('p-4')}>
-                            <div className={cx('grid', 'grid-cols-1', 'gap-y-4', 'pb-4', 'border-b-[1px]', 'border-neutral-300')}>
-                                <Link href="/customer/account" prefetch={false}>
-                                    <Typography className={cx('py-[13px]', 'px-4')}>My Account</Typography>
-                                </Link>
-                                <Link href="/wishlist" prefetch={false}>
-                                    <Typography className={cx('py-[13px]', 'px-4')}>My Wishlist</Typography>
-                                </Link>
-                                <Link href="/catalog/product_compare" prefetch={false}>
-                                    <Typography className={cx('py-[13px]', 'px-4')}>Compare Products</Typography>
-                                </Link>
-                                <Button
-                                    className={cx(
-                                        '!px-0',
-                                        '!py-0',
-                                        'hover:shadow-none',
-                                        'focus:shadow-none',
-                                        'active:shadow-none',
-                                        'active:shadow-none',
-                                    )}
-                                    onClick={handleLogout}
-                                    variant="tertiary"
-                                    classNameText={cx('!text-red-500')}
-                                >
-                                    <Typography className={cx('py-[0]', 'px-4', 'text-red-500')}>Log Out</Typography>
-                                </Button>
-                            </div>
-                        </div>
-                    ) : (
-                        <div className={cx('p-4')}>
-                            <div className={cx('grid', 'grid-cols-1', 'gap-y-4', 'pb-4')}>
-                                <Link href="/customer/account/login" prefetch={false}>
-                                    <Typography className={cx('py-[13px]', 'px-4')}>Log in / Register</Typography>
-                                </Link>
-                                <Link href="/catalog/product_compare" prefetch={false}>
-                                    <Typography className={cx('py-[13px]', 'px-4')}>Compare Products</Typography>
-                                </Link>
-                            </div>
-                        </div>
-                    )}
-                </>
-            ),
+            content: <BurgerMenuAccount isLogin={isLogin} handleLogout={handleLogout} />,
             type: 'react-component',
         },
     ];
@@ -151,7 +113,7 @@ const TabletMobile = (props) => {
                     'gap-x-[10px]',
                     'fixed',
                     'bottom-0',
-                    'z-[1050]',
+                    'z-10',
                     'w-[100vw]',
                     'bg-neutral-white',
                 )}
@@ -221,7 +183,9 @@ const TabletMobile = (props) => {
                     open={openBurgerMenu}
                     handleClose={() => setOpenBurgerMenu(false)}
                     position="left"
-                    className={cx('mobile:max-tablet:w-[320px]')}
+                    className={cx('mobile:max-tablet:w-[300px]')}
+                    customButtonClose
+                    backdrop
                 >
                     <Tabs
                         data={burgerMenuData}
