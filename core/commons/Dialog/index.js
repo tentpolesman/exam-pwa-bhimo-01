@@ -32,6 +32,7 @@ const Dialog = ({
     useCloseTitleButton,
     onClickCloseTitle,
     children,
+    classWrapperTitle,
 }) => {
     const isVariantPlain = variant === 'plain';
     const isVariantContainer = variant === 'container';
@@ -95,6 +96,7 @@ const Dialog = ({
                                 'rounded-t-[12px]',
                                 'flex items-center justify-between',
                                 'py-[16px]',
+                                classWrapperTitle,
                             )
                         }
                         >
@@ -182,7 +184,7 @@ const Dialog = ({
                                                 onClick={positiveAction}
                                                 className={
                                                     cx(
-                                                        'py-[12px] px-[22px] border-0 mobile:w-[50%] mobile:w-[50%] desktop:w-auto tablet:w-auto',
+                                                        'py-[12px] px-[22px] border-0 mobile:w-[50%] desktop:w-auto tablet:w-auto',
                                                         !negativeAction && '!w-[100%]',
                                                     )
                                                 }
@@ -233,6 +235,7 @@ Dialog.propTypes = {
     backdrop: propTypes.bool,
     closeOnBackdrop: propTypes.bool,
     onClose: propTypes.func,
+    classWrapperTitle: propTypes.string,
 };
 
 Dialog.defaultProps = {
@@ -251,6 +254,7 @@ Dialog.defaultProps = {
     backdrop: true,
     closeOnBackdrop: false,
     onClose: () => {},
+    classWrapperTitle: '',
 };
 
 export default Dialog;

@@ -49,6 +49,7 @@ const ProductDetailAction = ({
     useProductRelated = false,
     useProductUpsell = false,
     Content,
+    ...other
 }) => {
     const route = useRouter();
     const { isDesktop, isTablet, isMobile } = useMediaQuery();
@@ -90,7 +91,7 @@ const ProductDetailAction = ({
 
     // data tabs
     let expandData = [];
-    if (item.description.html) {
+    if (item?.description?.html) {
         expandData = [
             ...expandData,
             {
@@ -512,6 +513,7 @@ const ProductDetailAction = ({
                 ...item,
                 weltpixel_labels,
             }}
+            {...other}
         />
     );
 };

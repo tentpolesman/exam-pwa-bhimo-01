@@ -7,7 +7,7 @@ import dynamic from 'next/dynamic';
 import 'open-iconic/font/css/open-iconic-bootstrap.css';
 import React from 'react';
 
-const MagezonSlider = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonSlider'), { ssr: false });
+const MagezonSlider = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonSlider'));
 const MagezonCaraousel = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonCaraousel'), { ssr: false });
 const MagezonColumn = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonColumn'));
 const MagezonRow = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonRow'));
@@ -68,6 +68,18 @@ const MagezonElement = (props) => {
         el_id,
         el_inner_class,
         storeConfig,
+        margin_top,
+        margin_right,
+        margin_bottom,
+        margin_left,
+        padding_top,
+        padding_right,
+        padding_bottom,
+        padding_left,
+        border_top_left_radius,
+        border_top_right_radius,
+        border_bottom_left_radius,
+        border_bottom_right_radius,
     } = props;
     const { base_media_url } = storeConfig;
     let childrenContent;
@@ -274,6 +286,15 @@ const MagezonElement = (props) => {
                         position: relative;
                         width: 100%;
                         ${background_color ? `background-color: ${background_color};` : ''}
+                    }
+                    .mgz-element-inner {
+                        overflow: hidden;
+                        margin: ${margin_top || 0}px ${margin_right || 0}px ${margin_bottom || 0}px ${margin_left || 0}px;
+                        padding: ${padding_top || 0}px ${padding_right || 0}px ${padding_bottom || 0}px ${padding_left || 0}px;
+                        ${border_top_left_radius ? `border-top-left-radius: ${border_top_left_radius || 0}px;` : ''}
+                        ${border_top_right_radius ? `border-top-right-radius: ${border_top_right_radius || 0}px;` : ''}
+                        ${border_bottom_left_radius ? `border-bottom-left-radius: ${border_bottom_left_radius || 0}px;` : ''}
+                        ${border_bottom_right_radius ? `border-bottom-right-radius: ${border_bottom_left_radius || 0}px;` : ''}
                     }
                     @media screen and (max-width: 360px) {
                         .full_height {

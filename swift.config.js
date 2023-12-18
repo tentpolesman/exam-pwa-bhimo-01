@@ -234,6 +234,13 @@ const modules = {
     catalog: {
         enabled: true,
         productListing: {
+            quickView: {
+                bannerImage: {
+                    mobile: 296,
+                    tablet: 296,
+                    desktop: 400,
+                },
+            },
             sort: {
                 relevance: true,
                 position: true,

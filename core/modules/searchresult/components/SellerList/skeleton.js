@@ -1,23 +1,17 @@
-import Skeleton from '@material-ui/lab/Skeleton';
-import useStyles from '@core_modules/searchresult/components/style';
+import Skeleton from '@common/Skeleton';
 
-const SkeletonSeller = () => {
-    const styles = useStyles();
-    return (
-        <>
-            <div className={styles.titleContainer}>
-                <div className={styles.sellerContainer}>
-                    <div className={styles.imageContainer}>
-                        <Skeleton animation="wave" variant="rect" width={50} height={55} />
-                    </div>
-                    <div>
-                        <Skeleton animation="wave" variant="rect" width={150} height={30} />
-                        <Skeleton animation="wave" variant="text" width={150} height={30} />
-                    </div>
-                </div>
+const SkeletonSeller = () => (
+    <div className="flex flex-row justify-between items-center">
+        <div className="flex flex-row mt-3">
+            <div className="flex">
+                <Skeleton width={50} height={55} />
             </div>
-        </>
-    );
-};
+            <div>
+                <Skeleton width={150} height={30} />
+                <Skeleton width={150} height={30} />
+            </div>
+        </div>
+    </div>
+);
 
 export default SkeletonSeller;

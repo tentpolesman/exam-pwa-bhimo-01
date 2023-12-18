@@ -36,18 +36,15 @@ const Content = (props) => {
 
     if (homePageConfig && useCmsPage && useCmsPage.enable) {
         content = (
-            <>
-                <CmsPage
-                    onlyCms
-                    slug={[useCmsPage.identifier]}
-                    withLayoutHeader
-                    withLayoutFooter
-                    withCmsTitle={false}
-                    {...other}
-                    storeConfig={storeConfig}
-                    pageConfig={cmsHome}
-                />
-            </>
+            <CmsPage
+                slug={[useCmsPage.identifier]}
+                withLayoutHeader
+                withLayoutFooter
+                withCmsTitle={false}
+                {...other}
+                storeConfig={storeConfig}
+                pageConfig={cmsHome}
+            />
         );
     } else {
         const Config = {

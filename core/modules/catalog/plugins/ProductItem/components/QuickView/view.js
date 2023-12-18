@@ -1,56 +1,26 @@
 import Dialog from '@common/Dialog';
 import cx from 'classnames';
 import XMarkIcon from '@heroicons/react/24/solid/XMarkIcon';
-import Typography from '@common_typography';
-import RatingStar from '@common_ratingstar';
-import OptionItem from '@core_modules/product/plugins/OptionItem';
-import Divider from '@common/Divider';
-import parse from 'html-react-parser';
-import Button from '@common/Button';
-import HeartIcon from '@heroicons/react/24/outline/HeartIcon';
-import CompareIcon from '@heroicons/react/24/outline/ArrowsRightLeftIcon';
-// import Banner from '@common_slick/BannerThumbnail';
-import WeltpixelLabel from '../WeltpixelLabel';
+import ProductDetailAction from '@plugin_productdetailaction';
+import { modules } from '@config';
+import useMediaQuery from '@hook/useMediaQuery';
 
 const QuickView = (props) => {
     const {
-        open, handleClose,
-        generatePrice,
-        // generateTiersPrice,
-        price,
-        priceData,
-        product,
-        t,
-        dataPrice,
-        setBanner,
-        setPrice,
-        setStockStatus,
-        setAdditionalPrice,
-        customizableOptions,
-        setCustomizableOptions,
-        errorCustomizableOptions,
-        checkCustomizableOptionsValue,
-        additionalPrice,
-        setSpesificProduct,
-        reviewValue,
-        // banner,
-        storeConfig,
-        weltpixel_labels,
+        open, handleClose, ...other
     } = props;
 
-    const { short_description = '' } = product;
+    const {
+        screen,
+    } = useMediaQuery();
 
-    let shortDescription = '';
-
-    if (typeof short_description === 'string') {
-        shortDescription = '';
-    } else if (short_description) {
-        shortDescription = short_description.html;
-    }
+    const mainImage = modules.catalog.productListing.quickView.bannerImage[screen];
 
     return (
         <Dialog
             open={open}
+            variant="container"
+            classWrapperTitle="!hidden"
             content={(
                 <div className={cx(
                     'w-full flex flex-col desktop:flex-row-reverse gap-2 !bg-[transparent]',
@@ -71,128 +41,45 @@ const QuickView = (props) => {
                     </div>
                     <div className={cx(
                         'w-full h-max max-h-[calc(100vh-60px)] p-8 bg-neutral-white rounded-lg',
-                        'flex flex-col tablet:flex-row gap-4 tablet:gap-6',
                         'shadow-xl overflow-y-scroll',
                     )}
                     >
-                        <div className="max-h-[50%] tablet:w-[296px] tablet:h-[296px] desktop:w-[400px] desktop:h-[400px]">
-                            {storeConfig?.pwa?.label_enable && storeConfig?.pwa?.label_weltpixel_enable && (
-                                <WeltpixelLabel t={t} weltpixel_labels={weltpixel_labels} categoryLabel={false} />
+                        <ProductDetailAction
+                            useReviewList={false}
+                            useProductTabs={false}
+                            useProductImagePreview={false}
+                            useShareProduct
+                            classContainer="!mt-0 gap-4 tablet:gap-6"
+                            useProductRelated={false}
+                            imageSliderProps={{
+                                detectAutoScreen: false,
+                                horizontalThumbnail: true,
+                                imageProps: {
+                                    mainImage,
+                                },
+
+                                customStyleImageWrapper: {
+                                    width: mainImage,
+                                    height: mainImage,
+                                },
+                                customStyleImageContainer: {
+                                    width: mainImage,
+                                    height: mainImage,
+                                },
+                            }}
+                            classContentWrapper={cx(
+                                'desktop:!pl-0',
+                                'desktop:!ml-0 tablet:!ml-0',
+                                'desktop:!px-0 tablet:!px-0 mobile:!px-0',
                             )}
-                            <div className="w-[296px] h-[296px]" />
-                            {/* <Banner
-                                data={banner}
-                                noLink
-                                thumbnail
-                                showArrow
-                                autoPlay={false}
-                                width={400}
-                                height={400}
-                                // customClassCaraousel={styles.caraousel}
-                                storeConfig={storeConfig}
-                            /> */}
-                        </div>
-                        <div className={cx(
-                            'flex flex-col gap-4 tablet:gap-5',
-                            'w-max desktop:min-w-[450px]',
-                        )}
-                        >
-                            <div className={cx(
-                                'flex flex-col gap-2',
-                            )}
-                            >
-                                {
-                                    product.seller && (
-
-                                        <Typography color="text-primary">{product.seller.seller_name}</Typography>
-                                    )
-                                }
-                                <Typography classNam="line-clamp-2" variant="h2" color="text-neutral-800">
-                                    {product?.name || ''}
-                                </Typography>
-                                {// eslint-disable-next-line no-underscore-dangle
-                                    product.__typename !== 'AwGiftCardProduct' && generatePrice(priceData, price)
-                                }
-                                <div className="flex flex-row gap-2 items-center">
-                                    <RatingStar value={reviewValue || 0} />
-                                    <Typography color="text-neutral-500" className="font-normal" variant="p" type="regular" letter="capitalize">
-                                        {`(${product.review.reviews_count || 0} ${t('product:review')})`}
-                                    </Typography>
-                                </div>
-                            </div>
-                            <div className="py-1">
-                                <Divider />
-                            </div>
-                            <div className="flex flex-col gap-4">
-                                <OptionItem
-                                    price={price}
-                                    t={t}
-                                    data={product}
-                                    dataPrice={dataPrice}
-                                    priceData={priceData}
-                                    setBanner={setBanner}
-                                    setPrice={setPrice}
-                                    setStockStatus={setStockStatus}
-                                    setAdditionalPrice={setAdditionalPrice}
-                                    customizableOptions={customizableOptions}
-                                    setCustomizableOptions={setCustomizableOptions}
-                                    errorCustomizableOptions={errorCustomizableOptions}
-                                    checkCustomizableOptionsValue={checkCustomizableOptionsValue}
-                                    additionalPrice={additionalPrice}
-                                    handleSelecteProduct={setSpesificProduct}
-                                    showAddToCart
-                                    showQty
-                                    labelAddToCart={t('common:button:addToCart')}
-                                    showWishlist={false}
-                                    enableProductCompare={false}
-                                    enableBundle={false}
-                                    enableDownload={false}
-                                    showStockStatus
-                                    stockStatus={product?.stock_status || ''}
-                                    storeConfig={storeConfig}
-                                />
-                            </div>
-                            {
-                                shortDescription && (
-
-                                    <div className="hidden tablet:flex line-clamp-2 text-md text-neutral-500 leading-5">
-                                        {parse(shortDescription)}
-                                    </div>
-                                )
-                            }
-
-                            <div className="py-1">
-                                <Divider />
-                            </div>
-                            <div className="flex flex-col desktop:flex-row justify-between items-start desktop:items-center">
-                                <div className="flex flex-row pl-1">
-                                    Share :
-                                </div>
-                                <div className="inline-flex gap-2">
-                                    <Button
-                                        icon={<HeartIcon />}
-                                        iconPosition="right"
-                                        variant="plain"
-                                        className="!p-1"
-                                    >
-                                        {t('catalog:button:addToWishlist')}
-                                    </Button>
-                                    <Button
-                                        icon={<CompareIcon />}
-                                        iconPosition="right"
-                                        variant="plain"
-                                        className="!p-1"
-                                    >
-                                        {t('catalog:button:addToCompare')}
-                                    </Button>
-                                </div>
-                            </div>
-                        </div>
+                            classImageSliderWrapper="overflow-hidden"
+                            {...other}
+                        />
 
                     </div>
                 </div>
             )}
-            classContainer="!shadow-none tablet:!max-w-[700px] desktop:!max-w-[945px]"
+            classContainer="!shadow-none max-w-[360px] tablet:!max-w-[700px] desktop:!max-w-[945px]"
             classContent="!p-0 !bg-[transparent]"
         />
     );

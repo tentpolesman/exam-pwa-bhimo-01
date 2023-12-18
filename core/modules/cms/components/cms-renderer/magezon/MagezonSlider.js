@@ -12,9 +12,11 @@ import MagezonLink from '@core_modules/cms/components/cms-renderer/magezon/Magez
 import { getStoreHost } from '@helpers/config';
 import ChevronLeft from '@heroicons/react/20/solid/ChevronLeftIcon';
 import ChevronRight from '@heroicons/react/20/solid/ChevronRightIcon';
+import { BREAKPOINTS } from '@root/core/theme/vars';
 import cx from 'classnames';
 import React, { useRef, useState } from 'react';
 import Slider from 'react-slick';
+import useMediaQuery from '@hook/useMediaQuery';
 
 const VideoContent = (props) => {
     const {
@@ -124,6 +126,8 @@ const MagezonSliderContent = (props) => {
         mute,
     } = props;
     const mediaUrl = `${getStoreHost()}media`;
+    const { isMobile } = useMediaQuery();
+    const sliderHeight = isMobile ? '310px' : `${slider_height}px`;
 
     const otherButton1Props = {
         button_border_color: button1_border_color,
@@ -149,7 +153,7 @@ const MagezonSliderContent = (props) => {
     return (
         <>
             {background_type !== 'image' ? (
-                <div style={{ height: `${slider_height}px` }}>
+                <div style={{ height: sliderHeight }}>
                     <VideoContent
                         background_type={background_type}
                         youtube_id={youtube_id}
@@ -249,6 +253,7 @@ const MagezonSliderContent = (props) => {
                                 useContainer={false}
                                 storeConfig={storeConfig}
                                 lazy={lazy}
+                                preload={!lazy}
                                 className="flex w-full h-full"
                             />
                         ) : (
@@ -261,6 +266,7 @@ const MagezonSliderContent = (props) => {
                                     useContainer={false}
                                     storeConfig={storeConfig}
                                     lazy={lazy}
+                                    preload={!lazy}
                                     className="flex w-full h-full"
                                 />
                             </MagezonLink>
@@ -276,6 +282,14 @@ const MagezonSliderContent = (props) => {
                     .magezon-slide-image {
                         height: ${slider_height}px;
                         overflow: hidden;
+                    }
+                    @media screen and (min-width: ${BREAKPOINTS.xs}px) and (max-width: ${BREAKPOINTS.md}px) {
+                        .magezon-slide {
+                            height: 310px;
+                        }
+                        .magezon-slide-image {
+                            height: 310px;
+                        }
                     }
                     .magezon-slide-image img {
                         width: 100%;
@@ -376,7 +390,9 @@ const MagezonSlider = (props) => {
 
     const [slideIdx, setSlideIndex] = useState(0);
     const { unhoverStyle, hoverStyle } = useHoverStyle(image_hover_effect);
-    let slideHeight = storeConfig.pwa?.magezon_slider_desktop_height;
+    const { isMobile } = useMediaQuery();
+
+    let slideHeight = !isMobile ? storeConfig.pwa?.magezon_slider_desktop_height : 310;
     let slideWidth = storeConfig.pwa?.magezon_slider_desktop_width;
     slideHeight = typeof slideHeight === 'string' ? parseInt(slideHeight, 10) : slideHeight;
     slideWidth = typeof slideWidth === 'string' ? parseInt(slideWidth, 10) : slideWidth;
@@ -529,11 +545,20 @@ const MagezonSlider = (props) => {
                     {items.map((item, id) => (
                         <div
                             key={id}
-                            className={cx('magezon-slider--dot-nav-item', 'cursor-pointer', 'rounded-full', 'shadow-base', {
-                                'magezon-slider--dot-nav-item-active': slideIdx === id,
-                                'w-[10px] h-[10px] m-[5px] bg-primary-100 border-2 border-pwa-primary': slideIdx === id,
-                                'w-[8px] h-[8px] m-[5px] bg-neutral-white': slideIdx !== id,
-                            })}
+                            className={cx(
+                                'magezon-slider--dot-nav-item',
+                                'cursor-pointer',
+                                'rounded-full',
+                                'shadow-base',
+                                'w-[6px] tablet:w-[10px] desktop:w-3',
+                                'h-[6px] tablet:h-[10px] desktop:h-3',
+                                'mx-[6px]',
+                                {
+                                    'magezon-slider--dot-nav-item-active': slideIdx === id,
+                                    'bg-primary-100 !shadow-[0_0_0_3px] !shadow-primary': slideIdx === id,
+                                    'bg-neutral-white': slideIdx !== id,
+                                },
+                            )}
                             onClick={() => sliderRef.slickGoTo(id)}
                         />
                     ))}
@@ -557,6 +582,14 @@ const MagezonSlider = (props) => {
                         flex-wrap: nowrap;
                         align-items: center;
                         justify-content: center;
+                    }
+                    @media screen and (min-width: ${BREAKPOINTS.xs}px) and (max-width: ${BREAKPOINTS.md}px) {
+                        .magezon-slider-inner {
+                            height: 310px;
+                        }
+                        .magezon-slider-inner :global(.slick-track) {
+                            height: 310px;
+                        }
                     }
                     .magezon-slider-inner :global(.slick-arrow:before) {
                         font-size: 20px;
@@ -604,7 +637,10 @@ const MagezonSlider = (props) => {
                         display: flex;
                         align-items: center;
                         justify-content: center;
-                        transition: opacity 0.3s ease-in-out, background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+                        transition:
+                            opacity 0.3s ease-in-out,
+                            background-color 0.3s ease-in-out,
+                            color 0.3s ease-in-out;
                     }
                     .magezon-slider--button-nav-item :global(svg) {
                         color: ${owl_color};

@@ -24,8 +24,8 @@ const ImageLoader = () => {
 const Backdrop = ({ open }) => (
     <div
         className={cx(
-            'z-[999]',
-            'bg-opacity-30',
+            'z-[1300]',
+            'bg-opacity-10',
             'bg-neutral-800',
             'section-backdrop',
             'fixed',

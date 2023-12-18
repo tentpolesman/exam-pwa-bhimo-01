@@ -1,25 +1,29 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable no-plusplus */
 import Typography from '@common_typography';
-import Skeleton from '@core_modules/searchresult/components/SellerList/skeleton';
-import useStyles from '@core_modules/searchresult/components/style';
-import Avatar from '@material-ui/core/Avatar';
-import Grid from '@material-ui/core/Grid';
-import Link from '@material-ui/core/Link';
+import Link from 'next/link';
+import Image from '@common_image';
+import Show from '@common/Show';
+import Skeleton from './skeleton';
 
 const SellerItem = (props) => {
-    const styles = useStyles();
     const {
         name, id, logo, city,
     } = props;
     const citySplit = city?.split(',');
 
     return (
-        <div className={styles.titleContainer}>
+        <div className="flex flex-row justify-between items-center">
             <Link href={`/seller/${id}`}>
-                <div className={styles.sellerContainer}>
-                    <div className={styles.imageContainer}>
-                        <Avatar alt="name" src={logo} className={styles.sellerLogo} variant="rounded" />
+                <div className="flex flex-row mt-3">
+                    <div className="float-left mr-5">
+                        <div className="rounded-full flex items-center justify-center h-max w-max">
+                            <Image
+                                src={logo}
+                                classContainer="w-[60px] h-[60px]"
+                                className="w-[60px] h-[60px]"
+                            />
+                        </div>
                     </div>
                     <div>
                         <Typography variant="p" type="bold" letter="capitalize" size="14">
@@ -37,30 +41,22 @@ const SellerItem = (props) => {
 
 const SellerView = (props) => {
     const { data, loading } = props;
-    const styles = useStyles();
 
     return (
-        <div className={styles.wrapper}>
-            <div className={styles.topTitle}>
-                Seller
-            </div>
-            {loading ? (
-                <Grid container>
-                    {[1, 2, 3, 4].map((idx) => (
-                        <Grid key={idx} item xs={12} sm={4} md={3}>
-                            <Skeleton />
-                        </Grid>
-                    ))}
-                </Grid>
-            ) : (
-                <Grid container>
+        <div className="flex flex-col gap-4">
+            <Typography className="font-semibold text-md">Seller</Typography>
+            <div className="grid grid-cols-1 tablet:grid-cols-3 desktop:grid-cols-4">
+                <Show when={loading}>
+                    {
+                        [1, 2, 3, 4].map((key) => <Skeleton key={key} />)
+                    }
+                </Show>
+                <Show when={!loading}>
                     {data.map((item, idx) => (
-                        <Grid key={idx} item xs={12} sm={4} md={3}>
-                            <SellerItem {...item} />
-                        </Grid>
+                        <SellerItem {...item} key={idx} />
                     ))}
-                </Grid>
-            )}
+                </Show>
+            </div>
         </div>
     );
 };

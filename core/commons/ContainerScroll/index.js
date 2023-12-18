@@ -42,7 +42,7 @@ const ContainerScroll = ({
 
     return (
         <div
-            className={cx('container-scroll flex flex-col relative group h-auto', classNameContainer)}
+            className={cx('container-scroll flex flex-col relative group/container-scroll h-auto', classNameContainer)}
             style={{
                 ...(maxHeight ? { maxHeight } : null),
                 ...(maxWidth ? { maxWidth } : null),
@@ -56,7 +56,7 @@ const ContainerScroll = ({
                         'px-[5px]',
                         'absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2',
                         'opacity-0',
-                        'group-hover:opacity-100',
+                        'group-hover/container-scroll:opacity-100',
                         'z-[1]',
                         'pointer-events-none',
                         'order-0',
@@ -65,17 +65,17 @@ const ContainerScroll = ({
                 >
                     <Button
                         variant="tertiary"
-                        className={cx('container-scroll-arrow-left', '!px-[10px]', 'pointer-events-auto', leftNavClassName)}
+                        className={cx('container-scroll-arrow-left', '!px-[10px]', 'pointer-events-auto', 'shadow-md', leftNavClassName)}
                         onClick={onClickArrowLeft}
                     >
-                        <ChevronLeftIcon style={{ width: arrowSize, height: arrowSize }} />
+                        <ChevronLeftIcon className="w-6 h-6 text-primary" style={{ width: arrowSize, height: arrowSize }} />
                     </Button>
                     <Button
                         variant="tertiary"
-                        className={cx('container-scroll-arrow-right', '!px-[10px]', 'pointer-events-auto', rightNavClassName)}
+                        className={cx('container-scroll-arrow-right', '!px-[10px]', 'pointer-events-auto', 'shadow-md', rightNavClassName)}
                         onClick={onClickArrowRight}
                     >
-                        <ChevronRightIcon style={{ width: arrowSize, height: arrowSize }} />
+                        <ChevronRightIcon className="w-6 h-6 text-primary" style={{ width: arrowSize, height: arrowSize }} />
                     </Button>
                 </div>
             </Show>
