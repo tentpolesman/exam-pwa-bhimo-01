@@ -7,7 +7,7 @@
 import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
 import { formatPrice } from '@helper_currency';
-import useStyles from '@plugin_optionitem/BundleOption/style';
+import useStyles from '@core_modules/product/plugins/OptionItem/BundleOption/style';
 import React from 'react';
 
 const Multiple = ({

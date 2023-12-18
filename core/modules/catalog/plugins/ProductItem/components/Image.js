@@ -4,7 +4,7 @@
 import Thumbor from '@common_image';
 import Link from 'next/link';
 import React from 'react';
-import { basePath } from '@config';
+import { basePath, modules } from '@config';
 import cx from 'classnames';
 
 const ImageDetail = (props) => {
@@ -13,8 +13,8 @@ const ImageDetail = (props) => {
         classContainer = '', className = '', isGrid, lazy = true, preload = false,
     } = props;
 
-    let defaultWidth = storeConfig?.pwa?.image_product_width;
-    let defaultHeight = storeConfig?.pwa?.image_product_height;
+    let defaultWidth = modules?.catalog?.productListing?.imageSize?.width;
+    let defaultHeight = modules?.catalog?.productListing?.imageSize?.height;
 
     if (typeof defaultWidth === 'string') defaultWidth = parseInt(defaultWidth, 10);
     if (typeof defaultHeight === 'string') defaultHeight = parseInt(defaultHeight, 10);

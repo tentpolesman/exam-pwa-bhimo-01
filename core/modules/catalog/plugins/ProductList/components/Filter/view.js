@@ -7,7 +7,7 @@ import Divider from '@common_divider';
 
 const FilterView = (props) => {
     const {
-        isSearch, filter = [], handleSave, handleReset,
+        filter = [], handleSave, handleReset,
         scrollContent = true, t,
     } = props;
 
@@ -19,8 +19,8 @@ const FilterView = (props) => {
         >
             {
                 filter && filter.length > 0 && filter.map((itemFilter, key) => {
-                    if ((itemFilter.field === 'cat' || itemFilter.field === 'attribute_set_id') && !isSearch) {
-                        return <span key={key} />;
+                    if ((itemFilter.field === 'cat' || itemFilter.field === 'attribute_set_id')) {
+                        return null;
                     }
                     if (itemFilter.field === 'indexed_attributes' || itemFilter.field === 'category_uid') {
                         return null;

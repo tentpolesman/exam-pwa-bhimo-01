@@ -9,6 +9,7 @@ import cx from 'classnames';
 
 import Show from '@common/Show';
 import dynamic from 'next/dynamic';
+import parser from 'html-react-parser';
 
 const CmsRenderer = dynamic(() => import('@core_modules/cms/components/cms-renderer'));
 
@@ -52,7 +53,7 @@ const Detail = (props) => {
                         color="primary"
                         letter="capitalize"
                     >
-                        {seller.seller_name || ''}
+                        {parser(seller.seller_name || '')}
                     </Typography>
                 </div>
             </Show>
@@ -65,12 +66,12 @@ const Detail = (props) => {
                             !isGrid && 'text-sm tablet:text-[16px]',
                         )}
                     >
-                        {name}
+                        {parser(name)}
                     </Typography>
                 </Link>
             </Show>
-            <Show when={showShortDescription && shortDescription}>
-                <div className="hidden tablet:flex line-clamp-2 text-md text-neutral-500 leading-5">
+            <Show when={showShortDescription && shortDescription && !isGrid}>
+                <div className="hidden tablet:flex !line-clamp-2 text-md text-neutral-500 leading-5">
                     <CmsRenderer content={shortDescription} />
                 </div>
             </Show>

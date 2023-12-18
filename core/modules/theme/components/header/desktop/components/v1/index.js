@@ -7,14 +7,12 @@ import React from 'react';
 
 import cx from 'classnames';
 
-import '@fortawesome/fontawesome-free/css/all.min.css';
-
 import { features } from '@config';
 import { getCookies } from '@helper_cookies';
 
 const DesktopHeader = dynamic(() => import('@core_modules/theme/components/header/desktop/components/v1/adaptive/desktop'), { ssr: true });
-const TabletHeader = dynamic(() => import('@core_modules/theme/components/header/desktop/components/v1/adaptive/tablet'), { ssr: false });
-const MobileHeader = dynamic(() => import('@core_modules/theme/components/header/desktop/components/v1/adaptive/mobile'), { ssr: false });
+const TabletHeader = dynamic(() => import('@core_modules/theme/components/header/desktop/components/v1/adaptive/tablet'), { ssr: true });
+const MobileHeader = dynamic(() => import('@core_modules/theme/components/header/desktop/components/v1/adaptive/mobile'), { ssr: true });
 
 const ViewTopNavigation = (props) => {
     const {
@@ -72,61 +70,55 @@ const ViewTopNavigation = (props) => {
                 'top-[38px]': showGlobalPromo && deviceWidth >= 768,
             })}
         >
-            <main>
+            <div className={cx('header-wrapper-main')}>
                 <div className="header-main">
-                    {deviceType && deviceType.isDesktop === true && (
-                        <DesktopHeader
-                            t={t}
-                            storeConfig={storeConfig}
-                            isLogin={isLogin}
-                            setValue={setValue}
-                            handleSearch={handleSearch}
-                            dataVesMenu={data}
-                            loadingVesMenu={loading}
-                            vesMenuConfig={vesMenuConfig}
-                            handleLogout={handleLogout}
-                            customer={customer}
-                            deviceWidth={deviceWidth}
-                        />
-                    )}
-                    {deviceType && deviceType.isMobile === true && deviceWidth && deviceWidth > 768 && (
-                        <TabletHeader
-                            t={t}
-                            storeConfig={storeConfig}
-                            isLogin={isLogin}
-                            setValue={setValue}
-                            handleSearch={handleSearch}
-                            dataVesMenu={data}
-                            loadingVesMenu={loading}
-                            vesMenuConfig={vesMenuConfig}
-                            handleLogout={handleLogout}
-                            customer={customer}
-                            deviceWidth={deviceWidth}
-                        />
-                    )}
-                    {deviceType && deviceType.isMobile === true && deviceWidth && deviceWidth < 768 && (
-                        <MobileHeader
-                            t={t}
-                            storeConfig={storeConfig}
-                            isLogin={isLogin}
-                            setValue={setValue}
-                            handleSearch={handleSearch}
-                            dataVesMenu={data}
-                            loadingVesMenu={loading}
-                            vesMenuConfig={vesMenuConfig}
-                            handleLogout={handleLogout}
-                            customer={customer}
-                            showGlobalPromo={showGlobalPromo}
-                            deviceWidth={deviceWidth}
-                            appName={appName}
-                            installMessage={installMessage}
-                        />
-                    )}
+                    <DesktopHeader
+                        t={t}
+                        storeConfig={storeConfig}
+                        isLogin={isLogin}
+                        setValue={setValue}
+                        handleSearch={handleSearch}
+                        dataVesMenu={data}
+                        loadingVesMenu={loading}
+                        vesMenuConfig={vesMenuConfig}
+                        handleLogout={handleLogout}
+                        customer={customer}
+                        deviceWidth={deviceWidth}
+                    />
+                    <TabletHeader
+                        t={t}
+                        storeConfig={storeConfig}
+                        isLogin={isLogin}
+                        setValue={setValue}
+                        handleSearch={handleSearch}
+                        dataVesMenu={data}
+                        loadingVesMenu={loading}
+                        vesMenuConfig={vesMenuConfig}
+                        handleLogout={handleLogout}
+                        customer={customer}
+                        deviceWidth={deviceWidth}
+                    />
+                    <MobileHeader
+                        t={t}
+                        storeConfig={storeConfig}
+                        isLogin={isLogin}
+                        setValue={setValue}
+                        handleSearch={handleSearch}
+                        dataVesMenu={data}
+                        loadingVesMenu={loading}
+                        vesMenuConfig={vesMenuConfig}
+                        handleLogout={handleLogout}
+                        customer={customer}
+                        showGlobalPromo={showGlobalPromo}
+                        deviceWidth={deviceWidth}
+                        appName={appName}
+                        installMessage={installMessage}
+                    />
                 </div>
-            </main>
+            </div>
             <style jsx>
                 {`
-                    main {
+                    .header-wrapper-main {
                         background-color: ${storeConfig && storeConfig.pwa && storeConfig.pwa.background_color};
                     }
                     .menu-category {

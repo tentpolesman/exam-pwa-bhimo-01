@@ -8,7 +8,7 @@ import StockStatus from '@common_statusstock';
 
 const Button = dynamic(() => import('@common_button'), { ssr: true });
 
-const OptionAction = (props) => {
+const OptionItemAction = (props) => {
     const {
         loading,
         disabled,
@@ -42,6 +42,7 @@ const OptionAction = (props) => {
     };
 
     const additionalProps = {};
+
     if (isPlp) {
         Object.assign(additionalProps, {
             link: !isSimpleOrConfigurable && url_key ? url_key : '',
@@ -88,4 +89,4 @@ const OptionAction = (props) => {
         </div>
     );
 };
-export default OptionAction;
+export default OptionItemAction;

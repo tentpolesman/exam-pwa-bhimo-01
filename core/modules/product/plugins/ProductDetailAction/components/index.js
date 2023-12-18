@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-expressions */
+/* eslint-disable max-len */
 import Typography from '@common_typography';
-import ImageSlider from '@common_imageslider';
 import Show from '@common_show';
 import Divider from '@common_divider';
 import Share from '@common_share';
@@ -10,12 +10,15 @@ import ReviewList from '@core_modules/product/pages/default/components/ReviewLis
 import Dialog from '@common_dialog';
 import CmsRenderer from '@core_modules/cms/components/cms-renderer';
 import ProductRelated from '@core_modules/product/pages/default/components/ProductRelated';
+import ProductUpsell from '@core_modules/product/pages/default/components/ProductUpsell';
 import dynamic from 'next/dynamic';
 import cx from 'classnames';
 import { HeartIcon, ArrowsRightLeftIcon } from '@heroicons/react/24/outline';
 
+const ImageSlider = dynamic(() => import('@common_imageslider'), { ssr: true });
 const RatingStar = dynamic(() => import('@common_ratingstar'), { ssr: true });
 const ProductTabs = dynamic(() => import('@core_modules/product/pages/default/components/ProductTabs'), { ssr: false });
+const ProductTabsAccordion = dynamic(() => import('@core_modules/product/pages/default/components/ProductTabsAccordion'), { ssr: false });
 const CustomizableOption = dynamic(() => import('@plugin_customizableitem'));
 const OptionItem = dynamic(() => import('@plugin_optionitem'), { ssr: true });
 
@@ -53,19 +56,45 @@ const ProductDetailAction = ({
     useProductTabs,
     useProductImagePreview,
     useShareProduct,
+    useProductRelated,
+    useProductUpsell,
     setStockStatus,
     setAdditionalPrice,
     setBanner,
+    showShortDesc,
+    setShowShortDesc,
     reviewRef,
+    isMobile,
+    classContainer,
+    classContentWrapper,
+    imageSliderProps = {},
+    classImageSliderWrapper,
+    handleOption,
+    setPrice,
+    currencyCode,
+    currencyCache,
+    openOption,
+    setOpenOption,
 }) => (
     <div className="plugin-product-detail-action desktop:px-[0px] tablet:px-[16px]">
-        <div className={cx('product-detail-container', 'desktop:grid tablet:grid desktop:grid-cols-2 tablet:grid-cols-2', 'mt-[32px]')}>
-            <div className={cx('product-detail-slider')}>
+        <div className={cx(
+            'product-detail-container',
+            'desktop:grid tablet:grid desktop:grid-cols-2 tablet:grid-cols-2',
+            'mt-[32px]',
+            classContainer,
+        )}
+        >
+            <div className={cx(
+                'product-detail-slider',
+                classImageSliderWrapper,
+            )}
+            >
                 <ImageSlider
                     useZoom={false}
                     data={banner}
                     storeConfig={storeConfig}
                     onClickZoomImage={useProductImagePreview && enablePopupImage ? handleOpenImageDetail : null}
+                    {...imageSliderProps}
                 />
             </div>
             <div className={cx(
@@ -74,22 +103,69 @@ const ProductDetailAction = ({
                 'desktop:ml-[48px] tablet:ml-[12px]',
                 'desktop:px-[0px] tablet:px-[0px] mobile:px-[16px]',
                 'desktop:flex tablet:flex desktop:flex-col tablet:flex-col',
-                'grap-[24px]',
                 'items-start',
+                classContentWrapper,
             )}
             >
                 <Typography variant="h1" className="first-letter:uppercase mb-[12px] desktop:mt-[0px] tablet:mt-[0px] mobile:mt-[24px]">
                     {data?.name || '-'}
                 </Typography>
                 <Show when={!isAwGiftCard && !loadPrice}>
-                    <GeneratePrice
-                        additionalPrice={additionalPrice}
-                        spesificProduct={spesificProduct}
-                        errorPrice={errorPrice}
-                        loadPrice={loadPrice}
-                        priceDataItem={priceData}
-                        priceItem={price}
-                    />
+                    <div className={
+                        cx(
+                            'product-detail-info-price-container',
+                            isMobile && 'flex justify-between',
+                        )
+                    }
+                    >
+                        <div className="product-detail-info-price-left">
+                            <GeneratePrice
+                                additionalPrice={additionalPrice}
+                                spesificProduct={spesificProduct}
+                                errorPrice={errorPrice}
+                                loadPrice={loadPrice}
+                                priceDataItem={priceData}
+                                priceItem={price}
+                            />
+                        </div>
+
+                        {/* SHARE, WISHLIST, COMPARE MOBILE */}
+                        <Show when={isMobile}>
+                            <div className={cx(
+                                'product-detail-info-price-right',
+                                'flex items-center gap-1.5',
+                            )}
+                            >
+                                <Show when={enableWishlist}>
+                                    <Button
+                                        variant="plain"
+                                        icon={false}
+                                        iconOnly={false}
+                                        onClick={handleWishlist}
+                                        className="!p-0 whitespace-nowrap"
+                                    >
+                                        <Typography color="text-neutral-500 hover:text-neutral-400 flex items-center" variant="bd-2a">
+                                            <HeartIcon className="h-[20px] w-[20px]" />
+                                        </Typography>
+                                    </Button>
+                                </Show>
+                                <Show when={enableProductCompare}>
+                                    <Button
+                                        variant="plain"
+                                        icon={false}
+                                        iconOnly={false}
+                                        onClick={() => handleSetCompareList(data?.id)}
+                                        className="!p-0 whitespace-nowrap"
+                                    >
+                                        <Typography color="text-neutral-500 hover:text-neutral-400 flex items-center" variant="bd-2a">
+                                            <ArrowsRightLeftIcon className="h-[20px] w-[20px]" />
+                                        </Typography>
+                                    </Button>
+                                </Show>
+                                <Share />
+                            </div>
+                        </Show>
+                    </div>
                 </Show>
                 <Button
                     variant="plain"
@@ -128,11 +204,15 @@ const ProductDetailAction = ({
                         setBanner={setBanner}
                         showWishlist={false}
                         enableProductCompare={false}
-                        enableBundle={false}
-                        enableDownload={false}
                         showStockStatus
                         stockStatus={data?.stock_status || ''}
                         storeConfig={storeConfig}
+                        handleOption={handleOption}
+                        setPrice={setPrice}
+                        currencyCode={currencyCode}
+                        currencyCache={currencyCache}
+                        openOption={openOption}
+                        setOpenOption={setOpenOption}
                         data={{
                             ...data,
                             url_key: slug,
@@ -140,9 +220,41 @@ const ProductDetailAction = ({
                         }}
                     />
                 </div>
-                <Typography variant="p-2" className="mt-[24px]">
-                    {data?.short_description?.html ? <CmsRenderer content={data?.short_description?.html} /> : null}
-                </Typography>
+                <div className="product-detail-description-container">
+                    <div className="product-detail-description relative">
+                        <Typography
+                            variant="p-2"
+                            className={
+                                cx(
+                                    'mt-[24px]',
+                                    showShortDesc && 'h-auto',
+                                    !showShortDesc && 'desktop:h-[120px] tablet:h-[80px] mobile:h-[80px] overflow-hidden',
+                                )
+                            }
+                        >
+                            {data?.short_description?.html ? <CmsRenderer content={data?.short_description?.html} /> : null}
+                        </Typography>
+                        <Show when={!showShortDesc && data?.short_description?.html?.length > 0}>
+                            <div
+                                className="w-[100%] h-[25px] absolute bottom-[0px]"
+                                style={{
+                                    background: 'linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.7497373949579832) 43%, rgba(255,255,255,0) 100%)',
+                                }}
+                            />
+                        </Show>
+                    </div>
+                    <Show when={data?.short_description?.html?.length > 0}>
+                        <Button
+                            variant="plain"
+                            onClick={() => setShowShortDesc(!showShortDesc)}
+                            className="!p-0 mt-[6px]"
+                        >
+                            <Typography variant="bd-2a">
+                                {showShortDesc ? `- ${t('common:label:showLess')}` : `+ ${t('common:label:showMore')}`}
+                            </Typography>
+                        </Button>
+                    </Show>
+                </div>
                 <Divider className="my-[24px]" />
                 <div className={
                     cx(
@@ -155,9 +267,10 @@ const ProductDetailAction = ({
                 >
                     <Show when={useShareProduct}>
                         <div className={cx('porudct-detail-info-footer-share')}>
-                            <Share instagram={false} />
+                            <Share />
                         </div>
                     </Show>
+                    {/* WISHLIST & COMPARE DESKTOP, TABLET */}
                     <div className={
                         cx(
                             'product-detail-info-footer-action',
@@ -199,7 +312,7 @@ const ProductDetailAction = ({
             </div>
         </div>
 
-        <Show when={useProductTabs}>
+        <Show when={!isMobile && useProductTabs}>
             <div
                 className={cx(
                     'product-detail-tabs',
@@ -221,6 +334,20 @@ const ProductDetailAction = ({
                     }
                 />
             </div>
+        </Show>
+
+        <Show when={isMobile && useProductTabs}>
+            <ProductTabsAccordion
+                data={expandData}
+                smartProductTabs={
+                    smartProductTabs || {
+                        tab_2: {
+                            label: null,
+                            content: null,
+                        },
+                    }
+                }
+            />
         </Show>
 
         <Show when={useReviewList}>
@@ -258,7 +385,22 @@ const ProductDetailAction = ({
                 />
             </Dialog>
         </Show>
-        <ProductRelated t={t} dataProduct={data} isLogin={isLogin} storeConfig={storeConfig} />
+        <Show when={useProductRelated}>
+            <ProductRelated
+                t={t}
+                dataProduct={data}
+                isLogin={isLogin}
+                storeConfig={storeConfig}
+            />
+        </Show>
+        <Show when={useProductUpsell}>
+            <ProductUpsell
+                t={t}
+                dataProduct={data}
+                isLogin={isLogin}
+                storeConfig={storeConfig}
+            />
+        </Show>
     </div>
 );
 

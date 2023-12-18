@@ -202,14 +202,20 @@ const GenerateFilter = (props) => {
                 </div>
             );
         }
-        if ((itemFilter.field === 'cat' || itemFilter.field === 'category_id') && !isSearch) {
+        if ((itemFilter.field === 'cat' || itemFilter.field === 'category_id')) {
             return (
                 <div className="flex flex-col gap-2">
                     {itemFilter.value.map((val, ids) => {
                         if (val !== 'attribute_set_id') {
                             return (
                                 <button
-                                    onClick={(e) => onChangeTabs(e, ids + 1)}
+                                    onClick={(e) => {
+                                        if (isSearch) {
+                                            selectFilter(itemFilter.field, val.value);
+                                        } else {
+                                            onChangeTabs(e, ids + 1);
+                                        }
+                                    }}
                                     className="border-none flex flex-row justify-between items-center"
                                     key={ids}
                                     type="button"
@@ -227,9 +233,6 @@ const GenerateFilter = (props) => {
                     })}
                 </div>
             );
-        }
-        if ((itemFilter.field === 'cat' || itemFilter.field === 'category_id') && isSearch) {
-            return <span key={idx} />;
         }
 
         if (itemFilter.field === 'category_uid') return null;

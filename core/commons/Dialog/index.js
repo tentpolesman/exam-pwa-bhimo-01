@@ -20,14 +20,19 @@ const Dialog = ({
     negativeLabel,
     negativeAction,
     negativeProps,
+    classTitle,
     classContent,
     classWrapper,
     classContainer,
+    classContainerAction,
     backdrop,
     closeOnBackdrop,
     useCloseButton,
     onClickClose,
+    useCloseTitleButton,
+    onClickCloseTitle,
     children,
+    classWrapperTitle,
 }) => {
     const isVariantPlain = variant === 'plain';
     const isVariantContainer = variant === 'container';
@@ -83,25 +88,47 @@ const Dialog = ({
                         classContainer,
                     )}
                     >
-                        {/* TITLE */}
-                        {
-                            title && (
-                                <div className={cx(
-                                    'dialog-title',
-                                    'bg-neutral-white',
-                                    'text-neutral-700',
-                                    'rounded-t-[12px]',
-                                    'font-semibold',
-                                    'text-[16px]',
-                                    'px-[32px]',
-                                    'pt-[32px]',
-                                    'pb-[4px]',
-                                )}
-                                >
-                                    {title}
-                                </div>
+                        <div className={
+                            cx(
+                                'dialog-title',
+                                'bg-neutral-white',
+                                'text-neutral-700',
+                                'rounded-t-[12px]',
+                                'flex items-center justify-between',
+                                'py-[16px]',
+                                classWrapperTitle,
                             )
                         }
+                        >
+                            {/* TITLE */}
+                            {
+                                title && (
+                                    <div className={cx(
+                                        'font-semibold',
+                                        'text-[16px]',
+                                        'desktop:px-[32px] tablet:px-[32px] mobile:px-[16px]',
+                                        classTitle,
+                                    )}
+                                    >
+                                        {title}
+                                    </div>
+                                )
+                            }
+                            <Show when={useCloseTitleButton}>
+                                <Button
+                                    onClick={onClickCloseTitle}
+                                    iconOnly
+                                    className={
+                                        cx(
+                                            'button-close-dialog',
+                                            'desktop:!px-[32px] tablet:!px-[32px] mobile:!px-[16px]',
+                                        )
+                                    }
+                                    variant="plain"
+                                    icon={<XMarkIcon className="h-[24] w-[24]" />}
+                                />
+                            </Show>
+                        </div>
                         {/* CONTENT */}
                         {
                             content && (
@@ -111,7 +138,7 @@ const Dialog = ({
                                     'text-neutral-600',
                                     'bg-white',
                                     'pt-[4px]',
-                                    'px-[32px]',
+                                    'desktop:px-[32px] tablet:px-[32px] mobile:px-[16px]',
                                     'pb-[32px]',
                                     'text-[14px]',
                                     classContent,
@@ -135,6 +162,7 @@ const Dialog = ({
                                     'desktop:justify-end tablet:justify-end mobile:justify-center',
                                     'gap-[16px]',
                                     'bg-neutral-100',
+                                    classContainerAction,
                                 )}
                                 >
                                     {
@@ -154,7 +182,12 @@ const Dialog = ({
                                         positiveAction && (
                                             <Button
                                                 onClick={positiveAction}
-                                                className="py-[12px] px-[22px] border-0 mobile:w-[50%] mobile:w-[50%] desktop:w-auto tablet:w-auto"
+                                                className={
+                                                    cx(
+                                                        'py-[12px] px-[22px] border-0 mobile:w-[50%] desktop:w-auto tablet:w-auto',
+                                                        !negativeAction && '!w-[100%]',
+                                                    )
+                                                }
                                                 classNameText="justify-center"
                                                 {...positiveProps}
                                             >
@@ -171,7 +204,12 @@ const Dialog = ({
                     <Button
                         onClick={onClickClose}
                         iconOnly
-                        className="button-close-dialog absolute desktop:top-[50px] tablet:top-[50px] desktop:right-[50px] tablet:right-[50px] mobile:top-[10px] mobile:right-[0px]"
+                        className={
+                            cx(
+                                'button-close-dialog absolute desktop:top-[50px] tablet:top-[24px] desktop:right-[50px] tablet:right-[24px] mobile:top-[10px] mobile:right-[0px]',
+                                '!px-[20px] !py-[20px]',
+                            )
+                        }
                         variant="plain"
                         icon={<XMarkIcon className="h-[24] w-[24]" />}
                     />
@@ -197,6 +235,7 @@ Dialog.propTypes = {
     backdrop: propTypes.bool,
     closeOnBackdrop: propTypes.bool,
     onClose: propTypes.func,
+    classWrapperTitle: propTypes.string,
 };
 
 Dialog.defaultProps = {
@@ -215,6 +254,7 @@ Dialog.defaultProps = {
     backdrop: true,
     closeOnBackdrop: false,
     onClose: () => {},
+    classWrapperTitle: '',
 };
 
 export default Dialog;

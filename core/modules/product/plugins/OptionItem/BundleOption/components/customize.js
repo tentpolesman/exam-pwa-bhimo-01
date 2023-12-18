@@ -8,7 +8,7 @@ import Typography from '@common_typography';
 import ButtonQty from '@common_buttonqty';
 import Button from '@common_button';
 import dynamic from 'next/dynamic';
-import useStyles from '@plugin_optionitem/BundleOption/style';
+import useStyles from '@core_modules/product/plugins/OptionItem/BundleOption/style';
 
 const Select = dynamic(() => import('./customizeType/select'), { ssr: false });
 const Multiple = dynamic(() => import('./customizeType/multiple'), { ssr: false });

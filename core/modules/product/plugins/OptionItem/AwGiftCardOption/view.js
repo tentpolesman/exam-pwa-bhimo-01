@@ -10,7 +10,7 @@ import TextField from '@common_forms/TextField';
 import Image from '@common_image';
 import Select from '@common_forms/Select';
 import Typography from '@common_typography';
-import useStyles from '@core_modules/product/plugins/OptionItem/AwGiftCardProduct/styles';
+import useStyles from '@core_modules/product/plugins/OptionItem/AwGiftCardOption/styles';
 import DateDayJs from '@date-io/dayjs';
 import { formatPrice } from '@helper_currency';
 import Dialog from '@material-ui/core/Dialog';
@@ -26,7 +26,7 @@ import dynamic from 'next/dynamic';
 import { getHost } from '@helper_config';
 
 const Button = dynamic(() => import('@common_button'), { ssr: false });
-const OptionAction = dynamic(() => import('@core_modules/product/plugins/OptionItemAction'), { ssr: true });
+const OptionItemAction = dynamic(() => import('@core_modules/product/plugins/OptionItemAction'), { ssr: true });
 const MagezonElement = dynamic(() => import('@core_modules/cms/components/cms-renderer/index'), { ssr: false });
 
 const AwGiftCardProduct = (props) => {
@@ -313,7 +313,7 @@ const AwGiftCardProduct = (props) => {
                         showAddToCart,
                     })
                     : (
-                        <OptionAction
+                        <OptionItemAction
                             loading={loading}
                             disabled={disabled}
                             showQty={showQty}

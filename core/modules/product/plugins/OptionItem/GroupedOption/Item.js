@@ -2,7 +2,7 @@ import React from 'react';
 import PriceFormat from '@common_priceformat';
 import Typography from '@common_typography';
 
-import useStyles from '@plugin_optionitem/GroupedProduct/style';
+import useStyles from '@core_modules/product/plugins/OptionItem/GroupedOption/style';
 
 const ItemGrouped = ({
     max = 10000,

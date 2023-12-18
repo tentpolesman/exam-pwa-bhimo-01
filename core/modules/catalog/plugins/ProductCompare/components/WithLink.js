@@ -1,31 +1,29 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
+import BadgeCounter from '@common_badgecounter';
 import ArrowsRightLeftIcon from '@heroicons/react/24/solid/ArrowsRightLeftIcon';
-import Badge from '@material-ui/core/Badge';
 import cx from 'classnames';
 import Link from 'next/link';
 
-const WithLink = ({ compareList, handleLink }) => {
-    if (compareList && compareList.compareList && compareList.compareList.item_count) {
+const WithLink = ({ compareList, handleLink, isLogin }) => {
+    if (compareList && compareList.compareList && compareList.compareList.item_count && isLogin) {
         return (
             <Link href={handleLink} prefetch={false}>
                 {compareList ? (
-                    <Badge color="secondary" badgeContent={compareList.compareList.item_count > 0 ? compareList.compareList.item_count : 0}>
+                    <BadgeCounter value={compareList.compareList.item_count > 0 ? compareList.compareList.item_count : 0}>
                         <ArrowsRightLeftIcon className={cx('w-[24px]', 'text-neutral-600', 'mt-3')} />
-                    </Badge>
+                    </BadgeCounter>
                 ) : (
-                    <Badge color="secondary" badgeContent={0}>
+                    <BadgeCounter value={0}>
                         <ArrowsRightLeftIcon className={cx('w-[24px]', 'text-neutral-600', 'mt-3')} />
-                    </Badge>
+                    </BadgeCounter>
                 )}
             </Link>
         );
     }
     return (
         <Link href={handleLink} prefetch={false}>
-            <Badge color="secondary" badgeContent={0}>
-                <ArrowsRightLeftIcon className={cx('w-[24px]', 'text-neutral-600', 'mt-3')} />
-            </Badge>
+            <ArrowsRightLeftIcon className={cx('w-[24px]', 'text-neutral-600', 'mt-3')} />
         </Link>
     );
 };

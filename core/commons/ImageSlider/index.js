@@ -8,9 +8,208 @@ import Show from '@common_show';
 import Button from '@common_button';
 import ContainerScroll from '@common_containerscroll';
 import useMediaQuery from '@hook/useMediaQuery';
+import Link from 'next/link';
 import { ArrowsPointingOutIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import { modules } from '@root/swift.config.js';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
+import { useSwipeable } from 'react-swipeable';
+
+const ImageSliderVideo = ({
+    mainImage,
+    urlEmbed,
+    videoUrl,
+    video,
+    swipeHandlers,
+}) => {
+    const { isMobile } = useMediaQuery();
+    if (urlEmbed || video) {
+        const urlVideoTag = video ? video.split('"') : null;
+        return (
+            <iframe
+                {...swipeHandlers}
+                width={isMobile ? '100%' : mainImage}
+                height={mainImage}
+                src={urlEmbed || urlVideoTag[5]}
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                title={urlVideoTag ? urlVideoTag[8] : ''}
+            />
+        );
+    }
+    if (videoUrl) {
+        const urlVideo = videoUrl && videoUrl.video_url.split('/');
+        return (
+            <iframe
+                {...swipeHandlers}
+                width={isMobile ? '100%' : mainImage}
+                height={mainImage}
+                src={`https://www.youtube.com/embed/${urlVideo[3]}`}
+                title={videoUrl.video_title}
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+            />
+        );
+    }
+    return null;
+};
+
+// image when preview with zoom
+const ImageSliderSelectedPreview = ({
+    toggleZoom,
+    setToggleZoom,
+    imagePreview,
+    mainImage,
+    storeConfig,
+}) => {
+    const isEmbedOrVideo = imagePreview?.urlEmbed || imagePreview?.video;
+    const isVideoUrl = imagePreview?.videoUrl;
+
+    if (isEmbedOrVideo) {
+        return (
+            <ImageSliderVideo
+                mainImage={mainImage}
+                urlEmbed={imagePreview?.urlEmbed}
+                video={imagePreview?.video}
+            />
+        );
+    }
+
+    if (isVideoUrl) {
+        return (
+            <ImageSliderVideo
+                mainImage={mainImage}
+                videoUrl={imagePreview.videoUrl}
+            />
+        );
+    }
+
+    return (
+        <TransformWrapper>
+            {({ zoomIn, zoomOut }) => (
+                <TransformComponent
+                    wrapperStyle={{
+                        cursor: toggleZoom ? 'zoom-out' : 'zoom-in',
+                        margin: '0 auto',
+                    }}
+                >
+                    <div
+                        onClick={() => {
+                            setToggleZoom(!toggleZoom);
+                            if (toggleZoom) zoomOut();
+                            else zoomIn();
+                        }}
+                    >
+                        <Image
+                            storeConfig={storeConfig}
+                            className={
+                                cx('w-full h-full', 'rounded-[12px]', 'cursor-zoom-in', 'mx-auto')
+                            }
+                            styleContainer={{
+                                width: mainImage,
+                                height: mainImage,
+                            }}
+                            src={imagePreview?.imageUrl}
+                            alt={imagePreview?.imageAlt ?? 'slider image preview'}
+                            quality={80}
+                            width={mainImage}
+                            height={mainImage}
+                            widthMobile={mainImage}
+                            heightMobile={mainImage}
+                        />
+                    </div>
+                </TransformComponent>
+            )}
+        </TransformWrapper>
+    );
+};
+
+// hero image
+const ImageSliderSelected = ({
+    useZoom,
+    isMobile,
+    imagePreview,
+    storeConfig,
+    mainImage,
+    mainImagePreview,
+    swipeHandlers,
+}) => {
+    const isEmbedOrVideo = imagePreview?.urlEmbed || imagePreview?.video;
+    const isVideoUrl = imagePreview?.videoUrl;
+    const link = imagePreview?.link;
+    const linkHref = (link && link.includes('http://')) || link.includes('https://') ? link : link[0] === '/' ? link : `/${link}`;
+
+    if (isEmbedOrVideo) {
+        return (
+            <ImageSliderVideo
+                swipeHandlers={swipeHandlers}
+                mainImage={mainImage}
+                urlEmbed={imagePreview?.urlEmbed}
+                video={imagePreview?.video}
+            />
+        );
+    }
+
+    if (isVideoUrl) {
+        return (
+            <ImageSliderVideo
+                swipeHandlers={swipeHandlers}
+                mainImage={mainImage}
+                videoUrl={imagePreview.videoUrl}
+            />
+        );
+    }
+
+    if (link !== '#') {
+        return (
+            <Link href={linkHref} passHref>
+                <Image
+                    storeConfig={storeConfig}
+                    className={
+                        cx(
+                            'w-full h-full',
+                            'rounded-[12px]',
+                        )
+                    }
+                    styleContainer={{
+                        width: isMobile ? '100%' : useZoom ? mainImagePreview : mainImage,
+                        height: isMobile ? '100%' : useZoom ? 'auto' : mainImage,
+                    }}
+                    src={imagePreview?.imageUrl}
+                    alt={imagePreview?.imageAlt ?? 'slider image preview'}
+                    width={mainImage}
+                    height={mainImage}
+                    widthMobile={mainImage}
+                    heightMobile={mainImage}
+                    quality={80}
+                />
+            </Link>
+        );
+    }
+    return (
+        <Image
+            storeConfig={storeConfig}
+            className={
+                cx(
+                    'w-full h-full',
+                    'rounded-[12px]',
+                )
+            }
+            styleContainer={{
+                width: isMobile ? '100%' : useZoom ? mainImagePreview : mainImage,
+                height: isMobile ? '100%' : useZoom ? 'auto' : mainImage,
+            }}
+            src={imagePreview?.imageUrl}
+            alt={imagePreview?.imageAlt ?? 'slider image preview'}
+            width={mainImage}
+            height={mainImage}
+            widthMobile={mainImage}
+            heightMobile={mainImage}
+            quality={80}
+        />
+    );
+};
 
 const ImageSlider = ({
     data,
@@ -20,6 +219,9 @@ const ImageSlider = ({
     verticalThumbnail,
     detectAutoScreen = true,
     useZoom = true,
+    imageProps = {},
+    customStyleImageWrapper = {},
+    customStyleImageContainer = {},
 }) => {
     const [imagePreview, setImagePreview] = React.useState(null);
     const [indexActive, setIndexActive] = React.useState(0);
@@ -50,11 +252,20 @@ const ImageSlider = ({
         setImagePreview(data[indexActiveIncrements]);
     };
 
+    const swipeHandlers = useSwipeable({
+        onSwipedLeft: () => {
+            onClickImagePreviewArrowRight();
+        },
+        onSwipedRight: () => {
+            onClickImagePreviewArrowLeft();
+        },
+    });
+
     React.useEffect(() => {
         if (data && data?.length > 0) {
             setImagePreview(data[indexActive]);
         }
-    }, []);
+    }, [data]);
 
     return (
         <div className={cx('image-slider', detectAutoScreen && isDesktop && 'inline-flex', detectAutoScreen && !isDesktop && 'flex flex-col')}>
@@ -63,7 +274,13 @@ const ImageSlider = ({
                     variant="vertical"
                     maxHeight={mainImage}
                     style={{ width: thumbnailImage }}
-                    className={cx('image-slider-vertical', 'px-[0px] mx-auto')}
+                    className={
+                        cx(
+                            'image-slider-vertical',
+                            'px-[0px] mx-auto',
+                            'm-0 !p-0',
+                        )
+                    }
                 >
                     {
                         data && data?.map((item, index) => {
@@ -102,9 +319,11 @@ const ImageSlider = ({
                     style={{
                         width: isMobile ? '100%' : useZoom ? mainImagePreview : mainImage,
                         height: isMobile ? '100%' : useZoom ? 'auto' : mainImage,
+                        ...customStyleImageWrapper,
                     }}
                     className={
                         cx(
+                            'z-[999]',
                             'image-slider-preview',
                             'relative desktop:px-[16px] tablet:px-[0px] mobile:px-[16px]',
                             detectAutoScreen && 'tablet:mr-auto tablet:ml-[0px] mobile:mx-auto',
@@ -114,10 +333,12 @@ const ImageSlider = ({
                     }
                 >
                     <div
+                        {...swipeHandlers}
                         onMouseEnter={() => setShowArrow(true)}
                         onMouseLeave={() => setShowArrow(false)}
                         style={{
                             width: isMobile ? '100%' : useZoom ? mainImagePreview : mainImage,
+                            ...customStyleImageContainer,
                         }}
                         className={cx(
                             'container-image-slider-parent',
@@ -125,63 +346,27 @@ const ImageSlider = ({
                         )}
                     >
                         <Show when={useZoom}>
-                            <TransformWrapper>
-                                {({ zoomIn, zoomOut }) => (
-                                    <TransformComponent
-                                        wrapperStyle={{
-                                            cursor: toggleZoom ? 'zoom-out' : 'zoom-in',
-                                            margin: '0 auto',
-                                        }}
-                                    >
-                                        <div
-                                            onClick={() => {
-                                                setToggleZoom(!toggleZoom);
-                                                if (toggleZoom) zoomOut();
-                                                else zoomIn();
-                                            }}
-                                        >
-                                            <Image
-                                                storeConfig={storeConfig}
-                                                className={
-                                                    cx('w-full h-full', 'rounded-[12px]', 'cursor-zoom-in', 'mx-auto')
-                                                }
-                                                styleContainer={{
-                                                    width: mainImagePreview,
-                                                    height: mainImagePreview,
-                                                }}
-                                                src={imagePreview?.imageUrl}
-                                                alt={imagePreview?.imageAlt ?? 'slider image preview'}
-                                                quality={80}
-                                                width={mainImagePreview}
-                                                height={mainImagePreview}
-                                                widthMobile={mainImagePreview}
-                                                heightMobile={mainImagePreview}
-                                            />
-                                        </div>
-                                    </TransformComponent>
-                                )}
-                            </TransformWrapper>
+                            <ImageSliderSelectedPreview
+                                swipeHandlers={swipeHandlers}
+                                toggleZoom={toggleZoom}
+                                setToggleZoom={setToggleZoom}
+                                imagePreview={imagePreview}
+                                mainImage={mainImagePreview}
+                                storeConfig={storeConfig}
+                            />
                         </Show>
                         <Show when={!useZoom}>
-                            <Image
+                            <ImageSliderSelected
+                                swipeHandlers={swipeHandlers}
+                                useZoom={useZoom}
+                                isMobile={isMobile}
+                                imagePreview={imagePreview}
+                                mainImage={mainImage}
+                                mainImagePreview={mainImagePreview}
                                 storeConfig={storeConfig}
-                                className={
-                                    cx(
-                                        'w-full h-full',
-                                        'rounded-[12px]',
-                                    )
-                                }
-                                styleContainer={{
-                                    width: isMobile ? '100%' : useZoom ? mainImagePreview : mainImage,
-                                    height: isMobile ? '100%' : useZoom ? 'auto' : mainImage,
-                                }}
-                                src={imagePreview?.imageUrl}
-                                alt={imagePreview?.imageAlt ?? 'slider image preview'}
-                                width={mainImage}
-                                height={mainImage}
-                                widthMobile={mainImage}
-                                heightMobile={mainImage}
-                                quality={80}
+                                onClickImagePreviewArrowRight={onClickImagePreviewArrowRight}
+                                onClickImagePreviewArrowLeft={onClickImagePreviewArrowLeft}
+                                {...imageProps}
                             />
                         </Show>
 
@@ -225,7 +410,7 @@ const ImageSlider = ({
                     maxWidth={detectAutoScreen && !isMobile ? mainImage : null}
                     className={cx(
                         'image-slider-horizontal',
-                        useZoom && 'desktop:mt-[24px] tablet:mt-[16px] mobile:mt-[16px]',
+                        useZoom && 'desktop:mt-[0px] tablet:mt-[0px] mobile:mt-[0px]',
                     )}
                     itemsLength={data?.length}
                     style={isMobile ? { width: screenWidth } : {}}
@@ -237,7 +422,8 @@ const ImageSlider = ({
                                 <div
                                     className={
                                         cx(
-                                            'mr-[16px] mt-[12px]',
+                                            !useZoom && 'mr-[16px] mt-[12px]',
+                                            useZoom && 'mr-[16px] mt-[0px]',
                                             'desktop:first:ml-[0px] desktop:last:mr-[0px]',
                                             'tablet:first:ml-[0px] tablet:last:mr-[0px]',
                                             'mobile:first:ml-[16px] mobile:last:mr-[6px]',

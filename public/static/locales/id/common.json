@@ -205,6 +205,10 @@
         "addReview": "Masukkan Ulasan",
         "writeReview": "Tulis Ulasan",
         "detail": "Detail",
-        "moreInfo": "Info Selebihnya"
+        "moreInfo": "Info Selebihnya",
+        "shareToYourFriend": "Bagian kepada teman dan keluarga Anda!",
+        "showMore": "Lihat Selengkapnya",
+        "showLess": "Lihat Sedikitnya",
+        "selectProduct": "Pilih Produk"
     }
 }

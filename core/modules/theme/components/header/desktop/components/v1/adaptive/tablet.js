@@ -15,12 +15,9 @@ import Image from '@common_image';
 import Tabs from '@common_tabs';
 import Typography from '@common_typography';
 
-import config from '@config';
-
 import Cookies from 'js-cookie';
 import TagManager from 'react-gtm-module';
 
-import '@fortawesome/fontawesome-free/css/all.min.css';
 import Bars3Icon from '@heroicons/react/24/solid/Bars3Icon';
 import DevicePhoneMobileIcon from '@heroicons/react/24/solid/DevicePhoneMobileIcon';
 
@@ -31,10 +28,8 @@ const SwitcherCurrency = dynamic(() => import('@common_currency'), { ssr: false 
 const SwitcherLanguage = dynamic(() => import('@common_language'), { ssr: false });
 
 const TabletHeader = (props) => {
-    const { t, storeConfig, isLogin, setValue, handleSearch, dataVesMenu, loadingVesMenu, vesMenuConfig, handleLogout, customer, deviceWidth } =
-        props;
+    const { t, storeConfig, isLogin, setValue, handleSearch, dataVesMenu, loadingVesMenu, vesMenuConfig, handleLogout, deviceWidth } = props;
 
-    const { modules } = config;
     const adminId = Cookies.get('admin_id');
 
     const handleClickInstallApp = () => {
@@ -115,6 +110,7 @@ const TabletHeader = (props) => {
                 'tablet-header',
                 'tablet:max-desktop:block',
                 'desktop:hidden',
+                'mobile:max-tablet:hidden',
                 'transition-all',
                 'delay-100',
                 'duration-500',
@@ -127,7 +123,7 @@ const TabletHeader = (props) => {
                     className={cx(
                         'top-header-tablet__content',
                         'grid grid-cols-[436fr_268fr] gap-4',
-                        'tablet:max-w-[768px] desktop:hidden',
+                        'tablet:max-w-[768px] desktop:hidden mobile:max-tablet:hidden',
                         'm-[0_auto]',
                     )}
                 >

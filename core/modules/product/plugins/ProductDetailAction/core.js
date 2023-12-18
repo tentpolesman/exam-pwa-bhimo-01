@@ -2,6 +2,7 @@
 /* eslint-disable radix */
 import cx from 'classnames';
 import TagManager from 'react-gtm-module';
+import useMediaQuery from '@hook/useMediaQuery';
 import { useQuery, useReactiveVar } from '@apollo/client';
 import { debuging, features, modules } from '@config';
 import { getPriceFromList } from '@core_modules/product/helpers/getPrice';
@@ -45,11 +46,16 @@ const ProductDetailAction = ({
     useProductTabs = false,
     useProductImagePreview = false,
     useShareProduct = false,
+    useProductRelated = false,
+    useProductUpsell = false,
     Content,
+    ...other
 }) => {
     const route = useRouter();
+    const { isDesktop, isTablet, isMobile } = useMediaQuery();
     const context = isLogin && isLogin === 1 ? { request: 'internal' } : {};
     const item = product.items[productKey];
+    const currencyCode = item?.price_range?.minimum_price?.regular_price?.currency || 'USD';
     const reviewRef = React.useRef(null);
 
     // cache currency
@@ -85,7 +91,7 @@ const ProductDetailAction = ({
 
     // data tabs
     let expandData = [];
-    if (item.description.html) {
+    if (item?.description?.html) {
         expandData = [
             ...expandData,
             {
@@ -103,12 +109,15 @@ const ProductDetailAction = ({
                 type: 'react-component',
                 content: (
                     <ul className="grid grid-cols-2">
-                        {item.more_info.map((val, idx) => (
-                            <li className={cx('grid', 'grid-cols-1', 'py-2')} key={idx}>
-                                <span className="text-2md font-bold">{val.label}</span>
-                                <span className="text-2md">{val.value}</span>
-                            </li>
-                        ))}
+                        {item.more_info.map((val, idx) => {
+                            const isEmpty = val.value.includes('-- Please Select --');
+                            return (
+                                <li className={cx('grid', 'grid-cols-1', 'py-2')} key={idx}>
+                                    <span className="text-2md font-bold">{val.label}</span>
+                                    <span className="text-2md">{isEmpty ? '-' : val.value}</span>
+                                </li>
+                            );
+                        })}
                     </ul>
                 ),
             },
@@ -174,6 +183,8 @@ const ProductDetailAction = ({
     const [openOption, setOpenOption] = React.useState(false);
     const [stockStatus, setStockStatus] = React.useState(item.stock_status);
     const [wishlist, setWishlist] = React.useState(false);
+    // Show More Short Desc
+    const [showShortDesc, setShowShortDesc] = React.useState(false);
 
     const [additionalPrice, setAdditionalPrice] = React.useState(0);
     const [price, setPrice] = React.useState({
@@ -224,7 +235,7 @@ const ProductDetailAction = ({
                     eventLabel: item.name,
                     label: item.name,
                     ecommerce: {
-                        currencyCode: item.price_range.minimum_price.regular_price.currency || 'USD',
+                        currencyCode,
                         add: {
                             products: [
                                 {
@@ -442,11 +453,13 @@ const ProductDetailAction = ({
 
     // eslint-disable-next-line no-underscore-dangle
     const isAwGiftCard = item.__typename === 'AwGiftCardProduct';
-    const priceData = getPriceFromList(dataPrice, item?.id || null);
-
+    const priceData = getPriceFromList(dataPrice?.products?.items, item?.id || null);
     return (
         <Content
             isLogin={isLogin}
+            isDesktop={isDesktop}
+            isTablet={isTablet}
+            isMobile={isMobile}
             enableProductCompare={enableProductCompare}
             enableWishlist={enableWishlist}
             t={t}
@@ -490,10 +503,17 @@ const ProductDetailAction = ({
             setStockStatus={setStockStatus}
             setBanner={setBanner}
             reviewRef={reviewRef}
+            showShortDesc={showShortDesc}
+            setShowShortDesc={setShowShortDesc}
+            setPrice={setPrice}
+            currencyCode={currencyCode}
+            useProductRelated={useProductRelated}
+            useProductUpsell={useProductUpsell}
             data={{
                 ...item,
                 weltpixel_labels,
             }}
+            {...other}
         />
     );
 };

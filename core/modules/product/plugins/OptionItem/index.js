@@ -2,13 +2,13 @@ import dynamic from 'next/dynamic';
 import { modules } from '@config';
 
 const ConfigurableOption = dynamic(() => import('@plugin_optionitem/ConfigurableOption'), { ssr: false });
-const SimpleOption = dynamic(() => import('@plugin_optionitem/SimpleProduct'), { ssr: false });
-const VirtualOption = dynamic(() => import('@plugin_optionitem/Virtual'), { ssr: false });
-const DownloadOption = dynamic(() => import('@plugin_optionitem/Download'), { ssr: false });
+const SimpleOption = dynamic(() => import('@plugin_optionitem/SimpleOption'), { ssr: false });
+const VirtualOption = dynamic(() => import('@plugin_optionitem/VirtualOption'), { ssr: false });
+const DownloadOption = dynamic(() => import('@plugin_optionitem/DownloadableOption'), { ssr: false });
 const BundleOption = dynamic(() => import('@plugin_optionitem/BundleOption'), { ssr: false });
-const GroupedOption = dynamic(() => import('@plugin_optionitem/GroupedProduct'), { ssr: false });
+const GroupedOption = dynamic(() => import('@plugin_optionitem/GroupedOption'), { ssr: false });
 const CustomizableOption = dynamic(() => import('@plugin_customizableitem'), { ssr: false });
-const AwGiftCardProduct = dynamic(() => import('@plugin_optionitem/AwGiftCardProduct'), { ssr: false });
+const AwGiftCardProduct = dynamic(() => import('@plugin_optionitem/AwGiftCardOption'), { ssr: false });
 
 const OptionItem = (props) => {
     const {
@@ -45,12 +45,12 @@ const OptionItem = (props) => {
                 />
             )}
 
-            {enableDownload && __typename === 'BundleProduct' && (
+            {enableBundle && __typename === 'BundleProduct' && (
                 <BundleOption
                     {...props}
                 />
             )}
-            {enableBundle && __typename === 'DownloadableProduct' && (
+            {enableDownload && __typename === 'DownloadableProduct' && (
                 <DownloadOption
                     {...props}
                 />

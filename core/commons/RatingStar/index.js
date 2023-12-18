@@ -5,7 +5,15 @@ import { COLORS } from '@theme_vars';
 import cx from 'classnames';
 
 // eslint-disable-next-line object-curly-newline
-const RatingStar = ({ value = 1, maxvalue = 5, onChange = () => {}, disabled = true, sizeIcon = 'sm', miniSummary = false }) => {
+const RatingStar = ({
+    classContainer,
+    value = 1,
+    maxvalue = 5,
+    onChange = () => {},
+    disabled = true,
+    sizeIcon = 'sm',
+    miniSummary = false,
+}) => {
     const icon = [];
 
     const classes = cx('hover:cursor-pointer', {
@@ -39,7 +47,13 @@ const RatingStar = ({ value = 1, maxvalue = 5, onChange = () => {}, disabled = t
             if (ind - value > 0 && ind - value < 1) {
                 icon.push(
                     <div role="button" className={cx('mr-0', 'p-0')} key={ind} disabled={disabled} onClick={() => onChange(ind)}>
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={cx(classes)}>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={cx(classes, 'text-yellow-400 flex tablet:hidden')}>
+                            <path
+                                d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"
+                                clipRule="evenodd"
+                            />
+                        </svg>
+                        <svg id="definitions" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={cx(classes, 'hidden tablet:flex')}>
                             <defs>
                                 <linearGradient id="grad2">
                                     <stop offset={`${(value - (ind - 1)) * 100}%`} stopColor={COLORS.yellow[400]} />
@@ -68,7 +82,7 @@ const RatingStar = ({ value = 1, maxvalue = 5, onChange = () => {}, disabled = t
             }
         }
     }
-    return <div className={cx('flex', 'flex-row')}>{icon.map((Item) => Item)}</div>;
+    return <div className={cx('flex', 'flex-row', classContainer)}>{icon.map((Item) => Item)}</div>;
 };
 
 export default RatingStar;

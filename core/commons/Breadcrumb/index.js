@@ -42,7 +42,7 @@ const ItemBreadcrumb = ({
             <Typography
                 variant="bd-2b"
                 style={labelStyle}
-                className={cx('text-sm', 'whitespace-nowrap', 'flex', 'items-center')}
+                className={cx('text-sm', 'whitespace-nowrap', 'flex', 'items-center', '!text-neutral-400')}
             >
                 {iconOnly && icon }
                 {!iconOnly && label}

@@ -33,12 +33,13 @@ const ReviewCardForm = ({
             </Typography>
             <RatingStar
                 value={Formik.values.rating}
+                classContainer={cx('mb-[6px]')}
                 onChange={(newValue) => {
                     Formik.setFieldValue('rating', newValue);
                 }}
             />
             {Formik.touched.rating && Formik.errors.rating && (
-                <Typography variant="p" color="red">
+                <Typography variant="bd-2b" color="!text-red">
                     {(Formik.touched.rating && Formik.errors.rating) ? Formik.errors.rating : ''}
                 </Typography>
             )}
