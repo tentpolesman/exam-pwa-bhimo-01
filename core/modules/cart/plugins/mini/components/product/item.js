@@ -12,7 +12,7 @@ import ButtonQty from '@common_buttonqty';
 import Thumbor from '@common_image';
 import Typography from '@common_typography';
 
-import TrashIcon from '@heroicons/react/24/outline/TrashIcon';
+import TrashIcon from '@heroicons/react/24/solid/TrashIcon';
 
 import { formatPrice } from '@helper_currency';
 import { useTranslation } from 'next-i18next';
@@ -50,7 +50,14 @@ const Item = (props) => {
                         href="/[...slug]"
                         as={`/${product.url_key}`}
                         passHref
-                        className={cx('minicart__item--photo', 'h-[120px]', 'w-[120px]', 'block')}
+                        className={cx(
+                            'minicart__item--photo',
+                            'tablet:h-[120px]',
+                            'tablet:w-[120px]',
+                            'mobile:max-tablet:h-[100px]',
+                            'mobile:max-tablet:w-[100px]',
+                            'block',
+                        )}
                     >
                         <Thumbor
                             className="product-image-photo"
@@ -65,11 +72,11 @@ const Item = (props) => {
                 </div>
                 <div className={cx('minicart__item--details', 'basis-full')}>
                     <div className={cx('minicart__item--details-child-wrapper', 'grid', 'grid-cols-1', 'gap-y-[10px]')}>
-                        <div className={cx('minicart__item--details-child-top-wrapper', 'flex', 'flex-row', 'gap-3')}>
+                        <div className={cx('minicart__item--details-child-top-wrapper', 'flex', 'flex-row', 'gap-3', 'justify-between')}>
                             <div className={cx('minicart__item--name-wrapper', 'tablet:max-desktop:basis-[176px]', 'desktop:basis-[320px]')}>
                                 <strong className="minicart__item--name">
                                     <Link href="/[...slug]" as={`/${product.url_key}`}>
-                                        <Typography variant="p-1" className={cx('normal-case')}>
+                                        <Typography variant="p-1" className={cx('normal-case', 'mobile:max-tablet:text-md')}>
                                             {product.name}
                                         </Typography>
                                     </Link>
@@ -78,7 +85,7 @@ const Item = (props) => {
                                     {configurable_options && configurable_options.length ? (
                                         <div className="product-options">
                                             {configurable_options.map((val, idx) => (
-                                                <div className="option-wrapper" key={idx}>
+                                                <div className={cx('option-wrapper', 'normal-case', 'mobile:max-tablet:text-md')} key={idx}>
                                                     <strong>{val.option_label}</strong>
                                                     {' '}
                                                     :
@@ -102,10 +109,6 @@ const Item = (props) => {
                                                                 x
                                                                 {item.label}
                                                                 {' '}
-                                                                {/* <strong>
-                                                        {' + '}
-                                                        {formatPrice(item.price, 'IDR', currencyCache)}
-                                                    </strong> */}
                                                             </div>
                                                         ))}
                                                     </div>
@@ -154,7 +157,8 @@ const Item = (props) => {
                             <div className={cx('minicart__item--delete-wrapper')}>
                                 <Button
                                     className={cx(
-                                        'm-2',
+                                        'tablet:m-2',
+                                        'mobile:max-tablet:m-0',
                                         '!px-0',
                                         '!py-0',
                                         '!ml-0',
@@ -165,7 +169,9 @@ const Item = (props) => {
                                     )}
                                     onClick={() => deleteCart(props)}
                                     icon={<TrashIcon />}
-                                    iconProps={{ className: cx('w-[24px]', 'text-neutral-500') }}
+                                    iconProps={{
+                                        className: cx('mobile:max-tablet:w-[20px]', 'tablet:w-[24px]', 'text-neutral-500'),
+                                    }}
                                     iconOnly
                                     variant="tertiary"
                                     classNameText={cx('!text-neutral-700')}
@@ -184,11 +190,16 @@ const Item = (props) => {
                         >
                             <div className={cx('details-qty qty', 'desktop:basis-full')}>
                                 <ButtonQty value={quantity} onChange={handleUpdateCart} />
-                                {/* <span className="item-minus qty-update" onClick={() => (quantity > 1 ? updateCart(id, quantity - 1) : '')}>-</span>
-                                <span className="item-count">{quantity}</span>
-                                <span className="item-plus qty-update" onClick={() => updateCart(id, quantity + 1)}>+</span> */}
                             </div>
-                            <div className={cx('item-price', 'desktop:basis-[74px]')}>
+                            <div
+                                className={cx(
+                                    'item-price',
+                                    'desktop:basis-[74px]',
+                                    'font-semibold',
+                                    'mobile:max-tablet:text-md',
+                                    'mobile:max-desktop:pt-1',
+                                )}
+                            >
                                 {formatPrice(
                                     custom_price?.price_incl_tax?.value || 0,
                                     custom_price?.price_incl_tax?.currency || 'IDR',
@@ -198,38 +209,6 @@ const Item = (props) => {
                         </div>
                     </div>
                 </div>
-                {/* <div className="minicart__item--pricing">
-                    <div className="details-qty qty">
-                        <label className="label" htmlFor="cart-item">
-                            Qty
-                        </label>
-                        <ButtonQty
-                            value={quantity}
-                            onChange={setQty}
-                            max={10000}
-                        />
-                        <span className="item-minus qty-update" onClick={() => (quantity > 1 ? updateCart(id, quantity - 1) : '')} />
-                        <span className="item-count">{quantity}</span>
-                        <span className="item-plus qty-update" onClick={() => updateCart(id, quantity + 1)} />
-                    </div>
-                    <div className="item-price">
-                        {formatPrice(custom_price?.price_incl_tax?.value || 0, custom_price?.price_incl_tax?.currency || 'IDR', currencyCache)}
-                    </div>
-                </div> */}
-
-                {/* {errorCartItems && errorCartItems.length > 0 && errorCartItems[0] === null && (
-                    <div className="oos-info">
-                        <span className="oos-info-content">{t('common:cart:oos')}</span>
-                    </div>
-                )} */}
-                {/* <div
-                    className="delete"
-                    onClick={() => {
-                        deleteCart(props);
-                    }}
-                >
-                    x
-                </div> */}
             </div>
             {errorCartItems && errorCartItems.length > 0 && errorCartItems[0] !== null && (
                 <div className="error-status-qty">

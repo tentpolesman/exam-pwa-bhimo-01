@@ -3,22 +3,20 @@
 /* eslint-disable consistent-return */
 /* eslint-disable no-script-url */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState } from 'react';
-import parse, { domToReact } from 'html-react-parser';
-import Slider from 'react-slick';
+import { features } from '@config';
+import useStyles from '@core_modules/cms/components/cms-renderer/widget-slider-caraousel/style';
+import { setCookies } from '@helpers/cookies';
 import LeftArrowIcon from '@material-ui/icons/ArrowBackIos';
 import RightArrowIcon from '@material-ui/icons/ArrowForwardIos';
-import classNames from 'classnames';
-import { features } from '@config';
-import { setCookies } from '@helpers/cookies';
+import cx from 'classnames';
+import parse, { domToReact } from 'html-react-parser';
 import propTypes from 'prop-types';
-import useStyles from '@core_modules/cms/components/cms-renderer/widget-slider-caraousel/style';
+import React, { useState } from 'react';
+import Slider from 'react-slick';
 
-const WidetSliderCarousel = (props) => {
+const WidgetSliderCarousel = (props) => {
     const {
-        storeConfig, showArrow, content, className,
-        showClose, key_cookies, backgroundColor, textColor,
-        handleClose: customHandleClose,
+        storeConfig, showArrow, content, className, showClose, key_cookies, backgroundColor, textColor, handleClose: customHandleClose,
     } = props;
     const styles = useStyles();
     const [slideIndex, setIndex] = useState(0);
@@ -45,7 +43,7 @@ const WidetSliderCarousel = (props) => {
             if (name === 'ul') {
                 return (
                     // eslint-disable-next-line no-return-assign
-                    <Slider ref={(slider) => sliderRef = slider} {...settingSlider}>
+                    <Slider ref={(slider) => (sliderRef = slider)} {...settingSlider}>
                         {domToReact(children, optionSlider)}
                     </Slider>
                 );
@@ -64,11 +62,7 @@ const WidetSliderCarousel = (props) => {
                 }
 
                 if (attribs.class === 'prettify') {
-                    return (
-                        <span style={{ color: 'hotpink' }}>
-                            {domToReact(children, options)}
-                        </span>
-                    );
+                    return <span style={{ color: 'hotpink' }}>{domToReact(children, options)}</span>;
                 }
 
                 if (attribs.class === 'btn-bar') {
@@ -117,31 +111,65 @@ const WidetSliderCarousel = (props) => {
         customHandleClose(false);
     };
 
+    const arrowClass = cx(
+        'font-[24px]',
+        'absolute',
+        'p-[10px]',
+        'rounded-[5px]',
+        'text-center',
+        'pl-[10px]',
+        'top-[calc(50%-24px]',
+        'w-[30px]',
+        'h-[30px]',
+        'cursor-pointer',
+        'mobile:max-tablet:p-0',
+        'mobile:max-tablet:w-[20px]',
+        'mobile:max-tablet:h-[20px]',
+        'mobile:max-tablet:text-[16px]',
+        'mobile:max-tablet:top-[calc(50%)]',
+    );
+
     if (content && content !== '') {
         return (
-            <div className={(className && className !== '') ? className : styles.container}>
+            <div className={className && className !== '' ? className : styles.container}>
                 <div className="slider-container">
                     {parse(content, options)}
-                    {
-                        showClose ? (
-                            <button className={styles.btnClose} onClick={handleClose} type="button">
-                                X
-                            </button>
-                        ) : null
-                    }
+                    {showClose ? (
+                        <button
+                            className={cx(
+                                'close-btn-widget-slider',
+                                'absolute',
+                                'top-[5px]',
+                                'right-[15px]',
+                                'text-[inherit]',
+                                'rounded-[5px]',
+                                'border-none',
+                                'cursor-pointer',
+                                'outline-none',
+                                'mobile:max-tablet:right-[5px]',
+                            )}
+                            onClick={handleClose}
+                            type="button"
+                        >
+                            X
+                        </button>
+                    ) : null}
                 </div>
                 {showArrow ? (
                     <>
-                        <div id="arrow-left" className={classNames(styles.arrow, styles.leftArrow)} onClick={handleLeftArrow}>
+                        <div id="arrow-left" className={cx(arrowClass, 'left-[20%]', 'mobile:max-tablet:left-[5px]')} onClick={handleLeftArrow}>
                             <LeftArrowIcon fontSize="inherit" style={{ color: storeConfig.global_promo.text_color }} />
                         </div>
-                        <div id="arrow-right" className={classNames(styles.arrow, styles.rightArrow)} onClick={handleRightArrow}>
+                        <div id="arrow-right" className={cx(arrowClass, 'right-[20%]', 'mobile:max-tablet:right-[5px]')} onClick={handleRightArrow}>
                             <RightArrowIcon fontSize="inherit" style={{ color: storeConfig.global_promo.text_color }} />
                         </div>
                     </>
                 ) : null}
                 <style jsx>
                     {`
+                        .close-btn-widget-slider {
+                            background: none;
+                        }
                         .slider-container {
                             height: 45px;
                             overflow: hidden;
@@ -149,23 +177,21 @@ const WidetSliderCarousel = (props) => {
                             padding: 10px 25%;
                             font-size: 14px;
                             color: ${color};
-                            justify-content:center;
+                            justify-content: center;
                             background-color: ${background};
                         }
 
                         @media (max-width: 768px) {
                             .slider-container {
-                               height: auto;
-                               padding: 5px 10px;
-                               font-size: 12px;
+                                height: auto;
+                                padding: 5px 10px;
+                                font-size: 12px;
                             }
                         }
-                        
+
                         .btn-bar {
                             display: none;
                         }
-
-                        
                     `}
                 </style>
             </div>
@@ -174,7 +200,7 @@ const WidetSliderCarousel = (props) => {
     return null;
 };
 
-WidetSliderCarousel.propTypes = {
+WidgetSliderCarousel.propTypes = {
     // eslint-disable-next-line react/forbid-prop-types
     storeConfig: propTypes.object.isRequired,
     showArrow: propTypes.bool,
@@ -186,7 +212,7 @@ WidetSliderCarousel.propTypes = {
     textColor: propTypes.string,
 };
 
-WidetSliderCarousel.defaultProps = {
+WidgetSliderCarousel.defaultProps = {
     showArrow: true,
     className: '',
     showClose: true,
@@ -195,4 +221,4 @@ WidetSliderCarousel.defaultProps = {
     textColor: '',
 };
 
-export default WidetSliderCarousel;
+export default WidgetSliderCarousel;

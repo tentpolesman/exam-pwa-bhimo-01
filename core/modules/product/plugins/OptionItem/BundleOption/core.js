@@ -276,6 +276,7 @@ const OptionsItemsBundle = (props) => {
             loading={loading || loadingAdd}
             t={t}
             disabled={stock_status === 'OUT_OF_STOCK'}
+            stockStatus={stock_status}
             customButton={customButton}
             currencyCache={currencyCache}
             {...other}

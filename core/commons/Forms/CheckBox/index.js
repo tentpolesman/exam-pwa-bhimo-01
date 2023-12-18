@@ -68,7 +68,7 @@ const CheckBox = (props) => {
 
     if (isVariantSingle) {
         return (
-            <div className="">
+            <div className="common-checkbox-container">
                 <input
                     {...other}
                     type="checkbox"

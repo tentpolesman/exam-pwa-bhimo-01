@@ -6,14 +6,15 @@
 /* eslint-disable no-plusplus */
 import Typography from '@common_typography';
 import ButtonQty from '@common_buttonqty';
-import Button from '@common_button';
+import Divider from '@common_divider';
 import dynamic from 'next/dynamic';
-import useStyles from '@core_modules/product/plugins/OptionItem/BundleOption/style';
+import cx from 'classnames';
+import OptionItemAction from '@plugin_optionitemaction';
 
-const Select = dynamic(() => import('./customizeType/select'), { ssr: false });
-const Multiple = dynamic(() => import('./customizeType/multiple'), { ssr: false });
-const Radio = dynamic(() => import('./customizeType/radio'), { ssr: false });
-const Checkbox = dynamic(() => import('./customizeType/checkbox'), { ssr: false });
+const Select = dynamic(() => import('@plugin_optionitem/BundleOption/components/customizeType/select'), { ssr: false });
+const Multiple = dynamic(() => import('@plugin_optionitem/BundleOption/components/customizeType/multiple'), { ssr: false });
+const Radio = dynamic(() => import('@plugin_optionitem/BundleOption/components/customizeType/radio'), { ssr: false });
+const Checkbox = dynamic(() => import('@plugin_optionitem/BundleOption/components/customizeType/checkbox'), { ssr: false });
 
 const GenerateOptionsSelect = (props) => {
     const {
@@ -57,69 +58,78 @@ const GenerateOptionsSelect = (props) => {
 
 const Customize = (props) => {
     const {
-        data, t, items, changeQty, generateBundlePrice, selectOptions, handleAddToCart, loading, currencyCache,
+        data,
+        t,
+        items,
+        changeQty,
+        generateBundlePrice,
+        selectOptions,
+        handleAddToCart,
+        loading,
+        currencyCache,
+        stockStatus,
     } = props;
     const [qty, setQty] = React.useState(1);
-    const styles = useStyles();
     const product = data && data.products ? data.products.items[0] : {};
     const isDynamicPrice = product ? product.dynamic_price : true;
 
     return (
         <>
-            <Typography variant="h5" type="bold">
-                Customize
-                {' '}
+            <Typography variant="bd-1c" color="text-neutral-500">
+                {`${t('common:label:customize')} `}
                 {product.name}
             </Typography>
             {items.length > 0 ? (
-                <div className={styles.customizeContainer}>
-                    <div className="flex flex-row">
+                <div className={cx('customization-container', 'mt-[16px]')}>
+                    <div className="flex flex-col">
                         <div className="xs:basis-full lg:basis-full">
                             {items.map((val, idx) => (
-                                <div className="item-list" key={idx}>
-                                    <Typography variant="label" type="bold">
+                                <div className="item-list mb-[16px]" key={idx}>
+                                    <Typography variant="bd-1">
                                         {val.title}
                                         <span className="required-label">*</span>
                                     </Typography>
-                                    <GenerateOptionsSelect
-                                        data={val}
-                                        options={val.options}
-                                        selectOptions={selectOptions}
-                                        currencyCache={currencyCache}
-                                        dynamicPrice={isDynamicPrice}
-                                    />
-                                    <Typography variant="label" type="bold">
+                                    <div className="item-list-option mt-[16px] mb-[16px]">
+                                        <GenerateOptionsSelect
+                                            data={val}
+                                            options={val.options}
+                                            selectOptions={selectOptions}
+                                            currencyCache={currencyCache}
+                                            dynamicPrice={isDynamicPrice}
+                                        />
+                                    </div>
+                                    <Typography variant="bd-2a">
                                         {t('product:quantity')}
                                     </Typography>
                                     <ButtonQty
+                                        classNameInputContainer="mt-[6px]"
                                         value={val.options.find((option) => option.is_default)?.quantity}
                                         onChange={(e) => changeQty(val.position, e)}
                                         max={10000}
                                         disabled={!val.options.find((option) => option.is_default)?.can_change_quantity}
                                     />
+                                    <Divider className="mt-[16px] mb-[24px]" />
                                 </div>
                             ))}
                         </div>
-                        <div className="xs:basis-full lg:basis-full" style={{ marginTop: 20 }}>
-                            <Typography variant="label" type="bold">
+                        <div className="xs:basis-full lg:basis-full flex flex-col gap-4">
+                            <Typography variant="bd-1c" color="text-neutral-500" className="mb-[16px]">
                                 {t('product:yourCustomization')}
                             </Typography>
-                            <hr />
-                            <Typography variant="h3" type="bold">
+                            <Typography variant="bd-1c" color="text-neutral-800" className="mb-[24px]">
                                 {generateBundlePrice(items, currencyCache, isDynamicPrice)}
                             </Typography>
-                            <ButtonQty value={1} onChange={(e) => setQty(e)} max={10000} />
-                            <Button
-                                id="plugin-addToCart-btn"
-                                className={styles.btnAddToCard}
-                                color="primary"
-                                onClick={() => handleAddToCart(qty)}
+                            <OptionItemAction
+                                t={t}
+                                showStockStatus
+                                stockStatus={stockStatus}
+                                stockStatusClassWrapper="mb-[24px]"
+                                value={1}
+                                setQty={(e) => setQty(e)}
+                                maxQty={10000}
+                                handleAddToCart={() => handleAddToCart(qty)}
                                 loading={loading}
-                            >
-                                <Typography align="center" type="bold" letter="uppercase" color="white" variant="span">
-                                    {t('product:addToCart')}
-                                </Typography>
-                            </Button>
+                            />
                         </div>
                     </div>
                 </div>

@@ -87,7 +87,20 @@ const DesktopHeader = (props) => {
     };
 
     return (
-        <div className={cx('desktop-header', 'mobile:max-desktop:hidden', 'transition-transform', 'delay-300', 'duration-500', 'ease-in-out')}>
+        <div
+            className={cx(
+                'desktop-header',
+                'mobile:max-desktop:hidden',
+                'transition-transform',
+                'delay-300',
+                'duration-500',
+                'ease-in-out',
+                'shadow-md',
+                {
+                    'hidden-this-desktop': deviceWidth < 1200,
+                },
+            )}
+        >
             <div
                 id="top-header"
                 className={cx('top-header', 'mobile:max-desktop:hidden', 'tablet:border-b-[1.5px]', 'tablet:border-b-neutral-300', 'py-[1px]')}

@@ -1,6 +1,8 @@
+/* eslint-disable max-len */
 import React from 'react';
 import PriceFormat from '@common_priceformat';
 import Typography from '@common_typography';
+import cx from 'classnames';
 
 const ItemGrouped = ({
     max = 10000,
@@ -32,9 +34,9 @@ const ItemGrouped = ({
     };
 
     return (
-        <div className="flex flex-row items-center justify-between min-h-max py-2 border-b-[2px] border-b-neutral-100">
-            <div className="flex flex-col">
-                <Typography>{product.name}</Typography>
+        <div className={cx('flex flex-row items-center justify-between min-h-[50px] border-b-[2px] py-[10px]')}>
+            <div className={cx('flex flex-col')}>
+                <Typography className="ml-[5px]">{product.name}</Typography>
                 <PriceFormat
                     priceRange={product.price_range}
                     priceTiers={product.price_tiers}
@@ -53,7 +55,14 @@ const ItemGrouped = ({
                     )
                     : (
                         <input
-                            className="min-h-[20px] max-w-[50px] tablet:max-w[60px] tablet:min-h-[30px] text-center"
+                            className={
+                                cx(
+                                    'text-center mr-[5px]',
+                                    'desktop:min-h-[30px] desktop:min-w-[60px] desktop:w-[60px]',
+                                    'mobile:min-h-[20px] mobile:min-w-[50px] mobile:w-[60px]',
+                                    '[appearance:textfield] [webkit-appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none',
+                                )
+                            }
                             type="number"
                             onChange={handleLocalChange}
                             readOnly={disabled}

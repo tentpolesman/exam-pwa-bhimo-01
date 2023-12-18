@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import dynamic from 'next/dynamic';
-import classNames from 'classnames';
+import cx from 'classnames';
 import Typography from '@common_typography';
 import ButtonQty from '@common_buttonqty';
 import Show from '@common_show';
@@ -26,6 +26,7 @@ const OptionItemAction = (props) => {
         freeItemsData,
         showStockStatus,
         stockStatus,
+        stockStatusClassWrapper,
         __typename,
         url_key,
         isPlp = false,
@@ -53,12 +54,17 @@ const OptionItemAction = (props) => {
 
     return (
         <div className="flex flex-col gap-4">
-            <Show when={showStockStatus && stockStatus}>
-                <StockStatus inStock={stockStatus === 'IN_STOCK'} />
-            </Show>
+            <div className={
+                cx('stock-status-container', stockStatusClassWrapper)
+            }
+            >
+                <Show when={showStockStatus && stockStatus}>
+                    <StockStatus inStock={stockStatus === 'IN_STOCK'} />
+                </Show>
+            </div>
             <div className="flex flex-row gap-4 items-end">
                 {showQty && (
-                    <div className={classNames('flex flex-col gap-2', 'product-OptionItem-qty')}>
+                    <div className={cx('flex flex-col gap-2', 'product-OptionItem-qty')}>
                         <Typography className="font-normal" variant="span">
                             {t('common:title:qty')}
                         </Typography>
@@ -74,7 +80,7 @@ const OptionItemAction = (props) => {
                 {showAddToCart && (
                     <Button
                         id="plugin-addToCart-btn"
-                        className={classNames('w-full h-[48px] [&.button-link]:justify-center', customStyleBtnAddToCard)}
+                        className={cx('w-full h-[48px] [&.button-link]:justify-center', customStyleBtnAddToCard)}
                         classNameText="justify-center"
                         color="primary"
                         onClick={handleAddToCart}

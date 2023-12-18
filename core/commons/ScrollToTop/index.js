@@ -15,7 +15,9 @@ const ScrollTop = (props) => {
 
             const headerInner = document.getElementById('header-inner');
             const desktopHeader = document.getElementsByClassName('desktop-header')[0];
+            const desktopHeaderClassList = Object.values(desktopHeader.classList);
             const tabletHeader = document.getElementsByClassName('tablet-header')[0];
+            const tabletHeaderClassList = Object.values(tabletHeader.classList);
 
             const checkScrollTop = () => {
                 const globalPromo = document.getElementById('global-promo-message');
@@ -25,53 +27,70 @@ const ScrollTop = (props) => {
                     if (window.pageYOffset > 200) {
                         if (headerInner) {
                             if (desktopHeader) {
-                                if (showGlobalPromo && globalPromo) {
-                                    headerInner.classList.remove('top-[38px]');
+                                const isShownDesktop = !(desktopHeaderClassList.filter((item) => item === 'hidden-this-desktop').length > 0);
+                                if (isShownDesktop) {
+                                    if (showGlobalPromo && globalPromo) {
+                                        headerInner.classList.remove('top-[38px]');
+                                    }
+                                    if (scrollTopPosition > lastScrollTop) {
+                                        headerInner.classList.remove('top-[-43px]');
+                                        headerInner.classList.add('top-[-128px]');
+                                    } else if (scrollTopPosition < lastScrollTop) {
+                                        headerInner.classList.remove('top-[-128px]');
+                                        headerInner.classList.add('top-[-43px]');
+                                    }
+                                    lastScrollTop = scrollTopPosition <= 0 ? 0 : scrollTopPosition;
                                 }
-                                if (scrollTopPosition > lastScrollTop) {
-                                    headerInner.classList.remove('top-[-43px]');
-                                    headerInner.classList.add('top-[-128px]');
-                                } else if (scrollTopPosition < lastScrollTop) {
-                                    headerInner.classList.remove('top-[-128px]');
-                                    headerInner.classList.add('top-[-43px]');
-                                }
-                                lastScrollTop = scrollTopPosition <= 0 ? 0 : scrollTopPosition;
                             }
                             if (tabletHeader) {
-                                if (showGlobalPromo && globalPromo) {
-                                    headerInner.classList.remove('top-[38px]');
+                                const isShownTablet = !(tabletHeaderClassList.filter((item) => item === 'hidden-this-tablet').length > 0);
+                                if (isShownTablet) {
+                                    if (showGlobalPromo && globalPromo) {
+                                        headerInner.classList.remove('top-[38px]');
+                                    }
                                     headerInner.classList.add('top-[-43px]');
                                 }
-                                headerInner.classList.add('top-[-43px]');
                             }
                         }
                     } else if (window.pageYOffset > 0 && window.pageYOffset <= 200) {
                         if (desktopHeader) {
-                            if (showGlobalPromo && globalPromo) {
-                                headerInner.classList.remove('top-[38px]');
+                            const isShownDesktop = !(desktopHeaderClassList.filter((item) => item === 'hidden-this-desktop').length > 0);
+                            if (isShownDesktop) {
+                                if (showGlobalPromo && globalPromo) {
+                                    headerInner.classList.remove('top-[38px]');
+                                }
                             }
                         }
                         if (tabletHeader) {
-                            if (showGlobalPromo && globalPromo) {
-                                headerInner.classList.remove('top-[38px]');
+                            const isShownTablet = !(tabletHeaderClassList.filter((item) => item === 'hidden-this-tablet').length > 0);
+                            if (isShownTablet) {
+                                if (showGlobalPromo && globalPromo) {
+                                    headerInner.classList.remove('top-[38px]');
+                                }
                             }
                         }
                     } else {
                         if (desktopHeader) {
-                            if (scrollTopPosition === 0) {
-                                headerInner.classList.remove('top-[-43px]');
-                                headerInner.classList.remove('top-[-128px]');
-                                if (showGlobalPromo && globalPromo) {
-                                    headerInner.classList.add('top-[38px]');
+                            const isShownDesktop = !(desktopHeaderClassList.filter((item) => item === 'hidden-this-desktop').length > 0);
+                            if (isShownDesktop) {
+                                if (scrollTopPosition === 0) {
+                                    headerInner.classList.remove('top-[-43px]');
+                                    headerInner.classList.remove('top-[-128px]');
+                                    if (showGlobalPromo && globalPromo) {
+                                        headerInner.classList.add('top-[38px]');
+                                    }
                                 }
+                                lastScrollTop = scrollTopPosition <= 0 ? 0 : scrollTopPosition;
                             }
-                            lastScrollTop = scrollTopPosition <= 0 ? 0 : scrollTopPosition;
                         }
                         if (tabletHeader) {
-                            if (scrollTopPosition === 0) {
-                                headerInner.classList.remove('top-[-43px]');
-                                if (showGlobalPromo && globalPromo) {
-                                    headerInner.classList.add('top-[38px]');
+                            const isShownTablet = !(tabletHeaderClassList.filter((item) => item === 'hidden-this-tablet').length > 0);
+                            if (isShownTablet) {
+                                if (scrollTopPosition === 0) {
+                                    headerInner.classList.remove('top-[-43px]');
+                                    if (showGlobalPromo && globalPromo) {
+                                        headerInner.classList.add('top-[38px]');
+                                    }
                                 }
                             }
                         }

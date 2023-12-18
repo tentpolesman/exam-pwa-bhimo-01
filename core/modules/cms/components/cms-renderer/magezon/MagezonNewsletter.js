@@ -1,20 +1,10 @@
-import React from 'react';
 import NewsletterForm from '@plugin_newsletter';
+import React from 'react';
 
 const MagezonNewsletter = (props) => {
     const { disable_element } = props;
     if (!disable_element) {
-        return (
-            <div>
-                <NewsletterForm isCms {...props} />
-                <style jsx global>
-                    {`
-                        .container {
-                        }
-                    `}
-                </style>
-            </div>
-        );
+        return <NewsletterForm isCms {...props} />;
     }
     return null;
 };

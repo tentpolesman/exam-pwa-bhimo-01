@@ -1,6 +1,7 @@
+/* eslint-disable max-len */
 import React from 'react';
 import Typography from '@common_typography';
-import classNames from 'classnames';
+import cx from 'classnames';
 import OptionItemAction from '@core_modules/product/plugins/OptionItemAction';
 import Item from '@core_modules/product/plugins/OptionItem/GroupedOption/Item';
 import Show from '@common/Show';
@@ -16,33 +17,26 @@ const GroupedProductOptionView = ({
     CustomFooter,
     ...other
 }) => (
-    <>
-        <div className="flex flex-col">
-            <Show when={!isPlp && (!loadData && optionsData.length > 0)}>
-                <div className="flex flex-col mb-7">
-                    <div className={classNames(
-                        'flex flex-row items-center justify-between min-h-[50px] border-b-[2px] border-b-neutral-100 py-2',
-                        'border-b-primary',
-                    )}
-                    >
-                        <Typography type="bold">{t('common:product:titleProduct')}</Typography>
-                        <Typography type="bold">{t('common:title:shortQty')}</Typography>
-                    </div>
-                    {
-                        optionsData.map((item, key) => (
-                            <Item
-                                key={key}
-                                {...item}
-                                itemsCart={itemsCart}
-                                setItemsCart={setItemsCart}
-                                disabled={disabled}
-                            />
-                        ))
-                    }
+    <div className={cx('grouped-option-container')}>
+        <Show when={!isPlp && !loadData && optionsData.length > 0}>
+            <div className={cx('flex flex-col mb-[30px]')}>
+                <div className={cx('flex flex-row items-center justify-between min-h-[50px] border-b-[2px] py-[10px]', 'border-b-[2px] border-neutral-250')}>
+                    <Typography type="bold">{t('common:product:titleProduct')}</Typography>
+                    <Typography type="bold">{t('common:title:shortQty')}</Typography>
                 </div>
-            </Show>
-        </div>
-
+                {
+                    optionsData.map((item, key) => (
+                        <Item
+                            key={key}
+                            {...item}
+                            itemsCart={itemsCart}
+                            setItemsCart={setItemsCart}
+                            disabled={disabled}
+                        />
+                    ))
+                }
+            </div>
+        </Show>
         {React.isValidElement(CustomFooter)
             ? React.cloneElement(CustomFooter, {
                 ...other,
@@ -55,12 +49,14 @@ const GroupedProductOptionView = ({
                 <OptionItemAction
                     loading={loading}
                     disabled={disabled}
+                    showQty={false}
                     handleAddToCart={handleAddToCart}
                     t={t}
+                    showAddToCart
                     {...other}
                 />
             )}
-    </>
+    </div>
 );
 
 export default GroupedProductOptionView;

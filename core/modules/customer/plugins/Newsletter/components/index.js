@@ -68,7 +68,7 @@ const NewsletterView = (props) => {
                         'tablet:py-6',
                         'max-tablet:px-4',
                         'max-tablet:py-6',
-                        'tablet:px-[10px]',
+                        'tablet:px-0',
                     )}
                 >
                     <div className={cx('left-section-newsletter', 'max-tablet:grid', 'max-tablet:grid-cols-1')}>
