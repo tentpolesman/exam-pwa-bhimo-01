@@ -21,16 +21,22 @@ import TagManager from 'react-gtm-module';
 import Bars3Icon from '@heroicons/react/24/solid/Bars3Icon';
 import DevicePhoneMobileIcon from '@heroicons/react/24/solid/DevicePhoneMobileIcon';
 
+import { getCategories } from '@core_modules/theme/services/graphql';
+
 const Autocomplete = dynamic(() => import('@core_modules/theme/components/header/desktop/components/autocomplete'), { ssr: false });
+const BurgerMenuCategories = dynamic(() => import('@core_modules/theme/components/header/desktop/components/burgermenu/categories'), { ssr: false });
+const BurgerMenuAccount = dynamic(() => import('@core_modules/theme/components/header/desktop/components/burgermenu/account/index'), { ssr: false });
 const ShoppingBagIcon = dynamic(() => import('@plugin_shoppingbag'), { ssr: true });
 const NotificationBell = dynamic(() => import('@plugin_notificationbell'), { ssr: true });
 const SwitcherCurrency = dynamic(() => import('@common_currency'), { ssr: false });
 const SwitcherLanguage = dynamic(() => import('@common_language'), { ssr: false });
 
 const TabletHeader = (props) => {
-    const { t, storeConfig, isLogin, setValue, handleSearch, dataVesMenu, loadingVesMenu, vesMenuConfig, handleLogout, deviceWidth } = props;
+    const { t, storeConfig, isLogin, setValue, handleSearch, handleLogout, deviceWidth, ...other } = props;
 
     const adminId = Cookies.get('admin_id');
+
+    const { data } = getCategories();
 
     const handleClickInstallApp = () => {
         const timestamp = Date.now();
@@ -50,56 +56,12 @@ const TabletHeader = (props) => {
     const burgerMenuData = [
         {
             title: 'Menu',
-            content: <p className={cx('p-4')}>Reserved For Ves Menu</p>,
+            content: data && <BurgerMenuCategories data={data.categories.items[0].children} />,
             type: 'react-component',
         },
         {
             title: 'Account',
-            content: (
-                <>
-                    {!isLogin ? (
-                        <div className={cx('p-4')}>
-                            <div className={cx('grid', 'grid-cols-1', 'gap-y-4', 'pb-4', 'border-b-[1px]', 'border-neutral-300')}>
-                                <Link href="/customer/account" prefetch={false}>
-                                    <Typography className={cx('py-[13px]', 'px-4')}>My Account</Typography>
-                                </Link>
-                                <Link href="/wishlist" prefetch={false}>
-                                    <Typography className={cx('py-[13px]', 'px-4')}>My Wishlist</Typography>
-                                </Link>
-                                <Link href="/catalog/product_compare" prefetch={false}>
-                                    <Typography className={cx('py-[13px]', 'px-4')}>Compare Products</Typography>
-                                </Link>
-                                <Button
-                                    className={cx(
-                                        '!px-0',
-                                        '!py-0',
-                                        'hover:shadow-none',
-                                        'focus:shadow-none',
-                                        'active:shadow-none',
-                                        'active:shadow-none',
-                                    )}
-                                    onClick={handleLogout}
-                                    variant="tertiary"
-                                    classNameText={cx('!text-red-500')}
-                                >
-                                    <Typography className={cx('py-[0]', 'px-4', 'text-red-500')}>Log Out</Typography>
-                                </Button>
-                            </div>
-                        </div>
-                    ) : (
-                        <div className={cx('p-4')}>
-                            <div className={cx('grid', 'grid-cols-1', 'gap-y-4', 'pb-4')}>
-                                <Link href="/customer/account/login" prefetch={false}>
-                                    <Typography className={cx('py-[13px]', 'px-4')}>Log in / Register</Typography>
-                                </Link>
-                                <Link href="/catalog/product_compare" prefetch={false}>
-                                    <Typography className={cx('py-[13px]', 'px-4')}>Compare Products</Typography>
-                                </Link>
-                            </div>
-                        </div>
-                    )}
-                </>
-            ),
+            content: <BurgerMenuAccount isLogin={isLogin} handleLogout={handleLogout} {...other} />,
             type: 'react-component',
         },
     ];
@@ -115,6 +77,10 @@ const TabletHeader = (props) => {
                 'delay-100',
                 'duration-500',
                 'ease-in-out',
+                'shadow-md',
+                {
+                    'hidden-this-tablet': deviceWidth < 768 || deviceWidth > 1200,
+                },
             )}
         >
             <div id="top-header-tablet" className={cx('top-header__tablet', 'tablet:border-b-[1.5px]', 'tablet:border-b-neutral-300', 'py-[1px]')}>
@@ -198,24 +164,28 @@ const TabletHeader = (props) => {
                             variant="tertiary"
                             classNameText={cx('!text-neutral-700')}
                         />
-                        <Drawer
-                            open={openBurgerMenu}
-                            handleClose={() => setOpenBurgerMenu(false)}
-                            position="left"
-                            className={cx('tablet:max-desktop:w-[396px]')}
-                        >
-                            <Tabs
-                                data={burgerMenuData}
-                                tabHasContent
-                                tabWrapperClassName={cx('border-none')}
-                                tabTitleWrapperClassName={cx('grid', 'grid-cols-2')}
-                                tabTitleClassName={cx('border-none', '!text-neutral-700', 'text-2md', 'font-semibold')}
-                                tabTitleActiveClassName={cx('border-none', '!text-neutral-700', 'text-2md', 'font-semibold')}
-                                tabTitleListClassName={cx('bg-neutral-100')}
-                                tabTitleListActiveClassName={cx('bg-neutral-white', 'border-b-[1px]', 'border-b-neutral-400')}
-                                tabContentClassName={cx('pt-0')}
-                            />
-                        </Drawer>
+                        {data && (
+                            <Drawer
+                                open={openBurgerMenu}
+                                handleClose={() => setOpenBurgerMenu(false)}
+                                position="left"
+                                className={cx('tablet:max-desktop:w-[396px]')}
+                                customButtonClose
+                                backdrop
+                            >
+                                <Tabs
+                                    data={burgerMenuData}
+                                    tabHasContent
+                                    tabWrapperClassName={cx('border-none')}
+                                    tabTitleWrapperClassName={cx('grid', 'grid-cols-2')}
+                                    tabTitleClassName={cx('border-none', '!text-neutral-700', 'text-2md', 'font-semibold')}
+                                    tabTitleActiveClassName={cx('border-none', '!text-neutral-700', 'text-2md', 'font-semibold')}
+                                    tabTitleListClassName={cx('bg-neutral-100')}
+                                    tabTitleListActiveClassName={cx('bg-neutral-white', 'border-b-[1px]', 'border-b-neutral-400')}
+                                    tabContentClassName={cx('pt-0')}
+                                />
+                            </Drawer>
+                        )}
                     </div>
                     <div className={cx('middle-header-tablet__logo')}>
                         <Link href="/" legacyBehavior>
