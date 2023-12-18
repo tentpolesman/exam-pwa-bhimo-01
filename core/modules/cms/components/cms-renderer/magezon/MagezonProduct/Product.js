@@ -41,7 +41,7 @@ const Product = (props) => {
 
     const productProps = {
         storeConfig,
-        enableQuickView: false,
+        enableQuickView: true,
         enableImage: product_image,
         enableAddToCart: product_addtocart,
         enableOption: product_swatches,

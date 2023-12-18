@@ -40,6 +40,7 @@ const Caraousel = (props) => {
                             ),
                         }}
                         {...other}
+                        enableQuickView
                     />
                 ))}
             </ContainerScroll>
