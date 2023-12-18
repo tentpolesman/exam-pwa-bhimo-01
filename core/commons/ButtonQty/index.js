@@ -44,6 +44,7 @@ const ButtonQty = ({
     classNameBtnMinus,
     classNameBtnPlus,
     classNameInput,
+    classNameInputContainer,
 }) => {
     const [localValue, setLocalValue] = React.useState(value);
     const disabledMin = disabled || localValue === 1;
@@ -106,7 +107,8 @@ const ButtonQty = ({
                 'rounded-[8px]',
                 'gap-[7px]',
                 'p-[4px]',
-                disabled && 'border-neutral-200',
+                'border-neutral-200',
+                classNameInputContainer,
             )}
         >
 

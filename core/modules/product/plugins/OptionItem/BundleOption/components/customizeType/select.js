@@ -3,17 +3,16 @@
 /* eslint-disable no-undef */
 /* eslint-disable radix */
 /* eslint-disable no-plusplus */
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import { formatPrice } from '@helper_currency';
-import useStyles from '@core_modules/product/plugins/OptionItem/BundleOption/style';
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable guard-for-in */
 import React from 'react';
+import Select from '@common_forms/Select';
+import cx from 'classnames';
+import { formatPrice } from '@helper_currency';
 
 const SelectItem = ({
     data, options = [], selectOptions, currencyCache, dynamicPrice,
 }) => {
-    const styles = useStyles();
     const defaultValue = React.useMemo(() => {
         let tempValue = 0;
         if (options && options.length > 0) {
@@ -27,33 +26,51 @@ const SelectItem = ({
         return tempValue;
     }, [options]);
 
+    const selectedValue = React.useMemo(() => {
+        let selectedLabel = '';
+        const filterOption = options.filter((item) => item.id === defaultValue);
+        if (filterOption.length > 0) {
+            const option_item = filterOption[0];
+            selectedLabel = `${option_item.label} - ${formatPrice(dynamicPrice === false
+                ? option_item.price : option_item.product.price_range.minimum_price.final_price.value,
+            option_item.product.price_range.minimum_price.final_price.currency,
+            currencyCache)}`;
+        }
+        return selectedLabel;
+    }, [defaultValue]);
+
+    const listOptions = React.useMemo(() => {
+        const dataOptions = [];
+        if (options) {
+            for (const option_index in options) {
+                const option_item = options[option_index];
+                dataOptions.push({
+                    id: option_item.id,
+                    value: option_item.id,
+                    label: `${option_item.label} - ${formatPrice(dynamicPrice === false
+                        ? option_item.price : option_item.product.price_range.minimum_price.final_price.value,
+                    option_item.product.price_range.minimum_price.final_price.currency,
+                    currencyCache)}`,
+                });
+            }
+        }
+        return dataOptions;
+    }, [options]);
+
     return (
-        <FormControl className={styles.selectItem}>
+        <div className={cx('cutomize-option-select')}>
             <Select
-                labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                value={defaultValue}
-                onChange={(e) => selectOptions(data, parseInt(e.target.value))}
-            >
-                {}
-                {options
-                    .filter((opt) => opt.label != null || opt.product != null)
-                    .map((val, idx) => (
-                        <MenuItem key={idx} value={val.id}>
-                            <label
-                                className="label-options"
-                                dangerouslySetInnerHTML={{
-                                    __html: `${val.label} + <b>${formatPrice(dynamicPrice === false
-                                        ? val.price
-                                        : val.product.price_range.minimum_price.final_price.value,
-                                    val.product.price_range.minimum_price.final_price.currency,
-                                    currencyCache)}</b>`,
-                                }}
-                            />
-                        </MenuItem>
-                    ))}
-            </Select>
-        </FormControl>
+                value={selectedValue}
+                options={listOptions}
+                optionProps={{
+                    className: 'absolute',
+                }}
+                onChange={(value) => {
+                    selectOptions(data, parseInt(value));
+                }}
+            />
+        </div>
     );
 };
 

@@ -3,17 +3,21 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/anchor-is-valid */
+import React from 'react';
 import Typography from '@common_typography';
 import cx from 'classnames';
-import { useEffect, useState } from 'react';
 import CheckIcon from '@heroicons/react/24/solid/CheckIcon';
 import propTypes from 'prop-types';
 import parser from 'html-react-parser';
+import { useTranslation } from 'react-i18next';
 
 const Radio = (props) => {
     const {
+        id,
+        variant = 'multiple',
         data = [],
         onChange = () => {},
+        onClick = () => {},
         value = '',
         name = 'radio',
         ariaLabel = 'radio',
@@ -31,16 +35,22 @@ const Radio = (props) => {
         size = 'md',
         customItemProps = {},
         type = 'radio',
+        checked,
+        children,
     } = props;
+    const { t } = useTranslation(['common']);
     const { radioGroupClasses = '', radioClasses = '' } = classNames;
-    const [more, setMore] = useState(7);
-    const [mappedData, setMappedData] = useState(data);
+    const [more, setMore] = React.useState(7);
+    const [mappedData, setMappedData] = React.useState(data);
+    const isVariantSingle = variant === 'single';
 
-    useEffect(() => {
-        if (useLoadMore) {
-            setMappedData(data?.slice(0, more));
-        } else {
-            setMappedData(data);
+    React.useEffect(() => {
+        if (isVariantSingle) {
+            if (useLoadMore) {
+                setMappedData(data?.slice(0, more));
+            } else {
+                setMappedData(data);
+            }
         }
     }, [useLoadMore, more, data]);
 
@@ -66,6 +76,49 @@ const Radio = (props) => {
     const handleChangeCustom = (val) => {
         !disabled && onChange(val);
     };
+
+    if (isVariantSingle) {
+        return (
+            <div className="common-checkbox-container">
+                <input
+                    type="radio"
+                    id={id}
+                    name={name}
+                    ariaLabel={ariaLabel}
+                    value={value}
+                    checked={checked}
+                    onChange={onChange}
+                    onClick={onClick}
+                    disabled={disabled}
+                    className={cx(
+                        'form-radio',
+                        'w-4',
+                        'h-4',
+                        'mr-2',
+                        'border-solid',
+                        'border-[1px]',
+                        'focus:ring-0',
+                        'focus:border-primary',
+                        'text-primary',
+                        'focus:shadow-[0_0_0_4px]',
+                        'focus:shadow-primary-50',
+                        'focus:ring-offset-0',
+                        'checked:bg-[length:150%]',
+                        'visible',
+                        {
+                            'border-neutral-300 text-neutral-300': !disabled,
+                            'w-5 h-5': size === 'md',
+                            'w-6 h-6': size === 'lg',
+                            'invisible hidden': type === 'check',
+                        },
+                        radioClasses,
+                    )}
+                />
+                {children}
+            </div>
+        );
+    }
+
     return (
         <div className={cx('m-0 mb-[10px] flex flex-col', className)}>
             {label ? (
@@ -179,7 +232,7 @@ const Radio = (props) => {
 
             {useLoadMore && data.length > 7 && more <= 7 && (
                 <a onClick={handleMore} className="mt-[10px] text-right cursor-pointer">
-                    <Typography className="underline">See more</Typography>
+                    <Typography className="underline">{t('common:label:seeMore')}</Typography>
                 </a>
             )}
             {useLoadMore && more > 7 && (

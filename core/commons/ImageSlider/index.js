@@ -37,14 +37,16 @@ const ImageSliderVideo = ({
             />
         );
     }
+
     if (videoUrl) {
-        const urlVideo = videoUrl && videoUrl.video_url.split('/');
+        const urlVideo = videoUrl && videoUrl?.video_url?.split('/');
+        const urlVideoSrc = urlVideo?.length > 1 ? `https://www.youtube.com/embed/${urlVideo[3]}` : null;
         return (
             <iframe
                 {...swipeHandlers}
                 width={isMobile ? '100%' : mainImage}
                 height={mainImage}
-                src={`https://www.youtube.com/embed/${urlVideo[3]}`}
+                src={urlVideoSrc}
                 title={videoUrl.video_title}
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -76,7 +78,7 @@ const ImageSliderSelectedPreview = ({
         );
     }
 
-    if (isVideoUrl) {
+    if (isVideoUrl && isVideoUrl !== '#') {
         return (
             <ImageSliderVideo
                 mainImage={mainImage}
@@ -151,7 +153,7 @@ const ImageSliderSelected = ({
         );
     }
 
-    if (isVideoUrl) {
+    if (isVideoUrl && isVideoUrl !== '#') {
         return (
             <ImageSliderVideo
                 swipeHandlers={swipeHandlers}

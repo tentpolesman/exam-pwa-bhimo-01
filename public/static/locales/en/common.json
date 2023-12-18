@@ -212,6 +212,15 @@
         "shareToYourFriend": "Share to your friend and family!",
         "showMore": "Show More",
         "showLess": "Show Less",
-        "selectProduct": "Select Product"
+        "selectProduct": "Select Product",
+        "preview": "Preview",
+        "giftCard": "Gift Card",
+        "giftCardCode": "Gift Card Code",
+        "to": "To",
+        "from": "From",
+        "value": "Value",
+        "shopNow": "Shop Now",
+        "applyShopNow": "Apply on shopping cart page.",
+        "customize": "Customize"
     }
 }

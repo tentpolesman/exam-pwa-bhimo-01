@@ -107,6 +107,11 @@ const ProductDetailAction = ({
                 classContentWrapper,
             )}
             >
+                <Show when={data?.brand}>
+                    <Typography variant="bd-1b" className="mb-[10px] !text-primary-700">
+                        {data?.brand}
+                    </Typography>
+                </Show>
                 <Typography variant="h1" className="first-letter:uppercase mb-[12px] desktop:mt-[0px] tablet:mt-[0px] mobile:mt-[24px]">
                     {data?.name || '-'}
                 </Typography>
@@ -220,41 +225,43 @@ const ProductDetailAction = ({
                         }}
                     />
                 </div>
-                <div className="product-detail-description-container">
-                    <div className="product-detail-description relative">
-                        <Typography
-                            variant="p-2"
-                            className={
-                                cx(
-                                    'mt-[24px]',
-                                    showShortDesc && 'h-auto',
-                                    !showShortDesc && 'desktop:h-[120px] tablet:h-[80px] mobile:h-[80px] overflow-hidden',
-                                )
-                            }
-                        >
-                            {data?.short_description?.html ? <CmsRenderer content={data?.short_description?.html} /> : null}
-                        </Typography>
-                        <Show when={!showShortDesc && data?.short_description?.html?.length > 0}>
-                            <div
-                                className="w-[100%] h-[25px] absolute bottom-[0px]"
-                                style={{
-                                    background: 'linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.7497373949579832) 43%, rgba(255,255,255,0) 100%)',
-                                }}
-                            />
+                <Show when={data?.short_description?.html?.length > 0}>
+                    <div className="product-detail-description-container">
+                        <div className="product-detail-description relative">
+                            <Typography
+                                variant="p-2"
+                                className={
+                                    cx(
+                                        'mt-[24px]',
+                                        showShortDesc && 'h-auto',
+                                        !showShortDesc && 'desktop:h-[120px] tablet:h-[80px] mobile:h-[80px] overflow-hidden',
+                                    )
+                                }
+                            >
+                                {data?.short_description?.html ? <CmsRenderer content={data?.short_description?.html} /> : null}
+                            </Typography>
+                            <Show when={!showShortDesc && data?.short_description?.html?.length > 0}>
+                                <div
+                                    className="w-[100%] h-[25px] absolute bottom-[0px]"
+                                    style={{
+                                        background: 'linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.7497373949579832) 43%, rgba(255,255,255,0) 100%)',
+                                    }}
+                                />
+                            </Show>
+                        </div>
+                        <Show when={data?.short_description?.html?.length > 0}>
+                            <Button
+                                variant="plain"
+                                onClick={() => setShowShortDesc(!showShortDesc)}
+                                className="!p-0 mt-[6px]"
+                            >
+                                <Typography variant="bd-2a">
+                                    {showShortDesc ? `- ${t('common:label:showLess')}` : `+ ${t('common:label:showMore')}`}
+                                </Typography>
+                            </Button>
                         </Show>
                     </div>
-                    <Show when={data?.short_description?.html?.length > 0}>
-                        <Button
-                            variant="plain"
-                            onClick={() => setShowShortDesc(!showShortDesc)}
-                            className="!p-0 mt-[6px]"
-                        >
-                            <Typography variant="bd-2a">
-                                {showShortDesc ? `- ${t('common:label:showLess')}` : `+ ${t('common:label:showMore')}`}
-                            </Typography>
-                        </Button>
-                    </Show>
-                </div>
+                </Show>
                 <Divider className="my-[24px]" />
                 <div className={
                     cx(

@@ -10,19 +10,14 @@ import TextField from '@common_forms/TextField';
 import Image from '@common_image';
 import Select from '@common_forms/Select';
 import Typography from '@common_typography';
-import useStyles from '@core_modules/product/plugins/OptionItem/AwGiftCardOption/styles';
 import DateDayJs from '@date-io/dayjs';
-import { formatPrice } from '@helper_currency';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
+import Dialog from '@common_dialog';
+import dynamic from 'next/dynamic';
+import cx from 'classnames';
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
-import classnames from 'classnames';
+import { formatPrice } from '@helper_currency';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import dynamic from 'next/dynamic';
 import { getHost } from '@helper_config';
 
 const Button = dynamic(() => import('@common_button'), { ssr: false });
@@ -47,7 +42,6 @@ const AwGiftCardProduct = (props) => {
     } = props;
     const [open, setOpen] = useState(false);
     const router = useRouter();
-    const styles = useStyles();
 
     // prettier-ignore
     const {
@@ -153,7 +147,7 @@ const AwGiftCardProduct = (props) => {
                             return (
                                 <div
                                     key={idx}
-                                    className={classnames('xs:basis-full sm:basis-1/2 md:basis-4/12 template-option', {
+                                    className={cx('xs:basis-full sm:basis-1/2 md:basis-4/12 template-option', {
                                         'template-selected': selectedTemplate.value === template.value,
                                     })}
                                     onClick={handleSelectTemplate}
@@ -292,7 +286,7 @@ const AwGiftCardProduct = (props) => {
                         <div className="gc-previewButton-container">
                             <Button className="gc-previewButton" onClick={handlePreview}>
                                 <Typography color="white" type="bold">
-                                    Preview
+                                    {t('common:label:preview')}
                                 </Typography>
                             </Button>
                         </div>
@@ -326,86 +320,83 @@ const AwGiftCardProduct = (props) => {
                         />
                     )
             }
-            <Dialog open={open} onClose={handleCloseDialog} fullWidth>
-                <DialogTitle classes={{ root: styles.root }} onClose={handleCloseDialog}>
-                    <IconButton onClick={handleCloseDialog}>
-                        <CloseIcon />
-                    </IconButton>
-                </DialogTitle>
-                <DialogContent>
-                    <div className="gc-dialog-content">
-                        <div className="gc-dialog-content-inner">
-                            <div className="gc-dialog-image">
-                                <Image src={selectedTemplate.image} width={280} height={175} />
-                            </div>
-                            <Typography variant="h1">GIFT CARD</Typography>
-                            <div className="gc-dialog-storelogo">
-                                <Image
-                                    src={`${storeConfig?.secure_base_media_url}logo/${storeConfig?.header_logo_src}`}
-                                    width={240}
-                                    height={104}
-                                    alt={storeConfig?.logo_alt || ''}
-                                />
-                            </div>
-                            <div className="gc-dialog-card-details">
-                                <table>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <Typography>To:</Typography>
-                                            </td>
-                                            <td>
-                                                <Typography>{formik.values.aw_gc_recipient_name}</Typography>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <Typography>From:</Typography>
-                                            </td>
-                                            <td>
-                                                <Typography>{formik.values.aw_gc_sender_name}</Typography>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <Typography>Value:</Typography>
-                                            </td>
-                                            <td>
-                                                <Typography>
-                                                    {selectedCustomAmount === 'custom'
-                                                        ? formatPrice(Number(formik.values.aw_gc_custom_amount))
-                                                        : formatPrice(selectedCustomAmount)}
-                                                </Typography>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <Typography> Gift Card Code:</Typography>
-                                            </td>
-                                            <td className="gc-dialog-card-details-giftcardcode">
-                                                <Typography> XXXXXXXXXXXX</Typography>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <Button className="gc-dialog-card-details-button" onClick={() => router.push(`${getHost()}`)}>
-                                <Typography variant="h2" color="white">
-                                    Shop Now
-                                </Typography>
-                            </Button>
-                            <Typography>Apply on shopping cart page.</Typography>
+            <Dialog
+                open={open}
+                onClickClose={handleCloseDialog}
+                variant="plain"
+            >
+                <div className="gc-dialog-content">
+                    <div className="gc-dialog-content-inner">
+                        <div className="gc-dialog-image">
+                            <Image src={selectedTemplate.image} width={280} height={175} />
                         </div>
-                        <div className="gc-dialog-message">
-                            {formik.values.aw_gc_headline && (
-                                <Typography variant="h2" type="bold">
-                                    {formik.values.aw_gc_headline}
-                                </Typography>
-                            )}
-                            {formik.values.aw_gc_message && <Typography>{formik.values.aw_gc_message}</Typography>}
+                        <Typography variant="h1">{t('common:label:giftCard')}</Typography>
+                        <div className="gc-dialog-storelogo">
+                            <Image
+                                src={`${storeConfig?.secure_base_media_url}logo/${storeConfig?.header_logo_src}`}
+                                width={240}
+                                height={104}
+                                alt={storeConfig?.logo_alt || ''}
+                            />
                         </div>
+                        <div className="gc-dialog-card-details">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <Typography>{t('common:label:to')}:</Typography>
+                                        </td>
+                                        <td>
+                                            <Typography>{formik.values.aw_gc_recipient_name}</Typography>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <Typography>{t('common:label:from')}:</Typography>
+                                        </td>
+                                        <td>
+                                            <Typography>{formik.values.aw_gc_sender_name}</Typography>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <Typography>{t('common:label:value')}:</Typography>
+                                        </td>
+                                        <td>
+                                            <Typography>
+                                                {selectedCustomAmount === 'custom'
+                                                    ? formatPrice(Number(formik.values.aw_gc_custom_amount))
+                                                    : formatPrice(selectedCustomAmount)}
+                                            </Typography>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <Typography> {t('common:label:giftCardCode')}:</Typography>
+                                        </td>
+                                        <td className="gc-dialog-card-details-giftcardcode">
+                                            <Typography>XXXXXXXXXXXX</Typography>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <Button className="gc-dialog-card-details-button" onClick={() => router.push(`${getHost()}`)}>
+                            <Typography variant="h2" color="white">
+                                {t('common:label:shopNow')}
+                            </Typography>
+                        </Button>
+                        <Typography>{t('common:label:applyShopNow')}</Typography>
                     </div>
-                </DialogContent>
+                    <div className="gc-dialog-message">
+                        {formik.values.aw_gc_headline && (
+                            <Typography variant="h2" type="bold">
+                                {formik.values.aw_gc_headline}
+                            </Typography>
+                        )}
+                        {formik.values.aw_gc_message && <Typography>{formik.values.aw_gc_message}</Typography>}
+                    </div>
+                </div>
             </Dialog>
             <style jsx>
                 {`

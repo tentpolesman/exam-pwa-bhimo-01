@@ -209,6 +209,15 @@
         "shareToYourFriend": "Bagian kepada teman dan keluarga Anda!",
         "showMore": "Lihat Selengkapnya",
         "showLess": "Lihat Sedikitnya",
-        "selectProduct": "Pilih Produk"
+        "selectProduct": "Pilih Produk",
+        "preview": "Pratinjau",
+        "giftCard": "Kartu Hadiah",
+        "giftCardCode": "Kode Kartu Hadiah",
+        "to": "Kepada",
+        "from": "Dari",
+        "value": "Nilai",
+        "shopNow": "Belanja Sekarang",
+        "applyShopNow": "Terapkan di halaman keranjang belanja.",
+        "customize": "Penyesuaian"
     }
 }

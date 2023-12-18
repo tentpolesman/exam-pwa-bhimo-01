@@ -1,13 +1,14 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable max-len */
 import TextField from '@common_forms/TextField';
 import Typography from '@common_typography';
-import { COLORS } from '@theme_vars';
-import { useClickAway } from '@uidotdev/usehooks';
-import cx from 'classnames';
-import { useState } from 'react';
 import ArrowUp from '@heroicons/react/24/solid/ChevronUpIcon';
 import ArrowDown from '@heroicons/react/24/solid/ChevronDownIcon';
+import cx from 'classnames';
+import { COLORS } from '@theme_vars';
+import { useClickAway } from '@uidotdev/usehooks';
+import { useState } from 'react';
 
 const Select = (props) => {
     const {
@@ -22,11 +23,13 @@ const Select = (props) => {
         errorMessage = '',
         inputProps = {},
         textFiledProps = {},
+        optionProps = {},
         ...restProps
     } = props;
 
     const { className: inputPropsClass, ...restInputProps } = inputProps;
     const { className: textFiledClass, ...restTextFiledProps } = textFiledProps;
+    const { className: optionClass, ...restOptionProps } = optionProps;
 
     const [open, setOpen] = useState(false);
     const ref = useClickAway(() => {
@@ -65,7 +68,10 @@ const Select = (props) => {
                 {...restTextFiledProps}
             />
             {open && options?.length > 0 ? (
-                <div className={cx('w-full', 'flex', 'flex-col', 'py-3', 'px-4', 'shadow-md', 'cursor-pointer', 'bg-neutral-white', 'z-50')}>
+                <div
+                    className={cx('w-full', 'flex', 'flex-col', 'py-3', 'px-4', 'shadow-md', 'cursor-pointer', 'bg-neutral-white', 'z-50', optionClass)}
+                    {...restOptionProps}
+                >
                     {options.map((d, idx) => (
                         <div
                             key={idx}
