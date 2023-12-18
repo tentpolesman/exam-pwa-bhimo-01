@@ -97,7 +97,7 @@ const ScrollTop = (props) => {
         <div
             onClick={scrollTop}
             role="presentation"
-            className={cx('fixed', 'bottom-space-16', 'right-space-16', 'z-1099', 'visible', {
+            className={cx('fixed', 'bottom-space-16', 'right-space-16', 'z-scroll-to-top', 'visible', {
                 'hidden invisible': !trigger,
             })}
         >
