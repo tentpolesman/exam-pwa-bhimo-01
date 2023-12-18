@@ -51,9 +51,9 @@ const Product = (props) => {
         enablePrice: product_price,
         enableRating: product_review,
         enableProductName: product_name,
-        className: cx('min-w-[145px] tablet:min-w-[190px] desktop:min-w-[273px]', {
+        className: cx('!min-w-[145px] tablet:!min-w-[190px] desktop:!min-w-[273px]', {
             'desktop:carousel-item flex-shrink-0': !isSingleProduct,
-            'basis-[145px] tablet:basis-[190px] desktop:basis-[273px]': !isProductGrid && !isSingleProduct,
+            '!basis-[145px] !tablet:basis-[190px] !desktop:basis-[273px]': !isProductGrid && !isSingleProduct,
             '[&:not(:last-child)]:mb-4': isProductList,
             'desktop:!max-w-[273px]': isSingleProduct && product_display === 'grid',
             [generateGridItemClass(item_xl, 'xl')]: isProductGrid && item_xl,

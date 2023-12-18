@@ -13,21 +13,6 @@ const MagezonRow = (props) => {
         storeConfig,
         max_width,
         content_align,
-        border_style,
-        background_position,
-        background_color,
-        border_top_width,
-        border_right_width,
-        border_bottom_width,
-        border_left_width,
-        margin_top,
-        margin_right,
-        margin_bottom,
-        margin_left,
-        padding_top,
-        padding_right,
-        padding_bottom,
-        padding_left,
     } = props;
 
     return (

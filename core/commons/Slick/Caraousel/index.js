@@ -15,13 +15,29 @@ const Caraousel = (props) => {
             <ContainerScroll showArrow={showArrow}>
                 {data?.length > 0 && data.map((item, key) => (
                     <Item
-                        className="carousel-item [&:not(:last-child)]:mr-4 !max-w-[288px] !h-[initial]"
+                        className="carousel-item [&:not(:last-child)]:mr-4 !min-w-[145px] tablet:!min-w-[190px] desktop:!min-w-[273px] !h-[initial]"
                         key={key}
                         {...item}
                         storeConfig={storeConfig}
                         imageProps={{
-                            className: 'desktop:!w-64 desktop:!h-64',
-                            classContainer: 'desktop:!w-64 desktop:!h-64',
+                            className: cx(
+                                'product-image',
+                                '!w-[136px]',
+                                '!h-[136px]',
+                                'tablet:!w-[194px]',
+                                'tablet:!h-[194px]',
+                                'desktop:!w-[242px]',
+                                'desktop:!h-[242px]',
+                            ),
+                            classContainer: cx(
+                                'product-image-container',
+                                '!w-[136px]',
+                                '!h-[136px]',
+                                'desktop:!w-[242px]',
+                                'desktop:!h-[242px]',
+                                'tablet:!w-[194px]',
+                                'tablet:!h-[194px]',
+                            ),
                         }}
                         {...other}
                     />
