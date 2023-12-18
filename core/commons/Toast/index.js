@@ -88,7 +88,7 @@ const Toast = ({
                     'lg:m-4 sm:m-4 xs:m-4',
                     'lg:max-w-md',
                     'items-center',
-                    open && 'z-50 opacity-100',
+                    open && 'z-toast opacity-100',
                     !open && 'opacity-0',
                     classNamesToast,
                     className,

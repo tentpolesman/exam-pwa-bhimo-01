@@ -148,4 +148,12 @@ export const SPACING = {
     'space-128': '128px',
 };
 
+export const ZINDEX = {
+    'backdrop-loader': 1300,
+    'scroll-to-top': 1099,
+    toast: 1202,
+    'backdrop-dialog': 1200,
+    dialog: 1201,
+};
+
 export default {};

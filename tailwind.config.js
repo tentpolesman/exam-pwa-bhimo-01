@@ -1,5 +1,5 @@
 import {
-    BREAKPOINTS, COLORS, FONT_FAMILY, FONT_SIZE, LETTER_SPACING, LINE_HEIGHT, SPACING,
+    BREAKPOINTS, COLORS, FONT_FAMILY, FONT_SIZE, LETTER_SPACING, LINE_HEIGHT, SPACING, ZINDEX,
 } from './core/theme/vars';
 
 const plugin = require('tailwindcss/plugin');
@@ -51,6 +51,7 @@ module.exports = {
                 lg: `0px 4px 6px -2px ${COLORS.neutral[900]}0D, 0px 10px 15px -3px ${COLORS.neutral[900]}1A`,
                 xl: `0px 10px 10px -5px ${COLORS.neutral[900]}0A, 0px 20px 25px -5px ${COLORS.neutral[900]}1A`,
             },
+            zIndex: ZINDEX,
         },
         screens: {
             xs: `${BREAKPOINTS.xs}px`,
