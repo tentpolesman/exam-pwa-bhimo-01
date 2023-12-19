@@ -31,7 +31,8 @@ const SwitcherCurrency = dynamic(() => import('@common_currency'), { ssr: false 
 const SwitcherLanguage = dynamic(() => import('@common_language'), { ssr: false });
 
 const DesktopHeader = (props) => {
-    const { t, storeConfig, isLogin, setValue, handleSearch, dataVesMenu, loadingVesMenu, vesMenuConfig, handleLogout, deviceWidth } = props;
+    const { t, storeConfig, isLogin, customer, setValue, handleSearch, dataVesMenu, loadingVesMenu, vesMenuConfig, handleLogout, deviceWidth } =
+        props;
 
     const { modules } = config;
     // const adminId = Cookies.get('admin_id');
@@ -209,8 +210,7 @@ const DesktopHeader = (props) => {
                                                 <div className="popover-children">
                                                     <UserIcon className={cx('w-[24px]', 'text-neutral-600', 'inline-block')} />
                                                     <Typography variant="bd-2b" className={cx('inline-block', 'pl-2', '!text-primary-700')}>
-                                                        {/* {customer.firstname} */}
-                                                        Hi, Fakhri !
+                                                        {customer.firstname}
                                                     </Typography>
                                                 </div>
                                             </Popover>
