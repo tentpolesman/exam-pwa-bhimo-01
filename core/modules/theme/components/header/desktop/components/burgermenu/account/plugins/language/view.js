@@ -55,7 +55,7 @@ const ViewSwitcherLanguage = (props) => {
                                             return (
                                                 <>
                                                     <div
-                                                        className={cx('py-3', 'px-4', 'bg-neutral-100')}
+                                                        className={cx('py-2', 'px-4', 'bg-neutral-100', 'hover:cursor-pointer')}
                                                         onClick={() => {
                                                             setSwitcherContentActive(false);
                                                             setSwitcherContent(null);
@@ -70,7 +70,7 @@ const ViewSwitcherLanguage = (props) => {
                                                         />
                                                     </div>
                                                     <div
-                                                        className={cx('py-3', 'px-4')}
+                                                        className={cx('py-2', 'px-4', 'hover:cursor-pointer')}
                                                         onClick={() => onClickLanguage({ item: language_item })}
                                                         key={index}
                                                     >
@@ -80,7 +80,11 @@ const ViewSwitcherLanguage = (props) => {
                                             );
                                         }
                                         return (
-                                            <div className={cx('py-3', 'px-4')} onClick={() => onClickLanguage({ item: language_item })} key={index}>
+                                            <div
+                                                className={cx('py-2', 'px-4', 'hover:cursor-pointer')}
+                                                onClick={() => onClickLanguage({ item: language_item })}
+                                                key={index}
+                                            >
                                                 <Typography>{language_item.label}</Typography>
                                             </div>
                                         );
@@ -90,10 +94,10 @@ const ViewSwitcherLanguage = (props) => {
                             setSwitcherContent(content);
                         }}
                     >
-                        <div className={cx('py-3', 'px-4')}>
+                        <div className={cx('pt-4', 'px-4')}>
                             <Typography>{lang?.label}</Typography>
                         </div>
-                        <div>
+                        <div className={cx('pt-4')}>
                             <ChevronRight />
                         </div>
                     </div>

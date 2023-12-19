@@ -41,7 +41,7 @@ const MiniComponent = (props) => {
                 handleClose={() => setOpen(false)}
                 position="right"
                 className={cx('mobile:max-tablet:w-[320px]', 'tablet:max-desktop:w-[396px]', 'desktop:w-[540px]', {
-                    'mobile:max-tablet:right-[320px] tablet:max-desktop:right-[396px] desktop:w-[540px]': open,
+                    'mobile:max-tablet:right-[320px] tablet:max-desktop:right-[396px] desktop:right-[540px]': open,
                 })}
             >
                 <div>

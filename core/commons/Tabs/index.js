@@ -1,9 +1,9 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React from 'react';
 import CmsRenderer from '@core_modules/cms/components/cms-renderer';
 import cx from 'classnames';
 import { useTranslation } from 'next-i18next';
+import React from 'react';
 
 const Tabs = (props) => {
     const {

@@ -28,7 +28,7 @@ const BurgerMenuAccount = (props) => {
         <>
             {!switcherContentActive && (
                 <>
-                    {!isLogin ? (
+                    {isLogin ? (
                         <div className={cx('p-4')}>
                             <div className={cx('grid', 'grid-cols-1', 'gap-y-4', 'pb-4', 'border-b-[1px]', 'border-neutral-300')}>
                                 <Link href="/customer/account" prefetch={false}>
