@@ -177,12 +177,14 @@ const Menu = (props) => {
                                         )}
                                     </>
                                 ) : (
-                                    <a
-                                        href="#"
-                                        dangerouslySetInnerHTML={{
-                                            __html: prefix !== '' ? `${prefix}` : val.name,
-                                        }}
-                                    />
+                                    <Link key={idx} href={generateLink(val)[0]} as={generateLink(val)[1]} prefetch={false} legacyBehavior>
+                                        <a
+                                            onClick={() => handleClick(val)}
+                                            dangerouslySetInnerHTML={{
+                                                __html: prefix !== '' ? `${prefix}` : val.name,
+                                            }}
+                                        />
+                                    </Link>
                                 )}
 
                                 {val.children.length > 0 ? (

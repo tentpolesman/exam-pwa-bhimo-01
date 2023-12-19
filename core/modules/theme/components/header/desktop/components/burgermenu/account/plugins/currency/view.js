@@ -72,7 +72,7 @@ const ViewSwitcherCurrency = (props) => {
                                                 return (
                                                     <>
                                                         <div
-                                                            className={cx('py-3', 'px-4', 'bg-neutral-100')}
+                                                            className={cx('py-2', 'px-4', 'bg-neutral-100')}
                                                             onClick={() => {
                                                                 setSwitcherContentActive(false);
                                                                 setSwitcherContent(null);
@@ -89,7 +89,7 @@ const ViewSwitcherCurrency = (props) => {
                                                         <>
                                                             {isCurrent ? (
                                                                 <div
-                                                                    className={cx('py-3', 'px-4', 'flex', 'justify-between')}
+                                                                    className={cx('py-2', 'px-4', 'flex', 'justify-between', 'hover:cursor-pointer')}
                                                                     onClick={() => {
                                                                         setDefaultCurrency({
                                                                             default_display_currency_code,
@@ -103,7 +103,7 @@ const ViewSwitcherCurrency = (props) => {
                                                                 </div>
                                                             ) : (
                                                                 <div
-                                                                    className={cx('py-3', 'px-4')}
+                                                                    className={cx('py-2', 'px-4', 'hover:cursor-pointer')}
                                                                     onClick={() => {
                                                                         setDefaultCurrency({
                                                                             default_display_currency_code,
@@ -121,7 +121,7 @@ const ViewSwitcherCurrency = (props) => {
                                             }
                                             return (
                                                 <div
-                                                    className={cx('py-3', 'px-4')}
+                                                    className={cx('py-2', 'px-4', 'hover:cursor-pointer')}
                                                     onClick={() => {
                                                         setDefaultCurrency({
                                                             default_display_currency_code,
@@ -139,10 +139,10 @@ const ViewSwitcherCurrency = (props) => {
                             setSwitcherContent(content);
                         }}
                     >
-                        <div className={cx('py-3', 'px-4')}>
+                        <div className={cx('pt-4', 'px-4')}>
                             <Typography>{`${finalDefaultCurrency}`}</Typography>
                         </div>
-                        <div>
+                        <div className={cx('pt-4')}>
                             <ChevronRight />
                         </div>
                     </div>

@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
-import Box from '@material-ui/core/Box';
-import Skeleton from '@material-ui/lab/Skeleton';
+import Skeleton from '@common_skeleton';
 import cx from 'classnames';
 import React from 'react';
 
@@ -10,7 +9,7 @@ import { features } from '@config';
 // import Button from '@common_button';
 
 // import CmsRenderer from '@core_modules/cms/components/cms-renderer';
-import WidgetSliderCaraousel from '@core_modules/cms/components/cms-renderer/widget-slider-caraousel';
+import GlobalPromoCarousel from '@core_modules/cms/components/cms-renderer/global-promo-carousel';
 import useStyles from '@core_modules/theme/components/globalPromo/styles';
 import { getCmsBlocks } from '@core_modules/theme/services/graphql';
 
@@ -32,30 +31,17 @@ const GlobalPromoMessage = (props) => {
     });
 
     if (loading) {
-        return (
-            <Box className={styles.containerLoading}>
-                <Skeleton animation="wave" variant="text" width="60%" height={16} />
-            </Box>
-        );
+        return <Skeleton height={16} />;
     }
-    // const color = cx(`!text-[${storeConfig.global_promo.text_color}]`);
 
     if (!loading && data && data.cmsBlocks && data.cmsBlocks.items.length > 0 && data.cmsBlocks.items[0].content && isShown) {
         return (
             <>
                 <div
                     id="global-promo-message"
-                    className={cx(
-                        'global-promo-message',
-                        'h-[38px]',
-                        'text-center',
-                        'font-normal',
-                        'tablet:text-md',
-                        'mobile:max-tablet:text-sm',
-                        'pt-2',
-                    )}
+                    className={cx('global-promo-message', 'h-[38px]', 'text-center', 'font-normal', 'tablet:text-md', 'mobile:max-tablet:text-sm')}
                 >
-                    <WidgetSliderCaraousel
+                    <GlobalPromoCarousel
                         className={styles.container}
                         content={data.cmsBlocks.items[0].content}
                         key_cookies={key_cookies}
@@ -64,32 +50,6 @@ const GlobalPromoMessage = (props) => {
                         storeConfig={storeConfig}
                         {...other}
                     />
-                    {/* <CmsRenderer content={data.cmsBlocks.items[0].content} />
-                    {!isMobile ? (
-                        <Button
-                            className={cx(
-                                'm-0',
-                                '!p-0',
-                                'absolute',
-                                'top-2',
-                                'right-4',
-                                'hover:shadow-none',
-                                'focus:shadow-none',
-                                'active:shadow-none',
-                                'active:shadow-none',
-                                '!bg-[unset]',
-                            )}
-                            onClick={() => {
-                                setCookies(key_cookies, false);
-                                setIsShown(false);
-                                document.getElementById('header-inner').classList.remove('top-[38px]');
-                            }}
-                            icon={<XMarkIcon />}
-                            iconProps={{ className: cx('w-[18px]', color) }}
-                            iconOnly
-                            variant="tertiary"
-                        />
-                    ) : null} */}
                 </div>
                 <style jsx>
                     {`
