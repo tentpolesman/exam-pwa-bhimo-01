@@ -87,6 +87,7 @@ const OptionsItemsBundle = (props) => {
         loading: customLoading,
         setLoading: setCustomLoading,
         customButton,
+        ...other
     } = props;
 
     // cache currency
@@ -278,6 +279,7 @@ const OptionsItemsBundle = (props) => {
             stockStatus={stock_status}
             customButton={customButton}
             currencyCache={currencyCache}
+            {...other}
         />
     );
 };

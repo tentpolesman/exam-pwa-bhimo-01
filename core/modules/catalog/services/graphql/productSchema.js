@@ -643,6 +643,10 @@ query getDetailproduct($url_key: String!){
                 }
                 __typename
               }` : ''}
+
+        ... on BundleProduct {
+          price_view
+        }
       }
     }
 }`;

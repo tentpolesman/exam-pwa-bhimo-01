@@ -3,39 +3,52 @@ import { gql } from '@apollo/client';
 
 export const categories = gql`
     {
-        categoryList {
-            children_count
-            children {
-                id
-                level
+        categories {
+            items {
+                uid
                 name
+                level
                 path
                 url_path
                 url_key
                 include_in_menu
+                children_count
                 children {
-                    id
-                    level
+                    uid
                     name
+                    level
                     path
                     url_path
                     url_key
-                    image
-                    image_path
+                    include_in_menu
+                    children_count
                     children {
-                        id
-                        level
+                        uid
                         name
+                        level
                         path
                         url_path
                         url_key
+                        include_in_menu
+                        children_count
                         children {
-                            id
-                            level
+                            uid
                             name
+                            level
                             path
                             url_path
                             url_key
+                            include_in_menu
+                            children_count
+                            children {
+                                uid
+                                name
+                                level
+                                path
+                                url_path
+                                url_key
+                                include_in_menu
+                            }
                         }
                     }
                 }

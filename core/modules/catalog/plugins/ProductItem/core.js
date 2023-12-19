@@ -16,7 +16,6 @@ import { localCompare } from '@services/graphql/schema/local';
 import { getStoreHost } from '@helpers/config';
 import { getAppEnv } from '@root/core/helpers/env';
 import ModalQuickView from '@plugin_productitem/components/QuickView';
-import WeltpixelLabel from '@plugin_productitem/components/WeltpixelLabel';
 import TagManager from 'react-gtm-module';
 import { priceVar } from '@root/core/services/graphql/cache';
 
@@ -168,7 +167,7 @@ const ProductItem = (props) => {
             const dataTemp = cachePrice;
             dataTemp[identifier] = dataPrice;
             priceVar({
-                ...cachePrice,
+                ...dataTemp,
             });
         }
     }, [dataPrice]);
@@ -402,10 +401,8 @@ const ProductItem = (props) => {
     const showProductCompare = enableProductCompare || modules.productcompare.enabled;
     const showShortDescription = enableShortDescription;
 
-    const priceData = getPriceFromList(dataPrice, id);
     const generatePrice = (priceDataItem = []) => {
         // handle if loading price
-
         if (loadPrice) {
             return (
                 <div className="w-full h-auto">
@@ -431,23 +428,33 @@ const ProductItem = (props) => {
                 productType: priceDataItem[0].__typename,
                 specialFromDate: priceDataItem[0].special_from_date,
                 specialToDate: priceDataItem[0].special_to_date,
+                priceView: priceDataItem[0].price_view,
             };
         }
 
         return (
             <div className="product-item-price">
-                {priceProduct && <PriceFormat {...priceProduct} specialFromDate={special_from_date} specialToDate={special_to_date} />}
+                <Show when={priceProduct}>
+                    <PriceFormat
+                        {...priceProduct}
+                        specialFromDate={special_from_date}
+                        specialToDate={special_to_date}
+                    />
+                </Show>
             </div>
         );
     };
 
     const CustomerFooter = (params) => {
-        const { loading, disabled, handleAddToCart } = params;
+        const {
+            loading, disabled, handleAddToCart, viewItemOnly,
+        } = params;
+        const priceData = getPriceFromList(getPrice(), id);
         return (
             <div className="flex flex-col gap-2 tablet:gap-4">
                 {enablePrice && generatePrice(priceData)}
                 <div className="hidden tablet:flex desktop:flex flex-row gap-1 justify-between items-center w-full">
-                    {showAddToCart && (
+                    <Show when={showAddToCart && !viewItemOnly}>
                         <Button
                             iconProps={{ className: 'w-4 h-4 hidden desktop:flex' }}
                             icon={<CartIcon className="text-neutral-white" />}
@@ -463,7 +470,27 @@ const ProductItem = (props) => {
                                 {t('common:button:addToCart')}
                             </Typography>
                         </Button>
-                    )}
+                    </Show>
+                    <Show when={showAddToCart && viewItemOnly}>
+                        <Button
+                            disabled={disabled}
+                            loading={loading}
+                            className={classNames(
+                                '!py-0 w-max h-[38px] desktop:h-[40px] tablet:max-w-[116px] desktop:max-w-max justify-center',
+                                'hover:shadow-[0_0_0_4px] hover:shadow-primary-300',
+                            )}
+                            link="/[...slug]"
+                            linkProps={
+                                {
+                                    as: `/${url_key}`,
+                                }
+                            }
+                        >
+                            <Typography color="white" className="font-normal text-sm">
+                                {t('common:button:viewItem')}
+                            </Typography>
+                        </Button>
+                    </Show>
                     <Show when={showWishlist || showProductCompare}>
                         <div className="flex-row gap-1 hidden tablet:flex desktop:flex">
                             <Show when={showWishlist}>
@@ -500,6 +527,10 @@ const ProductItem = (props) => {
     };
 
     const isOos = stock_status === 'OUT_OF_STOCK';
+    const viewItemOnly = __typename === 'BundleProduct' || __typename === 'DownloadableProduct'
+    || __typename === 'GroupedProduct' || __typename === 'AwGiftCardProduct';
+
+    const priceData = getPriceFromList(getPrice(), id);
 
     if (isGrid) {
         return (
@@ -534,10 +565,6 @@ const ProductItem = (props) => {
                     id="catalog-item-product"
                 >
                     <div className="w-full relative group overflow-hidden">
-                        {!isOos && storeConfig?.pwa?.label_enable && storeConfig?.pwa?.label_weltpixel_enable && (
-                            <WeltpixelLabel t={t} weltpixel_labels={weltpixel_labels} categoryLabel />
-                        )}
-
                         {!isOos && storeConfig?.pwa?.label_enable && LabelView ? (
                             <LabelView t={t} {...other} isGrid={isGrid} spesificProduct={spesificProduct} />
                         ) : null}
@@ -617,7 +644,7 @@ const ProductItem = (props) => {
                             Pricing={(enablePrice && !showOption) && generatePrice(priceData)}
                             isGrid={isGrid}
                         />
-                        {showOption ? (
+                        <Show when={showOption}>
                             <div className="hidden tablet:flex desktop:flex flex-col gap-2 tablet:gap-4 h-full justify-between">
                                 <ConfigurableOpt
                                     t={t}
@@ -631,6 +658,7 @@ const ProductItem = (props) => {
                                     catalogList={catalogList}
                                     handleSelecteProduct={setSpesificProduct}
                                     showAddToCart={showAddToCart}
+                                    viewItemOnly={viewItemOnly}
                                     propsItem={{
                                         className: 'w-5 h-5',
                                     }}
@@ -644,12 +672,13 @@ const ProductItem = (props) => {
                                     CustomFooter={<CustomerFooter />}
                                     showWishlist={showWishlist}
                                     enableProductCompare={showProductCompare}
-                                    enableBundle={false}
-                                    enableDownload={false}
                                     isPlp
                                 />
                             </div>
-                        ) : null}
+                            <div className="flex flex-col tablet:hidden h-full justify-end">
+                                {generatePrice(priceData)}
+                            </div>
+                        </Show>
                     </div>
                 </div>
             </>
@@ -696,9 +725,6 @@ const ProductItem = (props) => {
                         {!isOos && storeConfig?.pwa?.label_enable && LabelView ? (
                             <LabelView t={t} {...other} isGrid={isGrid} spesificProduct={spesificProduct} />
                         ) : null}
-                        {!isOos && storeConfig?.pwa?.label_enable && storeConfig?.pwa?.label_weltpixel_enable && (
-                            <WeltpixelLabel t={t} weltpixel_labels={weltpixel_labels} categoryLabel />
-                        )}
                         {isOos && (
                             <div className="absolute top-2 tablet:top-3 left-2 tablet:left-3 z-10">
                                 <Badge

@@ -11,7 +11,7 @@ const QuickView = (props) => {
     } = props;
 
     const {
-        screen,
+        screen, isDesktop,
     } = useMediaQuery();
 
     const mainImage = modules.catalog.productListing.quickView.bannerImage[screen];
@@ -40,7 +40,7 @@ const QuickView = (props) => {
                         </div>
                     </div>
                     <div className={cx(
-                        'w-full h-max max-h-[calc(100vh-60px)] p-8 bg-neutral-white rounded-lg',
+                        'w-full h-max max-h-[calc(100vh-60px)] p-4 tablet:p-8 bg-neutral-white rounded-lg',
                         'shadow-xl overflow-y-scroll',
                     )}
                     >
@@ -53,7 +53,7 @@ const QuickView = (props) => {
                             useProductRelated={false}
                             imageSliderProps={{
                                 detectAutoScreen: false,
-                                horizontalThumbnail: true,
+                                horizontalThumbnail: isDesktop,
                                 imageProps: {
                                     mainImage,
                                 },

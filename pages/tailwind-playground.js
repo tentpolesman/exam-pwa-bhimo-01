@@ -4,7 +4,7 @@ import getLayoutSSRProps from '@core_modules/theme/layout/ssr';
 import Layout from '@layout';
 import createApolloClient from '@lib/apollo/apolloClient';
 import { withApollo } from '@lib_apollo';
-// import cx from 'classnames';
+import cx from 'classnames';
 import { withTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 // import Button from '@common_button';
@@ -151,7 +151,7 @@ function Page(props) {
     return (
         <Layout t={t} {...props}>
             {/* <div className="flex items-center justify-center"> */}
-            <div>
+            <div className={cx('!pt-4', 'px-0', 'h-[1080px]', 'desktop:py-16', 'tablet:py-8')}>
                 {data && data[0].children && (
                     <Tabs
                         data={data[0].children}

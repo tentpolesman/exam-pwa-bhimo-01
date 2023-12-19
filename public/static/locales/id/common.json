@@ -41,7 +41,8 @@
         "addToCart": "Tambah ke Keranjang",
         "allowCookies": "Ijinkan Cookie",
         "simulateQrCode": "Sumulasi Pembayaran Qrcode",
-        "submitReview": "Kirim Ulasan"
+        "submitReview": "Kirim Ulasan",
+        "viewItem": "Lihat Item"
     },
     "cart": {
         "myCart": "Cart Saya",

@@ -51,7 +51,7 @@ const Dialog = ({
                 <div
                     role="presentation"
                     className={cx(
-                        'fixed top-0 left-0 w-full h-full z-[1200]',
+                        'fixed top-0 left-0 w-full h-full z-backdrop-dialog',
                         'bg-neutral-black bg-opacity-50',
                     )}
                     onClick={() => closeOnBackdrop && onClose()}
@@ -60,7 +60,7 @@ const Dialog = ({
             <div className={cx(
                 'section-dialog',
                 'fixed',
-                'z-[1201]',
+                'z-dialog',
                 'w-[100%]',
                 'h-[100%]',
                 'left-0',

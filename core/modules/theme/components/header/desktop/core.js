@@ -1,10 +1,10 @@
+/* eslint-disable object-curly-newline */
+/* eslint-disable indent */
 /* eslint-disable no-unused-expressions */
 import { useApolloClient } from '@apollo/client';
 import { custDataNameCookie, features, modules } from '@config';
 import Content from '@core_modules/theme/components/header/desktop/components';
-import {
-    getCategories, getCustomer, getVesMenu, removeToken,
-} from '@core_modules/theme/services/graphql';
+import { getCategories, getCustomer, getVesMenu, removeToken } from '@core_modules/theme/services/graphql';
 import { removeIsLoginFlagging } from '@helper_auth';
 import { removeCartId } from '@helper_cartid';
 import { removeCookies } from '@helper_cookies';
@@ -27,6 +27,7 @@ const CoreTopNavigation = (props) => {
         installMessage,
         isHomepage,
         deviceType,
+        ...other
     } = props;
     let data = propsVesMenu;
     let loading = !propsVesMenu;
@@ -34,11 +35,11 @@ const CoreTopNavigation = (props) => {
     if (!data && storeConfig && storeConfig.pwa) {
         const { data: dataVesMenu, loading: loadingVesMenu } = storeConfig.pwa.ves_menu_enable
             ? getVesMenu({
-                variables: {
-                    alias: storeConfig.pwa.ves_menu_alias,
-                },
-                fetchPolicy: 'no-cache',
-            })
+                  variables: {
+                      alias: storeConfig.pwa.ves_menu_alias,
+                  },
+                  fetchPolicy: 'no-cache',
+              })
             : getCategories();
         data = dataVesMenu;
         loading = loadingVesMenu;
@@ -125,6 +126,7 @@ const CoreTopNavigation = (props) => {
             isHomepage={isHomepage}
             deviceType={deviceType}
             deviceWidth={deviceWidth}
+            {...other}
         />
     );
 };

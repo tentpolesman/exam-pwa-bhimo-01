@@ -1,3 +1,6 @@
+/* eslint-disable object-curly-newline */
+/* eslint-disable react/jsx-one-expression-per-line */
+/* eslint-disable operator-linebreak */
 /* eslint-disable max-len */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
@@ -23,9 +26,7 @@ import XMarkIcon from '@heroicons/react/24/solid/XMarkIcon';
 
 const MiniComponent = (props) => {
     const router = useRouter();
-    const {
-        open, setOpen, count, t, loading, data, deleteCart, updateCart, errorCart, storeConfig, currencyCache,
-    } = props;
+    const { open, setOpen, count, t, loading, data, deleteCart, updateCart, errorCart, storeConfig, currencyCache } = props;
     const errorCartItems = data?.errorItems?.length > 0;
     const disabled = errorCartItems || (errorCart && errorCart.length > 0);
     const subtotal_including_tax = data?.custom_total_price?.subtotal_including_tax?.value || 0;
@@ -39,7 +40,9 @@ const MiniComponent = (props) => {
                 open={open}
                 handleClose={() => setOpen(false)}
                 position="right"
-                className={cx('tablet:max-desktop:w-[396px]', 'desktop:w-[540px]')}
+                className={cx('mobile:max-tablet:w-[320px]', 'tablet:max-desktop:w-[396px]', 'desktop:w-[540px]', {
+                    'mobile:max-tablet:right-[320px] tablet:max-desktop:right-[396px] desktop:w-[540px]': open,
+                })}
             >
                 <div>
                     <div className={cx('minicart__header--wrapper', 'tablet:pt-8', 'tablet:mx-6')}>
@@ -56,15 +59,27 @@ const MiniComponent = (props) => {
                             )}
                         >
                             <div className={cx('minicart__header--info')}>
-                                <Typography variant="p-1a">{`My Cart (${count})`}</Typography>
+                                <Typography
+                                    variant="p-1a"
+                                    className={cx(
+                                        'mobile:max-tablet:leading-[18px]',
+                                        'mobile:max-tablet:font-semibold',
+                                        'mobile:max-tablet:text-md',
+                                        'mobile:max-tablet:p-4',
+                                    )}
+                                >
+                                    {`My Cart (${count})`}
+                                </Typography>
                             </div>
                             <div className={cx('minicart__header--close-action', 'text-right')}>
                                 <Button
                                     className={cx(
-                                        'm-0',
-                                        '!px-0',
-                                        '!py-0',
-                                        '!ml-0',
+                                        'tablet:m-0',
+                                        'tablet:!px-0',
+                                        'tablet:!py-0',
+                                        'tablet:!ml-0',
+                                        'mobile:max-tablet:mt-1',
+                                        'mobile:max-tablet:p-2',
                                         'hover:shadow-none',
                                         'focus:shadow-none',
                                         'active:shadow-none',
@@ -97,8 +112,7 @@ const MiniComponent = (props) => {
                             <div className={cx('absolute', 'left-0', 'min-h-[50px]', 'w-full', 'grid', 'grid-cols-1', 'gap-y-4')}>
                                 <div className={cx('sub-total', 'px-6', 'flex', 'flex-row', 'justify-between', 'pt-4')}>
                                     <Typography variant="p-1" className={cx('normal-case')}>
-                                        {t('common:cart:cardTotal')}
-                                        :
+                                        {t('common:cart:cardTotal')}:
                                     </Typography>
                                     <Typography variant="p-1a" className={cx('normal-case')}>
                                         {data.custom_total_price
@@ -144,9 +158,9 @@ const MiniComponent = (props) => {
                                                     }, 3000);
                                                 } else if (subtotal_including_tax) {
                                                     if (
-                                                        storeConfig.pwacheckout?.enable === '1'
-                                                        && storeConfig.pwacheckout?.version === 'V2'
-                                                        && cartId
+                                                        storeConfig.pwacheckout?.enable === '1' &&
+                                                        storeConfig.pwacheckout?.version === 'V2' &&
+                                                        cartId
                                                     ) {
                                                         getScv2Url({
                                                             variables: {

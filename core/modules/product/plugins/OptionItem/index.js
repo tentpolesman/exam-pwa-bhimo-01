@@ -18,6 +18,8 @@ const OptionItem = (props) => {
         enableVirtual = true,
         enableDownload = true,
         enableBundle = true,
+        eanbleGrouped = true,
+        enableAwGiftCard = true,
     } = props;
     const { __typename } = data;
     return (
@@ -55,12 +57,12 @@ const OptionItem = (props) => {
                     {...props}
                 />
             )}
-            {__typename === 'GroupedProduct' && (
+            {eanbleGrouped && __typename === 'GroupedProduct' && (
                 <GroupedOption
                     {...props}
                 />
             )}
-            {__typename === 'AwGiftCardProduct' && (
+            {enableAwGiftCard && __typename === 'AwGiftCardProduct' && (
                 <AwGiftCardProduct {...props} />
             )}
         </>

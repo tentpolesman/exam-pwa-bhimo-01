@@ -328,11 +328,11 @@ const Layout = (props) => {
     };
 
     const generateClasses = () => {
-        let classes = `tablet:min-h-[calc(100vh-435px)] tablet:mt-[130px] tablet:max-w-[768px] desktop:min-h[calc(100vh-435px)] desktop:mt-[140px] desktop:max-w-[1200px] ${font.variable} font-sans !font-pwa-default`;
+        let classes = `tablet:max-w-[768px] desktop:max-w-[1200px] ${font.variable} font-sans !font-pwa-default`;
         if (showGlobalPromo) {
-            classes += 'tablet:mt-[12rem] desktop:mt-[14rem]';
+            classes += ' tablet:max-desktop:mt-[145px] desktop:mt-[205px]';
         } else {
-            classes += 'tablet:mt-[11rem] desktop:mt-[13rem]';
+            classes += ' tablet:max-desktop:mt-[110px] desktop:mt-[190px]';
         }
         if (pageConfig.bottomNav && storeConfig?.pwa?.mobile_navigation === 'bottom_navigation' && storeConfig?.pwa?.enabler_footer_mobile) {
             classes += ' mb-[60px]';
@@ -601,6 +601,7 @@ const Layout = (props) => {
                         isHomepage={isHomepage}
                         deviceType={deviceType}
                         handleClosePromo={handleClosePromo}
+                        i18n={i18n}
                     />
                     {/* <div className="hidden-desktop">
                         {React.isValidElement(CustomHeader) ? (

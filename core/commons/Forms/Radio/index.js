@@ -141,7 +141,7 @@ const Radio = (props) => {
                                     selected={JSON.stringify(value) === JSON.stringify(item.value)}
                                     onChange={handleChangeCustom}
                                     storeConfig={storeConfig}
-                                    disabled={disabled}
+                                    disabled={item.disabled || disabled}
                                     {...customItemProps}
                                 />
                                 {ComponentOptional(item)}

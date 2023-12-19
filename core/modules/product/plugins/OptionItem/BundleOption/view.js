@@ -5,6 +5,7 @@ import Show from '@common_show';
 
 const Button = dynamic(() => import('@common_button'), { ssr: false });
 const Customize = dynamic(() => import('@plugin_optionitem/BundleOption/components/customize'), { ssr: true });
+const OptionItemAction = dynamic(() => import('@core_modules/product/plugins/OptionItemAction'), { ssr: true });
 
 const BundleView = (props) => {
     const {
@@ -20,11 +21,40 @@ const BundleView = (props) => {
         customButton,
         currencyCache,
         stockStatus,
+        isPlp,
+        CustomFooter,
+        ...other
     } = props;
     const [open, setOpen] = React.useState(false || (typeof window !== 'undefined' && window.innerWidth <= 768));
 
     if (customButton) {
         return customButton;
+    }
+
+    if (isPlp) {
+        return (
+            <>
+                <div />
+                {React.isValidElement(CustomFooter)
+                    ? React.cloneElement(CustomFooter, {
+                        ...other,
+                        loading,
+                        disabled,
+                        handleAddToCart,
+                        t,
+                    })
+                    : (
+                        <OptionItemAction
+                            loading={loading}
+                            disabled={disabled}
+                            showQty={false}
+                            handleAddToCart={handleAddToCart}
+                            t={t}
+                            {...other}
+                        />
+                    )}
+            </>
+        );
     }
 
     return (

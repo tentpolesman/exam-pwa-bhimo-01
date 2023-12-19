@@ -77,10 +77,12 @@ const ConfigurableOptionCore = (props) => {
                 ...product,
                 ...productPrice,
             });
-            handleSelecteProduct({
-                ...product,
-                ...productPrice,
-            });
+            if (handleSelecteProduct) {
+                handleSelecteProduct({
+                    ...product,
+                    ...productPrice,
+                });
+            }
             const bannerData = [];
             if (product.media_gallery.length > 0) {
                 // eslint-disable-next-line array-callback-return
@@ -102,14 +104,20 @@ const ConfigurableOptionCore = (props) => {
                     imageUrl,
                 });
             }
-            setBanner(bannerData);
-            setPrice({
-                priceRange: productPrice.price_range,
-                priceTiers: productPrice.price_tiers,
-                // eslint-disable-next-line no-underscore-dangle
-                productType: product.__typename,
-            });
-            setStockStatus(product.stock_status);
+            if (setBanner) {
+                setBanner(bannerData);
+            }
+            if (setPrice) {
+                setPrice({
+                    priceRange: productPrice.price_range,
+                    priceTiers: productPrice.price_tiers,
+                    // eslint-disable-next-line no-underscore-dangle
+                    productType: product.__typename,
+                });
+            }
+            if (setStockStatus) {
+                setStockStatus(product.stock_status);
+            }
         } else {
             const bannerData = [];
             if (media_gallery && media_gallery.length > 0) {
@@ -132,15 +140,23 @@ const ConfigurableOptionCore = (props) => {
                     imageUrl,
                 });
             }
-            setBanner(bannerData);
-            setPrice({
-                priceRange: price_range,
-                priceTiers: price_tiers,
-                // eslint-disable-next-line no-underscore-dangle
-                productType: __typename,
-            });
-            setStockStatus(stock_status);
-            handleSelecteProduct({ ...data });
+            if (setBanner) {
+                setBanner(bannerData);
+            }
+            if (setPrice) {
+                setPrice({
+                    priceRange: price_range,
+                    priceTiers: price_tiers,
+                    // eslint-disable-next-line no-underscore-dangle
+                    productType: __typename,
+                });
+            }
+            if (setStockStatus) {
+                setStockStatus(stock_status);
+            }
+            if (handleSelecteProduct) {
+                handleSelecteProduct({ ...data });
+            }
         }
 
         firstSelected.code = key;
@@ -348,7 +364,7 @@ const ConfigurableOptionCore = (props) => {
                             window.reloadCartQty = true;
                             window.toastMessage({ variant: 'success', text: t('product:successAddCart'), open: true });
                             setLoading(false);
-                            setOpen(false);
+                            if (setOpen) setOpen(false);
                         })
                         .catch((e) => {
                             const originalError = e.message.includes(':') ? e.message.split(':')[1] : e.message;

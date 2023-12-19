@@ -7,7 +7,7 @@ const LabelView = (props) => {
         storeConfig = {},
     } = props;
     return (
-        <div className="absolute top-0 left-0 right-1 rounded z-[1] flex flex-row justify-between w-full p-4">
+        <div className="absolute top-2 tablet:top-3 left-2 tablet:left-3 right-1 rounded z-[1] flex flex-row justify-between w-full">
             <Label
                 productType={__typename}
                 newFromDate={new_from_date}
