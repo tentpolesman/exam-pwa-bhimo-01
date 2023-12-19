@@ -79,7 +79,7 @@ const ProductLabel = ({
             <Show when={IS_OOS}>
                 <Badge
                     bold
-                    className={cx('product-label-new bg-neutral uppercase mb-[6px]')}
+                    className={cx('product-label-new bg-neutral-250 uppercase mb-[6px]')}
                     label={t('common:cart:oos')}
                     fontSize={fontSizeBadge}
                 />
@@ -88,7 +88,7 @@ const ProductLabel = ({
                 <Badge
                     bold
                     success
-                    className={cx('product-label-new', classNameBadge)}
+                    className={cx('product-label-new uppercase', classNameBadge)}
                     label={t('common:title:new')}
                     fontSize={fontSizeBadge}
                 />
@@ -97,7 +97,7 @@ const ProductLabel = ({
                 <Badge
                     bold
                     danger
-                    className={cx('product-label-sale', showLabelNew && 'mt-[4px]', classNameBadge)}
+                    className={cx('product-label-sale uppercase', showLabelNew && 'mt-[4px]', classNameBadge)}
                     label={`${t('common:title:sale')}!`}
                     fontSize={fontSizeBadge}
                 />
