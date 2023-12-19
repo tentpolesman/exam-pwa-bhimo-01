@@ -78,10 +78,10 @@ const Detail = (props) => {
 
             <Show when={showRating}>
                 <div className="hidden desktop:flex">
-                    <RatingStar value={ratingValue || 3} sizeIcon="lg" />
+                    <RatingStar value={ratingValue} sizeIcon="lg" />
                 </div>
                 <div className="flex desktop:hidden">
-                    <RatingStar value={ratingValue || 3} sizeIcon="sm" />
+                    <RatingStar value={ratingValue} sizeIcon="sm" />
                 </div>
             </Show>
             {Pricing && Pricing}

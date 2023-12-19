@@ -813,14 +813,17 @@ const ProductItem = (props) => {
                                     catalogList={catalogList}
                                     handleSelecteProduct={setSpesificProduct}
                                     showAddToCart={showAddToCart}
+                                    viewItemOnly={viewItemOnly}
                                     labelAddToCart={t('common:button:addToCart')}
                                     isGrid={isGrid}
                                     {...other}
+                                    customizableOptions={customizableOptions}
+                                    setCustomizableOptions={setCustomizableOptions}
+                                    errorCustomizableOptions={errorCustomizableOptions}
+                                    checkCustomizableOptionsValue={checkCustomizableOptionsValue}
                                     CustomFooter={<CustomerFooter />}
                                     showWishlist={showWishlist}
                                     enableProductCompare={showProductCompare}
-                                    enableBundle={false}
-                                    enableDownload={false}
                                     isPlp
                                 />
                             </div>

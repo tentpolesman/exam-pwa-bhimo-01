@@ -51,6 +51,8 @@ const Radio = (props) => {
             } else {
                 setMappedData(data);
             }
+        } else {
+            setMappedData(data);
         }
     }, [useLoadMore, more, data]);
 
