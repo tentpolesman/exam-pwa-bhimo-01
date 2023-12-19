@@ -13,11 +13,13 @@ const Password = (props) => {
     const {
         label = 'Password',
         value = '',
-        onChange = () => {},
+        onChange = () => { },
         showPasswordMeter = false,
         showVisible = false,
         error = false,
         errorMessage = '',
+        classLabel = {},
+        placeholder = '********',
         ...restProps
     } = props;
     const [show, setShow] = useState(false);
@@ -50,7 +52,7 @@ const Password = (props) => {
     return (
         <div className="flex flex-col w-[320px]" {...restProps}>
             {label ? (
-                <Typography variant="bd-2" className="uppercase">
+                <Typography variant="bd-2" className={cx('uppercase', classLabel)}>
                     {label.replace(/_/g, ' ')}
                 </Typography>
             ) : null}
@@ -66,6 +68,7 @@ const Password = (props) => {
                 }}
                 value={value}
                 onChange={handleChange}
+                placeholder={placeholder}
             />
             {showPasswordMeter && (
                 <>

@@ -76,7 +76,7 @@ const ProductDetailAction = ({
     openOption,
     setOpenOption,
 }) => (
-    <div className="plugin-product-detail-action desktop:px-[0px] tablet:px-[16px]">
+    <div className="plugin-product-detail-action">
         <div className={cx(
             'product-detail-container',
             'desktop:grid tablet:grid desktop:grid-cols-2 tablet:grid-cols-2',
@@ -325,7 +325,7 @@ const ProductDetailAction = ({
                 className={cx(
                     'product-detail-tabs',
                     'desktop:mt-[64px] tablet:mt-[64px]',
-                    'desktop:px-[0px] tablet:px-[0px] mobile:px-[16px]',
+                    'desktop:px-[0px] tablet:px-[16px] mobile:px-[16px]',
                 )}
             >
                 <ProductTabs
@@ -364,7 +364,7 @@ const ProductDetailAction = ({
                 className={cx(
                     'product-list-review-container',
                     'mt-[48px]',
-                    'desktop:px-[0px] tablet:px-[0px] mobile:px-[16px]',
+                    'desktop:px-[0px] tablet:px-[16px] mobile:px-[16px]',
                 )}
             >
                 <ReviewList

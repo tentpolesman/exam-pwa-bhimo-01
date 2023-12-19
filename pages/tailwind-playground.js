@@ -151,7 +151,7 @@ function Page(props) {
     return (
         <Layout t={t} {...props}>
             {/* <div className="flex items-center justify-center"> */}
-            <div className={cx('!pt-4', 'px-0', 'h-[1080px]', 'desktop:py-16', 'tablet:py-8')}>
+            <div className={cx('!pt-4', 'px-0', 'h-[1080px]', 'desktop:py-16', 'tablet:py-8', '!pl-[6px]')}>
                 {data && data[0].children && (
                     <Tabs
                         data={data[0].children}

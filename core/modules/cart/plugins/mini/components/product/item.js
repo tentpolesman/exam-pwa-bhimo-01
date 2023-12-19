@@ -157,8 +157,7 @@ const Item = (props) => {
                             <div className={cx('minicart__item--delete-wrapper')}>
                                 <Button
                                     className={cx(
-                                        'tablet:m-2',
-                                        'mobile:max-tablet:m-0',
+                                        '!m-0',
                                         '!px-0',
                                         '!py-0',
                                         '!ml-0',

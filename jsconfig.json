@@ -201,6 +201,8 @@
             "@plugin_newsletter/*": ["src/modules/customer/plugins/Newsletter/*", "core/modules/customer/plugins/Newsletter/*"],
             "@plugin_otp": ["src/modules/login/plugins/otp", "core/modules/login/plugins/otp"],
             "@plugin_otp/*": ["src/modules/login/plugins/otp/*", "core/modules/login/plugins/otp/*"],
+            "@plugin_otpfield": ["src/modules/login/plugins/OTPField", "core/modules/login/plugins/OTPField"],
+            "@plugin_otpfield/*": ["src/modules/login/plugins/OTPField/*", "core/modules/login/plugins/OTPField/*"],
             "@plugin_notificationbell": ["src/modules/notification/plugins/NotificationBell", "core/modules/notification/plugins/NotificationBell"],
             "@plugin_notificationbell/*": ["src/modules/notification/plugins/NotificationBell/*", "core/modules/notification/plugins/NotificationBell/*"],
 

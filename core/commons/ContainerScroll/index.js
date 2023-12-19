@@ -91,7 +91,7 @@ const ContainerScroll = ({
                     'relative',
                     'scrollbar-none',
                     'p-4',
-                    '-m-4',
+                    'desktop:-m-4 tablet:m-0 mobile:m-0',
                     isHorizontal && 'overflow-x-auto flex scroll-smooth',
                     isVertical && 'overflow-y-auto',
                     className,

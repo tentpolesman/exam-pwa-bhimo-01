@@ -54,7 +54,13 @@ const ProductRelated = ({
         }
     }, [data]);
 
-    if (loading) return <Loader />;
+    if (loading) {
+        return (
+            <div className="desktop:px-[0px] tablet:px-[16px]">
+                <Loader />
+            </div>
+        );
+    }
 
     if (!loading && !error && data && data.products && data.products.items.length > 0
         && data.products.items[0].related_products && data.products.items[0].related_products.length > 0) {
