@@ -444,9 +444,10 @@ const ConfigurableOptionCore = (props) => {
             setQty={setQty}
             t={t}
             loading={loading || configProduct.loading}
+            loadProdcut={configProduct.loading}
             disabled={disabled}
             isGrid={isGrid}
-            disableItem={disabled}
+            disableItem={disabled || loading}
             stockStatus={stockStatus}
             url_key={url_key}
             {...other}

@@ -473,8 +473,6 @@ const ProductItem = (props) => {
                     </Show>
                     <Show when={showAddToCart && viewItemOnly}>
                         <Button
-                            disabled={disabled}
-                            loading={loading}
                             className={classNames(
                                 '!py-0 w-max h-[38px] desktop:h-[40px] tablet:max-w-[116px] desktop:max-w-max justify-center',
                                 'hover:shadow-[0_0_0_4px] hover:shadow-primary-300',
