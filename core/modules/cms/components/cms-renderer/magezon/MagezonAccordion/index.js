@@ -2,41 +2,55 @@
 /* eslint-disable no-return-assign */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable arrow-body-style */
-/* eslint-disable no-unused-vars */
 /* eslint-disable operator-linebreak */
 
 import Typography from '@common_typography';
 import Heading from '@core_modules/cms/components/cms-renderer/magezon/components/commons/heading';
-import { Accordion, AccordionDetails, AccordionSummary } from '@core_modules/cms/components/cms-renderer/magezon/MagezonAccordion/accordion';
 import MagezonIcon from '@core_modules/cms/components/cms-renderer/magezon/MagezonIcon';
 import MagezonSection from '@core_modules/cms/components/cms-renderer/magezon/MagezonSection';
-import AddIcon from '@material-ui/icons/Add';
-import DetailsIcon from '@material-ui/icons/Details';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
-import FiberManualRecordOutlinedIcon from '@material-ui/icons/FiberManualRecordOutlined';
-import RemoveIcon from '@material-ui/icons/Remove';
 import { useState } from 'react';
+import Accordion from '@common/Accordion';
+import cx from 'classnames';
 
 const MagezonAccordion = (props) => {
-    // prettier-ignore
     const {
-        active_icon, icon,
-        accordion_icon, active_sections, at_least_one_open,
-        collapsible_all, description, elements, gap,
-        icon_position, no_fill_content_area,
-        section_active_background_color, section_active_border_color, section_active_color,
-        section_align, section_border_style,
-        section_background_color, section_border_color, section_color,
-        section_hover_background_color, section_hover_border_color, section_hover_color,
+        active_icon,
+        icon,
+        accordion_icon,
+        active_sections,
+        at_least_one_open,
+        description,
+        elements,
+        gap,
+        icon_position,
+        no_fill_content_area,
+        section_active_background_color,
+        section_active_border_color,
+        section_active_color,
+        section_align,
+        section_border_style,
+        section_background_color,
+        section_border_color,
+        section_color,
+        section_hover_background_color,
+        section_hover_border_color,
+        section_hover_color,
+        section_content_background_color,
         spacing,
-        line_color, line_position, line_width, show_line,
-        title, title_align, title_tag, title_color, title_font_size,
+        line_color,
+        line_position,
+        line_width,
+        show_line,
+        title,
+        title_align,
+        title_tag,
+        title_color,
+        title_font_size,
         storeConfig,
     } = props;
     const accordionsState = {};
-    let expandMoreIcon;
-    let expandLessIcon;
+    let ExpandMoreIcon;
+    let ExpandLessIcon;
     if (elements.length > 0) {
         elements.forEach((_, index) => {
             accordionsState[`accordion-${index}`] = false;
@@ -56,20 +70,17 @@ const MagezonAccordion = (props) => {
     const [expandedList, setExpandedList] = useState(accordionsState);
 
     if (accordion_icon === 'chevron') {
-        expandMoreIcon = <ExpandMoreIcon />;
-        expandLessIcon = <ExpandMoreIcon />;
-    } else if (accordion_icon === 'plus') {
-        expandMoreIcon = <AddIcon />;
-        expandLessIcon = <RemoveIcon />;
+        ExpandMoreIcon = undefined;
+        ExpandLessIcon = undefined;
     } else if (accordion_icon === 'triangle') {
-        expandMoreIcon = <DetailsIcon fontSize="small" />;
-        expandLessIcon = <DetailsIcon fontSize="small" />;
+        ExpandMoreIcon = <MagezonIcon icon="fas fa-caret-down" />;
+        ExpandLessIcon = <MagezonIcon icon="fas fa-caret-up" />;
     } else if (accordion_icon === 'dot') {
-        expandMoreIcon = <FiberManualRecordOutlinedIcon fontSize="small" />;
-        expandLessIcon = <FiberManualRecordIcon fontSize="small" />;
-    } else if (accordion_icon === 'custom') {
-        expandMoreIcon = <MagezonIcon icon={icon} />;
-        expandLessIcon = <MagezonIcon icon={active_icon} />;
+        ExpandMoreIcon = <MagezonIcon icon="far fa-circle" />;
+        ExpandLessIcon = <MagezonIcon icon="fas fa-circle" />;
+    } else if (accordion_icon === 'plus' || accordion_icon === 'custom') {
+        ExpandMoreIcon = <MagezonIcon icon={icon} />;
+        ExpandLessIcon = <MagezonIcon icon={active_icon} />;
     }
 
     const headingProps = {
@@ -84,20 +95,17 @@ const MagezonAccordion = (props) => {
         show_line,
     };
 
-    const handleExpand = (panel) => (event, isExpanded) => {
+    const handleExpand = (panel) => {
         Object.keys(expandedList).forEach((list) => {
             if (list === panel) {
                 const countOpen = Object.keys(expandedList).filter((item) => expandedList[item] === true).length;
+                setExpandedList({ ...expandedList, [list]: !expandedList[list] });
                 if (at_least_one_open && expandedList[list] && countOpen === 1) {
                     // one must stay opened
                     setExpandedList({ ...expandedList, [list]: true });
-                } else if (collapsible_all) {
-                    // can expand all accordion
-                    setExpandedList({ ...expandedList, [list]: isExpanded });
                 } else {
                     // default
-                    Object.keys(expandedList).forEach((k) => (expandedList[k] = false));
-                    setExpandedList({ ...expandedList, [list]: isExpanded });
+                    setExpandedList({ ...expandedList, [list]: !expandedList[list] });
                 }
             }
         });
@@ -110,30 +118,24 @@ const MagezonAccordion = (props) => {
                 <div className="mgz-accordion-content">
                     {elements.length > 0 &&
                         elements.map((element, index) => {
-                            const { icon: elementIcon, icon_position: elementIconPosition } = element;
-
                             return (
                                 <Accordion
                                     key={index}
-                                    expanded={expandedList[`accordion-${index}`]}
-                                    onChange={handleExpand(`accordion-${index}`)}
-                                    TransitionProps={{ unmountOnExit: true }}
+                                    open={expandedList[`accordion-${index}`]}
+                                    handleOpen={() => handleExpand(`accordion-${index}`)}
+                                    handleClose={() => handleExpand(`accordion-${index}`)}
+                                    label={<Typography variant={title_tag} className="accordion-title">{element.title}</Typography>}
+                                    classLabel={cx('accordion-label', {
+                                        '[&.accordion-label]:ml-[5px]': icon_position === 'left',
+                                    })}
+                                    classSummary={cx('accordion-summary', {
+                                        '!flex-row-reverse !justify-end': icon_position === 'left',
+                                        '!flex-row': icon_position === 'right',
+                                    })}
+                                    classContent="accordion-content"
+                                    CustomIcon={expandedList[`accordion-${index}`] ? ExpandLessIcon : ExpandMoreIcon}
                                 >
-                                    <AccordionSummary expandIcon={expandedList[`accordion-${index}`] ? expandLessIcon : expandMoreIcon}>
-                                        <div
-                                            style={{
-                                                display: 'flex',
-                                                flexDirection: elementIconPosition === 'left' ? 'row' : 'row-reverse',
-                                                marginLeft: '10px',
-                                            }}
-                                        >
-                                            {elementIcon && <MagezonIcon icon={elementIcon} />}
-                                            <Typography variant="h4">{element.title}</Typography>
-                                        </div>
-                                    </AccordionSummary>
-                                    <AccordionDetails>
-                                        <MagezonSection elements={element.elements} storeConfig={storeConfig} />
-                                    </AccordionDetails>
+                                    <MagezonSection elements={element.elements} storeConfig={storeConfig} />
                                 </Accordion>
                             );
                         })}
@@ -141,60 +143,58 @@ const MagezonAccordion = (props) => {
             </div>
             <style jsx>
                 {`
-                    .mgz-accordion :global(.MuiAccordion-root) {
+                    .mgz-accordion :global(.accordion-summary) {
                         color: #333;
                         border: none;
+                        transition:
+                            background-color 0.4s ease-in-out,
+                            color 0.4s ease-in-out;
+                    }
+                    .mgz-accordion :global(.common-accordion) {
                         ${gap ? `margin-bottom: ${gap}px;` : ''}
-                        transition: background-color 0.4s ease-in-out, color 0.4s ease-in-out;
                     }
-                    .mgz-accordion :global(.MuiAccordion-root > div:first-child:not(.Mui-expanded)) {
+                    .mgz-accordion :global(.accordion-summary) {
                         background-color: ${section_background_color || '#f8f8f8'};
+                        ${!no_fill_content_area ? `border: 1px solid ${section_active_border_color || '#eee'};` : ''}
                         border: 1px ${section_border_style || 'solid'} ${section_border_color || '#eee'};
+                        padding: 14px;
                     }
-                    .mgz-accordion :global(.MuiAccordion-root > div.Mui-expanded) {
+                    .mgz-accordion :global(.accordion-summary:hover) {
+                        ${section_hover_background_color ? `background-color: ${section_hover_background_color} !important;` : ''}
+                        ${section_hover_border_color ? `border-color: ${section_hover_border_color} !important;` : ''}
+                    }
+                    .mgz-accordion :global(.accordion-summary:hover i) {
+                        ${section_hover_background_color ? `background-color: ${section_hover_background_color} !important;` : ''}
+                    }
+                    .mgz-accordion :global(details[open] .accordion-summary) {
                         border: 1px ${section_border_style || 'solid'} ${section_active_border_color || '#eee'};
                         ${section_active_background_color ? `background-color: ${section_active_background_color}` : ''}
                     }
-                    .mgz-accordion :global(.MuiAccordionSummary-content) {
+                    .mgz-accordion :global(details[open] .accordion-summary i) {
+                        ${section_active_background_color ? `background-color: ${section_active_background_color}` : ''}
+                    }
+                    .mgz-accordion :global(.accordion-content) {
                         justify-content: ${section_align === 'left' ? 'flex-start' : section_align === 'center' ? 'center' : 'flex-end'};
+                        padding: 14px 20px;
+                        margin-top: unset;
+                        ${section_content_background_color ? `background-color: ${section_content_background_color}` : ''}
                     }
                     .mgz-accordion :global(*[class*='Typography']) {
                         color: ${section_color || '#000000'};
                         ${title_font_size ? `font-size: ${title_font_size}px` : ''}
                     }
-                    .mgz-accordion :global(.Mui-expanded .MuiAccordionSummary-root *[class*='Typography']) {
+                    .mgz-accordion :global(.accordion-summary .accordion-title) {
                         color: ${section_active_color || '#000000'};
                     }
-                    .mgz-accordion :global(.MuiAccordion-root div:not(.Mui-expanded):hover *[class*='Typography']) {
+                    .mgz-accordion :global(.accordion-summary:hover .accordion-title) {
                         color: ${section_hover_color || '#000000'};
                     }
-                    .mgz-accordion :global(.MuiAccordion-root > div:first-child:not(.Mui-expanded):hover) {
-                        ${section_hover_background_color ? `background-color: ${section_hover_background_color};` : ''}
-                        ${section_hover_border_color ? `border-color: ${section_hover_border_color};` : ''}
-                    }
-                    .mgz-accordion :global(.MuiCollapse-wrapper) {
-                        background-color: ${no_fill_content_area ? '#ffffff' : '#ffffff'};
-                        ${!no_fill_content_area ? `border: 1px solid ${section_active_border_color || '#eee'};` : ''}
-                    }
-                    .mgz-accordion :global(.MuiAccordionDetails-root) {
-                        display: block;
-                        padding: 14px 20px;
-                    }
-                    .mgz-accordion :global(.MuiCollapse-container) {
+                    .mgz-accordion :global(.accordion-content) {
                         ${spacing ? `margin-top: ${spacing}px;` : ''}
                     }
-                    .mgz-accordion :global(.MuiAccordionSummary-root) {
-                        flex-direction: ${icon_position === 'left' ? 'row-reverse' : 'row'};
-                    }
-                    .mgz-accordion :global(.MuiIconButton-root) {
-                        ${icon_position === 'left' ? 'margin-left: -6px; margin-right: 0;' : 'margin-right: -12px;'}
-                    }
-                    .mgz-accordion :global(.MuiSvgIcon-fontSizeSmall) {
+                    .mgz-accordion :global(.magezon-icon i) {
                         font-size: 14px;
-                        color: #000000;
-                    }
-                    .mgz-accordion :global(.magezon-icon) {
-                        font-size: 14px;
+                        color: var(--color-pwa-font_color);
                     }
                 `}
             </style>
