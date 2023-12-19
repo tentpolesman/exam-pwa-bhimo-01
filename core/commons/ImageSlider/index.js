@@ -242,12 +242,12 @@ const ImageSlider = ({
         isDesktop, isMobile, screen, screenWidth,
     } = useMediaQuery();
 
-    const thumbnailImageWidth = modules.product.imageSize.thumbnail[screen].width;
-    const thumbnailImageHeight = modules.product.imageSize.thumbnail[screen].height;
-    const mainImageWidth = modules.product.imageSize.main[screen].width;
-    const mainImageHeight = modules.product.imageSize.main[screen].height;
-    const mainImagePreviewWidth = modules.product.imageSize.main_preview[screen].width;
-    const mainImagePreviewHeight = modules.product.imageSize.main_preview[screen].height;
+    const thumbnailImageWidth = modules.product.imageSize.thumbnail[screen]?.width ?? 0;
+    const thumbnailImageHeight = modules.product.imageSize.thumbnail[screen]?.height ?? 0;
+    const mainImageWidth = modules.product.imageSize.main[screen]?.width ?? 0;
+    const mainImageHeight = modules.product.imageSize.main[screen]?.height ?? 0;
+    const mainImagePreviewWidth = modules.product.imageSize.main_preview[screen]?.width ?? 0;
+    const mainImagePreviewHeight = modules.product.imageSize.main_preview[screen]?.height ?? 0;
 
     const onSelectedImage = ({ index, item }) => {
         setIndexActive(index);
@@ -293,6 +293,7 @@ const ImageSlider = ({
                             'image-slider-vertical',
                             'px-[0px] mx-auto',
                             'm-0 !p-0',
+                            'desktop:m-0 tablet:m-0 mobile:m-0',
                         )
                     }
                 >
@@ -445,6 +446,7 @@ const ImageSlider = ({
                     className={cx(
                         'image-slider-horizontal',
                         useZoom && 'desktop:mt-[0px] tablet:mt-[0px] mobile:mt-[0px]',
+                        'desktop:m-0 tablet:m-0 mobile:m-0',
                     )}
                     itemsLength={data?.length}
                     style={isMobile ? { width: screenWidth } : {}}
