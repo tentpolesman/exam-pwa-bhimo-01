@@ -447,7 +447,11 @@ const ProductDetailAction = ({
 
     // eslint-disable-next-line no-underscore-dangle
     const isAwGiftCard = item.__typename === 'AwGiftCardProduct';
-    const priceData = getPriceFromList(dataPrice?.products?.items, item?.id || null);
+    const priceData = getPriceFromList(
+        dataPrice?.products?.items || cachePrice[generateIdentifier].products.items,
+        item?.id || null,
+    );
+
     return (
         <Content
             isLogin={isLogin}

@@ -30,6 +30,7 @@ const OptionItemAction = (props) => {
         __typename,
         url_key,
         isPlp = false,
+        CustomFooter,
     } = props;
     const IS_OOS = stockStatus === 'OUT_OF_STOCK';
     const isSimpleOrConfigurable = __typename === 'SimpleProduct' || __typename === 'ConfigurableProduct';
@@ -54,45 +55,48 @@ const OptionItemAction = (props) => {
     }
 
     return (
-        <div className="flex flex-col gap-4">
-            <div className={
-                cx('stock-status-container', stockStatusClassWrapper)
-            }
-            >
-                <Show when={showStockStatus && stockStatus}>
-                    <StockStatus inStock={stockStatus === 'IN_STOCK'} />
-                </Show>
+        <div className="option-item-action-container">
+            <div className="flex flex-col gap-4">
+                <div className={
+                    cx('stock-status-container', stockStatusClassWrapper)
+                }
+                >
+                    <Show when={showStockStatus && stockStatus}>
+                        <StockStatus inStock={stockStatus === 'IN_STOCK'} />
+                    </Show>
+                </div>
+                <div className="flex flex-row gap-4 items-end">
+                    {showQty && (
+                        <div className={cx('flex flex-col gap-2', 'product-OptionItem-qty')}>
+                            <Typography className="font-normal" variant="span">
+                                {t('common:title:qty')}
+                            </Typography>
+                            <ButtonQty
+                                value={qty}
+                                onChange={setQty}
+                                max={customQty ? freeItemsData.quantity : maxQty}
+                                disabled={disabled}
+                                classNameInput="h-[38px]"
+                            />
+                        </div>
+                    )}
+                    {showAddToCart && (
+                        <Button
+                            id="plugin-addToCart-btn"
+                            className={cx('w-full h-[48px] [&.button-link]:justify-center', customStyleBtnAddToCard)}
+                            classNameText="justify-center"
+                            color="primary"
+                            onClick={handleAddToCart}
+                            loading={loading}
+                            disabled={disabled || IS_OOS}
+                            {...additionalProps}
+                        >
+                            {(isPlp && !isSimpleOrConfigurable) ? t('product:viewItem') : labelAddToCart || t('product:addToCart')}
+                        </Button>
+                    )}
+                </div>
             </div>
-            <div className="flex flex-row gap-4 items-end">
-                {showQty && (
-                    <div className={cx('flex flex-col gap-2', 'product-OptionItem-qty')}>
-                        <Typography className="font-normal" variant="span">
-                            {t('common:title:qty')}
-                        </Typography>
-                        <ButtonQty
-                            value={qty}
-                            onChange={setQty}
-                            max={customQty ? freeItemsData.quantity : maxQty}
-                            disabled={disabled}
-                            classNameInput="h-[38px]"
-                        />
-                    </div>
-                )}
-                {showAddToCart && (
-                    <Button
-                        id="plugin-addToCart-btn"
-                        className={cx('w-full h-[48px] [&.button-link]:justify-center', customStyleBtnAddToCard)}
-                        classNameText="justify-center"
-                        color="primary"
-                        onClick={handleAddToCart}
-                        loading={loading}
-                        disabled={disabled || IS_OOS}
-                        {...additionalProps}
-                    >
-                        {(isPlp && !isSimpleOrConfigurable) ? t('product:viewItem') : labelAddToCart || t('product:addToCart')}
-                    </Button>
-                )}
-            </div>
+            {CustomFooter}
         </div>
     );
 };

@@ -222,6 +222,8 @@
         "value": "Value",
         "shopNow": "Shop Now",
         "applyShopNow": "Apply on shopping cart page.",
-        "customize": "Customize"
+        "customize": "Customize",
+        "trailer": "Trailer",
+        "viewSample": "View Sample"
     }
 }

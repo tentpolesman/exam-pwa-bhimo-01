@@ -79,7 +79,7 @@ const Radio = (props) => {
 
     if (isVariantSingle) {
         return (
-            <div className="common-checkbox-container">
+            <div className="common-radio-container">
                 <input
                     type="radio"
                     id={id}

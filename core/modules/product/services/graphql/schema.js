@@ -585,6 +585,11 @@ export const getDownloadProduct = (sku) => {
             uid
             title
             price
+            sample_url
+          }
+          downloadable_product_samples {
+            title
+            sample_url
           }
         }
       }

@@ -4,13 +4,15 @@ import OptionItemAction from '@core_modules/product/plugins/OptionItemAction';
 import CheckBox from '@common/Forms/CheckBox';
 import Typography from '@common_typography';
 import Divider from '@common_divider';
+import Show from '@common_show';
+import Button from '@common_button';
 import { formatPrice } from '@helper_currency';
-import Show from '@common/Show';
 
 const DownloadView = (props) => {
     const {
         t,
         items,
+        downloadProductSamples,
         handleOptionDownloadable,
         handleOptionAll,
         disabled,
@@ -49,12 +51,27 @@ const DownloadView = (props) => {
                                         onClick={() => !disabled && handleOptionDownloadable(val.id, val.price)}
                                         classNames={{
                                             checkboxClasses: 'w-[16px] h-[16px]',
+                                            checkboxContainerClasses: 'flex',
                                         }}
                                     >
-                                        <Typography variant="bd-2b">
-                                            {`${val.title} + `}
-                                            <b>{`${formatPrice(val.price, currencyCode, currencyCache)}`}</b>
-                                        </Typography>
+                                        <div className="option-downloadable-item flex justify-between w-[100%]">
+                                            <Typography variant="bd-2b">
+                                                {`${val.title} + `}
+                                                <b>{`${formatPrice(val.price, currencyCode, currencyCache)}`}</b>
+                                            </Typography>
+                                            <Show when={val?.sample_url}>
+                                                <Button
+                                                    link={val.sample_url}
+                                                    linkTarget="_blank"
+                                                    variant="plain"
+                                                    className="!p-0"
+                                                >
+                                                    <Typography variant="bd-2b" className="underline">
+                                                        {t('common:label:viewSample')}
+                                                    </Typography>
+                                                </Button>
+                                            </Show>
+                                        </div>
                                     </CheckBox>
                                 </div>
                             ),
@@ -86,6 +103,28 @@ const DownloadView = (props) => {
                             setQty={setQty}
                             t={t}
                             showAddToCart={showAddToCart}
+                            CustomFooter={(
+                                <Show when={downloadProductSamples.length > 0}>
+                                    <div className="option-footer-downloadable flex flex-col mt-[12px]">
+                                        <Typography variant="bd-2" className="mb-[6px] mt-[12px]">{t('common:label:trailer')}</Typography>
+                                        {
+                                            downloadProductSamples.map((item, index) => (
+                                                <Button
+                                                    link={item.sample_url}
+                                                    linkTarget="_blank"
+                                                    variant="plain"
+                                                    className="!p-0 my-[6px]"
+                                                    key={`trailer-${index}`}
+                                                >
+                                                    <Typography variant="bd-2b" className="underline" color="text-neutral-500">
+                                                        {item.title}
+                                                    </Typography>
+                                                </Button>
+                                            ))
+                                        }
+                                    </div>
+                                </Show>
+                            )}
                             {...other}
                         />
                     )
