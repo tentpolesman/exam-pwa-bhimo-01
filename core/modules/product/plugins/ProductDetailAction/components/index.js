@@ -9,6 +9,7 @@ import GeneratePrice from '@core_modules/product/pages/default/components/Genera
 import ReviewList from '@core_modules/product/pages/default/components/ReviewList';
 import Dialog from '@common_dialog';
 import CmsRenderer from '@core_modules/cms/components/cms-renderer';
+import ProductLabel from '@common_productlabel';
 import ProductRelated from '@core_modules/product/pages/default/components/ProductRelated';
 import ProductUpsell from '@core_modules/product/pages/default/components/ProductUpsell';
 import dynamic from 'next/dynamic';
@@ -84,18 +85,39 @@ const ProductDetailAction = ({
             classContainer,
         )}
         >
-            <div className={cx(
-                'product-detail-slider',
-                classImageSliderWrapper,
-            )}
+            <div
+                className={cx(
+                    'product-detail-slider',
+                    'relative',
+                    classImageSliderWrapper,
+                )}
             >
                 <ImageSlider
                     useZoom={false}
                     data={banner}
-                    dataProduct={data}
                     storeConfig={storeConfig}
                     onClickZoomImage={useProductImagePreview && enablePopupImage ? handleOpenImageDetail : null}
                     {...imageSliderProps}
+                    FooterComponentImagePreview={(
+                        <ProductLabel
+                            className="absolute top-[15px] left-[17px]"
+                            stockStatus={data?.stockStatus}
+                            newFromDate={data?.new_from_date}
+                            newToDate={data?.new_to_date}
+                            specialFromDate={data?.special_from_date}
+                            specialToDate={data?.special_to_date}
+                            priceRange={data?.price_range}
+                            config={{
+                                enabled: storeConfig.pwa.label_enable,
+                                new: {
+                                    enabled: storeConfig.pwa.label_enable,
+                                },
+                                sale: {
+                                    enabled: storeConfig.pwa.label_sale_enable,
+                                },
+                            }}
+                        />
+                    )}
                 />
             </div>
             <div className={cx(

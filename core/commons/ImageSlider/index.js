@@ -9,7 +9,7 @@ import Button from '@common_button';
 import ContainerScroll from '@common_containerscroll';
 import useMediaQuery from '@hook/useMediaQuery';
 import Link from 'next/link';
-import ProductLabel from '@common_productlabel';
+import { PlayIcon } from '@heroicons/react/24/solid';
 import { ArrowsPointingOutIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import { modules } from '@root/swift.config.js';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
@@ -42,7 +42,8 @@ const ImageSliderVideo = ({
 
     if (videoUrl) {
         const urlVideo = videoUrl && videoUrl?.video_url?.split('/');
-        const urlVideoSrc = urlVideo?.length > 1 ? `https://www.youtube.com/embed/${urlVideo[3]}` : null;
+        const urlVideoKey = urlVideo[3]?.replace('watch?v=', '');
+        const urlVideoSrc = urlVideo?.length > 1 ? `https://www.youtube.com/embed/${urlVideoKey}?autoplay=1` : null;
         return (
             <iframe
                 {...swipeHandlers}
@@ -223,7 +224,6 @@ const ImageSliderSelected = ({
 
 const ImageSlider = ({
     data,
-    dataProduct,
     storeConfig,
     onClickZoomImage,
     horizontalThumbnail,
@@ -234,6 +234,7 @@ const ImageSlider = ({
     customStyleImageWrapper = {},
     customStyleImageContainer = {},
     customClassImageWrapper = '',
+    FooterComponentImagePreview,
 }) => {
     const [imagePreview, setImagePreview] = React.useState(null);
     const [indexActive, setIndexActive] = React.useState(0);
@@ -301,11 +302,22 @@ const ImageSlider = ({
                     {
                         data && data?.map((item, index) => {
                             const isActive = indexActive === index;
+                            const isVideo = item?.urlEmbed || item?.video || item?.videoUrl;
                             return (
                                 <div
-                                    className="mb-[12px]"
+                                    className="mb-[12px] relative"
                                     key={`image-slider-vertical-${index}`}
                                 >
+                                    <Show when={isVideo}>
+                                        <PlayIcon
+                                            className={
+                                                cx(
+                                                    'absolute z-10 w-[24px] h-[24px] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2',
+                                                    'text-primary-700 pointer-events-none',
+                                                )
+                                            }
+                                        />
+                                    </Show>
                                     <Image
                                         storeConfig={storeConfig}
                                         className={cx(
@@ -389,24 +401,6 @@ const ImageSlider = ({
                                 {...imageProps}
                             />
                         </Show>
-                        <ProductLabel
-                            className="absolute top-[15px] left-[17px]"
-                            stockStatus={dataProduct?.stockStatus}
-                            newFromDate={dataProduct?.new_from_date}
-                            newToDate={dataProduct?.new_to_date}
-                            specialFromDate={dataProduct?.special_from_date}
-                            specialToDate={dataProduct?.special_to_date}
-                            priceRange={dataProduct?.price_range}
-                            config={{
-                                enabled: storeConfig.pwa.label_enable,
-                                new: {
-                                    enabled: storeConfig.pwa.label_enable,
-                                },
-                                sale: {
-                                    enabled: storeConfig.pwa.label_sale_enable,
-                                },
-                            }}
-                        />
                         <Show when={showArrow}>
                             <Button
                                 variant="tertiary"
@@ -423,8 +417,9 @@ const ImageSlider = ({
                                 <ChevronRightIcon style={{ width: 20, height: 20 }} />
                             </Button>
                         </Show>
+                        {FooterComponentImagePreview}
                     </div>
-                    <Show when={onClickZoomImage}>
+                    <Show when={data && onClickZoomImage}>
                         <Button
                             variant="plain"
                             onClick={onClickZoomImage}
@@ -456,19 +451,31 @@ const ImageSlider = ({
                     {
                         data && data?.map((item, index) => {
                             const isActive = indexActive === index;
+                            const isVideo = item?.urlEmbed || item?.video || item?.videoUrl;
                             return (
                                 <div
+                                    key={`image-slider-horizontal-${index}`}
                                     className={
                                         cx(
                                             !useZoom && 'mr-[16px] mt-[12px]',
                                             useZoom && 'mr-[16px] mt-[0px]',
+                                            'relative',
                                             'desktop:first:ml-[0px] desktop:last:mr-[0px]',
                                             'tablet:first:ml-[0px] tablet:last:mr-[0px]',
                                             'mobile:first:ml-[16px] mobile:last:mr-[6px]',
                                         )
                                     }
-                                    key={`image-slider-horizontal-${index}`}
                                 >
+                                    <Show when={isVideo}>
+                                        <PlayIcon
+                                            className={
+                                                cx(
+                                                    'absolute z-10 w-[24px] h-[24px] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2',
+                                                    'text-primary-700 pointer-events-none',
+                                                )
+                                            }
+                                        />
+                                    </Show>
                                     <Image
                                         storeConfig={storeConfig}
                                         styleContainer={{

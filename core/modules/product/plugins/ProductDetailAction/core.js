@@ -440,7 +440,6 @@ const ProductDetailAction = ({
     }, [customizableOptions]);
 
     const handleOpenImageDetail = React.useCallback((e, idx) => {
-        e.preventDefault();
         setOpenImageDetail(!openImageDetail);
         setSelectedImgIdx(idx);
     }, [openImageDetail]);
@@ -448,7 +447,7 @@ const ProductDetailAction = ({
     // eslint-disable-next-line no-underscore-dangle
     const isAwGiftCard = item.__typename === 'AwGiftCardProduct';
     const priceData = getPriceFromList(
-        dataPrice?.products?.items || cachePrice[generateIdentifier].products.items,
+        dataPrice?.products?.items || cachePrice[generateIdentifier]?.products?.items,
         item?.id || null,
     );
 
