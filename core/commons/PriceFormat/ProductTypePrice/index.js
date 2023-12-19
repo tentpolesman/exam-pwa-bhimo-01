@@ -69,7 +69,7 @@ const SimpleProductTypePrice = ({
         validSpecial = nowTime >= startTime && nowTime <= endTime;
     }
 
-    if (productType === 'GroupedProduct' && !isPdp && !isQuickView) {
+    if (productType === 'GroupedProduct') {
         return (
             <div className="price-case-grouped">
                 <StartingAt textClassName={textClassName} />

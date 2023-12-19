@@ -107,7 +107,7 @@ const Button = (props) => {
             }
             {...textProps}
         >
-            <Show when={icon && loading}>
+            <Show when={loading}>
                 <ArrowPath
                     className={cx(
                         'animate-spin w-6 h-6',

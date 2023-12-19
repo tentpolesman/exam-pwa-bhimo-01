@@ -31,6 +31,7 @@ const OptionItemAction = (props) => {
         url_key,
         isPlp = false,
     } = props;
+    const IS_OOS = stockStatus === 'OUT_OF_STOCK';
     const isSimpleOrConfigurable = __typename === 'SimpleProduct' || __typename === 'ConfigurableProduct';
     const [internalLoading, setInternalLoading] = useState(false);
 
@@ -85,7 +86,7 @@ const OptionItemAction = (props) => {
                         color="primary"
                         onClick={handleAddToCart}
                         loading={loading}
-                        disabled={disabled}
+                        disabled={disabled || IS_OOS}
                         {...additionalProps}
                     >
                         {(isPlp && !isSimpleOrConfigurable) ? t('product:viewItem') : labelAddToCart || t('product:addToCart')}

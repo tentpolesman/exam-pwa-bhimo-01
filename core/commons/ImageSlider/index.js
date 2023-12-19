@@ -9,6 +9,7 @@ import Button from '@common_button';
 import ContainerScroll from '@common_containerscroll';
 import useMediaQuery from '@hook/useMediaQuery';
 import Link from 'next/link';
+import ProductLabel from '@common_productlabel';
 import { ArrowsPointingOutIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import { modules } from '@root/swift.config.js';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
@@ -215,6 +216,7 @@ const ImageSliderSelected = ({
 
 const ImageSlider = ({
     data,
+    dataProduct,
     storeConfig,
     onClickZoomImage,
     horizontalThumbnail,
@@ -325,7 +327,7 @@ const ImageSlider = ({
                     }}
                     className={
                         cx(
-                            'z-[999]',
+                            'z-50',
                             'image-slider-preview',
                             'relative desktop:px-[16px] tablet:px-[0px] mobile:px-[16px]',
                             detectAutoScreen && 'tablet:mr-auto tablet:ml-[0px] mobile:mx-auto',
@@ -371,7 +373,24 @@ const ImageSlider = ({
                                 {...imageProps}
                             />
                         </Show>
-
+                        <ProductLabel
+                            className="absolute top-[15px] left-[17px]"
+                            stockStatus={dataProduct?.stock_status}
+                            newFromDate={dataProduct?.new_from_date}
+                            newToDate={dataProduct?.new_to_date}
+                            specialFromDate={dataProduct?.special_from_date}
+                            specialToDate={dataProduct?.special_to_date}
+                            priceRange={dataProduct?.price_range}
+                            config={{
+                                enabled: storeConfig.pwa.label_enable,
+                                new: {
+                                    enabled: storeConfig.pwa.label_enable,
+                                },
+                                sale: {
+                                    enabled: storeConfig.pwa.label_sale_enable,
+                                },
+                            }}
+                        />
                         <Show when={showArrow}>
                             <Button
                                 variant="tertiary"

@@ -20,7 +20,7 @@ const GroupedProductOptionView = ({
     <div className={cx('grouped-option-container')}>
         <Show when={!isPlp && !loadData && optionsData.length > 0}>
             <div className={cx('flex flex-col mb-[30px]')}>
-                <div className={cx('flex flex-row items-center justify-between min-h-[50px] border-b-[2px] py-[10px]', 'border-b-[2px] border-neutral-250')}>
+                <div className={cx('flex flex-row items-center justify-between min-h-[50px] border-b-[2px] py-[10px]', 'border-b-[2px] border-neutral-200')}>
                     <Typography type="bold">{t('common:product:titleProduct')}</Typography>
                     <Typography type="bold">{t('common:title:shortQty')}</Typography>
                 </div>

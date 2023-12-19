@@ -83,12 +83,6 @@ const ProductDetailAction = ({
         enablePopupImage = storeConfig.pwa.popup_detail_image_enable;
     }
 
-    // weltpixel
-    let weltpixel_labels = [];
-    if (labels.data && labels.data.products && labels.data.products.items.length > 0 && labels.data.products.items[0].weltpixel_labels) {
-        weltpixel_labels = labels.data.products.items[0].weltpixel_labels;
-    }
-
     // data tabs
     let expandData = [];
     if (item?.description?.html) {
@@ -511,7 +505,7 @@ const ProductDetailAction = ({
             useProductUpsell={useProductUpsell}
             data={{
                 ...item,
-                weltpixel_labels,
+                labels,
             }}
             {...other}
         />

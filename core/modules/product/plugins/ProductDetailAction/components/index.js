@@ -92,6 +92,7 @@ const ProductDetailAction = ({
                 <ImageSlider
                     useZoom={false}
                     data={banner}
+                    dataProduct={data}
                     storeConfig={storeConfig}
                     onClickZoomImage={useProductImagePreview && enablePopupImage ? handleOpenImageDetail : null}
                     {...imageSliderProps}

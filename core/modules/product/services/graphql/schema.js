@@ -2,37 +2,6 @@
 import { gql } from '@apollo/client';
 import { modules } from '@config';
 
-const weltpixel_labels = `
-weltpixel_labels {
-  categoryLabel {
-      css
-      customer_group
-      image
-      page_position
-      position
-      priority
-      text
-      text_padding
-      text_bg_color
-      text_font_size
-      text_font_color          
-  }
-  productLabel {
-      css
-      customer_group
-      image
-      page_position
-      position
-      priority
-      text
-      text_padding
-      text_bg_color
-      text_font_size
-      text_font_color  
-  }
-}        
-`;
-
 const productDetail = (config = {}) => `
     seller_id
     seller {
@@ -150,7 +119,6 @@ query Product($url: String!){
       id
       upsell_products {
         ${productDetail(config)}        
-        ${config?.pwa?.label_weltpixel_enable ? weltpixel_labels : ''}
         ${priceRange}
         ${priceTiers}
       }
@@ -172,7 +140,6 @@ query Product($url: String!) {
       id
       related_products {
         ${productDetail(config)}        
-        ${config?.pwa?.label_weltpixel_enable ? weltpixel_labels : ''}
         ${priceRange}
         ${priceTiers}
       }
@@ -299,6 +266,8 @@ const productDetailFragment = (config = {}) => gql`
     meta_keyword
     special_from_date
     special_to_date
+    new_from_date
+    new_to_date
     price_range @skip(if: $includePrice) {
       ${priceRangePartial}
     }
@@ -723,7 +692,7 @@ export const getGroupedProduct = (config = {}) => gql`
     }
 `;
 
-export const getProductLabel = (config = {}) => gql`
+export const getProductLabel = () => gql`
 query Products($url: String){
   products(
     search: "" ,filter: {
@@ -736,7 +705,6 @@ query Products($url: String){
       seller_id
       id
       __typename
-      ${config?.pwa?.label_weltpixel_enable ? weltpixel_labels : ''}
     }
   }
 }

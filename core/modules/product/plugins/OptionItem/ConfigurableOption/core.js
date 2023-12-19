@@ -442,7 +442,8 @@ const ConfigurableOptionCore = (props) => {
             handleAddToCart={handleAddToCart}
             setQty={setQty}
             t={t}
-            loading={loading || configProduct.loading}
+            loading={loading}
+            loadingProduct={configProduct.loading}
             disabled={stockStatus === 'OUT_OF_STOCK'}
             isGrid={isGrid}
             disableItem={stock_status === 'OUT_OF_STOCK'}

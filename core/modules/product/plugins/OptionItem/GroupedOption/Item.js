@@ -34,9 +34,9 @@ const ItemGrouped = ({
     };
 
     return (
-        <div className={cx('flex flex-row items-center justify-between min-h-[50px] border-b-[2px] py-[10px]')}>
+        <div className={cx('item-grouped flex flex-row items-center justify-between min-h-[50px] border-neutral-200 border-b-[1px] py-[10px]')}>
             <div className={cx('flex flex-col')}>
-                <Typography className="ml-[5px]">{product.name}</Typography>
+                <Typography>{product.name}</Typography>
                 <PriceFormat
                     priceRange={product.price_range}
                     priceTiers={product.price_tiers}
@@ -49,7 +49,7 @@ const ItemGrouped = ({
             {
                 product.stock_status === 'OUT_OF_STOCK'
                     ? (
-                        <Typography variant="p" type="bold" letter="uppercase">
+                        <Typography variant="bd-2c">
                             {product.stock_status.replace(/_/g, ' ') || ''}
                         </Typography>
                     )
@@ -61,6 +61,7 @@ const ItemGrouped = ({
                                     'desktop:min-h-[30px] desktop:min-w-[60px] desktop:w-[60px]',
                                     'mobile:min-h-[20px] mobile:min-w-[50px] mobile:w-[60px]',
                                     '[appearance:textfield] [webkit-appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none',
+                                    'border-[1px] border-neutral-300 rounded-[6px] focus:outline-primary-700',
                                 )
                             }
                             type="number"
