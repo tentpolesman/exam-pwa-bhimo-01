@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable no-plusplus */
 /* eslint-disable react/no-unescaped-entities */
+import { useReactiveVar } from '@apollo/client';
 import { formatPrice } from '@helper_currency';
 import formatDate from '@helper_date';
 import Paper from '@material-ui/core/Paper';
@@ -10,10 +11,14 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import { currencyVar } from '@root/core/services/graphql/cache';
 import Cookies from 'js-cookie';
 import Link from 'next/link';
-import { useReactiveVar } from '@apollo/client';
-import { currencyVar } from '@root/core/services/graphql/cache';
+
+import cx from 'classnames';
+
+import Button from '@common_button';
+import Typography from '@common_typography';
 
 const OrderView = (props) => {
     const {
@@ -26,13 +31,23 @@ const OrderView = (props) => {
     const customerData = Cookies.get('cdt') && JSON.parse(Cookies.get('cdt'));
     const currencyData = Cookies.get('app_currency') && JSON.parse(Cookies.get('app_currency'));
     return (
-        <>
-            <h2 className={styles.infoTitle}>
+        <div className={cx('pt-10')}>
+            <div className={cx('address-title-section', 'pb-[18px]', 'border-b-[1.5px]', 'border-neutral-200', 'flex', 'flex-row')}>
+                <Typography variant="h3" className={cx('mobile:max-desktop:hidden', 'pl-0')}>
+                    {t('customer:order:recentOrder')}
+                </Typography>
+                <Button link="/sales/order/history" variant="plain" className={cx('pl-6', '!py-0')}>
+                    <Typography variant="bd-2a" className={cx('!text-neutral-500', 'underline', 'underline-offset-2')}>
+                        {t('customer:menu:viewall')}
+                    </Typography>
+                </Button>
+            </div>
+            {/* <h2 className={styles.infoTitle}>
                 {t('customer:order:recentOrder')}
                 <Link href="/sales/order/history" className={styles.desktopLinkHeader}>
                     {t('customer:menu:viewall')}
                 </Link>
-            </h2>
+            </h2> */}
             <hr />
             <div className="flex flex-row">
                 <div className="lg:basis-full">
@@ -81,10 +96,7 @@ const OrderView = (props) => {
                                                     {val.status_label}
                                                 </TableCell>
                                                 <TableCell component="td" scope="row">
-                                                    <Link
-                                                        href={`/sales/order/view/order_id/${val.order_number}`}
-                                                        className={styles.desktopLink}
-                                                    >
+                                                    <Link href={`/sales/order/view/order_id/${val.order_number}`} className={styles.desktopLink}>
                                                         Detail
                                                     </Link>
                                                     <button type="button" className={styles.reorderButton} onClick={() => reOrder(val.order_number)}>
@@ -107,7 +119,7 @@ const OrderView = (props) => {
                     </TableContainer>
                 </div>
             </div>
-        </>
+        </div>
     );
 };
 

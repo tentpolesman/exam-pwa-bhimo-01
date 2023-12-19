@@ -1,38 +1,37 @@
-import React from 'react';
-import useStyles from '@core_modules/cms/components/cms-renderer/magezon/style';
-import MagezonButton from '@core_modules/cms/components/cms-renderer/magezon/MagezonButton';
-import Accordion from '@material-ui/core/Accordion';
+import Accordion from '@common/Accordion';
+import MagezonIcon from '@core_modules/cms/components/cms-renderer/magezon/MagezonIcon';
+import { useState } from 'react';
 
 const MagezonToggle = (props) => {
     const {
-        icon, active_icon, toggle_title, toggle_content,
+        //
+        icon,
+        active_icon,
+        toggle_title,
+        toggle_content,
+        ...other
     } = props;
-    const [open, setOpen] = React.useState(false);
-    const classes = useStyles(props);
+    const [open, setOpen] = useState(false);
 
-    const openToggle = () => {
-        setOpen(!open);
+    const handleOpen = () => {
+        setOpen(true);
+    };
+    const handleClose = () => {
+        setOpen(false);
     };
 
     return (
-        <div className={`${classes.container}`}>
-            <div className="toggle-wrapper">
-                <MagezonButton icon={open ? active_icon : icon} title={toggle_title} onClick={openToggle} />
-                {open ? (
-                    <Accordion disabled={false} expanded={open}>
-                        <div dangerouslySetInnerHTML={{ __html: toggle_content }} />
-                    </Accordion>
-                ) : null}
-            </div>
-            <style jsx global>
-                {`
-                    .toggle-wrapper {
-                        display: flex;
-                        flex-direction: column;
-                    }
-                `}
-            </style>
-        </div>
+        <Accordion
+            open={open}
+            handleOpen={handleOpen}
+            handleClose={handleClose}
+            label={toggle_title}
+            classLabel="accordion-label [&.accordion-label]:ml-[5px]"
+            classSummary="flex-row-reverse !justify-end"
+            CustomIcon={<MagezonIcon icon={open ? active_icon : icon} {...other} />}
+        >
+            <div dangerouslySetInnerHTML={{ __html: toggle_content }} />
+        </Accordion>
     );
 };
 

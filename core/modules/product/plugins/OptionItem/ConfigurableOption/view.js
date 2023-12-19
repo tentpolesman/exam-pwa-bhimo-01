@@ -54,6 +54,7 @@ const ConfigurableView = (props) => {
                     })
                     : (
                         <OptionItemAction
+                            {...other}
                             loading={loading}
                             disabled={disabled}
                             showQty={showQty}
@@ -62,7 +63,6 @@ const ConfigurableView = (props) => {
                             setQty={setQty}
                             t={t}
                             showAddToCart={showAddToCart}
-                            {...other}
                         />
                     )
             }

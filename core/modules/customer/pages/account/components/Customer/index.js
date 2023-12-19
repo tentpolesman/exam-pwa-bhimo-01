@@ -1,8 +1,8 @@
 // Library
-import React from 'react';
 import { modules } from '@config';
-import Layout from '@layout_customer';
 import gqlService from '@core_modules/customer/services/graphql';
+import Layout from '@layout_customer';
+import React from 'react';
 
 const Customer = (props) => {
     const {
@@ -51,6 +51,7 @@ const Customer = (props) => {
 
     const menu = [
         { href: '/sales/order/history', title: t('customer:menu:myOrder') },
+        { href: '/inboxnotification/notification', title: t('customer:menu:notification') },
         { href: '/customer/account/profile', title: t('customer:menu:myAccount') },
         { href: '/customer/account/address', title: t('customer:menu:address') },
         { href: '/sales/downloadable/history', title: t('customer:menu:myDownload') },
@@ -76,9 +77,7 @@ const Customer = (props) => {
         }),
         { href: '/customer/newsletter', title: t('customer:setting:newsletter') },
         {
-            href: storeConfig && storeConfig.OmsRma.enable_oms_rma
-                ? storeConfig.OmsRma.oms_rma_link
-                : '/rma/customer',
+            href: storeConfig && storeConfig.OmsRma.enable_oms_rma ? storeConfig.OmsRma.oms_rma_link : '/rma/customer',
             title: t('customer:menu:return'),
         },
     ];

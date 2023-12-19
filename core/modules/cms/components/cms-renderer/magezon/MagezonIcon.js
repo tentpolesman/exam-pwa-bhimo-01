@@ -24,7 +24,7 @@ const MagezonIcon = (props) => {
         <div className={classnames(classIcon, sizeClasses)}>
             {/* <div className="wrapperIcon"> */}
             <MagezonLink link={customUrl} link_target={link_target}>
-                <div className="magezon-icon-inner">
+                <div className="magezon-icon-inner flex justify-center items-center">
                     <i className={iconRes} />
                 </div>
             </MagezonLink>

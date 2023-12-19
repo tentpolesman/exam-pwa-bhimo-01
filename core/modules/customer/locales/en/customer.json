@@ -3,7 +3,7 @@
     "pageTitle": "Customer dashboard"
   },
   "newPassword": {
-    "title": "Change new password",
+    "title": "Change New Password",
     "success": "Password has been update successfully",
     "failed": "Failed on updating password"
   },

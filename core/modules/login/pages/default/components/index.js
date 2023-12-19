@@ -275,19 +275,21 @@ const Login = (props) => {
                                         </Button>
                                     </form>
                                 )}
-                            <div
-                                class="mt-4 flex items-center before:mt-0.5 before:flex-1 before:border-t
-                                    before:border-neutral-300 after:mt-0.5 after:flex-1 after:border-t after:border-neutral-300"
-                            >
-                                <Typography variant="p-2" className="mx-4 text-center !text-neutral-400">
-                                    {t('login:orSignWith')}
-                                </Typography>
-                            </div>
 
                             {firebaseLoaded && firebase.app() && !socialLoginMethodLoading && (
-                                <div>
-                                    <StyledFirebaseAuth className="text-primary-500" uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
-                                </div>
+                                <>
+                                    <div
+                                        class="mt-4 flex items-center before:mt-0.5 before:flex-1 before:border-t
+                                    before:border-neutral-300 after:mt-0.5 after:flex-1 after:border-t after:border-neutral-300"
+                                    >
+                                        <Typography variant="p-2" className="mx-4 text-center !text-neutral-400">
+                                            {t('login:orSignWith')}
+                                        </Typography>
+                                    </div>
+                                    <div>
+                                        <StyledFirebaseAuth className="text-primary-500" uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
+                                    </div>
+                                </>
                             )}
 
                             <Typography variant="p-2" className="text-neutral-500 inline-flex gap-1 justify-center">
