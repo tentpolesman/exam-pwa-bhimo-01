@@ -32,7 +32,6 @@ const Button = (props) => {
 
     const { className: classIcon, ...resIconProps } = iconProps;
     const isPositionRight = position === 'right';
-    const isDisableOrLoading = disabled || loading;
 
     const buttonSizes = {
         sm: `px-[16px] py-[8px] ${iconOnly ? 'p-[8px]' : ''}`,
@@ -56,6 +55,7 @@ const Button = (props) => {
                 'focus:shadow-[0_0_0_4px] hover:shadow-lg bg-pwa-button_background hover:bg-pwa-button_background_hover focus:shadow-primary-300 ',
                 'active:bg-primary disabled:bg-neutral-200 disabled:text-neutral-400 disabled:hover:shadow-none',
                 'disabled:focus:shadow-none disabled:active:bg-neutral-200 disabled:active:shadow-none',
+                loading && 'focus:shadow-none hover:shadow-none cursor-default',
             ),
             typography: cx('!text-pwa-button_text', underline && 'underline'),
         },
@@ -67,6 +67,7 @@ const Button = (props) => {
             button: cx(
                 'focus:shadow-[0_0_0_4px] hover:shadow-lg bg-neutral-white hover:shadow-lg',
                 'focus:shadow-primary-300 active:shadow-primary-300 active:shadow-[0_0_0_4px]',
+                loading && 'focus:shadow-none hover:shadow-none cursor-default',
             ),
             typography: cx('!text-primary', underline && 'underline'),
         },
@@ -74,6 +75,7 @@ const Button = (props) => {
             button: cx(
                 'focus:shadow-[0_0_0_4px] hover:shadow-lg bg-neutral-white border border-black',
                 'hover:opacity-50 focus:shadow-neutral-100 focus:border-none',
+                loading && 'focus:shadow-none hover:shadow-none cursor-default',
             ),
             typography: cx('!text-black', underline && 'underline'),
         },
@@ -82,7 +84,7 @@ const Button = (props) => {
                 'focus:shadow-[0_0_0_4px] hover:shadow-lg bg-neutral-100 hover:bg-neutral-100',
                 'hover:shadow-none focus:shadow-none active:bg-neutral-100 active:shadow-none',
             ),
-            typography: cx('!text-neutral-white', underline && 'underline'),
+            typography: cx('!text-neutral-400', underline && 'underline'),
         },
         plain: {
             button: '',
@@ -98,8 +100,8 @@ const Button = (props) => {
                     'flex',
                     'items-center',
                     classNameText,
-                    styleClass[variant].typography,
-                    isDisableOrLoading && styleClass.disabled.typography,
+                    !disabled && styleClass[variant].typography,
+                    disabled && styleClass.disabled.typography,
                     {
                         'flex-row-reverse': icon && isPositionRight,
                     },
@@ -107,7 +109,7 @@ const Button = (props) => {
             }
             {...textProps}
         >
-            <Show when={icon && loading}>
+            <Show when={loading}>
                 <ArrowPath
                     className={cx(
                         'animate-spin w-6 h-6',
@@ -115,6 +117,7 @@ const Button = (props) => {
                             'ml-[6px]': isPositionRight && !iconOnly,
                             'mr-[6px]': !isPositionRight && !iconOnly,
                             'text-lg': !iconOnly || (iconOnly && (size === 'sm' || size === 'md')),
+                            '!text-neutral-white': variant === 'primary',
                         },
                     )}
                 />
@@ -146,8 +149,8 @@ const Button = (props) => {
                     'button-link',
                     'group',
                     'flex items-center',
-                    !isDisableOrLoading && styleClass[variant].button,
-                    isDisableOrLoading && styleClass.disabled.button,
+                    !disabled && styleClass[variant].button,
+                    disabled && styleClass.disabled.button,
                     classes,
                 )}
                 onClick={onClick}
@@ -162,12 +165,16 @@ const Button = (props) => {
     return (
         <button
             type="button"
-            onClick={onClick}
-            disabled={isDisableOrLoading}
+            onClick={() => {
+                if (!disabled && !loading) {
+                    onClick();
+                }
+            }}
+            disabled={disabled}
             className={cx(
                 'group',
-                !isDisableOrLoading && styleClass[variant].button,
-                isDisableOrLoading && styleClass.disabled.button,
+                !disabled && styleClass[variant].button,
+                disabled && styleClass.disabled.button,
                 classes,
             )}
             {...restProps}

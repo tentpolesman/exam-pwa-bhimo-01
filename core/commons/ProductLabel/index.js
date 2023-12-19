@@ -37,22 +37,19 @@ const generateNew = ({ newFromDate, newToDate }) => {
 };
 
 const generateSale = ({
-    priceRange, specialFromDate, specialToDate,
+    specialFromDate, specialToDate,
 }) => {
-    const regularPrice = priceRange.minimum_price.regular_price;
-    const finalPrice = priceRange.minimum_price.final_price;
-    let validSpecial = true;
+    let validSpecial = false;
     const nowTime = new Date(Date.now()).getTime();
     if (specialFromDate && specialFromDate !== null) {
         const startTime = new Date(specialFromDate).getTime();
+        validSpecial = true;
         if (nowTime < startTime) validSpecial = false;
     }
     if (specialToDate && specialToDate !== null) {
         const endTime = new Date(specialToDate).getTime();
+        validSpecial = true;
         if (nowTime > endTime) validSpecial = false;
-    }
-    if (regularPrice.value === finalPrice.value) {
-        validSpecial = false;
     }
     return validSpecial;
 };

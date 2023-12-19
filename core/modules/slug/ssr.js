@@ -9,6 +9,7 @@ import { getResolver } from '@core_modules/slug/services/graphql/schema';
 import getCmsSSRProps from '@core_modules/cms/pages/default/ssr';
 import createApolloClient from '@lib/apollo/apolloClient';
 import getLayoutSSRProps from '@core_modules/theme/layout/ssr';
+import getSSRCategoryProps from '@core_modules/catalog/pages/category/ssr';
 
 const getSSRProps = async (ctx) => {
     const apolloClient = createApolloClient({}, ctx);
@@ -46,7 +47,7 @@ const getSSRProps = async (ctx) => {
     } else if (urlType === 'PRODUCT') {
         // belum buat ssr product
     } else if (urlType === 'CATEGORY') {
-        // bebelum buat ssr product lum
+        await getSSRCategoryProps({ apolloClient, urlResolver });
     }
 
     const apolloState = apolloClient.cache.extract();

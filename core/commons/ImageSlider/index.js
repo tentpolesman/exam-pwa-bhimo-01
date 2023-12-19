@@ -224,6 +224,7 @@ const ImageSlider = ({
     imageProps = {},
     customStyleImageWrapper = {},
     customStyleImageContainer = {},
+    customClassImageWrapper = '',
 }) => {
     const [imagePreview, setImagePreview] = React.useState(null);
     const [indexActive, setIndexActive] = React.useState(0);
@@ -331,6 +332,7 @@ const ImageSlider = ({
                             detectAutoScreen && 'tablet:mr-auto tablet:ml-[0px] mobile:mx-auto',
                             !detectAutoScreen && 'mx-auto',
                             isDesktop && 'pl-[24px]',
+                            customClassImageWrapper,
                         )
                     }
                 >

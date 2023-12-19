@@ -72,7 +72,7 @@ const OptionItemAction = (props) => {
                             value={qty}
                             onChange={setQty}
                             max={customQty ? freeItemsData.quantity : maxQty}
-                            disabled={disabled}
+                            disabled={disabled || loading}
                             classNameInput="h-[38px]"
                         />
                     </div>
@@ -82,13 +82,13 @@ const OptionItemAction = (props) => {
                         id="plugin-addToCart-btn"
                         className={cx('w-full h-[48px] [&.button-link]:justify-center', customStyleBtnAddToCard)}
                         classNameText="justify-center"
-                        color="primary"
+                        variant="primary"
                         onClick={handleAddToCart}
                         loading={loading}
                         disabled={disabled}
                         {...additionalProps}
                     >
-                        {(isPlp && !isSimpleOrConfigurable) ? t('product:viewItem') : labelAddToCart || t('product:addToCart')}
+                        {(isPlp && !isSimpleOrConfigurable) ? t('common:button:viewItem') : labelAddToCart || t('common:button:addToCart')}
                     </Button>
                 )}
             </div>
