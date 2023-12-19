@@ -1,10 +1,10 @@
 /* eslint-disable no-plusplus */
-import { modules } from '@config';
-import Link from 'next/link';
-import classNames from 'classnames';
-import { useRouter } from 'next/router';
 import Typography from '@common_typography';
+import { modules } from '@config';
 import useStyles from '@layout_customer/style';
+import cx from 'classnames';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 const Layout = (props) => {
     const {
@@ -18,9 +18,22 @@ const Layout = (props) => {
     const menu = [
         { href: '/customer/account', title: t('customer:menu:myAccount') },
         { href: '/sales/order/history', title: t('customer:menu:myOrder') },
-        { href: '/sales/downloadable/history', title: t('customer:menu:myDownload') },
-        { href: '/customer/account/profile', title: t('customer:menu:accountInformation') },
+        { href: '/inboxnotification/notification', title: t('customer:menu:notification') },
         { href: '/customer/account/address', title: t('customer:menu:address') },
+        { href: '/customer/account/profile', title: t('customer:menu:accountInformation') },
+        ...pushIf(modules.wishlist.enabled, {
+            href: '/wishlist',
+            title: t('customer:menu:wishlist'),
+        }),
+        {
+            href: storeConfig && storeConfig.OmsRma.enable_oms_rma ? storeConfig.OmsRma.oms_rma_link : '/rma/customer',
+            title: t('customer:menu:return'),
+        },
+        ...pushIf(modules.storecredit.enabled, {
+            href: '/customer/account/storecredit',
+            title: t('customer:menu:storeCredit'),
+        }),
+        { href: '/sales/downloadable/history', title: t('customer:menu:myDownload') },
         ...pushIf(modules.productreview.enabled, {
             href: '/review/customer',
             title: t('customer:menu:myProductReview'),
@@ -29,29 +42,15 @@ const Layout = (props) => {
             href: '/awgiftcard/card',
             title: 'Gift Card',
         }),
-        ...pushIf(modules.storecredit.enabled, {
-            href: '/customer/account/storecredit',
-            title: t('customer:menu:storeCredit'),
+        ...pushIf(modules.rewardpoint.enabled, {
+            href: '/aw_rewardpoints/info',
+            title: t('customer:menu:rewardPoint'),
         }),
         ...pushIf(modules.notification.enabled, {
             href: '/inboxnotification/notification',
             title: t('customer:menu:notification'),
         }),
         { href: '/customer/newsletter', title: t('customer:setting:newsletter') },
-        {
-            href: storeConfig && storeConfig.OmsRma.enable_oms_rma
-                ? storeConfig.OmsRma.oms_rma_link
-                : '/rma/customer',
-            title: t('customer:menu:return'),
-        },
-        ...pushIf(modules.rewardpoint.enabled, {
-            href: '/aw_rewardpoints/info',
-            title: t('customer:menu:rewardPoint'),
-        }),
-        ...pushIf(modules.wishlist.enabled, {
-            href: '/wishlist',
-            title: t('customer:wishlist:pageTitle'),
-        }),
     ];
     for (let index = 0; index < menu.length; index++) {
         const item = menu[index];
@@ -60,8 +59,8 @@ const Layout = (props) => {
         }
     }
     return (
-        <div className="flex flex-row">
-            <div className="md:basis-2/12 xs:basis-full hidden-mobile">
+        <div className="flex flex-row desktop:gap-x-[18px]">
+            <div className={cx('md:basis-2/12', 'xs:basis-full', 'mobile:max-desktop:hidden')}>
                 <div className={styles.listMenuContainer}>
                     <ul className={styles.listMenu}>
                         {menu.map((val, idx) => (
@@ -69,20 +68,18 @@ const Layout = (props) => {
                                 key={idx}
                                 className={
                                     router.asPath === val.href || val.href === activeMenu
-                                        ? classNames(styles.listMenuItem, styles.listMenuItemActive)
+                                        ? cx(styles.listMenuItem, styles.listMenuItemActive)
                                         : styles.listMenuItem
                                 }
                             >
-                                <Link href={val.href}>
-                                    {val.title}
-                                </Link>
+                                <Link href={val.href}>{val.title}</Link>
                             </li>
                         ))}
                     </ul>
                 </div>
             </div>
             <div className="md:basis-10/12 xs:basis-full sm:basis-full">
-                <Typography variant="h4" type="bold" letter="capitalize" className={classNames('hidden-mobile', styles.titleContent)}>
+                <Typography variant="h2" type="bold" letter="capitalize" className={cx('mobile:max-desktop:hidden', 'pl-0')}>
                     {title || titlePage}
                 </Typography>
                 {children}

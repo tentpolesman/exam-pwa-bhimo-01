@@ -3,29 +3,29 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable max-len */
 /* eslint-disable react/no-danger */
-import Link from 'next/link';
-import noReload from '@helper_noreload';
-import { setResolver, getResolver } from '@helper_localstorage';
-import Carousel from '@common_slick/Caraousel';
-import { removeIsLoginFlagging } from '@helper_auth';
-import { removeCookies } from '@helper_cookies';
-import { removeCartId } from '@helper_cartid';
-import Router, { useRouter } from 'next/router';
 import { useApolloClient } from '@apollo/client';
-import ProductItem from '@plugin_productitem';
-import { localTotalCart, localCompare } from '@services/graphql/schema/local';
-import Typography from '@common_typography';
-import PointCard from '@plugin_rewardpointinfo';
-import Badge from '@material-ui/core/Badge';
-import withStyles from '@material-ui/core/styles/withStyles';
-import classNames from 'classnames';
 import Button from '@common_button';
-import Cookies from 'js-cookie';
+import Carousel from '@common_slick/Caraousel';
+import Typography from '@common_typography';
 import { custDataNameCookie } from '@config';
+import ProductCompareLabel from '@core_modules/catalog/plugins/ProductCompare';
 import useStyles from '@core_modules/customer/pages/account/components/Customer/style';
 import { removeToken as deleteToken } from '@core_modules/customer/services/graphql';
-import ProductCompareLabel from '@core_modules/catalog/plugins/ProductCompare';
+import { removeIsLoginFlagging } from '@helper_auth';
+import { removeCartId } from '@helper_cartid';
+import { removeCookies } from '@helper_cookies';
+import { getResolver, setResolver } from '@helper_localstorage';
+import noReload from '@helper_noreload';
+import Badge from '@material-ui/core/Badge';
+import withStyles from '@material-ui/core/styles/withStyles';
+import ProductItem from '@plugin_productitem';
+import PointCard from '@plugin_rewardpointinfo';
+import { localCompare, localTotalCart } from '@services/graphql/schema/local';
+import classNames from 'classnames';
+import Cookies from 'js-cookie';
 import dynamic from 'next/dynamic';
+import Link from 'next/link';
+import Router, { useRouter } from 'next/router';
 
 const Footer = dynamic(() => import('@common_footer'), { ssr: false });
 // eslint-disable-next-line consistent-return
@@ -89,9 +89,9 @@ const ViewMobile = (props) => {
                         {userData && userData.customer && `${userData.customer.firstname} ${userData.customer.lastname}`}
                     </h3>
                     <p className={styles.account_email}>{userData && userData.customer && userData.customer.email}</p>
-                    {userData && userData.customer && adminId !== undefined && adminId !== ''
-                        ? <p className={styles.account_email}>{`(Login By ${JSON.parse(adminId)[1]})`}</p>
-                        : null}
+                    {userData && userData.customer && adminId !== undefined && adminId !== '' ? (
+                        <p className={styles.account_email}>{`(Login By ${JSON.parse(adminId)[1]})`}</p>
+                    ) : null}
                 </div>
                 <div className={[styles.account_block, styles.padding_vertical_40].join(' ')}>
                     {modules.rewardpoint.enabled ? <PointCard {...props} /> : null}
@@ -100,7 +100,6 @@ const ViewMobile = (props) => {
                             {menu.map(({ href, title }, index) => (
                                 <li className={styles.account_navigation_item} key={index}>
                                     <Link href={href} className={styles.account_navigation_link}>
-
                                         <StyledBadge
                                             color="secondary"
                                             max={99}
@@ -109,7 +108,6 @@ const ViewMobile = (props) => {
                                         >
                                             {title}
                                         </StyledBadge>
-
                                     </Link>
                                 </li>
                             ))}
@@ -123,20 +121,21 @@ const ViewMobile = (props) => {
                                 <Typography variant="span" type="bold" letter="capitalize" className={styles.account_wishlist_title}>
                                     Wishlist
                                 </Typography>
-                                <Link
-                                    href="/wishlist"
-                                    className={[styles.account_wishlist_read_more].join(' ')}>
-
+                                <Link href="/wishlist" className={[styles.account_wishlist_read_more].join(' ')}>
                                     <Typography variant="span" type="bold" letter="capitalize">
                                         {t('customer:menu:readMore')}
                                     </Typography>
-
                                 </Link>
                             </div>
                         </div>
                         {modules.wishlist.enabled ? (
                             <div className={styles.account_clearfix}>
-                                <Carousel data={wishlist} className={[styles.wishlistBlock, styles.margin20].join(' ')} Item={ProductItem} storeConfig={storeConfig} />
+                                <Carousel
+                                    data={wishlist}
+                                    className={[styles.wishlistBlock, styles.margin20].join(' ')}
+                                    Item={ProductItem}
+                                    storeConfig={storeConfig}
+                                />
                             </div>
                         ) : null}
                     </div>
@@ -163,7 +162,7 @@ const ViewMobile = (props) => {
                     ) : null}
 
                     <li className={styles.account_navigation_item}>
-                        <Button fullWidth className={styles.logoutBtn} onClick={handleLogout} variant="contained">
+                        <Button fullWidth className={styles.logoutBtn} onClick={handleLogout} variant="primary">
                             <Typography className={styles.logOutTxt} color="white" variant="span" type="bold" letter="uppercase">
                                 {t('customer:button:logout')}
                             </Typography>
