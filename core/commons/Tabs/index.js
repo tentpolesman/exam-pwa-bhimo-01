@@ -1,14 +1,15 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React from 'react';
 import CmsRenderer from '@core_modules/cms/components/cms-renderer';
 import cx from 'classnames';
 import { useTranslation } from 'next-i18next';
+import React from 'react';
 
 const Tabs = (props) => {
     const {
         data = [],
         onChange = () => {},
+        activeTabsProps = null,
         allItems = true,
         tabHasContent = false,
         tabWrapperClassName,
@@ -22,6 +23,7 @@ const Tabs = (props) => {
 
     const { t } = useTranslation(['common']);
     const [activeTabs, setActiveTabs] = React.useState(0);
+    const usedActive = activeTabsProps !== null ? activeTabsProps : activeTabs;
 
     const tabClasses = cx(
         'inline-block',
@@ -68,13 +70,13 @@ const Tabs = (props) => {
                         && data.map((item, index) => {
                             if (index === 0) {
                                 return (
-                                    <li className={cx(activeTabs === index ? tabTitleListActiveClassName : tabTitleListClassName)} key={index}>
+                                    <li className={cx(usedActive === index ? tabTitleListActiveClassName : tabTitleListClassName)} key={index}>
                                         <a
                                             href="#"
                                             className={
                                                 !tabHasContent && allItems
                                                     ? cx(tabClasses, 'default-allitems')
-                                                    : activeTabs === index
+                                                    : usedActive === index
                                                         ? cx(tabClasses, tabActive, 'default-active')
                                                         : cx(tabClasses)
                                             }
@@ -92,13 +94,13 @@ const Tabs = (props) => {
                                 );
                             }
                             return (
-                                <li className={cx(activeTabs === index ? tabTitleListActiveClassName : tabTitleListClassName)} key={index}>
+                                <li className={cx(usedActive === index ? tabTitleListActiveClassName : tabTitleListClassName)} key={index}>
                                     <a
                                         href="#"
                                         className={
                                             !tabHasContent && allItems
                                                 ? cx(tabClasses, 'default-allitems')
-                                                : activeTabs === index
+                                                : usedActive === index
                                                     ? cx(tabClasses, tabActive, 'default-active')
                                                     : cx(tabClasses)
                                         }
@@ -125,7 +127,7 @@ const Tabs = (props) => {
                             return (
                                 <div
                                     className={cx('tab-content', {
-                                        hidden: activeTabs !== index,
+                                        hidden: usedActive !== index,
                                     })}
                                     key={index}
                                 >
@@ -139,7 +141,7 @@ const Tabs = (props) => {
                             return (
                                 <div
                                     className={cx('tab-content', {
-                                        hidden: activeTabs !== index,
+                                        hidden: usedActive !== index,
                                     })}
                                     key={index}
                                 >
@@ -150,7 +152,7 @@ const Tabs = (props) => {
                         return (
                             <div
                                 className={cx('tab-content', {
-                                    hidden: activeTabs !== index,
+                                    hidden: usedActive !== index,
                                 })}
                                 key={index}
                             >
