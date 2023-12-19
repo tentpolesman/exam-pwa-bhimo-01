@@ -73,6 +73,7 @@ const Share = ({
                             <Show when={whatsapp}>
                                 <Button
                                     link={whatsappLink(linkShare)}
+                                    linkTarget="_blank"
                                     variant="plain"
                                     className="flex justify-center items-center border border-neutral-200 px-[18px] py-[10px] mb-[16px]"
                                 >
@@ -83,6 +84,7 @@ const Share = ({
                             <Show when={facebook}>
                                 <Button
                                     link={facebookLink(linkShare)}
+                                    linkTarget="_blank"
                                     variant="plain"
                                     className="flex justify-center items-center border border-neutral-200 px-[18px] py-[10px] mb-[16px]"
                                 >
@@ -93,6 +95,7 @@ const Share = ({
                             <Show when={twitter}>
                                 <Button
                                     link={twitterLink(linkShare)}
+                                    linkTarget="_blank"
                                     variant="plain"
                                     className="flex justify-center items-center border border-neutral-200 px-[18px] py-[10px] mb-[16px]"
                                 >
@@ -120,6 +123,7 @@ const Share = ({
                 <Show when={whatsapp}>
                     <Button
                         link={whatsappLink(linkShare)}
+                        linkTarget="_blank"
                         variant="plain"
                         iconOnly
                         icon={<Image src="/assets/img/logo_whatsapp.svg" width={16} height={16} style={{ width: 16, height: 16 }} />}
@@ -129,6 +133,7 @@ const Share = ({
                 <Show when={facebook}>
                     <Button
                         link={facebookLink(linkShare)}
+                        linkTarget="_blank"
                         variant="plain"
                         iconOnly
                         classNameText="w-[16px] h-[16px]"
@@ -139,6 +144,7 @@ const Share = ({
                 <Show when={twitter}>
                     <Button
                         link={twitterLink(linkShare)}
+                        linkTarget="_blank"
                         variant="plain"
                         iconOnly
                         classNameText="w-[16px] h-[16px]"
