@@ -25,6 +25,7 @@ const ProductRelatedView = ({ data, t, storeConfig }) => (
             data={data}
             Item={ProductItem}
             storeConfig={storeConfig}
+            classNameCarousel="desktop:-m-4 tablet:m-0 mobile:m-0"
         />
     </div>
 );
