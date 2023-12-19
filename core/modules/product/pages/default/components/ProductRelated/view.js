@@ -14,7 +14,7 @@ const ProductRelatedView = ({ data, t, storeConfig }) => (
             className={
                 cx(
                     'desktop:mb-[24px] tablet:mb-[16px] mobile:mb-[16px]',
-                    'desktop:mx-[16] tablet:mx-[16px] mobile:mx-[16px]',
+                    'desktop:mx-[0px] tablet:mx-[16px] mobile:mx-[16px]',
                 )
             }
         >

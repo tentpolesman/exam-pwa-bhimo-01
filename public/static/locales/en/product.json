@@ -13,7 +13,7 @@
     "nickname" : "Nickname",
     "submitReview" : "Submit review" ,
     "rate" : "Rate",
-    "upsellTitle": "You might also like",
+    "upsellTitle": "Up Selling Product",
     "validate": {
         "nickname": "Nickname is required",
         "rating": "Rating is required",

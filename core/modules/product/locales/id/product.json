@@ -12,7 +12,7 @@
     "nickname" : "Nama panggilan",
     "submitReview" : "Kirim review" ,
     "rate" : "Rating",
-    "upsellTitle": "Mungkin Anda suka",
+    "upsellTitle": "Product Terlaris",
     "validate": {
         "nickname": "Nickname tidak boleh kosong",
         "rating": "Rating tidak boleh kosong",
