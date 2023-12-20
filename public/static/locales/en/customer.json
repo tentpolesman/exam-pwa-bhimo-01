@@ -58,9 +58,10 @@
     "subcription": "You are subscribed to 'General Subscription'.",
     "aboutUs": "About us",
     "contactUs": "Contact us",
-    "myPoint": "My point",
+    "myPoint": "My Point",
     "myOrder": "My Orders",
-    "myAccount": "My account",
+    "myAccount": "My Account",
+    "dashboard": "Dashboard",
     "address": "Address Book",
     "findAStore": "Find a Store",
     "setting": "Settings",
@@ -120,7 +121,7 @@
     "myProductReview": "My product review"
   },
   "order": {
-    "recentOrder" : "Recent order",
+    "recentOrder": "Recent Order",
     "order" : "Order",
     "date": "Date",
     "shippedTo": "Shipped to",
