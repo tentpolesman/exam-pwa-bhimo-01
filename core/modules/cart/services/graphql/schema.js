@@ -187,6 +187,7 @@ items {
       values {
         label
         quantity
+        price
       }
     }
   }
@@ -252,6 +253,7 @@ items {
       values {
         label
         quantity
+        price
       }
     }
   }
@@ -492,6 +494,7 @@ export const getMiniCart = gql`
                   values {
                     label
                     quantity
+                    price
                   }
                 }
               }

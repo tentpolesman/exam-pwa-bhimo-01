@@ -1,5 +1,3 @@
-/* eslint-disable radix */
-/* eslint-disable no-plusplus */
 import { useEffect, useState } from 'react';
 import { getCartId, setCartId } from '@helper_cartid';
 import TagManager from 'react-gtm-module';
@@ -12,10 +10,13 @@ import {
     addWishlist as mutationWishlist, getCartDataLazy, getCartItemLazy,
     deleteCartItem, updateCartitem, addProductToCartPromo, applyCouponToCart, removeCouponFromCart, cancelAndReOrder,
 } from '@core_modules/cart/services/graphql';
+import Backdrop from '@common/Backdrop';
+
+import Content from '@core_modules/cart/pages/default/components';
 
 const Cart = (props) => {
     const {
-        t, token, isLogin, EmptyView, SkeletonView, pageConfig, Content, storeConfig, ...other
+        t, token, isLogin, pageConfig, storeConfig, ...other
     } = props;
 
     // cache currency
@@ -254,19 +255,17 @@ const Cart = (props) => {
         window.backdropLoader(true);
 
         const cartId = getCartId();
-        setLoadingCart(true);
         setLoadingSummary(true);
         actDeleteItem({
             variables: {
                 cartId,
-                cart_item_id: parseInt(itemProps.id),
+                cart_item_id: parseInt(itemProps.id, 10),
             },
             context: {
                 request: 'internal',
             },
         })
             .then(() => {
-                // setLoadingCart(false);
                 toggleEditMode();
                 window.backdropLoader(false);
                 window.toastMessage({
@@ -276,7 +275,6 @@ const Cart = (props) => {
                 });
             })
             .catch((e) => {
-                // setLoadingCart(false);
                 toggleEditMode();
                 window.backdropLoader(false);
                 window.toastMessage({
@@ -290,13 +288,12 @@ const Cart = (props) => {
     // update items
     const updateItem = (itemData) => {
         window.backdropLoader(true);
-        setLoadingCart(true);
         setLoadingSummary(true);
         const cartId = getCartId();
         actUpdateItem({
             variables: {
                 cartId,
-                cart_item_id: parseInt(itemData.cart_item_id),
+                cart_item_id: parseInt(itemData.cart_item_id, 10),
                 quantity: itemData.quantity,
             },
             context: {
@@ -527,7 +524,7 @@ const Cart = (props) => {
             window.backdropLoader(true);
             addWishlist({
                 variables: {
-                    productId: parseInt(itemProps.product.id),
+                    productId: parseInt(itemProps.product.id, 10),
                 },
             })
                 .then(async () => {
@@ -554,20 +551,12 @@ const Cart = (props) => {
     if (loadingCart) {
         return (
             <Layout pageConfig={config || pageConfig} {...props}>
-                <SkeletonView />
+                <Backdrop open />
             </Layout>
         );
     }
 
     const globalCurrency = storeConfig.default_display_currency_code;
-
-    if (!loadingCart && cart.items.length < 1) {
-        return (
-            <Layout pageConfig={config || pageConfig} {...props}>
-                <EmptyView t={t} />
-            </Layout>
-        );
-    }
 
     const contentProps = {
         dataCart: cart,
@@ -592,7 +581,6 @@ const Cart = (props) => {
     };
     return (
         <Layout pageConfig={config || pageConfig} {...props} showRecentlyBar={false}>
-            <h1 style={{ display: 'none' }}>Shopping Cart</h1>
             <Content currencyCache={currencyCache} {...other} {...contentProps} />
         </Layout>
     );
