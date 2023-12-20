@@ -68,7 +68,7 @@ const OptionItemAction = (props) => {
             <div className="flex flex-row gap-4 items-end">
                 {showQty && (
                     <div className={cx('flex flex-col gap-2', 'product-OptionItem-qty')}>
-                        <Typography className="font-normal" variant="span">
+                        <Typography className="font-normal">
                             {t('common:title:qty')}
                         </Typography>
                         <ButtonQty

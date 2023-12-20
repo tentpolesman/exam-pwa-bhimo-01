@@ -18,6 +18,10 @@ const ViewCustomizableDropDownOption = ({
                         disabled={disabled}
                         options={data}
                         name={title}
+                        value={selected}
+                        onChange={onChange}
+                        error={error}
+                        errorMessage={error}
                         label={(
                             <>
                                 <Typography className="uppercase font-bold">
@@ -27,10 +31,9 @@ const ViewCustomizableDropDownOption = ({
                                 </Typography>
                             </>
                         )}
-                        value={selected}
-                        onChange={onChange}
-                        error={error}
-                        errorMessage={error}
+                        optionProps={{
+                            className: 'absolute',
+                        }}
                         textFiledProps={{
                             className: '!w-full',
                         }}

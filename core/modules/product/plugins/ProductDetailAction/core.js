@@ -56,6 +56,7 @@ const ProductDetailAction = ({
     const { isDesktop, isTablet, isMobile } = useMediaQuery();
     const context = isLogin && isLogin == 1 ? { request: 'internal' } : {};
     const item = product.items[productKey];
+
     const currencyCode = item?.price_range?.minimum_price?.regular_price?.currency || 'USD';
     const reviewRef = React.useRef(null);
 

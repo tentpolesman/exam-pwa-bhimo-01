@@ -6,7 +6,6 @@ import Divider from '@common_divider';
 import Share from '@common_share';
 import Button from '@common_button';
 import GeneratePrice from '@core_modules/product/pages/default/components/GeneratePrice';
-import ReviewList from '@core_modules/product/pages/default/components/ReviewList';
 import Dialog from '@common_dialog';
 import CmsRenderer from '@core_modules/cms/components/cms-renderer';
 import ProductLabel from '@common_productlabel';
@@ -22,6 +21,7 @@ const ProductTabs = dynamic(() => import('@core_modules/product/pages/default/co
 const ProductTabsAccordion = dynamic(() => import('@core_modules/product/pages/default/components/ProductTabsAccordion'), { ssr: false });
 const CustomizableOption = dynamic(() => import('@plugin_customizableitem'));
 const OptionItem = dynamic(() => import('@plugin_optionitem'), { ssr: false });
+const ReviewList = dynamic(() => import('@core_modules/product/pages/default/components/ReviewList'), { ssr: false });
 
 const ProductDetailAction = ({
     t,
@@ -199,7 +199,7 @@ const ProductDetailAction = ({
                     variant="plain"
                     className="!p-0 flex items-center"
                     onClick={() => {
-                        reviewRef?.current?.scrollIntoView({ behavior: 'smooth' });
+                            reviewRef?.current?.scrollIntoView({ behavior: 'smooth' });
                     }}
                 >
                     <div className="flex mt-[12px]">
@@ -217,6 +217,7 @@ const ProductDetailAction = ({
                     <OptionItem
                         price={price}
                         t={t}
+                        url_key={data?.url_key || ''}
                         dataPrice={dataPrice}
                         priceData={priceData}
                         setStockStatus={setStockStatus}
@@ -251,18 +252,18 @@ const ProductDetailAction = ({
                 <Show when={data?.short_description?.html?.length > 0}>
                     <div className="product-detail-description-container">
                         <div className="product-detail-description relative">
-                            <Typography
-                                variant="p-2"
+                            <div
                                 className={
                                     cx(
                                         'mt-[24px]',
                                         showShortDesc && 'h-auto',
                                         !showShortDesc && 'desktop:h-[120px] tablet:h-[80px] mobile:h-[80px] overflow-hidden',
+                                        'text-md', 'font-normal', 'leading-2lg', 'tracking-normal',
                                     )
                                 }
                             >
                                 {data?.short_description?.html ? <CmsRenderer content={data?.short_description?.html} /> : null}
-                            </Typography>
+                            </div>
                             <Show when={!showShortDesc && data?.short_description?.html?.length > 0}>
                                 <div
                                     className="w-[100%] h-[25px] absolute bottom-[0px]"
