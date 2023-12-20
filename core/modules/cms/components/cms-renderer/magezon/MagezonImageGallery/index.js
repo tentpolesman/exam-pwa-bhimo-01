@@ -209,6 +209,7 @@ const MagezonImageGallery = (props) => {
                                 height={calculateHeight()}
                                 fit={fit}
                                 captions={captions}
+                                storeConfig={storeConfig}
                             />
                         ))}
                     </Slider>
