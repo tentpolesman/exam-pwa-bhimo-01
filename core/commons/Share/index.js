@@ -12,7 +12,12 @@ import { getHost } from '@helper_config';
 import { useRouter } from 'next/router';
 import Dialog from '@common/Dialog';
 
-const isMobileOrTablet = () => /(android|iphone|ipad|mobile)/i.test(navigator.userAgent);
+const isMobileOrTablet = () => {
+    if (typeof navigator !== 'undefined') {
+        return /(android|iphone|ipad|mobile)/i.test(navigator.userAgent);
+    }
+    return false;
+};
 const whatsappLink = (text) => {
     const prefixUrlWA = (isMobileOrTablet() ? 'api' : 'web');
     return `https://${prefixUrlWA}.whatsapp.com/send?text=${text}`;

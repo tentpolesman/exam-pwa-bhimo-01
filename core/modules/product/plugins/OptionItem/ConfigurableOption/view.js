@@ -4,8 +4,8 @@ import dynamic from 'next/dynamic';
 // import Item from '@plugin_optionitem/ConfigurableOption/Item';
 // import Footer from '@plugin_optionitem/components/Footer';
 
-const Item = dynamic(() => import('@plugin_optionitem/ConfigurableOption/Item'), { ssr: true });
-const OptionItemAction = dynamic(() => import('@core_modules/product/plugins/OptionItemAction'), { ssr: true });
+const Item = dynamic(() => import('@plugin_optionitem/ConfigurableOption/Item'), { ssr: false });
+const OptionItemAction = dynamic(() => import('@core_modules/product/plugins/OptionItemAction'), { ssr: false });
 
 const ConfigurableView = (props) => {
     const {

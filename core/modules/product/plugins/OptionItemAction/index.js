@@ -6,7 +6,7 @@ import ButtonQty from '@common_buttonqty';
 import Show from '@common_show';
 import StockStatus from '@common_statusstock';
 
-const Button = dynamic(() => import('@common_button'), { ssr: true });
+const Button = dynamic(() => import('@common_button'), { ssr: false });
 
 const OptionItemAction = (props) => {
     const {

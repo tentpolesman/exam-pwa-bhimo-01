@@ -21,7 +21,7 @@ import { useState } from 'react';
 import { getHost } from '@helper_config';
 
 const Button = dynamic(() => import('@common_button'), { ssr: false });
-const OptionItemAction = dynamic(() => import('@core_modules/product/plugins/OptionItemAction'), { ssr: true });
+const OptionItemAction = dynamic(() => import('@core_modules/product/plugins/OptionItemAction'), { ssr: false });
 const MagezonElement = dynamic(() => import('@core_modules/cms/components/cms-renderer/index'), { ssr: false });
 
 const AwGiftCardProduct = (props) => {
