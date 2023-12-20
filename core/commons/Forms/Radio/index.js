@@ -21,7 +21,7 @@ const Radio = (props) => {
         value = '',
         name = 'radio',
         ariaLabel = 'radio',
-        label = '',
+        label,
         CustomItem,
         className = {},
         classNames = {},
@@ -186,7 +186,7 @@ const Radio = (props) => {
                                 onChange={handleChange}
                                 id={item.id || `${name}-${index}`}
                             />
-                            <label for={item.id || `${name}-${index}`} className="cursor-pointer flex items-center group">
+                            <label htmlFor={item.id || `${name}-${index}`} className="cursor-pointer flex items-center group">
                                 {type === 'check' ? (
                                     item.value === value ? (
                                         <div className={cx(
@@ -252,8 +252,8 @@ Radio.propTypes = {
     value: propTypes.string,
     name: propTypes.string,
     ariaLabel: propTypes.string,
-    label: propTypes.string,
-    CustomItem: propTypes.func,
+    label: propTypes.oneOfType([propTypes.string, propTypes.bool]),
+    CustomItem: propTypes.any,
     className: propTypes.oneOfType([propTypes.string, propTypes.object]),
     classNames: propTypes.shape({
         radioGroupClasses: propTypes.oneOfType([propTypes.string, propTypes.object]),
@@ -262,7 +262,7 @@ Radio.propTypes = {
     error: propTypes.bool,
     errorMessage: propTypes.string,
     disabled: propTypes.bool,
-    CustomLabel: propTypes.func,
+    CustomLabel: propTypes.any,
     useLoadMore: propTypes.bool,
     ComponentOptional: propTypes.func,
     storeConfig: propTypes.object,

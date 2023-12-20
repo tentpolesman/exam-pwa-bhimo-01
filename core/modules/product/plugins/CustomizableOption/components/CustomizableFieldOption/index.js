@@ -132,8 +132,8 @@ const CustomizableFieldOption = ({
 
     let error = '';
     useMemo(() => {
-        if (options.option_id && errorCustomizableOptions.length > 0) {
-            const findError = errorCustomizableOptions.filter((op) => op.option_id === options.option_id);
+        if (options.option_id && errorCustomizableOptions?.length > 0) {
+            const findError = errorCustomizableOptions?.filter((op) => op.option_id === options.option_id);
             if (findError && findError.length > 0) {
                 error = t('product:validate:fieldRequired');
             }

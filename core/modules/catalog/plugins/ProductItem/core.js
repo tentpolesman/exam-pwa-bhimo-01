@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import { debuging, modules } from '@config';
 import { getLoginInfo } from '@helper_auth';
 import { setCookies, getCookies } from '@helper_cookies';
@@ -133,7 +134,7 @@ const ProductItem = (props) => {
     let isLogin = '';
     if (typeof window !== 'undefined') isLogin = getLoginInfo();
 
-    const context = isLogin && isLogin === 1 ? { request: 'internal' } : {};
+    const context = isLogin && isLogin == 1 ? { request: 'internal' } : {};
 
     const [getProduct, { data: dataDetailProduct, error: errorDetailProduct, loading: loadingDetailProduct }] = getDetailProduct(
         storeConfig.pwa || {},

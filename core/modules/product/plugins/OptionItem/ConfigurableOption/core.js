@@ -466,16 +466,16 @@ ConfigurableOptionCore.propTypes = {
     ConfigurableView: propTypes.func,
     Footer: propTypes.func,
     setStockStatus: propTypes.func,
-    stockStatus: '',
+    stockStatus: propTypes.string,
     handleAddToCart: propTypes.func,
     loading: propTypes.bool,
     setLoading: propTypes.func,
     checkCustomizableOptionsValue: propTypes.func,
-    errorCustomizableOptions: propTypes.object,
-    customizableOptions: propTypes.object,
+    errorCustomizableOptions: propTypes.oneOfType([propTypes.object, propTypes.array]),
+    customizableOptions: propTypes.oneOfType([propTypes.object, propTypes.array]),
     handleSelecteProduct: propTypes.func,
     isGrid: propTypes.bool,
-    noValidate: false,
+    noValidate: propTypes.oneOfType([propTypes.bool, propTypes.func]),
 };
 
 ConfigurableOptionCore.defaultProps = {

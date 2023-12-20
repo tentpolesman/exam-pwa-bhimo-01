@@ -45,7 +45,7 @@ const ViewCustomizableFileOption = ({
                         ) }
                         {
                             data.file_extension !== '' && (
-                                <Typography variant="p">
+                                <Typography>
                                     {t('product:customizableOptions:file:extentionAccept')}
                                     <strong>{data.file_extension}</strong>
                                 </Typography>
@@ -53,7 +53,7 @@ const ViewCustomizableFileOption = ({
                         }
                         {
                             data.image_size_x !== '' && (
-                                <Typography variant="p">
+                                <Typography>
                                     {t('product:customizableOptions:file:maxImageWidth')}
                                     <strong>
                                         {data.image_size_x}
@@ -65,7 +65,7 @@ const ViewCustomizableFileOption = ({
                         }
                         {
                             data.image_size_y !== '' && (
-                                <Typography variant="p">
+                                <Typography>
                                     {t('product:customizableOptions:file:maxImageHeight')}
                                     <strong>
                                         {data.image_size_y}

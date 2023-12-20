@@ -1,5 +1,6 @@
 /* eslint-disable radix */
 /* eslint-disable no-plusplus */
+/* eslint-disable eqeqeq */
 import { useEffect, useState } from 'react';
 import { getCartId, setCartId } from '@helper_cartid';
 import TagManager from 'react-gtm-module';
@@ -476,7 +477,7 @@ const Cart = (props) => {
     // add to wishlist
     const [addWishlist] = mutationWishlist();
     const handleFeed = (itemProps) => {
-        if (isLogin && isLogin === 1) {
+        if (isLogin && isLogin == 1) {
             // GTM UA dataLayer
             TagManager.dataLayer({
                 dataLayer: {
