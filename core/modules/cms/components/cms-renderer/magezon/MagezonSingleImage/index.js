@@ -56,7 +56,10 @@ const MagezonSingleImage = (props) => {
         video_map,
         overlay_color,
         storeConfig,
+        el_class,
     } = props;
+
+    const preloadImage = el_class === 'preload';
 
     let classes = 'magezon-image';
     let classImage = 'mgz-single-image';
@@ -162,6 +165,7 @@ const MagezonSingleImage = (props) => {
                         alt={imageCaption || 'magezon image'}
                         classContainer={classContainer}
                         storeConfig={storeConfig}
+                        preload={preloadImage}
                         {...imageProps}
                     />
                 </MagezonLink>
@@ -175,6 +179,7 @@ const MagezonSingleImage = (props) => {
                     alt={imageCaption || 'magezon image'}
                     classContainer={classContainer}
                     storeConfig={storeConfig}
+                    preload={preloadImage}
                     {...imageProps}
                 />
             ) : (
@@ -189,6 +194,7 @@ const MagezonSingleImage = (props) => {
                     classContainer={classContainer}
                     storeConfig={storeConfig}
                     onClick={handleClick}
+                    preload={preloadImage}
                     {...imageProps}
                 />
             )}

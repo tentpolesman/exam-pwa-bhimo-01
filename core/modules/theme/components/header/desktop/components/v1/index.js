@@ -83,7 +83,7 @@ const ViewTopNavigation = (props) => {
                         loadingVesMenu={loading}
                         vesMenuConfig={vesMenuConfig}
                         handleLogout={handleLogout}
-                        customer={customer}
+                        customer={customer.customer}
                         deviceWidth={deviceWidth}
                         {...other}
                     />
@@ -97,7 +97,7 @@ const ViewTopNavigation = (props) => {
                         loadingVesMenu={loading}
                         vesMenuConfig={vesMenuConfig}
                         handleLogout={handleLogout}
-                        customer={customer}
+                        customer={customer.customer}
                         deviceWidth={deviceWidth}
                         {...other}
                     />

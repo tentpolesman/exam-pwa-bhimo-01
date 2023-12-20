@@ -93,7 +93,7 @@ const OptionsItemsBundle = (props) => {
     // cache currency
     const currencyCache = useReactiveVar(currencyVar);
 
-    const reviewValue = parseInt(review.rating_summary, 0) / 20;
+    const reviewValue = parseInt(review?.rating_summary || 0, 0) / 20;
     const [items, setItems] = React.useState([]);
     let [loadingAdd, setLoadingAdd] = React.useState(false);
     const mount = React.useRef(null);

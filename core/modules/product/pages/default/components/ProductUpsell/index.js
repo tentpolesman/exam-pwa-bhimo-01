@@ -57,12 +57,12 @@ const ProductUpsell = ({
     if (loading) return <Loader />;
 
     if (!loading && !error && data && data.products && data.products.items.length > 0
-        && data.products.items[0].related_products && data.products.items[0].related_products.length > 0) {
+        && data.products.items[0].upsell_products && data.products.items[0].upsell_products.length > 0) {
         return (
             <View
                 {...other}
                 storeConfig={storeConfig}
-                data={data.products.items[0].related_products}
+                data={data.products.items[0].upsell_products}
             />
         );
     }

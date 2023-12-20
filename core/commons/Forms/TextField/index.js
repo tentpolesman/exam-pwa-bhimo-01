@@ -149,10 +149,9 @@ const TextField = React.forwardRef((props, ref) => {
                             },
                             inputClassName,
                         )}
+                        defaultValue={value}
                         {...restInputProps}
-                    >
-                        {value}
-                    </textarea>
+                    />
                 </Show>
                 <Show when={!multiline}>
                     <input

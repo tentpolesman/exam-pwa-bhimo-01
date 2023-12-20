@@ -31,7 +31,8 @@ const SwitcherCurrency = dynamic(() => import('@common_currency'), { ssr: false 
 const SwitcherLanguage = dynamic(() => import('@common_language'), { ssr: false });
 
 const DesktopHeader = (props) => {
-    const { t, storeConfig, isLogin, setValue, handleSearch, dataVesMenu, loadingVesMenu, vesMenuConfig, handleLogout, deviceWidth } = props;
+    const { t, storeConfig, isLogin, customer, setValue, handleSearch, dataVesMenu, loadingVesMenu, vesMenuConfig, handleLogout, deviceWidth } =
+        props;
 
     const { modules } = config;
     // const adminId = Cookies.get('admin_id');
@@ -51,32 +52,39 @@ const DesktopHeader = (props) => {
     };
 
     const [open, setOpen] = React.useState(false);
+
     const PopoverContent = () => {
         return (
-            <ul className={cx('currency-list__wrapper')}>
+            <ul className={cx('my-account-list__wrapper')}>
+                <Link href="/customer/account">
+                    <li
+                        key={0}
+                        className={cx('my-account-list__item', 'py-2', 'px-2', 'text-left', 'hover:cursor-pointer', 'hover:bg-neutral-100')}
+                        onClick={() => router.push('/customer/account')}
+                    >
+                        <Typography className={cx('currency-list__text', 'text-neutral-700')}>My Account</Typography>
+                    </li>
+                </Link>
+                <Link href="/wishlist">
+                    <li
+                        key={1}
+                        className={cx('my-account-list__item', 'py-2', 'px-2', 'text-left', 'hover:cursor-pointer', 'hover:bg-neutral-100')}
+                        onClick={() => router.push('/wishlist')}
+                    >
+                        <Typography className={cx('currency-list__text', 'text-neutral-700')}>My Wish List</Typography>
+                    </li>
+                </Link>
+                <Link href="/catalog/product_compare">
+                    <li
+                        key={2}
+                        className={cx('my-account-list__item', 'py-2', 'px-2', 'text-left', 'hover:cursor-pointer', 'hover:bg-neutral-100')}
+                        onClick={() => router.push('/catalog/product_compare')}
+                    >
+                        <Typography className={cx('currency-list__text', 'text-neutral-700')}>Compare Products</Typography>
+                    </li>
+                </Link>
                 <li
-                    key={0}
-                    className={cx('my-account-list__item', 'py-2', 'px-2', 'text-left', 'hover:cursor-pointer', 'hover:bg-neutral-100')}
-                    onClick={() => router.push('/customer/account')}
-                >
-                    <Typography className={cx('currency-list__text', 'text-neutral-700')}>My Account</Typography>
-                </li>
-                <li
-                    key={0}
-                    className={cx('my-account-list__item', 'py-2', 'px-2', 'text-left', 'hover:cursor-pointer', 'hover:bg-neutral-100')}
-                    onClick={() => router.push('/wishlist')}
-                >
-                    <Typography className={cx('currency-list__text', 'text-neutral-700')}>My Wish List</Typography>
-                </li>
-                <li
-                    key={0}
-                    className={cx('my-account-list__item', 'py-2', 'px-2', 'text-left', 'hover:cursor-pointer', 'hover:bg-neutral-100')}
-                    onClick={() => router.push('/catalog/product_compare')}
-                >
-                    <Typography className={cx('currency-list__text', 'text-neutral-700')}>Compare Products</Typography>
-                </li>
-                <li
-                    key={0}
+                    key={3}
                     className={cx('my-account-list__item', 'py-2', 'px-2', 'text-left', 'hover:cursor-pointer', 'hover:bg-neutral-100')}
                     onClick={() => handleLogout()}
                 >
@@ -193,32 +201,29 @@ const DesktopHeader = (props) => {
                                     'mt-3',
                                     'hover:cursor-pointer',
                                     'flex',
-                                    'justify-end',
+                                    'justify-start',
                                 )}
                             >
                                 {isLogin ? (
                                     <div onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}>
-                                        <Link href="/customer/account">
-                                            <Popover
-                                                content={<PopoverContent />}
-                                                open={open}
-                                                setOpen={setOpen}
-                                                className="top-[80%]"
-                                                contentClassName="rounded-none"
-                                            >
-                                                <div className="popover-children">
-                                                    <UserIcon className={cx('w-[24px]', 'text-neutral-600', 'inline-block')} />
-                                                    <Typography variant="bd-2b" className={cx('inline-block', 'pl-2', '!text-primary-700')}>
-                                                        {/* {customer.firstname} */}
-                                                        Hi, Fakhri !
-                                                    </Typography>
-                                                </div>
-                                            </Popover>
-                                        </Link>
+                                        <Popover
+                                            content={<PopoverContent />}
+                                            open={open}
+                                            setOpen={setOpen}
+                                            className={cx('min-w-[180px]', 'top-[99%]', 'left-[0%]')}
+                                            contentClassName={cx('rounded-sm')}
+                                        >
+                                            <div className="popover-children">
+                                                <UserIcon className={cx('w-[24px]', 'text-neutral-600', 'inline-block', 'ml-1')} />
+                                                <Typography variant="bd-2b" className={cx('inline-block', 'pl-2', '!text-primary-700')}>
+                                                    {customer && customer.firstname}
+                                                </Typography>
+                                            </div>
+                                        </Popover>
                                     </div>
                                 ) : (
                                     <Link href="/customer/account/login">
-                                        <UserIcon className={cx('w-[24px]', 'text-neutral-600', 'inline-block')} />
+                                        <UserIcon className={cx('w-[24px]', 'text-neutral-600', 'inline-block', 'ml-1')} />
                                         <Typography variant="bd-2b" className={cx('inline-block', 'pl-2')}>
                                             {t('common:menu:sign')}/{t('common:menu:register')}
                                         </Typography>

@@ -115,7 +115,6 @@ const MagezonSliderContent = (props) => {
         button2_hover_border_color,
         button2_hover_color,
         link_type,
-        slide_link,
         storeConfig,
         lazy,
         width,
@@ -244,33 +243,17 @@ const MagezonSliderContent = (props) => {
                         </div>
                     </div>
                     <div className="magezon-slide-image">
-                        {link_type === 'button' ? (
-                            <Image
-                                src={`${mediaUrl}/${image}`}
-                                alt={heading}
-                                width={width}
-                                height={height}
-                                useContainer={false}
-                                storeConfig={storeConfig}
-                                lazy={lazy}
-                                preload={!lazy}
-                                className="flex w-full h-full"
-                            />
-                        ) : (
-                            <MagezonLink link={slide_link}>
-                                <Image
-                                    src={`${mediaUrl}/${image}`}
-                                    alt={heading}
-                                    width={width}
-                                    height={height}
-                                    useContainer={false}
-                                    storeConfig={storeConfig}
-                                    lazy={lazy}
-                                    preload={!lazy}
-                                    className="flex w-full h-full"
-                                />
-                            </MagezonLink>
-                        )}
+                        <Image
+                            src={`${mediaUrl}/${image}`}
+                            alt={heading}
+                            width={width}
+                            height={height}
+                            useContainer={false}
+                            storeConfig={storeConfig}
+                            lazy={lazy}
+                            preload={!lazy}
+                            className="flex w-full h-full"
+                        />
                     </div>
                 </div>
             )}
@@ -524,21 +507,38 @@ const MagezonSlider = (props) => {
                 <div className="magezon-slider-inner z-auto">
                     <Slider ref={(slider) => (sliderRef = slider)} {...settings}>
                         {items.map((item, i) => (
-                            <MagezonSliderContent
-                                key={i}
-                                slider_height={slider_height}
-                                content_position={content_position}
-                                height={slideHeight}
-                                width={slideWidth}
-                                storeConfig={storeConfig}
-                                {...item}
-                                lazy={i !== 0}
-                            />
+                            <>
+                                {item?.link_type !== 'full' ? (
+                                    <MagezonSliderContent
+                                        key={i}
+                                        slider_height={slider_height}
+                                        content_position={content_position}
+                                        height={slideHeight}
+                                        width={slideWidth}
+                                        storeConfig={storeConfig}
+                                        {...item}
+                                        lazy={i !== 0}
+                                    />
+                                ) : (
+                                    <MagezonLink link={item?.slide_link}>
+                                        <MagezonSliderContent
+                                            key={i}
+                                            slider_height={slider_height}
+                                            content_position={content_position}
+                                            height={slideHeight}
+                                            width={slideWidth}
+                                            storeConfig={storeConfig}
+                                            {...item}
+                                            lazy={i !== 0}
+                                        />
+                                    </MagezonLink>
+                                )}
+                            </>
                         ))}
                     </Slider>
                 </div>
                 <div
-                    className={cx('magezon-slider--dot-nav', 'z-auto', 'flex', 'justify-center', 'items-center', 'mt-[10px]', {
+                    className={cx('magezon-slider--dot-nav', 'z-auto', 'flex', 'justify-center', 'items-center', 'mt-[10px]', 'min-h-[20px]', {
                         'absolute bottom-[24px] left-0 right-0': owl_dots_insie,
                     })}
                 >

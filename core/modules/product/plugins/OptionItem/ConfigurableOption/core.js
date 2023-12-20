@@ -431,6 +431,8 @@ const ConfigurableOptionCore = (props) => {
         }
     }, [selectConfigurable]);
 
+    const disabled = stockStatus === 'OUT_OF_STOCK' || stock_status === 'OUT_OF_STOCK';
+
     return (
         <View
             options={options}
@@ -443,9 +445,10 @@ const ConfigurableOptionCore = (props) => {
             setQty={setQty}
             t={t}
             loading={loading || configProduct.loading}
-            disabled={stockStatus === 'OUT_OF_STOCK'}
+            loadingProduct={configProduct.loading}
+            disabled={disabled}
             isGrid={isGrid}
-            disableItem={stock_status === 'OUT_OF_STOCK'}
+            disableItem={disabled || loading}
             stockStatus={stockStatus}
             url_key={url_key}
             {...other}

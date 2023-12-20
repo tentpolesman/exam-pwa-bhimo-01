@@ -1,4 +1,5 @@
 /* eslint-disable camelcase */
+/* eslint-disable no-nested-ternary */
 import Typography from '@common_typography/index';
 import { formatPrice } from '@helper_currency';
 import useMediaQuery from '@hook/useMediaQuery';
@@ -60,7 +61,7 @@ const SimpleProductTypePrice = ({
     const isVariantLg = variant === 'lg';
     const priceVariantDesktopLabel = isVariantLg ? 'bd-1c' : 'bd-1a';
     const priceVariantDesktopLabelSub = isVariantLg ? 'bd-2b' : 'bd-3b';
-    const priceVariantMobileLabel = isVariantLg ? 'h2' : 'bd-2';
+    const priceVariantMobileLabel = isVariantLg ? (isPdp ? 'bd-1c' : 'h2') : 'bd-2';
     const priceVariantMobileLabelSub = isVariantLg ? 'bd-2b' : 'bd-3b';
     const priceLabelVariant = isDesktop ? priceVariantDesktopLabel : priceVariantMobileLabel;
     const priceLabelSubVariant = isDesktop ? priceVariantDesktopLabelSub : priceVariantMobileLabelSub;
@@ -69,7 +70,7 @@ const SimpleProductTypePrice = ({
         validSpecial = nowTime >= startTime && nowTime <= endTime;
     }
 
-    if (productType === 'GroupedProduct' && !isPdp && !isQuickView) {
+    if (productType === 'GroupedProduct') {
         return (
             <div className="price-case-grouped">
                 <StartingAt textClassName={textClassName} />

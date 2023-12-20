@@ -9,18 +9,19 @@ import GeneratePrice from '@core_modules/product/pages/default/components/Genera
 import ReviewList from '@core_modules/product/pages/default/components/ReviewList';
 import Dialog from '@common_dialog';
 import CmsRenderer from '@core_modules/cms/components/cms-renderer';
+import ProductLabel from '@common_productlabel';
 import ProductRelated from '@core_modules/product/pages/default/components/ProductRelated';
 import ProductUpsell from '@core_modules/product/pages/default/components/ProductUpsell';
 import dynamic from 'next/dynamic';
 import cx from 'classnames';
 import { HeartIcon, ArrowsRightLeftIcon } from '@heroicons/react/24/outline';
 
-const ImageSlider = dynamic(() => import('@common_imageslider'), { ssr: true });
-const RatingStar = dynamic(() => import('@common_ratingstar'), { ssr: true });
+const ImageSlider = dynamic(() => import('@common_imageslider'), { ssr: false });
+const RatingStar = dynamic(() => import('@common_ratingstar'), { ssr: false });
 const ProductTabs = dynamic(() => import('@core_modules/product/pages/default/components/ProductTabs'), { ssr: false });
 const ProductTabsAccordion = dynamic(() => import('@core_modules/product/pages/default/components/ProductTabsAccordion'), { ssr: false });
 const CustomizableOption = dynamic(() => import('@plugin_customizableitem'));
-const OptionItem = dynamic(() => import('@plugin_optionitem'), { ssr: true });
+const OptionItem = dynamic(() => import('@plugin_optionitem'), { ssr: false });
 
 const ProductDetailAction = ({
     t,
@@ -76,7 +77,7 @@ const ProductDetailAction = ({
     openOption,
     setOpenOption,
 }) => (
-    <div className="plugin-product-detail-action desktop:px-[0px] tablet:px-[16px]">
+    <div className="plugin-product-detail-action">
         <div className={cx(
             'product-detail-container',
             'desktop:grid tablet:grid desktop:grid-cols-2 tablet:grid-cols-2',
@@ -84,10 +85,12 @@ const ProductDetailAction = ({
             classContainer,
         )}
         >
-            <div className={cx(
-                'product-detail-slider',
-                classImageSliderWrapper,
-            )}
+            <div
+                className={cx(
+                    'product-detail-slider',
+                    'relative',
+                    classImageSliderWrapper,
+                )}
             >
                 <ImageSlider
                     useZoom={false}
@@ -95,6 +98,26 @@ const ProductDetailAction = ({
                     storeConfig={storeConfig}
                     onClickZoomImage={useProductImagePreview && enablePopupImage ? handleOpenImageDetail : null}
                     {...imageSliderProps}
+                    FooterComponentImagePreview={(
+                        <ProductLabel
+                            className="absolute top-[15px] left-[17px]"
+                            stockStatus={data?.stockStatus}
+                            newFromDate={data?.new_from_date}
+                            newToDate={data?.new_to_date}
+                            specialFromDate={data?.special_from_date}
+                            specialToDate={data?.special_to_date}
+                            priceRange={data?.price_range}
+                            config={{
+                                enabled: storeConfig.pwa.label_enable,
+                                new: {
+                                    enabled: storeConfig.pwa.label_enable,
+                                },
+                                sale: {
+                                    enabled: storeConfig.pwa.label_sale_enable,
+                                },
+                            }}
+                        />
+                    )}
                 />
             </div>
             <div className={cx(
@@ -324,7 +347,7 @@ const ProductDetailAction = ({
                 className={cx(
                     'product-detail-tabs',
                     'desktop:mt-[64px] tablet:mt-[64px]',
-                    'desktop:px-[0px] tablet:px-[0px] mobile:px-[16px]',
+                    'desktop:px-[0px] tablet:px-[16px] mobile:px-[16px]',
                 )}
             >
                 <ProductTabs
@@ -363,7 +386,7 @@ const ProductDetailAction = ({
                 className={cx(
                     'product-list-review-container',
                     'mt-[48px]',
-                    'desktop:px-[0px] tablet:px-[0px] mobile:px-[16px]',
+                    'desktop:px-[0px] tablet:px-[16px] mobile:px-[16px]',
                 )}
             >
                 <ReviewList
