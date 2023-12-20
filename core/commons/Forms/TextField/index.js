@@ -27,6 +27,7 @@ const TextField = React.forwardRef((props, ref) => {
         rightIconProps,
         onFocusGoogleMap = false,
         classWrapper = '',
+        required = false,
         ...restProps
     } = props;
 
@@ -74,7 +75,12 @@ const TextField = React.forwardRef((props, ref) => {
         <div className={cx('flex flex-col relative', classWrapper)}>
             {label ? (
                 <label className="mb-2">
-                    <Typography>{label}</Typography>
+                    <Typography>
+                        {label}
+                        <Show when={required}>
+                            <span className={cx('text-red-600')}> *</span>
+                        </Show>
+                    </Typography>
                 </label>
             ) : null}
             <div

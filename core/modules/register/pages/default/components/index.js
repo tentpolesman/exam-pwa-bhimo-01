@@ -3,22 +3,22 @@ import PasswordField from '@common_forms/Password';
 import Select from '@common_forms/Select';
 import TextField from '@common_forms/TextField';
 import Typography from '@common_typography';
-// import useStyles from '@core_modules/register/pages/default/components/style';
+import dynamic from 'next/dynamic';
+import Link from 'next/link';
 import DateDayJs from '@date-io/dayjs';
-import { breakPointsUp } from '@helper_theme';
 import Checkbox from '@common_forms/CheckBox';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
-import OtpBlock from '@plugin_otp';
 import cx from 'classnames';
 import ReCAPTCHA from 'react-google-recaptcha';
-import PhoneInput from '@common_forms/PhoneInput';
+import Show from '@common_show';
+
+const PhoneInput = dynamic(() => import('@common_forms/PhoneInput'), { ssr: false });
 
 const RegisterView = ({
     t,
     formik,
-    enableOtp,
-    setdisabled,
+    // enableOtp,
+    // setdisabled,
     handleChangePhone,
     handleWa,
     handleChangeDate,
@@ -32,9 +32,12 @@ const RegisterView = ({
     gender,
     dob,
 }) => {
-    // const styles = useStyles();
-    const desktop = breakPointsUp('sm');
-    const divInputStyle = cx('w-full', 'mb-[24px]');
+    const divInputStyle = cx('w-full');
+    const divInputWrapperStyle = cx('mb-[24px]');
+
+    const checkIsFieldError = (name = '') => !!(formik.touched[name] && formik.errors[name]);
+
+    const fieldErrorMessage = (name = '') => (formik.touched[name] && formik.errors[name]) || null;
 
     return (
         <>
@@ -59,37 +62,66 @@ const RegisterView = ({
                 >
                     <TextField
                         className={divInputStyle}
+                        classWrapper={divInputWrapperStyle}
                         id="register-email-textfield"
-                        label="Email"
+                        label={t('common:form:emailAddress')}
+                        placeholder={t('common:placeholder:email')}
                         type="email"
                         name="email"
+                        required
                         value={formik.values.email}
                         onChange={formik.handleChange}
-                        error={!!(formik.touched.email && formik.errors.email)}
-                        errorMessage={(formik.touched.email && formik.errors.email) || null}
-                    />
-                    <TextField
-                        className={divInputStyle}
-                        id="register-firstname-textfield"
-                        label={t('common:form:firstName')}
-                        name="firstName"
-                        value={formik.values.firstName}
-                        onChange={formik.handleChange}
-                        error={!!(formik.touched.firstName && formik.errors.firstName)}
-                        errorMessage={(formik.touched.firstName && formik.errors.firstName) || null}
-                    />
-                    <TextField
-                        className={divInputStyle}
-                        id="register-lastname-textfield"
-                        label={t('common:form:lastName')}
-                        name="lastName"
-                        value={formik.values.lastName}
-                        onChange={formik.handleChange}
-                        error={!!(formik.touched.lastName && formik.errors.lastName)}
-                        errorMessage={(formik.touched.lastName && formik.errors.lastName) || null}
+                        absolute={false}
+                        rightIcon={<></>}
+                        hintProps={{
+                            displayHintText: checkIsFieldError('email'),
+                            hintType: checkIsFieldError('email') ? 'error' : '',
+                            hintText: fieldErrorMessage('email'),
+                            className: cx('my-2'),
+                        }}
                     />
 
-                    {gender && (
+                    <TextField
+                        className={divInputStyle}
+                        classWrapper={divInputWrapperStyle}
+                        id="register-firstname-textfield"
+                        label={t('common:form:firstName')}
+                        placeholder={t('common:placeholder:firstName')}
+                        name="firstName"
+                        required
+                        value={formik.values.firstName}
+                        onChange={formik.handleChange}
+                        absolute={false}
+                        rightIcon={<></>}
+                        hintProps={{
+                            displayHintText: checkIsFieldError('firstName'),
+                            hintType: checkIsFieldError('firstName') ? 'error' : '',
+                            hintText: fieldErrorMessage('firstName'),
+                            className: cx('my-2'),
+                        }}
+                    />
+
+                    <TextField
+                        className={divInputStyle}
+                        classWrapper={divInputWrapperStyle}
+                        id="register-lastname-textfield"
+                        label={t('common:form:lastName')}
+                        placeholder={t('common:placeholder:lastName')}
+                        name="lastName"
+                        required
+                        value={formik.values.lastName}
+                        onChange={formik.handleChange}
+                        absolute={false}
+                        rightIcon={<></>}
+                        hintProps={{
+                            displayHintText: checkIsFieldError('lastName'),
+                            hintType: checkIsFieldError('lastName') ? 'error' : '',
+                            hintText: fieldErrorMessage('lastName'),
+                            className: cx('my-2'),
+                        }}
+                    />
+
+                    <Show when={gender}>
                         <Select
                             className={cx('select-gender', divInputStyle)}
                             options={[
@@ -101,58 +133,107 @@ const RegisterView = ({
                             value={formik.values.gender}
                             onChange={formik.handleChange}
                             helperText={t('common:form:select')}
-                            error={!!(formik.touched.gender && formik.errors.gender)}
-                            errorMessage={(formik.touched.gender && formik.errors.gender) || null}
+                            error={checkIsFieldError('gender')}
+                            errorMessage={fieldErrorMessage('gender')}
                         />
-                    )}
-                    {dob && (
+                    </Show>
+
+                    <Show when={dob}>
                         <DatePicker
                             fullWidth
                             label={t('common:form:dob')}
                             name="dob"
                             value={formik.values.dob}
                             onChange={handleChangeDate}
-                            error={!!(formik.touched.dob && formik.errors.dob)}
-                            helperText={(formik.touched.dob && formik.errors.dob) || null}
+                            error={checkIsFieldError('dob')}
+                            errorMessage={fieldErrorMessage('dob')}
                         />
-                    )}
+                    </Show>
+
                     <PasswordField
-                        className={cx('register-form-password', divInputStyle)}
-                        classLabel={cx('capitalize', 'font-normal')}
+                        className={cx('register-form-password', divInputStyle, divInputWrapperStyle)}
+                        classWrapper={divInputWrapperStyle}
+                        classLabel={cx('capitalize', '!font-medium')}
                         id="register-password-passfield"
                         label="Password"
                         showVisible
                         showPasswordMeter
                         name="password"
+                        required
                         value={formik.values.password}
                         onChange={formik.handleChange}
-                        error={!!(formik.touched.password && formik.errors.password)}
-                        errorMessage={(formik.touched.password && formik.errors.password) || null}
+                        error={checkIsFieldError('password')}
+                        errorMessage={fieldErrorMessage('password')}
                     />
+
                     <PasswordField
-                        className={cx('register-form-password', divInputStyle)}
-                        classLabel={cx('capitalize', 'font-normal')}
+                        className={cx('register-form-password', divInputStyle, divInputWrapperStyle)}
+                        classLabel={cx('capitalize', '!font-medium')}
                         id="register-passwordConfirm-passfield"
                         label={t('common:form:confirm')}
                         showVisible
-                        name="password"
+                        name="confirmPassword"
+                        required
                         value={formik.values.confirmPassword}
                         onChange={formik.handleChange}
-                        error={!!(formik.touched.confirmPassword && formik.errors.confirmPassword)}
-                        errorMessage={(formik.touched.confirmPassword && formik.errors.confirmPassword) || null}
+                        error={checkIsFieldError('confirmPassword')}
+                        errorMessage={fieldErrorMessage('confirmPassword')}
                     />
+
                     <PhoneInput
                         id="register-phoneNumber-textfield"
-                        className={cx('phone-number', divInputStyle)}
-                        classNameField={divInputStyle}
+                        className={cx('phone-number', divInputStyle, divInputWrapperStyle)}
+                        classLabel={cx('capitalize', '!font-medium')}
+                        classNameField={cx(
+                            'w-full',
+                            '!border-neutral-300 hover:!border-neutral-400 focus:!border-primary focus:!shadow-[0_0_0_4px] focus:!shadow-primary-200',
+                        )}
                         label={`${t('common:form:phoneNumber')}`}
-                        name="whatsappNumber"
-                        value={formik.values.whatsappNumber}
-                        onChange={handleChangeWa}
-                        error={!!(formik.touched.whatsappNumber && formik.errors.whatsappNumber)}
-                        errorMessage={(formik.touched.whatsappNumber && formik.errors.whatsappNumber) || null}
+                        placeholder={`${t('common:form:phoneNumber')}`}
+                        name="phoneNumber"
+                        required
+                        value={formik.values.phoneNumber}
+                        onChange={handleChangePhone}
+                        error={checkIsFieldError('phoneNumber')}
+                        errorMessage={fieldErrorMessage('phoneNumber')}
                     />
-                    {enableOtp && false ? (
+
+                    <div className={cx('checkbox-wa-wrapper', divInputWrapperStyle)}>
+                        <Checkbox
+                            id="register-waRegitered-checkbox"
+                            name="whastapptrue"
+                            label={t('register:subscribe')}
+                            variant="single"
+                            size="sm"
+                            value={phoneIsWa}
+                            onChange={handleWa}
+                        >
+                            <Typography variant="bd-2b">{t('register:isWhatsapp')}</Typography>
+                        </Checkbox>
+                    </div>
+
+                    <Show when={!phoneIsWa}>
+                        <PhoneInput
+                            id="register-waNumber-textfield"
+                            className={cx('phone-number', divInputStyle, divInputWrapperStyle)}
+                            classLabel={cx('capitalize', '!font-medium')}
+                            classNameField={cx(
+                                'w-full',
+                                '!border-neutral-300',
+                                'hover:!border-neutral-400 focus:!border-primary focus:!shadow-[0_0_0_4px] focus:!shadow-primary-200',
+                            )}
+                            label={`${t('common:form:phoneNumber')} Whatsapp`}
+                            placeholder={`${t('common:form:phoneNumber')}`}
+                            name="whatsappNumber"
+                            required
+                            value={formik.values.whatsappNumber}
+                            onChange={handleChangeWa}
+                            error={checkIsFieldError('whatsappNumber')}
+                            errorMessage={fieldErrorMessage('whatsappNumber')}
+                        />
+                    </Show>
+
+                    {/* {enableOtp && false ? (
                         <>
                             <OtpBlock
                                 type="register"
@@ -194,39 +275,53 @@ const RegisterView = ({
                                 />
                             )}
                         </>
-                    ) : null}
-                    <div className="">
-                        <FormControlLabel
-                            value={formik.values.subscribe}
-                            onChange={formik.handleChange}
-                            name="subscribe"
-                            control={<Checkbox id="register-newsletter-checkbox" name="subscribe" color="primary" size="small" />}
-                            label={(
-                                <Typography variant="p" letter="capitalize" className="flex flex-row center">
-                                    {t('register:subscribe')}
-                                </Typography>
-                            )}
-                            style={{ marginBottom: enableRecaptcha ? 25 : 0 }}
-                        />
+                    ) : null} */}
 
-                        {enableRecaptcha ? (
+                    <div className={cx('register-footer', 'border-t-[1px] pt-[24px] border-neutral-200')}>
+                        <div className={cx('checkbox-newsletter-wrapper', 'mb-[24px]')}>
+                            <Checkbox
+                                id="register-newsletter-checkbox"
+                                variant="single"
+                                name="subscribe"
+                                label={t('register:subscribe')}
+                                size="sm"
+                                value={formik.values.subscribe}
+                                onChange={formik.handleChange}
+                            >
+                                <Typography variant="bd-2b">{t('register:subscribe')}</Typography>
+                            </Checkbox>
+                        </div>
+
+                        <Show when={enableRecaptcha}>
                             <>
                                 <ReCAPTCHA sitekey={sitekey} onChange={handleChangeCaptcha} ref={recaptchaRef} />
-                                {formik.errors.captcha && <Typography color="red">{formik.errors.captcha}</Typography>}
+                                <Show when={formik.errors.captcha}>
+                                    <Typography className={cx('text-md font-normal leading-lg tracking-normal text-pwa-font my-2 !text-red')}>
+                                        {formik.errors.captcha}
+                                    </Typography>
+                                </Show>
                             </>
-                        ) : null}
+                        </Show>
                         <Button
                             disabled={disabled}
-                            fullWidth={!desktop}
-                            // className={styles.btnSigin}
                             id="register-btnRegister"
                             type="submit"
-                            align={desktop ? 'left' : 'center'}
+                            className={cx('!w-full', disabled ? '!bg-neutral-200' : '', enableRecaptcha ? 'mt-[24px]' : '')}
+                            classNameText={cx('!justify-center')}
                         >
-                            <Typography variant="span" type="bold" letter="uppercase">
-                                {t('register:button')}
-                            </Typography>
+                            <Typography className={cx(disabled ? '!text-neutral-400' : '!text-neutral-white')}>{t('register:button')}</Typography>
                         </Button>
+                        <div className={cx('flex', 'justify-center', 'mt-[16px]')}>
+                            <Typography variant="bd-2b" className={cx('!text-neutral-500')}>
+                                {t('register:haveAccount')}
+                                <Link href="/customer/account/login">
+                                    {' '}
+                                    <Typography variant="bd-2b" className={cx('!text-primary-600')}>
+                                        {t('register:login')}
+                                    </Typography>
+                                </Link>
+                            </Typography>
+                        </div>
                     </div>
                 </form>
             </div>
