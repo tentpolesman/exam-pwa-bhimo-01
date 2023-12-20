@@ -12,6 +12,7 @@ import cx from 'classnames';
 import ReCAPTCHA from 'react-google-recaptcha';
 import Show from '@common_show';
 
+const Breadcrumb = dynamic(() => import('@common_breadcrumb'), { ssr: false });
 const PhoneInput = dynamic(() => import('@common_forms/PhoneInput'), { ssr: false });
 
 const RegisterView = ({
@@ -34,14 +35,21 @@ const RegisterView = ({
 }) => {
     const divInputStyle = cx('w-full');
     const divInputWrapperStyle = cx('mb-[24px]');
+    const breadcrumbsData = [{ label: t('register:button'), link: '#', active: true }];
 
     const checkIsFieldError = (name = '') => !!(formik.touched[name] && formik.errors[name]);
-
     const fieldErrorMessage = (name = '') => (formik.touched[name] && formik.errors[name]) || null;
 
     return (
         <>
             <div className={cx('register-container', 'justify-center')}>
+                <Breadcrumb
+                    withHome
+                    iconHomeOnly
+                    className={cx('mb-[40px]', 'desktop:mt-[10px]', 'tablet:mt-[0px]', 'mobile:mt-[16px] mobile:ml-[16px]')}
+                    data={breadcrumbsData}
+                />
+
                 <div className={cx('register-title', 'text-center', 'mb-[40px]')}>
                     <Typography variant="h1">{t('register:pageTitle')}</Typography>
                 </div>
@@ -57,6 +65,10 @@ const RegisterView = ({
                         'border-neutral-200',
                         'rounded-[6px]',
                         'desktop:w-[650px]',
+                        'desktop:mx-auto',
+                        'tablet:w-[550px]',
+                        'tablet:mx-auto',
+                        'mobile:mx-[16px]',
                     )}
                     onSubmit={formik.handleSubmit}
                 >
