@@ -3,13 +3,14 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
-import cx from 'classnames';
 import Link from 'next/link';
 import Typography from '@common_typography/index';
+import useMediaQuery from '@hook/useMediaQuery';
+import cx from 'classnames';
 import { HomeIcon } from '@heroicons/react/20/solid';
-import { useTranslation } from 'next-i18next';
 import { COLORS } from '@theme_vars';
 import { setResolver, getResolver } from '@helper_localstorage';
+import { createExcerpt } from '@helper_text';
 
 const handleClick = async (url, id) => {
     if (id) {
@@ -30,76 +31,75 @@ const ItemBreadcrumb = ({
     label,
     labelStyle,
     seperate,
-}) => (
-    <div className={cx(
-        'section-breadcrumb-item',
-        'flex',
-        'items-center',
-    )}
-    >
+}) => {
+    const { isMobile } = useMediaQuery();
+    return (
+        <div className={cx(
+            'section-breadcrumb-item',
+            'flex',
+            'items-center',
+        )}
+        >
 
-        <Link href={url} onClick={() => handleClick(url, id)}>
-            <Typography
-                variant="bd-2b"
-                style={labelStyle}
-                className={cx('text-sm', 'whitespace-nowrap', 'flex', 'items-center', '!text-neutral-400')}
-            >
-                {iconOnly && icon }
-                {!iconOnly && label}
-                {
-                    seperate && <Typography variant="bd-2b" className="mx-[10px]" color="text-neutral-400">/</Typography>
-                }
-            </Typography>
-        </Link>
-    </div>
-);
+            <Link href={url} onClick={() => handleClick(url, id)}>
+                <Typography
+                    variant="bd-2b"
+                    style={labelStyle}
+                    className={cx('text-sm', 'whitespace-nowrap', 'flex', 'items-center', '!text-neutral-400')}
+                >
+                    {iconOnly && icon }
+                    {!iconOnly && isMobile ? createExcerpt(label, 40) : label}
+                </Typography>
+            </Link>
+            {
+                seperate && <Typography variant="bd-2b" className="mx-[10px]" color="text-neutral-400">/</Typography>
+            }
+        </div>
+    );
+};
 
 const Breadcrumb = ({
     data = [],
     iconHomeOnly,
     withHome = true,
     className,
-}) => {
-    const { t } = useTranslation(['common']);
-    return (
-        <div className={cx(
-            'section-breadcrumb',
-            'flex',
-            'items-center',
-            'mb-[10px]',
-            'overflow-x-auto',
-            className,
-        )}
-        >
-            {
-                withHome && (
+}) => (
+    <div className={cx(
+        'section-breadcrumb',
+        'flex',
+        'items-center',
+        'mb-[10px]',
+        'overflow-x-auto',
+        className,
+    )}
+    >
+        {
+            withHome && (
+                <ItemBreadcrumb
+                    iconOnly={iconHomeOnly}
+                    key="breadcrumb-home"
+                    icon={<HomeIcon className="h-[18px] w-[18px] text-neutral-400" />}
+                    url="/"
+                    seperate={data?.length > 0}
+                />
+            )
+        }
+        {
+            data && data.map((item, index) => {
+                const isActive = item?.active || false;
+                return (
                     <ItemBreadcrumb
-                        iconOnly={iconHomeOnly}
-                        key="breadcrumb-home"
-                        icon={<HomeIcon className="h-[18px] w-[18px] text-neutral-400" />}
-                        url="/"
-                        label={t('common:home:title')}
-                        seperate={data?.length > 0}
+                        key={`breadcrumb-${index}-${item?.id}`}
+                        id={item?.id}
+                        url={item?.link}
+                        label={item?.label}
+                        labelStyle={isActive ? { color: COLORS.neutral[600] } : { color: COLORS.neutral[400] }}
+                        seperate={!isActive}
                     />
-                )
-            }
-            {
-                data && data.map((item, index) => {
-                    const isActive = item?.active || false;
-                    return (
-                        <ItemBreadcrumb
-                            key={`breadcrumb-${index}-${item?.id}`}
-                            id={item?.id}
-                            url={item?.link}
-                            label={item?.label}
-                            labelStyle={isActive ? { color: COLORS.neutral[600] } : { color: COLORS.neutral[400] }}
-                            seperate={!isActive}
-                        />
-                    );
-                })
-            }
-        </div>
-    );
-};
+                );
+            })
+        }
+    </div>
+);
 
 export default Breadcrumb;

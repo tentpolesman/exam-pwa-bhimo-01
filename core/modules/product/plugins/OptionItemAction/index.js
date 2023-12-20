@@ -6,7 +6,7 @@ import ButtonQty from '@common_buttonqty';
 import Show from '@common_show';
 import StockStatus from '@common_statusstock';
 
-const Button = dynamic(() => import('@common_button'), { ssr: true });
+const Button = dynamic(() => import('@common_button'), { ssr: false });
 
 const OptionItemAction = (props) => {
     const {
@@ -30,7 +30,10 @@ const OptionItemAction = (props) => {
         __typename,
         url_key,
         isPlp = false,
+        CustomFooter,
     } = props;
+    const IS_OOS = stockStatus === 'OUT_OF_STOCK';
+    const IS_INSTOCK = stockStatus === 'IN_STOCK';
     const isSimpleOrConfigurable = __typename === 'SimpleProduct' || __typename === 'ConfigurableProduct';
     const [internalLoading, setInternalLoading] = useState(false);
 
@@ -59,7 +62,7 @@ const OptionItemAction = (props) => {
             }
             >
                 <Show when={showStockStatus && stockStatus}>
-                    <StockStatus inStock={stockStatus === 'IN_STOCK'} />
+                    <StockStatus inStock={IS_INSTOCK} />
                 </Show>
             </div>
             <div className="flex flex-row gap-4 items-end">
@@ -72,7 +75,7 @@ const OptionItemAction = (props) => {
                             value={qty}
                             onChange={setQty}
                             max={customQty ? freeItemsData.quantity : maxQty}
-                            disabled={disabled || loading}
+                            disabled={disabled || loading || IS_OOS}
                             classNameInput="h-[38px]"
                         />
                     </div>
@@ -85,13 +88,14 @@ const OptionItemAction = (props) => {
                         variant="primary"
                         onClick={handleAddToCart}
                         loading={loading}
-                        disabled={disabled}
+                        disabled={disabled || IS_OOS}
                         {...additionalProps}
                     >
                         {(isPlp && !isSimpleOrConfigurable) ? t('common:button:viewItem') : labelAddToCart || t('common:button:addToCart')}
                     </Button>
                 )}
             </div>
+            {CustomFooter}
         </div>
     );
 };

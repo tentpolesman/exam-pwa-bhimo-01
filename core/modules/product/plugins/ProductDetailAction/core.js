@@ -83,12 +83,6 @@ const ProductDetailAction = ({
         enablePopupImage = storeConfig.pwa.popup_detail_image_enable;
     }
 
-    // weltpixel
-    let weltpixel_labels = [];
-    if (labels.data && labels.data.products && labels.data.products.items.length > 0 && labels.data.products.items[0].weltpixel_labels) {
-        weltpixel_labels = labels.data.products.items[0].weltpixel_labels;
-    }
-
     // data tabs
     let expandData = [];
     if (item?.description?.html) {
@@ -446,14 +440,17 @@ const ProductDetailAction = ({
     }, [customizableOptions]);
 
     const handleOpenImageDetail = React.useCallback((e, idx) => {
-        e.preventDefault();
         setOpenImageDetail(!openImageDetail);
         setSelectedImgIdx(idx);
     }, [openImageDetail]);
 
     // eslint-disable-next-line no-underscore-dangle
     const isAwGiftCard = item.__typename === 'AwGiftCardProduct';
-    const priceData = getPriceFromList(dataPrice?.products?.items, item?.id || null);
+    const priceData = getPriceFromList(
+        dataPrice?.products?.items || cachePrice[generateIdentifier]?.products?.items,
+        item?.id || null,
+    );
+
     return (
         <Content
             isLogin={isLogin}
@@ -511,7 +508,7 @@ const ProductDetailAction = ({
             useProductUpsell={useProductUpsell}
             data={{
                 ...item,
-                weltpixel_labels,
+                labels,
             }}
             {...other}
         />

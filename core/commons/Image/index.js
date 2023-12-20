@@ -8,9 +8,7 @@ import { BREAKPOINTS } from '@theme_vars';
 import Head from 'next/head';
 import cx from 'classnames';
 
-function gcd(a, b) {
-    return (b === 0) ? a : gcd(b, a % b);
-}
+const gcd = (a, b) => ((b === 0) ? a : gcd(b, a % b));
 
 const Container = ({
     children, enable, className, style,

@@ -81,7 +81,7 @@ const Radio = (props) => {
 
     if (isVariantSingle) {
         return (
-            <div className="common-checkbox-container">
+            <div className="common-radio-container">
                 <input
                     type="radio"
                     id={id}
@@ -230,7 +230,7 @@ const Radio = (props) => {
                     );
                 })}
             </div>
-            {error && <Typography className="text-red">{errorMessage}</Typography>}
+            {error && <Typography className="text-red mt-[12px] first-letter:uppercase">{errorMessage}</Typography>}
 
             {useLoadMore && data.length > 7 && more <= 7 && (
                 <a onClick={handleMore} className="mt-[10px] text-right cursor-pointer">
@@ -239,7 +239,7 @@ const Radio = (props) => {
             )}
             {useLoadMore && more > 7 && (
                 <a onClick={handleLess} className="mt-[10px] text-right cursor-pointer">
-                    <Typography className="underline">See less</Typography>
+                    <Typography className="underline">{t('common:label:seeLess')}</Typography>
                 </a>
             )}
         </div>

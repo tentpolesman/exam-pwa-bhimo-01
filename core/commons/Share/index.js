@@ -12,7 +12,12 @@ import { getHost } from '@helper_config';
 import { useRouter } from 'next/router';
 import Dialog from '@common/Dialog';
 
-const isMobileOrTablet = () => /(android|iphone|ipad|mobile)/i.test(navigator.userAgent);
+const isMobileOrTablet = () => {
+    if (typeof navigator !== 'undefined') {
+        return /(android|iphone|ipad|mobile)/i.test(navigator.userAgent);
+    }
+    return false;
+};
 const whatsappLink = (text) => {
     const prefixUrlWA = (isMobileOrTablet() ? 'api' : 'web');
     return `https://${prefixUrlWA}.whatsapp.com/send?text=${text}`;
@@ -73,6 +78,7 @@ const Share = ({
                             <Show when={whatsapp}>
                                 <Button
                                     link={whatsappLink(linkShare)}
+                                    linkTarget="_blank"
                                     variant="plain"
                                     className="flex justify-center items-center border border-neutral-200 px-[18px] py-[10px] mb-[16px]"
                                 >
@@ -83,6 +89,7 @@ const Share = ({
                             <Show when={facebook}>
                                 <Button
                                     link={facebookLink(linkShare)}
+                                    linkTarget="_blank"
                                     variant="plain"
                                     className="flex justify-center items-center border border-neutral-200 px-[18px] py-[10px] mb-[16px]"
                                 >
@@ -93,6 +100,7 @@ const Share = ({
                             <Show when={twitter}>
                                 <Button
                                     link={twitterLink(linkShare)}
+                                    linkTarget="_blank"
                                     variant="plain"
                                     className="flex justify-center items-center border border-neutral-200 px-[18px] py-[10px] mb-[16px]"
                                 >
@@ -120,6 +128,7 @@ const Share = ({
                 <Show when={whatsapp}>
                     <Button
                         link={whatsappLink(linkShare)}
+                        linkTarget="_blank"
                         variant="plain"
                         iconOnly
                         icon={<Image src="/assets/img/logo_whatsapp.svg" width={16} height={16} style={{ width: 16, height: 16 }} />}
@@ -129,6 +138,7 @@ const Share = ({
                 <Show when={facebook}>
                     <Button
                         link={facebookLink(linkShare)}
+                        linkTarget="_blank"
                         variant="plain"
                         iconOnly
                         classNameText="w-[16px] h-[16px]"
@@ -139,6 +149,7 @@ const Share = ({
                 <Show when={twitter}>
                     <Button
                         link={twitterLink(linkShare)}
+                        linkTarget="_blank"
                         variant="plain"
                         iconOnly
                         classNameText="w-[16px] h-[16px]"

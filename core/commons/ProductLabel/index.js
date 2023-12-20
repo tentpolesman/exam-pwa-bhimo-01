@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
 import React from 'react';
 import Badge from '@common_badge';
+import Show from '@common_show';
 import cx from 'classnames';
 import { useTranslation } from 'next-i18next';
 
@@ -58,6 +59,7 @@ const ProductLabel = ({
     className,
     classNameBadge,
     config,
+    stockStatus,
     priceRange,
     specialFromDate,
     specialToDate,
@@ -65,34 +67,38 @@ const ProductLabel = ({
     newToDate,
     fontSizeBadge,
 }) => {
-    const { t } = useTranslation(['common']);
+    const { t } = useTranslation(['common', 'cart']);
+    const IS_OOS = stockStatus === 'OUT_OF_STOCK';
     const showLabelNew = generateNew({ newFromDate, newToDate });
     const showSale = generateSale({ priceRange, specialFromDate, specialToDate });
-
     return (
         <div className={cx('product-label', className)}>
-            {
-                (config.enable && config.new.enable && showLabelNew) && (
-                    <Badge
-                        bold
-                        success
-                        className={cx('product-label-new', classNameBadge)}
-                        label={t('common:title:new')}
-                        fontSize={fontSizeBadge}
-                    />
-                )
-            }
-            {
-                (config.enable && config.sale.enable && showSale) && (
-                    <Badge
-                        bold
-                        danger
-                        className={cx('product-label-sale', showLabelNew && 'mt-[4px]', classNameBadge)}
-                        label={`${t('common:title:sale')}!`}
-                        fontSize={fontSizeBadge}
-                    />
-                )
-            }
+            <Show when={IS_OOS}>
+                <Badge
+                    bold
+                    className={cx('product-label-new bg-neutral-250 uppercase mb-[6px]')}
+                    label={t('common:cart:oos')}
+                    fontSize={fontSizeBadge}
+                />
+            </Show>
+            <Show when={config.enabled && config.new.enabled && showLabelNew}>
+                <Badge
+                    bold
+                    success
+                    className={cx('product-label-new uppercase', classNameBadge)}
+                    label={t('common:title:new')}
+                    fontSize={fontSizeBadge}
+                />
+            </Show>
+            <Show when={config.enabled && config.sale.enabled && showSale}>
+                <Badge
+                    bold
+                    danger
+                    className={cx('product-label-sale uppercase', showLabelNew && 'mt-[4px]', classNameBadge)}
+                    label={`${t('common:title:sale')}!`}
+                    fontSize={fontSizeBadge}
+                />
+            </Show>
         </div>
     );
 };

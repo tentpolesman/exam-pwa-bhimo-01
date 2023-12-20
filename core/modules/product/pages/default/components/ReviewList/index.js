@@ -199,7 +199,7 @@ const ReviewList = ({
                     <div className={cx('review-list-label-rating', 'flex items-center')}>
                         <RatingStar value={getReviewsCount || 0} />
                         <Typography variant="p-2" className="ml-[6px]">
-                            {`(${(getReviewsCount) || 0} ${t('product:review')})`}
+                            {`(${(review?.totalCount) || 0} ${t('product:review')})`}
                         </Typography>
                     </div>
                     <Show when={isLogin === 1 || guest_review === '1'}>
@@ -214,19 +214,6 @@ const ReviewList = ({
             <Divider />
             <div className={cx('mt-[24px]')}>
                 {review && review.items.map((item, index) => <ReviewCard key={index} {...item} />)}
-                {/* {review && review.totalCount > review.items.length && (
-                    <Button variant="outlined" onClick={handleLoad} disabled={loading || loadMore}>
-                        {loadMore || loading ? (
-                            <Typography variant="p-1">
-                                {`${t('common:menu:loading')}...`}
-                            </Typography>
-                        ) : (
-                            <Typography variant="p-1">
-                                {t('product:moreReview')}
-                            </Typography>
-                        )}
-                    </Button>
-                )} */}
                 <PaginationSection
                     page={page}
                     totalPage={review.totalCount / reviewParams.pageSize}

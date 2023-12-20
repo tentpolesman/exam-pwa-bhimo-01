@@ -21,3 +21,13 @@ export const StripHtmlTags = (str = '') => {
 
 // eslint-disable-next-line max-len
 export const capitalizeEachWord = (str = '') => str.toLowerCase().split(' ').map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+
+export const createExcerpt = (text, maxLength) => {
+    if (text.length <= maxLength) {
+        return text; // Return the full text if it's shorter than the maximum length
+    }
+    // Create an excerpt by taking a substring of the text up to the maxLength
+    const excerpt = text.substring(0, maxLength);
+    // Trim the excerpt to the last space to avoid cutting off in the middle of a word
+    return `${excerpt.substring(0, excerpt.lastIndexOf(' '))}...`;
+};
