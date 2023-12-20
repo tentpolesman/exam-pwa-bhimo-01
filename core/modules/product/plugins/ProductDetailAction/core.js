@@ -1,5 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable radix */
+/* eslint-disable eqeqeq */
 import cx from 'classnames';
 import TagManager from 'react-gtm-module';
 import useMediaQuery from '@hook/useMediaQuery';
@@ -53,7 +54,7 @@ const ProductDetailAction = ({
 }) => {
     const route = useRouter();
     const { isDesktop, isTablet, isMobile } = useMediaQuery();
-    const context = isLogin && isLogin === 1 ? { request: 'internal' } : {};
+    const context = isLogin && isLogin == 1 ? { request: 'internal' } : {};
     const item = product.items[productKey];
     const currencyCode = item?.price_range?.minimum_price?.regular_price?.currency || 'USD';
     const reviewRef = React.useRef(null);
@@ -221,7 +222,7 @@ const ProductDetailAction = ({
     }, [item?.options, customizableOptions]);
 
     const handleWishlist = () => {
-        if (isLogin && isLogin === 1) {
+        if (isLogin && isLogin == 1) {
             // GTM UA dataLayer
             TagManager.dataLayer({
                 dataLayer: {

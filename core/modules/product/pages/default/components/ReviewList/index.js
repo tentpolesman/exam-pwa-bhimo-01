@@ -2,6 +2,7 @@
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable no-console */
 /* eslint-disable no-unused-expressions */
+/* eslint-disable eqeqeq */
 import React, { useEffect, useMemo, useState } from 'react';
 import { getReviews, addReview } from '@core_modules/product/services/graphql';
 import { useFormik } from 'formik';
@@ -202,7 +203,7 @@ const ReviewList = ({
                             {`(${(review?.totalCount) || 0} ${t('product:review')})`}
                         </Typography>
                     </div>
-                    <Show when={isLogin === 1 || guest_review === '1'}>
+                    <Show when={isLogin == 1 || guest_review === '1'}>
                         <Button variant="outlined" onClick={() => onWriteReview()}>
                             <Typography variant="bd-2" type="bold" letter="uppercase">
                                 {t('product:writeReview')}

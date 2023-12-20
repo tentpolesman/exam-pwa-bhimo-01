@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import React, { useEffect } from 'react';
 import propTypes from 'prop-types';
 import { useRouter } from 'next/router';
@@ -178,7 +179,7 @@ const ProductList = (props) => {
         };
         config = generateConfig(query, config, elastic, availableFilter);
     }
-    const context = (isLogin && isLogin === 1) || (config.sort && config.sort.key === 'random') ? { request: 'internal' } : {};
+    const context = (isLogin && isLogin == 1) || (config.sort && config.sort.key === 'random') ? { request: 'internal' } : {};
 
     const {
         loading, data, fetchMore, error: errorGetProduct,

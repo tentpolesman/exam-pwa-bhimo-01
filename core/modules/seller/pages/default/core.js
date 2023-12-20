@@ -1,5 +1,6 @@
 /* eslint-disable object-curly-newline */
 // import { getProduct } from '@core_modules/catalog/services/graphql';
+/* eslint-disable eqeqeq */
 import { getSeller } from '@core_modules/seller/services/graphql';
 import { getHost } from '@helper_config';
 import Layout from '@layout';
@@ -37,7 +38,7 @@ const Seller = (props) => {
 
     const [showChat, setShowChat] = React.useState(false);
     const handleChat = () => {
-        if (isLogin && isLogin === 1) {
+        if (isLogin && isLogin == 1) {
             setShowChat(!showChat);
         } else {
             window.toastMessage({
