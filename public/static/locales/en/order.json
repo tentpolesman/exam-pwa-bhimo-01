@@ -1,5 +1,5 @@
 {
-    "title" : "My Order",
+    "title": "My Orders",
     "order" : "Order",
     "notFound": "Order not found",
     "shippedTo": "Shipped to",
