@@ -7,12 +7,18 @@ import React from 'react';
 
 const Caraousel = (props) => {
     const {
-        data = [], showArrow = true, Item, storeConfig = {}, className = '', ...other
+        data = [],
+        showArrow = true,
+        Item,
+        storeConfig = {},
+        className = '',
+        classNameCarousel = '',
+        ...other
     } = props;
 
     return (
         <div className={cx('carousel', className)}>
-            <ContainerScroll showArrow={showArrow}>
+            <ContainerScroll showArrow={showArrow} className={classNameCarousel}>
                 {data?.length > 0 && data.map((item, key) => (
                     <Item
                         className="carousel-item [&:not(:last-child)]:mr-4 !min-w-[145px] tablet:!min-w-[190px] desktop:!min-w-[273px] !h-[initial]"

@@ -26,6 +26,7 @@ const OptionItem = (props) => {
         <>
             { modules.product.customizableOptions.enabled && (
                 <CustomizableOption
+                    showCustomizableOption
                     {...props}
                 />
             ) }

@@ -97,7 +97,7 @@
         "shortQty": "Qty",
         "action": "Action",
         "extraFee": "Extra Fee",
-        "relatedProduct": "Related products",
+        "relatedProduct": "You may also like",
         "sale": "Sale",
         "new": "New",
         "free": "Free",
@@ -222,6 +222,8 @@
         "value": "Value",
         "shopNow": "Shop Now",
         "applyShopNow": "Apply on shopping cart page.",
-        "customize": "Customize"
+        "customize": "Customize",
+        "trailer": "Trailer",
+        "viewSample": "View Sample"
     }
 }

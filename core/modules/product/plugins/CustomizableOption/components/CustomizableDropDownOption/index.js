@@ -1,4 +1,5 @@
 /* eslint-disable no-underscore-dangle */
+/* eslint-disable eqeqeq */
 import React, { useState, useMemo } from 'react';
 import { useQuery } from '@apollo/client';
 import { formatPrice } from '@helpers/currency';
@@ -24,8 +25,7 @@ const CustomizableDropDownOption = ({
         fetchPolicy: 'no-cache',
     });
 
-    const onChange = async (e) => {
-        const val = e.target.value;
+    const onChange = async (val) => {
         let filterValues = [];
         let addPrice = 0;
         if (val && val !== '') {
@@ -64,7 +64,12 @@ const CustomizableDropDownOption = ({
                 setAdditionalPrice(0);
             }
         }
-        setSelected(val);
+        const filter = value?.filter((item) => item.option_type_id == val);
+        let selectedLabel = '';
+        if (filter.length > 0) {
+            selectedLabel = filter[0].label;
+        }
+        setSelected(selectedLabel);
     };
 
     useMemo(() => {
@@ -89,7 +94,7 @@ const CustomizableDropDownOption = ({
                     }
                     return {
                         ...item,
-                        option_id: option[0].option_id,
+                        id: option[0].option_id,
                         label: `${item.title} + ${formatPrice(price)}`,
                         value: JSON.stringify(item.option_type_id),
                         price,
@@ -109,8 +114,8 @@ const CustomizableDropDownOption = ({
 
     let error = '';
     useMemo(() => {
-        if (options.option_id && errorCustomizableOptions.length > 0) {
-            const findError = errorCustomizableOptions.filter((op) => op.option_id === options.option_id);
+        if (options.option_id && errorCustomizableOptions?.length > 0) {
+            const findError = errorCustomizableOptions?.filter((op) => op.option_id === options.option_id);
             if (findError && findError.length > 0) {
                 error = t('product:validate:fieldRequired');
             }

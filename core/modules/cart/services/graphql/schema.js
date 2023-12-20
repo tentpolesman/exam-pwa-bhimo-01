@@ -356,7 +356,7 @@ export const getCartItem = gql`query getCartData($cartId: String!) {
   }
 }`;
 
-export const getCrossellCart = (config = {}) => gql`
+export const getCrossellCart = () => gql`
 query getCartData($cartId: String!) {
   cart(cart_id: $cartId) {
      items {
@@ -366,36 +366,6 @@ query getCartData($cartId: String!) {
           name
           url_key
           sku
-          ${config?.pwa?.label_weltpixel_enable ? `
-          weltpixel_labels {
-            categoryLabel {
-                css
-                customer_group
-                image
-                page_position
-                position
-                priority
-                text
-                text_padding
-                text_bg_color
-                text_font_size
-                text_font_color          
-            }
-            productLabel {
-                css
-                customer_group
-                image
-                page_position
-                position
-                priority
-                text
-                text_padding
-                text_bg_color
-                text_font_size
-                text_font_color  
-            }
-          }        
-          ` : ''}
           thumbnail {
             url
           }

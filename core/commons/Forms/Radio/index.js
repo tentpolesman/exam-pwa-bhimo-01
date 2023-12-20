@@ -21,7 +21,7 @@ const Radio = (props) => {
         value = '',
         name = 'radio',
         ariaLabel = 'radio',
-        label = '',
+        label,
         CustomItem,
         className = {},
         classNames = {},
@@ -51,6 +51,8 @@ const Radio = (props) => {
             } else {
                 setMappedData(data);
             }
+        } else {
+            setMappedData(data);
         }
     }, [useLoadMore, more, data]);
 
@@ -79,7 +81,7 @@ const Radio = (props) => {
 
     if (isVariantSingle) {
         return (
-            <div className="common-checkbox-container">
+            <div className="common-radio-container">
                 <input
                     type="radio"
                     id={id}
@@ -184,7 +186,7 @@ const Radio = (props) => {
                                 onChange={handleChange}
                                 id={item.id || `${name}-${index}`}
                             />
-                            <label for={item.id || `${name}-${index}`} className="cursor-pointer flex items-center group">
+                            <label htmlFor={item.id || `${name}-${index}`} className="cursor-pointer flex items-center group">
                                 {type === 'check' ? (
                                     item.value === value ? (
                                         <div className={cx(
@@ -228,7 +230,7 @@ const Radio = (props) => {
                     );
                 })}
             </div>
-            {error && <Typography className="text-red">{errorMessage}</Typography>}
+            {error && <Typography className="text-red mt-[12px] first-letter:uppercase">{errorMessage}</Typography>}
 
             {useLoadMore && data.length > 7 && more <= 7 && (
                 <a onClick={handleMore} className="mt-[10px] text-right cursor-pointer">
@@ -237,7 +239,7 @@ const Radio = (props) => {
             )}
             {useLoadMore && more > 7 && (
                 <a onClick={handleLess} className="mt-[10px] text-right cursor-pointer">
-                    <Typography className="underline">See less</Typography>
+                    <Typography className="underline">{t('common:label:seeLess')}</Typography>
                 </a>
             )}
         </div>
@@ -250,8 +252,8 @@ Radio.propTypes = {
     value: propTypes.string,
     name: propTypes.string,
     ariaLabel: propTypes.string,
-    label: propTypes.string,
-    CustomItem: propTypes.func,
+    label: propTypes.oneOfType([propTypes.string, propTypes.bool]),
+    CustomItem: propTypes.any,
     className: propTypes.oneOfType([propTypes.string, propTypes.object]),
     classNames: propTypes.shape({
         radioGroupClasses: propTypes.oneOfType([propTypes.string, propTypes.object]),
@@ -260,7 +262,7 @@ Radio.propTypes = {
     error: propTypes.bool,
     errorMessage: propTypes.string,
     disabled: propTypes.bool,
-    CustomLabel: propTypes.func,
+    CustomLabel: propTypes.any,
     useLoadMore: propTypes.bool,
     ComponentOptional: propTypes.func,
     storeConfig: propTypes.object,

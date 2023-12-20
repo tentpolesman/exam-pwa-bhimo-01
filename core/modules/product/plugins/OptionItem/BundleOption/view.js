@@ -4,8 +4,8 @@ import Typography from '@common_typography';
 import Show from '@common_show';
 
 const Button = dynamic(() => import('@common_button'), { ssr: false });
-const Customize = dynamic(() => import('@plugin_optionitem/BundleOption/components/customize'), { ssr: true });
-const OptionItemAction = dynamic(() => import('@core_modules/product/plugins/OptionItemAction'), { ssr: true });
+const Customize = dynamic(() => import('@plugin_optionitem/BundleOption/components/customize'), { ssr: false });
+const OptionItemAction = dynamic(() => import('@core_modules/product/plugins/OptionItemAction'), { ssr: false });
 
 const BundleView = (props) => {
     const {

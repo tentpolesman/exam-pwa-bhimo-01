@@ -302,7 +302,7 @@ const Layout = (props) => {
                 dataLayer: {
                     pageName: pageConfig.title,
                     pageType: pageConfig.pageType || 'other',
-                    customerGroup: isLogin === 1 ? 'GENERAL' : 'NOT LOGGED IN',
+                    customerGroup: isLogin == 1 ? 'GENERAL' : 'NOT LOGGED IN',
                 },
             };
             if (custData && custData.email) {
