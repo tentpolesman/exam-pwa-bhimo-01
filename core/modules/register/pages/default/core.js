@@ -8,14 +8,11 @@ import { getCartId, setCartId } from '@helper_cartid';
 import Layout from '@layout';
 import Cookies from 'js-cookie';
 import React, { useRef } from 'react';
-
 import { useFormik } from 'formik';
 import Router from 'next/router';
 import * as Yup from 'yup';
-
 import { getAppEnv } from '@helpers/env';
 import { regexPhone } from '@helper_regex';
-
 import {
     getCustomerCartId,
     getGuestCustomer,
@@ -24,6 +21,7 @@ import {
     register,
 } from '@core_modules/register/services/graphql';
 import { getCustomer, subscribeNewsletter } from '@core_modules/register/services/graphql/schema';
+import { requestOtpRegister } from '@core_modules/login/services/graphql';
 
 import { registerConfig } from '@services/graphql/repository/pwa_config';
 import { priceVar } from '@root/core/services/graphql/cache';
@@ -54,7 +52,11 @@ const Register = (props) => {
 
     const [phoneIsWa, setPhoneIsWa] = React.useState(false);
     const [cusIsLogin, setIsLogin] = React.useState(0);
-    const [disabled, setdisabled] = React.useState(false);
+    const [disabled, setDisabled] = React.useState(true);
+    const [disabledOtpButton, setDisabledOtpButton] = React.useState(false);
+    // state otp
+    const [showOtp, setShowOtp] = React.useState(false);
+    const [isFillForm, setIsFillForm] = React.useState(false);
     const [isSubscribed, setIsSubscribed] = React.useState({
         email: '',
         subscribed: false,
@@ -112,6 +114,8 @@ const Register = (props) => {
     const enableOtp = otpConfig.data && otpConfig.data.otpConfig.otp_enable[0].enable_otp_register;
 
     const [sendRegister] = register();
+    // otp
+    const [actRequestOtpRegister] = requestOtpRegister();
 
     const [actSubscribe] = useMutation(subscribeNewsletter, {
         context: {
@@ -135,7 +139,7 @@ const Register = (props) => {
             ...configValidation,
             phoneNumber: Yup.string().required(t('validate:phoneNumber:required')).matches(regexPhone, t('validate:phoneNumber:wrong')),
             whatsappNumber: Yup.string().required(t('validate:whatsappNumber:required')).matches(regexPhone, t('validate:whatsappNumber:wrong')),
-            otp: Yup.number().required('Otp is required'),
+            otp: showOtp && Yup.number().required('Otp is required'),
         };
     }
 
@@ -165,6 +169,56 @@ const Register = (props) => {
                 : Yup.string().nullable(),
         };
     }
+
+    // handleSend to OTP View
+    const handleSend = (phoneNumber) => {
+        // const configSendOtp = {
+        //     maxLength: otpConfig?.data?.otpConfig?.otp_length?.[0]?.length_otp_register || 4,
+        //     maxTry: otpConfig?.data?.otpConfig?.otp_max_try?.[0]?.max_try_otp_register || 3,
+        //     expired: otpConfig?.data?.otpConfig?.otp_expired_time?.[0]?.expired_time_otp_register || 60,
+        // };
+
+        window.backdropLoader(true);
+        actRequestOtpRegister({
+            variables: {
+                phoneNumber,
+            },
+        })
+            .then(() => {
+                setShowOtp(true);
+                window.backdropLoader(false);
+                // setManySendOtp(manySendOtp + 1);
+                // eslint-disable-next-line no-nested-ternary
+                // setTime(configSendOtp && configSendOtp.expired ? configSendOtp.expired : 60);
+                window.toastMessage({
+                    open: true,
+                    text: t('otp:sendSuccess'),
+                    variant: 'success',
+                });
+            })
+            .catch((e) => {
+                window.backdropLoader(false);
+                if (e.message === 'phone number is already Registered') {
+                    window.toastMessage({
+                        open: true,
+                        text: `${t('otp:registerOtpFailed', { phoneNumber })}`,
+                        variant: 'error',
+                    });
+                } else if (e.message === 'Max retries exceeded') {
+                    window.toastMessage({
+                        open: true,
+                        text: `${t('otp:registerOtpTooManyRetries', { phoneNumber })}`,
+                        variant: 'error',
+                    });
+                } else {
+                    window.toastMessage({
+                        open: true,
+                        text: e.message.split(':')[1] || t('otp:sendFailed'),
+                        variant: 'error',
+                    });
+                }
+            });
+    };
 
     const RegisterSchema = Yup.object().shape(configValidation);
 
@@ -197,11 +251,11 @@ const Register = (props) => {
                     getCart();
                     window.backdropLoader(false);
                 }
-                setdisabled(false);
+                setDisabled(false);
             })
             .catch((e) => {
-                // console.log(e.errors);
-                setdisabled(false);
+                setShowOtp(false);
+                setDisabled(false);
                 window.backdropLoader(false);
                 window.toastMessage({
                     open: true,
@@ -228,9 +282,11 @@ const Register = (props) => {
         },
         validationSchema: RegisterSchema,
         onSubmit: (values, { resetForm }) => {
-            setdisabled(true);
+            setDisabled(true);
             window.backdropLoader(true);
-            if (enableRecaptcha) {
+            if (showOtp) {
+                handleSendRegister(values, resetForm);
+            } else if (enableRecaptcha) {
                 fetch('/captcha-validation', {
                     method: 'post',
                     body: JSON.stringify({
@@ -241,7 +297,11 @@ const Register = (props) => {
                     .then((data) => data.json())
                     .then((json) => {
                         if (json.success) {
-                            handleSendRegister(values, resetForm);
+                            if (enableOtp && !showOtp) {
+                                handleSend(values.phoneNumber);
+                            } else {
+                                handleSendRegister(values, resetForm);
+                            }
                         } else {
                             window.toastMessage({
                                 open: true,
@@ -261,6 +321,8 @@ const Register = (props) => {
                     });
 
                 recaptchaRef.current.reset();
+            } else if (enableOtp && !showOtp) {
+                handleSend(values.phoneNumber);
             } else {
                 handleSendRegister(values, resetForm);
             }
@@ -358,7 +420,7 @@ const Register = (props) => {
                     }, 700);
                 })
                 .catch((e) => {
-                    setdisabled(false);
+                    setDisabled(false);
                     window.backdropLoader(false);
                     window.toastMessage({
                         open: true,
@@ -385,27 +447,45 @@ const Register = (props) => {
         formik.initialValues.email = guestData.ordersFilter.data[0].detail[0].customer_email;
     }
 
+    /**
+     * Disable register button
+     */
+    React.useEffect(() => {
+        if (Object.keys(formik.errors).length < 2 && isFillForm) {
+            setDisabled(false);
+        } else if (Object.keys(formik.errors).length > 0 && !isFillForm) {
+            setIsFillForm(true);
+        } else if (Object.keys(formik.errors).length > 1) {
+            setDisabled(true);
+        }
+    }, [formik.errors, isFillForm, showOtp]);
+
+    const contentProps = {
+        ...props,
+        showOtp,
+        setShowOtp,
+        formik,
+        enableOtp,
+        setDisabled,
+        handleChangePhone,
+        handleWa,
+        phoneIsWa,
+        handleChangeWa,
+        enableRecaptcha,
+        sitekey,
+        handleChangeCaptcha,
+        disabled,
+        recaptchaRef,
+        gender,
+        dob: date_of_birth,
+        handleChangeDate,
+        disabledOtpButton,
+        setDisabledOtpButton,
+    };
+
     return (
         <Layout pageConfig={pageConfig || config} {...props} isLoginPage>
-            <Content
-                {...props}
-                t={t}
-                formik={formik}
-                enableOtp={enableOtp}
-                setdisabled={setdisabled}
-                handleChangePhone={handleChangePhone}
-                handleWa={handleWa}
-                phoneIsWa={phoneIsWa}
-                handleChangeWa={handleChangeWa}
-                enableRecaptcha={enableRecaptcha}
-                sitekey={sitekey}
-                handleChangeCaptcha={handleChangeCaptcha}
-                disabled={disabled}
-                recaptchaRef={recaptchaRef}
-                gender={gender}
-                dob={date_of_birth}
-                handleChangeDate={handleChangeDate}
-            />
+            <Content {...contentProps} />
         </Layout>
     );
 };
