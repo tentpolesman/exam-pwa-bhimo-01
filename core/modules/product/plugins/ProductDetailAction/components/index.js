@@ -130,11 +130,6 @@ const ProductDetailAction = ({
                 classContentWrapper,
             )}
             >
-                <Show when={data?.brand}>
-                    <Typography variant="bd-1b" className="mb-[10px] !text-primary-700">
-                        {data?.brand}
-                    </Typography>
-                </Show>
                 <Typography variant="h1" className="first-letter:uppercase mb-[12px] desktop:mt-[0px] tablet:mt-[0px] mobile:mt-[24px]">
                     {data?.name || '-'}
                 </Typography>
