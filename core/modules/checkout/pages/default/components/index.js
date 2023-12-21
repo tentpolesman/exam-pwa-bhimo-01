@@ -78,7 +78,6 @@ const Content = (props) => {
     const isSelectedPurchaseOrder = checkout.selected.payment === 'purchaseorder';
     // prettier-ignore
     const isPurchaseOrderApply = isSelectedPurchaseOrder && checkout.status.purchaseOrderApply;
-    const travelokaPayRef = React.useRef();
     const stripeRef = React.useRef();
     const [clientSecret, setClientSecret] = useState(null);
 
@@ -306,7 +305,6 @@ const Content = (props) => {
                         setInitialOptionPaypal={setInitialOptionPaypal}
                         initialOptionPaypal={initialOptionPaypal}
                         setTokenData={setTokenData}
-                        travelokaPayRef={travelokaPayRef}
                         stripeRef={stripeRef}
                         clientSecret={clientSecret}
                         setClientSecret={setClientSecret}
@@ -358,7 +356,6 @@ const Content = (props) => {
                     SummaryView={SummaryView}
                     refSummary={SummaryRef}
                     isOnlyVirtualProductOnCart={isOnlyVirtualProductOnCart}
-                    travelokaPayRef={travelokaPayRef}
                     checkoutTokenState={checkoutTokenState}
                     setCheckoutTokenState={setCheckoutTokenState}
                 />

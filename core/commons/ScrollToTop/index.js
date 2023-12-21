@@ -15,9 +15,9 @@ const ScrollTop = (props) => {
 
             const headerInner = document.getElementById('header-inner');
             const desktopHeader = document.getElementsByClassName('desktop-header')[0];
-            const desktopHeaderClassList = Object.values(desktopHeader.classList);
+            const desktopHeaderClassList = Object.values(desktopHeader?.classList || {});
             const tabletHeader = document.getElementsByClassName('tablet-header')[0];
-            const tabletHeaderClassList = Object.values(tabletHeader.classList);
+            const tabletHeaderClassList = Object.values(tabletHeader?.classList || {});
 
             const checkScrollTop = () => {
                 const globalPromo = document.getElementById('global-promo-message');
