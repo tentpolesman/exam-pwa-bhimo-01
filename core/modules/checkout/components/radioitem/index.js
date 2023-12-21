@@ -115,7 +115,6 @@ const RadioDeliveryItem = (props) => {
                 {shippingLabel}
                 {rightSide}
             </div>
-            <style jsx />
         </div>
     );
 };
