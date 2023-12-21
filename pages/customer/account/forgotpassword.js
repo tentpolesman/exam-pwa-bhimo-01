@@ -1,14 +1,6 @@
 import Page from '@core_modules/forgotpassword/pages/default';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import getSSRProps from '@core_modules/forgotpassword/pages/default/ssr';
 
-export async function getServerSideProps(ctx) {
-    return {
-        props: {
-            ...(await serverSideTranslations(ctx.locale, ['common', 'validate', 'forgotpassword'])),
-            withAuth: false,
-            query: ctx.query,
-        },
-    };
-}
+export const getServerSideProps = async (ctx) => getSSRProps(ctx);
 
 export default Page;
