@@ -28,6 +28,7 @@
     "pageTitle" : "Daftar alamat",
     "addTitle" : "Tambah alamat baru",
     "editTitle" : "Ubah",
+    "editAddress": "Ubah",
     "changeAddress": "Ubah",
     "removeTitle": "Hapus",
     "defaultBilling": "Alamat pembayaran default ",
