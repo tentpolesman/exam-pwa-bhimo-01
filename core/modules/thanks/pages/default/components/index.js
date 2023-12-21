@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable eqeqeq */
 import Button from '@common_button';
 import Typography from '@common_typography';
 import Router from 'next/router';
@@ -73,7 +74,7 @@ const View = (props) => {
             <div className={styles.info}>
                 <Typography variant="span" className={styles.infoOrderId} letter="none">
                     {`${t('thanks:yourOrderId')} : `}
-                    {isLogin && isLogin === 1 ? (
+                    {isLogin && isLogin == 1 ? (
                         <>
                             <a onClick={handleDetailOrder} className={styles.link}>
                                 <b>{checkoutData?.order_number}</b>

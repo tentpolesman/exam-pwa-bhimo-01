@@ -28,7 +28,7 @@ const ReviewCardForm = ({
             }}
         />
         <div className={cx('section-rating', 'mt-[24px]')}>
-            <Typography variant="p" type="semiBold">
+            <Typography>
                 {t('product:rate')}
             </Typography>
             <RatingStar

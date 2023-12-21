@@ -2,8 +2,10 @@
 /* eslint-disable no-undef */
 /* eslint-disable react/no-danger */
 /* eslint-disable array-callback-return */
-import Breadcrumb from '@common_breadcrumb';
 import ProductDetailAction from '@plugin_productdetailaction';
+import dynamic from 'next/dynamic';
+
+const Breadcrumb = dynamic(() => import('@common_breadcrumb'), { ssr: false });
 
 const ProductPage = (props) => {
     const {

@@ -302,7 +302,7 @@ const Layout = (props) => {
                 dataLayer: {
                     pageName: pageConfig.title,
                     pageType: pageConfig.pageType || 'other',
-                    customerGroup: isLogin === 1 ? 'GENERAL' : 'NOT LOGGED IN',
+                    customerGroup: isLogin == 1 ? 'GENERAL' : 'NOT LOGGED IN',
                 },
             };
             if (custData && custData.email) {
@@ -330,9 +330,9 @@ const Layout = (props) => {
     const generateClasses = () => {
         let classes = `${!isCms ? 'tablet:max-w-[768px] desktop:max-w-[1200px]' : ''} ${font.variable} font-sans !font-pwa-default`;
         if (showGlobalPromo) {
-            classes += ' tablet:max-desktop:mt-[145px] desktop:mt-[205px]';
+            classes += ' tablet:max-desktop:mt-[145px] desktop:mt-[215px]';
         } else {
-            classes += ' tablet:max-desktop:mt-[110px] desktop:mt-[190px]';
+            classes += ' tablet:max-desktop:mt-[110px] desktop:mt-[195px]';
         }
         if (pageConfig.bottomNav && storeConfig?.pwa?.mobile_navigation === 'bottom_navigation' && storeConfig?.pwa?.enabler_footer_mobile) {
             classes += ' mb-[60px]';
@@ -569,6 +569,7 @@ const Layout = (props) => {
                             handleClose={handleClosePromo}
                             appName={appName}
                             installMessage={installMessage}
+                            isMobile={deviceWidth < 768}
                         />
                     )}
                     {/* <div className="hidden-mobile">

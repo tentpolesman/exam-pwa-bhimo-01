@@ -1,26 +1,41 @@
 /* eslint-disable no-plusplus */
-import { modules } from '@config';
-import Link from 'next/link';
-import classNames from 'classnames';
-import { useRouter } from 'next/router';
 import Typography from '@common_typography';
-import useStyles from '@layout_customer/style';
+import { modules } from '@config';
+import cx from 'classnames';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 const Layout = (props) => {
     const {
         children, t, title, activeMenu, storeConfig,
     } = props;
     const pushIf = (condition, ...elements) => (condition ? elements : []);
-    const styles = useStyles();
     const router = useRouter();
     let titlePage = '';
 
     const menu = [
         { href: '/customer/account', title: t('customer:menu:myAccount') },
+        { title: t('customer:menu:dashboard') },
         { href: '/sales/order/history', title: t('customer:menu:myOrder') },
-        { href: '/sales/downloadable/history', title: t('customer:menu:myDownload') },
-        { href: '/customer/account/profile', title: t('customer:menu:accountInformation') },
+        ...pushIf(modules.notification.enabled, {
+            href: '/inboxnotification/notification',
+            title: t('customer:menu:notification'),
+        }),
         { href: '/customer/account/address', title: t('customer:menu:address') },
+        { href: '/customer/account/profile', title: t('customer:menu:accountInformation') },
+        ...pushIf(modules.wishlist.enabled, {
+            href: '/wishlist',
+            title: t('customer:menu:wishlist'),
+        }),
+        {
+            href: storeConfig && storeConfig.OmsRma.enable_oms_rma ? storeConfig.OmsRma.oms_rma_link : '/rma/customer',
+            title: t('customer:menu:return'),
+        },
+        ...pushIf(modules.storecredit.enabled, {
+            href: '/customer/account/storecredit',
+            title: t('customer:menu:storeCredit'),
+        }),
+        { href: '/sales/downloadable/history', title: t('customer:menu:myDownload') },
         ...pushIf(modules.productreview.enabled, {
             href: '/review/customer',
             title: t('customer:menu:myProductReview'),
@@ -29,29 +44,11 @@ const Layout = (props) => {
             href: '/awgiftcard/card',
             title: 'Gift Card',
         }),
-        ...pushIf(modules.storecredit.enabled, {
-            href: '/customer/account/storecredit',
-            title: t('customer:menu:storeCredit'),
-        }),
-        ...pushIf(modules.notification.enabled, {
-            href: '/inboxnotification/notification',
-            title: t('customer:menu:notification'),
-        }),
-        { href: '/customer/newsletter', title: t('customer:setting:newsletter') },
-        {
-            href: storeConfig && storeConfig.OmsRma.enable_oms_rma
-                ? storeConfig.OmsRma.oms_rma_link
-                : '/rma/customer',
-            title: t('customer:menu:return'),
-        },
         ...pushIf(modules.rewardpoint.enabled, {
             href: '/aw_rewardpoints/info',
             title: t('customer:menu:rewardPoint'),
         }),
-        ...pushIf(modules.wishlist.enabled, {
-            href: '/wishlist',
-            title: t('customer:wishlist:pageTitle'),
-        }),
+        { href: '/customer/newsletter', title: t('customer:setting:newsletter') },
     ];
     for (let index = 0; index < menu.length; index++) {
         const item = menu[index];
@@ -60,29 +57,92 @@ const Layout = (props) => {
         }
     }
     return (
-        <div className="flex flex-row">
-            <div className="md:basis-2/12 xs:basis-full hidden-mobile">
-                <div className={styles.listMenuContainer}>
-                    <ul className={styles.listMenu}>
-                        {menu.map((val, idx) => (
-                            <li
-                                key={idx}
-                                className={
-                                    router.asPath === val.href || val.href === activeMenu
-                                        ? classNames(styles.listMenuItem, styles.listMenuItemActive)
-                                        : styles.listMenuItem
-                                }
-                            >
-                                <Link href={val.href}>
-                                    {val.title}
-                                </Link>
-                            </li>
-                        ))}
+        <div className="flex flex-row desktop:gap-x-[18px]">
+            <div className={cx('md:basis-3/12', 'xs:basis-full', 'mobile:max-desktop:hidden')}>
+                <div className={cx('p-3', 'rounded-lg', 'border-[1px]', 'border-neutral-200', 'shadow-sm')}>
+                    <ul>
+                        {menu.map((val, idx) => {
+                            if (idx === 0) {
+                                return (
+                                    <li
+                                        key={idx}
+                                        className={cx(
+                                            'mx-3',
+                                            'pt-3',
+                                            'pb-5',
+                                            'text-[18px]',
+                                            'font-semibold',
+                                            'leading-7',
+                                            'border-b-[1px]',
+                                            'border-neutral-200',
+                                        )}
+                                    >
+                                        {val.title}
+                                    </li>
+                                );
+                            }
+                            if (idx === 1) {
+                                return (
+                                    <li
+                                        key={idx}
+                                        className={cx('px-3', 'mt-3', 'pt-2', 'pb-2', 'text-md', 'rounded-md', {
+                                            'bg-neutral-50 border-[1px] border-neutral-100 font-medium':
+                                                router.asPath === '/customer/account' || activeMenu === '/customer/account',
+                                        })}
+                                    >
+                                        {val.title}
+                                    </li>
+                                );
+                            }
+                            if (val.title === t('customer:menu:return')) {
+                                return (
+                                    <>
+                                        <div className={cx('mx-2', 'my-2', 'h-[1px]', 'bg-neutral-200')} />
+                                        <li
+                                            key={idx}
+                                            className={cx('px-3', 'py-2', 'text-md', 'rounded-md', {
+                                                'bg-neutral-50 border-[1px] border-neutral-100 font-medium':
+                                                    router.asPath === val.href || activeMenu === val.href,
+                                            })}
+                                        >
+                                            <Link href={val.href}>{val.title}</Link>
+                                        </li>
+                                    </>
+                                );
+                            }
+                            if (modules.productreview.enabled && val.title === t('customer:menu:myProductReview')) {
+                                return (
+                                    <>
+                                        <div className={cx('mx-2', 'my-2', 'h-[1px]', 'bg-neutral-200')} />
+                                        <li
+                                            key={idx}
+                                            className={cx('px-3', 'py-2', 'text-md', 'rounded-md', {
+                                                'bg-neutral-50 border-[1px] border-neutral-100 font-medium':
+                                                    router.asPath === val.href || activeMenu === val.href,
+                                            })}
+                                        >
+                                            <Link href={val.href}>{val.title}</Link>
+                                        </li>
+                                    </>
+                                );
+                            }
+                            return (
+                                <li
+                                    key={idx}
+                                    className={cx('px-3', 'py-2', 'text-md', 'rounded-md', {
+                                        'bg-neutral-50 border-[1px] border-neutral-100 font-medium':
+                                            router.asPath === val.href || activeMenu === val.href,
+                                    })}
+                                >
+                                    <Link href={val.href}>{val.title}</Link>
+                                </li>
+                            );
+                        })}
                     </ul>
                 </div>
             </div>
-            <div className="md:basis-10/12 xs:basis-full sm:basis-full">
-                <Typography variant="h4" type="bold" letter="capitalize" className={classNames('hidden-mobile', styles.titleContent)}>
+            <div className="md:basis-9/12 xs:basis-full sm:basis-full">
+                <Typography variant="h2" type="bold" letter="capitalize" className={cx('mobile:max-desktop:hidden', 'pl-0')}>
                     {title || titlePage}
                 </Typography>
                 {children}

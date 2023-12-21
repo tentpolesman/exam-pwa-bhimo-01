@@ -9,13 +9,15 @@ import Button from '@common_button';
 import ContainerScroll from '@common_containerscroll';
 import useMediaQuery from '@hook/useMediaQuery';
 import Link from 'next/link';
+import { PlayIcon } from '@heroicons/react/24/solid';
 import { ArrowsPointingOutIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import { modules } from '@root/swift.config.js';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 import { useSwipeable } from 'react-swipeable';
 
 const ImageSliderVideo = ({
-    mainImage,
+    mainImageWidth,
+    mainImageHeight,
     urlEmbed,
     videoUrl,
     video,
@@ -27,8 +29,8 @@ const ImageSliderVideo = ({
         return (
             <iframe
                 {...swipeHandlers}
-                width={isMobile ? '100%' : mainImage}
-                height={mainImage}
+                width={isMobile ? '100%' : mainImageWidth}
+                height={mainImageHeight}
                 src={urlEmbed || urlVideoTag[5]}
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -40,12 +42,13 @@ const ImageSliderVideo = ({
 
     if (videoUrl) {
         const urlVideo = videoUrl && videoUrl?.video_url?.split('/');
-        const urlVideoSrc = urlVideo?.length > 1 ? `https://www.youtube.com/embed/${urlVideo[3]}` : null;
+        const urlVideoKey = urlVideo[3]?.replace('watch?v=', '');
+        const urlVideoSrc = urlVideo?.length > 1 ? `https://www.youtube.com/embed/${urlVideoKey}?autoplay=1` : null;
         return (
             <iframe
                 {...swipeHandlers}
-                width={isMobile ? '100%' : mainImage}
-                height={mainImage}
+                width={isMobile ? '100%' : mainImageWidth}
+                height={mainImageHeight}
                 src={urlVideoSrc}
                 title={videoUrl.video_title}
                 frameBorder="0"
@@ -62,7 +65,8 @@ const ImageSliderSelectedPreview = ({
     toggleZoom,
     setToggleZoom,
     imagePreview,
-    mainImage,
+    mainImagePreviewWidth,
+    mainImagePreviewHeight,
     storeConfig,
 }) => {
     const isEmbedOrVideo = imagePreview?.urlEmbed || imagePreview?.video;
@@ -71,7 +75,8 @@ const ImageSliderSelectedPreview = ({
     if (isEmbedOrVideo) {
         return (
             <ImageSliderVideo
-                mainImage={mainImage}
+                mainImageWidth={mainImagePreviewWidth}
+                mainImageHeight={mainImagePreviewHeight}
                 urlEmbed={imagePreview?.urlEmbed}
                 video={imagePreview?.video}
             />
@@ -81,7 +86,8 @@ const ImageSliderSelectedPreview = ({
     if (isVideoUrl && isVideoUrl !== '#') {
         return (
             <ImageSliderVideo
-                mainImage={mainImage}
+                mainImageWidth={mainImagePreviewWidth}
+                mainImageHeight={mainImagePreviewHeight}
                 videoUrl={imagePreview.videoUrl}
             />
         );
@@ -109,16 +115,16 @@ const ImageSliderSelectedPreview = ({
                                 cx('w-full h-full', 'rounded-[12px]', 'cursor-zoom-in', 'mx-auto')
                             }
                             styleContainer={{
-                                width: mainImage,
-                                height: mainImage,
+                                width: mainImagePreviewWidth,
+                                height: mainImagePreviewHeight,
                             }}
                             src={imagePreview?.imageUrl}
                             alt={imagePreview?.imageAlt ?? 'slider image preview'}
                             quality={80}
-                            width={mainImage}
-                            height={mainImage}
-                            widthMobile={mainImage}
-                            heightMobile={mainImage}
+                            width={mainImagePreviewWidth}
+                            height={mainImagePreviewHeight}
+                            widthMobile={mainImagePreviewWidth}
+                            heightMobile={mainImagePreviewHeight}
                         />
                     </div>
                 </TransformComponent>
@@ -133,8 +139,9 @@ const ImageSliderSelected = ({
     isMobile,
     imagePreview,
     storeConfig,
-    mainImage,
-    mainImagePreview,
+    mainImageWidth,
+    mainImageHeight,
+    mainImagePreviewWidth,
     swipeHandlers,
 }) => {
     const isEmbedOrVideo = imagePreview?.urlEmbed || imagePreview?.video;
@@ -146,7 +153,8 @@ const ImageSliderSelected = ({
         return (
             <ImageSliderVideo
                 swipeHandlers={swipeHandlers}
-                mainImage={mainImage}
+                mainImageWidth={mainImageWidth}
+                mainImageHeight={mainImageHeight}
                 urlEmbed={imagePreview?.urlEmbed}
                 video={imagePreview?.video}
             />
@@ -157,7 +165,8 @@ const ImageSliderSelected = ({
         return (
             <ImageSliderVideo
                 swipeHandlers={swipeHandlers}
-                mainImage={mainImage}
+                mainImageWidth={mainImageWidth}
+                mainImageHeight={mainImageHeight}
                 videoUrl={imagePreview.videoUrl}
             />
         );
@@ -175,15 +184,15 @@ const ImageSliderSelected = ({
                         )
                     }
                     styleContainer={{
-                        width: isMobile ? '100%' : useZoom ? mainImagePreview : mainImage,
-                        height: isMobile ? '100%' : useZoom ? 'auto' : mainImage,
+                        width: isMobile ? '100%' : useZoom ? mainImagePreviewWidth : mainImageWidth,
+                        height: isMobile ? '100%' : useZoom ? 'auto' : mainImageHeight,
                     }}
                     src={imagePreview?.imageUrl}
                     alt={imagePreview?.imageAlt ?? 'slider image preview'}
-                    width={mainImage}
-                    height={mainImage}
-                    widthMobile={mainImage}
-                    heightMobile={mainImage}
+                    width={mainImageWidth}
+                    height={mainImageHeight}
+                    widthMobile={mainImageWidth}
+                    heightMobile={mainImageHeight}
                     quality={80}
                 />
             </Link>
@@ -199,15 +208,15 @@ const ImageSliderSelected = ({
                 )
             }
             styleContainer={{
-                width: isMobile ? '100%' : useZoom ? mainImagePreview : mainImage,
-                height: isMobile ? '100%' : useZoom ? 'auto' : mainImage,
+                width: isMobile ? '100%' : useZoom ? mainImagePreviewWidth : mainImageWidth,
+                height: isMobile ? '100%' : useZoom ? 'auto' : mainImageHeight,
             }}
             src={imagePreview?.imageUrl}
             alt={imagePreview?.imageAlt ?? 'slider image preview'}
-            width={mainImage}
-            height={mainImage}
-            widthMobile={mainImage}
-            heightMobile={mainImage}
+            width={mainImageWidth}
+            height={mainImageHeight}
+            widthMobile={mainImageWidth}
+            heightMobile={mainImageHeight}
             quality={80}
         />
     );
@@ -224,6 +233,8 @@ const ImageSlider = ({
     imageProps = {},
     customStyleImageWrapper = {},
     customStyleImageContainer = {},
+    customClassImageWrapper = '',
+    FooterComponentImagePreview,
 }) => {
     const [imagePreview, setImagePreview] = React.useState(null);
     const [indexActive, setIndexActive] = React.useState(0);
@@ -233,9 +244,12 @@ const ImageSlider = ({
         isDesktop, isMobile, screen, screenWidth,
     } = useMediaQuery();
 
-    const thumbnailImage = modules.product.imageSize.thumbnail[screen];
-    const mainImage = modules.product.imageSize.main[screen];
-    const mainImagePreview = modules.product.imageSize.main_preview[screen];
+    const thumbnailImageWidth = modules.product.imageSize.thumbnail[screen]?.width ?? 0;
+    const thumbnailImageHeight = modules.product.imageSize.thumbnail[screen]?.height ?? 0;
+    const mainImageWidth = modules.product.imageSize.main[screen]?.width ?? 0;
+    const mainImageHeight = modules.product.imageSize.main[screen]?.height ?? 0;
+    const mainImagePreviewWidth = modules.product.imageSize.main_preview[screen]?.width ?? 0;
+    const mainImagePreviewHeight = modules.product.imageSize.main_preview[screen]?.height ?? 0;
 
     const onSelectedImage = ({ index, item }) => {
         setIndexActive(index);
@@ -274,24 +288,36 @@ const ImageSlider = ({
             <Show when={(detectAutoScreen && isDesktop) || verticalThumbnail}>
                 <ContainerScroll
                     variant="vertical"
-                    maxHeight={mainImage}
-                    style={{ width: thumbnailImage }}
+                    maxHeight={mainImageHeight}
+                    style={{ width: thumbnailImageWidth }}
                     className={
                         cx(
                             'image-slider-vertical',
                             'px-[0px] mx-auto',
                             'm-0 !p-0',
+                            'desktop:m-0 tablet:m-0 mobile:m-0',
                         )
                     }
                 >
                     {
                         data && data?.map((item, index) => {
                             const isActive = indexActive === index;
+                            const isVideo = item?.urlEmbed || item?.video || item?.videoUrl;
                             return (
                                 <div
-                                    className="mb-[12px]"
+                                    className="mb-[12px] relative"
                                     key={`image-slider-vertical-${index}`}
                                 >
+                                    <Show when={isVideo}>
+                                        <PlayIcon
+                                            className={
+                                                cx(
+                                                    'absolute z-10 w-[24px] h-[24px] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2',
+                                                    'text-primary-700 pointer-events-none',
+                                                )
+                                            }
+                                        />
+                                    </Show>
                                     <Image
                                         storeConfig={storeConfig}
                                         className={cx(
@@ -303,11 +329,11 @@ const ImageSlider = ({
                                         )}
                                         src={item?.imageUrl}
                                         alt={item?.imageAlt ?? `slider image ${index}`}
-                                        width={thumbnailImage}
-                                        height={thumbnailImage}
+                                        width={thumbnailImageWidth}
+                                        height={thumbnailImageHeight}
                                         quality={80}
-                                        widthMobile={thumbnailImage}
-                                        heightMobile={thumbnailImage}
+                                        widthMobile={thumbnailImageWidth}
+                                        heightMobile={thumbnailImageHeight}
                                         onClick={() => onSelectedImage({ index, item })}
                                     />
                                 </div>
@@ -319,18 +345,19 @@ const ImageSlider = ({
             <Show when={imagePreview}>
                 <div
                     style={{
-                        width: isMobile ? '100%' : useZoom ? mainImagePreview : mainImage,
-                        height: isMobile ? '100%' : useZoom ? 'auto' : mainImage,
+                        width: isMobile ? '100%' : useZoom ? mainImagePreviewWidth : mainImageWidth,
+                        height: isMobile ? '100%' : useZoom ? 'auto' : mainImageHeight,
                         ...customStyleImageWrapper,
                     }}
                     className={
                         cx(
-                            'z-[999]',
+                            'z-50',
                             'image-slider-preview',
                             'relative desktop:px-[16px] tablet:px-[0px] mobile:px-[16px]',
                             detectAutoScreen && 'tablet:mr-auto tablet:ml-[0px] mobile:mx-auto',
                             !detectAutoScreen && 'mx-auto',
                             isDesktop && 'pl-[24px]',
+                            customClassImageWrapper,
                         )
                     }
                 >
@@ -339,7 +366,7 @@ const ImageSlider = ({
                         onMouseEnter={() => setShowArrow(true)}
                         onMouseLeave={() => setShowArrow(false)}
                         style={{
-                            width: isMobile ? '100%' : useZoom ? mainImagePreview : mainImage,
+                            width: isMobile ? '100%' : useZoom ? mainImagePreviewWidth : mainImageWidth,
                             ...customStyleImageContainer,
                         }}
                         className={cx(
@@ -353,7 +380,8 @@ const ImageSlider = ({
                                 toggleZoom={toggleZoom}
                                 setToggleZoom={setToggleZoom}
                                 imagePreview={imagePreview}
-                                mainImage={mainImagePreview}
+                                mainImagePreviewWidth={mainImagePreviewWidth}
+                                mainImagePreviewHeight={mainImagePreviewHeight}
                                 storeConfig={storeConfig}
                             />
                         </Show>
@@ -363,15 +391,16 @@ const ImageSlider = ({
                                 useZoom={useZoom}
                                 isMobile={isMobile}
                                 imagePreview={imagePreview}
-                                mainImage={mainImage}
-                                mainImagePreview={mainImagePreview}
+                                mainImageWidth={mainImageWidth}
+                                mainImageHeight={mainImageHeight}
+                                mainImagePreviewWidth={mainImagePreviewWidth}
+                                mainImagePreviewHeight={mainImagePreviewHeight}
                                 storeConfig={storeConfig}
                                 onClickImagePreviewArrowRight={onClickImagePreviewArrowRight}
                                 onClickImagePreviewArrowLeft={onClickImagePreviewArrowLeft}
                                 {...imageProps}
                             />
                         </Show>
-
                         <Show when={showArrow}>
                             <Button
                                 variant="tertiary"
@@ -388,8 +417,9 @@ const ImageSlider = ({
                                 <ChevronRightIcon style={{ width: 20, height: 20 }} />
                             </Button>
                         </Show>
+                        {FooterComponentImagePreview}
                     </div>
-                    <Show when={onClickZoomImage}>
+                    <Show when={data && onClickZoomImage}>
                         <Button
                             variant="plain"
                             onClick={onClickZoomImage}
@@ -409,10 +439,11 @@ const ImageSlider = ({
             <Show when={(detectAutoScreen && !isDesktop && imagePreview) || horizontalThumbnail}>
                 <ContainerScroll
                     variant="horizontal"
-                    maxWidth={detectAutoScreen && !isMobile ? mainImage : null}
+                    maxWidth={detectAutoScreen && !isMobile ? mainImageWidth : null}
                     className={cx(
                         'image-slider-horizontal',
                         useZoom && 'desktop:mt-[0px] tablet:mt-[0px] mobile:mt-[0px]',
+                        'desktop:m-0 tablet:m-0 mobile:m-0',
                     )}
                     itemsLength={data?.length}
                     style={isMobile ? { width: screenWidth } : {}}
@@ -420,24 +451,36 @@ const ImageSlider = ({
                     {
                         data && data?.map((item, index) => {
                             const isActive = indexActive === index;
+                            const isVideo = item?.urlEmbed || item?.video || item?.videoUrl;
                             return (
                                 <div
+                                    key={`image-slider-horizontal-${index}`}
                                     className={
                                         cx(
                                             !useZoom && 'mr-[16px] mt-[12px]',
                                             useZoom && 'mr-[16px] mt-[0px]',
+                                            'relative',
                                             'desktop:first:ml-[0px] desktop:last:mr-[0px]',
                                             'tablet:first:ml-[0px] tablet:last:mr-[0px]',
                                             'mobile:first:ml-[16px] mobile:last:mr-[6px]',
                                         )
                                     }
-                                    key={`image-slider-horizontal-${index}`}
                                 >
+                                    <Show when={isVideo}>
+                                        <PlayIcon
+                                            className={
+                                                cx(
+                                                    'absolute z-10 w-[24px] h-[24px] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2',
+                                                    'text-primary-700 pointer-events-none',
+                                                )
+                                            }
+                                        />
+                                    </Show>
                                     <Image
                                         storeConfig={storeConfig}
                                         styleContainer={{
-                                            height: thumbnailImage,
-                                            width: thumbnailImage,
+                                            height: thumbnailImageHeight,
+                                            width: thumbnailImageWidth,
                                             cursor: 'pointer',
                                         }}
                                         className={cx(
@@ -448,11 +491,11 @@ const ImageSlider = ({
                                         )}
                                         src={item?.imageUrl}
                                         alt={item?.imageAlt ?? `slider image ${index}`}
-                                        width={thumbnailImage}
-                                        height={thumbnailImage}
+                                        width={thumbnailImageWidth}
+                                        height={thumbnailImageHeight}
                                         quality={80}
-                                        widthMobile={thumbnailImage}
-                                        heightMobile={thumbnailImage}
+                                        widthMobile={thumbnailImageWidth}
+                                        heightMobile={thumbnailImageHeight}
                                         onClick={() => onSelectedImage({ index, item })}
                                     />
                                 </div>

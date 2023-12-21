@@ -91,12 +91,12 @@
         "search": "Pencarian ...",
         "brand": "Brand",
         "category": "Kategory",
-        "summary": "Ringkasan",
+        "summary": "Ringkasan order",
         "price": "Harga",
         "shortQty": "Jml",
         "action": "Aksi",
         "extraFee": "Biaya Tambahan",
-        "relatedProduct": "Relasi Produk",
+        "relatedProduct": "Anda mungkin juga menyukainya",
         "sale": "Diskon",
         "new": "Baru",
         "free": "Free",
@@ -219,6 +219,8 @@
         "value": "Nilai",
         "shopNow": "Belanja Sekarang",
         "applyShopNow": "Terapkan di halaman keranjang belanja.",
-        "customize": "Penyesuaian"
+        "customize": "Penyesuaian",
+        "trailer": "Trailer",
+        "viewSample": "Lihat Contoh"
     }
 }

@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/no-danger */
 /* eslint-disable object-curly-newline */
+/* eslint-disable eqeqeq */
 import Typography from '@common_typography';
 import useStyles from '@core_modules/seller/pages/default/components/style';
 import Avatar from '@material-ui/core/Avatar';
@@ -87,7 +88,7 @@ const SellerInfo = (props) => {
                     {/* CHAT FEATURES ON DESKTOP */}
                     {features.chatSystem.enable && (
                         <div>
-                            {isLogin === 1 && showChat ? (
+                            {isLogin == 1 && showChat ? (
                                 <ChatContent
                                     isSellerPage
                                     handleChatSellerPage={handleChat}

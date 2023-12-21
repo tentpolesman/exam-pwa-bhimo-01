@@ -1,7 +1,7 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 
-const OptionItemAction = dynamic(() => import('@core_modules/product/plugins/OptionItemAction'), { ssr: true });
+const OptionItemAction = dynamic(() => import('@core_modules/product/plugins/OptionItemAction'), { ssr: false });
 
 const SimpleOptionView = ({
     qty = 1,

@@ -19,6 +19,7 @@ const Select = (props) => {
         options = [],
         placeholder = 'Please Select',
         className = '',
+        classNameLabel = '',
         error = false,
         errorMessage = '',
         inputProps = {},
@@ -39,7 +40,7 @@ const Select = (props) => {
     return (
         <div ref={ref} className={cx('relative', open ? 'z-50' : '', className)} {...restProps}>
             {label && typeof label === 'string' ? (
-                <Typography variant="bd-2 mb-2" className="uppercase">
+                <Typography variant="bd-2" className={cx('mb-2 uppercase', classNameLabel)}>
                     {label.replace(/_/g, ' ')}
                 </Typography>
             ) : null}

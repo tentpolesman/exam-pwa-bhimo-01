@@ -29,7 +29,7 @@ const Detail = (props) => {
         enableProductName = true,
     } = props;
     const showRating = typeof enableRating !== 'undefined' ? enableRating : storeConfig?.pwa?.rating_enable;
-    const enableMultiSeller = storeConfig.enable_oms_multiseller === '1';
+    const enableMultiSeller = storeConfig.enable_oms_multiseller === '1' || storeConfig.enable_oms_multiseller === 1;
 
     let shortDescription = '';
 
@@ -44,7 +44,7 @@ const Detail = (props) => {
             <Show when={enableMultiSeller && seller && seller.seller_name}>
                 <div className="flex">
                     <Typography
-                        variant="p"
+                        variant="bd-2"
                         className={cx(
                             'line-clamp-2 text-primary capitalize mb-[2px] tablet:mb-[6px]',
                             isGrid && 'text-sm tablet:text-md',
@@ -53,7 +53,7 @@ const Detail = (props) => {
                         color="primary"
                         letter="capitalize"
                     >
-                        {parser(seller.seller_name || '')}
+                        {parser(seller?.seller_name || '')}
                     </Typography>
                 </div>
             </Show>
@@ -64,6 +64,7 @@ const Detail = (props) => {
                             'font-medium line-clamp-2 mb-[6px] capitalize',
                             isGrid && 'text-[14px] tablet:text-[16px]',
                             !isGrid && 'text-sm tablet:text-[16px]',
+                            'leading-lg tablet:leading-2lg',
                         )}
                     >
                         {parser(name)}
@@ -78,10 +79,10 @@ const Detail = (props) => {
 
             <Show when={showRating}>
                 <div className="hidden desktop:flex">
-                    <RatingStar value={ratingValue || 3} sizeIcon="lg" />
+                    <RatingStar value={ratingValue} sizeIcon="lg" />
                 </div>
                 <div className="flex desktop:hidden">
-                    <RatingStar value={ratingValue || 3} sizeIcon="sm" />
+                    <RatingStar value={ratingValue} sizeIcon="sm" />
                 </div>
             </Show>
             {Pricing && Pricing}

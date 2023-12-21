@@ -38,7 +38,7 @@ const ContainerScroll = ({
         if (containerRef?.current?.children?.length > 0) {
             setContainerChildrenWidth((containerRef.current.children[0].clientWidth + marginSize) * slidesToScroll);
         }
-    }, [containerRef]);
+    }, [containerRef, children]);
 
     return (
         <div

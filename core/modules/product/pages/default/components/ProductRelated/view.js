@@ -9,7 +9,15 @@ const ProductItem = dynamic(() => import('@plugin_productitem'), { ssr: false })
 
 const ProductRelatedView = ({ data, t, storeConfig }) => (
     <div className={cx('product-related-container', 'xs:basis-full lg:basis-full')}>
-        <Typography variant="h1" component="h2" align="center">
+        <Typography
+            variant="h1"
+            className={
+                cx(
+                    'desktop:mb-[24px] tablet:mb-[16px] mobile:mb-[16px]',
+                    'desktop:mx-[0px] tablet:mx-[16px] mobile:mx-[16px]',
+                )
+            }
+        >
             {t('common:title:relatedProduct')}
         </Typography>
         <Caraousel
@@ -17,6 +25,7 @@ const ProductRelatedView = ({ data, t, storeConfig }) => (
             data={data}
             Item={ProductItem}
             storeConfig={storeConfig}
+            classNameCarousel="desktop:m-0 tablet:m-0 mobile:m-0 desktop:!p-0 tablet:!p-4 !mobile:!p-4"
         />
     </div>
 );

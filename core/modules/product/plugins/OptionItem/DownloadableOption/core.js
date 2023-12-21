@@ -10,7 +10,7 @@ import React from 'react';
 import TagManager from 'react-gtm-module';
 import {
     addDownloadProductToCart,
-    getDownloadroduct,
+    getDownloadProduct,
     getGuestCartId as queryGetGuestCartId,
     getCustomerCartId,
 } from '@core_modules/product/services/graphql';
@@ -49,14 +49,19 @@ const OptionsItemDownload = ({
     const [items, setItems] = React.useState([]);
     const [selectDownloadable, setSelectDownloadable] = React.useState({});
     const cartUser = getCustomerCartId();
-    const downloadProduct = getDownloadroduct(sku);
+    const downloadProduct = getDownloadProduct(sku);
     const { loading } = downloadProduct;
-
     let [loadingAdd, setLoadingAdd] = React.useState(false);
 
     if (typeof customLoading !== 'undefined' && typeof setCustomLoading === 'function') {
         loadingAdd = customLoading;
         setLoadingAdd = setCustomLoading;
+    }
+
+    const dataProductsItems = downloadProduct?.data?.products?.items;
+    let downloadProductSamples = [];
+    if (dataProductsItems?.length > 0) {
+        downloadProductSamples = dataProductsItems[0]?.downloadable_product_samples;
     }
 
     React.useEffect(() => {
@@ -277,6 +282,7 @@ const OptionsItemDownload = ({
     return (
         <View
             items={items}
+            downloadProductSamples={downloadProductSamples}
             handleAddToCart={handleAddToCart}
             handleOptionAll={handleOptionAll}
             handleOptionDownloadable={handleOptionDownloadable}

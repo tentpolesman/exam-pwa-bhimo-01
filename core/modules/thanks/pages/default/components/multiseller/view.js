@@ -3,6 +3,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable eqeqeq */
 import Button from '@common_button';
 import Typography from '@common_typography';
 
@@ -69,12 +70,14 @@ const ViewThanksMultiSeller = (props) => {
                                         {item.seller_city && ` - ${item.seller_city}`}
                                     </StyledTableCell>
                                     <StyledTableCell align="right">
-                                        {isLogin && isLogin === 1 ? (
-                                            (<Link href={`/sales/order/view/order_id/${item?.order_number}`} passhref>
+                                        {isLogin && isLogin == 1 ? (
+                                            (
+                                                <Link href={`/sales/order/view/order_id/${item?.order_number}`} passhref>
 
-                                                <b>{`#${item?.order_number}`}</b>
+                                                    <b>{`#${item?.order_number}`}</b>
 
-                                            </Link>)
+                                                </Link>
+                                            )
                                         ) : (
                                             <b>{`#${item?.order_number}`}</b>
                                         )}

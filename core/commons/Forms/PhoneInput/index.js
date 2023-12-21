@@ -8,7 +8,8 @@ import 'react-phone-number-input/style.css';
 
 const PhoneInput = (props) => {
     const {
-        value, onChange, label = '', error = false, errorMessage = '', className = '', ...restProps
+        value, onChange, label = '', error = false, errorMessage = '', className = '',
+        classNameField = '', classLabel = '', placeholder = '81234567890', ...restProps
     } = props;
 
     const pwaConfig = useReactiveVar(storeConfigVar);
@@ -18,7 +19,7 @@ const PhoneInput = (props) => {
         <div className={cx('flex', 'flex-col', className)} {...restProps}>
             {label ? (
                 <label className="mb-2">
-                    <Typography variant="h4">{label}</Typography>
+                    <Typography variant="h4" className={classLabel}>{label}</Typography>
                 </label>
             ) : null}
             <ReactPhoneInput
@@ -38,11 +39,13 @@ const PhoneInput = (props) => {
                     {
                         '!border-red hover:!border-red': error,
                     },
+                    classNameField,
                 )}
                 numberInputProps={{
                     className: cx('pr-4', 'py-[10px]', ' focus-visible:outline-none', 'rounded-lg'),
                 }}
                 countrySelectComponent={CountrySelect}
+                placeholder={placeholder}
             />
             {error && errorMessage ? (
                 <Typography variant="bd-2b" className={cx('my-2', '!text-red')}>

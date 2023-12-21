@@ -3,20 +3,21 @@ import { getStoreName, getCurrencySchema } from '@core_modules/setting/services/
 import graphRequestClear from '@graphql_ssr';
 import { gql } from '@apollo/client';
 
-const layoutStoreConfigSchema = gql`
-    {
-        storeConfig {
-            pwa {
-                ves_menu_alias
-                footer_version
+const layoutStoreConfigSchema = (storeConfigExtra) => gql`
+        {
+            storeConfig {
+                pwa {
+                    ves_menu_alias
+                    footer_version
+                    ${storeConfigExtra}
+                }
             }
         }
-    }
-`;
+    `;
 
-const getSSRProps = async ({ apolloClient }) => {
+const getSSRProps = async ({ apolloClient, storeConfigExtra = '' }) => {
     // get cms page
-    let storeConfig = await graphRequestClear(layoutStoreConfigSchema);
+    let storeConfig = await graphRequestClear(layoutStoreConfigSchema(storeConfigExtra));
     storeConfig = storeConfig?.storeConfig ?? null;
 
     if (storeConfig) {
@@ -53,7 +54,13 @@ const getSSRProps = async ({ apolloClient }) => {
             query: getCmsBlocks,
             variables: { identifiers: [storeConfig?.pwa?.footer_version] },
         });
+
+        return {
+            storeConfig,
+        };
     }
+
+    return {};
 };
 
 export default getSSRProps;

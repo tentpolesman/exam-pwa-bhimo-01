@@ -172,19 +172,46 @@ const modules = {
     product: {
         imageSize: {
             thumbnail: {
-                desktop: 78,
-                tablet: 78,
-                mobile: 78,
+                desktop: {
+                    width: 78,
+                    height: 78,
+                },
+                tablet: {
+                    width: 78,
+                    height: 78,
+                },
+                mobile: {
+                    width: 78,
+                    height: 78,
+                },
             },
             main: {
-                desktop: 533,
-                tablet: 352,
-                mobile: 329,
+                desktop: {
+                    width: 533,
+                    height: 533,
+                },
+                tablet: {
+                    width: 352,
+                    height: 352,
+                },
+                mobile: {
+                    width: 329,
+                    height: 329,
+                },
             },
             main_preview: {
-                desktop: 603,
-                tablet: 603,
-                mobile: 329,
+                desktop: {
+                    width: 603,
+                    height: 603,
+                },
+                tablet: {
+                    width: 603,
+                    height: 603,
+                },
+                mobile: {
+                    width: 329,
+                    height: 329,
+                },
             },
         },
         customizableOptions: {

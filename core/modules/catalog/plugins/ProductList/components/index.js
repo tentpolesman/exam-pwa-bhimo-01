@@ -91,6 +91,7 @@ const ViewProductList = (props) => {
             <DrawerFilter
                 open={openDrawerFilter}
                 handleClose={handleCloseDrawetFilter}
+                className="z-dialog"
             >
                 <div className="px-6 py-4 flex flex-col">
                     <div className="mb-5 min-h-[36px] border-neutral-100 border-b-[1px] flex items-center justify-between pb-3">
@@ -106,22 +107,24 @@ const ViewProductList = (props) => {
                             className="!p-0"
                         />
                     </div>
-                    <Filter
-                        filter={customFilter || aggregations}
-                        defaultSort={JSON.stringify(defaultSort)}
-                        filterValue={query}
-                        setFiltervalue={setFiltervalue}
-                        isSearch={!!config.search}
-                        products={products}
-                        renderEmptyMessage={renderEmptyMessage}
-                        loading={loading}
-                        tabs={dataTabs}
-                        t={t}
-                        onChangeTabs={onChangeTabs}
-                        storeConfig={storeConfig}
-                        autoReload={false}
-                        onSave={handleCloseDrawetFilter}
-                    />
+                    <Show when={openDrawerFilter}>
+                        <Filter
+                            filter={customFilter || aggregations}
+                            defaultSort={JSON.stringify(defaultSort)}
+                            filterValue={query}
+                            setFiltervalue={setFiltervalue}
+                            isSearch={!!config.search}
+                            products={products}
+                            renderEmptyMessage={renderEmptyMessage}
+                            loading={loading}
+                            tabs={dataTabs}
+                            t={t}
+                            onChangeTabs={onChangeTabs}
+                            storeConfig={storeConfig}
+                            autoReload={false}
+                            onSave={handleCloseDrawetFilter}
+                        />
+                    </Show>
                 </div>
             </DrawerFilter>
             <Show when={loading}>
@@ -151,6 +154,7 @@ const ViewProductList = (props) => {
                             onChangeTabs={onChangeTabs}
                             storeConfig={storeConfig}
                             scrollContent={false}
+                            autoReload
                         />
                     </div>
                 </div>
@@ -275,7 +279,7 @@ const ViewProductList = (props) => {
                     >
                         <div className="flex flex-row">
                             <CircularProgress size="small" className="mr-2" />
-                            <Typography align="center" variant="span" type="bold" letter="uppercase" color="gray">
+                            <Typography varaint="bd-2" color="text-neutral">
                                 Loading...
                             </Typography>
                         </div>

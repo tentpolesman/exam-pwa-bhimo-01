@@ -17,5 +17,9 @@
     "valid": "Otp is valid",
     "invalid": "Otp is in valid",
     "registerOtpFailed": "Phone number of {{phoneNumber}} is already registered, please use another phone number.",
-    "registerOtpTooManyRetries": "You have exceeded the maximum number of retries : ({{phoneNumber}}"
+    "registerOtpTooManyRetries": "You have exceeded the maximum number of retries : ({{phoneNumber}}",
+    "sentOtp": "We have sent OTP Code via SMS/ WhatsApp to your registered number",
+    "haventRecieved": "Haven’t received the code yet?",
+    "resendCode": "Resend Code",
+    "otpCode": "OTP Code"
 }

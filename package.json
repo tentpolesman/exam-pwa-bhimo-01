@@ -95,6 +95,7 @@
     "react-gtm-module": "^2.0.8",
     "react-gtm-module-defer": "^2.0.11",
     "react-i18next": "^13.0.0",
+    "react-otp-input": "^3.1.1",
     "react-phone-number-input": "^3.2.3",
     "react-share": "^4.1.0",
     "react-slick": "^0.28.0",
