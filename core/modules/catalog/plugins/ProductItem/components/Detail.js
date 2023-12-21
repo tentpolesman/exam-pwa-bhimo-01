@@ -29,7 +29,7 @@ const Detail = (props) => {
         enableProductName = true,
     } = props;
     const showRating = typeof enableRating !== 'undefined' ? enableRating : storeConfig?.pwa?.rating_enable;
-    const enableMultiSeller = storeConfig.enable_oms_multiseller === '1';
+    const enableMultiSeller = storeConfig.enable_oms_multiseller === '1' || storeConfig.enable_oms_multiseller === 1;
 
     let shortDescription = '';
 
@@ -41,10 +41,10 @@ const Detail = (props) => {
 
     return (
         <div className="flex flex-col gap-1 relative w-full">
-            <Show when={enableMultiSeller && seller && seller.seller_name}>
+            <Show when={enableMultiSeller && seller && seller?.seller_name}>
                 <div className="flex">
                     <Typography
-                        variant="p"
+                        variant="bd-2"
                         className={cx(
                             'line-clamp-2 text-primary capitalize mb-[2px] tablet:mb-[6px]',
                             isGrid && 'text-sm tablet:text-md',
@@ -53,7 +53,7 @@ const Detail = (props) => {
                         color="primary"
                         letter="capitalize"
                     >
-                        {parser(seller.seller_name || '')}
+                        {parser(seller?.seller_name || '')}
                     </Typography>
                 </div>
             </Show>

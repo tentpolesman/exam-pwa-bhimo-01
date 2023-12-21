@@ -2,14 +2,12 @@ import React from 'react';
 import Typography from '@common_typography';
 import Select from '@common_forms/Select';
 import classNames from 'classnames';
-import useStyles from '@plugin_customizableitem/components/style';
 
 const ViewCustomizableDropDownOption = ({
     title = 'test', data = [], selected = '', disabled,
     onChange = () => {}, error = '', required = false,
 }) => {
-    const styles = useStyles();
-    const customClass = classNames('flex flex-col', styles.container, styles.customizableDropDownOption);
+    const customClass = classNames('flex flex-col', 'w-[100%]');
     return (
         <div className={customClass}>
             {
@@ -18,21 +16,22 @@ const ViewCustomizableDropDownOption = ({
                         disabled={disabled}
                         options={data}
                         name={title}
-                        label={(
-                            <>
-                                <Typography className="uppercase font-bold">
-                                    {title.replace(/_/g, ' ')}
-                                    {' '}
-                                    {required && <Typography className="font-bold text-red">*</Typography>}
-                                </Typography>
-                            </>
-                        )}
                         value={selected}
                         onChange={onChange}
-                        error={error}
+                        error={error !== ''}
                         errorMessage={error}
+                        label={(
+                            <Typography variant="bd-2a" className="font-bold">
+                                {title.replace(/_/g, ' ')}
+                                {' '}
+                                {required && <Typography variant="bd-2a" className="font-bold text-red">*</Typography>}
+                            </Typography>
+                        )}
+                        optionProps={{
+                            className: 'absolute',
+                        }}
                         textFiledProps={{
-                            className: '!w-full',
+                            className: '!w-full mt-[6px]',
                         }}
                     />
                 )

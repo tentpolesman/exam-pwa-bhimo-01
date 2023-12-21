@@ -15,6 +15,7 @@ const TextField = React.forwardRef((props, ref) => {
         value = '',
         name = '',
         className = '',
+        classNameLabel = '',
         label = '',
         hintProps = {},
         inputProps = {},
@@ -74,13 +75,11 @@ const TextField = React.forwardRef((props, ref) => {
     return (
         <div className={cx('flex flex-col relative', classWrapper)}>
             {label ? (
-                <label className="mb-2">
-                    <Typography>
-                        {label}
-                        <Show when={required}>
-                            <span className={cx('text-red-600')}> *</span>
-                        </Show>
-                    </Typography>
+                <label className={cx('mb-2', classNameLabel)}>
+                    <Typography>{label}</Typography>
+                    <Show when={required}>
+                        <span className={cx('text-red-600')}> *</span>
+                    </Show>
                 </label>
             ) : null}
             <div

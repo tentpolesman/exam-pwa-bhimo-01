@@ -12,7 +12,7 @@ const ImageRenderer = (props) => {
         const optImg = generateThumborUrl(src, 0, 0, true, false, storeConfig.pwa.thumbor_url);
 
         return (
-            <>
+            <span>
                 <Image
                     className={attribs.class}
                     classContainer="!pt-[unset]"
@@ -22,9 +22,9 @@ const ImageRenderer = (props) => {
                     height={attribs.height ? attribs.height.replace('px', '') : 0}
                     storeConfig={storeConfig}
                 />
-                <style jsx global>
+                <style jsx>
                     {`
-                        img.img {
+                        span :global(img.img) {
                             ${attribs.width ? `width: ${attribs.width} !important;` : ''}
                             ${attribs.height ? `height: ${attribs.height} !important;` : ''}
                             position: relative !important;
@@ -32,7 +32,7 @@ const ImageRenderer = (props) => {
                         }
                     `}
                 </style>
-            </>
+            </span>
         );
     }
 

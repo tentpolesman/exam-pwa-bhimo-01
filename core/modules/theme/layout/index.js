@@ -302,7 +302,7 @@ const Layout = (props) => {
                 dataLayer: {
                     pageName: pageConfig.title,
                     pageType: pageConfig.pageType || 'other',
-                    customerGroup: isLogin === 1 ? 'GENERAL' : 'NOT LOGGED IN',
+                    customerGroup: isLogin == 1 ? 'GENERAL' : 'NOT LOGGED IN',
                 },
             };
             if (custData && custData.email) {
@@ -328,7 +328,7 @@ const Layout = (props) => {
     };
 
     const generateClasses = () => {
-        let classes = `tablet:max-w-[768px] desktop:max-w-[1200px] ${font.variable} font-sans !font-pwa-default`;
+        let classes = `${!isCms ? 'tablet:max-w-[768px] desktop:max-w-[1200px]' : ''} ${font.variable} font-sans !font-pwa-default`;
         if (showGlobalPromo) {
             classes += ' tablet:max-desktop:mt-[145px] desktop:mt-[215px]';
         } else {

@@ -98,7 +98,7 @@
         "search": "Pencarian ...",
         "brand": "Brand",
         "category": "Kategory",
-        "summary": "Ringkasan",
+        "summary": "Ringkasan order",
         "price": "Harga",
         "shortQty": "Jml",
         "action": "Aksi",
@@ -228,6 +228,7 @@
         "applyShopNow": "Terapkan di halaman keranjang belanja.",
         "customize": "Penyesuaian",
         "trailer": "Trailer",
-        "viewSample": "Lihat Contoh"
+        "viewSample": "Lihat Contoh",
+        "loading": "Memuat"
     }
 }

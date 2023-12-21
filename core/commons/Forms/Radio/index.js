@@ -21,7 +21,7 @@ const Radio = (props) => {
         value = '',
         name = 'radio',
         ariaLabel = 'radio',
-        label = '',
+        label,
         CustomItem,
         className = {},
         classNames = {},
@@ -179,14 +179,14 @@ const Radio = (props) => {
                                     },
                                     radioClasses,
                                 )}
-                                name={item.name || name}
-                                ariaLabel={ariaLabel}
+                                name={item.name || `radio-${index}`}
+                                ariaLabel={item.ariaLabel || `radio-${index}`}
                                 value={item.value}
                                 checked={item.value === value}
                                 onChange={handleChange}
-                                id={item.id || `${name}-${index}`}
+                                id={item.id || `radio-${index}`}
                             />
-                            <label for={item.id || `${name}-${index}`} className="cursor-pointer flex items-center group">
+                            <label htmlFor={item.id || `radio-${index}`} className="cursor-pointer flex items-center group">
                                 {type === 'check' ? (
                                     item.value === value ? (
                                         <div className={cx(
@@ -252,8 +252,8 @@ Radio.propTypes = {
     value: propTypes.string,
     name: propTypes.string,
     ariaLabel: propTypes.string,
-    label: propTypes.string,
-    CustomItem: propTypes.func,
+    label: propTypes.oneOfType([propTypes.string, propTypes.bool]),
+    CustomItem: propTypes.any,
     className: propTypes.oneOfType([propTypes.string, propTypes.object]),
     classNames: propTypes.shape({
         radioGroupClasses: propTypes.oneOfType([propTypes.string, propTypes.object]),
@@ -262,7 +262,7 @@ Radio.propTypes = {
     error: propTypes.bool,
     errorMessage: propTypes.string,
     disabled: propTypes.bool,
-    CustomLabel: propTypes.func,
+    CustomLabel: propTypes.any,
     useLoadMore: propTypes.bool,
     ComponentOptional: propTypes.func,
     storeConfig: propTypes.object,

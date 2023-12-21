@@ -2,14 +2,12 @@ import React from 'react';
 import Typography from '@common_typography';
 import TextField from '@common_textfield';
 import classNames from 'classnames';
-import useStyles from '@plugin_customizableitem/components/style';
 
 const ViewCustomizableDateOption = ({
     title = 'test', data = {}, value = '', disabled,
     onChange = () => {}, error = '', required = false,
 }) => {
-    const styles = useStyles();
-    const customClass = classNames('flex flex-col', styles.container, styles.customizableDateOption);
+    const customClass = classNames('flex flex-col', 'w-[100%]');
     return (
         <div className={customClass}>
             {
@@ -20,10 +18,10 @@ const ViewCustomizableDateOption = ({
                         disabled={disabled}
                         label={(
                             <>
-                                <Typography variant="title" type="bold" letter="uppercase">
+                                <Typography variant="bd-2a">
                                     {data.label}
                                     {' '}
-                                    {required && <Typography color="red" type="bold" variant="label">*</Typography>}
+                                    {required && <Typography variant="bd-2a" color="text-red">*</Typography>}
                                 </Typography>
                             </>
                         )}

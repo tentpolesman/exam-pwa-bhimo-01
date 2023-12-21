@@ -358,34 +358,6 @@ const Menu = (props) => {
                         visibility: visible;
                     }
 
-                    @media (max-width: 1249px) {
-                        .mega-menu {
-                            background: #fff;
-                            border: 1px solid #ddd;
-                            border-top: 5px solid #000000;
-                            border-radius: 0 0 3px 3px;
-                            opacity: 0;
-                            transition: all 0s ease 0s;
-                            visibility: hidden;
-                            left: 0;
-                            padding: auto;
-                            margin: auto;
-                        }
-                        li:hover > .mega-menu {
-                            opacity: 1;
-                            overflow: visible;
-                            visibility: visible;
-                        }
-                        .nav-column a {
-                            color: #000000 !important;
-                            display: block;
-                            font-weight: bold;
-                            line-height: 1.75;
-                            margin: 0;
-                            padding: 7px;
-                        }
-                    }
-
                     /* menu content */
                     .nav-column a {
                         color: #000000 !important;

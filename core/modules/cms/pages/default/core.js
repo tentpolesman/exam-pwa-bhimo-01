@@ -82,7 +82,7 @@ const CmsSlug = (props) => {
             {...props}
             pageConfig={pageConfig || Config}
             data={data}
-            isCms={isHome != 'home'}
+            isCms
             isHomepage={isHome == 'home'}
             preloadImages={images?.length > 0 && images[0]}
         >

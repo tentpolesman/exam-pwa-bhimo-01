@@ -1,4 +1,5 @@
 /* eslint-disable array-callback-return */
+/* eslint-disable eqeqeq */
 import React from 'react';
 import propTypes from 'prop-types';
 import dynamic from 'next/dynamic';
@@ -11,7 +12,7 @@ const Loader = dynamic(() => import('@common_slick/Caraousel/Skeleton'));
 const ProductUpsell = ({
     dataProduct, isLogin, storeConfig, ...other
 }) => {
-    const context = (isLogin && isLogin === 1) ? { request: 'internal' } : {};
+    const context = (isLogin && isLogin == 1) ? { request: 'internal' } : {};
 
     const { loading, data, error } = getUpsellProduct(storeConfig, { context, variables: { url: dataProduct.url_key } });
 

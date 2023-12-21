@@ -1,7 +1,6 @@
 import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import * as PaypalSchema from '@core_modules/checkout/services/graphql/paypalSchema';
 import * as Schema from '@core_modules/checkout/services/graphql/schema';
-import * as TravelokaSchema from '@core_modules/checkout/services/graphql/travelokaSchema';
 import { getLoginInfo } from '@helper_auth';
 
 let isLogin = 0;
@@ -303,12 +302,6 @@ export const checkoutAgreements = () => useQuery(Schema.checkoutAgreements, {
     fetchPolicy: 'no-cache',
 });
 
-// traveloka
-export const travelokaCreateCharge = () => useMutation(TravelokaSchema.createCharge, {
-    ...config(USING_INTERNAL),
-    errorPolicy: 'all',
-});
-
 export default {
     updateExtraFee,
     updatedDefaultAddress,
@@ -364,5 +357,4 @@ export default {
     xenditCreateInvoice,
     xenditSimulateQr,
     checkoutAgreements,
-    travelokaCreateCharge,
 };

@@ -158,7 +158,7 @@ const AwGiftCardProduct = (props) => {
                             );
                         })}
                         {!!(formik.touched.aw_gc_template && formik.errors.aw_gc_template) && (
-                            <Typography variant="p" color="red">
+                            <Typography color="red">
                                 {formik.errors.aw_gc_template}
                             </Typography>
                         )}

@@ -99,7 +99,7 @@
         "search": "Search ...",
         "brand": "Brand",
         "category": "Category",
-        "summary": "Summary",
+        "summary": "Order summary",
         "price": "Price",
         "shortQty": "Qty",
         "action": "Action",
@@ -231,6 +231,7 @@
         "applyShopNow": "Apply on shopping cart page.",
         "customize": "Customize",
         "trailer": "Trailer",
-        "viewSample": "View Sample"
+        "viewSample": "View Sample",
+        "loading": "Loading"
     }
 }

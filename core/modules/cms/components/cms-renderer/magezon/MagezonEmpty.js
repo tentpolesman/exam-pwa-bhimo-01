@@ -18,22 +18,22 @@ const MagezonEmpty = (props) => {
                     }
                     @media (max-width: ${BREAKPOINTS.sm - 1}px) {
                         .mgz-empty {
-                            height: ${getHeight(xs_height)};
+                            ${xs_height ? `height: ${getHeight(xs_height)};` : ''}
                         }
                     }
                     @media (max-width: ${BREAKPOINTS.md - 1}px) {
                         .mgz-empty {
-                            height: ${getHeight(sm_height)};
+                            ${sm_height ? `height: ${getHeight(sm_height)};` : ''}
                         }
                     }
                     @media (max-width: ${BREAKPOINTS.lg - 1}px) {
                         .mgz-empty {
-                            height: ${getHeight(md_height)};
+                            ${md_height ? `height: ${getHeight(md_height)};` : ''}
                         }
                     }
                     @media (max-width: ${BREAKPOINTS.xl - 1}px) {
                         .mgz-empty {
-                            height: ${getHeight(lg_height)};
+                            ${lg_height ? `height: ${getHeight(lg_height)};` : ''}
                         }
                     }
                 `}

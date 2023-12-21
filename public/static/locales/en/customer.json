@@ -28,6 +28,7 @@
     "pageTitle" : "Address book",
     "addTitle" : "Add new address",
     "editTitle": "Manage Address",
+    "editAddress": "Edit",
     "changeAddress": "Change",
     "removeTitle": "Remove",
     "defaultBilling": "Default billing address",

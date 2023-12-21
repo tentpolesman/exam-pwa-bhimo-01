@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import WidgetNewsletterPopup from '@core_modules/cms/components/cms-renderer/widget-newsletter-popup/index';
 import useStyles from '@core_modules/theme/components/newsletterPopup/style';
 import { getCmsBlocks, getIsSubscribedCustomer } from '@core_modules/theme/services/graphql';
@@ -45,7 +46,7 @@ const NewsletterPopup = (props) => {
         setOpen(!open);
     };
 
-    if ((isLogin && isLogin === 1) && customerData?.customer?.is_subscribed) return null;
+    if ((isLogin && isLogin == 1) && customerData?.customer?.is_subscribed) return null;
     if (storeConfig.weltpixel_newsletter_general_display_mobile === '0' && !desktop) return null;
     if (storeConfig.weltpixel_newsletter_general_display_mode === '0' && pageConfig.pageType !== 'home') return null;
     if (pageConfig.pageType === 'checkout') return null;

@@ -61,7 +61,7 @@ const Product = (props) => {
             [generateGridItemClass(item_md, 'md')]: isProductGrid && item_md,
             [generateGridItemClass(item_sm, 'sm')]: isProductGrid && item_sm,
             [generateGridItemClass(item_xs, 'xs')]: isProductGrid && item_xs,
-            '!h-[initial]': !isProductGrid,
+            '!h-[initial]': !isProductGrid && !isSingleProduct,
         }),
         imageProps: {
             className: cx(
@@ -117,12 +117,18 @@ const Product = (props) => {
 
     if (type === 'single_product' && data?.products?.items) {
         content = data?.products?.items[0] && (
-            <ProductItem
-                //
-                {...data.products.items[0]}
-                {...productProps}
-                isGrid={product_display === 'grid'}
-            />
+            <div
+                className={cx('pb-4', {
+                    grid: product_display === 'list',
+                })}
+            >
+                <ProductItem
+                    //
+                    {...data.products.items[0]}
+                    {...productProps}
+                    isGrid={product_display === 'grid'}
+                />
+            </div>
         );
     }
 
