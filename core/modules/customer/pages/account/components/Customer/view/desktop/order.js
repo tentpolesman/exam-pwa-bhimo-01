@@ -26,8 +26,8 @@ const OrderView = (props) => {
     const customerData = Cookies.get('cdt') && JSON.parse(Cookies.get('cdt'));
     const currencyData = Cookies.get('app_currency') && JSON.parse(Cookies.get('app_currency'));
 
-    const generateBadge = (status) => {
-        if (status === 'Processing') {
+    const generateBadge = (status, status_label) => {
+        if (status === 'processing' || status === 'pending' || status === 'payment_review') {
             return (
                 <Badge
                     softColor
@@ -35,13 +35,13 @@ const OrderView = (props) => {
                     className={cx('rounded-md', 'w-fit')}
                     label={
                         <Typography variant="body-sm" className={cx('text-yellow-800', 'leading-md')}>
-                            {status}
+                            {status_label}
                         </Typography>
                     }
                 />
             );
         }
-        if (status === 'Canceled') {
+        if (status === 'canceled') {
             return (
                 <Badge
                     softColor
@@ -49,27 +49,13 @@ const OrderView = (props) => {
                     className={cx('rounded-md', 'w-fit')}
                     label={
                         <Typography variant="body-sm" className={cx('text-red-800', 'leading-md')}>
-                            {status}
+                            {status_label}
                         </Typography>
                     }
                 />
             );
         }
-        if (status === 'Payment Review') {
-            return (
-                <Badge
-                    softColor
-                    warning
-                    className={cx('rounded-md', 'w-fit')}
-                    label={
-                        <Typography variant="body-sm" className={cx('text-yellow-800', 'leading-md')}>
-                            {status}
-                        </Typography>
-                    }
-                />
-            );
-        }
-        if (status === 'Completed') {
+        if (status === 'complete') {
             return (
                 <Badge
                     softColor
@@ -77,7 +63,7 @@ const OrderView = (props) => {
                     className={cx('rounded-md', 'w-fit')}
                     label={
                         <Typography variant="body-sm" className={cx('text-green-800', 'leading-md')}>
-                            {status}
+                            {status_label}
                         </Typography>
                     }
                 />
@@ -86,11 +72,11 @@ const OrderView = (props) => {
         return (
             <Badge
                 softColor
-                primary
+                secondary
                 className={cx('rounded-md', 'w-fit')}
                 label={
                     <Typography variant="body-sm" className={cx('text-primary-800', 'leading-md')}>
-                        {status}
+                        {status_label}
                     </Typography>
                 }
             />
@@ -154,7 +140,7 @@ const OrderView = (props) => {
                                                     currencyCache,
                                                 )}
                                             </td>
-                                            <td>{generateBadge(val.status_label)}</td>
+                                            <td>{generateBadge(val.status, val.status_label)}</td>
                                             <td>
                                                 <Link
                                                     href={`/sales/order/view/order_id/${val.order_number}`}
