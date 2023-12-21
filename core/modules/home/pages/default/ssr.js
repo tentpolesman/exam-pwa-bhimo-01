@@ -15,7 +15,7 @@ const getSSRProps = async (ctx) => {
     // translation
     const translation = await serverSideTranslations(
         ctx.locale,
-        modules.checkout.checkoutOnly ? ['common', 'checkout', 'customer', 'validate'] : ['common', 'home'],
+        modules.checkout.checkoutOnly ? ['common', 'checkout', 'customer', 'validate'] : ['common', 'home', 'catalog'],
     );
 
     let homePageConfig;

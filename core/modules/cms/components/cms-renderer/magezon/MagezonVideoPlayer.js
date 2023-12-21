@@ -78,7 +78,7 @@ const MagezonVideoPlayer = (props) => {
             videoLink = `https://player.vimeo.com/video/${videoId[3]}?${additionalVideoProps}`;
         }
         if (video_type === 'youtube') {
-            const videoUrl = link && link.split('=')[1];
+            const videoUrl = videoLink && videoLink.split('=')[1];
             videoLink = `https://www.youtube.com/embed/${videoUrl}?${additionalVideoProps}`;
         }
         return (
