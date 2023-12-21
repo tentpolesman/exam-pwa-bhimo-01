@@ -19,12 +19,9 @@ import XMarkIcon from '@heroicons/react/20/solid/XMarkIcon';
 
 const WidgetSliderCarousel = (props) => {
     const {
-        storeConfig, content, className, showClose, key_cookies, backgroundColor, textColor, handleClose: customHandleClose,
+        content, className, showClose, key_cookies, handleClose: customHandleClose,
     } = props;
     const styles = useStyles();
-
-    const color = textColor && textColor !== '' ? textColor : storeConfig.global_promo.text_color;
-    const background = backgroundColor && backgroundColor !== '' ? backgroundColor : storeConfig.global_promo.background_color;
 
     const [activeTabs, setActiveTabs] = React.useState(0);
     const countTabs = React.useRef(0);
@@ -66,21 +63,17 @@ const WidgetSliderCarousel = (props) => {
 
     const handleClose = () => {
         setCookies(key_cookies, false);
-        const div = document.getElementsByClassName('slider-container');
-        if (div && div.length > 0) {
-            div[0].style.display = 'none';
-            div[0].style.height = '0px';
-        }
-        const leftArrow = document.getElementById('arrow-left');
-        if (leftArrow) {
-            leftArrow.style.display = 'none';
-        }
-
-        const rightArrow = document.getElementById('arrow-right');
-        if (rightArrow) {
-            rightArrow.style.display = 'none';
-        }
         customHandleClose(false);
+        const globalPromoMessage = document.getElementById('global-promo-message');
+        const headerInner = document.getElementById('header-inner');
+        if (headerInner) {
+            headerInner.classList.remove('top-[38px]');
+        }
+        if (globalPromoMessage) {
+            globalPromoMessage.style.display = 'none';
+            globalPromoMessage.style.height = '0px';
+            // globalPromoMessage.remove();
+        }
     };
 
     if (content && content !== '') {
@@ -107,7 +100,7 @@ const WidgetSliderCarousel = (props) => {
                         variant="plain"
                         iconOnly
                         icon={<ChevronLeftIcon />}
-                        iconProps={{ className: '!text-primary !opacity-100 mobile:max-tablet:h-[20px] mobile:max-tablet:w-[20px]' }}
+                        iconProps={{ className: '!text-neutral-white !opacity-100 mobile:max-tablet:h-[20px] mobile:max-tablet:w-[20px]' }}
                     />
                     {parse(content, options)}
                     <Button
@@ -130,7 +123,7 @@ const WidgetSliderCarousel = (props) => {
                         variant="plain"
                         iconOnly
                         icon={<ChevronRightIcon />}
-                        iconProps={{ className: '!text-primary !opacity-100 mobile:max-tablet:h-[20px] mobile:max-tablet:w-[20px]' }}
+                        iconProps={{ className: '!text-neutral-white !opacity-100 mobile:max-tablet:h-[20px] mobile:max-tablet:w-[20px]' }}
                     />
                     {showClose ? (
                         <Button
@@ -139,7 +132,7 @@ const WidgetSliderCarousel = (props) => {
                             variant="plain"
                             iconOnly
                             icon={<XMarkIcon />}
-                            iconProps={{ className: '!text-primary !opacity-100 mobile:max-tablet:h-[20px] mobile:max-tablet:w-[20px]' }}
+                            iconProps={{ className: '!text-neutral-white !opacity-100 mobile:max-tablet:h-[20px] mobile:max-tablet:w-[20px]' }}
                         />
                     ) : null}
                 </div>
@@ -154,9 +147,7 @@ const WidgetSliderCarousel = (props) => {
                             text-align: center;
                             padding: 8px 25%;
                             font-size: 14px;
-                            color: ${color};
                             justify-content: center;
-                            background-color: ${background};
                         }
 
                         @media (max-width: 768px) {
@@ -180,21 +171,16 @@ const WidgetSliderCarousel = (props) => {
 
 WidgetSliderCarousel.propTypes = {
     // eslint-disable-next-line react/forbid-prop-types
-    storeConfig: propTypes.object.isRequired,
     content: propTypes.string.isRequired,
     className: propTypes.string,
     showClose: propTypes.bool,
     key_cookies: propTypes.string,
-    backgroundColor: propTypes.string,
-    textColor: propTypes.string,
 };
 
 WidgetSliderCarousel.defaultProps = {
     className: '',
     showClose: true,
     key_cookies: features.globalPromo.key_cookies,
-    backgroundColor: '',
-    textColor: '',
 };
 
 export default WidgetSliderCarousel;
