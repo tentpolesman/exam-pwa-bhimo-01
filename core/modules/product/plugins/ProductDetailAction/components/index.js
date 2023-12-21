@@ -101,7 +101,7 @@ const ProductDetailAction = ({
                     FooterComponentImagePreview={(
                         <ProductLabel
                             className="absolute top-[15px] left-[17px]"
-                            stockStatus={data?.stockStatus}
+                            stockStatus={data?.stock_status}
                             newFromDate={data?.new_from_date}
                             newToDate={data?.new_to_date}
                             specialFromDate={data?.special_from_date}
