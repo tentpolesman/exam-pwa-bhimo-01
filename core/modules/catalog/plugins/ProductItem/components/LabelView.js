@@ -16,7 +16,7 @@ const LabelView = (props) => {
                 config={{
                     enable: storeConfig?.pwa?.label_enable,
                     new: {
-                        enable: storeConfig?.pwa?.label_enable,
+                        enable: storeConfig?.pwa?.label_new_enable,
                     },
                     sale: {
                         enable: storeConfig?.pwa?.label_sale_enable,

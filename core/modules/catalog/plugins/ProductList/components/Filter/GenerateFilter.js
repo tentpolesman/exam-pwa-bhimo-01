@@ -220,10 +220,10 @@ const GenerateFilter = (props) => {
                                     key={ids}
                                     type="button"
                                 >
-                                    <Typography className="font-normal" variant="span" letter="capitalize">
+                                    <Typography className="font-normal" variant="bd-2" letter="capitalize">
                                         {`${val.label.replace(/_/g, ' ')} `}
                                     </Typography>
-                                    <Typography className="font-normal" color="text-neutral-400" variant="span" letter="capitalize">
+                                    <Typography className="font-normal" color="text-neutral-400" variant="bd-2" letter="capitalize">
                                         {`(${val.count})`}
                                     </Typography>
                                 </button>
@@ -254,35 +254,18 @@ const GenerateFilter = (props) => {
 
             return (
                 <div className="flex flex-col gap-2">
-                    {
-                        openMore ? (
-                            <RadioGroup
-                                noLabel
-                                name={itemFilter.field.replace(/_/g, ' ')}
-                                label={false}
-                                data={[...itemFilters, ...othersFilters]}
-                                value={selectedFilter[itemFilter.field]}
-                                onChange={(value) => selectFilter(itemFilter.field, value)}
-                                className="!mb-0"
-                                classNames={{
-                                    radioGroupClasses: 'gap-2',
-                                }}
-                            />
-                        ) : (
-                            <RadioGroup
-                                noLabel
-                                name={itemFilter.field.replace(/_/g, ' ')}
-                                label={false}
-                                data={itemFilters}
-                                value={selectedFilter[itemFilter.field]}
-                                onChange={(value) => selectFilter(itemFilter.field, value)}
-                                className="!mb-0"
-                                classNames={{
-                                    radioGroupClasses: 'gap-2',
-                                }}
-                            />
-                        )
-                    }
+                    <RadioGroup
+                        noLabel
+                        name={itemFilter.field.replace(/_/g, ' ')}
+                        label={false}
+                        data={!openMore ? itemFilters : [...itemFilters, ...othersFilters]}
+                        value={selectedFilter[itemFilter.field]}
+                        onChange={(value) => selectFilter(itemFilter.field, value)}
+                        className="!mb-0"
+                        classNames={{
+                            radioGroupClasses: 'gap-2',
+                        }}
+                    />
 
                     {
                         othersFilters.length > 0 && (

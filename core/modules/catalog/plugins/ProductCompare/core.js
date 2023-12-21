@@ -104,7 +104,7 @@ const ProductCompareIcon = ({ withLink, WithLinkView, isLogin }) => {
     if (dataCompare || compareList) {
         return (
             <>
-                <Typography variant="span" type="bold" letter="uppercase">
+                <Typography variant="bd-2">
                     {t('common:productCompare:title')} (
                     {(dataCompare && dataCompare.item_count) ||
                         (compareList && compareList.compareList && compareList.compareList.item_count && compareList.compareList.item_count) ||
