@@ -18,7 +18,7 @@ const CmsPage = (props) => {
     if (onlyCms) return <CmsRenderer {...other} t={t} content={data.cmsPage.content} storeConfig={storeConfig} />;
 
     return (
-        <div className="cms-container xs:max-md:p-4 -m-[10px]">
+        <div className="cms-container">
             <CmsRenderer {...other} t={t} content={data.cmsPage.content} storeConfig={storeConfig} />
         </div>
     );

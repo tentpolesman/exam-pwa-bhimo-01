@@ -328,7 +328,7 @@ const Layout = (props) => {
     };
 
     const generateClasses = () => {
-        let classes = `tablet:max-w-[768px] desktop:max-w-[1200px] ${font.variable} font-sans !font-pwa-default`;
+        let classes = `${!isCms ? 'tablet:max-w-[768px] desktop:max-w-[1200px]' : ''} ${font.variable} font-sans !font-pwa-default`;
         if (showGlobalPromo) {
             classes += ' tablet:max-desktop:mt-[145px] desktop:mt-[205px]';
         } else {
