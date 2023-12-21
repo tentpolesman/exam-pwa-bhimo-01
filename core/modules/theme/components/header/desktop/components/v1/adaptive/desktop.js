@@ -179,7 +179,7 @@ const DesktopHeader = (props) => {
                     <div className={cx('middle-header__search')}>
                         <Autocomplete setValue={setValue} handleSearch={handleSearch} t={t} storeConfig={storeConfig} deviceWidth={deviceWidth} />
                     </div>
-                    <div className={cx('middle-header__statusicon', 'grid', 'grid-cols-[5fr_5fr]')}>
+                    <div className={cx('middle-header__statusicon', 'grid', 'grid-cols-[5fr_6fr]')}>
                         <div className={cx('middle-header__statusicon__left-section', 'grid', 'grid-cols-3')}>
                             <div className={cx('notification')}>
                                 <NotificationBell withLink />
@@ -210,14 +210,18 @@ const DesktopHeader = (props) => {
                                             content={<PopoverContent />}
                                             open={open}
                                             setOpen={setOpen}
-                                            className={cx('min-w-[180px]', 'top-[99%]', 'left-[0%]')}
+                                            className={cx('w-[160px]', 'top-[99%]', 'left-[0%]')}
                                             contentClassName={cx('rounded-sm')}
                                         >
                                             <div className="popover-children">
                                                 <UserIcon className={cx('w-[24px]', 'text-neutral-600', 'inline-block', 'ml-1')} />
-                                                <Typography variant="bd-2b" className={cx('inline-block', 'pl-2', '!text-primary-700')}>
-                                                    {customer && customer.firstname}
-                                                </Typography>
+                                                {customer && customer.firstname && (
+                                                    <Typography variant="bd-2b" className={cx('inline-block', 'pl-2', '!text-primary-700')}>
+                                                        {customer.firstname.length <= 12
+                                                            ? `${customer.firstname}`
+                                                            : `${customer.firstname.substring(0, 10)}...`}
+                                                    </Typography>
+                                                )}
                                             </div>
                                         </Popover>
                                     </div>

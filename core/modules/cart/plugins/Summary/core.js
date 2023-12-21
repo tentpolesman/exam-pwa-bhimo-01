@@ -4,10 +4,11 @@ import { formatPrice } from '@helper_currency';
 import { useReactiveVar } from '@apollo/client';
 import { currencyVar } from '@root/core/services/graphql/cache';
 import propTypes from 'prop-types';
+import DesktopView from '@plugin_summary/components/DesktopSummary';
 
 const CoreSummary = (props) => {
     const {
-        DesktopView, MobileView, isDesktop, dataCart, globalCurrency = 'IDR', storeConfig,
+        isDesktop, dataCart, globalCurrency = 'IDR', storeConfig,
         ...other
     } = props;
     // cache currency
@@ -52,7 +53,7 @@ const CoreSummary = (props) => {
         total = prices.grand_total;
         const [shipping] = shipping_addresses;
 
-        dataSummary.push({ item: 'Total', value: subtotal });
+        let haveOthersTotal;
 
         if (prices && prices.applied_taxes && prices.applied_taxes.length) {
             const taxes = prices.applied_taxes.reduce(
@@ -65,6 +66,7 @@ const CoreSummary = (props) => {
             );
             const price = formatPrice(taxes.value, taxes.currency, currencyCache);
             dataSummary.push({ item: t('common:summary:tax'), value: price });
+            haveOthersTotal = true;
         }
 
         if (modules.checkout.extraFee.enabled && applied_extra_fee && applied_extra_fee.extrafee_value) {
@@ -76,6 +78,7 @@ const CoreSummary = (props) => {
                     currencyCache,
                 ),
             });
+            haveOthersTotal = true;
         }
 
         if (storeConfig.enable_oms_multiseller === '1') {
@@ -89,11 +92,13 @@ const CoreSummary = (props) => {
             });
             const price = formatPrice(totalShipping, storeConfig.base_currency_code, currencyCache);
             dataSummary.push({ item: 'shipping', value: price });
+            haveOthersTotal = true;
         } else {
             if (shipping && shipping.selected_shipping_method) {
                 const shippingMethod = shipping.selected_shipping_method;
                 const price = formatPrice(shippingMethod.amount.value, shippingMethod.amount.currency, currencyCache);
                 dataSummary.push({ item: 'shipping', value: price });
+                haveOthersTotal = true;
             }
         }
         if (prices && prices.discounts && prices.discounts.length) {
@@ -102,6 +107,7 @@ const CoreSummary = (props) => {
                 return { item: `${disc.label}`, value: `-${price}` };
             });
             dataSummary = dataSummary.concat(discounts);
+            haveOthersTotal = true;
         }
 
         if (modules.storecredit.enabled) {
@@ -115,15 +121,19 @@ const CoreSummary = (props) => {
             } else if (applied_store_credit.is_use_store_credit) {
                 price = formatPrice(Math.abs(applied_store_credit.store_credit_amount), globalCurrency, currencyCache);
             }
-            if (price !== '') dataSummary.push({ item: `${t('common:summary:storeCredit')} `, value: `-${price}` });
+            if (price !== '') {
+                dataSummary.push({ item: `${t('common:summary:storeCredit')} `, value: `-${price}` });
+                haveOthersTotal = true;
+            }
         }
 
         if (modules.rewardpoint.enabled && applied_reward_points.is_use_reward_points) {
             const price = formatPrice(Math.abs(applied_reward_points.reward_points_amount), globalCurrency, currencyCache);
             dataSummary.push({ item: `${t('common:summary:rewardPoint')} `, value: `-${price}` });
+            haveOthersTotal = true;
         }
 
-        if (modules.giftcard.enabled && Object.keys(applied_giftcard).length>0) {
+        if (modules.giftcard.enabled && Object.keys(applied_giftcard).length > 0) {
             let giftCards = [];
             if (modules.giftcard.useCommerceModule) {
                 if (applied_giftcard && applied_giftcard.length > 0) {
@@ -138,30 +148,21 @@ const CoreSummary = (props) => {
                     return { item: `${t('common:summary:giftCard')} (${item.giftcard_code}) - ${price}`, value: `-${price}` };
                 });
             }
+            if (giftCards.length) haveOthersTotal = true;
             dataSummary = dataSummary.concat(giftCards);
+        }
+
+        if (haveOthersTotal) {
+            dataSummary.push({ item: 'Subtotal', value: subtotal });
         }
     }
 
-    if (isDesktop) {
-        return (
-            <DesktopView
-                items={items}
-                summary={{ total, data: dataSummary }}
-                isDesktop={isDesktop}
-                {...other}
-                dataCart={dataCart}
-                storeConfig={storeConfig}
-                currencyCache={currencyCache}
-            />
-        );
-    }
-
     return (
-        <MobileView
+        <DesktopView
             items={items}
             summary={{ total, data: dataSummary }}
+            isDesktop={isDesktop}
             {...other}
-            t={t}
             dataCart={dataCart}
             storeConfig={storeConfig}
             currencyCache={currencyCache}

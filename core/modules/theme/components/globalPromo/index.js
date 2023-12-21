@@ -39,7 +39,16 @@ const GlobalPromoMessage = (props) => {
             <>
                 <div
                     id="global-promo-message"
-                    className={cx('global-promo-message', 'h-[38px]', 'text-center', 'font-normal', 'tablet:text-md', 'mobile:max-tablet:text-sm')}
+                    className={cx(
+                        'global-promo-message',
+                        'h-[38px]',
+                        'text-center',
+                        'font-normal',
+                        'tablet:text-md',
+                        'mobile:max-tablet:text-sm',
+                        'bg-primary-700',
+                        'text-neutral-white',
+                    )}
                 >
                     <GlobalPromoCarousel
                         className={styles.container}
@@ -51,14 +60,6 @@ const GlobalPromoMessage = (props) => {
                         {...other}
                     />
                 </div>
-                <style jsx>
-                    {`
-                        .global-promo-message {
-                            background-color: ${storeConfig.global_promo.background_color};
-                            color: ${storeConfig.global_promo.text_color};
-                        }
-                    `}
-                </style>
             </>
         );
     }
