@@ -65,7 +65,7 @@ const Password = (props) => {
             <TextField
                 className="password-field mt-2 w-full"
                 type={show ? 'text' : 'password'}
-                rightIcon={showVisible && show ? <EyeIcon /> : showVisible ? <EyeSlashIcon /> : ''}
+                rightIcon={showVisible && show ? <EyeIcon /> : showVisible ? <EyeSlashIcon /> : <></>}
                 rightIconProps={{ className: showVisible ? 'cursor-pointer' : '', onClick: () => setShow(!show) }}
                 hintProps={{
                     displayHintText: error,
