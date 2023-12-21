@@ -2,7 +2,6 @@ import React from 'react';
 import Radio from '@common_forms/Radio';
 import Typography from '@common_typography';
 import classNames from 'classnames';
-import useStyles from '@plugin_customizableitem/components/style';
 
 const ViewCustomizableRadioOption = ({
     title = 'test', data = [], selected = [], disabled,
@@ -10,20 +9,21 @@ const ViewCustomizableRadioOption = ({
 }) => {
     const Label = () => (
         <>
-            <Typography variant="label" type="bold" letter="uppercase">
+            <Typography variant="bd-2a">
                 {title.replace(/_/g, ' ')}
                 {' '}
-                {required && <Typography color="red" type="bold" variant="label">*</Typography>}
+                {required && <Typography variant="bd-2a" color="text-red">*</Typography>}
             </Typography>
         </>
     );
-    const styles = useStyles();
-    const customClass = classNames('flex flex-col', styles.container, styles.customizableRadioOption);
+    const customClass = classNames('flex flex-col', 'w-[100%]');
     return (
         <div className={customClass}>
             {
                 data && data.length > 0 && (
                     <Radio
+                        size="sm"
+                        var
                         name={title}
                         label={title}
                         CustomLabel={Label}
@@ -37,7 +37,7 @@ const ViewCustomizableRadioOption = ({
             }
             {
                 error && error !== '' && (
-                    <Typography color="red">{error}</Typography>
+                    <Typography variant="bd-2a" color="text-red">{error}</Typography>
                 )
             }
         </div>
