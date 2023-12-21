@@ -179,14 +179,14 @@ const Radio = (props) => {
                                     },
                                     radioClasses,
                                 )}
-                                name={item.name || name}
-                                ariaLabel={ariaLabel}
+                                name={item.name || `radio-${index}`}
+                                ariaLabel={item.ariaLabel || `radio-${index}`}
                                 value={item.value}
                                 checked={item.value === value}
                                 onChange={handleChange}
-                                id={item.id || `${name}-${index}`}
+                                id={item.id || `radio-${index}`}
                             />
-                            <label htmlFor={item.id || `${name}-${index}`} className="cursor-pointer flex items-center group">
+                            <label htmlFor={item.id || `radio-${index}`} className="cursor-pointer flex items-center group">
                                 {type === 'check' ? (
                                     item.value === value ? (
                                         <div className={cx(

@@ -38,9 +38,10 @@ const generateNew = ({ newFromDate, newToDate }) => {
 };
 
 const generateSale = ({
-    specialFromDate, specialToDate,
+    specialFromDate, specialToDate, priceRange, productType,
 }) => {
     let validSpecial = false;
+    const isBundleOrAw = productType === 'BundleProduct' || productType === 'AwGiftCardProduct';
     const nowTime = new Date(Date.now()).getTime();
     if (specialFromDate && specialFromDate !== null) {
         const startTime = new Date(specialFromDate).getTime();
@@ -52,6 +53,17 @@ const generateSale = ({
         validSpecial = true;
         if (nowTime > endTime) validSpecial = false;
     }
+    const regularPrice = priceRange?.minimum_price?.regular_price || 0;
+    const finalPrice = priceRange?.minimum_price?.final_price || 0;
+
+    if (regularPrice.value > finalPrice.value) {
+        validSpecial = true;
+    }
+
+    if (isBundleOrAw) {
+        validSpecial = false;
+    }
+
     return validSpecial;
 };
 
@@ -66,11 +78,14 @@ const ProductLabel = ({
     newFromDate,
     newToDate,
     fontSizeBadge,
+    productType,
 }) => {
     const { t } = useTranslation(['common', 'cart']);
     const IS_OOS = stockStatus === 'OUT_OF_STOCK';
     const showLabelNew = generateNew({ newFromDate, newToDate });
-    const showSale = generateSale({ priceRange, specialFromDate, specialToDate });
+    const showSale = generateSale({
+        priceRange, specialFromDate, specialToDate, productType,
+    });
     return (
         <div className={cx('product-label', className)}>
             <Show when={IS_OOS}>
@@ -81,7 +96,7 @@ const ProductLabel = ({
                     fontSize={fontSizeBadge}
                 />
             </Show>
-            <Show when={config.enabled && config.new.enabled && showLabelNew}>
+            <Show when={config.enable && config.new.enable && showLabelNew}>
                 <Badge
                     bold
                     success
@@ -90,7 +105,7 @@ const ProductLabel = ({
                     fontSize={fontSizeBadge}
                 />
             </Show>
-            <Show when={config.enabled && config.sale.enabled && showSale}>
+            <Show when={config.enable && config.sale.enable && showSale}>
                 <Badge
                     bold
                     danger
