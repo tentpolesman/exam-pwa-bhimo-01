@@ -20,6 +20,8 @@ const Password = (props) => {
         errorMessage = '',
         classLabel = {},
         placeholder = '********',
+        absolute = true,
+        hintClassName = '',
         ...restProps
     } = props;
     const [show, setShow] = useState(false);
@@ -65,10 +67,12 @@ const Password = (props) => {
                     displayHintText: error,
                     hintType: error ? 'error' : '',
                     hintText: errorMessage,
+                    className: hintClassName,
                 }}
                 value={value}
                 onChange={handleChange}
                 placeholder={placeholder}
+                absolute={absolute}
             />
             {showPasswordMeter && (
                 <>

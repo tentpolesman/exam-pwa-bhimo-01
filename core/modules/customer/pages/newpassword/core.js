@@ -22,7 +22,13 @@ const NewPassword = (props) => {
             confirmPassword: '',
         },
         validationSchema: Yup.object().shape({
-            password: Yup.string().required(t('validate:password:required')),
+            password: Yup.string()
+                .required(t('validate:password:required'))
+                .test('check-pass-strength', t('customer:newPassword:passwordStrength'), (input) => {
+                    // Use 8 or more characters with at least 1 number and 1 symbol
+                    const regexPassword = new RegExp(/(?=.*[^A-Za-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8}/);
+                    return regexPassword.test(input);
+                }),
             confirmPassword: Yup.string()
                 .required(t('validate:confirmPassword:required'))
                 // eslint-disable-next-line no-use-before-define

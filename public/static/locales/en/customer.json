@@ -5,7 +5,14 @@
   "newPassword": {
     "title": "Change new password",
     "success": "Password has been update successfully",
-    "failed": "Failed on updating password"
+    "failed": "Failed on updating password",
+    "passwordStrength": "Use 8 or more characters with at least 1 number and 1 symbol",
+    "forgotYourPassword": "Forgot your password?",
+    "enterYourPassword": "Please enter your new password",
+    "newPassword": "New Password",
+    "resetPassword": "Reset Password",
+    "rememberYourPassword": "Remember your password?",
+    "backToLogin": "Back to Login"
   },
   "button": {
     "logout": "Sign out"
