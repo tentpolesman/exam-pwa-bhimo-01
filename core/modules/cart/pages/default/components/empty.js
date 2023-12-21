@@ -1,29 +1,29 @@
 import Typography from '@common_typography';
 import Button from '@common_button';
-import Link from 'next/link';
 import classNames from 'classnames';
-import useStyles from '@core_modules/cart/pages/default/components/style';
+import ShoppingCartIcon from '@heroicons/react/24/solid/ShoppingCartIcon';
 
 const EmptyView = (props) => {
-    const styles = useStyles();
     const { t } = props;
     return (
-        <div className={classNames(styles.container, styles.containerEmpty, 'row center-xs')}>
-            <div className="xs:basis-full">
-                <Typography variant="span" type="regular" align="center">
-                    <span className={styles.emptyCart}>{t('cart:empty:text')}</span>
-                </Typography>
-            </div>
-            <div className={classNames(styles.butonEmpty, 'xs:basis-full')}>
-                <Link href="/">
-
-                    <Button className={styles.toolbarButton}>
-                        {t('common:button:continueShopping')}
-                    </Button>
-
-                </Link>
-            </div>
-
+        <div className="flex flex-col items-center w-full gap-4">
+            <ShoppingCartIcon className={classNames(
+                'w-10 h-10 tablet:w-14 tablet:h-14 text-neutral-300',
+            )}
+            />
+            <Typography className="font-normal text-[14px] tablet:text-base">
+                {t('cart:empty:text')}
+            </Typography>
+            <Button
+                variant="primary"
+                className={classNames(
+                    'justify-center',
+                    'h-full w-full max-h-[38px] tablet:max-h-[48px] max-w-[142px] tablet:max-w-[170px]',
+                )}
+                link="/"
+            >
+                {t('cart:button:startShopping')}
+            </Button>
         </div>
     );
 };
