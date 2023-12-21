@@ -69,7 +69,6 @@
             "@helper_text": ["src/helpers/text", "core/helpers/text"],
             "@helper_theme": ["src/helpers/theme", "core/helpers/theme"],
             "@helper_urlparser": ["src/helpers/urlParser", "core/helpers/urlParser"],
-            "@helper_zxcvbn": ["src/helpers/zxcvbn", "core/helpers/zxcvbn"],
             "@helper_localstorage": ["src/helpers/localstorage", "core/helpers/localstorage"],
 
             "@hook/*": ["src/hooks/*", "core/hooks/*"],
