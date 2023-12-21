@@ -16,17 +16,16 @@ const Layout = (props) => {
     const menu = [
         { href: '/customer/account', title: t('customer:menu:myAccount') },
         { title: t('customer:menu:dashboard') },
-        { href: '/sales/order/history', title: t('customer:menu:myOrder') },
         ...pushIf(modules.notification.enabled, {
             href: '/inboxnotification/notification',
             title: t('customer:menu:notification'),
         }),
-        { href: '/customer/account/address', title: t('customer:menu:address') },
-        { href: '/customer/account/profile', title: t('customer:menu:accountInformation') },
+        { href: '/sales/order/history', title: t('customer:menu:myOrder') },
         ...pushIf(modules.wishlist.enabled, {
             href: '/wishlist',
             title: t('customer:menu:wishlist'),
         }),
+        { href: '/sales/downloadable/history', title: t('customer:menu:myDownload') },
         {
             href: storeConfig && storeConfig.OmsRma.enable_oms_rma ? storeConfig.OmsRma.oms_rma_link : '/rma/customer',
             title: t('customer:menu:return'),
@@ -35,7 +34,8 @@ const Layout = (props) => {
             href: '/customer/account/storecredit',
             title: t('customer:menu:storeCredit'),
         }),
-        { href: '/sales/downloadable/history', title: t('customer:menu:myDownload') },
+        { href: '/customer/account/address', title: t('customer:menu:address') },
+        { href: '/customer/account/profile', title: t('customer:menu:accountInformation') },
         ...pushIf(modules.productreview.enabled, {
             href: '/review/customer',
             title: t('customer:menu:myProductReview'),
@@ -90,7 +90,7 @@ const Layout = (props) => {
                                                 router.asPath === '/customer/account' || activeMenu === '/customer/account',
                                         })}
                                     >
-                                        {val.title}
+                                        <Link href="/customer/account">{val.title}</Link>
                                     </li>
                                 );
                             }
