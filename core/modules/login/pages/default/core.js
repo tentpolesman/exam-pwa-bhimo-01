@@ -551,7 +551,7 @@ const Login = (props) => {
                 });
                 return () => unregisterAuthObserver();
             } catch {
-                return null;
+                return () => {};
             }
         }
     }, []);
