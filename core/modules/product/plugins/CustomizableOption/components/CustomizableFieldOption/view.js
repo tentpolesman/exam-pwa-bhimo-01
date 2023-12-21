@@ -21,8 +21,6 @@ const ViewCustomizableFieldOption = ({
                         classNameLabel="mb-[6px]"
                         onChange={onChange}
                         value={value}
-                        error={error}
-                        errorMessage={error}
                         label={(
                             <Typography variant="bd-2a">
                                 {data.label}
@@ -30,6 +28,12 @@ const ViewCustomizableFieldOption = ({
                                 {required && <Typography variant="bd-2a" color="text-red">*</Typography>}
                             </Typography>
                         )}
+                        hintProps={{
+                            displayHintText: error !== '',
+                            hintType: error !== '' ? 'error' : '',
+                            hintText: error,
+                            className: '!static mt-[6px]',
+                        }}
                     />
                 )
             }
