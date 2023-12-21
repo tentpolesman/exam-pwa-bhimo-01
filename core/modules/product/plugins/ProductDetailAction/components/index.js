@@ -108,12 +108,12 @@ const ProductDetailAction = ({
                             specialToDate={data?.special_to_date}
                             priceRange={data?.price_range}
                             config={{
-                                enabled: storeConfig.pwa.label_enable,
+                                enable: storeConfig.pwa.label_enable,
                                 new: {
-                                    enabled: storeConfig.pwa.label_enable,
+                                    enable: storeConfig.pwa.label_enable,
                                 },
                                 sale: {
-                                    enabled: storeConfig.pwa.label_sale_enable,
+                                    enable: storeConfig.pwa.label_sale_enable,
                                 },
                             }}
                         />

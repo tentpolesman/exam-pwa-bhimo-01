@@ -86,6 +86,7 @@ const ProductLabel = ({
     const showSale = generateSale({
         priceRange, specialFromDate, specialToDate, productType,
     });
+
     return (
         <div className={cx('product-label', className)}>
             <Show when={IS_OOS}>
