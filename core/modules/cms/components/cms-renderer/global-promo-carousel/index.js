@@ -72,7 +72,7 @@ const WidgetSliderCarousel = (props) => {
         if (globalPromoMessage) {
             globalPromoMessage.style.display = 'none';
             globalPromoMessage.style.height = '0px';
-            // globalPromoMessage.remove();
+            globalPromoMessage.remove();
         }
     };
 
