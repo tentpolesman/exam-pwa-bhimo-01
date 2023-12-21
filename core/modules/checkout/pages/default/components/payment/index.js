@@ -19,7 +19,6 @@ export default function CustomizedExpansionPanels({
     setInitialOptionPaypal,
     initialOptionPaypal,
     setTokenData,
-    travelokaPayRef,
     stripeRef,
     clientSecret,
     setClientSecret,
@@ -390,7 +389,6 @@ export default function CustomizedExpansionPanels({
             paypalTokenData={paypalTokenData}
             paypalHandlingProps={paypalHandlingProps}
             initialOptionPaypal={initialOptionPaypal}
-            travelokaPayRef={travelokaPayRef}
             stripeRef={stripeRef}
             handleOpenMessage={handleOpenMessage}
             displayHowToPay={displayHowToPay}

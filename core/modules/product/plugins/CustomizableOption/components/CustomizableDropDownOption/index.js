@@ -1,11 +1,12 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable eqeqeq */
 import React, { useState, useMemo } from 'react';
+import getPrice from '@core_modules/product/helpers/getPrice';
+import View from '@plugin_customizableitem/components/CustomizableDropDownOption/view';
+import Typography from '@common_typography';
 import { useQuery } from '@apollo/client';
 import { formatPrice } from '@helpers/currency';
 import { useTranslation } from 'next-i18next';
-import getPrice from '@core_modules/product/helpers/getPrice';
-import View from '@plugin_customizableitem/components/CustomizableDropDownOption/view';
 import { getCustomizableDropDownOption } from '@core_modules/product/services/graphql/customizableSchema';
 
 const CustomizableDropDownOption = ({
@@ -13,7 +14,7 @@ const CustomizableDropDownOption = ({
     errorCustomizableOptions, additionalPrice, setAdditionalPrice,
     stock_status, ...other
 }) => {
-    const { t } = useTranslation(['product']);
+    const { t } = useTranslation(['common', 'product']);
     const productPrice = getPrice(other.price);
     const [value, setValue] = useState([]);
     const [options, setOptions] = useState({});
@@ -94,7 +95,8 @@ const CustomizableDropDownOption = ({
                     }
                     return {
                         ...item,
-                        id: option[0].option_id,
+                        id: option[0].option_type_id,
+                        option_id: option[0].option_id,
                         label: `${item.title} + ${formatPrice(price)}`,
                         value: JSON.stringify(item.option_type_id),
                         price,
@@ -123,7 +125,7 @@ const CustomizableDropDownOption = ({
     }, [options, errorCustomizableOptions]);
 
     if (loading || !data) {
-        return <p>Loading...</p>;
+        return <Typography>{`${t('common:label:loading')}...`}</Typography>;
     }
 
     return (

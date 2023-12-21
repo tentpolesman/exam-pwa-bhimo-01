@@ -41,7 +41,7 @@ const Detail = (props) => {
 
     return (
         <div className="flex flex-col gap-1 relative w-full">
-            <Show when={enableMultiSeller && seller && seller.seller_name}>
+            <Show when={enableMultiSeller && seller && seller?.seller_name}>
                 <div className="flex">
                     <Typography
                         variant="bd-2"

@@ -1,5 +1,6 @@
 /* eslint-disable no-plusplus */
 /* eslint-disable no-shadow */
+/* eslint-disable @next/next/no-img-element */
 import MuiExpansionPanel from '@material-ui/core/Accordion';
 import MuiExpansionPanelDetails from '@material-ui/core/AccordionDetails';
 import MuiExpansionPanelSummary from '@material-ui/core/AccordionSummary';
@@ -14,7 +15,6 @@ import FieldPoint from '@core_modules/checkout/components/fieldcode';
 import RadioItem from '@core_modules/checkout/components/radioitem';
 import ModalHowtoPay from '@core_modules/checkout/pages/default/components/ModalHowtoPay';
 import StripeCheckoutForm from '@core_modules/checkout/pages/default/components/payment/components/StripeCheckoutForm';
-import TravelokaPayForm from '@core_modules/checkout/pages/default/components/payment/components/TravelokaPayForm';
 import useStyles from '@core_modules/checkout/pages/default/components/style';
 import Arrow from '@material-ui/icons/ArrowDropDown';
 import Skeleton from '@material-ui/lab/Skeleton';
@@ -30,7 +30,6 @@ const ExpansionPanelSummary = withStyles(ExpanSummaryStyle)(MuiExpansionPanelSum
 const ExpansionPanelDetails = withStyles(ExpanDetailStyle)(MuiExpansionPanelDetails);
 const PO = 'purchaseorder';
 const PaypalCode = 'paypal_express';
-const travelokapay = 'travelokapay';
 const stripePayments = 'stripe_payments';
 
 /**
@@ -100,12 +99,10 @@ const PaymentView = (props) => {
         paypalTokenData,
         paypalHandlingProps,
         initialOptionPaypal,
-        travelokaPayRef,
         storeConfig,
         displayHowToPay,
         setDisplayHowToPay,
     } = props;
-    const { payment_travelokapay_bin_whitelist, payment_travelokapay_public_key, payment_travelokapay_user_id } = storeConfig;
     const { modules } = commonConfig;
     const [expanded, setExpanded] = React.useState(null);
     const [expandedActive, setExpandedActive] = React.useState(true);
@@ -246,8 +243,6 @@ const PaymentView = (props) => {
                                                                 const isPurchaseOrder = item.code === PO && selected.payment === PO;
                                                                 const isPaypal = item.code === PaypalCode && selected.payment === PaypalCode;
                                                                 const isStripe = item.code === stripePayments && selected.payment === stripePayments;
-                                                                // eslint-disable-next-line max-len
-                                                                const isTravelokaPay = item.code === travelokapay && selected.payment === travelokapay;
 
                                                                 if (isPurchaseOrder) {
                                                                     return (
@@ -282,17 +277,6 @@ const PaymentView = (props) => {
                                                                                 />
                                                                             </PayPalScriptProvider>
                                                                         </Grid>
-                                                                    );
-                                                                }
-                                                                if (isTravelokaPay) {
-                                                                    return (
-                                                                        <TravelokaPayForm
-                                                                            checkout={checkout}
-                                                                            payment_travelokapay_bin_whitelist={payment_travelokapay_bin_whitelist}
-                                                                            payment_travelokapay_public_key={payment_travelokapay_public_key}
-                                                                            payment_travelokapay_user_id={payment_travelokapay_user_id}
-                                                                            travelokaPayRef={travelokaPayRef}
-                                                                        />
                                                                     );
                                                                 }
                                                                 if (isStripe
