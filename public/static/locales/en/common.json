@@ -68,6 +68,8 @@
         "lastName": "Last Name",
         "phoneNumber": "Phone Number",
         "gender": "Gender",
+        "emailAddress": "Email Address",
+        "email": "Email",
         "dob": "Date of Birth",
         "confirm": "Confirm Password",
         "currentPassword": "Current Password",
@@ -82,6 +84,11 @@
         "mapError": "Cannot load map, please check your internet connection",
         "mapLoading": "Loading map...",
         "maxChar": "Max. {{length}} Character"
+    },
+    "placeholder": {
+        "email": "e.g: user@gmail.com",
+        "firstName": "e.g: John Doe",
+        "lastName": "e.g: Doe"
     },
     "title": {
         "qty": "Quantity",
@@ -226,5 +233,8 @@
         "trailer": "Trailer",
         "viewSample": "View Sample",
         "loading": "Loading"
+    },
+    "cms": {
+        "unableToRender": "Unable to render the content"
     }
 }

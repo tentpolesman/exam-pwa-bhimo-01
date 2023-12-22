@@ -67,6 +67,8 @@
         "lastName": "Nama Belakang",
         "phoneNumber": "Nomor Telepon",
         "gender": "Jenis Kelamin",
+        "emailAddress": "Alamat Email",
+        "email": "Email",
         "dob": "Tanggal Lahir",
         "confirm": "Konfirmasi Password",
         "currentPasword": "Password Lama",
@@ -81,6 +83,11 @@
         "mapError": "Tidak dapat memuat peta. Silahkan periksa koneksi internet anda.",
         "mapLoading": "Memuat peta...",
         "maxChar": "Maksimal {{length}} Karakter"
+    },
+    "placeholder": {
+        "email": "contoh: user@gmail.com",
+        "firstName": "contoh: John Doe",
+        "lastName": "contoh: Doe"
     },
     "title": {
         "qty": "Jumlah",
@@ -223,5 +230,8 @@
         "trailer": "Trailer",
         "viewSample": "Lihat Contoh",
         "loading": "Memuat"
+    },
+    "cms": {
+        "unableToRender": "Gagal menampilkan konten"
     }
 }

@@ -86,12 +86,13 @@ const ProductLabel = ({
     const showSale = generateSale({
         priceRange, specialFromDate, specialToDate, productType,
     });
+
     return (
         <div className={cx('product-label', className)}>
             <Show when={IS_OOS}>
                 <Badge
                     bold
-                    className={cx('product-label-new bg-neutral-250 uppercase mb-[6px]')}
+                    className={cx('product-label-new !bg-neutral-250 uppercase mb-[6px]')}
                     label={t('common:cart:oos')}
                     fontSize={fontSizeBadge}
                 />
