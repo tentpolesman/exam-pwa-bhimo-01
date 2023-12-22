@@ -186,7 +186,7 @@ const DefaultView = (props) => {
                         <Pagination
                             handleChangePage={handleChangePage}
                             page={data && data.current_page}
-                            maxPageRender={pageSize}
+                            siblingCount={1}
                             className={cx('!p-0')}
                             totalPage={data && data.total_pages}
                         />
