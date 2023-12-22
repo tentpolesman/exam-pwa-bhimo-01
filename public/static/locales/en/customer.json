@@ -128,7 +128,8 @@
     "shippedTo": "Shipped to",
     "orderTotal": "Order total",
     "status": "Status",
-    "action": "Action"
+    "action": "Action",
+    "emptyMessage": "You haven't added an order"
   },
   "notHaveNotification" : "You don't have notification yet",
   "notHaveOrder" : "Empty order history"

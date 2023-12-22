@@ -111,7 +111,6 @@ const AddressView = (props) => {
                 >
                     <Typography className={cx('!text-neutral-white')}>{t('customer:address:emptyMessage')}</Typography>
                 </Button>
-                // <div style={{ textAlign: 'center' }}>{t('customer:address:emptyMessage')}</div>
             )}
         </div>
     );

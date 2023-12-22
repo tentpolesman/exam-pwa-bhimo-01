@@ -183,7 +183,7 @@ const OrderView = (props) => {
                                                 'active:cursor-auto',
                                             )}
                                         >
-                                            <Typography className={cx('!text-neutral-white')}>{t('customer:address:emptyMessage')}</Typography>
+                                            <Typography className={cx('!text-neutral-white')}>{t('customer:order:emptyMessage')}</Typography>
                                         </Button>
                                     </td>
                                 </tr>
