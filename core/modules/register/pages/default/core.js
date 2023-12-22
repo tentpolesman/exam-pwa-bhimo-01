@@ -50,7 +50,7 @@ const Register = (props) => {
         }
     }
 
-    const [phoneIsWa, setPhoneIsWa] = React.useState(false);
+    const [phoneIsWa, setPhoneIsWa] = React.useState(true);
     const [cusIsLogin, setIsLogin] = React.useState(0);
     const [disabled, setDisabled] = React.useState(true);
     const [disabledOtpButton, setDisabledOtpButton] = React.useState(false);
@@ -172,12 +172,6 @@ const Register = (props) => {
 
     // handleSend to OTP View
     const handleSend = (phoneNumber) => {
-        // const configSendOtp = {
-        //     maxLength: otpConfig?.data?.otpConfig?.otp_length?.[0]?.length_otp_register || 4,
-        //     maxTry: otpConfig?.data?.otpConfig?.otp_max_try?.[0]?.max_try_otp_register || 3,
-        //     expired: otpConfig?.data?.otpConfig?.otp_expired_time?.[0]?.expired_time_otp_register || 60,
-        // };
-
         window.backdropLoader(true);
         actRequestOtpRegister({
             variables: {
@@ -187,9 +181,6 @@ const Register = (props) => {
             .then(() => {
                 setShowOtp(true);
                 window.backdropLoader(false);
-                // setManySendOtp(manySendOtp + 1);
-                // eslint-disable-next-line no-nested-ternary
-                // setTime(configSendOtp && configSendOtp.expired ? configSendOtp.expired : 60);
                 window.toastMessage({
                     open: true,
                     text: t('otp:sendSuccess'),
@@ -303,13 +294,13 @@ const Register = (props) => {
                                 handleSendRegister(values, resetForm);
                             }
                         } else {
+                            window.backdropLoader(false);
                             window.toastMessage({
                                 open: true,
                                 variant: 'error',
                                 text: t('register:failed'),
                             });
                         }
-                        window.backdropLoader(false);
                     })
                     .catch(() => {
                         window.backdropLoader(false);

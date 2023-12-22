@@ -104,6 +104,7 @@
     "simple-react-lightbox": "^3.6.6",
     "slick-carousel": "^1.8.1",
     "stripe": "^10.17.0",
+    "tailwind-datepicker-react": "^1.4.3",
     "webfontloader": "^1.6.28",
     "yup": "^0.28.3"
   },
