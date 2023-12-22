@@ -18,7 +18,7 @@ const ViewCustomizableDropDownOption = ({
                         name={title}
                         value={selected}
                         onChange={onChange}
-                        error={error}
+                        error={error !== ''}
                         errorMessage={error}
                         label={(
                             <Typography variant="bd-2a" className="font-bold">

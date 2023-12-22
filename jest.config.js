@@ -72,7 +72,6 @@ module.exports = {
         '^@helper_text': ['<rootDir>/src/helpers/text', '<rootDir>/core/helpers/text'],
         '^@helper_theme': ['<rootDir>/src/helpers/theme', '<rootDir>/core/helpers/theme'],
         '^@helper_urlparser': ['<rootDir>/src/helpers/urlParser', '<rootDir>/core/helpers/urlParser'],
-        '^@helper_zxcvbn': ['<rootDir>/src/helpers/zxcvbn', '<rootDir>/core/helpers/zxcvbn'],
         '^@helper_localstorage': ['<rootDir>/src/helpers/localstorage', '<rootDir>/core/helpers/localstorage'],
         '^@helper_image': ['<rootDir>/src/helpers/image', '<rootDir>/core/helpers/image'],
 
@@ -82,10 +81,7 @@ module.exports = {
         '^@common_dialog': ['<rootDir>/src/commons/ConfirmDialog', '<rootDir>/core/commons/ConfirmDialog'],
         '^@common_dropfile': ['<rootDir>/src/commons/DropFile', '<rootDir>/core/commons/DropFile'],
         '^@common_googlemaps': ['<rootDir>/src/commons/GoogleMaps', '<rootDir>/core/commons/GoogleMaps'],
-        '^@common_googlemaps_autocomplete': [
-            '<rootDir>/src/commons/GoogleMapsAutocomplete',
-            '<rootDir>/core/commons/GoogleMapsAutocomplete',
-        ],
+        '^@common_googlemaps_autocomplete': ['<rootDir>/src/commons/GoogleMapsAutocomplete', '<rootDir>/core/commons/GoogleMapsAutocomplete'],
         '^@common_gridlist': ['<rootDir>/src/commons/GridList', '<rootDir>/core/commons/GridList'],
         '^@common_priceformat': ['<rootDir>/src/commons/PriceFormat', '<rootDir>/core/commons/PriceFormat'],
         '^@common_ratingstar': ['<rootDir>/src/commons/RatingStar', '<rootDir>/core/commons/RatingStar'],
@@ -187,10 +183,7 @@ module.exports = {
             '<rootDir>/core/modules/theme/components/footer/desktop/$1',
         ],
         '^@common_productlabel/(.*)$': ['<rootDir>/src/commons/ProductLabel/$1', '<rootDir>/core/commons/ProductLabel/$1'],
-        '^@common_optionconfigurable/(.*)$': [
-            '<rootDir>/src/commons/OptionConfigurable/$1',
-            '<rootDir>/core/commons/OptionConfigurable/$1',
-        ],
+        '^@common_optionconfigurable/(.*)$': ['<rootDir>/src/commons/OptionConfigurable/$1', '<rootDir>/core/commons/OptionConfigurable/$1'],
 
         '^@plugin_summary': ['<rootDir>/src/modules/cart/plugins/Summary', '<rootDir>/core/modules/cart/plugins/Summary'],
         '^@plugin_summary/(.*)$': ['<rootDir>/src/modules/cart/plugins/Summary/$1', '<rootDir>/core/modules/cart/plugins/Summary/$1'],

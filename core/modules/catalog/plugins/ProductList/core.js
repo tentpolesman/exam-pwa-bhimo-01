@@ -9,7 +9,6 @@ import { useReactiveVar } from '@apollo/client';
 import * as Schema from '@core_modules/catalog/services/graphql/productSchema';
 
 import Content from '@plugin_productlist/components';
-import dynamic from 'next/dynamic';
 
 import { getLocalStorage, setLocalStorage } from '@root/core/helpers/localstorage';
 import generateConfig from '@core_modules/catalog/helpers/generateConfig';
@@ -18,8 +17,7 @@ import getPrice from '@core_modules/catalog/helpers/getPrice';
 
 import { getTagManager, getTagManagerGA4 } from '@core_modules/catalog/helpers/catalogTagManager';
 import TagManager from 'react-gtm-module';
-
-const ErrorMessage = dynamic(() => import('@plugin_productlist/components/ErrorMessage'), { ssr: false });
+import Alert from '@common/Alert';
 
 const ProductList = (props) => {
     const {
@@ -277,7 +275,7 @@ const ProductList = (props) => {
         if (count || loading) {
             return null;
         }
-        return <ErrorMessage variant="warning" text={t('catalog:emptyProductSearchResult')} open />;
+        return <Alert severity="warning">{t('catalog:emptyProductSearchResult')}</Alert>;
     };
 
     /**

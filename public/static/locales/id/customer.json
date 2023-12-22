@@ -28,6 +28,7 @@
     "pageTitle" : "Daftar alamat",
     "addTitle" : "Tambah alamat baru",
     "editTitle" : "Ubah",
+    "editAddress": "Ubah",
     "changeAddress": "Ubah",
     "removeTitle": "Hapus",
     "defaultBilling": "Alamat pembayaran default ",
@@ -126,7 +127,8 @@
     "shippedTo": "Pengiriman",
     "orderTotal": "Total order",
     "status": "Status",
-    "action": "Aksi"
+    "action": "Aksi",
+    "emptyMessage": "Kamu belum memiliki order"
   },
   "notHaveNotification" : "Anda belum mempunyai notifikasi",
   "notHaveOrder" : "Riwayat transaksi kosong"

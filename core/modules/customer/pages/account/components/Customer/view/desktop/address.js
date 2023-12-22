@@ -6,6 +6,8 @@ import cx from 'classnames';
 import Button from '@common_button';
 import Typography from '@common_typography';
 
+import ExclamationTriangleIcon from '@heroicons/react/24/outline/ExclamationTriangleIcon';
+
 const generateData = (data, { t }) => (
     <p className={cx('pt-5')}>
         <Typography variant="p2" className={cx('block', 'font-normal')}>
@@ -88,7 +90,27 @@ const AddressView = (props) => {
                     </div>
                 </div>
             ) : (
-                <div style={{ textAlign: 'center' }}>{t('customer:address:emptyMessage')}</div>
+                <Button
+                    icon={<ExclamationTriangleIcon />}
+                    iconPosition="left"
+                    className={cx(
+                        'w-full',
+                        'bg-yellow-500',
+                        'hover:bg-yellow-500',
+                        'focus:bg-yellow-500',
+                        'active:bg-yellow-500',
+                        'hover:shadow-none',
+                        'focus:shadow-none',
+                        'active:shadow-none',
+                        'cursor-auto',
+                        'hover:cursor-auto',
+                        'focus:cursor-auto',
+                        'active:cursor-auto',
+                        'mt-[18px]',
+                    )}
+                >
+                    <Typography className={cx('!text-neutral-white')}>{t('customer:address:emptyMessage')}</Typography>
+                </Button>
             )}
         </div>
     );

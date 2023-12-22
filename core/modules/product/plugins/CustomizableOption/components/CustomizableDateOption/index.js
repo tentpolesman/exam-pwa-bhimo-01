@@ -1,11 +1,12 @@
 /* eslint-disable no-underscore-dangle */
 import React, { useState, useMemo } from 'react';
-import { useQuery } from '@apollo/client';
-import { formatPrice } from '@helpers/currency';
-import { useTranslation } from 'next-i18next';
 import dayjs from 'dayjs';
 import getPrice from '@core_modules/product/helpers/getPrice';
 import View from '@plugin_customizableitem/components/CustomizableDateOption/view';
+import Typography from '@common_typography';
+import { useQuery } from '@apollo/client';
+import { formatPrice } from '@helpers/currency';
+import { useTranslation } from 'next-i18next';
 import { getCustomizableDateOption } from '@core_modules/product/services/graphql/customizableSchema';
 
 const CustomizableDateOption = ({
@@ -13,7 +14,7 @@ const CustomizableDateOption = ({
     errorCustomizableOptions, additionalPrice, setAdditionalPrice,
     stock_status, ...other
 }) => {
-    const { t } = useTranslation(['product']);
+    const { t } = useTranslation(['common', 'product']);
     const productPrice = getPrice(other.price);
     const [value, setValue] = useState(null);
     const [options, setOptions] = useState({});
@@ -101,7 +102,7 @@ const CustomizableDateOption = ({
     }, [options, errorCustomizableOptions]);
 
     if (loading || !data) {
-        return <p>Loading...</p>;
+        return <Typography>{`${t('common:label:loading')}...`}</Typography>;
     }
 
     return (

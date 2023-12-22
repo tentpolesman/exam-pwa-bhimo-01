@@ -16,6 +16,7 @@ import Button from '@common_button';
 import Typography from '@common_typography';
 
 import ArrowDownIcon from '@heroicons/react/20/solid/ArrowDownIcon';
+import ExclamationTriangleIcon from '@heroicons/react/24/outline/ExclamationTriangleIcon';
 
 const OrderView = (props) => {
     const { customerOrders, t, reOrder } = props;
@@ -26,8 +27,8 @@ const OrderView = (props) => {
     const customerData = Cookies.get('cdt') && JSON.parse(Cookies.get('cdt'));
     const currencyData = Cookies.get('app_currency') && JSON.parse(Cookies.get('app_currency'));
 
-    const generateBadge = (status) => {
-        if (status === 'Processing') {
+    const generateBadge = (status, status_label) => {
+        if (status === 'processing' || status === 'pending' || status === 'payment_review') {
             return (
                 <Badge
                     softColor
@@ -35,13 +36,13 @@ const OrderView = (props) => {
                     className={cx('rounded-md', 'w-fit')}
                     label={
                         <Typography variant="body-sm" className={cx('text-yellow-800', 'leading-md')}>
-                            {status}
+                            {status_label}
                         </Typography>
                     }
                 />
             );
         }
-        if (status === 'Canceled') {
+        if (status === 'canceled') {
             return (
                 <Badge
                     softColor
@@ -49,27 +50,13 @@ const OrderView = (props) => {
                     className={cx('rounded-md', 'w-fit')}
                     label={
                         <Typography variant="body-sm" className={cx('text-red-800', 'leading-md')}>
-                            {status}
+                            {status_label}
                         </Typography>
                     }
                 />
             );
         }
-        if (status === 'Payment Review') {
-            return (
-                <Badge
-                    softColor
-                    warning
-                    className={cx('rounded-md', 'w-fit')}
-                    label={
-                        <Typography variant="body-sm" className={cx('text-yellow-800', 'leading-md')}>
-                            {status}
-                        </Typography>
-                    }
-                />
-            );
-        }
-        if (status === 'Completed') {
+        if (status === 'complete') {
             return (
                 <Badge
                     softColor
@@ -77,7 +64,7 @@ const OrderView = (props) => {
                     className={cx('rounded-md', 'w-fit')}
                     label={
                         <Typography variant="body-sm" className={cx('text-green-800', 'leading-md')}>
-                            {status}
+                            {status_label}
                         </Typography>
                     }
                 />
@@ -86,11 +73,11 @@ const OrderView = (props) => {
         return (
             <Badge
                 softColor
-                primary
+                secondary
                 className={cx('rounded-md', 'w-fit')}
                 label={
                     <Typography variant="body-sm" className={cx('text-primary-800', 'leading-md')}>
-                        {status}
+                        {status_label}
                     </Typography>
                 }
             />
@@ -154,7 +141,7 @@ const OrderView = (props) => {
                                                     currencyCache,
                                                 )}
                                             </td>
-                                            <td>{generateBadge(val.status_label)}</td>
+                                            <td>{generateBadge(val.status, val.status_label)}</td>
                                             <td>
                                                 <Link
                                                     href={`/sales/order/view/order_id/${val.order_number}`}
@@ -175,7 +162,32 @@ const OrderView = (props) => {
                                         </tr>
                                     ))}
                                 </>
-                            ) : null}
+                            ) : (
+                                <tr>
+                                    <td colSpan={6}>
+                                        <Button
+                                            icon={<ExclamationTriangleIcon />}
+                                            iconPosition="left"
+                                            className={cx(
+                                                'w-full',
+                                                'bg-yellow-500',
+                                                'hover:bg-yellow-500',
+                                                'focus:bg-yellow-500',
+                                                'active:bg-yellow-500',
+                                                'hover:shadow-none',
+                                                'focus:shadow-none',
+                                                'active:shadow-none',
+                                                'cursor-auto',
+                                                'hover:cursor-auto',
+                                                'focus:cursor-auto',
+                                                'active:cursor-auto',
+                                            )}
+                                        >
+                                            <Typography className={cx('!text-neutral-white')}>{t('customer:order:emptyMessage')}</Typography>
+                                        </Button>
+                                    </td>
+                                </tr>
+                            )}
                         </tbody>
                     </table>
                 </div>
