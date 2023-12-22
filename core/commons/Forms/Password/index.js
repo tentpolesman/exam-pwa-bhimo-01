@@ -8,12 +8,13 @@ import Cookies from 'js-cookie';
 import { useState } from 'react';
 import EyeIcon from '@heroicons/react/24/outline/EyeIcon';
 import EyeSlashIcon from '@heroicons/react/24/outline/EyeSlashIcon';
+import Show from '@common_show';
 
 const Password = (props) => {
     const {
         label = 'Password',
         value = '',
-        onChange = () => { },
+        onChange = () => {},
         showPasswordMeter = false,
         showVisible = false,
         error = false,
@@ -22,6 +23,7 @@ const Password = (props) => {
         placeholder = '********',
         absolute = true,
         hintClassName = '',
+        required = false,
         ...restProps
     } = props;
     const [show, setShow] = useState(false);
@@ -56,12 +58,16 @@ const Password = (props) => {
             {label ? (
                 <Typography variant="bd-2" className={cx('uppercase', classLabel)}>
                     {label.replace(/_/g, ' ')}
+
+                    <Show when={required}>
+                        <span className={cx('text-red-600')}> *</span>
+                    </Show>
                 </Typography>
             ) : null}
             <TextField
                 className="password-field mt-2 w-full"
                 type={show ? 'text' : 'password'}
-                rightIcon={showVisible && show ? <EyeIcon /> : showVisible ? <EyeSlashIcon /> : ''}
+                rightIcon={showVisible && show ? <EyeIcon /> : showVisible ? <EyeSlashIcon /> : <></>}
                 rightIconProps={{ className: showVisible ? 'cursor-pointer' : '', onClick: () => setShow(!show) }}
                 hintProps={{
                     displayHintText: error,

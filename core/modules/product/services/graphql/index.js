@@ -86,7 +86,7 @@ export const getConfigurableProduct = (config = {}, params = {}) => useQuery(Sch
 export const getBundleProduct = (sku) => useQuery(Schema.getBundleProduct(sku), {
     ...defaultConfig,
 });
-export const getDownloadroduct = (sku) => useQuery(Schema.getDownloadProduct(sku), {
+export const getDownloadProduct = (sku) => useQuery(Schema.getDownloadProduct(sku), {
     ...defaultConfig,
 });
 export const getGroupedProduct = (config = {}, params = {}) => useQuery(Schema.getGroupedProduct(config), {

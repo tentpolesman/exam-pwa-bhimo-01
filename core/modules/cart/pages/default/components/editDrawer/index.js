@@ -1,13 +1,11 @@
-import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import Typography from '@common_typography';
 import Button from '@common_button';
 import ButtonQty from '@common_buttonqty';
-import useStyles from '@core_modules/cart/pages/default/components/editDrawer/style';
+import Drawer from '@common/Drawer';
 
 const EditDrawer = ({
     t, open, toggleOpen, id, quantity = 1, product_name = '', updateItem,
 }) => {
-    const styles = useStyles();
     const [qty, setQty] = React.useState(quantity);
 
     React.useEffect(() => {
@@ -25,18 +23,18 @@ const EditDrawer = ({
         toggleOpen(!_open);
     };
     return (
-        <SwipeableDrawer
-            anchor="bottom"
+        <Drawer
+            position="bottom"
             open={open}
             onClose={toggleDrawer('bottom', false)}
             onOpen={toggleDrawer('bottom', true)}
         >
-            <div className={styles.container}>
+            <div className="w-full h-full flex justify-center items-center p-4">
                 <Typography variant="title" type="regular" align="center">
                     {product_name}
                 </Typography>
-                <div className={styles.qty}>
-                    <Typography variant="span">{t('common:title:qty')}</Typography>
+                <div className="flex flex-row pl-4 py-4 pr-7">
+                    <Typography variant="bd-2b">{t('common:title:qty')}</Typography>
                     <ButtonQty
                         value={qty}
                         onChange={setQty}
@@ -45,7 +43,6 @@ const EditDrawer = ({
                 </div>
                 <Button
                     id="cart-editDrawer-saveBtn"
-                    className={styles.toolbarButton}
                     onClick={() => {
                         toggleOpen(false);
                         updateItem({
@@ -53,12 +50,11 @@ const EditDrawer = ({
                             quantity: qty,
                         });
                     }}
-                    customRootStyle={{ width: 'fit-content' }}
                 >
                     {t('cart:button:saveEdit')}
                 </Button>
             </div>
-        </SwipeableDrawer>
+        </Drawer>
     );
 };
 

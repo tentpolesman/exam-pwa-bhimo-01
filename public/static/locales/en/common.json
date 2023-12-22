@@ -68,6 +68,8 @@
         "lastName": "Last Name",
         "phoneNumber": "Phone Number",
         "gender": "Gender",
+        "emailAddress": "Email Address",
+        "email": "Email",
         "dob": "Date of Birth",
         "confirm": "Confirm Password",
         "currentPassword": "Current Password",
@@ -83,6 +85,11 @@
         "mapLoading": "Loading map...",
         "maxChar": "Max. {{length}} Character"
     },
+    "placeholder": {
+        "email": "e.g: user@gmail.com",
+        "firstName": "e.g: John Doe",
+        "lastName": "e.g: Doe"
+    },
     "title": {
         "qty": "Quantity",
         "color": "Color",
@@ -92,12 +99,12 @@
         "search": "Search ...",
         "brand": "Brand",
         "category": "Category",
-        "summary": "Summary",
+        "summary": "Order summary",
         "price": "Price",
         "shortQty": "Qty",
         "action": "Action",
         "extraFee": "Extra Fee",
-        "relatedProduct": "Related products",
+        "relatedProduct": "You may also like",
         "sale": "Sale",
         "new": "New",
         "free": "Free",
@@ -222,6 +229,12 @@
         "value": "Value",
         "shopNow": "Shop Now",
         "applyShopNow": "Apply on shopping cart page.",
-        "customize": "Customize"
+        "customize": "Customize",
+        "trailer": "Trailer",
+        "viewSample": "View Sample",
+        "loading": "Loading"
+    },
+    "cms": {
+        "unableToRender": "Unable to render the content"
     }
 }

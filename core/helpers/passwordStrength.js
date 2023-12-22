@@ -1,12 +1,6 @@
 /* eslint-disable global-require */
 import { passwordStrength } from '@config';
 
-let zxcvbn = '';
-
-if (typeof window !== 'undefined') {
-    zxcvbn = require('./zxcvbn');
-}
-
 const defaultValue = passwordStrength.minValue;
 const defaultRequiredClass = passwordStrength.numberOfRequiredClass;
 
@@ -21,25 +15,19 @@ const getScore = (password, minValue, numberOfRequiredClass) => {
             return 0;
         }
 
-        const valid1 = new RegExp(
-            `^(${lower}|${upper}|${number}|${special})(?=.{${minValue},})`,
-        );
+        const valid1 = new RegExp(`^(${lower}|${upper}|${number}|${special})(?=.{${minValue},})`);
 
         const valid2 = new RegExp(
-            `^((${lower + upper})|(${lower + number})|(${number + upper})|(${
-                lower + special
-            })|(${special + upper}))(?=.{${minValue},})`,
+            `^((${lower + upper})|(${lower + number})|(${number + upper})|(${lower + special})|(${special + upper}))(?=.{${minValue},})`,
         );
 
         const valid3 = new RegExp(
-            `^((${lower + upper + number})|(${lower + upper + special})|(${
-                special + lower + number
-            })|(${special + upper + number}))(?=.{${minValue},})`,
+            `^((${lower + upper + number})|(${lower + upper + special})|(${special + lower + number})|(${
+                special + upper + number
+            }))(?=.{${minValue},})`,
         );
 
-        const valid4 = new RegExp(
-            `^(${lower + upper + number + special})(?=.{${minValue},})`,
-        );
+        const valid4 = new RegExp(`^(${lower + upper + number + special})(?=.{${minValue},})`);
 
         let valid;
 
@@ -60,17 +48,21 @@ const getScore = (password, minValue, numberOfRequiredClass) => {
             break;
         }
 
-        const zxcvbnScore = zxcvbn(password).score;
-        return valid === true && zxcvbnScore > 0 ? zxcvbnScore : 1;
+        if (valid) {
+            // strength password
+            let strengths = 0;
+            if (password.length > minValue + 3) strengths += 1;
+            if (valid2.test(password)) strengths += 1;
+            if (valid3.test(password)) strengths += 1;
+            if (valid4.test(password)) strengths += 1;
+            return strengths;
+        }
+        return 1;
     }
     return 0;
 };
 
-const GetScore = ({
-    value,
-    minValue = defaultValue,
-    numberOfRequiredClass = defaultRequiredClass,
-}) => {
+const GetScore = ({ value, minValue = defaultValue, numberOfRequiredClass = defaultRequiredClass }) => {
     const score = getScore(value, minValue, numberOfRequiredClass);
     switch (score) {
     case 0:

@@ -6,25 +6,32 @@ import cx from 'classnames';
 
 const Accordion = (props) => {
     const {
-        label, open, handleOpen, handleClose,
+        label,
+        open,
+        handleOpen,
+        handleClose,
         className = '',
         classLabel = '',
         classSummary,
         CustomAccordionSummary,
         classContent = '',
         children,
+        CustomIcon,
     } = props;
 
-    const handleShow = () => {
-        if (open) {
-            handleClose();
-        } else {
-            handleOpen();
+    const handleShow = (e) => {
+        if (typeof handleOpen === 'function' || typeof handleClose === 'function') {
+            e.preventDefault();
+            if (open && typeof handleClose === 'function') {
+                handleClose();
+            } else if (typeof handleOpen === 'function') {
+                handleOpen();
+            }
         }
     };
 
     return (
-        <details className={cx('group flex flex-col common-accordion', className)} open={open || false}>
+        <details className={cx('group flex flex-col common-accordion', className)} open={open}>
             <summary
                 onClick={handleShow}
                 className={cx(
@@ -32,30 +39,26 @@ const Accordion = (props) => {
                     classSummary,
                 )}
             >
-                {
-                    React.isValidElement(CustomAccordionSummary)
-                        ? React.cloneElement(CustomAccordionSummary, {
-                            className: classSummary,
-                            label,
-                            classLabel,
-                        })
-                        : (
-                            <>
-                                <Typography className={cx('capitalize font-semibold', classLabel)}>{label}</Typography>
-                                <span className="transition group-open:rotate-180">
-                                    <Arrow className="w-5 h-5" />
-                                </span>
-                            </>
-                        )
-                }
+                {React.isValidElement(CustomAccordionSummary) ? (
+                    React.cloneElement(CustomAccordionSummary, {
+                        className: classSummary,
+                        label,
+                        classLabel,
+                    })
+                ) : (
+                    <>
+                        <Typography className={cx('capitalize font-semibold', classLabel)}>{label}</Typography>
+                        {React.isValidElement(CustomIcon) ? (
+                            React.cloneElement(CustomIcon)
+                        ) : (
+                            <span className="transition group-open:rotate-180">
+                                <Arrow className="w-5 h-5" />
+                            </span>
+                        )}
+                    </>
+                )}
             </summary>
-            <div className={cx(
-                'text-neutral-600 mt-4 group-open:animate-fadeIn group-open:duration-700',
-                classContent,
-            )}
-            >
-                {children}
-            </div>
+            <div className={cx('text-neutral-600 mt-4 group-open:animate-fadeIn group-open:duration-700', classContent)}>{children}</div>
         </details>
     );
 };
@@ -75,8 +78,8 @@ Accordion.propTypes = {
 Accordion.defaultProps = {
     label: '',
     open: false,
-    handleOpen: () => {},
-    handleClose: () => {},
+    handleOpen: undefined,
+    handleClose: undefined,
     classSummary: '',
     CustomAccordionSummary: false,
     classContent: '',

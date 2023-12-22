@@ -69,7 +69,6 @@
             "@helper_text": ["src/helpers/text", "core/helpers/text"],
             "@helper_theme": ["src/helpers/theme", "core/helpers/theme"],
             "@helper_urlparser": ["src/helpers/urlParser", "core/helpers/urlParser"],
-            "@helper_zxcvbn": ["src/helpers/zxcvbn", "core/helpers/zxcvbn"],
             "@helper_localstorage": ["src/helpers/localstorage", "core/helpers/localstorage"],
 
             "@hook/*": ["src/hooks/*", "core/hooks/*"],
@@ -90,6 +89,7 @@
             "@common_typography": ["src/commons/Typography", "core/commons/Typography"],
             "@common_password": ["src/commons/Password", "core/commons/Forms/Password"],
             "@common_popover": ["src/commons/Popover", "core/commons/Popover"],
+            "@common_pagination": ["src/commons/Pagination", "core/commons/Pagination"],
             "@common_rangeslider": ["src/commons/RangeSlider", "core/commons/RangeSlider"],
             "@common_textfield": ["src/commons/TextField", "core/commons/TextField"],
             "@common_badge": ["src/commons/Badge", "core/commons/Badge"],
@@ -111,6 +111,7 @@
             "@common_typography/*": ["src/commons/Typography/*", "core/commons/Typography/*"],
             "@common_password/*": ["src/commons/Password/*", "core/commons/Password/*"],
             "@common_popover/*": ["src/commons/Popover/*", "core/commons/Popover/*"],
+            "@common_pagination/*": ["src/commons/Pagination/*", "core/commons/Pagination/*"],
             "@common_rangeslider/*": ["src/commons/RangeSlider/*", "core/commons/RangeSlider/*"],
             "@common_textfield/*": ["src/commons/TextField/*", "core/commons/TextField/*"],
             "@common_badge/*": ["src/commons/Badge/*", "core/commons/Badge/*"],

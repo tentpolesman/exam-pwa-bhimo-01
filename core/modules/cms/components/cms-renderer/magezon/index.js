@@ -291,7 +291,6 @@ const MagezonElement = (props) => {
                         ${align ? `text-align: ${align};` : ''}
                         position: relative;
                         width: 100%;
-                        ${background_color ? `background-color: ${background_color};` : ''}
                     }
                     .mgz-element-inner {
                         overflow: hidden;
@@ -307,6 +306,7 @@ const MagezonElement = (props) => {
                         ${border_right_width ? `border-right-width: ${border_right_width || 0}px;` : ''}
                         ${border_bottom_width ? `border-bottom-width: ${border_bottom_width || 0}px;` : ''}
                         ${border_left_width ? `border-left-width: ${border_left_width || 0}px;` : ''}
+                        ${background_color ? `background-color: ${background_color};` : ''}
                     }
                     @media screen and (max-width: 360px) {
                         .full_height {
@@ -344,7 +344,7 @@ const MagezonElement = (props) => {
                 `}
             </style>
             <style jsx global>
-                {`
+                {`  
                     .mgz-column > * {
                         padding: 0px;
                     }

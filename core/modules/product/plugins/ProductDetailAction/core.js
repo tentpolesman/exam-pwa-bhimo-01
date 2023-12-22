@@ -1,5 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable radix */
+/* eslint-disable eqeqeq */
 import cx from 'classnames';
 import TagManager from 'react-gtm-module';
 import useMediaQuery from '@hook/useMediaQuery';
@@ -48,13 +49,15 @@ const ProductDetailAction = ({
     useShareProduct = false,
     useProductRelated = false,
     useProductUpsell = false,
+    ssrProduct,
     Content,
     ...other
 }) => {
     const route = useRouter();
     const { isDesktop, isTablet, isMobile } = useMediaQuery();
-    const context = isLogin && isLogin === 1 ? { request: 'internal' } : {};
+    const context = isLogin && isLogin == 1 ? { request: 'internal' } : {};
     const item = product.items[productKey];
+
     const currencyCode = item?.price_range?.minimum_price?.regular_price?.currency || 'USD';
     const reviewRef = React.useRef(null);
 
@@ -66,6 +69,9 @@ const ProductDetailAction = ({
     const reviewValue = parseInt(item.review.rating_summary, 0) / 20;
     const enableProductCompare = modules.productcompare.enabled;
     const enableWishlist = modules.wishlist.enabled;
+
+    // ssr
+    const ssrBanner = ssrProduct?.bannerResult;
 
     const labels = getProductLabel(storeConfig, { context, variables: { url: slug[0] } });
     const { data: dataCompare, client } = useQuery(localCompare);
@@ -81,12 +87,6 @@ const ProductDetailAction = ({
     let enablePopupImage = false;
     if (storeConfig && storeConfig.pwa) {
         enablePopupImage = storeConfig.pwa.popup_detail_image_enable;
-    }
-
-    // weltpixel
-    let weltpixel_labels = [];
-    if (labels.data && labels.data.products && labels.data.products.items.length > 0 && labels.data.products.items[0].weltpixel_labels) {
-        weltpixel_labels = labels.data.products.items[0].weltpixel_labels;
     }
 
     // data tabs
@@ -227,7 +227,7 @@ const ProductDetailAction = ({
     }, [item?.options, customizableOptions]);
 
     const handleWishlist = () => {
-        if (isLogin && isLogin === 1) {
+        if (isLogin && isLogin == 1) {
             // GTM UA dataLayer
             TagManager.dataLayer({
                 dataLayer: {
@@ -446,14 +446,17 @@ const ProductDetailAction = ({
     }, [customizableOptions]);
 
     const handleOpenImageDetail = React.useCallback((e, idx) => {
-        e.preventDefault();
         setOpenImageDetail(!openImageDetail);
         setSelectedImgIdx(idx);
     }, [openImageDetail]);
 
     // eslint-disable-next-line no-underscore-dangle
     const isAwGiftCard = item.__typename === 'AwGiftCardProduct';
-    const priceData = getPriceFromList(dataPrice?.products?.items, item?.id || null);
+    const priceData = getPriceFromList(
+        dataPrice?.products?.items || cachePrice[generateIdentifier]?.products?.items,
+        item?.id || null,
+    );
+
     return (
         <Content
             isLogin={isLogin}
@@ -470,7 +473,7 @@ const ProductDetailAction = ({
             priceData={priceData}
             loadPrice={loadPrice}
             errorPrice={errorPrice}
-            banner={banner}
+            banner={ssrBanner || banner}
             storeConfig={storeConfig}
             enablePopupImage={enablePopupImage}
             openImageDetail={openImageDetail}
@@ -511,7 +514,7 @@ const ProductDetailAction = ({
             useProductUpsell={useProductUpsell}
             data={{
                 ...item,
-                weltpixel_labels,
+                labels,
             }}
             {...other}
         />

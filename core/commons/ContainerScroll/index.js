@@ -38,7 +38,7 @@ const ContainerScroll = ({
         if (containerRef?.current?.children?.length > 0) {
             setContainerChildrenWidth((containerRef.current.children[0].clientWidth + marginSize) * slidesToScroll);
         }
-    }, [containerRef]);
+    }, [containerRef, children]);
 
     return (
         <div
@@ -90,8 +90,7 @@ const ContainerScroll = ({
                     'container-scroll-data',
                     'relative',
                     'scrollbar-none',
-                    'p-4',
-                    '-m-4',
+                    'pb-4',
                     isHorizontal && 'overflow-x-auto flex scroll-smooth',
                     isVertical && 'overflow-y-auto',
                     className,

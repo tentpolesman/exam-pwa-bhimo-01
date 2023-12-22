@@ -28,7 +28,7 @@ const ReviewCardForm = ({
             }}
         />
         <div className={cx('section-rating', 'mt-[24px]')}>
-            <Typography variant="p" type="semiBold">
+            <Typography>
                 {t('product:rate')}
             </Typography>
             <RatingStar
@@ -48,7 +48,6 @@ const ReviewCardForm = ({
             absolute={false}
             className="w-full"
             classWrapper="mt-[24px]"
-            contain
             onChange={Formik.handleChange}
             value={Formik.values.title}
             label={t('product:title')}
@@ -72,9 +71,6 @@ const ReviewCardForm = ({
             value={Formik.values.detail}
             placeholder={t('product:review')}
             label={t('product:review')}
-            multiline
-            error={!!(Formik.touched.detail && Formik.errors.detail)}
-            errorMessage={(Formik.touched.detail && Formik.errors.detail) || null}
             inputProps={{
                 name: 'detail',
                 className: 'align-top h-[140px]',

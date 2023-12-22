@@ -12,7 +12,12 @@ import { getHost } from '@helper_config';
 import { useRouter } from 'next/router';
 import Dialog from '@common/Dialog';
 
-const isMobileOrTablet = () => /(android|iphone|ipad|mobile)/i.test(navigator.userAgent);
+const isMobileOrTablet = () => {
+    if (typeof navigator !== 'undefined') {
+        return /(android|iphone|ipad|mobile)/i.test(navigator.userAgent);
+    }
+    return false;
+};
 const whatsappLink = (text) => {
     const prefixUrlWA = (isMobileOrTablet() ? 'api' : 'web');
     return `https://${prefixUrlWA}.whatsapp.com/send?text=${text}`;
@@ -73,30 +78,51 @@ const Share = ({
                             <Show when={whatsapp}>
                                 <Button
                                     link={whatsappLink(linkShare)}
+                                    linkTarget="_blank"
                                     variant="plain"
                                     className="flex justify-center items-center border border-neutral-200 px-[18px] py-[10px] mb-[16px]"
                                 >
-                                    <Image src="/assets/img/logo_whatsapp.svg" width={16} height={16} style={{ width: 16, height: 16 }} />
+                                    <Image
+                                        src="/assets/img/logo_whatsapp.svg"
+                                        width={16}
+                                        height={16}
+                                        style={{ width: 16, height: 16 }}
+                                        alt="image share whatsapp mobile"
+                                    />
                                     <Typography variant="bd-2a" className="ml-[6px]">WhatsApp</Typography>
                                 </Button>
                             </Show>
                             <Show when={facebook}>
                                 <Button
                                     link={facebookLink(linkShare)}
+                                    linkTarget="_blank"
                                     variant="plain"
                                     className="flex justify-center items-center border border-neutral-200 px-[18px] py-[10px] mb-[16px]"
                                 >
-                                    <Image src="/assets/img/logo_facebook.svg" width={16} height={16} style={{ width: 16, height: 16 }} />
+                                    <Image
+                                        src="/assets/img/logo_facebook.svg"
+                                        width={16}
+                                        height={16}
+                                        style={{ width: 16, height: 16 }}
+                                        alt="image share facebook mobile"
+                                    />
                                     <Typography variant="bd-2a" className="ml-[6px]">Facebook</Typography>
                                 </Button>
                             </Show>
                             <Show when={twitter}>
                                 <Button
                                     link={twitterLink(linkShare)}
+                                    linkTarget="_blank"
                                     variant="plain"
                                     className="flex justify-center items-center border border-neutral-200 px-[18px] py-[10px] mb-[16px]"
                                 >
-                                    <Image src="/assets/img/logo_x.svg" width={16} height={16} style={{ width: 16, height: 16 }} />
+                                    <Image
+                                        src="/assets/img/logo_x.svg"
+                                        width={16}
+                                        height={16}
+                                        style={{ width: 16, height: 16 }}
+                                        alt="image share twitter mobile"
+                                    />
                                     <Typography variant="bd-2a" className="ml-[6px]">Twitter</Typography>
                                 </Button>
                             </Show>
@@ -120,29 +146,56 @@ const Share = ({
                 <Show when={whatsapp}>
                     <Button
                         link={whatsappLink(linkShare)}
+                        linkTarget="_blank"
                         variant="plain"
                         iconOnly
-                        icon={<Image src="/assets/img/logo_whatsapp.svg" width={16} height={16} style={{ width: 16, height: 16 }} />}
+                        icon={(
+                            <Image
+                                src="/assets/img/logo_whatsapp.svg"
+                                width={16}
+                                height={16}
+                                style={{ width: 16, height: 16 }}
+                                alt="image share whatsapp"
+                            />
+                        )}
                         className="!p-0"
                     />
                 </Show>
                 <Show when={facebook}>
                     <Button
                         link={facebookLink(linkShare)}
+                        linkTarget="_blank"
                         variant="plain"
                         iconOnly
                         classNameText="w-[16px] h-[16px]"
-                        icon={<Image src="/assets/img/logo_facebook.svg" width={16} height={16} style={{ width: 16, height: 16 }} />}
+                        icon={(
+                            <Image
+                                src="/assets/img/logo_facebook.svg"
+                                width={16}
+                                height={16}
+                                style={{ width: 16, height: 16 }}
+                                alt="image share facebook"
+                            />
+                        )}
                         className="!p-0"
                     />
                 </Show>
                 <Show when={twitter}>
                     <Button
                         link={twitterLink(linkShare)}
+                        linkTarget="_blank"
                         variant="plain"
                         iconOnly
                         classNameText="w-[16px] h-[16px]"
-                        icon={<Image src="/assets/img/logo_x.svg" width={16} height={16} style={{ width: 16, height: 16 }} />}
+                        icon={(
+                            <Image
+                                src="/assets/img/logo_x.svg"
+                                width={16}
+                                height={16}
+                                style={{ width: 16, height: 16 }}
+                                alt="image share twitter"
+                            />
+                        )}
                         className="!p-0"
                     />
                 </Show>

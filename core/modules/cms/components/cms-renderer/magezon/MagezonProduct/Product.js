@@ -7,7 +7,7 @@ import ProductItem from '@plugin_productitem';
 import ContainerScroll from '@common/ContainerScroll';
 import cx from 'classnames';
 import { generateGridItemClass } from '@helpers/style';
-import { BREAKPOINTS } from '@root/core/theme/vars';
+import { BREAKPOINTS, COLORS } from '@root/core/theme/vars';
 
 const Product = (props) => {
     const {
@@ -51,8 +51,8 @@ const Product = (props) => {
         enablePrice: product_price,
         enableRating: product_review,
         enableProductName: product_name,
-        className: cx('!min-w-[145px] tablet:!min-w-[190px] desktop:!min-w-[273px]', {
-            'desktop:carousel-item flex-shrink-0': !isSingleProduct,
+        className: cx('carousel-item', '!min-w-[145px]', 'tablet:!min-w-[190px]', 'desktop:!min-w-[273px]', {
+            'flex-shrink-0': !isSingleProduct,
             '!basis-[145px] !tablet:basis-[190px] !desktop:basis-[273px]': !isProductGrid && !isSingleProduct,
             '[&:not(:last-child)]:mb-4': isProductList,
             'desktop:!max-w-[273px]': isSingleProduct && product_display === 'grid',
@@ -61,7 +61,7 @@ const Product = (props) => {
             [generateGridItemClass(item_md, 'md')]: isProductGrid && item_md,
             [generateGridItemClass(item_sm, 'sm')]: isProductGrid && item_sm,
             [generateGridItemClass(item_xs, 'xs')]: isProductGrid && item_xs,
-            '!h-[initial]': !isProductGrid,
+            '!h-[initial]': !isProductGrid && !isSingleProduct,
         }),
         imageProps: {
             className: cx(
@@ -117,12 +117,18 @@ const Product = (props) => {
 
     if (type === 'single_product' && data?.products?.items) {
         content = data?.products?.items[0] && (
-            <ProductItem
-                //
-                {...data.products.items[0]}
-                {...productProps}
-                isGrid={product_display === 'grid'}
-            />
+            <div
+                className={cx('pb-4', {
+                    grid: product_display === 'list',
+                })}
+            >
+                <ProductItem
+                    //
+                    {...data.products.items[0]}
+                    {...productProps}
+                    isGrid={product_display === 'grid'}
+                />
+            </div>
         );
     }
 
@@ -228,7 +234,7 @@ const Product = (props) => {
             <style jsx>
                 {`
                     .mgz-product-content :global(.carousel-item) {
-                        overflow: unset;
+                        background-color: ${COLORS.neutral.white};
                     }
                 `}
             </style>

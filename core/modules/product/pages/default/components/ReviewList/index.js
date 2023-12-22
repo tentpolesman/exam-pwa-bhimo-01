@@ -2,6 +2,7 @@
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable no-console */
 /* eslint-disable no-unused-expressions */
+/* eslint-disable eqeqeq */
 import React, { useEffect, useMemo, useState } from 'react';
 import { getReviews, addReview } from '@core_modules/product/services/graphql';
 import { useFormik } from 'formik';
@@ -199,10 +200,10 @@ const ReviewList = ({
                     <div className={cx('review-list-label-rating', 'flex items-center')}>
                         <RatingStar value={getReviewsCount || 0} />
                         <Typography variant="p-2" className="ml-[6px]">
-                            {`(${(getReviewsCount) || 0} ${t('product:review')})`}
+                            {`(${(review?.totalCount) || 0} ${t('product:review')})`}
                         </Typography>
                     </div>
-                    <Show when={isLogin === 1 || guest_review === '1'}>
+                    <Show when={isLogin == 1 || guest_review === '1'}>
                         <Button variant="outlined" onClick={() => onWriteReview()}>
                             <Typography variant="bd-2" type="bold" letter="uppercase">
                                 {t('product:writeReview')}
@@ -214,19 +215,6 @@ const ReviewList = ({
             <Divider />
             <div className={cx('mt-[24px]')}>
                 {review && review.items.map((item, index) => <ReviewCard key={index} {...item} />)}
-                {/* {review && review.totalCount > review.items.length && (
-                    <Button variant="outlined" onClick={handleLoad} disabled={loading || loadMore}>
-                        {loadMore || loading ? (
-                            <Typography variant="p-1">
-                                {`${t('common:menu:loading')}...`}
-                            </Typography>
-                        ) : (
-                            <Typography variant="p-1">
-                                {t('product:moreReview')}
-                            </Typography>
-                        )}
-                    </Button>
-                )} */}
                 <PaginationSection
                     page={page}
                     totalPage={review.totalCount / reviewParams.pageSize}

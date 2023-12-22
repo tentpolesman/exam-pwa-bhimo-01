@@ -27,7 +27,7 @@ const CheckBox = (props) => {
     } = props;
 
     const { t } = useTranslation(['common']);
-    const { checkboxClasses = '', checkboxGroupClasses = '' } = classNames;
+    const { checkboxClasses = '', checkboxGroupClasses = '', checkboxContainerClasses = '' } = classNames;
     const [selected, setSelected] = React.useState(value);
     const [more, setMore] = React.useState(7);
     const dataItems = useLoadMore ? data?.slice(0, more) : data;
@@ -68,7 +68,7 @@ const CheckBox = (props) => {
 
     if (isVariantSingle) {
         return (
-            <div className="common-checkbox-container">
+            <div className={cx('common-checkbox-container', checkboxContainerClasses)}>
                 <input
                     {...other}
                     type="checkbox"

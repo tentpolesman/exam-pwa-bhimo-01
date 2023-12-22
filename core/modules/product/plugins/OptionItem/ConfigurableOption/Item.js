@@ -2,8 +2,8 @@ import dynamic from 'next/dynamic';
 import classNames from 'classnames';
 
 // import SelectOption from '@common_optionconfigurable';
-const CustomRadio = dynamic(() => import('@common_forms/Radio'), { ssr: true });
-const SelectOption = dynamic(() => import('@common_optionconfigurable'), { ssr: true });
+const CustomRadio = dynamic(() => import('@common_forms/Radio'), { ssr: false });
+const SelectOption = dynamic(() => import('@common_optionconfigurable'), { ssr: false });
 
 const ItemConfigurableView = (props) => {
     const {

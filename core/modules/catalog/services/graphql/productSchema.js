@@ -135,40 +135,6 @@ export const getProduct = (config = {}, router) => gql`
           html
         }
         ${
-    config.label_weltpixel_enable
-        ? `
-        weltpixel_labels {
-          categoryLabel {
-            css
-            customer_group
-            image
-            page_position
-            position
-            priority
-            text
-            text_padding
-            text_bg_color
-            text_font_size
-            text_font_color          
-          }
-          productLabel {
-            css
-            customer_group
-            image
-            page_position
-            position
-            priority
-            text
-            text_padding
-            text_bg_color
-            text_font_size
-            text_font_color  
-          }
-        }        
-        `
-        : ''
-}
-        ${
     config.configurable_options_enable
         ? `review {
           rating_summary
@@ -476,7 +442,8 @@ const productDetail = (config = {}) => `
     }
     special_from_date
     special_to_date
-
+    new_from_date
+    new_to_date
     `;
 const priceRange = `
     price_range {

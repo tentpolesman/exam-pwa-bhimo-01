@@ -1,4 +1,5 @@
 /* eslint-disable consistent-return */
+/* eslint-disable eqeqeq */
 import FeaturedSkeleton from '@core_modules/home/pages/default/components/Skeleton/FeaturedSkeleton';
 import FeaturedView from '@core_modules/home/pages/default/components/FeaturedProducts/view';
 import gqlService from '@core_modules/home/service/graphql';
@@ -18,7 +19,7 @@ const onReInit = () => {
 const FeaturedProducts = ({
     t, isLogin, storeConfig,
 }) => {
-    const context = (isLogin && isLogin === 1) ? { request: 'internal' } : {};
+    const context = (isLogin && isLogin == 1) ? { request: 'internal' } : {};
     const { loading, data, error } = gqlService.getFeaturedProducts({
         skip: !storeConfig,
         variables: {

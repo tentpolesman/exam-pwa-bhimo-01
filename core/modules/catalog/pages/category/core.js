@@ -9,8 +9,6 @@ import Backdrop from '@common/Backdrop';
 
 const ErrorView = dynamic(() => import('@core_modules/error/pages/default'), { ssr: false });
 
-// SSR Not Working
-
 const Page = (props) => {
     const {
         categoryId, storeConfig: configStore, pageConfig = {}, ...other

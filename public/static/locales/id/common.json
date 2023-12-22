@@ -67,6 +67,8 @@
         "lastName": "Nama Belakang",
         "phoneNumber": "Nomor Telepon",
         "gender": "Jenis Kelamin",
+        "emailAddress": "Alamat Email",
+        "email": "Email",
         "dob": "Tanggal Lahir",
         "confirm": "Konfirmasi Password",
         "currentPasword": "Password Lama",
@@ -82,6 +84,11 @@
         "mapLoading": "Memuat peta...",
         "maxChar": "Maksimal {{length}} Karakter"
     },
+    "placeholder": {
+        "email": "contoh: user@gmail.com",
+        "firstName": "contoh: John Doe",
+        "lastName": "contoh: Doe"
+    },
     "title": {
         "qty": "Jumlah",
         "color": "Warna",
@@ -91,12 +98,12 @@
         "search": "Pencarian ...",
         "brand": "Brand",
         "category": "Kategory",
-        "summary": "Ringkasan",
+        "summary": "Ringkasan order",
         "price": "Harga",
         "shortQty": "Jml",
         "action": "Aksi",
         "extraFee": "Biaya Tambahan",
-        "relatedProduct": "Relasi Produk",
+        "relatedProduct": "Anda mungkin juga menyukainya",
         "sale": "Diskon",
         "new": "Baru",
         "free": "Free",
@@ -219,6 +226,12 @@
         "value": "Nilai",
         "shopNow": "Belanja Sekarang",
         "applyShopNow": "Terapkan di halaman keranjang belanja.",
-        "customize": "Penyesuaian"
+        "customize": "Penyesuaian",
+        "trailer": "Trailer",
+        "viewSample": "Lihat Contoh",
+        "loading": "Memuat"
+    },
+    "cms": {
+        "unableToRender": "Gagal menampilkan konten"
     }
 }

@@ -1,5 +1,6 @@
 /* eslint-disable comma-dangle */
 /* eslint-disable no-lonely-if */
+/* eslint-disable radix */
 import { useApolloClient, useReactiveVar } from '@apollo/client';
 import { modules } from '@config';
 import { removeCartId, setCartId } from '@helper_cartid';
@@ -15,9 +16,7 @@ import gqlService from '@core_modules/checkout/services/graphql';
 import Skeleton from '@material-ui/lab/Skeleton';
 import SummaryPlugin from '@plugin_summary';
 
-import useTravelokaPay from '@core_modules/checkout/helpers/useTravelokaPay';
 import ModalXendit from '@core_modules/checkout/pages/default/components/ModalXendit/index';
-import Traveloka3DSModal from '@core_modules/checkout/pages/default/components/payment/components/Traveloka3DSModal';
 import { getAppEnv } from '@root/core/helpers/env';
 
 const Summary = ({
@@ -30,7 +29,6 @@ const Summary = ({
     config,
     refSummary,
     storeConfig,
-    travelokaPayRef,
     checkoutTokenState,
     setCheckoutTokenState,
 }) => {
@@ -62,21 +60,6 @@ const Summary = ({
     const [getIndodanaRedirect, urlIndodana] = gqlService.getIndodanaUrl();
     // xendit
     const [getXenditUrl] = gqlService.xenditCreateInvoice();
-
-    // travelokapay
-    const { payment_travelokapay_bin_whitelist, payment_travelokapay_public_key, payment_travelokapay_user_id } = storeConfig;
-    const {
-        open: openTraveloka, setOpen: setOpenTraveloka, handleClose, handleTravelokaPay,
-    } = useTravelokaPay({
-        t,
-        travelokaPayRef,
-        config,
-        handleOpenMessage,
-        checkout,
-        setCheckout,
-        payment_travelokapay_user_id,
-        payment_travelokapay_bin_whitelist,
-    });
 
     // mutation update delete
     const [actDeleteItem] = gqlService.deleteItemCart();
@@ -235,66 +218,6 @@ const Summary = ({
         await formik.submitForm();
         formValidation = await formik.validateForm();
 
-        if (checkout.data.cart.selected_payment_method.code.match(/travelokapay/)) {
-            window.Xendit.setPublishableKey(payment_travelokapay_public_key);
-
-            const {
-                values: { cardNumber, cvv, expiryDate },
-            } = travelokaPayRef.current;
-            const expiryDatas = expiryDate.split('/');
-            const errorMessages = [];
-
-            travelokaPayRef.current.submitForm();
-            const travelokaValidateForm = await travelokaPayRef.current.validateForm();
-            if (Object.keys(travelokaValidateForm).length > 0) {
-                handleOpenMessage({
-                    variant: 'error',
-                    text: Object.values(travelokaValidateForm),
-                });
-                state.loading.order = false;
-                setCheckout(state);
-                return;
-            }
-
-            if (!window.Xendit.card.validateCardNumber(cardNumber)) {
-                travelokaPayRef.current.setFieldError(
-                    'cardNumber',
-                    `${t('checkout:travelokaPay:validation:cardNumber')} ${t('checkout:travelokaPay:validation:invalid')}`,
-                );
-                errorMessages.push(`${t('checkout:travelokaPay:validation:cardNumber')} ${t('checkout:travelokaPay:validation:invalid')}`);
-            }
-            if (!window.Xendit.card.validateExpiry(expiryDatas[0], `20${expiryDatas[1]}`)) {
-                travelokaPayRef.current.setFieldError(
-                    'expiryDate',
-                    `${t('checkout:travelokaPay:validation:expiryDate')} ${t('checkout:travelokaPay:validation:invalid')}`,
-                );
-                errorMessages.push(`${t('checkout:travelokaPay:validation:expiryDate')} ${t('checkout:travelokaPay:validation:invalid')}`);
-            }
-            if (!window.Xendit.card.validateCvn(cvv)) {
-                travelokaPayRef.current.setFieldError(
-                    'cvv',
-                    `${t('checkout:travelokaPay:validation:cvv')} ${t('checkout:travelokaPay:validation:invalid')}`,
-                );
-                errorMessages.push(`${t('checkout:travelokaPay:validation:cvv')} ${t('checkout:travelokaPay:validation:invalid')}`);
-            }
-
-            if (errorMessages.length > 0) {
-                handleOpenMessage({
-                    variant: 'error',
-                    text: errorMessages,
-                });
-                state.loading.order = false;
-                setCheckout(state);
-                return;
-                // eslint-disable-next-line no-else-return
-            } else {
-                handleOpenMessage({
-                    variant: 'success',
-                    text: 'Successfully Validated.',
-                });
-            }
-        }
-
         if (Object.keys(formValidation).length === 0 && formValidation.constructor === Object) {
             if (checkout.selected.delivery === 'pickup' && (checkout.error.pickupInformation || checkout.error.selectStore)) {
                 state.loading.order = false;
@@ -394,8 +317,6 @@ const Summary = ({
                         || modules.checkout.xendit.paymentPrefixCodeOnSuccess.includes(checkout.data.cart.selected_payment_method.code)
                     ) {
                         handleXendit(orderNumber);
-                    } else if (checkout.data.cart.selected_payment_method.code.match(/travelokapay/)) {
-                        handleTravelokaPay(orderNumber);
                     } else {
                         handleOpenMessage({
                             variant: 'success',
@@ -653,7 +574,6 @@ const Summary = ({
         return (
             <>
                 <ModalXendit open={openXendit} setOpen={() => setOpenXendit(!openXendit)} iframeUrl={xenditIframeUrl} {...xenditState} />
-                <Traveloka3DSModal open={openTraveloka} setOpen={setOpenTraveloka} handleClose={handleClose} />
                 <div className="hidden-desktop">
                     <SummaryPlugin
                         t={t}

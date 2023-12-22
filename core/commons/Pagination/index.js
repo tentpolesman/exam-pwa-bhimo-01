@@ -1,16 +1,25 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import propTypes from 'prop-types';
 import cx from 'classnames';
 import ChevronLeftIcon from '@heroicons/react/24/outline/ChevronLeftIcon';
 import ChevronRightIcon from '@heroicons/react/24/outline/ChevronRightIcon';
 
+function generateRange(start, end) {
+    const length = end - start + 1;
+    return Array.from({ length }, (_, idx) => idx + start);
+}
+
 const Pagination = (props) => {
     const {
-        handleChangePage, mobile, showArrowButton,
-        page, totalPage, maxPageRender, className,
+        handleChangePage,
+        mobile,
+        showArrowButton,
+        page,
+        totalPage,
+        className,
+        siblingCount,
     } = props;
-
-    const longPage = totalPage && totalPage > maxPageRender;
+    const longPage = totalPage && totalPage > siblingCount;
 
     let pageArray = [];
 
@@ -24,41 +33,47 @@ const Pagination = (props) => {
     }
 
     if (longPage && !mobile) {
-        if ((totalPage / maxPageRender) > 2) {
-            pageArray = [];
-            pageArray.push(1);
-            pageArray.push('dot');
-            for (let index = page - 2; index < page; index += 1) {
-                pageArray.push(index);
+        // eslint-disable-next-line consistent-return
+        pageArray = useMemo(() => {
+            const totalPageNumbers = siblingCount + 5;
+
+            if (totalPageNumbers >= totalPage) {
+                return generateRange(1, totalPage);
             }
 
-            pageArray.push(page);
+            const leftSiblingIndex = Math.max(page - siblingCount, 1);
+            const rightSiblingIndex = Math.min(
+                page + siblingCount,
+                totalPage,
+            );
 
-            for (let index = page + 2; index > page; index -= 1) {
-                pageArray.push(index);
+            const shouldShowLeftDots = leftSiblingIndex > 2;
+            const shouldShowRightDots = rightSiblingIndex < totalPage - 2;
+
+            const firstPageIndex = 1;
+            const lastPageIndex = totalPage;
+
+            if (!shouldShowLeftDots && shouldShowRightDots) {
+                const leftItemCount = 3 + 2 * siblingCount;
+                const leftRange = generateRange(1, leftItemCount);
+
+                return [...leftRange, 'dot', totalPage];
             }
 
-            pageArray.push('dot');
-            pageArray.push(totalPage);
-        }
-
-        if (page === totalPage || page > totalPage - maxPageRender) {
-            pageArray = [];
-            pageArray.push(1);
-            pageArray.push('dot');
-            for (let index = (totalPage + 1) - maxPageRender; index <= totalPage; index += 1) {
-                pageArray.push(index);
+            if (shouldShowLeftDots && !shouldShowRightDots) {
+                const rightItemCount = 3 + 2 * siblingCount;
+                const rightRange = generateRange(
+                    totalPage - rightItemCount + 1,
+                    totalPage,
+                );
+                return [firstPageIndex, 'dot', ...rightRange];
             }
-        }
 
-        if (page < maxPageRender) {
-            pageArray = [];
-            for (let index = 1; index <= maxPageRender; index += 1) {
-                pageArray.push(index);
+            if (shouldShowLeftDots && shouldShowRightDots) {
+                const middleRange = generateRange(leftSiblingIndex, rightSiblingIndex);
+                return [firstPageIndex, 'dot', ...middleRange, 'dot', lastPageIndex];
             }
-            pageArray.push('dot');
-            pageArray.push(totalPage);
-        }
+        }, [page]);
     }
 
     if (mobile) {
@@ -78,7 +93,7 @@ const Pagination = (props) => {
     };
 
     const handeClickPage = (itemPage) => {
-        if (itemPage !== 'dot' || itemPage !== page) {
+        if (itemPage !== 'dot' && itemPage !== page) {
             handleChangePage(itemPage);
         }
     };
@@ -106,9 +121,9 @@ const Pagination = (props) => {
                 )
             }
             {
-                pageArray.map((item) => (
+                pageArray.map((item, idx) => (
                     <div
-                        key={item}
+                        key={idx}
                         role="button"
                         onClick={() => handeClickPage(item)}
                         tabIndex={item}
@@ -116,7 +131,7 @@ const Pagination = (props) => {
                         className={
                             cx(
                                 'w-10 h-10 flex items-center justify-center bg-neutral-white rounded-md',
-                                !mobile ? 'hover:bg-primary hover:text-neutral-50' : '',
+                                (item !== 'dot' && !mobile) ? 'hover:bg-primary hover:text-neutral-50' : '',
                                 (item === page && !mobile) ? 'bg-primary text-neutral-50' : '',
                                 (item === 'dot') ? 'bg-neutral-white hover:bg-neutral-white text-neutral-300' : '',
                             )
@@ -156,14 +171,14 @@ Pagination.propTypes = {
     handleChangePage: propTypes.func.isRequired,
     mobile: propTypes.bool,
     showArrowButton: propTypes.bool,
-    maxPageRender: propTypes.number,
+    siblingCount: propTypes.number,
     className: propTypes.string,
 };
 
 Pagination.defaultProps = {
     mobile: false,
     showArrowButton: true,
-    maxPageRender: 5,
+    siblingCount: 2,
     className: '',
 };
 

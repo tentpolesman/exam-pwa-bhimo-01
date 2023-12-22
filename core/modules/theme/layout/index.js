@@ -113,8 +113,12 @@ const Layout = (props) => {
     const { ogContent = {}, schemaOrg = null, headerDesktop = true, footer = true } = pageConfig;
     const router = useRouter();
     const appEnv = getAppEnv();
+    if (getCookies(features.globalPromo.key_cookies) === '' && storeConfig.global_promo?.enable) {
+        setCookies(features.globalPromo.key_cookies, true);
+    }
     const enablePromo =
         getCookies(features.globalPromo.key_cookies) !== '' ? !!getCookies(features.globalPromo.key_cookies) : storeConfig.global_promo?.enable;
+
 
     const [dialog, setDialog] = useState({
         open: false,
@@ -302,7 +306,7 @@ const Layout = (props) => {
                 dataLayer: {
                     pageName: pageConfig.title,
                     pageType: pageConfig.pageType || 'other',
-                    customerGroup: isLogin === 1 ? 'GENERAL' : 'NOT LOGGED IN',
+                    customerGroup: isLogin == 1 ? 'GENERAL' : 'NOT LOGGED IN',
                 },
             };
             if (custData && custData.email) {
@@ -328,7 +332,7 @@ const Layout = (props) => {
     };
 
     const generateClasses = () => {
-        let classes = `tablet:max-w-[768px] desktop:max-w-[1200px] ${font.variable} font-sans !font-pwa-default`;
+        let classes = `${!isCms ? 'tablet:max-w-[768px] desktop:max-w-[1200px]' : ''} ${font.variable} font-sans !font-pwa-default`;
         if (showGlobalPromo) {
             classes += ' tablet:max-desktop:mt-[145px] desktop:mt-[215px]';
         } else {

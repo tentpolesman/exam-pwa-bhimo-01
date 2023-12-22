@@ -62,7 +62,7 @@ function CustomRadio({
                 {label}
             </Typography>
             <RadioGroup
-                aria-label={ariaLabel}
+                ariaLabel={ariaLabel}
                 name={name}
                 value={value}
                 onChange={handleChange}

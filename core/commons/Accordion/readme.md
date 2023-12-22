@@ -23,17 +23,6 @@ const Component = () => {
 export default Component;
 ```
 
-
-label: '',
-    open: false,
-    handleOpen: () => {},
-    handleClose: () => {},
-    classSummary: '',
-    CustomAccordionSummary: false,
-    classContent: '',
-    classLabel: '',
-    className: '',
-
 ### Properties
 | Props       | Required | default | Description | Type |
 | :---        | :---     |:---- | :---        |:---  |
