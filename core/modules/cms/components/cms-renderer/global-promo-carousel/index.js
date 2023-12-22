@@ -3,7 +3,6 @@
 /* eslint-disable consistent-return */
 /* eslint-disable no-script-url */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import useStyles from '@core_modules/cms/components/cms-renderer/global-promo-carousel/style';
 import cx from 'classnames';
 import parse, { domToReact } from 'html-react-parser';
 import propTypes from 'prop-types';
@@ -18,16 +17,17 @@ import ChevronRightIcon from '@heroicons/react/20/solid/ChevronRightIcon';
 import XMarkIcon from '@heroicons/react/20/solid/XMarkIcon';
 
 const WidgetSliderCarousel = (props) => {
+    // WIP : AUTOPLAY
+    // const { content, className, showClose, key_cookies, handleClose: customHandleClose, autoPlaySpeed = 4000 } = props;
     const {
         content, className, showClose, key_cookies, handleClose: customHandleClose,
     } = props;
-    const styles = useStyles();
 
     const [activeTabs, setActiveTabs] = React.useState(0);
-    const countTabs = React.useRef(0);
+    let countTabs = 0;
 
     const optionSlider = {
-        replace: ({ name, children, attribs }) => {
+        replace: ({ name, children }) => {
             if (name === 'ul') {
                 return (
                     // eslint-disable-next-line no-return-assign
@@ -35,14 +35,15 @@ const WidgetSliderCarousel = (props) => {
                 );
             }
             if (name === 'li') {
-                countTabs.current = parseInt(attribs['data-index'], 10);
+                countTabs += 1;
+                const id = countTabs - 1;
                 return (
                     <div
                         className={cx('slide-content', {
-                            hidden: activeTabs !== parseInt(attribs['data-index'], 10),
+                            hidden: activeTabs !== id,
                         })}
-                        // className={cx('slide-content', 'translate-y-10')}
-                        key={parseInt(attribs['data-index'], 10)}
+                        data-index={id}
+                        key={id}
                     >
                         {domToReact(children, optionSlider)}
                     </div>
@@ -54,7 +55,7 @@ const WidgetSliderCarousel = (props) => {
     const options = {
         replace: ({ attribs, children }) => {
             if (attribs) {
-                if (attribs.id === 'slides') {
+                if (attribs.id !== 'slides') {
                     return <div className="slide-container">{domToReact(children, optionSlider)}</div>;
                 }
             }
@@ -76,14 +77,24 @@ const WidgetSliderCarousel = (props) => {
         }
     };
 
+    // WIP : AUTOPLAY
+    // setInterval(() => {
+    //     const activeCurrent = activeTabs;
+    //     if (activeCurrent + 1 === countTabs) {
+    //         setActiveTabs(0);
+    //     } else {
+    //         setActiveTabs(activeCurrent + 1);
+    //     }
+    // }, autoPlaySpeed);
+
     if (content && content !== '') {
         return (
-            <div className={className && className !== '' ? className : styles.container}>
-                <div className="slider-container">
+            <div className={className}>
+                <div className={cx('slider-container', 'h-[45px]', 'overflow-hidden', 'text-center', 'p-[8px_25%]')}>
                     <Button
                         onClick={() => {
                             if (activeTabs - 1 < 0) {
-                                setActiveTabs(countTabs.current);
+                                setActiveTabs(countTabs - 1);
                             } else {
                                 setActiveTabs(activeTabs - 1);
                             }
@@ -96,6 +107,7 @@ const WidgetSliderCarousel = (props) => {
                             'mobile:max-tablet:!top-[60%]',
                             '!py-0',
                             'bg-[transparent]',
+                            'translate-y-[-50%]',
                         )}
                         variant="plain"
                         iconOnly
@@ -105,7 +117,7 @@ const WidgetSliderCarousel = (props) => {
                     {parse(content, options)}
                     <Button
                         onClick={() => {
-                            if (activeTabs + 1 > countTabs.current) {
+                            if (activeTabs + 1 === countTabs) {
                                 setActiveTabs(0);
                             } else {
                                 setActiveTabs(activeTabs + 1);
@@ -119,6 +131,7 @@ const WidgetSliderCarousel = (props) => {
                             'mobile:max-tablet:!top-[60%]',
                             '!py-0',
                             'bg-[transparent]',
+                            'translate-y-[-50%]',
                         )}
                         variant="plain"
                         iconOnly
@@ -128,7 +141,15 @@ const WidgetSliderCarousel = (props) => {
                     {showClose ? (
                         <Button
                             onClick={handleClose}
-                            className={cx('absolute', 'right-0', 'tablet:!top-[40%]', 'mobile:max-tablet:!top-[60%]', '!py-0', 'bg-[transparent]')}
+                            className={cx(
+                                'absolute',
+                                'right-0',
+                                'tablet:!top-[40%]',
+                                'mobile:max-tablet:!top-[60%]',
+                                '!py-0',
+                                'bg-[transparent]',
+                                'translate-y-[-50%]',
+                            )}
                             variant="plain"
                             iconOnly
                             icon={<XMarkIcon />}
