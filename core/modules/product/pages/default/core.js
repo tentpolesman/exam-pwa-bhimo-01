@@ -17,7 +17,7 @@ import {
 } from '@core_modules/product/services/graphql';
 
 const ContentDetail = ({
-    t, slug, product, keyProduct, Content, isLogin, storeConfig,
+    t, slug, product, keyProduct, Content, isLogin, storeConfig, ssrProduct,
 }) => {
     const item = product.items[keyProduct];
     const reviewValue = parseInt(item.review.rating_summary, 0) / 20;
@@ -154,13 +154,21 @@ const ContentDetail = ({
             // product detail
             breadcrumbsData={breadcrumbsData}
             dataSeller={dataSeller}
+            ssrProduct={ssrProduct}
         />
     );
 };
 
 const PageDetail = (props) => {
     const {
-        slug, Content, t, isLogin, pageConfig, CustomHeader, storeConfig,
+        t,
+        slug,
+        Content,
+        isLogin,
+        pageConfig,
+        CustomHeader,
+        storeConfig,
+        ssrProduct,
     } = props;
 
     /**
@@ -345,10 +353,11 @@ const PageDetail = (props) => {
             {...props}
         >
             <ContentDetail
+                t={t}
                 slug={slug[0]}
                 keyProduct={productByUrl}
                 product={product}
-                t={t}
+                ssrProduct={ssrProduct}
                 Content={Content}
                 isLogin={isLogin}
                 storeConfig={storeConfig}

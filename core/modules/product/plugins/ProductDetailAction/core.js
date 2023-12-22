@@ -49,6 +49,7 @@ const ProductDetailAction = ({
     useShareProduct = false,
     useProductRelated = false,
     useProductUpsell = false,
+    ssrProduct,
     Content,
     ...other
 }) => {
@@ -68,6 +69,9 @@ const ProductDetailAction = ({
     const reviewValue = parseInt(item.review.rating_summary, 0) / 20;
     const enableProductCompare = modules.productcompare.enabled;
     const enableWishlist = modules.wishlist.enabled;
+
+    // ssr
+    const ssrBanner = ssrProduct?.bannerResult;
 
     const labels = getProductLabel(storeConfig, { context, variables: { url: slug[0] } });
     const { data: dataCompare, client } = useQuery(localCompare);
@@ -469,7 +473,7 @@ const ProductDetailAction = ({
             priceData={priceData}
             loadPrice={loadPrice}
             errorPrice={errorPrice}
-            banner={banner}
+            banner={ssrBanner || banner}
             storeConfig={storeConfig}
             enablePopupImage={enablePopupImage}
             openImageDetail={openImageDetail}

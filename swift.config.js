@@ -263,9 +263,18 @@ const modules = {
         productListing: {
             quickView: {
                 bannerImage: {
-                    mobile: 296,
-                    tablet: 296,
-                    desktop: 400,
+                    mobile: {
+                        width: 296,
+                        height: 296,
+                    },
+                    tablet: {
+                        width: 296,
+                        height: 296,
+                    },
+                    desktop: {
+                        width: 400,
+                        height: 400,
+                    },
                 },
             },
             sort: {
