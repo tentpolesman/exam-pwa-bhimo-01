@@ -16,6 +16,7 @@ import Button from '@common_button';
 import Typography from '@common_typography';
 
 import ArrowDownIcon from '@heroicons/react/20/solid/ArrowDownIcon';
+import ExclamationTriangleIcon from '@heroicons/react/24/outline/ExclamationTriangleIcon';
 
 const OrderView = (props) => {
     const { customerOrders, t, reOrder } = props;
@@ -161,7 +162,32 @@ const OrderView = (props) => {
                                         </tr>
                                     ))}
                                 </>
-                            ) : null}
+                            ) : (
+                                <tr>
+                                    <td colSpan={6}>
+                                        <Button
+                                            icon={<ExclamationTriangleIcon />}
+                                            iconPosition="left"
+                                            className={cx(
+                                                'w-full',
+                                                'bg-yellow-500',
+                                                'hover:bg-yellow-500',
+                                                'focus:bg-yellow-500',
+                                                'active:bg-yellow-500',
+                                                'hover:shadow-none',
+                                                'focus:shadow-none',
+                                                'active:shadow-none',
+                                                'cursor-auto',
+                                                'hover:cursor-auto',
+                                                'focus:cursor-auto',
+                                                'active:cursor-auto',
+                                            )}
+                                        >
+                                            <Typography className={cx('!text-neutral-white')}>{t('customer:order:emptyMessage')}</Typography>
+                                        </Button>
+                                    </td>
+                                </tr>
+                            )}
                         </tbody>
                     </table>
                 </div>

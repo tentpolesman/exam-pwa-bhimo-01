@@ -113,8 +113,12 @@ const Layout = (props) => {
     const { ogContent = {}, schemaOrg = null, headerDesktop = true, footer = true } = pageConfig;
     const router = useRouter();
     const appEnv = getAppEnv();
+    if (getCookies(features.globalPromo.key_cookies) === '' && storeConfig.global_promo?.enable) {
+        setCookies(features.globalPromo.key_cookies, true);
+    }
     const enablePromo =
         getCookies(features.globalPromo.key_cookies) !== '' ? !!getCookies(features.globalPromo.key_cookies) : storeConfig.global_promo?.enable;
+
 
     const [dialog, setDialog] = useState({
         open: false,

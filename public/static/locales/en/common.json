@@ -233,5 +233,8 @@
         "trailer": "Trailer",
         "viewSample": "View Sample",
         "loading": "Loading"
+    },
+    "cms": {
+        "unableToRender": "Unable to render the content"
     }
 }

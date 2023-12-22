@@ -168,7 +168,7 @@ const HeaderMobile = (props) => {
                     />
                 </div>
             </div>
-            <div id="top-header-mobile" className={cx('top-header__mobile', 'py-[1px]')}>
+            <div id="top-header-mobile" className={cx('top-header__mobile')}>
                 <div
                     id="top-header__content"
                     className={cx('top-header-mobile__content', 'mobile:max-tablet:max-w-[100%] tablet:hidden', 'm-[0_auto]')}

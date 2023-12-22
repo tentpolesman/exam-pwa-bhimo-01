@@ -15,7 +15,7 @@ import dynamic from 'next/dynamic';
 import cx from 'classnames';
 import { HeartIcon, ArrowsRightLeftIcon } from '@heroicons/react/24/outline';
 
-const ImageSlider = dynamic(() => import('@common_imageslider'), { ssr: false });
+const ImageSlider = dynamic(() => import('@common_imageslider'), { ssr: true });
 const RatingStar = dynamic(() => import('@common_ratingstar'), { ssr: false });
 const ProductTabs = dynamic(() => import('@core_modules/product/pages/default/components/ProductTabs'), { ssr: false });
 const ProductTabsAccordion = dynamic(() => import('@core_modules/product/pages/default/components/ProductTabsAccordion'), { ssr: false });
