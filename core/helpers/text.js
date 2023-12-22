@@ -23,11 +23,11 @@ export const StripHtmlTags = (str = '') => {
 export const capitalizeEachWord = (str = '') => str.toLowerCase().split(' ').map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
 
 export const createExcerpt = (text, maxLength) => {
-    if (text.length <= maxLength) {
+    if (text?.length <= maxLength) {
         return text; // Return the full text if it's shorter than the maximum length
     }
     // Create an excerpt by taking a substring of the text up to the maxLength
-    const excerpt = text.substring(0, maxLength);
+    const excerpt = text?.substring(0, maxLength);
     // Trim the excerpt to the last space to avoid cutting off in the middle of a word
-    return `${excerpt.substring(0, excerpt.lastIndexOf(' '))}...`;
+    return `${excerpt?.substring(0, excerpt?.lastIndexOf(' '))}...`;
 };
