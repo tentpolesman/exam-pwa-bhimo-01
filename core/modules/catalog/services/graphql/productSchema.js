@@ -442,7 +442,8 @@ const productDetail = (config = {}) => `
     }
     special_from_date
     special_to_date
-
+    new_from_date
+    new_to_date
     `;
 const priceRange = `
     price_range {

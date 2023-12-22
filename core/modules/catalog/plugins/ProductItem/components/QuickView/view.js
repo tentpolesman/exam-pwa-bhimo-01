@@ -55,16 +55,16 @@ const QuickView = (props) => {
                                 detectAutoScreen: false,
                                 horizontalThumbnail: true,
                                 imageProps: {
-                                    mainImage,
+                                    mainImageWidth: mainImage.width,
+                                    mainImageHeight: mainImage.height,
                                 },
-
                                 customStyleImageWrapper: {
-                                    width: mainImage,
-                                    height: mainImage,
+                                    width: mainImage.width,
+                                    height: mainImage.height,
                                 },
                                 customStyleImageContainer: {
-                                    width: mainImage,
-                                    height: mainImage,
+                                    width: mainImage.width,
+                                    height: mainImage.height,
                                 },
 
                                 customClassImageWrapper: '!px-[0]',

@@ -97,7 +97,7 @@ const ProductLabel = ({
                     fontSize={fontSizeBadge}
                 />
             </Show>
-            <Show when={config.enable && config.new.enable && showLabelNew}>
+            <Show when={!IS_OOS && config.enable && config.new.enable && showLabelNew}>
                 <Badge
                     bold
                     success
@@ -106,7 +106,7 @@ const ProductLabel = ({
                     fontSize={fontSizeBadge}
                 />
             </Show>
-            <Show when={config.enable && config.sale.enable && showSale}>
+            <Show when={!IS_OOS && config.enable && config.sale.enable && showSale}>
                 <Badge
                     bold
                     danger
