@@ -17,7 +17,7 @@ const getSSRProductProps = async ({ apolloClient, slug, storeConfig }) => {
                     bannerResult.push({
                         link: '#',
                         imageUrl: media.url,
-                        videoUrl: (media && media?.video_content) || null,
+                        videoUrl: media?.video_content || null,
                         imageAlt: media.label,
                     });
                 });
