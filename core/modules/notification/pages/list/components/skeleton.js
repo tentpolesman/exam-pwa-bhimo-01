@@ -1,33 +1,32 @@
-import Skeleton from '@material-ui/lab/Skeleton';
-import Grid from '@material-ui/core/Grid';
-import ListItem from '@material-ui/core/ListItem';
+import React from 'react';
+import cx from 'classnames';
+import Skeleton from '@common_skeleton';
 
-const SkeletonNotification = () => {
-    const SkeletonRect = ({ width, height }) => (
-        <Skeleton
-            style={{ margin: '8px 0' }}
-            variant="rect"
-            width={width}
-            height={height}
-            animation="wave"
-        />
-    );
-    const SkeletonItem = () => (
-        <Grid container direction="column">
-            <SkeletonRect width={250} height={16} />
-            <SkeletonRect width={90} height={10} />
-        </Grid>
-    );
-
+function SkeletonContent() {
     return (
-        <div className="container">
-            {[0, 1, 2, 3, 4].map((i) => (
-                <ListItem key={i} divider>
-                    <SkeletonItem />
-                </ListItem>
+        <div className={cx('pt-5')}>
+            {Array(10).fill(0).map((item, i) => (
+                <div
+                    key={i}
+                    className={cx(
+                        'border-t-[1px] border-b-[1px] border-neutral-100',
+                        'px-8 py-6',
+                    )}
+                >
+                    <div className="w-full flex flex-col [&>*+*]:mt-[12px]">
+                        <Skeleton
+                            width={260}
+                            height={20}
+                        />
+                        <Skeleton
+                            width={140}
+                            height={20}
+                        />
+                    </div>
+                </div>
             ))}
         </div>
     );
-};
+}
 
-export default SkeletonNotification;
+export default SkeletonContent;

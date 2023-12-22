@@ -5,12 +5,9 @@ import React from 'react';
 
 import { features } from '@config';
 import GlobalPromoCarousel from '@core_modules/cms/components/cms-renderer/global-promo-carousel';
-import useStyles from '@core_modules/theme/components/globalPromo/styles';
 import { getCmsBlocks } from '@core_modules/theme/services/graphql';
 
 const GlobalPromoMessage = (props) => {
-    const styles = useStyles();
-
     const {
         // prettier-ignore
         storeConfig,
@@ -23,7 +20,7 @@ const GlobalPromoMessage = (props) => {
     const [isShown, setIsShown] = React.useState(showGlobalPromo);
 
     const { data, loading } = getCmsBlocks({
-        identifiers: 'weltpixel_global_promo_message',
+        identifiers: 'global_promo_message',
     });
 
     if (loading) {
@@ -44,10 +41,11 @@ const GlobalPromoMessage = (props) => {
                         'mobile:max-tablet:text-sm',
                         'bg-primary-700',
                         'text-neutral-white',
+                        'mobile:max-tablet:py-1',
                     )}
                 >
                     <GlobalPromoCarousel
-                        className={styles.container}
+                        className={cx('relative', 'flex', 'justify-center', 'tablet:max-w-screen-tablet', 'desktop:max-w-screen-desktop', 'mx-auto')}
                         content={data.cmsBlocks.items[0].content}
                         key_cookies={key_cookies}
                         backgroundColor={storeConfig.global_promo.background_color}

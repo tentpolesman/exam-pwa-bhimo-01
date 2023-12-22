@@ -230,5 +230,8 @@
         "trailer": "Trailer",
         "viewSample": "Lihat Contoh",
         "loading": "Memuat"
+    },
+    "cms": {
+        "unableToRender": "Gagal menampilkan konten"
     }
 }

@@ -200,6 +200,8 @@ const RegisterView = ({
                             onChange={(e) => formik.setFieldValue('password', e.target.value)}
                             error={checkIsFieldError('password')}
                             errorMessage={fieldErrorMessage('password')}
+                            hintClassName="my-2"
+                            absolute={false}
                         />
 
                         <PasswordField
@@ -214,6 +216,8 @@ const RegisterView = ({
                             onChange={(e) => formik.setFieldValue('confirmPassword', e.target.value)}
                             error={checkIsFieldError('confirmPassword')}
                             errorMessage={fieldErrorMessage('confirmPassword')}
+                            hintClassName="my-2"
+                            absolute={false}
                         />
 
                         <PhoneInput
