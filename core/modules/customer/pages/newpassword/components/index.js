@@ -52,7 +52,8 @@ const ForgotPassword = (props) => {
                             error={!!formik.errors.password}
                             errorMessage={formik.errors.password || null}
                             showVisible
-                            hintClassName="mt-2"
+                            showPasswordMeter
+                            hintClassName="my-2"
                             absolute={false}
                         />
                         <PasswordField
