@@ -359,7 +359,7 @@ const ImageSlider = ({
                         cx(
                             'z-50',
                             'image-slider-preview',
-                            'relative desktop:px-[16px] tablet:px-[0px] mobile:px-[16px]',
+                            'relative desktop:px-[16px] tablet:px-[0px] mobile:px-[16px] rounded-[12px]',
                             detectAutoScreen && 'tablet:mr-auto tablet:ml-[0px] mobile:mx-auto',
                             !detectAutoScreen && 'mx-auto',
                             isDesktop && 'pl-[24px]',
@@ -431,13 +431,13 @@ const ImageSlider = ({
                             onClick={onClickZoomImage}
                             className={cx(
                                 'button-zoom-image absolute',
-                                'desktop:bottom-[16px] tablet:bottom-[12px] desktop:right-[-6px]',
+                                'desktop:bottom-[16px] tablet:bottom-[12px] desktop:right-[0px]',
                                 'tablet:right-[12px] mobile:bottom-[12px] mobile:right-[26px]',
                                 'bg-neutral-white',
                                 '!p-[10px]',
                             )}
                         >
-                            <ArrowsPointingOutIcon className="h-[14px] w-[14px]" />
+                            <ArrowsPointingOutIcon className="h-[20px] w-[20px]" />
                         </Button>
                     </Show>
                 </div>
