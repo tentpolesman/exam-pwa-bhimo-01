@@ -225,5 +225,8 @@
         "customize": "Customize",
         "trailer": "Trailer",
         "viewSample": "View Sample"
+    },
+    "cms": {
+        "unableToRender": "Unable to render the content"
     }
 }

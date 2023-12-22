@@ -222,5 +222,8 @@
         "customize": "Penyesuaian",
         "trailer": "Trailer",
         "viewSample": "Lihat Contoh"
+    },
+    "cms": {
+        "unableToRender": "Gagal menampilkan konten"
     }
 }
