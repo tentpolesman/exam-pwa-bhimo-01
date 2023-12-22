@@ -9,19 +9,14 @@ import propTypes from 'prop-types';
 import React from 'react';
 
 import Button from '@common_button';
-import { features } from '@config';
-import { setCookies } from '@helpers/cookies';
 
 import ChevronLeftIcon from '@heroicons/react/20/solid/ChevronLeftIcon';
 import ChevronRightIcon from '@heroicons/react/20/solid/ChevronRightIcon';
-import XMarkIcon from '@heroicons/react/20/solid/XMarkIcon';
 
 const WidgetSliderCarousel = (props) => {
     // WIP : AUTOPLAY
-    // const { content, className, showClose, key_cookies, handleClose: customHandleClose, autoPlaySpeed = 4000 } = props;
-    const {
-        content, className, showClose, key_cookies, handleClose: customHandleClose,
-    } = props;
+    // const { content, className, autoPlaySpeed = 4000 } = props;
+    const { content, className } = props;
 
     const [activeTabs, setActiveTabs] = React.useState(0);
     let countTabs = 0;
@@ -62,21 +57,6 @@ const WidgetSliderCarousel = (props) => {
         },
     };
 
-    const handleClose = () => {
-        setCookies(key_cookies, false);
-        customHandleClose(false);
-        const globalPromoMessage = document.getElementById('global-promo-message');
-        const headerInner = document.getElementById('header-inner');
-        if (headerInner) {
-            headerInner.classList.remove('top-[38px]');
-        }
-        if (globalPromoMessage) {
-            globalPromoMessage.style.display = 'none';
-            globalPromoMessage.style.height = '0px';
-            globalPromoMessage.remove();
-        }
-    };
-
     // WIP : AUTOPLAY
     // setInterval(() => {
     //     const activeCurrent = activeTabs;
@@ -101,10 +81,10 @@ const WidgetSliderCarousel = (props) => {
                         }}
                         className={cx(
                             'absolute',
-                            'mobile:max-tablet:left-[10%]',
-                            'tablet:left-[15%]',
+                            'mobile:max-tablet:left-[0%]',
+                            'tablet:left-[5%]',
                             'tablet:!top-[40%]',
-                            'mobile:max-tablet:!top-[60%]',
+                            'mobile:max-tablet:!top-[50%]',
                             '!py-0',
                             'bg-[transparent]',
                             'translate-y-[-50%]',
@@ -125,10 +105,10 @@ const WidgetSliderCarousel = (props) => {
                         }}
                         className={cx(
                             'absolute',
-                            'mobile:max-tablet:right-[10%]',
-                            'tablet:right-[15%]',
+                            'mobile:max-tablet:right-[0%]',
+                            'tablet:right-[5%]',
                             'tablet:!top-[40%]',
-                            'mobile:max-tablet:!top-[60%]',
+                            'mobile:max-tablet:!top-[50%]',
                             '!py-0',
                             'bg-[transparent]',
                             'translate-y-[-50%]',
@@ -138,24 +118,6 @@ const WidgetSliderCarousel = (props) => {
                         icon={<ChevronRightIcon />}
                         iconProps={{ className: '!text-neutral-white !opacity-100 mobile:max-tablet:h-[20px] mobile:max-tablet:w-[20px]' }}
                     />
-                    {showClose ? (
-                        <Button
-                            onClick={handleClose}
-                            className={cx(
-                                'absolute',
-                                'right-0',
-                                'tablet:!top-[40%]',
-                                'mobile:max-tablet:!top-[60%]',
-                                '!py-0',
-                                'bg-[transparent]',
-                                'translate-y-[-50%]',
-                            )}
-                            variant="plain"
-                            iconOnly
-                            icon={<XMarkIcon />}
-                            iconProps={{ className: '!text-neutral-white !opacity-100 mobile:max-tablet:h-[20px] mobile:max-tablet:w-[20px]' }}
-                        />
-                    ) : null}
                 </div>
                 <style jsx>
                     {`
@@ -194,14 +156,10 @@ WidgetSliderCarousel.propTypes = {
     // eslint-disable-next-line react/forbid-prop-types
     content: propTypes.string.isRequired,
     className: propTypes.string,
-    showClose: propTypes.bool,
-    key_cookies: propTypes.string,
 };
 
 WidgetSliderCarousel.defaultProps = {
     className: '',
-    showClose: true,
-    key_cookies: features.globalPromo.key_cookies,
 };
 
 export default WidgetSliderCarousel;

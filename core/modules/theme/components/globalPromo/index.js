@@ -41,10 +41,11 @@ const GlobalPromoMessage = (props) => {
                         'mobile:max-tablet:text-sm',
                         'bg-primary-700',
                         'text-neutral-white',
+                        'mobile:max-tablet:py-1',
                     )}
                 >
                     <GlobalPromoCarousel
-                        className={cx('relative', 'flex', 'justify-center')}
+                        className={cx('relative', 'flex', 'justify-center', 'tablet:max-w-screen-tablet', 'desktop:max-w-screen-desktop', 'mx-auto')}
                         content={data.cmsBlocks.items[0].content}
                         key_cookies={key_cookies}
                         backgroundColor={storeConfig.global_promo.background_color}
