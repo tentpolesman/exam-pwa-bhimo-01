@@ -5,11 +5,21 @@ import { storeConfigVar } from '@root/core/services/graphql/cache';
 import cx from 'classnames';
 import ReactPhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
+import Show from '@common_show';
 
 const PhoneInput = (props) => {
     const {
-        value, onChange, label = '', error = false, errorMessage = '', className = '',
-        classNameField = '', classLabel = '', placeholder = '81234567890', ...restProps
+        value,
+        onChange,
+        label = '',
+        error = false,
+        errorMessage = '',
+        className = '',
+        classNameField = '',
+        classLabel = '',
+        placeholder = '81234567890',
+        required = false,
+        ...restProps
     } = props;
 
     const pwaConfig = useReactiveVar(storeConfigVar);
@@ -19,7 +29,12 @@ const PhoneInput = (props) => {
         <div className={cx('flex', 'flex-col', className)} {...restProps}>
             {label ? (
                 <label className="mb-2">
-                    <Typography variant="h4" className={classLabel}>{label}</Typography>
+                    <Typography variant="h4" className={classLabel}>
+                        {label}
+                        <Show when={required}>
+                            <span className={cx('text-red-600')}> *</span>
+                        </Show>
+                    </Typography>
                 </label>
             ) : null}
             <ReactPhoneInput

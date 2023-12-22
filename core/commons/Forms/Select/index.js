@@ -9,6 +9,7 @@ import cx from 'classnames';
 import { COLORS } from '@theme_vars';
 import { useClickAway } from '@uidotdev/usehooks';
 import { useState } from 'react';
+import Show from '@common_show';
 
 const Select = (props) => {
     const {
@@ -25,6 +26,7 @@ const Select = (props) => {
         inputProps = {},
         textFiledProps = {},
         optionProps = {},
+        required = false,
         ...restProps
     } = props;
 
@@ -37,22 +39,25 @@ const Select = (props) => {
         setOpen(false);
     });
 
+    const selectValue = options?.find((opt) => opt.value === value)?.label ?? value;
+
     return (
         <div ref={ref} className={cx('relative', open ? 'z-50' : '', className)} {...restProps}>
             {label && typeof label === 'string' ? (
                 <Typography variant="bd-2" className={cx('mb-2 uppercase', classNameLabel)}>
                     {label.replace(/_/g, ' ')}
+                    <Show when={required}>
+                        <span className={cx('text-red-600')}> *</span>
+                    </Show>
                 </Typography>
             ) : null}
-            {label && typeof label === 'object' ? (
-                label
-            ) : null}
+            {label && typeof label === 'object' ? label : null}
             <TextField
                 className={cx('cursor-pointer', textFiledClass || '')}
                 rightIcon={!open ? <ArrowDown /> : <ArrowUp />}
                 inputProps={{
                     readOnly: true,
-                    className: (cx('cursor-pointer', inputPropsClass || '')),
+                    className: cx('cursor-pointer', inputPropsClass || ''),
                     name,
                     ...restInputProps,
                 }}
@@ -64,13 +69,24 @@ const Select = (props) => {
                 onClick={() => {
                     setOpen(!open);
                 }}
-                value={value}
+                value={selectValue}
                 placeholder={placeholder}
                 {...restTextFiledProps}
             />
             {open && options?.length > 0 ? (
                 <div
-                    className={cx('w-full', 'flex', 'flex-col', 'py-3', 'px-4', 'shadow-md', 'cursor-pointer', 'bg-neutral-white', 'z-50', optionClass)}
+                    className={cx(
+                        'w-full',
+                        'flex',
+                        'flex-col',
+                        'py-3',
+                        'px-4',
+                        'shadow-md',
+                        'cursor-pointer',
+                        'bg-neutral-white',
+                        'z-50',
+                        optionClass,
+                    )}
                     {...restOptionProps}
                 >
                     {options.map((d, idx) => (

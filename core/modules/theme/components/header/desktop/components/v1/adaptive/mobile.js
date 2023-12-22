@@ -32,7 +32,7 @@ const BurgerMenuAccount = dynamic(() => import('@core_modules/theme/components/h
 const ShoppingBagIcon = dynamic(() => import('@plugin_shoppingbag'), { ssr: true });
 const GlobalPromoMessage = dynamic(() => import('@core_modules/theme/components/globalPromo'), { ssr: true });
 
-const TabletMobile = (props) => {
+const HeaderMobile = (props) => {
     const {
         t,
         storeConfig,
@@ -98,6 +98,14 @@ const TabletMobile = (props) => {
             type: 'react-component',
         },
     ];
+
+    const [isMounted, setIsMounted] = React.useState(false);
+
+    React.useEffect(() => {
+        setIsMounted(true);
+    }, []);
+
+    if (!isMounted) return null;
 
     return (
         <div
@@ -296,4 +304,4 @@ const TabletMobile = (props) => {
     );
 };
 
-export default TabletMobile;
+export default HeaderMobile;
