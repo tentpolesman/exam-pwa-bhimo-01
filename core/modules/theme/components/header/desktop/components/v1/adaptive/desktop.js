@@ -53,6 +53,8 @@ const DesktopHeader = (props) => {
 
     const [open, setOpen] = React.useState(false);
 
+    console.log('storeConfig', storeConfig);
+
     const PopoverContent = () => {
         return (
             <ul className={cx('my-account-list__wrapper')}>
@@ -168,8 +170,8 @@ const DesktopHeader = (props) => {
                                     className="header-middle__logo-link"
                                     src={`${storeConfig.secure_base_media_url}logo/${storeConfig.header_logo_src}`}
                                     alt={storeConfig.default_title}
-                                    width={120}
-                                    height={52}
+                                    width={storeConfig?.logo_width || 120}
+                                    height={storeConfig?.logo_height || 52}
                                     storeConfig={storeConfig}
                                     lazy={false}
                                 />

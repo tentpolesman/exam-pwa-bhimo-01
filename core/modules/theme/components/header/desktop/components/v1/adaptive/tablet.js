@@ -194,8 +194,8 @@ const TabletHeader = (props) => {
                                     className="middle-header-tablet__logo-link"
                                     src={`${storeConfig.secure_base_media_url}logo/${storeConfig.header_logo_src}`}
                                     alt={storeConfig.default_title}
-                                    width={74}
-                                    height={34}
+                                    width={storeConfig?.logo_width || 74}
+                                    height={storeConfig?.logo_height || 34}
                                     storeConfig={storeConfig}
                                     lazy={false}
                                 />
