@@ -54,8 +54,6 @@ const DesktopHeader = (props) => {
 
     const [open, setOpen] = React.useState(false);
 
-    console.log('storeConfig', storeConfig);
-
     const PopoverContent = () => {
         return (
             <ul className={cx('my-account-list__wrapper')}>
