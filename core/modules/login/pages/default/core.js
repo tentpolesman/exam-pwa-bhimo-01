@@ -184,39 +184,41 @@ const Login = (props) => {
             variables: {
                 phoneNumber,
             },
-        }).then(() => {
-            setShowOtp(true);
-            window.backdropLoader(false);
-            setManySendOtp(manySendOtp + 1);
-            // eslint-disable-next-line no-nested-ternary
-            setTime(configSendOtp && configSendOtp.expired ? configSendOtp.expired : 60);
-            window.toastMessage({
-                open: true,
-                text: t('otp:sendSuccess'),
-                variant: 'success',
+        })
+            .then(() => {
+                setShowOtp(true);
+                window.backdropLoader(false);
+                setManySendOtp(manySendOtp + 1);
+                // eslint-disable-next-line no-nested-ternary
+                setTime(configSendOtp && configSendOtp.expired ? configSendOtp.expired : 60);
+                window.toastMessage({
+                    open: true,
+                    text: t('otp:sendSuccess'),
+                    variant: 'success',
+                });
+            })
+            .catch((e) => {
+                window.backdropLoader(false);
+                if (e.message === 'phone number is already Registered') {
+                    window.toastMessage({
+                        open: true,
+                        text: `${t('otp:registerOtpFailed', { phoneNumber })}`,
+                        variant: 'error',
+                    });
+                } else if (e.message === 'Max retries exceeded') {
+                    window.toastMessage({
+                        open: true,
+                        text: `${t('otp:registerOtpTooManyRetries', { phoneNumber })}`,
+                        variant: 'error',
+                    });
+                } else {
+                    window.toastMessage({
+                        open: true,
+                        text: e.message.split(':')[1] || t('otp:sendFailed'),
+                        variant: 'error',
+                    });
+                }
             });
-        }).catch((e) => {
-            window.backdropLoader(false);
-            if (e.message === 'phone number is already Registered') {
-                window.toastMessage({
-                    open: true,
-                    text: `${t('otp:registerOtpFailed', { phoneNumber })}`,
-                    variant: 'error',
-                });
-            } else if (e.message === 'Max retries exceeded') {
-                window.toastMessage({
-                    open: true,
-                    text: `${t('otp:registerOtpTooManyRetries', { phoneNumber })}`,
-                    variant: 'error',
-                });
-            } else {
-                window.toastMessage({
-                    open: true,
-                    text: e.message.split(':')[1] || t('otp:sendFailed'),
-                    variant: 'error',
-                });
-            }
-        });
     };
 
     const handleSubmit = (formOtp, variables) => {
@@ -322,6 +324,7 @@ const Login = (props) => {
                         return true;
                     }),
         password: Yup.string().required(t('validate:password:required')),
+        captcha: enableRecaptcha && Yup.string().required(t('validate:captcha:required')),
     });
 
     const LoginOtpSchema = Yup.object().shape({
@@ -465,7 +468,7 @@ const Login = (props) => {
                             }
                         }, 1500);
                     })
-                    .catch(() => { });
+                    .catch(() => {});
             } else if (query && query.redirect) {
                 Router.push(query.redirect);
             } else if (redirectLastPath && redirectLastPath !== '') {
