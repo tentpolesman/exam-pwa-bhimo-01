@@ -70,9 +70,6 @@ const ProductDetailAction = ({
     const enableProductCompare = modules.productcompare.enabled;
     const enableWishlist = modules.wishlist.enabled;
 
-    // ssr
-    const ssrBanner = ssrProduct?.bannerResult;
-
     const labels = getProductLabel(storeConfig, { context, variables: { url: slug[0] } });
     const { data: dataCompare, client } = useQuery(localCompare);
     const [addProductCompare] = addProductsToCompareList();
@@ -473,7 +470,7 @@ const ProductDetailAction = ({
             priceData={priceData}
             loadPrice={loadPrice}
             errorPrice={errorPrice}
-            banner={ssrBanner || banner}
+            banner={banner}
             storeConfig={storeConfig}
             enablePopupImage={enablePopupImage}
             openImageDetail={openImageDetail}

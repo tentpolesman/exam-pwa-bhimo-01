@@ -348,8 +348,11 @@ const ProductDetailAction = ({
             >
                 <ProductTabs
                     data={expandData}
+                    tabTitleWrapperClassName="[&>li:first-child>a]:!pl-[0px]"
                     tabHasContentClass="pt-[24px]"
                     tabContentClassName="mt-[24px]"
+                    tabTitleClassName="hover:border-b-[4px] !min-w-0 !px-[20px] !py-[13px]"
+                    tabTitleActiveClassName="border-b-[4px]"
                     smartProductTabs={
                         smartProductTabs || {
                             tab_2: {
