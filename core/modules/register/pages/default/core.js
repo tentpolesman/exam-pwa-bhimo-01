@@ -180,6 +180,7 @@ const Register = (props) => {
         })
             .then(() => {
                 setShowOtp(true);
+                setDisabledOtpButton(false);
                 window.backdropLoader(false);
                 window.toastMessage({
                     open: true,
@@ -223,23 +224,22 @@ const Register = (props) => {
             .then(async ({ data }) => {
                 resetForm();
                 if (data.internalCreateCustomerToken.is_email_confirmation) {
-                    window.backdropLoader(false);
                     setEmailConfirmationFlag({ status: '00', message: t('register:openEmail'), variant: 'success' });
-
                     window.toastMessage({
                         open: true,
                         text: t('register:openEmail'),
                         variant: 'success',
                     });
                     setTimeout(() => {
+                        window.backdropLoader(false);
                         Router.push('/customer/account/login');
                     }, 2000);
                 } else {
-                    await setIsLogin(1);
+                    setIsLogin(1);
                     if (Object.keys(cachePrice).length > 0) {
                         priceVar({});
                     }
-                    getCart();
+                    await getCart();
                     window.backdropLoader(false);
                 }
                 setDisabled(false);
@@ -275,8 +275,8 @@ const Register = (props) => {
         onSubmit: (values, { resetForm }) => {
             setDisabled(true);
             window.backdropLoader(true);
-            if (showOtp) {
-                handleSendRegister(values, resetForm);
+            if (enableOtp && !showOtp) {
+                handleSend(values.phoneNumber);
             } else if (enableRecaptcha) {
                 fetch('/captcha-validation', {
                     method: 'post',
@@ -288,11 +288,7 @@ const Register = (props) => {
                     .then((data) => data.json())
                     .then((json) => {
                         if (json.success) {
-                            if (enableOtp && !showOtp) {
-                                handleSend(values.phoneNumber);
-                            } else {
-                                handleSendRegister(values, resetForm);
-                            }
+                            handleSendRegister(values, resetForm);
                         } else {
                             window.backdropLoader(false);
                             window.toastMessage({
@@ -312,8 +308,6 @@ const Register = (props) => {
                     });
 
                 recaptchaRef.current.reset();
-            } else if (enableOtp && !showOtp) {
-                handleSend(values.phoneNumber);
             } else {
                 handleSendRegister(values, resetForm);
             }

@@ -42,8 +42,6 @@ const RegisterView = ({
     const checkIsFieldError = (name = '') => !!(formik.touched[name] && formik.errors[name]);
     const fieldErrorMessage = (name = '') => (formik.touched[name] && formik.errors[name]) || null;
 
-    console.log('masuk formik', formik.values);
-
     return (
         <>
             <div className={cx('register-container', 'justify-center', 'desktop:mb-[116px]', 'tablet:mb-[68px]', 'mobile:mb-[48px]')}>
