@@ -7,12 +7,12 @@ import TextField from '@common_forms/TextField';
 import Typography from '@common_typography';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
-import DateDayJs from '@date-io/dayjs';
 import Checkbox from '@common_forms/CheckBox';
 import cx from 'classnames';
 import ReCAPTCHA from 'react-google-recaptcha';
 import Show from '@common_show';
 import OtpView from '@plugin_otpfield';
+import Datepicker from '@common_forms/Datepicker';
 
 const Breadcrumb = dynamic(() => import('@common_breadcrumb'), { ssr: false });
 const PhoneInput = dynamic(() => import('@common_forms/PhoneInput'), { ssr: false });
@@ -176,17 +176,16 @@ const RegisterView = ({
                             />
                         </Show>
 
-                        {/* <Show when={dob}>
-                            <DatePicker
-                                fullWidth
+                        <Show when={dob}>
+                            <Datepicker
+                                classWrapper={divInputWrapperStyle}
                                 label={t('common:form:dob')}
                                 name="dob"
+                                classLabel={cx('capitalize', 'mb-[8px]')}
                                 value={formik.values.dob}
                                 onChange={handleChangeDate}
-                                error={checkIsFieldError('dob')}
-                                errorMessage={fieldErrorMessage('dob')}
                             />
-                        </Show> */}
+                        </Show>
 
                         <PasswordField
                             className={cx('register-form-password', divInputStyle, divInputWrapperStyle)}
@@ -197,12 +196,12 @@ const RegisterView = ({
                             showPasswordMeter
                             name="password"
                             required
+                            absolute={false}
+                            hintClassName={cx('my-2')}
                             value={formik.values.password}
                             onChange={(e) => formik.setFieldValue('password', e.target.value)}
                             error={checkIsFieldError('password')}
                             errorMessage={fieldErrorMessage('password')}
-                            hintClassName="my-2"
-                            absolute={false}
                         />
 
                         <PasswordField
@@ -213,16 +212,16 @@ const RegisterView = ({
                             showVisible
                             name="confirmPassword"
                             required
+                            absolute={false}
+                            hintClassName={cx('my-2')}
                             value={formik.values.confirmPassword}
                             onChange={(e) => formik.setFieldValue('confirmPassword', e.target.value)}
                             error={checkIsFieldError('confirmPassword')}
                             errorMessage={fieldErrorMessage('confirmPassword')}
-                            hintClassName="my-2"
-                            absolute={false}
                         />
 
                         <PhoneInput
-                            id="register-phoneNumber-textfield"
+                            id="register-phonenumber-textfield"
                             className={cx('phone-number', divInputStyle, divInputWrapperStyle)}
                             classLabel={cx('capitalize', '!font-medium')}
                             classNameField={cx(
@@ -240,15 +239,16 @@ const RegisterView = ({
                             errorMessage={fieldErrorMessage('phoneNumber')}
                         />
 
-                        <div className={cx('checkbox-wa-wrapper', divInputWrapperStyle)}>
+                        <div className={cx('checkbox-wa-wrapper', 'flex', 'content-center', divInputWrapperStyle)}>
                             <Checkbox
-                                id="register-waRegitered-checkbox"
+                                id="register-waregitered-checkbox"
                                 name="whastapptrue"
                                 label={t('register:subscribe')}
                                 variant="single"
                                 size="sm"
-                                value={phoneIsWa}
+                                checked={phoneIsWa}
                                 onChange={handleWa}
+                                classNames={{ checkboxContainerClasses: cx('flex', 'items-center') }}
                             >
                                 <Typography variant="bd-2b">{t('register:isWhatsapp')}</Typography>
                             </Checkbox>
@@ -256,7 +256,7 @@ const RegisterView = ({
 
                         <Show when={!phoneIsWa}>
                             <PhoneInput
-                                id="register-waNumber-textfield"
+                                id="register-wanumber-textfield"
                                 className={cx('phone-number', divInputStyle, divInputWrapperStyle)}
                                 classLabel={cx('capitalize', '!font-medium')}
                                 classNameField={cx(
@@ -283,8 +283,9 @@ const RegisterView = ({
                                     name="subscribe"
                                     label={t('register:subscribe')}
                                     size="sm"
-                                    value={formik.values.subscribe}
+                                    checked={formik.values.subscribe}
                                     onChange={formik.handleChange}
+                                    classNames={{ checkboxContainerClasses: cx('flex', 'items-center') }}
                                 >
                                     <Typography variant="bd-2b">{t('register:subscribe')}</Typography>
                                 </Checkbox>
@@ -328,10 +329,4 @@ const RegisterView = ({
     );
 };
 
-const RegisterViewProvider = (props) => (
-    // <MuiPickersUtilsProvider utils={DateDayJs}>
-    // </MuiPickersUtilsProvider>
-    <RegisterView {...props} />
-);
-
-export default RegisterViewProvider;
+export default RegisterView;

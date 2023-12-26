@@ -329,9 +329,9 @@ const Layout = (props) => {
     const generateClasses = () => {
         let classes = `${!isCms ? 'tablet:max-w-[768px] desktop:max-w-[1200px]' : ''} ${font.variable} font-sans !font-pwa-default`;
         if (showGlobalPromo) {
-            classes += ' tablet:max-desktop:mt-[145px] desktop:mt-[215px]';
+            classes += ' mobile:max-tablet:mt-2 tablet:max-desktop:mt-[145px] desktop:mt-[196px]';
         } else {
-            classes += ' tablet:max-desktop:mt-[110px] desktop:mt-[195px]';
+            classes += ' mobile:max-tablet:mt-2 tablet:max-desktop:mt-[107px] desktop:mt-[158px]';
         }
         if (pageConfig.bottomNav && storeConfig?.pwa?.mobile_navigation === 'bottom_navigation' && storeConfig?.pwa?.enabler_footer_mobile) {
             classes += ' mb-[60px]';
