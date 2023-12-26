@@ -80,25 +80,13 @@ const Menu = (props) => {
             <ul className="nav" role="menubar" id="header-nav-menubar">
                 {menu.map((val, idx) => {
                     if ((val.include_in_menu || storeConfig.pwa.ves_menu_enable) && val.name) {
-                        // const { className, styles } = generateMenuStyles(val);
-
                         const linkEl = useRef(null);
                         const megaMenuRef = useRef(null);
                         const refLi = useRef(null);
 
                         let prefix = '';
-                        if (val.icon_classes !== '') {
-                            prefix = `<i class='${val.icon_classes}'></i>`;
-                        }
-                        if (val.show_icon === true && val.icon !== '') {
-                            prefix += `<img src='${val.icon}' />`;
-                        }
 
                         prefix += ` ${val.name} `;
-
-                        if (val.caret !== '') {
-                            prefix += `<i class='${val.caret}'></i>`;
-                        }
 
                         if (val.children.length > 0) {
                             prefix += chevronDownSvg;
@@ -124,6 +112,15 @@ const Menu = (props) => {
                                         megaMenuRef.current.classList.remove(`animate__${val.dropdown_animation_in}`);
                                     }
                                 }}
+                                className={cx(
+                                    'text-md',
+                                    'font-medium',
+                                    '!leading-lg',
+                                    'tracking-normal',
+                                    'px-4',
+                                    'py-[13px]',
+                                    'hover:text-primary-700',
+                                )}
                             >
                                 {val.link && val.link !== '#' ? (
                                     <>
@@ -159,13 +156,6 @@ const Menu = (props) => {
                                                         linkEl.current.innerHTML = linkEl.current.innerHTML.replace(val.hover_caret, val.caret);
                                                     }
                                                 }}
-                                                className={cx(
-                                                    // className,
-                                                    'text-md',
-                                                    'font-normal',
-                                                    'leading-lg',
-                                                    'tracking-normal',
-                                                )}
                                             />
                                         </Link>
                                         {val.after_html && (
@@ -239,34 +229,11 @@ const Menu = (props) => {
                     .main-content {
                         display: flex;
                     }
-                    /* mini reset */
-                    .nav {
-                        width: 100%;
-                    }
-                    .nav,
-                    .nav a,
-                    .nav form,
-                    .nav input,
-                    .nav li,
-                    .nav ul {
-                        border: none;
-                        margin: 0;
-                        padding: 0;
-                    }
                     .nav a {
                         text-decoration: none;
                     }
                     .nav li {
                         list-style: none;
-                    }
-
-                    /* menu container */
-                    .nav {
-                        height: 49px;
-                        cursor: default;
-                        display: inline-block;
-                        position: relative;
-                        z-index: 20;
                     }
 
                     /* menu list */
@@ -277,8 +244,6 @@ const Menu = (props) => {
                     /* menu links */
                     .nav > li > a {
                         display: block;
-                        line-height: 3.5;
-                        padding: 0 1.25rem 0 0.25rem;
                         transition: all 0.3s ease;
                         z-index: 20;
                         position: relative;

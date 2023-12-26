@@ -88,8 +88,12 @@ const TabletHeader = (props) => {
                     id="top-header__content"
                     className={cx(
                         'top-header-tablet__content',
-                        'grid grid-cols-[436fr_268fr] gap-4',
+                        'flex',
+                        'flex-row',
+                        'justify-between',
+                        'gap-x-4',
                         'tablet:max-w-[768px] desktop:hidden mobile:max-tablet:hidden',
+                        'px-6',
                         'm-[0_auto]',
                     )}
                 >
@@ -135,21 +139,21 @@ const TabletHeader = (props) => {
                 <div
                     className={cx(
                         'middle-header-tablet__wrapper',
+                        'flex',
+                        'flex-row',
+                        'justify-between',
+                        'gap-x-5',
                         'm-[0_auto]',
-                        'grid',
-                        'grid-cols-[24fr_110fr_454fr_72fr]',
-                        'gap-4',
                         'tablet:max-w-[768px]',
+                        'px-6',
                     )}
                 >
                     <div className={cx('middle-header-tablet__burger-menu')}>
                         <Button
                             className={cx(
-                                'm-2',
-                                '!px-0',
-                                '!pb-0',
-                                '!pt-2',
-                                '!ml-0',
+                                'my-2',
+                                '!p-0',
+                                '!mx-0',
                                 'hover:shadow-none',
                                 'focus:shadow-none',
                                 'active:shadow-none',
@@ -187,15 +191,20 @@ const TabletHeader = (props) => {
                             </Drawer>
                         )}
                     </div>
-                    <div className={cx('middle-header-tablet__logo')}>
+                    <div className={cx('middle-header-tablet__logo', 'flex', 'items-center')}>
                         <Link href="/" legacyBehavior>
                             <a>
                                 <Image
+                                    styleContainer={{
+                                        width: `${storeConfig?.logo_width || 74}px`,
+                                        height: `${storeConfig?.logo_height || 34}px`,
+                                        paddingTop: 0,
+                                    }}
                                     className="middle-header-tablet__logo-link"
                                     src={`${storeConfig.secure_base_media_url}logo/${storeConfig.header_logo_src}`}
                                     alt={storeConfig.default_title}
-                                    width={74}
-                                    height={34}
+                                    width={storeConfig?.logo_width || 74}
+                                    height={storeConfig?.logo_height || 34}
                                     storeConfig={storeConfig}
                                     lazy={false}
                                 />
@@ -206,7 +215,7 @@ const TabletHeader = (props) => {
                         <Autocomplete setValue={setValue} handleSearch={handleSearch} t={t} storeConfig={storeConfig} deviceWidth={deviceWidth} />
                     </div>
                     <div className={cx('middle-header-tablet__statusicon')}>
-                        <div className={cx('middle-header__statusicon', 'flex', 'flex-wrap', 'flex-column', 'justify-between')}>
+                        <div className={cx('middle-header__statusicon', 'flex', 'flex-row', 'gap-x-1', 'justify-between')}>
                             <div className="notification">
                                 <NotificationBell withLink />
                             </div>

@@ -186,7 +186,7 @@ const HeaderMobile = (props) => {
                     ) : null}
                 </div>
             </div>
-            <div className={cx('bottom-header-mobile', 'shadow-2xl')}>
+            <div className={cx('bottom-header-mobile', 'shadow-lg')}>
                 <Drawer
                     open={openBurgerMenu}
                     handleClose={() => setOpenBurgerMenu(false)}
@@ -212,7 +212,7 @@ const HeaderMobile = (props) => {
                         'bottom-header-mobile__wrapper',
                         'm-[0_auto]',
                         'grid',
-                        'grid-cols-[1fr_7fr_2fr]',
+                        'grid-cols-[1fr_8fr_3fr]',
                         'mobile:max-tablet:max-w-[100%]',
                         'px-4',
                     )}
@@ -223,7 +223,7 @@ const HeaderMobile = (props) => {
                                 'm-2',
                                 '!px-0',
                                 '!pb-0',
-                                '!pt-2',
+                                '!pt-0',
                                 '!ml-0',
                                 'hover:shadow-none',
                                 'focus:shadow-none',
@@ -234,7 +234,7 @@ const HeaderMobile = (props) => {
                                 setOpenBurgerMenu(true);
                             }}
                             icon={<Bars3Icon />}
-                            iconProps={{ className: cx('text-neutral-700', 'w-[20px]', 'h-[20px]') }}
+                            iconProps={{ className: cx('text-neutral-700', 'w-[24px]', 'h-[24px]') }}
                             iconOnly
                             variant="tertiary"
                             classNameText={cx('!text-neutral-700')}
@@ -259,8 +259,8 @@ const HeaderMobile = (props) => {
                                     className={cx('bottom-header-mobile__logo-link')}
                                     src={`${storeConfig.secure_base_media_url}logo/${storeConfig.header_logo_src}`}
                                     alt={storeConfig.default_title}
-                                    width={74}
-                                    height={34}
+                                    width={storeConfig?.logo_width || 74}
+                                    height={storeConfig?.logo_height || 34}
                                     storeConfig={storeConfig}
                                     lazy={false}
                                 />
@@ -268,11 +268,11 @@ const HeaderMobile = (props) => {
                         </Link>
                     </div>
                     <div className={cx('bottom-header-mobile__statusicon')}>
-                        <div className={cx('middle-header__statusicon', 'flex', 'flex-wrap', 'flex-column', 'justify-between')}>
+                        <div className={cx('middle-header__statusicon', 'flex', 'flex-row', 'gap-x-2', 'justify-end')}>
                             <div className="search-icon">
                                 <Button
                                     className={cx(
-                                        'mt-4',
+                                        'mt-3',
                                         '!px-0',
                                         '!py-0',
                                         'hover:shadow-none',
