@@ -116,7 +116,8 @@
         "fileReject": "Cannot upload, Files must be a type ",
         "fetchError": "Connection Error. Please try again later.",
         "browser": "Browser not supported",
-        "videoNotSupported": "Your browser does not support the video tag."
+        "videoNotSupported": "Your browser does not support the video tag.",
+        "captcha": "Recaptcha verification failed, please try again."
     },
     "fileUpload": {
         "reject": "Cannot upload, Files must be a type ",

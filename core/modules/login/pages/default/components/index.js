@@ -1,20 +1,19 @@
 /* eslint-disable no-nested-ternary */
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
-
 import firebase from 'firebase/app';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import ReCAPTCHA from 'react-google-recaptcha';
-
 import Button from '@common_button';
 import PasswordField from '@common_forms/Password';
 import PhoneField from '@common_forms/PhoneInput';
 import TextField from '@common_forms/TextField';
 import Tabs from '@common_tabs';
 import Typography from '@common_typography';
-
 import { features } from '@config';
 import OtpView from '@plugin_otpfield';
+import Show from '@common_show';
+import cx from 'classnames';
 
 const Login = (props) => {
     const {
@@ -38,12 +37,8 @@ const Login = (props) => {
     } = props;
 
     const [activeTabs, setActiveTabs] = useState(0);
-    const tabsData = [
-        { title: 'Email' },
-        { title: t('login:Phone') },
-    ];
+    const tabsData = [{ title: 'Email' }, { title: t('login:Phone') }];
     const signInOptions = [];
-
     if (features.firebase.config.apiKey !== '' && firebase && firebase.auth && socialLoginMethodData && socialLoginMethodData.length > 0) {
         for (let idx = 0; idx < socialLoginMethodData.length; idx += 1) {
             const code = socialLoginMethodData[idx];
@@ -162,14 +157,18 @@ const Login = (props) => {
                                             </Typography>
                                         </Link>
                                     </div>
-                                    {enableRecaptcha ? (
+                                    <Show when={enableRecaptcha}>
                                         <div className="w-full">
                                             <ReCAPTCHA sitekey={sitekey} onChange={handleChangeCaptcha} ref={recaptchaRef} />
-                                            {formikPhoneEmail.errors.captcha && (
-                                                <Typography color="red">{formikPhoneEmail.errors.captcha}</Typography>
-                                            )}
+                                            <Show when={formikPhoneEmail.errors.captcha}>
+                                                <Typography
+                                                    className={cx('text-md font-normal leading-lg tracking-normal text-pwa-font my-2 !text-red')}
+                                                >
+                                                    {formikPhoneEmail.errors.captcha}
+                                                </Typography>
+                                            </Show>
                                         </div>
-                                    ) : null}
+                                    </Show>
 
                                     <Button className="flex justify-center capitalize" type="submit" disabled={disabled}>
                                         {t('login:pageTitle')}
@@ -215,12 +214,18 @@ const Login = (props) => {
                                             </Typography>
                                         </Link>
                                     </div>
-                                    {enableRecaptcha ? (
+                                    <Show when={enableRecaptcha}>
                                         <div className="w-full">
                                             <ReCAPTCHA sitekey={sitekey} onChange={handleChangeCaptcha} ref={recaptchaRef} />
-                                            {formik.errors.captcha && <Typography color="red">{formik.errors.captcha}</Typography>}
+                                            <Show when={formik.errors.captcha}>
+                                                <Typography
+                                                    className={cx('text-md font-normal leading-lg tracking-normal text-pwa-font my-2 !text-red')}
+                                                >
+                                                    {formik.errors.captcha}
+                                                </Typography>
+                                            </Show>
                                         </div>
-                                    ) : null}
+                                    </Show>
 
                                     <Button className="flex justify-center capitalize" type="submit" disabled={disabled}>
                                         {t('login:pageTitle')}
@@ -241,6 +246,18 @@ const Login = (props) => {
                                     errorMessage={formikOtp.errors.username || null}
                                     showVisible
                                 />
+
+                                <Show when={enableRecaptcha}>
+                                    <div className="w-full">
+                                        <ReCAPTCHA sitekey={sitekey} onChange={handleChangeCaptcha} ref={recaptchaRef} />
+                                        <Show when={formikOtp.errors.captcha}>
+                                            <Typography className={cx('text-md font-normal leading-lg tracking-normal text-pwa-font my-2 !text-red')}>
+                                                {formikOtp.errors.captcha}
+                                            </Typography>
+                                        </Show>
+                                    </div>
+                                </Show>
+
                                 <Button className="flex justify-center capitalize" type="submit" disabled={disabled}>
                                     {t('login:pageTitle')}
                                 </Button>
