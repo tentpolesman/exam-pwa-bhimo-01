@@ -1,21 +1,16 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable semi-style */
+/* eslint-disable max-len */
 import Typography from '@common_typography';
-import FormControl from '@material-ui/core/FormControl';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import IconButton from '@material-ui/core/IconButton';
-import Input from '@material-ui/core/Input';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import Popover from '@material-ui/core/Popover';
-import Help from '@material-ui/icons/Help';
+import TextField from '@common_forms/TextField';
 import Button from '@common_button';
-import Spiner from '@material-ui/core/CircularProgress';
-import useStyles from '@core_modules/checkout/pages/default/components/style';
+import CircularProgress from '@common_circularprogress';
 
 const EmailView = (props) => {
     const {
         t, formik, setAnchorEl, anchorEl, idButton, open, config,
         handleBlur, load,
     } = props;
-    const styles = useStyles();
 
     let isExternalLoginLink = false;
     if (config && config.loginRedirect && config.loginRedirect.link) {
@@ -31,17 +26,16 @@ const EmailView = (props) => {
     };
 
     return (
-        <div className={styles.block} id="checkoutEmailSetup">
-            <Typography variant="h2" type="bold" letter="uppercase">
+        <div className="border-b border-b-neutral-400 p-[30px]" id="checkoutEmailSetup">
+            <Typography variant="h2" className="font-bold uppercase">
                 {t('checkout:emailAddress')}
             </Typography>
-            <div className={styles.emailContainer}>
-                <FormControl
-                    fullWidth
+            <div className="m-[5px]">
+                <div
                     error={!!(formik.errors.email && formik.touched.email)}
-                    className={styles.customFormControl}
+                    className="form-control mt-[10px] mb-[20px]"
                 >
-                    <Input
+                    <TextField
                         id="checkout-email-input"
                         name="email"
                         placeholder="john.doe@gmail.com"
@@ -52,19 +46,19 @@ const EmailView = (props) => {
                             <>
                                 {
                                     load ? (
-                                        <Spiner size="1rem" />
+                                        <CircularProgress size="1rem" />
                                     ) : null
                                 }
-                                <InputAdornment position="end">
-                                    <IconButton
+                                {/* <InputAdornment position="end">
+                                    <Button
                                         aria-describedby={idButton}
                                         aria-label="toggle password visibility"
                                         onClick={(event) => {
                                             setAnchorEl(event.currentTarget);
                                         }}
                                     >
-                                        <Help />
-                                    </IconButton>
+                                        <InformationCircleIcon />
+                                    </Button>
                                     <Popover
                                         id={idButton}
                                         open={open}
@@ -83,14 +77,12 @@ const EmailView = (props) => {
                                     >
                                         <Typography variant="p">{t('checkout:emailHelper')}</Typography>
                                     </Popover>
-                                </InputAdornment>
+                                </InputAdornment> */}
                             </>
                         )}
                     />
-                    {/* { !saved && formik.values.email !== '' && (<FormHelperText>{t('checkout:message:unsavedEmail')}</FormHelperText>) } */}
-                    {(formik.touched.email && formik.errors.email)
-                        ? <FormHelperText>{formik.errors.email || null}</FormHelperText> : null}
-                </FormControl>
+                    {(formik.touched.email && formik.errors.email) ? <div className="form-control-error text-red">{formik.errors.email || null}</div> : null}
+                </div>
             </div>
             {!isExternalLoginLink
                 ? (

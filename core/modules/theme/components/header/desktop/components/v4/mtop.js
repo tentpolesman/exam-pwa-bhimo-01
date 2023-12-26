@@ -8,11 +8,10 @@ import React from 'react';
 import NotificationBell from '@plugin_notificationbell';
 import ShoppingBagIcon from '@plugin_shoppingbag';
 import ProductCompareIcon from '@core_modules/catalog/plugins/ProductCompare';
-import IconButton from '@material-ui/core/IconButton';
-import SearchIcon from '@material-ui/icons/Search';
 import Autocomplete from '@core_modules/theme/components/header/desktop/components/autocomplete';
 import SwitcherLanguage from '@common_language';
 import SwitcherCurrency from '@common_currency';
+import Button from '@common_button';
 import { breakPointsUp } from '@helper_theme';
 import config from '@config';
 
@@ -66,112 +65,113 @@ const ViewTop = (props) => {
         }
     }, [triger]);
 
-    return <>
-        <ul>
-            <li style={{ padding: '5px 0px !important' }}>
-                {enablePopupInstallation ? <DesktopInstallAppV4 appName={appName} installMessage={installMessage} /> : null}
-            </li>
-            <li>
-                {!isLogin ? (
-                    t('common:header:welcome')
-                ) : (
-                    <>
-                        <Link href="/customer/account" legacyBehavior>
-                            <a>
-                                {data.customer
-                                    ? `${t('common:header:hi').replace('$', `${data.customer.firstname} ${data.customer.lastname}`)} 
+    return (
+        <>
+            <ul>
+                <li style={{ padding: '5px 0px !important' }}>
+                    {enablePopupInstallation ? <DesktopInstallAppV4 appName={appName} installMessage={installMessage} /> : null}
+                </li>
+                <li>
+                    {!isLogin ? (
+                        t('common:header:welcome')
+                    ) : (
+                        <>
+                            <Link href="/customer/account" legacyBehavior>
+                                <a>
+                                    {data.customer
+                                        ? `${t('common:header:hi').replace('$', `${data.customer.firstname} ${data.customer.lastname}`)} 
                                 ${adminId !== undefined && adminId !== '' ? `(Login By ${JSON.parse(adminId)[1]})` : ''}`
-                                    : null}
-                            </a>
-                        </Link>
-                        <ul>
-                            <li>
-                                <Link href="/customer/account" legacyBehavior>
-                                    <a>{t('common:menu:myaccount')}</a>
-                                </Link>
-                            </li>
-                            <li>
-                                <Link href="/wishlist" legacyBehavior>
-                                    <a>
-                                        {t('common:menu:mywishlist')}
-                                        ({ data.customer?.wishlists[0].items_v2
-                                            ? data.customer?.wishlists[0].items_v2.items.length : 0} items ){' '}
-                                    </a>
-                                </Link>
-                            </li>
-                            <li>
-                                <a href="#" onClick={handleLogout}>
-                                    {t('common:menu:signout')}
+                                        : null}
                                 </a>
-                            </li>
-                        </ul>
-                    </>
-                )}
-            </li>
-            {!isLogin
-                ? desktop ? (
-                    <li>
-                        <Link href="/customer/account/login" legacyBehavior>
-                            <a id="header-menu-btnsign">{t('common:menu:sign')}</a>
-                        </Link>
-                        {' '}
-                        {t('common:menu:or')}
-                        {' '}
-                        <Link href="/customer/account/create" legacyBehavior>
-                            <a id="header-menu-btnregister">{t('common:menu:register')}</a>
-                        </Link>
-                        {' '}
-                    </li>
-                ) : (
-                    <li>
-                        <Link href="/customer/account" legacyBehavior>
-                            <a>{t('common:menu:account')}</a>
-                        </Link>
-                    </li>
-                ) : null}
-            <li>
-                <SwitcherLanguage {...props} />
-            </li>
-            <li>
-                <SwitcherCurrency {...props} />
-            </li>
-            <li>
-                <SwitcherMenu {...props} />
-            </li>
-        </ul>
-        <div className="header-middle__right" id="top-searchbox">
-            <div className="box">
-                <div className="header-middle__icons">
-                    <div className="notification">
-                        <NotificationBell withLink />
-                    </div>
-                    {modules.productcompare.enabled && (
-                        <div className="shopping-bag">
-                            <ProductCompareIcon withLink isLogin={isLogin} />
-                        </div>
+                            </Link>
+                            <ul>
+                                <li>
+                                    <Link href="/customer/account" legacyBehavior>
+                                        <a>{t('common:menu:myaccount')}</a>
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link href="/wishlist" legacyBehavior>
+                                        <a>
+                                            {t('common:menu:mywishlist')}
+                                            ({ data.customer?.wishlists[0].items_v2
+                                                ? data.customer?.wishlists[0].items_v2.items.length : 0} items ){' '}
+                                        </a>
+                                    </Link>
+                                </li>
+                                <li>
+                                    <a href="#" onClick={handleLogout}>
+                                        {t('common:menu:signout')}
+                                    </a>
+                                </li>
+                            </ul>
+                        </>
                     )}
-                    <div id="header-shoppingBag-icon" className="shopping-bag">
-                        <ShoppingBagIcon withLink storeConfig={storeConfig} />
+                </li>
+                {!isLogin
+                    ? desktop ? (
+                        <li>
+                            <Link href="/customer/account/login" legacyBehavior>
+                                <a id="header-menu-btnsign">{t('common:menu:sign')}</a>
+                            </Link>
+                            {' '}
+                            {t('common:menu:or')}
+                            {' '}
+                            <Link href="/customer/account/create" legacyBehavior>
+                                <a id="header-menu-btnregister">{t('common:menu:register')}</a>
+                            </Link>
+                            {' '}
+                        </li>
+                    ) : (
+                        <li>
+                            <Link href="/customer/account" legacyBehavior>
+                                <a>{t('common:menu:account')}</a>
+                            </Link>
+                        </li>
+                    ) : null}
+                <li>
+                    <SwitcherLanguage {...props} />
+                </li>
+                <li>
+                    <SwitcherCurrency {...props} />
+                </li>
+                <li>
+                    <SwitcherMenu {...props} />
+                </li>
+            </ul>
+            <div className="header-middle__right" id="top-searchbox">
+                <div className="box">
+                    <div className="header-middle__icons">
+                        <div className="notification">
+                            <NotificationBell withLink />
+                        </div>
+                        {modules.productcompare.enabled && (
+                            <div className="shopping-bag">
+                                <ProductCompareIcon withLink isLogin={isLogin} />
+                            </div>
+                        )}
+                        <div id="header-shoppingBag-icon" className="shopping-bag">
+                            <ShoppingBagIcon withLink storeConfig={storeConfig} />
+                        </div>
                     </div>
-                </div>
-                <div className="header-middle__search">
-                    <Autocomplete
-                        setValue={setValue}
-                        handleSearch={handleSearch}
-                        OptionsItem={OptionAutocomplete}
-                        t={t}
-                        storeConfig={storeConfig}
-                    />
-                    <div className="search-icon">
-                        <IconButton disabled={value === ''} edge="start" onClick={searchByClick} aria-label="close">
-                            <SearchIcon />
-                        </IconButton>
+                    <div className="header-middle__search">
+                        <Autocomplete
+                            setValue={setValue}
+                            handleSearch={handleSearch}
+                            OptionsItem={OptionAutocomplete}
+                            t={t}
+                            storeConfig={storeConfig}
+                        />
+                        <div className="search-icon">
+                            <Button disabled={value === ''} edge="start" onClick={searchByClick} aria-label="close">
+                                {/* <SearchIcon /> */}
+                            </Button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <style jsx>
-            {`
+            <style jsx>
+                {`
                 ul {
                     margin: 0;
                     list-style: none;
@@ -260,16 +260,17 @@ const ViewTop = (props) => {
                     transition: display 1s ease;
                 }
             `}
-        </style>
-        <style jsx global>
-            {`
+            </style>
+            <style jsx global>
+                {`
                 @media screen and (max-width: 1024px) {
                     #top-searchbox .header-middle__search .MuiAutocomplete-root {
                         width: 10rem !important;
                     }
                 }
             `}
-        </style>
-    </>;
+            </style>
+        </>
+    );
 };
 export default ViewTop;

@@ -63,6 +63,7 @@
         "asLowAs": "As low as",
         "startFrom": "Starting at"
     },
+    "qty": "Quantity",
     "form": {
         "firstName": "First Name",
         "lastName": "Last Name",
@@ -232,7 +233,11 @@
         "customize": "Customize",
         "trailer": "Trailer",
         "viewSample": "View Sample",
-        "loading": "Loading"
+        "loading": "Loading",
+        "all": "All",
+        "total": "Total",
+        "remove": "Remove",
+        "apply": "Apply"
     },
     "cms": {
         "unableToRender": "Unable to render the content"

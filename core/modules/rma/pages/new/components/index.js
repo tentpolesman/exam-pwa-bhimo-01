@@ -7,14 +7,13 @@ import classNames from 'classnames';
 import Typography from '@common_typography';
 import Layout from '@layout_customer';
 import Button from '@common_button';
-import Divider from '@material-ui/core/Divider';
+import Divider from '@common_divider';
 import DropFile from '@common_dropfile';
 import CheckBox from '@common_forms/CheckBox';
 import Router from 'next/router';
+import ItemProduct from '@core_modules/rma/pages/new/components/ItemProduct';
+import ItemField from '@core_modules/rma/pages/new/components/ItemField';
 import { requestRma } from '@core_modules/rma/services/graphql';
-import useStyles from './styles';
-import ItemProduct from './ItemProduct';
-import ItemField from './ItemField/index';
 
 const NewContent = (props) => {
     const {
@@ -29,7 +28,6 @@ const NewContent = (props) => {
             </Layout>
         );
     }
-    const styles = useStyles();
     const [formData, setFormData] = React.useState({
         order_number,
         customer_name: customerData.firstname,
@@ -184,8 +182,8 @@ const NewContent = (props) => {
 
     return (
         <Layout {...props} title={t('customer:menu:return')} activeMenu="/rma/customer">
-            <div className="flex flex-col">
-                <div className={classNames(styles.block)}>
+            <div className="flex flex-col rma-container">
+                <div className={classNames('')}>
                     {
                         custom_fields && custom_fields.length > 0 && custom_fields.map((item, index) => {
                             if (item.refers === 'request') {
@@ -214,10 +212,10 @@ const NewContent = (props) => {
                         })
                     }
                 </div>
-                <div className={styles.labelProduct}>
+                <div>
                     <Typography variant="title">{t('rma:product')}</Typography>
                 </div>
-                <div className={styles.selectProductContainer}>
+                <div>
                     <span onClick={selectAll}>
                         <Typography variant="label">{t('rma:selectAll')}</Typography>
                     </span>
@@ -226,7 +224,7 @@ const NewContent = (props) => {
                         <Typography variant="label">{t('rma:deselectAll')}</Typography>
                     </span>
                 </div>
-                <div className={styles.block}>
+                <div>
                     {products.length > 0
                             && (
                                 <CheckBox
@@ -239,7 +237,7 @@ const NewContent = (props) => {
                                 />
                             )}
                 </div>
-                <div className={styles.block}>
+                <div>
                     <TextField
                         name="message"
                         onChange={(event) => setFormData({ ...formData, message: event.target.value })}
@@ -250,10 +248,10 @@ const NewContent = (props) => {
                         rows={4}
                     />
                 </div>
-                <div className={styles.block}>
+                <div>
                     <DropFile label={t('rma:form:placeholder:uploadFile')} getBase64={handleGetBase64} acceptedFile={fileAccept} />
                 </div>
-                <div className={styles.block}>
+                <div>
                     <Button fullWidth onClick={handleSubmit}>
                         <Typography letter="uppercase" type="bold" variant="span" color="white">{t('rma:form:submit')}</Typography>
                     </Button>

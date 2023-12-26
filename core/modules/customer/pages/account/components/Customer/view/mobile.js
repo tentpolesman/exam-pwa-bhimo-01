@@ -3,29 +3,27 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable max-len */
 /* eslint-disable react/no-danger */
-import { useApolloClient } from '@apollo/client';
 import Button from '@common_button';
 import Carousel from '@common_slick/Caraousel';
 import Typography from '@common_typography';
-import { custDataNameCookie } from '@config';
 import ProductCompareLabel from '@core_modules/catalog/plugins/ProductCompare';
-import useStyles from '@core_modules/customer/pages/account/components/Customer/style';
-import { removeToken as deleteToken } from '@core_modules/customer/services/graphql';
-import { removeIsLoginFlagging } from '@helper_auth';
-import { removeCartId } from '@helper_cartid';
-import { removeCookies } from '@helper_cookies';
-import { getResolver, setResolver } from '@helper_localstorage';
 import noReload from '@helper_noreload';
-import Badge from '@material-ui/core/Badge';
-import withStyles from '@material-ui/core/styles/withStyles';
+import Badge from '@common_badge';
 import ProductItem from '@plugin_productitem';
 import PointCard from '@plugin_rewardpointinfo';
-import { localCompare, localTotalCart } from '@services/graphql/schema/local';
 import classNames from 'classnames';
 import Cookies from 'js-cookie';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import Router, { useRouter } from 'next/router';
+import { useApolloClient } from '@apollo/client';
+import { custDataNameCookie } from '@config';
+import { removeToken as deleteToken } from '@core_modules/customer/services/graphql';
+import { removeIsLoginFlagging } from '@helper_auth';
+import { removeCartId } from '@helper_cartid';
+import { removeCookies } from '@helper_cookies';
+import { getResolver, setResolver } from '@helper_localstorage';
+import { localCompare, localTotalCart } from '@services/graphql/schema/local';
 
 const Footer = dynamic(() => import('@common_footer'), { ssr: false });
 // eslint-disable-next-line consistent-return
@@ -65,13 +63,7 @@ const ViewMobile = (props) => {
                 //
             });
     };
-    const styles = useStyles();
-    const StyledBadge = withStyles(() => ({
-        badge: {
-            right: -4,
-            top: 4,
-        },
-    }))(Badge);
+    const styles = {};
     const footerMobile = {
         display: storeConfig.pwa && storeConfig.pwa.mobile_navigation === 'bottom_navigation' ? 'flex' : null,
     };
@@ -100,14 +92,14 @@ const ViewMobile = (props) => {
                             {menu.map(({ href, title }, index) => (
                                 <li className={styles.account_navigation_item} key={index}>
                                     <Link href={href} className={styles.account_navigation_link}>
-                                        <StyledBadge
+                                        <Badge
                                             color="secondary"
                                             max={99}
                                             invisible={!href.includes('notification') || !totalUnread}
                                             badgeContent={totalUnread}
                                         >
                                             {title}
-                                        </StyledBadge>
+                                        </Badge>
                                     </Link>
                                 </li>
                             ))}

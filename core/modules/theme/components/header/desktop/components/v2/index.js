@@ -3,13 +3,11 @@
 /* eslint-disable max-len */
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import SearchIcon from '@material-ui/icons/Search';
-import PersonIcon from '@material-ui/icons/Person';
-import Badge from '@material-ui/core/Badge';
+import Badge from '@common_badge';
 import NotificationBell from '@plugin_notificationbell';
 import ShoppingBagIcon from '@plugin_shoppingbag';
 import ProductCompareIcon from '@core_modules/catalog/plugins/ProductCompare';
-import IconButton from '@material-ui/core/IconButton';
+import Button from '@common_button';
 import Link from 'next/link';
 import DesktopInstallAppV2 from '@core_modules/theme/components/header/desktop/components/v2/custom-install-popup/desktop';
 import Menu from '@core_modules/theme/components/header/desktop/components/v2/mcategory';
@@ -112,7 +110,7 @@ const ViewTopNavigation = (props) => {
                                         <div className="signin">
                                             <Link href="/customer/account" passHref legacyBehavior>
                                                 <Badge color="secondary">
-                                                    <PersonIcon color="secondary" />
+                                                    {/* <PersonIcon color="secondary" /> */}
                                                 </Badge>
                                             </Link>
                                         </div>
@@ -137,9 +135,9 @@ const ViewTopNavigation = (props) => {
                                             storeConfig={storeConfig}
                                         />
                                         <div className="search-icon">
-                                            <IconButton disabled={value === ''} edge="start" onClick={searchByClick} aria-label="close">
-                                                <SearchIcon />
-                                            </IconButton>
+                                            <Button disabled={value === ''} edge="start" onClick={searchByClick} aria-label="close">
+                                                {/* <SearchIcon /> */}
+                                            </Button>
                                         </div>
                                     </div>
                                 </div>
@@ -227,7 +225,7 @@ const ViewTopNavigation = (props) => {
                                         <div className="signin">
                                             <Link href="/customer/account" passHref legacyBehavior>
                                                 <Badge color="secondary">
-                                                    <PersonIcon color="secondary" />
+                                                    {/* <PersonIcon color="secondary" /> */}
                                                 </Badge>
                                             </Link>
                                         </div>
@@ -268,9 +266,9 @@ const ViewTopNavigation = (props) => {
                                             storeConfig={storeConfig}
                                         />
                                         <div className="search-icon">
-                                            <IconButton disabled={value === ''} edge="start" onClick={searchByClick} aria-label="close">
-                                                <SearchIcon />
-                                            </IconButton>
+                                            <Button disabled={value === ''} edge="start" onClick={searchByClick} aria-label="close">
+                                                {/* <SearchIcon /> */}
+                                            </Button>
                                         </div>
                                     </div>
                                 </div>

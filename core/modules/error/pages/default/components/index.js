@@ -1,9 +1,7 @@
 // import Link from 'next/link';
 // import Button from '@common_button';
-// import useStyles from '@core_modules/error/pages/default/components/style';
 
 const ErrorContent = (props) => {
-    // const styles = useStyles();
     // eslint-disable-next-line no-unused-vars
     const { statusCode, title } = props;
 

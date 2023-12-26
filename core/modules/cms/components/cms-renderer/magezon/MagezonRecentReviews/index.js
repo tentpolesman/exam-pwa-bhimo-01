@@ -3,14 +3,16 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable no-nested-ternary */
+/* eslint-disable radix */
+/* eslint-disable react/jsx-indent */
 
 import RatingStar from '@common_ratingstar';
 import Typography from '@common_typography';
 import formatDate from '@core/helpers/date';
 import { getProductReviews } from '@core_modules/cms/services/graphql';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import LeftArrowIcon from '@material-ui/icons/ChevronLeft';
-import RightArrowIcon from '@material-ui/icons/ChevronRight';
+import useMediaQuery from '@hook/useMediaQuery';
+import ChevronLeftIcon from '@heroicons/react/20/solid/ChevronLeftIcon';
+import ChevronRightIcon from '@heroicons/react/20/solid/ChevronRightIcon';
 import Link from 'next/link';
 import { useRef, useState } from 'react';
 import Slider from 'react-slick';
@@ -43,11 +45,9 @@ const MagezonRecentReviews = (props) => {
     const linePosClass = show_line && line_position === 'bottom' ? 'mgz-recent-reviews-heading-line--bottom' : '';
     const navSize = owl_nav_size === 'mini' ? 10 : owl_nav_size === 'small' ? 15 : owl_nav_size === 'normal' ? 20 : 25;
     const [showNav, setShowNav] = useState(true);
-    const isXl = useMediaQuery('(min-width:1200px)');
-    const isLg = useMediaQuery('(min-width:992px) and (max-width:1199px)');
-    const isMd = useMediaQuery('(min-width:768px) and (max-width:991px)');
-    const isSm = useMediaQuery('(min-width:576px) and (max-width:767px)');
-    const isXs = useMediaQuery('(max-width:576px)');
+    const {
+ isXl, isLg, isMd, isSm, isXs,
+} = useMediaQuery();
     let sliderRef = useRef();
 
     const getItemsToShow = () => {
@@ -96,7 +96,8 @@ const MagezonRecentReviews = (props) => {
     if (typeof defaultWidth === 'string') defaultWidth = parseInt(defaultWidth, 0);
     if (typeof defaultHeight === 'string') defaultHeight = parseInt(defaultHeight, 0);
 
-    return <>
+    return (
+<>
         <div className="mgz-recent-reviews">
             <div className={`mgz-recent-reviews-heading ${showLineClass} ${linePosClass}`}>
                 <div className="mgz-recent-reviews-heading-title">
@@ -154,10 +155,10 @@ const MagezonRecentReviews = (props) => {
                 {owl_nav && showNav && (
                     <div className="mgz-recent-reviews-nav">
                         <div className="mgz-recent-reviews-nav--btn" onClick={() => sliderRef.slickPrev()}>
-                            <LeftArrowIcon />
+                            <ChevronLeftIcon />
                         </div>
                         <div className="mgz-recent-reviews-nav--btn" onClick={() => sliderRef.slickNext()}>
-                            <RightArrowIcon />
+                            <ChevronRightIcon />
                         </div>
                     </div>
                 )}
@@ -292,7 +293,8 @@ const MagezonRecentReviews = (props) => {
                 }
             `}
         </style>
-    </>;
+</>
+);
 };
 
 export default MagezonRecentReviews;

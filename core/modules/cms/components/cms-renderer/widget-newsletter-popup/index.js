@@ -1,7 +1,6 @@
 import { useMutation } from '@apollo/client';
 import Button from '@common_button';
 import Typography from '@common_typography';
-import useStyles from '@core_modules/cms/components/cms-renderer/widget-newsletter-popup/style';
 import { subscribeNewsletter } from '@core_modules/customer/services/graphql/schema';
 import { useFormik } from 'formik';
 import parse, { domToReact } from 'html-react-parser';
@@ -14,7 +13,6 @@ const Newsletter = (props) => {
             request: 'internal',
         },
     });
-    const styles = useStyles();
 
     const formik = useFormik({
         initialValues: {
@@ -53,10 +51,9 @@ const Newsletter = (props) => {
 
     return (
         <form noValidate onSubmit={formik.handleSubmit}>
-            <div className={styles.fieldNewsletterControl}>
+            <div>
                 <label htmlFor="newsletter">
                     <input
-                        className={styles.fieldNewsletter}
                         name="email"
                         type="email"
                         id="newsletter"
@@ -65,7 +62,7 @@ const Newsletter = (props) => {
                         onChange={formik.handleChange}
                     />
                 </label>
-                <Button type="submit" loading={result.loading} className={styles.subscribeBtn}>
+                <Button type="submit" loading={result.loading}>
                     {t('common:newsletter:buttonLabel')}
                 </Button>
             </div>

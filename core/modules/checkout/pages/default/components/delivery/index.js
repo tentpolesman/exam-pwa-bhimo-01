@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 
-import useStyles from '@core_modules/checkout/pages/default/components/style';
 import gqlService from '@core_modules/checkout/services/graphql';
 import TagManager from 'react-gtm-module';
 
@@ -10,7 +9,6 @@ const DeliveryComp = (props) => {
         t, checkout, setCheckout, handleOpenMessage, storeConfig, DeliveryView, Skeleton, isOnlyVirtualProductOnCart,
     } = props;
     const [removePickupStore] = gqlService.removePickupStore();
-    const styles = useStyles();
     const handleSelect = async (delivery) => {
         await window.backdropLoader(true);
         if (delivery === 'home' && Object.keys(checkout.selectStore).length > 0 && Object.keys(checkout.pickupInformation).length > 0) {
@@ -198,7 +196,7 @@ const DeliveryComp = (props) => {
             window.backdropLoader(false);
         }
     };
-    if (checkout.loading.all) return <Skeleton styles={styles} />;
+    if (checkout.loading.all) return <Skeleton />;
     if (storeConfig.enable_oms_multiseller === '1') return null;
     if (isOnlyVirtualProductOnCart) return null;
     return <DeliveryView {...props} handleSelect={handleSelect} />;

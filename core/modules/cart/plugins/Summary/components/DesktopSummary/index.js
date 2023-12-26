@@ -4,15 +4,15 @@
 import Button from '@common_button';
 import Thumbor from '@common_image';
 import Typography from '@common_typography';
-import { formatPrice } from '@helper_currency';
-import { useReactiveVar } from '@apollo/client';
-import { storeConfigVar } from '@root/core/services/graphql/cache';
-import ExpandLess from '@material-ui/icons/ExpandLess';
-import ExpandMore from '@material-ui/icons/ExpandMore';
-import classNames from 'classnames';
+import ChevronUpIcon from '@heroicons/react/24/solid/ChevronUpIcon';
+import ChevronDoubleDownIcon from '@heroicons/react/24/solid/ChevronDoubleDownIcon';
 import React from 'react';
 import Show from '@common/Show';
 import Skeleton from '@common/Skeleton';
+import cx from 'classnames';
+import { formatPrice } from '@helper_currency';
+import { useReactiveVar } from '@apollo/client';
+import { storeConfigVar } from '@root/core/services/graphql/cache';
 
 import PaypalButtonView from '@plugin_paypalbutton';
 
@@ -30,12 +30,12 @@ const Summary = (props) => {
         <div
             id="desktopSummary"
             className={isDesktop
-                ? classNames(
+                ? cx(
                     'flex flex-col',
                     'sticky top-28 w-full h-auto',
                     'bg-neutral-50 border rounded-md border-neutral-200',
                 )
-                : classNames(
+                : cx(
                     'flex flex-col',
                     'sticky top-28 w-full h-auto',
                     'bg-neutral-50 border rounded-md border-neutral-200',
@@ -44,20 +44,20 @@ const Summary = (props) => {
             <Typography variant="h1" type="regular" letter="capitalize">
                 {t('common:summary:title')}
             </Typography>
-            <div className={classNames('', 'listSummary')}>
+            <div className={cx('', 'listSummary')}>
                 <Skeleton variant="rect" width="100%" height="30px" animation="wave" />
             </div>
-            <div className={classNames('', 'listSummary')}>
+            <div className={cx('', 'listSummary')}>
                 <Skeleton variant="rect" width="100%" height="30px" animation="wave" />
             </div>
-            <div className={classNames('', 'listSummary')}>
+            <div className={cx('', 'listSummary')}>
                 <Skeleton variant="rect" width="100%" height="30px" animation="wave" />
             </div>
-            <div className={classNames('', 'listSummary')}>
+            <div className={cx('', 'listSummary')}>
                 <divText
                     primary={(
                         <Typography variant="title" type="bold">
-                            Total
+                            {t('common:label:total')}
                         </Typography>
                     )}
                 />
@@ -117,7 +117,7 @@ const Summary = (props) => {
 
     return (
         <>
-            <div className={classNames(
+            <div className={cx(
                 'fixed desktop:hidden bottom-0 left-0 z-[9999] w-full h-20 bg-neutral-white bottom-checkout',
                 'p-4 shadow-inner bg-neutral-white',
             )}
@@ -131,12 +131,12 @@ const Summary = (props) => {
             <div
                 id="desktopSummary"
                 className={isDesktop
-                    ? classNames(
+                    ? cx(
                         'flex flex-col',
                         'sticky top-28 w-full h-auto',
                         'bg-neutral-50 border rounded-md border-neutral-200',
                     )
-                    : classNames(
+                    : cx(
                         'flex flex-col',
                         'sticky top-28 w-full h-auto',
                         'bg-neutral-50 border rounded-md border-neutral-200',
@@ -151,24 +151,24 @@ const Summary = (props) => {
                 </Show>
                 {showItems ? (
                     <>
-                        <div className={classNames('flex flex-row between-xs')} onClick={() => setOpenItem(!openItem)}>
+                        <div className={cx('flex flex-row between-xs')} onClick={() => setOpenItem(!openItem)}>
                             <div className="xs:basis-6/12">
                                 <Typography variant="bd-2b">{`${items.length} items in Cart`}</Typography>
                             </div>
-                            <div className="xs:basis-2/12">{openItem ? <ExpandLess /> : <ExpandMore />}</div>
+                            <div className="xs:basis-2/12">{openItem ? <ChevronUpIcon /> : <ChevronDoubleDownIcon />}</div>
                         </div>
                         {storeConfigLocalStorage.enable_oms_multiseller === '1' && openItem ? (
-                            <div className={classNames('flex flex-row')}>
+                            <div className={cx('flex flex-row')}>
                                 {
                                     cartItemBySeller.map((seller) => (
                                         <>
-                                            <div className={classNames('xs:basis-full bg-neutral-100 py-4')}>
+                                            <div className={cx('xs:basis-full bg-neutral-100 py-4')}>
                                                 <Typography variant="bd-2b">{seller.seller_name}</Typography>
                                             </div>
                                             {seller.productList.map((item, index) => (
                                                 <div
                                                     id="divProductSummary"
-                                                    className={classNames('xs:basis-full row between-xs', '', 'relative p-5')}
+                                                    className={cx('xs:basis-full row between-xs', '', 'relative p-5')}
                                                     key={index}
                                                 >
                                                     <div className="xs:basis-4/12">
@@ -180,7 +180,7 @@ const Summary = (props) => {
                                                             height={75}
                                                         />
                                                     </div>
-                                                    <div className={classNames('xs:basis-8/12', 'flex flex-col')}>
+                                                    <div className={cx('xs:basis-8/12', 'flex flex-col')}>
                                                         <Typography variant="bd-2b" className="line-clamp-2">{item.product.name}</Typography>
                                                         {item.configurable_options && item.configurable_options.length ? (
                                                             <div className="m-1">
@@ -198,7 +198,8 @@ const Summary = (props) => {
                                                         <div>
                                                             <span className="px-0 py-3" style={{ padding: '0' }}>
                                                                 <Typography variant="bd-2b" type="regular">
-                                                                    Qty:
+                                                                    {t('common:qty')}
+                                                                    :
                                                                     {` ${item.quantity}`}
                                                                 </Typography>
                                                             </span>
@@ -217,11 +218,11 @@ const Summary = (props) => {
                             </div>
                         ) : null}
                         {storeConfigLocalStorage.enable_oms_multiseller !== '1' && openItem ? (
-                            <div className={classNames('flex flex-row')}>
+                            <div className={cx('flex flex-row')}>
                                 {items.map((item, index) => (
                                     <div
                                         id="divProductSummary"
-                                        className={classNames('xs:basis-full row between-xs', '', 'relative p-5')}
+                                        className={cx('xs:basis-full row between-xs', '', 'relative p-5')}
                                         key={index}
                                     >
                                         {withAction && (
@@ -244,7 +245,7 @@ const Summary = (props) => {
                                                 storeConfig={storeConfig}
                                             />
                                         </div>
-                                        <div className={classNames('xs:basis-8/12', 'flex flex-col')}>
+                                        <div className={cx('xs:basis-8/12', 'flex flex-col')}>
                                             <Typography variant="bd-2b" className="line-clamp-2">{item.product.name}</Typography>
                                             {item.configurable_options && item.configurable_options.length ? (
                                                 <div className="m-1">
@@ -295,7 +296,7 @@ const Summary = (props) => {
                     {summary.data.map((dt, index) => (
                         <div
                             key={index}
-                            className={classNames('flex flex-row justify-between items-center')}
+                            className={cx('flex flex-row justify-between items-center')}
                         >
                             <Typography className="text-lg font-normal">
                                 {dt.item}
@@ -306,10 +307,10 @@ const Summary = (props) => {
                         </div>
                     ))}
                     <div
-                        className={classNames('flex flex-row justify-between items-center')}
+                        className={cx('flex flex-row justify-between items-center')}
                     >
                         <Typography className="text-lg font-normal">
-                            Total
+                            {t('common:label:total')}
                         </Typography>
                         <Typography className="text-lg !font-bold">
                             {summary.total.currency ? formatPrice(summary.total.value, summary.total.currency, currencyCache) : null}

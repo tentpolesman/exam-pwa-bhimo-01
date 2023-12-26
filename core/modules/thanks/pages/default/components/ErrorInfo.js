@@ -1,14 +1,8 @@
-import Alert from '@material-ui/lab/Alert';
-import useStyles from '@core_modules/thanks/pages/default/components/style';
-
-const ErrorInfo = ({ variant, text }) => {
-    const styles = useStyles();
-    return (
-        <div className={styles.container}>
-            <Alert className="m-15" severity={variant}>
-                {text}
-            </Alert>
+const ErrorInfo = ({ variant, text }) => (
+    <div className="error-info">
+        <div className="m-15 p-2" severity={variant}>
+            {text}
         </div>
-    );
-};
+    </div>
+);
 export default ErrorInfo;

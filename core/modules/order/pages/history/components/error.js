@@ -1,16 +1,11 @@
 import classNames from 'classnames';
-import Alert from '@material-ui/lab/Alert';
-import useStyles from '@core_modules/order/pages/history/style';
 
-const ErrorView = ({ type, message }) => {
-    const styles = useStyles();
-    return (
-        <div className={classNames(styles.container, styles.rowCenter)}>
-            <Alert className="m-15" severity={type}>
-                {message}
-            </Alert>
+const ErrorView = ({ type, message }) => (
+    <div className={classNames('')}>
+        <div className="alert m-15" severity={type}>
+            {message}
         </div>
-    );
-};
+    </div>
+);
 
 export default ErrorView;

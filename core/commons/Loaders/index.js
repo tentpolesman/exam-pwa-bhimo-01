@@ -1,4 +1,4 @@
-import CircularProgress from '@material-ui/core/CircularProgress';
+import CircularProgress from '@common_circularprogress';
 import PropTypes from 'prop-types';
 
 const Loading = ({ size }) => (

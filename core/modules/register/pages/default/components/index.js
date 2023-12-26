@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable semi-style */
 import Button from '@common_button';
 import PasswordField from '@common_forms/Password';
 import Select from '@common_forms/Select';
@@ -7,7 +9,6 @@ import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import DateDayJs from '@date-io/dayjs';
 import Checkbox from '@common_forms/CheckBox';
-import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import cx from 'classnames';
 import ReCAPTCHA from 'react-google-recaptcha';
 import Show from '@common_show';
@@ -175,7 +176,7 @@ const RegisterView = ({
                             />
                         </Show>
 
-                        <Show when={dob}>
+                        {/* <Show when={dob}>
                             <DatePicker
                                 fullWidth
                                 label={t('common:form:dob')}
@@ -185,7 +186,7 @@ const RegisterView = ({
                                 error={checkIsFieldError('dob')}
                                 errorMessage={fieldErrorMessage('dob')}
                             />
-                        </Show>
+                        </Show> */}
 
                         <PasswordField
                             className={cx('register-form-password', divInputStyle, divInputWrapperStyle)}
@@ -328,9 +329,9 @@ const RegisterView = ({
 };
 
 const RegisterViewProvider = (props) => (
-    <MuiPickersUtilsProvider utils={DateDayJs}>
-        <RegisterView {...props} />
-    </MuiPickersUtilsProvider>
+    // <MuiPickersUtilsProvider utils={DateDayJs}>
+    // </MuiPickersUtilsProvider>
+    <RegisterView {...props} />
 );
 
 export default RegisterViewProvider;

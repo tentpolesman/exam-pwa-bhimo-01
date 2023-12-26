@@ -2,12 +2,11 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-
-import { basePath } from '@config';
-import WidgetRenderer from '@core_modules/cms/components/cms-renderer/WidgetRenderer';
-import { generateThumborUrl, getImageFallbackUrl } from '@helpers/image';
-import PlayCircleOutlineIcon from '@material-ui/icons/PlayCircleOutline';
 import React from 'react';
+import WidgetRenderer from '@core_modules/cms/components/cms-renderer/WidgetRenderer';
+import PlayCircleIcon from '@heroicons/react/20/solid/PlayCircleIcon';
+import { basePath } from '@config';
+import { generateThumborUrl, getImageFallbackUrl } from '@helpers/image';
 
 const ImageElement = (props) => {
     // prettier-ignore
@@ -106,7 +105,7 @@ const ImageElement = (props) => {
                         videoCover.current.style.setProperty('display', 'none');
                     }}
                 >
-                    <PlayCircleOutlineIcon fontSize="large" />
+                    <PlayCircleIcon className="text-lg" />
                 </div>
                 <iframe
                     style={{ width: '100%', height: '100%' }}

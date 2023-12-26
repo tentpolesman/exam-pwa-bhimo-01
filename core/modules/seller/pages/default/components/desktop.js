@@ -1,14 +1,13 @@
 /* eslint-disable max-len */
 /* eslint-disable no-case-declarations */
+/* eslint-disable @next/next/no-img-element */
 import React from 'react';
 import Link from 'next/link';
 import { breakPointsUp } from '@helper_theme';
 import Banner from '@common_slick/Banner';
-import useStyles from '@core_modules/seller/pages/default/components/style';
 
 function DesktopContent(props) {
     const { data, storeConfig } = props;
-    const styles = useStyles();
     const desktop = breakPointsUp('sm');
 
     return (
@@ -52,7 +51,7 @@ function DesktopContent(props) {
                                             ? (
                                                 <div className="md:basis-full lg:basis-1/2" style={{ textAlign: 'center', margin: 'auto', width: '100%' }}>
                                                     <Link href={widget.hyperlink ? widget.hyperlink : '/#'}>
-                                                        <img src={widget.url} width="100%" className={styles.imgColumn} alt="img" />
+                                                        <img src={widget.url} width="100%" className="" alt="img" />
                                                     </Link>
                                                 </div>
                                             )

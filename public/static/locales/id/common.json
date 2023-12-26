@@ -229,7 +229,11 @@
         "customize": "Penyesuaian",
         "trailer": "Trailer",
         "viewSample": "Lihat Contoh",
-        "loading": "Memuat"
+        "loading": "Memuat",
+        "all": "Semua",
+        "total": "Total",
+        "remove": "Hapus",
+        "apply": "Terapkan"
     },
     "cms": {
         "unableToRender": "Gagal menampilkan konten"

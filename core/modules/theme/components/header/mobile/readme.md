@@ -6,8 +6,6 @@ this component use some dependency and **required**, so you need to install
 
 | Depedency   | Description | Type |
 | :---        | :---        |:---  |
-| `@material-ui/core` | depedency ui <br/> link docs [here](https://material-ui.com/getting-started/installation/)| external dependency |
-| `@material-ui/icons` | depedency icon UI from material ui <br/> link docs [here](https://material-ui.com/getting-started/installation/)| external dependency |
 | `classnames`   | dependency for merge className | external dependency |
 | `@common_typography` | commons components typography <br />from commons module | internal dependency |
 

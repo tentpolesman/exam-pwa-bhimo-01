@@ -1,27 +1,20 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable semi-style */
 /* eslint-disable react/no-danger */
 import React from 'react';
 import Typography from '@common_typography';
 import Button from '@common_button';
-import IconButton from '@material-ui/core/IconButton';
-import Slide from '@material-ui/core/Slide';
-import ArrowBack from '@material-ui/icons/ArrowBack';
-import useStyles from '@common_searchmodal/style';
+import ArrowLeftIcon from '@heroicons/react/24/solid/ArrowLeftIcon';
 
 const SubCategory = ({
     openSub, data, handleClickMenu, handleOpenSub,
     historyData, historyPosition, onBackHistory, back,
 }) => {
-    const styles = useStyles();
+    if (!openSub) return null;
     return (
-        <Slide
-            direction={back ? 'right' : 'left'}
-            in={!openSub}
-            timeout={400}
-            mountOnEnter
-            unmountOnExit
-        >
-            <div className={styles.body}>
-                <div className={styles.item}>
+        <div className="slide-container">
+            <div className="flex flex-col justify-center items-center pt-[20px] pb-[20px] px-[80px]">
+                <div className="m-0 flex flex-col justify-center items-center">
                     {data
                         ? data.map((catlvl1, index) => {
                             const renderMenu = () => (
@@ -41,15 +34,9 @@ const SubCategory = ({
                                             fullWidth
                                             variant="text"
                                             onClick={() => handleOpenSub(catlvl2)}
-                                            className={indx === catlvl1.children.length - 1 ? styles.lastCat : styles.cat}
+                                            className={indx === catlvl1.children.length - 1 ? 'm-0 p-[2px] h-auto !mb-[40px]' : 'p-[2px] h-auto'}
                                         >
-                                            <Typography
-                                                variant="span"
-                                                letter="capitalize"
-                                                size="14"
-                                                align="center"
-                                                color="default"
-                                            >
+                                            <Typography className="first-letter:uppercase text-md text-center">
                                                 <div dangerouslySetInnerHTML={{ __html: catlvl2.name }} />
                                             </Typography>
                                         </Button>
@@ -69,13 +56,13 @@ const SubCategory = ({
                 </div>
                 {
                     (historyPosition > 0 && historyData.length > 1) && (
-                        <IconButton onClick={onBackHistory}>
-                            <ArrowBack />
-                        </IconButton>
+                        <Button onClick={onBackHistory}>
+                            <ArrowLeftIcon />
+                        </Button>
                     )
                 }
             </div>
-        </Slide>
+        </div>
     );
 };
 

@@ -19,15 +19,11 @@ import TagManager from 'react-gtm-module';
 // eslint-disable-next-line object-curly-newline
 import { basePath, custDataNameCookie, debuging, features, modules } from '@config';
 import { createCompareList } from '@core_modules/product/services/graphql';
-// import useStyles from '@core_modules/theme/layout/style';
 import { getHost } from '@helper_config';
 import { getCookies, setCookies } from '@helper_cookies';
 import { getAppEnv } from '@helpers/env';
 // import { breakPointsDown, breakPointsUp } from '@helper_theme';
 // import crypto from 'crypto';
-// import Fab from '@material-ui/core/Fab';
-// import ChatIcon from '@material-ui/icons/Chat';
-
 // import PopupInstallAppMobile from '@core_modules/theme/components/custom-install-popup/mobile';
 import Copyright from '@core_modules/theme/components/footer/desktop/components/copyright';
 import { getCountCart } from '@core_modules/theme/services/graphql';
@@ -81,7 +77,6 @@ const Footer = dynamic(() => import('@common_footer'), { ssr: true });
 // END CHAT FEATURES IMPORT
 
 const Layout = (props) => {
-    // const bodyStyles = useStyles();
     const {
         dataVesMenu,
         pageConfig = {},
