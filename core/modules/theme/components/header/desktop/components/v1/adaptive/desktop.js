@@ -177,7 +177,7 @@ const DesktopHeader = (props) => {
                         'desktop:px-10',
                     )}
                 >
-                    <div className={cx('middle-header__logo', 'basis-[272px]', 'h-[44px]', 'flex', 'items-center')}>
+                    <div className={cx('middle-header__logo', 'basis-[272px]', 'h-[44px]', 'flex', 'items-center', 'cursor-pointer')}>
                         <Link href="/" legacyBehavior>
                             <Image
                                 styleContainer={{
