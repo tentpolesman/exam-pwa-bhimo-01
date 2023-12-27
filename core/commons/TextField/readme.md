@@ -6,7 +6,6 @@ this component use some dependency and **required**, so you need to install
 
 | Depedency   | Description | Type |
 | :---        | :---        |:---  |
-| `@material-ui/core` | depedency ui from material ui <br/> link docs [here](https://material-ui.com/getting-started/installation/)| external dependency |
 | `@common_typography` | commons components typography <br />from commons module | internal dependency |
 | `classnames`   | dependency for merge className | exterlnal dependency |
 
@@ -49,5 +48,5 @@ import TextField from '{pathModule}/commons/TextField';
 | `errorMessage`    | false    | text error message | `string` |
 | `footer`    | false    | custom footer componets on bootn after field input | `component` |
 | `shrink`    | false    | shrink label on center or top input field | `bool` |
-| `...other`    | false    | all props input field material-ui | `props` |
+| `...other`    | false    | all props input field | `props` |
 

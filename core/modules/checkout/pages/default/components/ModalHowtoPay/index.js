@@ -1,22 +1,11 @@
 import React from 'react';
 import Button from '@common_button';
 import Typography from '@common_typography';
-import AppBar from '@material-ui/core/AppBar';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import IconButton from '@material-ui/core/IconButton';
-import Slide from '@material-ui/core/Slide';
-import CloseIcon from '@material-ui/icons/Close';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
+import Dialog from '@common_dialog';
 import gqlService from '@core_modules/checkout/services/graphql';
 import CmsRenderer from '@core_modules/cms/components/cms-renderer';
-import useStyles from '@core_modules/checkout/pages/default/components/ModalHowtoPay/style';
+import XMarkIcon from '@heroicons/react/20/solid/XMarkIcon';
 import { useTranslation } from 'next-i18next';
-
-const Transition = React.forwardRef((props, ref) => (
-    <Slide direction="up" ref={ref} {...props} />
-));
 
 const ModalHowtoPay = ({
     open,
@@ -24,8 +13,6 @@ const ModalHowtoPay = ({
     setDisplayHowToPay,
 }) => {
     const { t } = useTranslation(['common', 'checkout', 'validate']);
-    const styles = useStyles();
-    const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
     const { data, error, loading: loadingTutor } = gqlService.getCmsPage({ identifier: 'how-to-pay' });
     const mount = React.useRef(null);
 
@@ -43,45 +30,38 @@ const ModalHowtoPay = ({
         return (
             <Dialog
                 open={open}
-                TransitionComponent={Transition}
                 onClose={setOpen}
                 maxWidth="sm"
-                fullWidth={!!isDesktop}
-                fullScreen={!isDesktop}
             >
-                <AppBar className={styles.appBar}>
+                <div className="app-bar relative bg-neutral-white p-[10px] shadow-none h-[70px] flex flex-row">
                     <Typography
-                        variant="label"
-                        type="bold"
-                        align="left"
-                        letter="uppercase"
-                        className={styles.title}
+                        className="self-start text-[1.7vw] text-neutral-600 mt-[30px] mb-[16px] ml-[30px] font-bold text-left uppercase"
                     >
                         {data.cmsPage.title}
                     </Typography>
-                    <IconButton
-                        className={styles.btnClose}
+                    <Button
+                        className="absolute right-[10px]"
                         edge="start"
                         onClick={setOpen}
                         aria-label="close"
                     >
-                        <CloseIcon className={styles.iconClose} />
-                    </IconButton>
-                </AppBar>
+                        <XMarkIcon className="text-[30px] text-primary" />
+                    </Button>
+                </div>
                 <div>
-                    <DialogContent dividers>
-                        <div className={styles.body}>
+                    <div className="dialog-content">
+                        <div className="flex flex-col relative h-full p-[20px]">
                             <CmsRenderer content={data.cmsPage.content} />
                         </div>
-                    </DialogContent>
+                    </div>
 
-                    <DialogActions>
-                        <div className={styles.footer}>
-                            <Button loading={loadingTutor} onClick={setOpen} className={styles.btnSave} type="submit">
+                    <div className="dialog-footer">
+                        <div className="flex flex-row justify-end bottom-0 bg-neutral-white p-[10px]">
+                            <Button loading={loadingTutor} onClick={setOpen} className="m-auto w-[8vw] h-[41px]" type="submit">
                                 {t('checkout:buttonOk')}
                             </Button>
                         </div>
-                    </DialogActions>
+                    </div>
                 </div>
             </Dialog>
         );

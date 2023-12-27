@@ -1,6 +1,5 @@
 import { debuging } from '@config';
 import { useTranslation } from 'next-i18next';
-import Alert from '@material-ui/lab/Alert';
 import React from 'react';
 import Router from 'next/router';
 import { setResolver, getResolver } from '@helper_localstorage';
@@ -20,18 +19,18 @@ const CategoryWrapper = (props) => {
     if (error) {
         return (
             <div>
-                <Alert className="m-15" severity="error">
+                <div className="alert m-15 p-2 bg-red-500 text-neutral-white">
                     {debuging.originalError ? error.message.split(':')[1] : t('common:error:fetchError')}
-                </Alert>
+                </div>
             </div>
         );
     }
     if (!data) {
         return (
             <div>
-                <Alert className="m-15" severity="error">
+                <div className="alert m-15 p-2 bg-red-500 text-neutral-white">
                     {t('common:error:notFound')}
-                </Alert>
+                </div>
             </div>
         );
     }

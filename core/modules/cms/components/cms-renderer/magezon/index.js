@@ -55,7 +55,6 @@ const MagezonElement = (props) => {
         mouse_parallax_size,
         mouse_parallax_speed,
         background_image,
-        background_color,
         full_height,
         xs_hide,
         sm_hide,
@@ -68,24 +67,6 @@ const MagezonElement = (props) => {
         el_id,
         el_inner_class,
         storeConfig,
-        margin_top,
-        margin_right,
-        margin_bottom,
-        margin_left,
-        padding_top,
-        padding_right,
-        padding_bottom,
-        padding_left,
-        border_top_left_radius,
-        border_top_right_radius,
-        border_bottom_left_radius,
-        border_bottom_right_radius,
-        border_style,
-        border_top_width,
-        border_right_width,
-        border_left_width,
-        border_bottom_width,
-        background_position,
     } = props;
     const { base_media_url } = storeConfig;
     let childrenContent;
@@ -285,28 +266,14 @@ const MagezonElement = (props) => {
                     {childrenContent}
                 </div>
             </div>
+            {/* prettier-ignore */}
             <style jsx>
                 {`
                     .mgz-element {
                         ${align ? `text-align: ${align};` : ''}
                         position: relative;
                         width: 100%;
-                    }
-                    .mgz-element-inner {
-                        overflow: hidden;
-                        margin: ${margin_top || 0}px ${margin_right || 0}px ${margin_bottom || 0}px ${margin_left || 0}px;
-                        padding: ${padding_top || 0}px ${padding_right || 0}px ${padding_bottom || 0}px ${padding_left || 0}px;
-                        ${border_top_left_radius ? `border-top-left-radius: ${border_top_left_radius || 0}px;` : ''}
-                        ${border_top_right_radius ? `border-top-right-radius: ${border_top_right_radius || 0}px;` : ''}
-                        ${border_bottom_left_radius ? `border-bottom-left-radius: ${border_bottom_left_radius || 0}px;` : ''}
-                        ${border_bottom_right_radius ? `border-bottom-right-radius: ${border_bottom_left_radius || 0}px;` : ''}
-                        ${border_style ? `border-style: ${border_style};` : ''}
-                        ${background_position ? `background-position: ${background_position?.split('-').join(' ')};` : ''}
-                        ${border_top_width ? `border-top-width: ${border_top_width || 0}px;` : ''}
-                        ${border_right_width ? `border-right-width: ${border_right_width || 0}px;` : ''}
-                        ${border_bottom_width ? `border-bottom-width: ${border_bottom_width || 0}px;` : ''}
-                        ${border_left_width ? `border-left-width: ${border_left_width || 0}px;` : ''}
-                        ${background_color ? `background-color: ${background_color};` : ''}
+                        box-sizing: border-box;
                     }
                     @media screen and (max-width: 360px) {
                         .full_height {
@@ -347,11 +314,6 @@ const MagezonElement = (props) => {
                 {`  
                     .mgz-column > * {
                         padding: 0px;
-                    }
-
-                    .mgz-element:not(.full_height) > .mgz-element-inner >.mgz-row > .mgz-column > * {
-                        width: initial;
-                        padding: 10px;
                     }
 
                     @media screen and (max-width: 768px) {

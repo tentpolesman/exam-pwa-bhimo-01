@@ -1,7 +1,6 @@
 import StoreLocatorMaps from '@core_modules/storelocator/pages/default/components/Maps';
 import SkeletonStoreLocator from '@core_modules/storelocator/pages/default/components/Skeleton';
 import StoreList from '@core_modules/storelocator/pages/default/components/StoreList';
-import WarningIcon from '@material-ui/icons/Warning';
 
 const StoreLocatorContent = ({ gmapKey, storeLocations, t }) => {
     // state
@@ -33,7 +32,7 @@ const StoreLocatorContent = ({ gmapKey, storeLocations, t }) => {
     if (storeList === null) {
         return (
             <div style={{ textAlign: 'center', paddingTop: '20vh' }}>
-                <WarningIcon style={{ fontSize: '100px' }} />
+                {/* <WarningIcon style={{ fontSize: '100px' }} /> */}
                 <br />
                 <span style={{ fontSize: '2rem' }}>{t('storelocator:noAvailableStore')}</span>
             </div>

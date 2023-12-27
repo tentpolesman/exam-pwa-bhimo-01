@@ -1,6 +1,4 @@
-import Grid from '@material-ui/core/Grid';
 import classNames from 'classnames';
-import useStyles from '@common_gridlist/style';
 
 const GridList = ({
     data = [],
@@ -10,22 +8,18 @@ const GridList = ({
     gridContainerProps = {},
     gridItemProps = {},
 }) => {
-    const styles = useStyles();
-    const containerStyle = classNames(styles.container, className);
     if (!ItemComponent) return null;
     return (
-        <Grid
-            container
-            spacing={1}
-            className={containerStyle}
+        <div
+            className={classNames('grid grid-cols-2 grid-rows-1 gap-2', className)}
             {...gridContainerProps}
         >
             {data.map((item, index) => (
-                <Grid item xs={6} key={index} {...gridItemProps}>
+                <div key={index} {...gridItemProps}>
                     <ItemComponent {...itemProps} {...item} />
-                </Grid>
+                </div>
             ))}
-        </Grid>
+        </div>
     );
 };
 

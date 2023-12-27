@@ -1,14 +1,13 @@
 import Button from '@common_button';
 import Header from '@common_headermobile';
-import Dialog from '@material-ui/core/Dialog';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import Skeleton from '@material-ui/lab/Skeleton';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import Add from '@material-ui/icons/Add';
+import Dialog from '@common_dialog';
+import useMediaQuery from '@hook/useMediaQuery';
+import Skeleton from '@common_skeleton';
+import Radio from '@common_forms/Radio';
+import PlusIcon from '@heroicons/react/20/solid/PlusIcon';
 import AddressFormDialog from '@plugin_addressform';
 import Typography from '@common_typography';
 import ItemAddress from '@core_modules/checkout/pages/default/components/ItemModalAddress';
-import useStyles from '@core_modules/checkout/pages/default/components/ModalAddress/style';
 
 const AddressView = (props) => {
     const {
@@ -17,13 +16,12 @@ const AddressView = (props) => {
         handleChange, handleCloseDiff, handleOpenNew, openNew, typeAddress, dataEdit,
         updateAddress, manageCustomer,
     } = props;
-    const styles = useStyles();
     const headerConfig = {
         headerTitle: t('customer:address:pageTitle'),
         header: 'relative',
         headerBackIcon: 'close',
     };
-    const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
+    const { isDesktop } = useMediaQuery();
 
     const getItemAddress = () => {
         let content;
@@ -82,8 +80,8 @@ const AddressView = (props) => {
                 pageTitle={typeAddress === 'new' ? t('customer:address:addTitle') : t('customer:address:editTitle')}
                 {...dataEdit}
             />
-            <Dialog open={open} className={[styles.address_drawer].join(' ')} maxWidth="sm" fullWidth={!!isDesktop} fullScreen={!isDesktop}>
-                <div className={styles.container} id="checkoutListAddress">
+            <Dialog open={open} className="left-0 w-full" maxWidth="sm" fullWidth={!!isDesktop} fullScreen={!isDesktop}>
+                <div className="w-full self-center mobile:max-w-[960px]" id="checkoutListAddress">
                     <Header
                         pageConfig={headerConfig}
                         LeftComponent={{
@@ -91,14 +89,14 @@ const AddressView = (props) => {
                                 setOpen(false);
                             },
                         }}
-                        className={styles.pageTitle}
+                        className="mb-0"
                     />
-                    <div className={[styles.address_form].join(' ')}>
+                    <div className="p-[15px] overflow-y-auto mobile:h-[80vh]">
                         <div>
-                            <RadioGroup row aria-label="position" onChange={handleChange} name="position" value={selectedAddressId}>
+                            <Radio variant="single" row aria-label="position" onChange={handleChange} name="position" value={selectedAddressId}>
                                 {getItemAddress()}
-                            </RadioGroup>
-                            <div className={[styles.address_action].join(' ')}>
+                            </Radio>
+                            <div className="p-[15px]">
                                 <Button
                                     className="checkout-modalAddress-addAddressBtn"
                                     variant="outlined"
@@ -108,7 +106,7 @@ const AddressView = (props) => {
                                     <Typography variant="span" letter="uppercase" type="bold">
                                         {t('customer:address:addTitle')}
                                     </Typography>
-                                    <Add />
+                                    <PlusIcon />
                                 </Button>
                             </div>
                         </div>

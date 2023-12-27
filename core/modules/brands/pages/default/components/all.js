@@ -2,25 +2,18 @@
 import Typography from '@common_typography';
 import GridList from '@common_gridlist';
 import Link from 'next/link';
-import useStyles from '@core_modules/brands/pages/default/components/style';
 
 const Item = (props) => {
-    const styles = useStyles();
     const { group, children } = props;
     return (
-        <div className={styles.allContainer}>
-            <Typography
-                align="center"
-                letter="uppercase"
-                type="bold"
-                variant="span"
-            >
+        <div className="mobile:px-[20px]">
+            <Typography className="text-center uppercase font-bold">
                 {group}
                 <ul>
                     {children.map((val, idx) => (
                         <>
                             {val.is_active === 1 ? (
-                                <li key={idx} className={styles.listBrand}>
+                                <li key={idx} className="text-left text-xs">
                                     {val.attribute_id ? (
                                         <Link href={`/catalogsearch/advanced/result?brand[]=${val.attribute_id}`}>
                                             {val.name}
@@ -38,22 +31,17 @@ const Item = (props) => {
 
 const AllBrands = (props) => {
     const { all, t } = props;
-    const styles = useStyles();
     return (
         <>
             <Typography
-                align="center"
-                letter="uppercase"
-                type="bold"
-                variant="span"
-                className={styles.title}
+                className="mb-[15px] flex flex-col justify-center items-center text-center uppercase font-bold"
             >
                 {t('brands:allBrands')}
             </Typography>
             <GridList
                 data={all}
                 ItemComponent={Item}
-                gridItemProps={{ xs: 6, sm: 4, md: 3 }}
+                className="desktop:grid-cols-4 tablet:grid-cols-3 mobile:grid-cols-2"
             />
         </>
     );

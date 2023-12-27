@@ -1,10 +1,8 @@
 import Typography from '@common_typography';
-import Chip from '@material-ui/core/Chip';
-import useStyles from '@core_modules/checkout/pages/default/components/style';
+import Badge from '@common_badge';
 import FieldPoint from '@core_modules/checkout/components/fieldcode';
 
 const GiftCardView = (props) => {
-    const styles = useStyles();
     const {
         handleApplyGift, handleRemoveGift, formik, appliedGiftCards, checkout, giftCards,
     } = props;
@@ -22,21 +20,20 @@ const GiftCardView = (props) => {
                 disabled={checkout.loading.giftCard}
                 error={!!formik.errors.giftCard}
                 errorMessage={formik.errors.giftCard}
-                styles={styles}
                 loading={checkout.loading.giftCard}
             />
             {appliedGiftCards.length || giftCards.length ? (
-                <div className={styles.giftcardInfoContainer}>
+                <div className="-mt-[30px] mr-[10px] mb-[30px] ml-[5px]">
                     {giftCards.length === 0 ? null : (
                         <div>
                             <Typography variant="p" letter="capitalize">
                                 Your Gift Card
                             </Typography>
-                            <div className={styles.giftCardItemContainer}>
+                            <div className="gift-card-item-container">
                                 {giftCards.map((item, index) => (
-                                    <Chip
+                                    <Badge
                                         disabled={checkout.loading.giftCard}
-                                        className={styles.giftCard}
+                                        className="mx-[5px]"
                                         key={index}
                                         size="small"
                                         label={item.giftcard_code}
@@ -53,11 +50,11 @@ const GiftCardView = (props) => {
                             <Typography variant="p" letter="capitalize">
                                 Applied Gift Card
                             </Typography>
-                            <div className={styles.giftCardItemContainer}>
+                            <div className="gift-card-item-container">
                                 {appliedGiftCards.map((item, index) => (
-                                    <Chip
+                                    <Badge
                                         disabled={checkout.loading.giftCard}
-                                        className={styles.giftCard}
+                                        className="mx-[5px]"
                                         color="primary"
                                         key={index}
                                         size="small"

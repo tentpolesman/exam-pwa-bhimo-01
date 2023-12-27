@@ -1,15 +1,15 @@
 /* eslint-disable indent */
+import React from 'react';
 import gqlService from '@core_modules/checkout/services/graphql';
-import Skeleton from '@material-ui/lab/Skeleton';
-import _ from 'lodash';
-import { useEffect } from 'react';
+import Skeleton from '@common_skeleton';
 import TagManager from 'react-gtm-module';
+import _ from 'lodash';
 
 const Loader = () => (
     <>
-        <Skeleton width="100%" variant="text" animation="wave" height={10} />
-        <Skeleton width="100%" variant="text" animation="wave" height={10} />
-        <Skeleton width="100%" variant="text" animation="wave" height={10} />
+        <Skeleton width="100%" height={10} />
+        <Skeleton width="100%" height={10} />
+        <Skeleton width="100%" height={10} />
     </>
 );
 
@@ -49,7 +49,7 @@ const Address = (props) => {
     let emptyPinpoint = false;
     let showEmptyPinpoint = false;
 
-    useEffect(() => {
+    React.useEffect(() => {
         if (data && data.cart && data.cart.dest_location) {
             dest_latitude = data.cart.dest_location.dest_latitude;
             dest_longitude = data.cart.dest_location.dest_longitude;
@@ -275,14 +275,14 @@ const Address = (props) => {
             }
         });
 
-    useEffect(() => {
+    React.useEffect(() => {
         if (defaultAddress && !checkout.data.isGuest) {
             const { cart } = checkout.data;
             setAddress(defaultAddress, cart, true);
         }
     }, [defaultAddress]);
 
-    useEffect(() => {
+    React.useEffect(() => {
         if (address) {
             const option = `${address.firstname} ${address.lastname} ${street} 
             ${address.city} 

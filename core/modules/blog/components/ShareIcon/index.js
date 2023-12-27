@@ -1,5 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import React from 'react';
+import { shareIconConfig } from '@services/graphql/repository/pwa_config';
 import {
     EmailIcon,
     EmailShareButton,
@@ -16,11 +17,8 @@ import {
     TwitterIcon,
     TwitterShareButton,
 } from 'react-share';
-import useStyles from '@core_modules/blog/components/ShareIcon/style';
-import { shareIconConfig } from '@services/graphql/repository/pwa_config';
 
 const ShareComp = ({ url }) => {
-    const styles = useStyles();
     let shareIcon = {};
 
     const { data, loading } = shareIconConfig();
@@ -33,35 +31,35 @@ const ShareComp = ({ url }) => {
 
     const icons = Object.entries(shareIcon);
     return (
-        <div className={styles.listShareIcon}>
+        <div className="flex flex-row justify-around">
             {icons.map((item, key) => (item[0] === 'share_icon_facebook' && item[1] === true ? (
-                <FacebookShareButton url={url} key={key} className={styles.iconShare}>
+                <FacebookShareButton url={url} key={key} className="mr-[10px]">
                     <FacebookIcon size={16} />
                 </FacebookShareButton>
             ) : item[0] === 'share_icon_twitter' && item[1] === true ? (
-                <TwitterShareButton url={url} key={key} className={styles.iconShare}>
+                <TwitterShareButton url={url} key={key} className="mr-[10px]">
                     <TwitterIcon size={16} />
                 </TwitterShareButton>
             ) : item[0] === 'share_icon_line' && item[1] === true ? (
-                <LineShareButton url={url} key={key} className={styles.iconShare}>
+                <LineShareButton url={url} key={key} className="mr-[10px]">
                     <LineIcon size={16} />
                 </LineShareButton>
             ) : item[0] === 'share_icon_pinterest' && item[1] === true ? (
-                <PinterestShareButton url={url} key={key} className={styles.iconShare}>
+                <PinterestShareButton url={url} key={key} className="mr-[10px]">
                     <PinterestIcon size={16} />
                 </PinterestShareButton>
             ) : item[0] === 'share_icon_telegram' && item[1] === true ? (
-                <TelegramShareButton url={url} key={key} className={styles.iconShare}>
+                <TelegramShareButton url={url} key={key} className="mr-[10px]">
                     <TelegramIcon size={16} />
                 </TelegramShareButton>
             ) : item[0] === 'share_icon_email' && item[1] === true ? (
-                <EmailShareButton url={url} key={key} className={styles.iconShare}>
+                <EmailShareButton url={url} key={key} className="mr-[10px]">
                     <EmailIcon size={16} />
                 </EmailShareButton>
             ) : (
                 item[0] === 'share_icon_linkedin'
                     && item[1] === true && (
-                    <LinkedinShareButton url={url} key={key} className={styles.iconShare}>
+                    <LinkedinShareButton url={url} key={key} className="mr-[10px]">
                         <LinkedinIcon size={16} />
                     </LinkedinShareButton>
                 )

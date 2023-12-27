@@ -1,16 +1,17 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable semi-style */
+/* eslint-disable radix */
 import Typography from '@common_typography';
-import { formatPrice } from '@helper_currency';
 import React from 'react';
-import Checkbox from '@material-ui/core/Checkbox';
+import CheckBox from '@common_forms/CheckBox';
 import Image from '@common_image';
-import useStyles from '@core_modules/rma/pages/new/components/styles';
+import { formatPrice } from '@helper_currency';
 
 const ItemProductView = (props) => {
     const {
         checked, disabled, handleChange, name,
         image_url, price_incl_tax, currency, storeConfig = {},
     } = props;
-    const styles = useStyles();
 
     let defaultWidth = storeConfig?.pwa?.image_product_width;
     let defaultHeight = storeConfig?.pwa?.image_product_height;
@@ -19,12 +20,11 @@ const ItemProductView = (props) => {
     if (typeof defaultHeight === 'string') defaultHeight = parseInt(defaultHeight, 0);
 
     return (
-        <div className={styles.itemContainer}>
-            <Checkbox checked={checked} disabled={disabled} onChange={handleChange} inputProps={{ 'aria-label': name }} />
-            <div className={styles.productImgContainer}>
+        <div class="rma-container">
+            <CheckBox checked={checked} disabled={disabled} onChange={handleChange} inputProps={{ 'aria-label': name }} />
+            <div className="rma-container-image">
                 <Image
                     src={image_url}
-                    className={styles.productImg}
                     alt={name}
                     width={defaultWidth}
                     height={defaultHeight}
@@ -32,8 +32,8 @@ const ItemProductView = (props) => {
                     storeConfig={storeConfig}
                 />
             </div>
-            <div className={styles.detailItem}>
-                <Typography variant="span" type="semiBold">
+            <div className="rm-container-label">
+                <Typography className="font-semibold">
                     {name || ''}
                 </Typography>
                 <Typography variant="span">{formatPrice(price_incl_tax, currency)}</Typography>

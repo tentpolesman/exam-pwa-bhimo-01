@@ -1,12 +1,10 @@
 /* eslint-disable indent */
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-// import TextField from '@material-ui/core/TextField';
-import SearchIcon from '@material-ui/icons/Search';
 import NotificationBell from '@plugin_notificationbell';
 import ShoppingBagIcon from '@plugin_shoppingbag';
 import ProductCompareIcon from '@core_modules/catalog/plugins/ProductCompare';
-import IconButton from '@material-ui/core/IconButton';
+import Button from '@common_button';
 import Link from 'next/link';
 import DesktopInstallApp from '@core_modules/theme/components/custom-install-popup/desktop';
 import Menu from '@core_modules/theme/components/header/desktop/components/v3/mcategory';
@@ -114,9 +112,9 @@ const ViewTopNavigation = (props) => {
                                         storeConfig={storeConfig}
                                     />
                                     <div className="search-icon">
-                                        <IconButton disabled={value === ''} edge="start" onClick={searchByClick} aria-label="close">
-                                            <SearchIcon />
-                                        </IconButton>
+                                        <Button disabled={value === ''} edge="start" onClick={searchByClick} aria-label="close">
+                                            {/* <SearchIcon /> */}
+                                        </Button>
                                     </div>
                                 </div>
                             </div>

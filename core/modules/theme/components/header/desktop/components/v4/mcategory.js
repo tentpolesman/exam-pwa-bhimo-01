@@ -4,11 +4,11 @@
 /* eslint-disable react/no-danger */
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable no-unused-vars */
 import { basePath } from '@config';
 import CmsRenderer from '@core_modules/cms/components/cms-renderer';
 import getPath from '@helper_getpath';
 import { getResolver, setResolver } from '@helper_localstorage';
-import { makeStyles } from '@material-ui/core/styles';
 import { PRIMARY, WHITE } from '@theme_color';
 import 'animate.css';
 import classNames from 'classnames';
@@ -73,25 +73,6 @@ const Menu = (props) => {
             <ul className="nav" role="menubar" id="header-nav-menubar">
                 {menu.map((val, idx) => {
                     if ((val.include_in_menu || storeConfig.pwa.ves_menu_enable) && val.name) {
-                        const useStyles = makeStyles(() => ({
-                            linkStyle: {
-                                backgroundColor: `${val.bg_color} !important` || WHITE,
-                                color: `${val.color} !important` || PRIMARY,
-                                '&:hover': {
-                                    backgroundColor: `${val.bg_hover_color} !important` || '#F3F3F3',
-                                    color: `${val.hover_color} !important` || '#FF0000',
-                                },
-                            },
-                            vesMegaMenu: {
-                                backgroundColor: val.dropdown_bgcolor || WHITE,
-                            },
-                            animationDuration: {
-                                animationDuration: `${val.dropdown_animation_time || '1'}s`,
-                            },
-                        }));
-
-                        const styles = useStyles();
-
                         const linkEl = useRef(null);
                         const megaMenuRef = useRef(null);
 
@@ -153,7 +134,6 @@ const Menu = (props) => {
                                                             linkEl.current.innerHTML = linkEl.current.innerHTML.replace(val.hover_caret, val.caret);
                                                         }
                                                     }}
-                                                    className={styles.linkStyle}
                                                 />
                                                 {val.after_html && <div dangerouslySetInnerHTML={{ __html: val.after_html }} />}
                                             </>
@@ -166,7 +146,7 @@ const Menu = (props) => {
 
                                 {val.children.length > 0 ? (
                                     <div
-                                        className={classNames('mega-menu', 'grid', styles.vesMegaMenu, styles.animationDuration)}
+                                        className={classNames('mega-menu', 'grid')}
                                         aria-hidden="true"
                                         role="menu"
                                         ref={megaMenuRef}

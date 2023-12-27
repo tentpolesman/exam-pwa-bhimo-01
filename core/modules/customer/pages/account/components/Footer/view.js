@@ -5,7 +5,6 @@
 /* eslint-disable react/no-danger */
 import Button from '@common_button';
 import Typography from '@common_typography';
-import useStyles from '@core_modules/customer/pages/account/components/Footer/style';
 import NewsletterDialog from '@core_modules/customer/pages/account/components/Newsletter';
 import { getResolver, setResolver } from '@helper_localstorage';
 import Link from 'next/link';
@@ -13,7 +12,7 @@ import router from 'next/router';
 
 // eslint-disable-next-line consistent-return
 const FooterView = (props) => {
-    const styles = useStyles();
+    const styles = {};
     const {
         t, isLogin, handleLogout, modules, data,
     } = props;

@@ -5,7 +5,6 @@
 import { getBannerSeller } from '@core_modules/seller/services/graphql';
 import Typography from '@common_typography';
 import Skeleton from '@common_skeleton';
-import useStyles from '@core_modules/seller/pages/default/components/style';
 import React from 'react';
 import TabLayout from '@core_modules/seller/pages/default/components/TabLayout';
 import SellerInfo from '@core_modules/seller/pages/default/components/SellerInfo';
@@ -14,7 +13,6 @@ import MobileContent from '@core_modules/seller/pages/default/components/mobile'
 
 const Content = (props) => {
     const { storeConfig, t, dataSeller, errorSeller, loadingSeller, link, sellerId, isLogin, route, handleChat, showChat, banner, ...other } = props;
-    const styles = useStyles();
 
     return (
         <>
@@ -26,11 +24,11 @@ const Content = (props) => {
             {dataSeller && dataSeller.getSeller.length > 0 && (
                 <>
                     <SellerInfo {...props} />
-                    <div className={styles.sellerProduct}>
+                    <div className="">
                         <TabLayout noBanner={banner} t={t}>
                             {
                                 loadingSeller && (
-                                    <div className={styles.skeletonWrapper}>
+                                    <div className="">
                                         <Skeleton variant="rect" animation="wave" xsStyle={{ width: '100%', height: `${storeConfig.pwa.home_slider_mobile_height}px` }} mdStyle={{ width: '100%', height: `${storeConfig.pwa.home_slider_desktop_height}px` }} />
                                     </div>
                                 )

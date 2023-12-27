@@ -3,32 +3,21 @@
 
 import Header from '@common_headermobile';
 import Typography from '@common_typography';
-import { modules } from '@config';
 import ShipperView from '@core_modules/trackingorder/pages/default/components/shipper';
-import useStyles from '@core_modules/trackingorder/pages/default/components/style';
-import { checkJson } from '@core_modules/trackingorder/pages/default/helpers/checkJson';
 import formatDate from '@helper_date';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import List from '@material-ui/core/List';
-import Slide from '@material-ui/core/Slide';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import LaunchIcon from '@material-ui/icons/Launch';
-import Alert from '@material-ui/lab/Alert';
-import { startCase } from 'lodash';
+import Dialog from '@common_dialog';
+import ArrowTopRightOnSquareIcon from '@heroicons/react/20/solid/ArrowTopRightOnSquareIcon';
 import Link from 'next/link';
-
-const Transition = React.forwardRef((props, ref) => <Slide direction="up" ref={ref} {...props} />);
+import { modules } from '@config';
+import { checkJson } from '@core_modules/trackingorder/pages/default/helpers/checkJson';
+import { startCase } from 'lodash';
 
 const ModalResult = (props) => {
     // prettier-ignore
     const {
         open, setOpen, t, orders, modalType, modalData,
     } = props;
-    const styles = useStyles();
     const { trackingorder } = modules;
-    const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
 
     const content = () => {
         const data = orders.data[0];
@@ -63,7 +52,7 @@ const ModalResult = (props) => {
                             modalType.toLowerCase().includes('anteraja') ||
                             modalType.toLowerCase().includes('popaket')
                         ) {
-                            trackOrder = <ShipperView type={modalType} data={modalData} orders={orders} styles={styles} t={t} />;
+                            trackOrder = <ShipperView type={modalType} data={modalData} orders={orders} t={t} />;
                         } else {
                             const keys = Object.keys(dt);
                             for (let idx = 0; idx < keys.length; idx += 1) {
@@ -76,7 +65,7 @@ const ModalResult = (props) => {
                                                     <a target="_blank" className="item-link">
                                                         <div style={{ display: 'flex', alignItems: 'center' }}>
                                                             <span>{t('trackingorder:track')}</span>
-                                                            <LaunchIcon fontSize="small" />
+                                                            <ArrowTopRightOnSquareIcon className="text-sm" />
                                                         </div>
                                                     </a>
                                                 </Link>
@@ -110,7 +99,7 @@ const ModalResult = (props) => {
                         {
                             modalData || modalData.length > 0
                                 ? (
-                                    <List>
+                                    <div className="list-container">
                                         {trackOrder}
                                         {items.map((item, i) => (
                                             <>
@@ -129,12 +118,12 @@ const ModalResult = (props) => {
                                                 </div>
                                             </>
                                         ))}
-                                    </List>
+                                    </div>
                                 )
 
                                 :
                                 (
-                                    <Alert severity="warning" style={{ marginBottom: 32 }}>{t('trackingorder:noDataAvailable')}</Alert>
+                                    <div className="p-2 bg-yellow-500 text-neutral-white mb-[32px]">{t('trackingorder:noDataAvailable')}</div>
                                 )
                         }
                     </div>
@@ -166,20 +155,16 @@ const ModalResult = (props) => {
                 </div>
             );
         }
-        return <Alert severity="warning">{t('trackingorder:orderNotFound')}</Alert>;
+        return <div className="p-2 bg-yellow-500 text-neutral-white mb-[32px]">{t('trackingorder:orderNotFound')}</div>;
     };
 
     return (
         <>
             <Dialog
-                maxWidth="sm"
-                fullWidth={!!isDesktop}
-                fullScreen={!isDesktop}
                 open={open}
                 onClose={() => setOpen(false)}
-                TransitionComponent={Transition}
             >
-                <DialogTitle>
+                <div className="dialog-title">
                     <Header
                         LeftComponent={{
                             onClick: () => setOpen(false),
@@ -190,8 +175,8 @@ const ModalResult = (props) => {
                             header: 'relative',
                         }}
                     />
-                </DialogTitle>
-                <DialogContent>{content()}</DialogContent>
+                </div>
+                <div className="dialog-content">{content()}</div>
             </Dialog>
         </>
     );

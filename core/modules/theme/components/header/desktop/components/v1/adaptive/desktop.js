@@ -21,6 +21,7 @@ import TagManager from 'react-gtm-module';
 
 import DevicePhoneMobileIcon from '@heroicons/react/24/solid/DevicePhoneMobileIcon';
 import UserIcon from '@heroicons/react/24/solid/UserIcon';
+import { BREAKPOINTS } from '@root/core/theme/vars';
 
 const Autocomplete = dynamic(() => import('@core_modules/theme/components/header/desktop/components/autocomplete'), { ssr: false });
 const Menu = dynamic(() => import('@core_modules/theme/components/header/desktop/components/v1/mcategory'), { ssr: false });
@@ -106,7 +107,7 @@ const DesktopHeader = (props) => {
                 'ease-in-out',
                 'shadow-md',
                 {
-                    'hidden-this-desktop': deviceWidth < 1200,
+                    'hidden-this-desktop': deviceWidth < BREAKPOINTS.xl,
                 },
             )}
         >
@@ -116,7 +117,7 @@ const DesktopHeader = (props) => {
             >
                 <div
                     id="top-header__content"
-                    className={cx('top-header__content', 'grid grid-cols-[75%_25%]', 'tablet:max-w-[768px] desktop:max-w-[1200px]', 'm-[0_auto]')}
+                    className={cx('top-header__content', 'grid grid-cols-[75%_25%]', 'tablet:max-w-[768px] desktop:max-w-[1280px]', 'm-[0_auto]')}
                 >
                     <div className={cx('top-header__content__popup-installation')} id="popup-desktop__install">
                         <Button

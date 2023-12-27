@@ -1,4 +1,5 @@
-import Slider from '@material-ui/core/Slider';
+/* eslint-disable no-unused-vars */
+/* eslint-disable semi-style */
 
 const SliderRadius = ({ radius, setRadius }) => (
     <div className="slider-radius">
@@ -13,7 +14,7 @@ const SliderRadius = ({ radius, setRadius }) => (
             1 Km
             <span style={{ float: 'right' }}>100 Km</span>
         </div>
-        <Slider
+        {/* <Slider
             value={radius}
             onChange={(e, newValue) => setRadius(newValue)}
             aria-labelledby="discrete-slider"
@@ -22,7 +23,7 @@ const SliderRadius = ({ radius, setRadius }) => (
             step={1000}
             min={1000}
             max={100 * 1000}
-        />
+        /> */}
     </div>
 );
 

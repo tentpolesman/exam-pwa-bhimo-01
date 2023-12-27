@@ -1,21 +1,15 @@
 /* eslint-disable react/jsx-wrap-multilines */
 /* eslint-disable object-curly-newline */
 /* eslint-disable react/forbid-prop-types */
+/* eslint-disable no-unused-vars */
 import React from 'react';
-import Button from '@material-ui/core/Button';
-import ArrowBack from '@material-ui/icons/ArrowBack';
-import CloseIcon from '@material-ui/icons/Close';
-import { useRouter } from 'next/router';
+import Button from '@common_button';
 import classNames from 'classnames';
 import dynamic from 'next/dynamic';
-
-import Box from '@material-ui/core/Box';
-
-import { getLoginInfo } from '@helper_auth';
-
 import Typography from '@common_typography';
 import propTypes from 'prop-types';
-import useStyles from '@core_modules/theme/components/header/mobile/style';
+import { getLoginInfo } from '@helper_auth';
+import { useRouter } from 'next/router';
 import { getAppEnv } from '@root/core/helpers/env';
 import { modules } from '@config';
 import { getStoreHost } from '@helpers/config';
@@ -24,7 +18,6 @@ import { getCategories, getVesMenu } from '@core_modules/theme/services/graphql/
 const BurgerMenu = dynamic(() => import('@core_modules/theme/components/header/mobile/BurgerMenu'), { ssr: true });
 
 const Header = ({ LeftComponent, CenterComponent, RightComponent, className, pageConfig, storeConfig }) => {
-    const styles = useStyles();
     const router = useRouter();
     const back = () => {
         if (modules.checkout.checkoutOnly) {
@@ -70,11 +63,11 @@ const Header = ({ LeftComponent, CenterComponent, RightComponent, className, pag
 
             return (
                 <div role="tabpanel" hidden={value !== index} id={`simple-tabpanel-${index}`} aria-labelledby={`simple-tab-${index}`} {...other}>
-                    {value === index && (
+                    {/* {value === index && (
                         <Box p={3}>
                             <Typography>{children}</Typography>
                         </Box>
-                    )}
+                    )} */}
                 </div>
             );
         };
@@ -92,7 +85,7 @@ const Header = ({ LeftComponent, CenterComponent, RightComponent, className, pag
 
         const burgerProps = {
             isLogin,
-            styles,
+            // styles,
             logoUrl,
             toggleDrawer,
             openModal,
@@ -120,52 +113,53 @@ const Header = ({ LeftComponent, CenterComponent, RightComponent, className, pag
 
     if (pageConfig && !pageConfig.header) return null;
 
-    const position = pageConfig && pageConfig.header === 'absolute' ? styles.headerAbsolute : styles.headerRelative;
+    // const position = pageConfig && pageConfig.header === 'absolute' ? styles.headerAbsolute : styles.headerRelative;
 
-    const containerStyle = classNames(styles.container, position, className);
-    return (
-        <div className={containerStyle}>
-            <div className={styles.leftContainer}>
-                {React.isValidElement(LeftComponent) ? (
-                    LeftComponent
-                ) : (
-                    <Button
-                        onClick={(LeftComponent && LeftComponent.onClick && LeftComponent.onClick) || back}
-                        className={classNames(styles.btnBack, 'header-closeBtn')}
-                    >
-                        {pageConfig.headerBackIcon && pageConfig.headerBackIcon === 'close' ? (
-                            <CloseIcon className={styles.backIcon} />
-                        ) : (
-                            <ArrowBack className={styles.backIcon} />
-                        )}
-                    </Button>
-                )}
-            </div>
-            <div className={styles.centerContainer}>
-                {React.isValidElement(CenterComponent) ? (
-                    CenterComponent
-                ) : (
-                    <>
-                        {pageConfig.headerTitle ? (
-                            <Typography
-                                variant={router.pathname === '/blog'
-                                || router.pathname === '/blog/[id]'
-                                || router.pathname === '/checkout/cart'
-                                || router.pathname === '/checkout' ? 'span' : 'h2'}
-                                type="bold"
-                                letter="uppercase"
-                                align="center"
-                                className={styles.title}
-                            >
-                                {pageConfig.headerTitle}
-                            </Typography>
-                        ) : null}
-                    </>
-                )}
-            </div>
-            <div className={styles.rightContainer}>{React.isValidElement(RightComponent) ? RightComponent : null}</div>
-        </div>
-    );
+    // const containerStyle = classNames(position, className);
+    return null;
+    // return (
+    //     <div className={containerStyle}>
+    //         <div className={styles.leftContainer}>
+    //             {React.isValidElement(LeftComponent) ? (
+    //                 LeftComponent
+    //             ) : (
+    //                 <Button
+    //                     onClick={(LeftComponent && LeftComponent.onClick && LeftComponent.onClick) || back}
+    //                     className={classNames(styles.btnBack, 'header-closeBtn')}
+    //                 >
+    //                     {pageConfig.headerBackIcon && pageConfig.headerBackIcon === 'close' ? (
+    //                         <CloseIcon className={styles.backIcon} />
+    //                     ) : (
+    //                         <ArrowBack className={styles.backIcon} />
+    //                     )}
+    //                 </Button>
+    //             )}
+    //         </div>
+    //         <div className={styles.centerContainer}>
+    //             {React.isValidElement(CenterComponent) ? (
+    //                 CenterComponent
+    //             ) : (
+    //                 <>
+    //                     {pageConfig.headerTitle ? (
+    //                         <Typography
+    //                             variant={router.pathname === '/blog'
+    //                             || router.pathname === '/blog/[id]'
+    //                             || router.pathname === '/checkout/cart'
+    //                             || router.pathname === '/checkout' ? 'span' : 'h2'}
+    //                             type="bold"
+    //                             letter="uppercase"
+    //                             align="center"
+    //                             className={styles.title}
+    //                         >
+    //                             {pageConfig.headerTitle}
+    //                         </Typography>
+    //                     ) : null}
+    //                 </>
+    //             )}
+    //         </div>
+    //         <div className={styles.rightContainer}>{React.isValidElement(RightComponent) ? RightComponent : null}</div>
+    //     </div>
+    // );
 };
 
 Header.propTypes = {

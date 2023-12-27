@@ -5,10 +5,8 @@ import SkeletonRecently from '@core_modules/theme/components/recentlyViewed/skel
 import classNames from 'classnames';
 import ButtonCompare from '@core_modules/theme/components/recentlyViewed/buttonCompare';
 import Typography from '@common_typography';
-import useStyles from '@core_modules/theme/components/recentlyViewed/style';
 
 const ProductView = (props) => {
-    const styles = useStyles();
     const {
         toggleDrawer, wrapperContent, recentlyBtnContent, desktop, t,
         loading, product, contentFeatured,
@@ -41,7 +39,7 @@ const ProductView = (props) => {
                             <GridList
                                 data={product ? product.products.items : []}
                                 ItemComponent={ProductItem}
-                                className={styles.GridItem}
+                                className="w-[500px] my-0 mx-[20px]"
                                 gridItemProps={{ xs: 4 }}
                             />
                         )
