@@ -89,7 +89,7 @@ const TabletHeader = (props) => {
                     className={cx(
                         'top-header-tablet__content',
                         'grid grid-cols-[436fr_268fr] gap-4',
-                        'tablet:max-w-[768px] desktop:hidden mobile:max-tablet:hidden',
+                        'tablet:max-w-[720px] desktop:hidden mobile:max-tablet:hidden',
                         'm-[0_auto]',
                     )}
                 >
@@ -139,7 +139,7 @@ const TabletHeader = (props) => {
                         'grid',
                         'grid-cols-[24fr_110fr_454fr_72fr]',
                         'gap-4',
-                        'tablet:max-w-[768px]',
+                        'tablet:max-w-[720px]',
                     )}
                 >
                     <div className={cx('middle-header-tablet__burger-menu')}>

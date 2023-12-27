@@ -1,10 +1,12 @@
 /* eslint-disable no-nested-ternary */
 import MagezonColumn from '@core_modules/cms/components/cms-renderer/magezon/MagezonColumn';
+import magezonDesignOptionsCss from '@core_modules/cms/helpers/magezonDesignOptionsCss';
 import cx from 'classnames';
 import React from 'react';
 
 const MagezonRow = (props) => {
     const {
+        //
         elements,
         xs_hide,
         sm_hide,
@@ -14,26 +16,31 @@ const MagezonRow = (props) => {
         max_width,
         content_align,
         row_type,
+        ...other
     } = props;
     const isContained = row_type === 'contained';
     const isFullWidth = row_type.indexOf('full_width') !== -1;
-    const isNoPad = row_type.indexOf('no_paddings') !== -1;
+    const { className, styles } = magezonDesignOptionsCss('mgz-row', { ...other });
 
     return (
         <>
             <div
-                className={cx('mgz-row', 'flex', 'flex-wrap', row_type, {
-                    'mgz-element-row-max-width': max_width && max_width !== '',
-                    'max-sm:hidden': xs_hide,
-                    'max-md:hidden': sm_hide,
-                    'max-lg:hidden': md_hide,
-                    'max-xl:hidden': lg_hide,
+                className={cx({
                     'w-full': isFullWidth,
-                    '[&>.mgz-column>*]:!p-0': isFullWidth && isNoPad,
-                    'w-[1220px] my-0 ml-[calc(50%)] -translate-x-[50%]': isContained,
+                    'desktop:max-w-[1280px] desktop:px-10 tablet:max-w-[768px] tablet:px-6 mobile:px-4 my-0 mx-auto': isContained,
                 })}
             >
-                {elements && elements.length > 0 && elements.map((item, key) => <MagezonColumn key={key} {...item} storeConfig={storeConfig} />)}
+                <div
+                    className={cx('mgz-row relative', 'flex', 'flex-wrap', row_type, className, {
+                        'mgz-element-row-max-width': max_width && max_width !== '',
+                        'max-sm:hidden': xs_hide,
+                        'max-md:hidden': sm_hide,
+                        'max-lg:hidden': md_hide,
+                        'max-xl:hidden': lg_hide,
+                    })}
+                >
+                    {elements && elements.length > 0 && elements.map((item, key) => <MagezonColumn key={key} {...item} storeConfig={storeConfig} />)}
+                </div>
             </div>
             <style jsx>
                 {`
@@ -44,6 +51,7 @@ const MagezonRow = (props) => {
                     }
                 `}
             </style>
+            {styles}
         </>
     );
 };

@@ -115,7 +115,7 @@ const DesktopHeader = (props) => {
             >
                 <div
                     id="top-header__content"
-                    className={cx('top-header__content', 'grid grid-cols-[75%_25%]', 'tablet:max-w-[768px] desktop:max-w-[1200px]', 'm-[0_auto]')}
+                    className={cx('top-header__content', 'grid grid-cols-[75%_25%]', 'tablet:max-w-[720px] desktop:max-w-[1200px]', 'm-[0_auto]')}
                 >
                     <div className={cx('top-header__content__popup-installation')} id="popup-desktop__install">
                         <Button
@@ -238,7 +238,7 @@ const DesktopHeader = (props) => {
                     </div>
                 </div>
             </div>
-            <div className={cx('bottom-header', 'tablet:max-w-[768px] desktop:max-w-[1200px]', 'm-[0_auto]', 'mobile:max-desktop:hidden')}>
+            <div className={cx('bottom-header', 'tablet:max-w-[720px] desktop:max-w-[1200px]', 'm-[0_auto]', 'mobile:max-desktop:hidden')}>
                 <div className="flex flex-row menu-category">
                     <div className="xs:basis-full menu-middle">
                         {loadingVesMenu ? null : <Menu vesMenuConfig={vesMenuConfig} data={dataVesMenu} storeConfig={storeConfig} />}

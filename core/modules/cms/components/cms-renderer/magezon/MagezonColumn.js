@@ -1,6 +1,8 @@
 import MagezonElement from '@core_modules/cms/components/cms-renderer/magezon/index';
 import { getColSpanTailwind, getFlexBasisTailwind } from '@root/core/helpers/style';
 import React from 'react';
+import magezonDesignOptionsCss from '@core_modules/cms/helpers/magezonDesignOptionsCss';
+import cx from 'classnames';
 
 const MagezonColumn = (props) => {
     const {
@@ -21,7 +23,10 @@ const MagezonColumn = (props) => {
         lg_hide,
         xl_hide,
         storeConfig,
+        ...other
     } = props;
+
+    const { className, styles } = magezonDesignOptionsCss('mgz-column', { ...other });
 
     let classColumn = 'mgz-column flex flex-col ';
     if (xs_size && xs_size !== '') classColumn += `${getFlexBasisTailwind(xs_size, 'xs')} `;
@@ -48,7 +53,7 @@ const MagezonColumn = (props) => {
 
     return (
         <>
-            <div className={classColumn}>
+            <div className={cx(classColumn, className)}>
                 {elements && elements.length > 0 && elements.map((item, key) => <MagezonElement key={key} {...item} storeConfig={storeConfig} />)}
             </div>
             <style jsx>
@@ -58,6 +63,7 @@ const MagezonColumn = (props) => {
                     }
                 `}
             </style>
+            {styles}
         </>
     );
 };
