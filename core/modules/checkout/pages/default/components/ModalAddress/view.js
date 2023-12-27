@@ -2,7 +2,7 @@ import Button from '@common_button';
 import Dialog from '@common_dialog';
 import Skeleton from '@common_skeleton';
 import Radio from '@common_forms/Radio';
-import Add from '@material-ui/icons/Add';
+import Add from '@heroicons/react/24/outline/PlusIcon';
 import AddressFormDialog from '@plugin_addressform';
 import Typography from '@common_typography';
 import ItemAddress from '@core_modules/checkout/pages/default/components/ItemModalAddress';
@@ -89,7 +89,7 @@ const AddressView = (props) => {
                                 <Typography variant="bd-2" letter="uppercase" type="bold">
                                     {t('customer:address:addTitle')}
                                 </Typography>
-                                <Add />
+                                <Add className="w-4 h-4" />
                             </Button>
                         </div>
                     </div>

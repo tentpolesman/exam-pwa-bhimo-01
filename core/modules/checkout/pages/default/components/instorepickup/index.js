@@ -3,7 +3,7 @@ import TextField from '@common_forms/TextField';
 import Typography from '@common_typography';
 import { pickupLocations, setInstoreShippingAddress, setShippingMethod } from '@core_modules/checkout/services/graphql';
 import Alert from '@common_alert';
-import classNames from 'classnames';
+import cx from 'classnames';
 import { useEffect, useState } from 'react';
 import Dialog from '@common_dialog';
 
@@ -108,7 +108,7 @@ const ModalPickupLocations = (props) => {
                                         <div
                                             key={loc.pickup_location_code}
                                             onClick={() => setSelected(loc)}
-                                            className={classNames(
+                                            className={cx(
                                                 styleCard,
                                                 (selected && selected.pickup_location_code === loc.pickup_location_code) ? styleCardActive : ''
                                             )}
@@ -162,7 +162,7 @@ const InStorePickup = (props) => {
     return (
         <div
             id="pickupInStore"
-            className={classNames(
+            className={cx(
                 'flex flex-col border-b border-b-neutral-200',
                 'w-full py-6 gap-4',
             )}
@@ -180,7 +180,7 @@ const InStorePickup = (props) => {
                 {t('checkout:pickupInformation:label')}
             </Typography>
             <Typography>{t('checkout:pickupInformation:pickupAtLabel')}</Typography>
-            <div className={classNames(
+            <div className={cx(
                 'my-2 p-4 flex flex-row items-center justify-between',
                 'border rounded-lg border-neutral-200 max-w-lg',
                 'mb-4',

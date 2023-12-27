@@ -4,7 +4,7 @@ import Dialog from '@common_dialog';
 import gqlService from '@core_modules/checkout/services/graphql';
 import CmsRenderer from '@core_modules/cms/components/cms-renderer';
 import { useTranslation } from 'next-i18next';
-import classNames from 'classnames';
+import cx from 'classnames';
 
 const ModalHowtoPay = ({
     open,
@@ -36,7 +36,7 @@ const ModalHowtoPay = ({
                 useCloseTitleButton
                 content={(
                     <div className="flex !max-h-[calc(100vh-36px)] flex-col gap-4 py-4 border-t border-neutral-200">
-                        <div className={classNames(
+                        <div className={cx(
                             'flex flex-col relative max-h-[calc(100vh-300px)] p-4 !overflow-scroll',
                             'max-w-full',
                         )}

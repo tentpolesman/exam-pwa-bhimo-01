@@ -1,15 +1,14 @@
 /* eslint-disable max-len */
 /* eslint-disable no-case-declarations */
+/* eslint-disable @next/next/no-img-element */
 import React from 'react';
 import Link from 'next/link';
 import classNames from 'classnames';
 import { breakPointsUp } from '@helper_theme';
 import Banner from '@common_slick/Banner';
-import useStyles from '@core_modules/seller/pages/default/components/style';
 
 function MobileContent(props) {
     const { data, storeConfig } = props;
-    const styles = useStyles();
     const desktop = breakPointsUp('sm');
 
     return (
@@ -54,7 +53,7 @@ function MobileContent(props) {
                                                 <div className="basis-full" style={{ margin: 'auto' }}>
                                                     <Link href={widget.hyperlink ? widget.hyperlink : '/#'}>
 
-                                                        <img src={widget.url} width="100%" className={styles.imgColumn} alt="img" />
+                                                        <img src={widget.url} width="100%" className="" alt="img" />
 
                                                     </Link>
                                                 </div>
@@ -74,7 +73,7 @@ function MobileContent(props) {
                         <div className="flex flex-row">
                             {
                                 item.widgets && item.widgets.length > 0 && (
-                                    <div className={classNames('basis-full', styles.videoContainer)} style={{ width: '100%' }}>
+                                    <div className={classNames('basis-full', '')} style={{ width: '100%' }}>
                                         <iframe className="video-iframe" width="100%" height="600px" src={item.widgets[0].url} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen />
                                     </div>
                                 )

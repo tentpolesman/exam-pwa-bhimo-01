@@ -2,7 +2,7 @@ import Button from '@common_button';
 import CircularProgress from '@common_circularprogress';
 import Typography from '@common_typography';
 import { formatPrice } from '@helper_currency';
-import classNames from 'classnames';
+import cx from 'classnames';
 
 const StoreCreditView = (props) => {
     const {
@@ -10,7 +10,7 @@ const StoreCreditView = (props) => {
     } = props;
     return (
         <div
-            className={classNames(
+            className={cx(
                 'border border-neutral-200 rounded-lg',
                 'w-full max-w-[420px]',
                 'flex flex-row items-center justify-between p-3',

@@ -5,7 +5,7 @@
 import React from 'react';
 import Typography from '@common_typography';
 import Button from '@common_button';
-import Checkbox from '@common_forms/CheckBox';
+import CheckBox from '@common_forms/CheckBox';
 import Skeleton from '@common_skeleton';
 import Dialog from '@common_dialog';
 
@@ -14,9 +14,9 @@ const ConfirmationView = ({
 }) => {
     const Loader = () => (
         <div className="flex flex-col py-5 w-full">
-            <Skeleton variant="text" width="40%" height={35} />
-            <Skeleton variant="text" width="80%" height={30} />
-            <Skeleton variant="text" width="80%" height={30} />
+            <Skeleton width="40%" height={35} />
+            <Skeleton width="80%" height={30} />
+            <Skeleton width="80%" height={30} />
         </div>
     );
 
@@ -33,7 +33,8 @@ const ConfirmationView = ({
                             <div>
                                 {
                                     item.mode === 'MANUAL' ? (
-                                        <Checkbox
+                                        <CheckBox
+                                            variant="single"
                                             checked={(checkList.length === 0) ? false : checkList[index].isChecked}
                                             onChange={() => handleCheckbox(index)}
                                             inputProps={{ 'aria-label': 'primary checkbox' }}
@@ -42,7 +43,8 @@ const ConfirmationView = ({
                                         />
                                     )
                                         : (
-                                            <Checkbox
+                                            <CheckBox
+                                                variant="single"
                                                 disabled
                                                 checked
                                                 inputProps={{ 'aria-label': 'primary checkbox' }}

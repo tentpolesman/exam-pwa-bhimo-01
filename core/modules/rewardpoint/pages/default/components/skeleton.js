@@ -1,6 +1,7 @@
-import Divider from '@material-ui/core/Divider';
-import Skeleton from '@material-ui/lab/Skeleton';
-import useStyles from '@core_modules/rewardpoint/pages/default/style';
+/* eslint-disable no-unused-vars */
+/* eslint-disable semi-style */
+import Divider from '@common_divider';
+import Skeleton from '@common_skeleton';
 
 const SkeletonDetail = () => (
     <>
@@ -10,44 +11,44 @@ const SkeletonDetail = () => (
     </>
 );
 
-export const Loader = () => {
-    const styles = useStyles();
-    return (
-        <div className={styles.container}>
-            <SkeletonDetail />
-            <div className={styles.tableOuterContainer}>
-                <div className={styles.table}>
-                    <div className="flex flex-col" style={{ marginTop: 15, marginBottom: 10 }}>
-                        <Skeleton variant="text" width="100%" height={30} />
-                        <Skeleton variant="text" width="100%" height={30} />
-                        <Skeleton variant="text" width="100%" height={30} />
-                        <Skeleton variant="text" width="100%" height={30} />
-                        <Skeleton variant="text" width="100%" height={30} />
-                        <Skeleton variant="text" width="100%" height={30} />
-                        <Divider />
-                    </div>
-                    <div className="flex flex-col" style={{ marginTop: 15, marginBottom: 10 }}>
-                        <Skeleton variant="text" width="100%" height={30} />
-                        <Skeleton variant="text" width="100%" height={30} />
-                        <Skeleton variant="text" width="100%" height={30} />
-                        <Skeleton variant="text" width="100%" height={30} />
-                        <Skeleton variant="text" width="100%" height={30} />
-                        <Skeleton variant="text" width="100%" height={30} />
-                        <Divider />
-                    </div>
-                    <div className="flex flex-col" style={{ marginTop: 15, marginBottom: 10 }}>
-                        <Skeleton variant="text" width="100%" height={30} />
-                        <Skeleton variant="text" width="100%" height={30} />
-                        <Skeleton variant="text" width="100%" height={30} />
-                        <Skeleton variant="text" width="100%" height={30} />
-                        <Skeleton variant="text" width="100%" height={30} />
-                        <Skeleton variant="text" width="100%" height={30} />
-                        <Divider />
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
-};
+export const Loader = () =>
+    null
+    // return (
+    //     <div className={styles.container}>
+    //         <SkeletonDetail />
+    //         <div className={styles.tableOuterContainer}>
+    //             <div className={styles.table}>
+    //                 <div className="flex flex-col" style={{ marginTop: 15, marginBottom: 10 }}>
+    //                     <Skeleton variant="text" width="100%" height={30} />
+    //                     <Skeleton variant="text" width="100%" height={30} />
+    //                     <Skeleton variant="text" width="100%" height={30} />
+    //                     <Skeleton variant="text" width="100%" height={30} />
+    //                     <Skeleton variant="text" width="100%" height={30} />
+    //                     <Skeleton variant="text" width="100%" height={30} />
+    //                     <Divider />
+    //                 </div>
+    //                 <div className="flex flex-col" style={{ marginTop: 15, marginBottom: 10 }}>
+    //                     <Skeleton variant="text" width="100%" height={30} />
+    //                     <Skeleton variant="text" width="100%" height={30} />
+    //                     <Skeleton variant="text" width="100%" height={30} />
+    //                     <Skeleton variant="text" width="100%" height={30} />
+    //                     <Skeleton variant="text" width="100%" height={30} />
+    //                     <Skeleton variant="text" width="100%" height={30} />
+    //                     <Divider />
+    //                 </div>
+    //                 <div className="flex flex-col" style={{ marginTop: 15, marginBottom: 10 }}>
+    //                     <Skeleton variant="text" width="100%" height={30} />
+    //                     <Skeleton variant="text" width="100%" height={30} />
+    //                     <Skeleton variant="text" width="100%" height={30} />
+    //                     <Skeleton variant="text" width="100%" height={30} />
+    //                     <Skeleton variant="text" width="100%" height={30} />
+    //                     <Skeleton variant="text" width="100%" height={30} />
+    //                     <Divider />
+    //                 </div>
+    //             </div>
+    //         </div>
+    //     </div>
+    // );
+;
 
 export default Loader;

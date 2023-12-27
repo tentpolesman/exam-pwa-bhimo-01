@@ -1,6 +1,7 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable semi-style */
 /* eslint-disable no-plusplus */
 /* eslint-disable no-shadow */
-
 import React from 'react';
 
 import Button from '@common_button';
@@ -30,9 +31,9 @@ const stripePayments = 'stripe_payments';
  */
 const Loader = () => (
     <>
-        <Skeleton variant="rect" width="100%" height={20} animation="wave" style={{ marginBottom: 10 }} />
-        <Skeleton variant="rect" width="100%" height={20} animation="wave" style={{ marginBottom: 10 }} />
-        <Skeleton variant="rect" width="100%" height={20} animation="wave" style={{ marginBottom: 10 }} />
+        <Skeleton className="rounded-[50%] mb-[10px]" width="100%" height={20} />
+        <Skeleton className="rounded-[50%] mb-[10px]" width="100%" height={20} />
+        <Skeleton className="rounded-[50%] mb-[10px]" width="100%" height={20} />
     </>
 );
 

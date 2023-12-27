@@ -44,9 +44,6 @@ module.exports = {
         ],
         'no-restricted-imports': [
             'error',
-            {
-                paths: ['@material-ui/core', '@material-ui/icons', '@material-ui/lab'],
-            },
         ],
         'import/no-extraneous-dependencies': 'off',
         'import/no-unresolved': 'off',

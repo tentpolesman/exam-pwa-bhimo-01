@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import Button from '@common_button';
 import Typography from '@common_typography';
-import classNames from 'classnames';
+import cx from 'classnames';
 import Skeleton from '@common_skeleton';
 import ModalPickupInformation from '@core_modules/checkout/pages/default/components/ModalPickupInformation';
 import ModalSelectStore from '@core_modules/checkout/pages/default/components/ModalSelectStore';
@@ -35,7 +35,7 @@ const PickupInformation = (props) => {
     return (
         <div
             id="checkoutPickupStore"
-            className={classNames(
+            className={cx(
                 'flex flex-col border-b border-b-neutral-200',
                 'w-full py-6 gap-4',
             )}
@@ -56,7 +56,7 @@ const PickupInformation = (props) => {
             <Typography variant="bd-1" className="uppercase">
                 {t('checkout:pickupInformation:label')}
             </Typography>
-            <div className={classNames(
+            <div className={cx(
                 'border rounded-lg border-neutral-200',
                 'max-w-lg p-4 mb-4',
             )}
@@ -105,7 +105,7 @@ const PickupInformation = (props) => {
             <Typography>
                 {t('checkout:pickupInformation:pickupAtLabel')}
             </Typography>
-            <div className={classNames(
+            <div className={cx(
                 'border rounded-lg border-neutral-200',
                 'max-w-lg p-4 mb-4',
             )}
@@ -135,7 +135,7 @@ const PickupInformation = (props) => {
                     }
                     {
                         pickupStores.loading || !pickupStores.data ? (
-                            <Skeleton variant="text" animation="wave" width={270} height={30} />
+                            <Skeleton width={270} height={30} />
                         ) : (
                             <Button
                                 align="left"

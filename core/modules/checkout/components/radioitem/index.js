@@ -2,7 +2,6 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable @next/next/no-img-element */
 import Typography from '@common_typography';
-import useStyles from '@core_modules/checkout/components/radioitem/style';
 import { formatPrice } from '@helpers/currency';
 import { useReactiveVar } from '@apollo/client';
 import { currencyVar } from '@root/core/services/graphql/cache';
@@ -10,7 +9,6 @@ import Radio from '@common_forms/Radio';
 import classNames from 'classnames';
 
 const RadioDeliveryItem = (props) => {
-    const styles = useStyles();
     const {
         value,
         label,
@@ -38,19 +36,19 @@ const RadioDeliveryItem = (props) => {
 
     if (image) {
         // eslint-disable-next-line @next/next/no-img-element
-        rightSide = <img src={image} className={styles.imgList} alt="cimb" />;
+        rightSide = <img src={image} className="max-w-[50px] max-h-[25px] right-0" alt="cimb" />;
     }
     const base_currency_code = storeConfig ? storeConfig.base_currency_code : 'RP';
     if (amount && price_incl_tax && price_incl_tax.value > amount.value) {
         rightSide = (
             <div className="flex flex-row between-xs">
                 <div className="xs:basis-full sm:basis-1/2">
-                    <Typography variant="p" type={labelType} className={styles.originalPrice} align="right">
+                    <Typography type={labelType} className="line-through text-right">
                         {formatPrice(price_incl_tax.value, amount.currency, currencyCache || base_currency_code, currencyCache)}
                     </Typography>
                 </div>
                 <div className="xs:basis-full sm:basis-1/2">
-                    <Typography variant="p" type={labelType} className={styles.promo} align="right">
+                    <Typography type={labelType} className="ml-auto font-bold text-right">
                         {formatPrice(amount.value, amount.currency, currencyCache || base_currency_code, currencyCache)}
                     </Typography>
                 </div>
@@ -60,7 +58,7 @@ const RadioDeliveryItem = (props) => {
         rightSide = (
             <div className="flex flex-row">
                 <div className="xs:basis-full sm:basis-1/2">
-                    <Typography variant="p" type={labelType} className={styles.notPromo} align="right">
+                    <Typography vtype={labelType} className="ml-auto font-normal text-right">
                         {formatPrice(price_incl_tax.value, amount.currency, currencyCache || base_currency_code, currencyCache)}
                     </Typography>
                 </div>
@@ -70,7 +68,7 @@ const RadioDeliveryItem = (props) => {
         rightSide = (
             <div className="flex flex-row">
                 <div className="xs:basis-full sm:basis-1/2">
-                    <Typography variant="p" type={labelType} className={styles.freeShipping} align="right">
+                    <Typography variant="p" type={labelType} className="ml-auto font-bold text-right">
                         {price_incl_tax.value !== 0 ? formatPrice(price_incl_tax.value, amount.currency, currencyCache
                             || base_currency_code, currencyCache) : 'FREE'}
                     </Typography>
@@ -82,12 +80,12 @@ const RadioDeliveryItem = (props) => {
     const shippingLabel = (
         <div>
             <div style={{ display: 'flex', alignItems: 'center' }}>
-                <Typography variant="p" type={labelType} className={styles.originalLabel}>
+                <Typography type={labelType}>
                     {label}
                 </Typography>
             </div>
             {promoLabel ? (
-                <Typography variant="p" type={labelType}>
+                <Typography type={labelType}>
                     (
                     {promoLabel}
                     )

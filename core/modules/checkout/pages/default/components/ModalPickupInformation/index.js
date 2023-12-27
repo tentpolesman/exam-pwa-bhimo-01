@@ -1,10 +1,10 @@
+import React from 'react';
 import Button from '@common_button';
 import TextField from '@common_forms/TextField';
 import { regexPhone } from '@helper_regex';
 import { useTranslation } from 'next-i18next';
 import Dialog from '@common_dialog';
 import { useFormik } from 'formik';
-import React from 'react';
 import * as Yup from 'yup';
 import gqlService from '@core_modules/checkout/services/graphql';
 

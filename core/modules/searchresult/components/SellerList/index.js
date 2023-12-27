@@ -4,7 +4,6 @@ import { getSeller } from '@core_modules/searchresult/services/graphql/index';
 import SellerItem from '@core_modules/searchresult/components/SellerList/view';
 
 const sellerList = (props) => {
-    // const styles = useStyles();
     const { q } = props;
     const { data, loading } = getSeller({
         fetchPolicy: 'no-cache',

@@ -5,7 +5,7 @@ import TextField from '@common_forms/TextField';
 import Typography from '@common_typography';
 import { useTranslation } from 'next-i18next';
 import Alert from '@common_alert';
-import classNames from 'classnames';
+import cx from 'classnames';
 import React from 'react';
 import gqlService from '@core_modules/checkout/services/graphql';
 import Dialog from '@common_dialog';
@@ -107,19 +107,19 @@ const ModalSelectStore = ({
         const styleCardActive = '!border-primary';
         const styleCardLast = 'mb-10';
         if (selected.key && selected.key === key) {
-            classname = classNames(styleCard, styleCardActive);
+            classname = cx(styleCard, styleCardActive);
         } else if (Object.keys(checkout.selectStore).length > 0 && !selected.key) {
             if (key === checkout.selectStore.code) {
-                classname = classNames(styleCard, styleCardActive);
+                classname = cx(styleCard, styleCardActive);
             } else if (index === listStores.length - 1) {
-                classname = classNames(styleCard, styleCardLast);
+                classname = cx(styleCard, styleCardLast);
             } else {
                 classname = styleCard;
             }
         } else if (index === listStores.length - 1 && key === selected.key) {
-            classname = classNames(styleCard, styleCardActive, styleCardLast);
+            classname = cx(styleCard, styleCardActive, styleCardLast);
         } else if (index === listStores.length - 1) {
-            classname = classNames(styleCard, styleCardLast);
+            classname = cx(styleCard, styleCardLast);
         } else {
             classname = styleCard;
         }

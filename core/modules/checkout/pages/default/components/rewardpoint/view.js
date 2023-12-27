@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import Button from '@common_button';
 import CircularProgress from '@common_circularprogress';
 import Typography from '@common_typography';

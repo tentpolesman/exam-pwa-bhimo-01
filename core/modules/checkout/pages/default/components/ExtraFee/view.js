@@ -5,8 +5,8 @@ import Typography from '@common_typography';
 import Radio from '@common_forms/Radio';
 import Select from '@common_forms/Select';
 import Checkbox from '@common_forms/CheckBox';
-import { formatPrice } from '@helper_currency';
 import Skeleton from '@common_skeleton';
+import { formatPrice } from '@helper_currency';
 
 const ExtraFeeView = ({
     cart, globalCurrency, t, state, handleChange, loading, currencyCache,

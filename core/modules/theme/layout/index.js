@@ -19,15 +19,11 @@ import TagManager from 'react-gtm-module';
 // eslint-disable-next-line object-curly-newline
 import { basePath, custDataNameCookie, debuging, features, modules } from '@config';
 import { createCompareList } from '@core_modules/product/services/graphql';
-// import useStyles from '@core_modules/theme/layout/style';
 import { getHost } from '@helper_config';
 import { getCookies, setCookies } from '@helper_cookies';
 import { getAppEnv } from '@helpers/env';
 // import { breakPointsDown, breakPointsUp } from '@helper_theme';
 // import crypto from 'crypto';
-// import Fab from '@material-ui/core/Fab';
-// import ChatIcon from '@material-ui/icons/Chat';
-
 // import PopupInstallAppMobile from '@core_modules/theme/components/custom-install-popup/mobile';
 import Copyright from '@core_modules/theme/components/footer/desktop/components/copyright';
 import { getCountCart } from '@core_modules/theme/services/graphql';
@@ -36,6 +32,7 @@ import { frontendConfig } from '@helpers/frontendOptions';
 import { localTotalCart } from '@services/graphql/schema/local';
 import localFont from 'next/font/local';
 import Script from 'next/script';
+import { BREAKPOINTS } from '@root/core/theme/vars';
 
 /**
  * Set font family using nextjs helper,
@@ -81,7 +78,6 @@ const Footer = dynamic(() => import('@common_footer'), { ssr: true });
 // END CHAT FEATURES IMPORT
 
 const Layout = (props) => {
-    // const bodyStyles = useStyles();
     const {
         dataVesMenu,
         pageConfig = {},
@@ -332,7 +328,7 @@ const Layout = (props) => {
     };
 
     const generateClasses = () => {
-        let classes = `${!isCms ? 'tablet:max-w-[768px] desktop:max-w-[1200px]' : ''} ${font.variable} font-sans !font-pwa-default`;
+        let classes = `${!isCms ? 'tablet:max-w-[768px] desktop:max-w-[1280px]' : ''} ${font.variable} font-sans !font-pwa-default`;
         if (showGlobalPromo) {
             classes += ' mobile:max-tablet:mt-2 tablet:max-desktop:mt-[145px] desktop:mt-[196px]';
         } else {
@@ -565,7 +561,7 @@ const Layout = (props) => {
             ) : null} */}
             {allowHeaderCheckout && (
                 <header ref={refHeader} className={cx(font.variable, 'font-sans', '!font-pwa-default')}>
-                    {typeof window !== 'undefined' && storeConfig.global_promo && storeConfig.global_promo.enable && deviceWidth > 768 && (
+                    {typeof window !== 'undefined' && storeConfig.global_promo && storeConfig.global_promo.enable && deviceWidth > BREAKPOINTS.md && (
                         <GlobalPromoMessage
                             t={t}
                             storeConfig={storeConfig}
@@ -573,7 +569,7 @@ const Layout = (props) => {
                             handleClose={handleClosePromo}
                             appName={appName}
                             installMessage={installMessage}
-                            isMobile={deviceWidth < 768}
+                            isMobile={deviceWidth < BREAKPOINTS.md}
                         />
                     )}
                     {/* <div className="hidden-mobile">

@@ -1,8 +1,11 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable semi-style */
 /* eslint-disable implicit-arrow-linebreak */
 /* eslint-disable operator-linebreak */
 /* eslint-disable max-len */
 /* eslint-disable comma-dangle */
 import Radio from '@common_forms/Radio';
+import React from 'react';
 import Typography from '@common_typography';
 import DeliveryItem from '@core_modules/checkout/components/radioitem';
 import RadioMultiseller from '@core_modules/checkout/pages/default/components/shipping/plugin/Radio';
@@ -10,15 +13,14 @@ import { basePath } from '@config';
 import { formatPrice } from '@helper_currency';
 import Alert from '@common_alert';
 import Skeleton from '@common_skeleton';
-import React from 'react';
 import classNames from 'classnames';
 import Accordion from '@common_acccordion';
 
 const Loader = () => (
     <>
-        <Skeleton variant="rect" width="100%" height={20} animation="wave" style={{ marginBottom: 10 }} />
-        <Skeleton variant="rect" width="100%" height={20} animation="wave" style={{ marginBottom: 10 }} />
-        <Skeleton variant="rect" width="100%" height={20} animation="wave" style={{ marginBottom: 10 }} />
+        <Skeleton className="rounded-[50%] mb-[10px]" width="100%" height={20} />
+        <Skeleton className="rounded-[50%] mb-[10px]" width="100%" height={20} />
+        <Skeleton className="rounded-[50%] mb-[10px]" width="100%" height={20} />
     </>
 );
 

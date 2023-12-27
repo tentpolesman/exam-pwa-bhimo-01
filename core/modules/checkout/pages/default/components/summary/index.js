@@ -13,7 +13,7 @@ import Router from 'next/router';
 
 import { getIpayUrl } from '@core_modules/checkout/helpers/config';
 import gqlService from '@core_modules/checkout/services/graphql';
-import Skeleton from '@material-ui/lab/Skeleton';
+import Skeleton from '@common_skeleton';
 import SummaryPlugin from '@plugin_summary';
 
 import ModalXendit from '@core_modules/checkout/pages/default/components/ModalXendit/index';
@@ -483,8 +483,8 @@ const Summary = ({
     }, [refSummary]);
     const Loader = () => (
         <>
-            <Skeleton variant="rect" width="100%" height={300} animation="wave" style={{ marginBottom: 5 }} />
-            <Skeleton variant="rect" width="100%" height={50} animation="wave" style={{ marginBottom: 5 }} />
+            <Skeleton className="rounded-[50%] mb-[5px]" width="100%" height={300} />
+            <Skeleton className="rounded-[50%] mb-[5px]" width="100%" height={50} />
         </>
     );
     if (checkout.loading.all) {

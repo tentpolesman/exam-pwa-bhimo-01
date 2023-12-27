@@ -3,18 +3,18 @@
 /* eslint-disable max-len */
 /* eslint-disable no-unused-expressions */
 import Typography from '@common_typography';
+import Radio from '@common_forms/Radio';
+import cx from 'classnames';
+import propTypes from 'prop-types';
 import { getCartId } from '@helper_cartid';
 import { getLocalStorage } from '@helper_localstorage';
 import { useReactiveVar } from '@apollo/client';
 import { storeConfigVar } from '@root/core/services/graphql/cache';
-import Radio from '@common/Forms/Radio';
-import classNames from 'classnames';
-import propTypes from 'prop-types';
 import React from 'react';
 
 const RadioItem = (props) => {
     const { value, label, className } = props;
-    const customStyle = classNames('', className);
+    const customStyle = cx('', className);
     return <Radio variant="single" value={value} size="sm" label={label || ''} className={customStyle} />;
 };
 
@@ -41,8 +41,8 @@ function CustomRadio({
 }) {
     const storeConfigLocalStorage = useReactiveVar(storeConfigVar);
 
-    const rootStyle = classNames('flex', className);
-    const containerStyle = classNames(flex === 'column' ? 'flex flex-col' : 'flex flex-row', classContainer, '');
+    const rootStyle = cx('flex', className);
+    const containerStyle = cx(flex === 'column' ? 'flex flex-col' : 'flex flex-row', classContainer, '');
 
     const handleChange = (event) => {
         !disabled && onChange(event.target.value);

@@ -1,3 +1,6 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable semi-style */
+/* eslint-disable max-len */
 import Typography from '@common_typography';
 import Button from '@common_button';
 import classNames from 'classnames';

@@ -1,9 +1,9 @@
 import Skeleton from '@common_skeleton';
 
 const SkeletonDelivery = () => (
-    <div className="flex flex-col gap-2">
+    <div className="border-b border-b-neutral-400 p-[30px]">
         <Skeleton width="60%" height={30} />
-        <Skeleton width="90%" height={70} />
+        <Skeleton className="rounded-[50%]" width="90%" height={70} />
     </div>
 );
 

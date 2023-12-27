@@ -18,7 +18,6 @@ import Summary from '@core_modules/checkout/pages/default/components/summary';
 import classNames from 'classnames';
 import dynamic from 'next/dynamic';
 import Router from 'next/router';
-import React, { useState } from 'react';
 
 import HeaderView from '@core_modules/checkout/pages/default/components/Header';
 import PromoModalItemView from '@core_modules/checkout/pages/default/components/PromoModalItem/view';
@@ -75,9 +74,9 @@ const Content = (props) => {
     const { order: loading, all: disabled } = checkout.loading;
     // prettier-ignore
     const stripeRef = React.useRef();
-    const [clientSecret, setClientSecret] = useState(null);
+    const [clientSecret, setClientSecret] = React.useState(null);
 
-    const [displayHowToPay, setDisplayHowToPay] = useState(false);
+    const [displayHowToPay, setDisplayHowToPay] = React.useState(false);
     const enableMultiSeller = storeConfig.enable_oms_multiseller === '1' || storeConfig.enable_oms_multiseller === 1;
 
     /**
@@ -89,7 +88,7 @@ const Content = (props) => {
                 <HeaderView storeConfig={storeConfig} />
             </div>
             <Typography variant="h1" className="hidden">
-                Checkout
+                {t('common:button:checkout')}
             </Typography>
             <Dialog
                 open={checkoutTokenState}

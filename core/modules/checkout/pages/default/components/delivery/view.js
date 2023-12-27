@@ -1,20 +1,20 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import Typography from '@common_typography';
+import cx from 'classnames';
 import { modules } from '@config';
-import classNames from 'classnames';
 
 const ShippingView = (props) => {
     const {
         checkout, handleSelect, t,
     } = props;
     const checkStyles = (delivery) => ((checkout.selected.delivery === delivery)
-        ? classNames(
+        ? cx(
             'p-4 border border-neutral-100 rounded-xl flex flex-row items-center cursor-pointer',
             'border-primary',
             `${delivery}Delivery`,
         )
-        : classNames(
+        : cx(
             'p-4 border border-neutral-100 rounded-xl flex flex-row items-center cursor-pointer',
             `${delivery}Delivery`,
         ));
@@ -25,7 +25,7 @@ const ShippingView = (props) => {
     return (
         <div
             id="checkoutDeliveryMethod"
-            className={classNames(
+            className={cx(
                 'flex flex-col border-b border-b-neutral-200',
                 'w-full pb-6 gap-4',
             )}

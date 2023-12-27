@@ -1,29 +1,13 @@
-import { useTheme } from '@material-ui/core/styles';
-import useMediaQuery from '@hook/useMediaQuery';
-
+/* eslint-disable no-unused-vars */
+/* eslint-disable semi-style */
 /**
  * check breakpoints up
  * @param string breakpoinst xs, sm, md , lg, xl  */
-export const breakPointsUp = (value) => {
-    const theme = useTheme();
-    const result = useMediaQuery(theme.breakpoints.up(value));
+export const breakPointsUp = (value) => null;
 
-    return result;
-};
+export const breakPointsBetween = (valueMin, valueMax) => null;
 
-export const breakPointsBetween = (valueMin, valueMax) => {
-    const theme = useTheme();
-    const result = useMediaQuery(theme.breakpoints.between(valueMin, valueMax));
-
-    return result;
-};
-
-export const breakPointsDown = (value) => {
-    const theme = useTheme();
-    const result = useMediaQuery(theme.breakpoints.down(value));
-
-    return result;
-};
+export const breakPointsDown = (value) => null;
 
 export default {
     breakPointsUp,
