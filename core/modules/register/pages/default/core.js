@@ -50,7 +50,7 @@ const Register = (props) => {
         }
     }
 
-    const [phoneIsWa, setPhoneIsWa] = React.useState(false);
+    const [phoneIsWa, setPhoneIsWa] = React.useState(true);
     const [cusIsLogin, setIsLogin] = React.useState(0);
     const [disabled, setDisabled] = React.useState(true);
     const [disabledOtpButton, setDisabledOtpButton] = React.useState(false);
@@ -172,12 +172,6 @@ const Register = (props) => {
 
     // handleSend to OTP View
     const handleSend = (phoneNumber) => {
-        // const configSendOtp = {
-        //     maxLength: otpConfig?.data?.otpConfig?.otp_length?.[0]?.length_otp_register || 4,
-        //     maxTry: otpConfig?.data?.otpConfig?.otp_max_try?.[0]?.max_try_otp_register || 3,
-        //     expired: otpConfig?.data?.otpConfig?.otp_expired_time?.[0]?.expired_time_otp_register || 60,
-        // };
-
         window.backdropLoader(true);
         actRequestOtpRegister({
             variables: {
@@ -186,10 +180,8 @@ const Register = (props) => {
         })
             .then(() => {
                 setShowOtp(true);
+                setDisabledOtpButton(false);
                 window.backdropLoader(false);
-                // setManySendOtp(manySendOtp + 1);
-                // eslint-disable-next-line no-nested-ternary
-                // setTime(configSendOtp && configSendOtp.expired ? configSendOtp.expired : 60);
                 window.toastMessage({
                     open: true,
                     text: t('otp:sendSuccess'),
@@ -232,23 +224,22 @@ const Register = (props) => {
             .then(async ({ data }) => {
                 resetForm();
                 if (data.internalCreateCustomerToken.is_email_confirmation) {
-                    window.backdropLoader(false);
                     setEmailConfirmationFlag({ status: '00', message: t('register:openEmail'), variant: 'success' });
-
                     window.toastMessage({
                         open: true,
                         text: t('register:openEmail'),
                         variant: 'success',
                     });
                     setTimeout(() => {
+                        window.backdropLoader(false);
                         Router.push('/customer/account/login');
                     }, 2000);
                 } else {
-                    await setIsLogin(1);
+                    setIsLogin(1);
                     if (Object.keys(cachePrice).length > 0) {
                         priceVar({});
                     }
-                    getCart();
+                    await getCart();
                     window.backdropLoader(false);
                 }
                 setDisabled(false);
@@ -284,8 +275,8 @@ const Register = (props) => {
         onSubmit: (values, { resetForm }) => {
             setDisabled(true);
             window.backdropLoader(true);
-            if (showOtp) {
-                handleSendRegister(values, resetForm);
+            if (enableOtp && !showOtp) {
+                handleSend(values.phoneNumber);
             } else if (enableRecaptcha) {
                 fetch('/captcha-validation', {
                     method: 'post',
@@ -297,19 +288,15 @@ const Register = (props) => {
                     .then((data) => data.json())
                     .then((json) => {
                         if (json.success) {
-                            if (enableOtp && !showOtp) {
-                                handleSend(values.phoneNumber);
-                            } else {
-                                handleSendRegister(values, resetForm);
-                            }
+                            handleSendRegister(values, resetForm);
                         } else {
+                            window.backdropLoader(false);
                             window.toastMessage({
                                 open: true,
                                 variant: 'error',
                                 text: t('register:failed'),
                             });
                         }
-                        window.backdropLoader(false);
                     })
                     .catch(() => {
                         window.backdropLoader(false);
@@ -321,8 +308,6 @@ const Register = (props) => {
                     });
 
                 recaptchaRef.current.reset();
-            } else if (enableOtp && !showOtp) {
-                handleSend(values.phoneNumber);
             } else {
                 handleSendRegister(values, resetForm);
             }

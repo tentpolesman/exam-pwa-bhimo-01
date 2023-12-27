@@ -7,7 +7,12 @@ const plugin = require('tailwindcss/plugin');
 // full list https://github.com/tailwindlabs/tailwindcss/blob/master/stubs/config.full.js
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-    content: ['./pages/**/*.{js,ts,jsx,tsx,mdx}', './core/**/*.{js,ts,jsx,tsx,mdx}', './src/**/*.{js,ts,jsx,tsx,mdx}'],
+    content: [
+        './pages/**/*.{js,ts,jsx,tsx,mdx}',
+        './core/**/*.{js,ts,jsx,tsx,mdx}',
+        './src/**/*.{js,ts,jsx,tsx,mdx}',
+        './node_modules/tailwind-datepicker-react/dist/**/*.js',
+    ],
     theme: {
         extend: {
             colors: {
