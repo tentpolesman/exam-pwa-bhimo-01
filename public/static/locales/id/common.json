@@ -42,7 +42,9 @@
         "allowCookies": "Ijinkan Cookie",
         "simulateQrCode": "Sumulasi Pembayaran Qrcode",
         "submitReview": "Kirim Ulasan",
-        "viewItem": "Lihat Item"
+        "viewItem": "Lihat Item",
+        "apply": "Terapkan",
+        "remove": "Hapus"
     },
     "cart": {
         "myCart": "Cart Saya",

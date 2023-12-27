@@ -2,12 +2,12 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable @next/next/no-img-element */
 import Typography from '@common_typography';
-import Radio from '@material-ui/core/Radio';
-import classNames from 'classnames';
 import useStyles from '@core_modules/checkout/components/radioitem/style';
 import { formatPrice } from '@helpers/currency';
 import { useReactiveVar } from '@apollo/client';
 import { currencyVar } from '@root/core/services/graphql/cache';
+import Radio from '@common_forms/Radio';
+import classNames from 'classnames';
 
 const RadioDeliveryItem = (props) => {
     const styles = useStyles();
@@ -17,7 +17,6 @@ const RadioDeliveryItem = (props) => {
         promoLabel,
         selected,
         onChange = () => {},
-        borderBottom = true,
         image = null,
         classContent = '',
         amount,
@@ -35,10 +34,10 @@ const RadioDeliveryItem = (props) => {
     const currencyCache = useReactiveVar(currencyVar);
 
     const labelType = selected ? 'bold' : 'regular';
-    const rootStyle = borderBottom ? styles.root : styles.rootRmBorder;
     let rightSide;
 
     if (image) {
+        // eslint-disable-next-line @next/next/no-img-element
         rightSide = <img src={image} className={styles.imgList} alt="cimb" />;
     }
     const base_currency_code = storeConfig ? storeConfig.base_currency_code : 'RP';
@@ -97,24 +96,35 @@ const RadioDeliveryItem = (props) => {
         </div>
     );
 
-    if (disabled) return null;
-
     return (
-        <div className={rootStyle} id="checkoutRadioItem">
+        <div className="checkoutRadioItem flex flex-row">
             <Radio
                 color="default"
-                size="small"
+                size="sm"
+                variant="single"
                 checked={selected}
                 onClick={handleChange}
-                inputProps={{
-                    id: 'checkout-radioBtn',
+                id={`${label}_${value}`.replace(/ /g, '_')}
+                classNames={{
+                    radioClasses: classNames(
+                        'cursor-pointer',
+                        disabled ? '!border-neutral-500 focus:!border-500 !text-neutral-500' : '',
+                    ),
                 }}
+                disabled={disabled}
             />
 
-            <div className={classNames(styles.labelContainer, classContent)}>
+            <label
+                for={`${label}_${value}`.replace(/ /g, '_')}
+                className={classNames(
+                    'flex flex-row items-center w-full justify-between',
+                    'cursor-pointer',
+                    classContent,
+                )}
+            >
                 {shippingLabel}
                 {rightSide}
-            </div>
+            </label>
         </div>
     );
 };

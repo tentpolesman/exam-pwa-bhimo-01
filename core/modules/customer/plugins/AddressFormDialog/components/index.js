@@ -9,6 +9,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Dialog from '@material-ui/core/Dialog';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import TextField from '@material-ui/core/TextField';
+import useMediaQuery from '@hook/useMediaQuery';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import useStyles from '@plugin_addressform/components/style';
 import classNames from 'classnames';
@@ -43,17 +44,7 @@ const AddressView = (props) => {
         headerBackIcon: 'close',
     };
     const addBtn = success ? styles.addBtnSuccess : styles.addBtn;
-    const [isDesktop, setIsDekstop] = React.useState(false);
-
-    React.useEffect(() => {
-        if (typeof window !== 'undefined') {
-            if (window.innerWidth > 1200) {
-                setIsDekstop(true);
-            } else {
-                setIsDekstop(false);
-            }
-        }
-    }, []);
+    const { isDesktop } = useMediaQuery();
 
     const getCountriesRender = () => (
         <div className={styles.boxField}>

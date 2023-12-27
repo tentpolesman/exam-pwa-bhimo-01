@@ -3,25 +3,22 @@
 import Button from '@common_button';
 import Typography from '@common_typography';
 import classNames from 'classnames';
-import Skeleton from '@material-ui/lab/Skeleton';
-import useStyles from '@core_modules/checkout/pages/default/components/PickupInformation/style';
+import Skeleton from '@common_skeleton';
 import ModalPickupInformation from '@core_modules/checkout/pages/default/components/ModalPickupInformation';
 import ModalSelectStore from '@core_modules/checkout/pages/default/components/ModalSelectStore';
 import gqlService from '@core_modules/checkout/services/graphql';
-import useParentStyles from '@core_modules/checkout/pages/default/components/style';
 
 const PickupInformation = (props) => {
     const {
         t, checkout, setCheckout, formik,
     } = props;
-    const classes = useStyles();
-    const styles = useParentStyles();
     const { cart } = checkout.data;
     let listStores = [];
     const pickupStores = gqlService.getPickupStore({
         variables: { cart_id: cart.id },
         skip: typeof cart === 'undefined',
     });
+
     if (!pickupStores.loading && pickupStores.data && !pickupStores.error) {
         listStores = pickupStores.data.getPickupStore.store;
     }
@@ -36,7 +33,13 @@ const PickupInformation = (props) => {
         });
     };
     return (
-        <div className={styles.block} id="checkoutPickupStore">
+        <div
+            id="checkoutPickupStore"
+            className={classNames(
+                'flex flex-col border-b border-b-neutral-200',
+                'w-full py-6 gap-4',
+            )}
+        >
             <ModalPickupInformation
                 open={openModal.openModalInfo}
                 setOpen={() => handleOpen('openModalInfo')}
@@ -50,10 +53,14 @@ const PickupInformation = (props) => {
                 checkout={checkout}
                 listStores={listStores}
             />
-            <Typography variant="title" type="bold" letter="uppercase">
+            <Typography variant="bd-1" className="uppercase">
                 {t('checkout:pickupInformation:label')}
             </Typography>
-            <div className={classNames(styles.cardPoint, classes.card)}>
+            <div className={classNames(
+                'border rounded-lg border-neutral-200',
+                'max-w-lg p-4 mb-4',
+            )}
+            >
                 <div className="flex flex-col">
                     {
                         (Object.keys(checkout.pickupInformation).length > 0) && (
@@ -82,14 +89,14 @@ const PickupInformation = (props) => {
                     }
                     <Button
                         align="left"
-                        variant="text"
+                        variant="plain"
                         className="clear-margin-padding"
                         onClick={() => handleOpen('openModalInfo')}
                         disabled={
                             formik.values.email !== '' && formik.values.email !== formik.values.oldEmail
                         }
                     >
-                        <Typography variant="span" letter="uppercase" type="bold">
+                        <Typography variant="bd-3" className="uppercase">
                             {t('checkout:pickupInformation:changePickupInformation')}
                         </Typography>
                     </Button>
@@ -98,12 +105,16 @@ const PickupInformation = (props) => {
             <Typography>
                 {t('checkout:pickupInformation:pickupAtLabel')}
             </Typography>
-            <div className={classNames(styles.cardPoint, classes.card)}>
+            <div className={classNames(
+                'border rounded-lg border-neutral-200',
+                'max-w-lg p-4 mb-4',
+            )}
+            >
                 <div className="flex flex-col">
                     {
                         (Object.keys(checkout.selectStore).length > 0) && (
                             <>
-                                <Typography variant="span" type="bold">
+                                <Typography variant="bd-2" type="bold">
                                     {checkout.selectStore.name}
                                 </Typography>
                                 <Typography>
@@ -128,14 +139,14 @@ const PickupInformation = (props) => {
                         ) : (
                             <Button
                                 align="left"
-                                variant="text"
+                                variant="plain"
                                 className="clear-margin-padding"
                                 onClick={() => handleOpen('openModalSelectStore')}
                                 disabled={
                                     formik.values.email !== '' && formik.values.email !== formik.values.oldEmail
                                 }
                             >
-                                <Typography variant="span" letter="uppercase" type="bold">
+                                <Typography variant="bd-3" className="uppercase">
                                     {t('checkout:pickupInformation:changePickupLocation')}
                                 </Typography>
                             </Button>

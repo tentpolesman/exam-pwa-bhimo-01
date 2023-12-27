@@ -79,6 +79,11 @@
         "button": "Gunakan kredit",
         "removeButton": "Hapus kredit saya"
     },
+    "giftCard": {
+        "placeholderField": "Kode Gift Card",
+        "yourGiftCard": "Gift card Kamu",
+        "appliedGiftCard": "Gift Card Terpasang"
+    },
     "promoCodePlaceholder": "Kode promo",
     "giftCartPlaceholder": "Nomor kartu hadiah",
     "yourOrderId": "Nomor pesanan Anda",

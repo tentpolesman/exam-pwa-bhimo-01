@@ -13,7 +13,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import List from '@material-ui/core/List';
 import Slide from '@material-ui/core/Slide';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
+import useMediaQuery from '@hook/useMediaQuery';
 import LaunchIcon from '@material-ui/icons/Launch';
 import Alert from '@material-ui/lab/Alert';
 import { startCase } from 'lodash';
@@ -28,7 +28,7 @@ const ModalResult = (props) => {
     } = props;
     const styles = useStyles();
     const { trackingorder } = modules;
-    const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
+    const { isDesktop } = useMediaQuery();
 
     const content = () => {
         const data = orders.data[0];

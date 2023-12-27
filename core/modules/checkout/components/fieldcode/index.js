@@ -2,8 +2,8 @@ import Button from '@common_button';
 import CircularProgress from '@common_circularprogress';
 import TextField from '@common_forms/TextField';
 import Typography from '@common_typography';
-import useStyles from '@core_modules/checkout/components/fieldcode/style';
 import cx from 'classnames';
+import { useTranslation } from 'next-i18next';
 
 const FieldPoint = ({
     onChange = () => {},
@@ -21,12 +21,12 @@ const FieldPoint = ({
     styleFrameText = {},
     styleTextField = {},
 }) => {
-    const styles = useStyles();
-
+    const { t } = useTranslation(['common']);
     const circularStyle = cx('absolute', 'top-[50%]', 'left-[50]', 'right-[50%]', 'mt-[-8px]', 'ml-[-8px]');
+
     return (
-        <div className={cx(styles.block, styles.rmBorder)} id={id}>
-            <div className={styles.fieldPoinContainer} style={styleFrame}>
+        <div className="w-full" id={id}>
+            <div className="flex flex-row items-center gap-3" style={styleFrame}>
                 <TextField
                     id={`${id}Textfield`}
                     name={name}
@@ -36,17 +36,26 @@ const FieldPoint = ({
                     value={value}
                     onChange={onChange}
                     placeholder={placeholder}
-                    error={error}
-                    errorMessage={error ? errorMessage : null}
+                    className="w-full tablet:min-w-[320px]"
+                    hintProps={{
+                        displayHintText: error,
+                        hintText: errorMessage,
+                        hintType: 'error',
+                    }}
                 />
-                <div>
-                    <Button variant="outlined" className={styles.btnAplly} onClick={action} disabled={disabled || loading || value === ''}>
-                        <Typography variant="p" color={loading || disabled || value === '' ? 'gray' : 'default'} type="bold" letter="uppercase">
-                            {toggleField ? 'Remove' : 'Apply'}
-                        </Typography>
-                        {loading && <CircularProgress className={circularStyle} size="regular" />}
-                    </Button>
-                </div>
+                <Button
+                    variant="outlined"
+                    onClick={action}
+                    disabled={disabled || loading || value === ''}
+                >
+                    <Typography
+                        color={loading || disabled || value === '' ? 'text-neutral-200' : 'text-neutral'}
+                        className="uppercase"
+                    >
+                        {toggleField ? t('common:button:remove') : t('common:button:apply')}
+                    </Typography>
+                    {loading && <CircularProgress className={circularStyle} size="regular" />}
+                </Button>
             </div>
         </div>
     );

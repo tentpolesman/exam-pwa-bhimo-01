@@ -1,6 +1,6 @@
 /* eslint-disable consistent-return */
 import { useTheme } from '@material-ui/core/styles';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
+import useMediaQuery from '@hook/useMediaQuery';
 
 jest.mock('@material-ui/core/styles', () => ({
     __esModule: true,

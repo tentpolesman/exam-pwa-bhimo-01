@@ -10,7 +10,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
+import useMediaQuery from '@hook/useMediaQuery';
 import React from 'react';
 import useStyles from '@core_modules/customer/pages/wishlist/components/sharewishlist/style';
 
@@ -22,7 +22,7 @@ const ShareWishlistView = (props) => {
     const {
         open, setOpen, handleShareWishlist, t, shareLoading,
     } = props;
-    const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
+    const { isDesktop } = useMediaQuery();
     const [emailCollection, setEmailCollection] = React.useState('');
     const [message, setMessage] = React.useState('');
     const handleSetEmail = (event) => {

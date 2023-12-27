@@ -1,6 +1,6 @@
 /* eslint-disable indent */
 import gqlService from '@core_modules/checkout/services/graphql';
-import Skeleton from '@material-ui/lab/Skeleton';
+import Skeleton from '@common_skeleton';
 import _ from 'lodash';
 import { useEffect } from 'react';
 import TagManager from 'react-gtm-module';

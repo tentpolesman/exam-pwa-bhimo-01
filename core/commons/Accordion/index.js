@@ -17,6 +17,7 @@ const Accordion = (props) => {
         classContent = '',
         children,
         CustomIcon,
+        classIcon = '',
     } = props;
 
     const handleShow = (e) => {
@@ -52,7 +53,7 @@ const Accordion = (props) => {
                             React.cloneElement(CustomIcon)
                         ) : (
                             <span className="transition group-open:rotate-180">
-                                <Arrow className="w-5 h-5" />
+                                <Arrow className={cx('w-5 h-5', classIcon)} />
                             </span>
                         )}
                     </>

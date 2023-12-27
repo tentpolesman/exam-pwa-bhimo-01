@@ -79,6 +79,11 @@
         "button": "Use my credit",
         "removeButton": "Remove my credit"
     },
+    "giftCard": {
+        "placeholderField": "Gift Card Code",
+        "yourGiftCard": "Your gift card",
+        "appliedGiftCard": "Applied Gift Card"
+    },
     "promoCodePlaceholder": "Promo code",
     "giftCartPlaceholder": "Gift cart number",
     "yourOrderId": "Your order number",

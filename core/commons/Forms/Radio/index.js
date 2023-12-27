@@ -81,7 +81,7 @@ const Radio = (props) => {
 
     if (isVariantSingle) {
         return (
-            <div className="common-radio-container">
+            <div className={cx('common-radio-container cursor-pointer', className)}>
                 <input
                     type="radio"
                     id={id}
@@ -106,7 +106,7 @@ const Radio = (props) => {
                         'focus:shadow-primary-50',
                         'focus:ring-offset-0',
                         'checked:bg-[length:150%]',
-                        'visible',
+                        'visible cursor-pointer',
                         {
                             'border-neutral-300 text-neutral-300': !disabled,
                             'w-5 h-5': size === 'md',

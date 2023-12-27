@@ -1,19 +1,11 @@
 import Button from '@common_button';
 import TextField from '@common_forms/TextField';
 import Typography from '@common_typography';
-import useModalStyles from '@core_modules/checkout/pages/default/components/ModalSelectStore/style';
-import useStyles from '@core_modules/checkout/pages/default/components/PickupInformation/style';
-import useParentStyles from '@core_modules/checkout/pages/default/components/style';
 import { pickupLocations, setInstoreShippingAddress, setShippingMethod } from '@core_modules/checkout/services/graphql';
-import AppBar from '@material-ui/core/AppBar';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
-import Alert from '@material-ui/lab/Alert';
+import Alert from '@common_alert';
 import classNames from 'classnames';
 import { useEffect, useState } from 'react';
+import Dialog from '@common_dialog';
 
 const ModalPickupLocations = (props) => {
     const {
@@ -24,7 +16,6 @@ const ModalPickupLocations = (props) => {
     const [listLocations, setListLocations] = useState(locations);
     const [selected, setSelected] = useState(checkout);
     const [search, setSearch] = useState('');
-    const styles = useModalStyles();
     const [setShipMethod] = setShippingMethod();
     const [setInstoreAddress] = setInstoreShippingAddress();
 
@@ -95,67 +86,64 @@ const ModalPickupLocations = (props) => {
         setListLocations(locations);
     }, [locations]);
 
+    const styleCard = 'w-full p-4 my-3 flex flex-col justify-between items-center border border-neutral-200 rouded-lg';
+    const styleCardActive = '!border-primary';
+
     /* eslint-disable */
     return (
-        <Dialog open={open} onClose={() => setOpen(!open)} fullWidth={true} maxWidth="sm">
-            <AppBar className={styles.appBar}>
-                <IconButton className={styles.btnClose} edge="start" onClick={() => setOpen(!open)} aria-label="close">
-                    <CloseIcon className={styles.iconClose} />
-                </IconButton>
-                <Typography variant="label" type="bold" align="center" letter="uppercase" className={styles.title}>
-                    {t('checkout:pickupInformation:label')}
-                </Typography>
-            </AppBar>
-            <DialogContent dividers>
-                <div className={styles.container}>
-                    <div className={styles.body}>
-                        <TextField label="Search" value={search} onChange={handleSearch} />
-                        {listLocations && listLocations.length > 0 ? (
-                            listLocations.map((loc) => {
-                                return (
-                                    <div
-                                        key={loc.pickup_location_code}
-                                        onClick={() => setSelected(loc)}
-                                        className={classNames(
-                                            styles.card,
-                                            selected && selected.pickup_location_code === loc.pickup_location_code && styles.cardActive
-                                        )}
-                                    >
-                                        <Typography variant="span" type="bold">
-                                            {loc.name}
-                                        </Typography>
-                                        <Typography>
-                                            {loc.street}
-                                            <br />
-                                            {loc.city}
-                                            <br />
-                                            {loc.region}
-                                            <br />
-                                            {loc.country_id}
-                                            <br />
-                                            {loc.postcode}
-                                            <br />
-                                            {loc.telephone}
-                                        </Typography>
-                                    </div>
-                                );
-                            })
-                        ) : (
-                            <Alert className="m-15" severity="warning">
-                                {t('checkout:storesNotFound')}
-                            </Alert>
-                        )}
-                    </div>
-                </div>
-            </DialogContent>
-            <DialogActions>
-                <div className={styles.footer}>
-                    <Button className={styles.btnSave} type="button" onClick={handleSave} loading={loading} disabled={loading}>
-                        {t('common:button:save')}
+        <Dialog
+            open={open}
+            closeOnBackdrop
+            onClose={() => setOpen()}
+            onClickCloseTitle={() => setOpen()}
+            title={t('checkout:pickupInformation:label')}
+            useCloseTitleButton
+            content={(
+                <div className="flex flex-col border-t border-neutral-200">
+                    <div className="flex flex-col">
+                            <TextField label="Search" value={search} onChange={handleSearch} />
+                            {listLocations && listLocations.length > 0 ? (
+                                listLocations.map((loc) => {
+                                    return (
+                                        <div
+                                            key={loc.pickup_location_code}
+                                            onClick={() => setSelected(loc)}
+                                            className={classNames(
+                                                styleCard,
+                                                (selected && selected.pickup_location_code === loc.pickup_location_code) ? styleCardActive : ''
+                                            )}
+                                        >
+                                            <Typography variant="bd-2">
+                                                {loc.name}
+                                            </Typography>
+                                            <Typography>
+                                                {loc.street}
+                                                <br />
+                                                {loc.city}
+                                                <br />
+                                                {loc.region}
+                                                <br />
+                                                {loc.country_id}
+                                                <br />
+                                                {loc.postcode}
+                                                <br />
+                                                {loc.telephone}
+                                            </Typography>
+                                        </div>
+                                    );
+                                })
+                            ) : (
+                                <Alert className="m-15" severity="warning">
+                                    {t('checkout:storesNotFound')}
+                                </Alert>
+                            )}
+                        </div>
+                    <Button className="w-full" classNameText="justify-center" type="button" onClick={handleSave} loading={loading} disabled={loading}>
+                            {t('common:button:save')}
                     </Button>
                 </div>
-            </DialogActions>
-        </Dialog>
+            )}
+        />
     );
 };
 
@@ -164,8 +152,6 @@ const InStorePickup = (props) => {
     const [getPickupLocations, results] = pickupLocations();
     const [open, setOpen] = useState(false);
     const locations = results.data?.pickupLocations.items;
-    const classes = useStyles();
-    const styles = useParentStyles();
     const { pickup_location_code } = checkout;
     const { address } = checkout.selected;
 
@@ -174,7 +160,13 @@ const InStorePickup = (props) => {
     }, [results.called]);
 
     return (
-        <div className={styles.block}>
+        <div
+            id="pickupInStore"
+            className={classNames(
+                'flex flex-col border-b border-b-neutral-200',
+                'w-full py-6 gap-4',
+            )}
+        >
             <ModalPickupLocations
                 t={t}
                 open={open}
@@ -184,15 +176,19 @@ const InStorePickup = (props) => {
                 setCheckout={setCheckout}
                 handleOpenMessage={handleOpenMessage}
             />
-            <Typography variant="title" type="bold" letter="uppercase">
+            <Typography variant="h2" className="uppercase">
                 {t('checkout:pickupInformation:label')}
             </Typography>
             <Typography>{t('checkout:pickupInformation:pickupAtLabel')}</Typography>
-            <div className={classNames(styles.cardPoint, classes.card)}>
+            <div className={classNames(
+                'my-2 p-4 flex flex-row items-center justify-between',
+                'border rounded-lg border-neutral-200 max-w-lg',
+                'mb-4',
+            )}>
                 <div className="flex flex-col">
                     {address && pickup_location_code && Object.keys(address).length > 0 && (
                         <>
-                            <Typography variant="span" type="bold">
+                            <Typography variant="bd-2">
                                 {address.name}
                             </Typography>
                             <Typography>
@@ -210,8 +206,8 @@ const InStorePickup = (props) => {
                             </Typography>
                         </>
                     )}
-                    <Button align="left" variant="text" className="clear-margin-padding" onClick={() => setOpen(!open)}>
-                        <Typography variant="span" letter="uppercase" type="bold">
+                    <Button align="left" variant="plain" className="!p-0 !m-0" onClick={() => setOpen(!open)}>
+                        <Typography variant="bd-2" className="uppercase">
                             {t('checkout:pickupInformation:changePickupLocation')}
                         </Typography>
                     </Button>

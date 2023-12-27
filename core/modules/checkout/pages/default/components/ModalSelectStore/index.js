@@ -4,28 +4,17 @@ import Button from '@common_button';
 import TextField from '@common_forms/TextField';
 import Typography from '@common_typography';
 import { useTranslation } from 'next-i18next';
-import AppBar from '@material-ui/core/AppBar';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import IconButton from '@material-ui/core/IconButton';
-import Slide from '@material-ui/core/Slide';
-import CloseIcon from '@material-ui/icons/Close';
-import Alert from '@material-ui/lab/Alert';
+import Alert from '@common_alert';
 import classNames from 'classnames';
 import React from 'react';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
 import gqlService from '@core_modules/checkout/services/graphql';
-import useStyles from '@core_modules/checkout/pages/default/components/ModalSelectStore/style';
-
-const Transition = React.forwardRef((props, ref) => <Slide direction="up" ref={ref} {...props} />);
+import Dialog from '@common_dialog';
 
 const ModalSelectStore = ({
     open, setOpen, checkout, setCheckout,
     listStores = [],
 }) => {
     const { t } = useTranslation(['common', 'checkout', 'validate']);
-    const styles = useStyles();
     const [stores, setStores] = React.useState(listStores);
     const [search, setSearch] = React.useState('');
     const [setPickupStore] = gqlService.setPickupStore();
@@ -34,7 +23,6 @@ const ModalSelectStore = ({
         item: null,
     });
     const [loading, setLoading] = React.useState(false);
-    const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
 
     const handleSelect = async (key, item) => {
         setSelected({
@@ -115,22 +103,25 @@ const ModalSelectStore = ({
 
     const getStyle = (key, index) => {
         let classname;
+        const styleCard = 'w-full p-4 my-3 flex flex-col justify-between items-center border border-neutral-200 rouded-lg';
+        const styleCardActive = '!border-primary';
+        const styleCardLast = 'mb-10';
         if (selected.key && selected.key === key) {
-            classname = classNames(styles.card, styles.cardActive);
+            classname = classNames(styleCard, styleCardActive);
         } else if (Object.keys(checkout.selectStore).length > 0 && !selected.key) {
             if (key === checkout.selectStore.code) {
-                classname = classNames(styles.card, styles.cardActive);
+                classname = classNames(styleCard, styleCardActive);
             } else if (index === listStores.length - 1) {
-                classname = classNames(styles.card, styles.cardLast);
+                classname = classNames(styleCard, styleCardLast);
             } else {
-                classname = styles.card;
+                classname = styleCard;
             }
         } else if (index === listStores.length - 1 && key === selected.key) {
-            classname = classNames(styles.card, styles.cardActive, styles.cardLast);
+            classname = classNames(styleCard, styleCardActive, styleCardLast);
         } else if (index === listStores.length - 1) {
-            classname = classNames(styles.card, styles.cardLast);
+            classname = classNames(styleCard, styleCardLast);
         } else {
-            classname = styles.card;
+            classname = styleCard;
         }
 
         return classname;
@@ -152,77 +143,67 @@ const ModalSelectStore = ({
     return (
         <Dialog
             open={open}
-            TransitionComponent={Transition}
-            onClose={setOpen}
-            maxWidth="sm"
-            fullWidth={!!isDesktop}
-            fullScreen={!isDesktop}
-        >
-            <AppBar className={styles.appBar}>
-                <IconButton className={styles.btnClose} edge="start" onClick={setOpen} aria-label="close">
-                    <CloseIcon className={styles.iconClose} />
-                </IconButton>
-                <Typography variant="label" type="bold" align="center" letter="uppercase" className={styles.title}>
-                    {t('checkout:pickupInformation:selectStoreLocation')}
-                </Typography>
-            </AppBar>
-            <DialogContent dividers>
-                <div className={styles.container}>
-                    <div className={styles.body}>
-                        <TextField
-                            label="Search"
-                            value={search}
-                            onChange={handleSearch}
-                        />
-                        {
-                            stores.length > 0
-                                ? (
-                                    stores.map((item, index) => (
-                                        <div
-                                            key={item.code}
-                                            onClick={() => handleSelect(item.code, item)}
-                                            className={getStyle(item.code, index)}
-                                        >
-                                            <Typography variant="span" type="bold">
-                                                {item.name}
-                                            </Typography>
-                                            <Typography>
-                                                {item.street}
-                                                <br />
-                                                {item.city}
-                                                <br />
-                                                {item.region}
-                                                <br />
-                                                {item.country_id}
-                                                <br />
-                                                {item.postcode}
-                                                <br />
-                                                {item.telephone}
-                                            </Typography>
-                                        </div>
-                                    ))
-                                ) : (
-                                    <Alert className="m-15" severity="warning">
-                                        {t('checkout:storesNotFound')}
-                                    </Alert>
-                                )
-                        }
+            closeOnBackdrop
+            onClose={() => setOpen()}
+            onClickCloseTitle={() => setOpen()}
+            title={t('checkout:pickupInformation:selectStoreLocation')}
+            useCloseTitleButton
+            content={(
+                <>
+                    <div className="flex flex-col">
+                        <div className="flex flex-col">
+                            <TextField
+                                label="Search"
+                                value={search}
+                                onChange={handleSearch}
+                            />
+                            {
+                                stores.length > 0
+                                    ? (
+                                        stores.map((item, index) => (
+                                            <div
+                                                key={item.code}
+                                                onClick={() => handleSelect(item.code, item)}
+                                                className={getStyle(item.code, index)}
+                                            >
+                                                <Typography variant="bd-2" type="bold">
+                                                    {item.name}
+                                                </Typography>
+                                                <Typography>
+                                                    {item.street}
+                                                    <br />
+                                                    {item.city}
+                                                    <br />
+                                                    {item.region}
+                                                    <br />
+                                                    {item.country_id}
+                                                    <br />
+                                                    {item.postcode}
+                                                    <br />
+                                                    {item.telephone}
+                                                </Typography>
+                                            </div>
+                                        ))
+                                    ) : (
+                                        <Alert className="m-15" severity="warning">
+                                            {t('checkout:storesNotFound')}
+                                        </Alert>
+                                    )
+                            }
+                        </div>
+                        <Button
+                            loading={loading}
+                            className="w-full"
+                            classNameText="justify-center"
+                            onClick={handleSave}
+                            disabled={!stores || stores.length === 0}
+                        >
+                            {t('common:button:save')}
+                        </Button>
                     </div>
-                </div>
-            </DialogContent>
-            <DialogActions>
-                <div className={styles.footer}>
-                    <Button
-                        loading={loading}
-                        className={styles.btnSave}
-                        onClick={handleSave}
-                        disabled={!stores || stores.length === 0}
-                    >
-                        {t('common:button:save')}
-                    </Button>
-                </div>
-            </DialogActions>
-        </Dialog>
+                </>
+            )}
+        />
     );
 };
 

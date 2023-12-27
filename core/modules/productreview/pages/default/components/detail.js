@@ -11,7 +11,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import CloseIcon from '@material-ui/icons/Close';
 import formatDate from '@helper_date';
 import Slide from '@material-ui/core/Slide';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
+import useMediaQuery from '@hook/useMediaQuery';
 import Link from 'next/link';
 import React from 'react';
 import useStyles from '@core_modules/productreview/pages/default/components/style';
@@ -24,7 +24,7 @@ const ProductReview = (props) => {
     const {
         open, setOpen, reviewItem, t, storeConfig,
     } = props;
-    const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
+    const { isDesktop } = useMediaQuery();
     if (reviewItem) {
         return (
             <Dialog

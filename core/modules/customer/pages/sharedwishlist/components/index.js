@@ -1,7 +1,6 @@
 /* eslint-disable max-len */
 import useStyles from '@core_modules/customer/pages/sharedwishlist/components/style';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { useTheme } from '@material-ui/core/styles';
+import useMediaQuery from '@hook/useMediaQuery';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -18,8 +17,7 @@ const Content = (props) => {
     const {
         wishlistItem, t, handleToCart, handleAddAlltoBag, SharedSkeleton,
     } = props;
-    const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('xs'));
+    const { isMobile } = useMediaQuery();
     /* eslint-disable */
     const handleAddToCart = (item) => {
         handleToCart({

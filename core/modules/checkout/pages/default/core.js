@@ -31,6 +31,10 @@ import { currencyVar } from '@root/core/services/graphql/cache';
 import * as Schema from '@core_modules/checkout/services/graphql/schema';
 import * as Yup from 'yup';
 
+// View
+
+import Content from '@core_modules/checkout/pages/default/components';
+
 function equalTo(ref, msg) {
     return this.test({
         name: 'equalTo',
@@ -47,7 +51,7 @@ function equalTo(ref, msg) {
 
 const Checkout = (props) => {
     const {
-        t, storeConfig, pageConfig, Content, cartId: propsCardId,
+        t, storeConfig, pageConfig, cartId: propsCardId,
     } = props;
     const config = {
         successRedirect: {
