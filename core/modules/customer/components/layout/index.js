@@ -140,7 +140,7 @@ const Layout = (props) => {
                             variant="h2"
                             type="bold"
                             letter="capitalize"
-                            className={cx('pl-0', 'mobile:max-desktop:mt-6', 'mobile:max-tablet:px-4', 'mobile:max-tablet:hidden')}
+                            className={cx('pl-0', 'mobile:max-desktop:mt-6', 'mobile:max-desktop:px-4', 'mobile:max-desktop:hidden')}
                         >
                             {title || titlePage}
                         </Typography>

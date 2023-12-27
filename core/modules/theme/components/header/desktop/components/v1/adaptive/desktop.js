@@ -16,11 +16,10 @@ import Popover from '@common_popover';
 import Typography from '@common_typography';
 import config from '@config';
 
-import Cookies from 'js-cookie';
+// import Cookies from 'js-cookie';
 import TagManager from 'react-gtm-module';
 
 import DevicePhoneMobileIcon from '@heroicons/react/24/solid/DevicePhoneMobileIcon';
-import UserIcon from '@heroicons/react/24/solid/UserIcon';
 import { BREAKPOINTS } from '@root/core/theme/vars';
 
 const Autocomplete = dynamic(() => import('@core_modules/theme/components/header/desktop/components/autocomplete'), { ssr: false });

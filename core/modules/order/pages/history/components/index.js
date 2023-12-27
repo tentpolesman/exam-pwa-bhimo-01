@@ -28,6 +28,8 @@ import Select from '@common_forms/Select';
 import Pagination from '@common_pagination';
 import Typography from '@common_typography';
 
+import MobileTabletActionMenu from '@core_modules/order/pages/history/components/plugins/MobileTabletActionMenu';
+
 import ExclamationTriangleIcon from '@heroicons/react/24/outline/ExclamationTriangleIcon';
 
 const DefaultView = (props) => {
@@ -96,8 +98,8 @@ const DefaultView = (props) => {
     };
 
     return (
-        <Layout t={t} wishlist={[]}>
-            <div className={cx('pt-5')}>
+        <Layout t={t}>
+            <div className={cx('pt-5', 'mobile:max-desktop:px-4')}>
                 <div className={cx('relative', 'overflow-x-auto', 'rounded-lg')}>
                     <table className={cx('w-full', 'text-md', 'border-[1px]', 'border-neutral-100')}>
                         <thead>
@@ -130,21 +132,37 @@ const DefaultView = (props) => {
                                             </td>
                                             <td>{generateBadge(val.status, val.status_label)}</td>
                                             <td>
-                                                <Link
-                                                    href={`/sales/order/view/order_id/${val.order_number}`}
-                                                    className={cx(
-                                                        'text-md',
-                                                        'px-4',
-                                                        'border-r-[1px]',
-                                                        'border-neutral-200',
-                                                        'hover:text-primary-700',
-                                                    )}
-                                                >
-                                                    View
-                                                </Link>
-                                                <button type="button" onClick={() => reOrder(val.order_number)}>
-                                                    <a className={cx('text-md', 'px-4', 'hover:text-primary-700')}>Reorder</a>
-                                                </button>
+                                                <div className={cx('mobile:max-desktop:hidden')}>
+                                                    <Link
+                                                        href={`/sales/order/view/order_id/${val.order_number}`}
+                                                        className={cx(
+                                                            'text-md',
+                                                            'px-4',
+                                                            'desktop:border-r-[1px]',
+                                                            'desktop:border-neutral-200',
+                                                            'hover:text-primary-700',
+                                                        )}
+                                                    >
+                                                        View
+                                                    </Link>
+                                                    <button type="button" onClick={() => reOrder(val.order_number)}>
+                                                        <a className={cx('text-md', 'px-4', 'hover:text-primary-700')}>Reorder</a>
+                                                    </button>
+                                                </div>
+                                                <div className={cx('desktop:hidden')}>
+                                                    <div
+                                                        className={cx(
+                                                            'mobile:max-desktop:flex',
+                                                            'mobile:max-desktop:flex-row',
+                                                            'mobile:max-desktop:content-center',
+                                                            'mobile:max-desktop:justify-center',
+                                                            'mobile:max-desktop:items-center',
+                                                            'tablet:max-desktop:py-6',
+                                                        )}
+                                                    >
+                                                        <MobileTabletActionMenu t={t} orderNumber={val.order_number} reOrder={reOrder} />
+                                                    </div>
+                                                </div>
                                             </td>
                                         </tr>
                                     ))}
@@ -182,13 +200,13 @@ const DefaultView = (props) => {
                     </table>
                 </div>
                 {data && data.items && data.items.length > 0 ? (
-                    <div className={cx('table-data', 'pt-6', 'flex', 'flex-row', 'justify-between')}>
+                    <div className={cx('table-data', 'pt-6', 'flex', 'mobile:flex-col', 'tablet:flex-row', 'justify-between')}>
                         <div className={cx('pt-2')}>
                             <Typography className={cx('font-normal', 'leading-2lg')}>
                                 {data && data.total_count && `${data.total_count} Item(s)`}
                             </Typography>
                         </div>
-                        <div className={cx('flex', 'flex-row')}>
+                        <div className={cx('flex', 'flex-row', 'mobile:max-tablet:pt-4', 'mobile:max-tablet:justify-center')}>
                             <Typography className={cx('font-normal', 'leading-2lg', 'p-3')}>Show</Typography>
                             <Select
                                 name="show"
