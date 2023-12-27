@@ -43,61 +43,12 @@ const WishlistComp = ({
         <>
             <Dialog
                 open={openDelete}
-                variant="container"
-                classWrapperTitle="!hidden"
-                content={(
-                    <div
-                        className={cx(
-                            'w-full flex flex-col desktop:flex-row-reverse gap-2 !bg-[transparent]',
-                        )}
-                    >
-                        <div className={cx(
-                            'w-full h-max max-h-[calc(100vh-60px)] p-4 tablet:p-8 bg-neutral-white rounded-lg',
-                            'shadow-xl overflow-y-scroll',
-                        )}
-                        >
-                            <div>
-                                <Typography variant="h3" className={cx('mb-[18px] text-center')}>
-                                    {t('customer:wishlist:warningDelete')}
-                                </Typography>
-                                <div
-                                    className={cx(
-                                        'flex items-center justify-center flex-wrap',
-                                    )}
-                                >
-                                    <div
-                                        className={cx(
-                                            'm-2',
-                                        )}
-                                    >
-                                        <Button
-                                            onClick={() => setOpenDelete(!openDelete)}
-                                        >
-                                            <Typography className={cx('!text-neutral-white uppercase')}>
-                                                {t('common:button:cancel')}
-                                            </Typography>
-                                        </Button>
-                                    </div>
-                                    <div
-                                        className={cx(
-                                            'm-2',
-                                        )}
-                                    >
-                                        <Button
-                                            onClick={() => handleDelete()}
-                                        >
-                                            <Typography className={cx('!text-neutral-white uppercase')}>
-                                                {t('common:button:yes')}
-                                            </Typography>
-                                        </Button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                )}
-                classContainer="!shadow-none max-w-[360px] tablet:!max-w-[700px] desktop:!max-w-[945px]"
-                classContent="!p-0 !bg-[transparent]"
+                onClose={() => setOpenDelete(!openDelete)}
+                title={t('customer:wishlist:warningDelete')}
+                positiveAction={handleDelete}
+                positiveLabel={t('common:button:yes')}
+                negativeLabel={t('common:button:cancel')}
+                negativeAction={() => setOpenDelete(!openDelete)}
             />
             <div
                 className={cx(
