@@ -95,7 +95,7 @@ const Content = (props) => {
     ];
 
     return (
-        <div className="flex flex-col">
+        <div className="flex flex-col cart-pages">
             <div className="xs:basis-full">
                 <GimmickBanner data={dataCart.promoBanner || []} t={t} {...other} />
             </div>
