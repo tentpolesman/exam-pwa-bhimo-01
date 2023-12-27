@@ -29,8 +29,8 @@ const AwGiftCardProduct = (props) => {
     const {
         data,
         qty = 1,
-        setQty = () => {},
-        handleAddToCart = () => {},
+        setQty = () => { },
+        handleAddToCart = () => { },
         t,
         loading = false,
         disabled = false,
@@ -499,4 +499,4 @@ const ViewProvider = (props) => (
     <AwGiftCardProduct {...props} />
 );
 
-// export default ViewProvider;
+export default ViewProvider;
