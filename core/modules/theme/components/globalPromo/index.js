@@ -24,7 +24,11 @@ const GlobalPromoMessage = (props) => {
     });
 
     if (loading) {
-        return <Skeleton height={16} className={cx('top-[10px]', 'left-[25%]', '!w-[50vw]')} />;
+        return (
+            <div id="global-promo-message">
+                <Skeleton height={38} className={cx('!top-[10px]', '!left-[25%]', '!w-[50vw]')} />
+            </div>
+        );
     }
 
     if (!loading && data && data.cmsBlocks && data.cmsBlocks.items.length > 0 && data.cmsBlocks.items[0].content && isShown) {
