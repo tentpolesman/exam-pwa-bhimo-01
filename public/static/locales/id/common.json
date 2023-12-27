@@ -115,7 +115,8 @@
         "fileReject": "Tidak dapat mengupload file harus ber type ",
         "fetchError": "Terjadi kesalahan. Silakan coba lagi nanti",
         "browser": "Browser tidak didukung",
-        "videoNotSupported": "Browser anda tidak mendukung elemen video."
+        "videoNotSupported": "Browser anda tidak mendukung elemen video.",
+        "captcha": "Gagal verifikasi recaptcha, Silakan coba lagi."
     },
     "fileUpload": {
         "reject": "Tidak dapat mengupload, file harus ber type  ",

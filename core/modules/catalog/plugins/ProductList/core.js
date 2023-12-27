@@ -272,10 +272,11 @@ const ProductList = (props) => {
 
     // eslint-disable-next-line no-shadow
     const renderEmptyMessage = (count, loading) => {
-        if (count || loading) {
-            return null;
+        const isEmptyProduct = data?.products?.items?.length < 1;
+        if (!loading && isEmptyProduct) {
+            return <Alert severity="warning">{t('catalog:emptyProductSearchResult')}</Alert>;
         }
-        return <Alert severity="warning">{t('catalog:emptyProductSearchResult')}</Alert>;
+        return null;
     };
 
     /**

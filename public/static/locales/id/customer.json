@@ -5,7 +5,14 @@
   "newPassword": {
     "title": "Ubah password",
     "success": "Password berhasil diperbarui",
-    "failed": "Password gagal diperbarui"
+    "failed": "Password gagal diperbarui",
+    "passwordStrength": "Gunakan 8 karakter atau lebih dengan minimal 1 angka dan 1 simbol",
+    "forgotYourPassword": "Lupa kata sandi Anda?",
+    "enterYourPassword": "Silakan masukkan kata sandi baru Anda",
+    "newPassword": "Password Baru",
+    "resetPassword": "Reset Password",
+    "rememberYourPassword": "Ingat kata sandi Anda?",
+    "backToLogin": "Kembali ke Login"
   },
   "button": {
     "logout": "Keluar"

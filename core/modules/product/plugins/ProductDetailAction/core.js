@@ -49,6 +49,7 @@ const ProductDetailAction = ({
     useShareProduct = false,
     useProductRelated = false,
     useProductUpsell = false,
+    ssrProduct,
     Content,
     ...other
 }) => {

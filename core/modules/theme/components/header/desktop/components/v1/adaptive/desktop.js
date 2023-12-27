@@ -29,6 +29,7 @@ const ShoppingBagIcon = dynamic(() => import('@plugin_shoppingbag'), { ssr: true
 const NotificationBell = dynamic(() => import('@plugin_notificationbell'), { ssr: true });
 const SwitcherCurrency = dynamic(() => import('@common_currency'), { ssr: false });
 const SwitcherLanguage = dynamic(() => import('@common_language'), { ssr: false });
+const UserInfo = dynamic(() => import('@core_modules/theme/components/header/desktop/components/v1/adaptive/plugin/userinfo'), { ssr: false });
 
 const DesktopHeader = (props) => {
     const { t, storeConfig, isLogin, customer, setValue, handleSearch, dataVesMenu, loadingVesMenu, vesMenuConfig, handleLogout, deviceWidth } =
@@ -156,31 +157,49 @@ const DesktopHeader = (props) => {
                 </div>
             </div>
             <div
-                className={cx('middle-header', 'mobile:max-desktop:hidden', 'tablet:border-b-[1.5px]', 'tablet:border-b-neutral-300', 'tablet:py-4')}
+                className={cx(
+                    'middle-header',
+                    'mobile:max-desktop:hidden',
+                    'tablet:border-b-[1.5px]',
+                    'tablet:border-b-neutral-300',
+                    'tablet:py-[15px]',
+                )}
             >
                 <div
-                    className={cx('middle-header__wrapper', 'm-[0_auto]', 'grid', 'grid-cols-[1fr_2fr_1fr]', 'desktop:max-w-[1200px]', 'm-[0_auto]')}
+                    className={cx(
+                        'middle-header__wrapper',
+                        'm-[0_auto]',
+                        'flex',
+                        'flex-row',
+                        'justify-between',
+                        'gap-x-6',
+                        'desktop:max-w-[1200px]',
+                        'desktop:px-10',
+                    )}
                 >
-                    <div className={cx('middle-header__logo', 'w-[120px]')}>
+                    <div className={cx('middle-header__logo', 'basis-[272px]', 'h-[44px]', 'flex', 'items-center')}>
                         <Link href="/" legacyBehavior>
-                            <a>
-                                <Image
-                                    className="header-middle__logo-link"
-                                    src={`${storeConfig.secure_base_media_url}logo/${storeConfig.header_logo_src}`}
-                                    alt={storeConfig.default_title}
-                                    width={120}
-                                    height={52}
-                                    storeConfig={storeConfig}
-                                    lazy={false}
-                                />
-                            </a>
+                            <Image
+                                styleContainer={{
+                                    width: `${storeConfig?.logo_width || 120}px`,
+                                    height: `${storeConfig?.logo_height || 52}px`,
+                                    paddingTop: 0,
+                                }}
+                                className="header-middle__logo-link"
+                                src={`${storeConfig.secure_base_media_url}logo/${storeConfig.header_logo_src}`}
+                                alt={storeConfig.default_title}
+                                width={storeConfig?.logo_width || 120}
+                                height={storeConfig?.logo_height || 52}
+                                storeConfig={storeConfig}
+                                lazy={false}
+                            />
                         </Link>
                     </div>
                     <div className={cx('middle-header__search')}>
                         <Autocomplete setValue={setValue} handleSearch={handleSearch} t={t} storeConfig={storeConfig} deviceWidth={deviceWidth} />
                     </div>
                     <div className={cx('middle-header__statusicon', 'grid', 'grid-cols-[5fr_6fr]')}>
-                        <div className={cx('middle-header__statusicon__left-section', 'grid', 'grid-cols-3')}>
+                        <div className={cx('middle-header__statusicon__left-section', 'flex', 'flex-row', 'gap-x-1', 'px-2')}>
                             <div className={cx('notification')}>
                                 <NotificationBell withLink />
                             </div>
@@ -202,43 +221,16 @@ const DesktopHeader = (props) => {
                                     'hover:cursor-pointer',
                                     'flex',
                                     'justify-start',
+                                    'group',
                                 )}
                             >
-                                {isLogin ? (
-                                    <div onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}>
-                                        <Popover
-                                            content={<PopoverContent />}
-                                            open={open}
-                                            setOpen={setOpen}
-                                            className={cx('w-[160px]', 'top-[99%]', 'left-[0%]')}
-                                            contentClassName={cx('rounded-sm')}
-                                        >
-                                            <div className="popover-children">
-                                                <UserIcon className={cx('w-[24px]', 'text-neutral-600', 'inline-block', 'ml-1')} />
-                                                {customer && customer.firstname && (
-                                                    <Typography variant="bd-2b" className={cx('inline-block', 'pl-2', '!text-primary-700')}>
-                                                        {customer.firstname.length <= 12
-                                                            ? `${customer.firstname}`
-                                                            : `${customer.firstname.substring(0, 10)}...`}
-                                                    </Typography>
-                                                )}
-                                            </div>
-                                        </Popover>
-                                    </div>
-                                ) : (
-                                    <Link href="/customer/account/login">
-                                        <UserIcon className={cx('w-[24px]', 'text-neutral-600', 'inline-block', 'ml-1')} />
-                                        <Typography variant="bd-2b" className={cx('inline-block', 'pl-2')}>
-                                            {t('common:menu:sign')}/{t('common:menu:register')}
-                                        </Typography>
-                                    </Link>
-                                )}
+                                <UserInfo t={t} isLogin={isLogin} customer={customer} open={open} setOpen={setOpen} PopoverContent={PopoverContent} />
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div className={cx('bottom-header', 'tablet:max-w-[720px] desktop:max-w-[1200px]', 'm-[0_auto]', 'mobile:max-desktop:hidden')}>
+            <div className={cx('bottom-header', 'tablet:max-w-[720px]', 'desktop:max-w-[1200px]', 'm-[0_auto]', 'px-6', 'mobile:max-desktop:hidden')}>
                 <div className="flex flex-row menu-category">
                     <div className="xs:basis-full menu-middle">
                         {loadingVesMenu ? null : <Menu vesMenuConfig={vesMenuConfig} data={dataVesMenu} storeConfig={storeConfig} />}

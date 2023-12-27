@@ -10,12 +10,12 @@ const NewsletterPage = (props) => {
     const {
         t, Content, pageConfig, app_cookies,
     } = props;
-    const [actUpdateCustomer, { data: dataUpdate, loading }] = useMutation(Schema.updateCustomer, {
+    const [actUpdateCustomer, { data: dataUpdate, loadingUpdate }] = useMutation(Schema.updateCustomer, {
         context: {
             request: 'internal',
         },
     });
-    const { data } = getCustomerSettings();
+    const { data, loading } = getCustomerSettings();
 
     const [customer, setCustomer] = useState({});
     const [settings, setSettings] = useState({
@@ -28,6 +28,14 @@ const NewsletterPage = (props) => {
         header: 'relative', // available values: "absolute", "relative", false (default)
         headerTitle: t('customer:setting:newsletter'),
         bottomNav: false,
+    };
+
+    const [checkData, setCheckData] = React.useState(customer.is_subscribed ? ['subscribed'] : []);
+    const handleChange = (val) => {
+        setCheckData(val);
+        const tmpSettings = {};
+        tmpSettings.is_subscribed = val.length === 1;
+        setSettings({ ...tmpSettings });
     };
 
     /**
@@ -57,7 +65,7 @@ const NewsletterPage = (props) => {
      * @check [loading]
      */
     useEffect(() => {
-        if (mount.current && !loading && dataUpdate !== undefined) {
+        if (mount.current && !loadingUpdate && dataUpdate !== undefined) {
             setTimeout(() => {
                 window.backdropLoader(false);
                 window.toastMessage({
@@ -67,7 +75,7 @@ const NewsletterPage = (props) => {
                 });
             }, 500);
         }
-    }, [loading]);
+    }, [loadingUpdate]);
 
     /**
      * [METHOD] handle save button
@@ -96,7 +104,16 @@ const NewsletterPage = (props) => {
 
     return (
         <Layout {...props} pageConfig={pageConfig || config}>
-            <Content t={t} customer={customer} setSettings={setSettings} handleSave={handleSave} app_cookies={app_cookies} />
+            <Content
+                t={t}
+                customer={customer}
+                setSettings={setSettings}
+                handleSave={handleSave}
+                app_cookies={app_cookies}
+                checkData={checkData}
+                handleChange={handleChange}
+                loading={loading || loadingUpdate}
+            />
         </Layout>
     );
 };

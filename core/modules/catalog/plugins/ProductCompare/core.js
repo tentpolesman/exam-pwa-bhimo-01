@@ -3,7 +3,6 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable-next-line jsx-a11y/click-events-have-key-events */
 import { useQuery } from '@apollo/client';
-import Typography from '@common_typography';
 import { createCompareList } from '@core_modules/product/services/graphql';
 import { getCompareList, getCustomerUid } from '@core_modules/productcompare/service/graphql';
 import { getCookies, setCookies } from '@helper_cookies';
@@ -11,6 +10,9 @@ import { localCompare } from '@services/graphql/schema/local';
 import { useTranslation } from 'next-i18next';
 import propTypes from 'prop-types';
 import React from 'react';
+
+import BadgeCounter from '@common_badgecounter';
+import Typography from '@common_typography';
 
 import ArrowsRightLeftIcon from '@heroicons/react/24/solid/ArrowsRightLeftIcon';
 import cx from 'classnames';
@@ -97,7 +99,11 @@ const ProductCompareIcon = ({ withLink, WithLinkView, isLogin }) => {
                 </>
             );
         }
-        return <ArrowsRightLeftIcon className={cx('w-[24px]', 'text-neutral-600', 'mt-3')} />;
+        return (
+            <BadgeCounter value={0}>
+                <ArrowsRightLeftIcon className={cx('w-[24px]', 'text-neutral-600', 'hover:text-primary-700', 'mt-3')} />
+            </BadgeCounter>
+        );
     }
 
     /* eslint-disable */

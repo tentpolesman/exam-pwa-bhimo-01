@@ -34,9 +34,9 @@ const ScrollTop = (props) => {
                                     }
                                     if (scrollTopPosition > lastScrollTop) {
                                         headerInner.classList.remove('top-[-43px]');
-                                        headerInner.classList.add('top-[-128px]');
+                                        headerInner.classList.add('top-[-120px]');
                                     } else if (scrollTopPosition < lastScrollTop) {
-                                        headerInner.classList.remove('top-[-128px]');
+                                        headerInner.classList.remove('top-[-120px]');
                                         headerInner.classList.add('top-[-43px]');
                                     }
                                     lastScrollTop = scrollTopPosition <= 0 ? 0 : scrollTopPosition;
@@ -75,7 +75,7 @@ const ScrollTop = (props) => {
                             if (isShownDesktop) {
                                 if (scrollTopPosition === 0) {
                                     headerInner.classList.remove('top-[-43px]');
-                                    headerInner.classList.remove('top-[-128px]');
+                                    headerInner.classList.remove('top-[-120px]');
                                     if (showGlobalPromo && globalPromo) {
                                         headerInner.classList.add('top-[38px]');
                                     }

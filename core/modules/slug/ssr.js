@@ -59,7 +59,7 @@ const getSSRProps = async (ctx) => {
     if (IS_CMS) {
         await getCmsSSRProps({ apolloClient, identifier: url });
     } else if (IS_PRODUCT) {
-        await getSSRProductProps({
+        obj.ssrProduct = await getSSRProductProps({
             apolloClient,
             slug: obj.slug[0],
             storeConfig: layoutSSR.storeConfig,

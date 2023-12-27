@@ -67,15 +67,16 @@ const ViewSwitcherLanguage = (props) => {
                         'focus:shadow-none',
                         'active:shadow-none',
                         'active:shadow-none',
+                        'group',
                     )}
                     onClick={() => setOpen(!open)}
                     icon={<ChevronDownIcon />}
-                    iconProps={{ className: cx('text-neutral-700', 'w-[20px]', 'h-[20px]') }}
+                    iconProps={{ className: cx('text-neutral-700', 'w-[20px]', 'h-[20px]', 'group-hover:text-primary-700') }}
                     iconPosition="right"
                     variant="tertiary"
                     classNameText={cx('!text-neutral-700')}
                 >
-                    <Typography>{lang?.label}</Typography>
+                    <Typography className={cx('group-hover:text-primary-700')}>{lang?.label}</Typography>
                 </Button>
             </Popover>
         );
