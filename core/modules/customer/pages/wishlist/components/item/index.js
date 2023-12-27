@@ -1,14 +1,11 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable semi-style */
-/* eslint-disable jsx-a11y/anchor-is-valid */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable radix */
+import Link from 'next/link';
+import cx from 'classnames';
+import TrashIcon from '@heroicons/react/24/solid/TrashIcon';
 import Button from '@common_button';
 import PriceFormat from '@common_priceformat';
 import Typography from '@common_typography';
 import Dialog from '@common_dialog';
-import Link from 'next/link';
 import Image from '@common_image';
 import { setResolver, getResolver } from '@helper_localstorage';
 
@@ -41,58 +38,147 @@ const WishlistComp = ({
 
     if (typeof defaultWidth === 'string') defaultWidth = parseInt(defaultWidth, 0);
     if (typeof defaultHeight === 'string') defaultHeight = parseInt(defaultHeight, 0);
-    return null;
-    // return (
-    //     <>
-    //         <Dialog
-    //             open={openDelete}
-    //             handleCancel={() => setOpenDelete(!openDelete)}
-    //             handleYes={handleDelete}
-    //             message={t('customer:wishlist:warningDelete')}
-    //         />
-    //         <div className={styles.card}>
-    //             <div className={styles.imgItem}>
-    //                 <Image
-    //                     src={imageSrc}
-    //                     className={styles.productImg}
-    //                     alt={name}
-    //                     width={defaultWidth}
-    //                     height={defaultHeight}
-    //                     quality={80}
-    //                     storeConfig={storeConfig}
-    //                 />
-    //             </div>
-    //             <div className={styles.content}>
-    //                 <Link
-    //                     href="/[...slug]"
-    //                     as={`/${url_key}`}
-    //                     onClick={() => handleClick(`/${url_key}`)}
-    //                     className={styles.productTitle}
-    //                 >
 
-    //                     <Typography variant="p">{name}</Typography>
-
-    //                 </Link>
-    //                 <PriceFormat
-    //                     variant="p"
-    //                     priceRange={price_range}
-    //                     priceTiers={price_tiers}
-    //                     productType={__typename}
-    //                     specialFromDate={special_from_date}
-    //                     specialToDate={special_to_date}
-    //                 />
-    //                 <Button className={styles.btnAdd} onClick={handleAddToCart}>
-    //                     <Typography variant="p" type="bold" letter="uppercase" color="white">
-    //                         {t('customer:wishlist:addToBag')}
-    //                     </Typography>
-    //                 </Button>
-    //             </div>
-    //             <IconButton onClick={() => setOpenDelete(!openDelete)}>
-    //                 <Delete />
-    //             </IconButton>
-    //         </div>
-    //     </>
-    // );
+    return (
+        <>
+            <Dialog
+                open={openDelete}
+                variant="container"
+                classWrapperTitle="!hidden"
+                content={(
+                    <div
+                        className={cx(
+                            'w-full flex flex-col desktop:flex-row-reverse gap-2 !bg-[transparent]',
+                        )}
+                    >
+                        <div className={cx(
+                            'w-full h-max max-h-[calc(100vh-60px)] p-4 tablet:p-8 bg-neutral-white rounded-lg',
+                            'shadow-xl overflow-y-scroll',
+                        )}
+                        >
+                            <div>
+                                <Typography variant="h3" className={cx('mb-[18px] text-center')}>
+                                    {t('customer:wishlist:warningDelete')}
+                                </Typography>
+                                <div
+                                    className={cx(
+                                        'flex items-center justify-center flex-wrap',
+                                    )}
+                                >
+                                    <div
+                                        className={cx(
+                                            'm-2',
+                                        )}
+                                    >
+                                        <Button
+                                            onClick={() => setOpenDelete(!openDelete)}
+                                        >
+                                            <Typography className={cx('!text-neutral-white uppercase')}>
+                                                {t('common:button:cancel')}
+                                            </Typography>
+                                        </Button>
+                                    </div>
+                                    <div
+                                        className={cx(
+                                            'm-2',
+                                        )}
+                                    >
+                                        <Button
+                                            onClick={() => handleDelete()}
+                                        >
+                                            <Typography className={cx('!text-neutral-white uppercase')}>
+                                                {t('common:button:yes')}
+                                            </Typography>
+                                        </Button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
+                classContainer="!shadow-none max-w-[360px] tablet:!max-w-[700px] desktop:!max-w-[945px]"
+                classContent="!p-0 !bg-[transparent]"
+            />
+            <div
+                className={cx(
+                    'border-[1px] border-neutral-200 flex items-center w-full',
+                    'desktop:mb-[15px] mb-[0px]',
+                )}
+            >
+                <div
+                    className={cx(
+                        'w-[127px] h-[156px] flex flex-col items-center justify-center m-[2px_0px] mobile:m-[0px]',
+                    )}
+                >
+                    <Image
+                        src={imageSrc}
+                        alt={name}
+                        width={defaultWidth}
+                        height={defaultHeight}
+                        quality={80}
+                        storeConfig={storeConfig}
+                    />
+                </div>
+                <div
+                    className={cx(
+                        'flex flex-col items-center text-center w-[70%]',
+                    )}
+                >
+                    <Link
+                        href="/[...slug]"
+                        as={`/${url_key}`}
+                        onClick={() => handleClick(`/${url_key}`)}
+                        style={{
+                            display: '-webkit-box',
+                            overflow: 'hidden',
+                            WebkitLineClamp: 2,
+                            WebkitBoxOrient: 'vertical',
+                        }}
+                    >
+                        <Typography variant="p">{name}</Typography>
+                    </Link>
+                    <PriceFormat
+                        variant="p"
+                        priceRange={price_range}
+                        priceTiers={price_tiers}
+                        productType={__typename}
+                        specialFromDate={special_from_date}
+                        specialToDate={special_to_date}
+                    />
+                    <Button
+                        onClick={handleAddToCart}
+                        className="mt-2"
+                    >
+                        <Typography className={cx('!text-neutral-white uppercase')}>
+                            {t('customer:wishlist:addToBag')}
+                        </Typography>
+                    </Button>
+                </div>
+                <div className="w-[50px] h-[50px] flex items-center justify-center">
+                    <Button
+                        className={cx(
+                            '!m-0',
+                            '!px-0',
+                            '!py-0',
+                            '!ml-0',
+                            'hover:shadow-none',
+                            'focus:shadow-none',
+                            'active:shadow-none',
+                            'active:shadow-none',
+                        )}
+                        onClick={() => setOpenDelete(!openDelete)}
+                        icon={<TrashIcon />}
+                        iconProps={{
+                            className: cx('mobile:max-tablet:w-[20px]', 'tablet:w-[24px]', 'text-neutral-500'),
+                        }}
+                        iconOnly
+                        variant="tertiary"
+                        classNameText={cx('!text-neutral-700')}
+                    />
+                </div>
+            </div>
+        </>
+    );
 };
 
 export default WishlistComp;
