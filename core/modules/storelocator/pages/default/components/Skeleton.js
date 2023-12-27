@@ -1,17 +1,12 @@
-import Skeleton from '@material-ui/lab/Skeleton';
-
 const SkeletonStoreLocator = () => (
-    <>
-        <div className="flex flex-row">
-            <div className="md:basis-3/12">
-                <Skeleton variant="rect" width="100%" height={515} />
-            </div>
-            <div className="md:basis-9/12">
-                <Skeleton variant="rect" width="100%" height={467} />
-                <Skeleton variant="rect" width="100%" height={36} style={{ marginTop: 12 }} />
+    <div className="flex flex-col">
+        <div className="md:basis-3/12">
+            <div className="flex flex-col gap-2 tablet:gap-2 animate-pulse">
+                <div className="h-[515px] w-full bg-neutral-100" />
+                <div className="h-5 w-full bg-neutral-100" />
             </div>
         </div>
-    </>
+    </div>
 );
 
 export default SkeletonStoreLocator;

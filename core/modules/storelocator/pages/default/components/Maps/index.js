@@ -4,8 +4,7 @@ import { compose, withProps } from 'recompose';
 import {
     withScriptjs, withGoogleMap, GoogleMap, Marker, Circle,
 } from 'react-google-maps';
-import Button from '@material-ui/core/Button';
-import AutorenewIcon from '@material-ui/icons/Autorenew';
+import Button from '@common_button';
 import SearchBox from '@core_modules/storelocator/pages/default/components/Maps/SearchBox';
 import SliderRadius from '@core_modules/storelocator/pages/default/components/Maps/SliderRadius';
 import InfoWindow from '@core_modules/storelocator/pages/default/components/Maps/InfoWindow';
@@ -102,16 +101,16 @@ const StoreLocatorMaps = compose(
     };
 
     return (
-        <>
+        <div className="mt-1">
             <div className="flex flex-row">
-                <div className="xs:basis-full sm:basis-5/12" style={{ marginTop: 16 }}>
+                <div className="xs:basis-full sm:basis-5/12">
                     <SearchBox ref={searchBoxRef} handleSearch={handleSearch} value={querySearch} setValue={setQuerySearch} />
                 </div>
-                <div className="xs:basis-8/12 sm:basis-4/12 md:basis-5/12" style={{ marginTop: 16 }}>
+                <div className="xs:basis-8/12 sm:basis-4/12 md:basis-5/12 mt-1">
                     <SliderRadius radius={radius} setRadius={handleRadius} />
                 </div>
-                <div className="xs:basis-4/12 sm:basis-3/12 md:basis-2/12" style={{ marginTop: 16 }}>
-                    <Button style={{ width: '100%' }} variant="contained" startIcon={<AutorenewIcon />} onClick={handleReset}>
+                <div className="xs:basis-4/12 sm:basis-3/12 md:basis-2/12 mt-1 ml-4">
+                    <Button onClick={handleReset}>
                         Reset
                     </Button>
                 </div>
@@ -152,7 +151,7 @@ const StoreLocatorMaps = compose(
                         ) : null
                 ))}
             </GoogleMap>
-        </>
+        </div>
     );
 });
 

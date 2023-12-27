@@ -1,19 +1,20 @@
 import StoreLocatorMaps from '@core_modules/storelocator/pages/default/components/Maps';
 import SkeletonStoreLocator from '@core_modules/storelocator/pages/default/components/Skeleton';
 import StoreList from '@core_modules/storelocator/pages/default/components/StoreList';
-import WarningIcon from '@material-ui/icons/Warning';
+import Alert from '@common/Alert';
 
 const StoreLocatorContent = ({ gmapKey, storeLocations, t }) => {
     // state
     const [centerPosition, setCenterPosition] = React.useState({});
     const [selectedStore, setSelectedStore] = React.useState();
-    const [storeList, setStoreList] = storeLocations !== null ? React.useState(
-        storeLocations.map((storeLocation) => ({
-            ...storeLocation,
-            lat: storeLocation.latitude,
-            lng: storeLocation.longitude,
-        })),
-    ) : React.useState(null);
+    const [storeList, setStoreList] = React.useState(
+        (storeLocations?.length > 0
+            && storeLocations?.map((storeLocation) => ({
+                ...storeLocation,
+                lat: storeLocation.latitude,
+                lng: storeLocation.longitude,
+            }))) || null,
+    );
 
     // effect
     React.useEffect(() => {
@@ -32,10 +33,10 @@ const StoreLocatorContent = ({ gmapKey, storeLocations, t }) => {
 
     if (storeList === null) {
         return (
-            <div style={{ textAlign: 'center', paddingTop: '20vh' }}>
-                <WarningIcon style={{ fontSize: '100px' }} />
-                <br />
-                <span style={{ fontSize: '2rem' }}>{t('storelocator:noAvailableStore')}</span>
+            <div className="pt-[20vh] text-center">
+                <Alert severity="error" className="capitalize">
+                    {t('storelocator:noAvailableStore')}
+                </Alert>
             </div>
         );
     }
@@ -72,19 +73,13 @@ const StoreLocatorContentWrapper = (props) => {
         loading, storeLocations, storeConfig, t,
     } = props;
     return (
-        <>
-            {
-                loading || typeof window === 'undefined'
-                    ? <SkeletonStoreLocator />
-                    : (
-                        <StoreLocatorContent
-                            t={t}
-                            gmapKey={storeConfig.icube_pinlocation_gmap_key}
-                            storeLocations={storeLocations}
-                        />
-                    )
-            }
-        </>
+        <div className="desktop:max-w-[1280px] desktop:px-10 tablet:max-w-[768px] tablet:px-6 mobile:px-4 my-0 mx-auto]">
+            {loading || typeof window === 'undefined' ? (
+                <SkeletonStoreLocator />
+            ) : (
+                <StoreLocatorContent t={t} gmapKey={storeConfig.icube_pinlocation_gmap_key} storeLocations={storeLocations} />
+            )}
+        </div>
     );
 };
 
