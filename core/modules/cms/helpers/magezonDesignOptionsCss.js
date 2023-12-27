@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable no-underscore-dangle */
 import { BREAKPOINTS } from '@root/core/theme/vars';
 import css from 'styled-jsx/css';
@@ -47,29 +48,29 @@ const generateDesignOptions = (classSelector, designOptions) => {
 
                 opts[screenOpt].forEach((_opt) => {
                     if (_opt.indexOf('padding_left') !== -1) {
-                        tempMappedValues += `padding-left: ${otherDeviceSizeDesignOpts[_opt]}px;`;
+                        tempMappedValues += `padding-left: ${Number(otherDeviceSizeDesignOpts[_opt]) || 0}px;`;
                     }
                     if (_opt.indexOf('padding_right') !== -1) {
-                        tempMappedValues += `padding-right: ${otherDeviceSizeDesignOpts[_opt]}px;`;
+                        tempMappedValues += `padding-right: ${Number(otherDeviceSizeDesignOpts[_opt]) || 0}px;`;
                     }
                     if (_opt.indexOf('padding_top') !== -1) {
-                        tempMappedValues += `padding-top: ${otherDeviceSizeDesignOpts[_opt]}px;`;
+                        tempMappedValues += `padding-top: ${Number(otherDeviceSizeDesignOpts[_opt]) || 0}px;`;
                     }
                     if (_opt.indexOf('padding_bottom') !== -1) {
-                        tempMappedValues += `padding-bottom: ${otherDeviceSizeDesignOpts[_opt]}px;`;
+                        tempMappedValues += `padding-bottom: ${Number(otherDeviceSizeDesignOpts[_opt]) || 0}px;`;
                     }
 
                     if (_opt.indexOf('margin_left') !== -1) {
-                        tempMappedValues += `margin-left: ${otherDeviceSizeDesignOpts[_opt]}px;`;
+                        tempMappedValues += `margin-left: ${Number(otherDeviceSizeDesignOpts[_opt]) || 0}px;`;
                     }
                     if (_opt.indexOf('margin_right') !== -1) {
-                        tempMappedValues += `margin-right: ${otherDeviceSizeDesignOpts[_opt]}px;`;
+                        tempMappedValues += `margin-right: ${Number(otherDeviceSizeDesignOpts[_opt]) || 0}px;`;
                     }
                     if (_opt.indexOf('margin_top') !== -1) {
-                        tempMappedValues += `margin-top: ${otherDeviceSizeDesignOpts[_opt]}px;`;
+                        tempMappedValues += `margin-top: ${Number(otherDeviceSizeDesignOpts[_opt]) || 0}px;`;
                     }
                     if (_opt.indexOf('margin_bottom') !== -1) {
-                        tempMappedValues += `margin-bottom: ${otherDeviceSizeDesignOpts[_opt]}px;`;
+                        tempMappedValues += `margin-bottom: ${Number(otherDeviceSizeDesignOpts[_opt]) || 0}px;`;
                     }
                 });
 
@@ -86,21 +87,21 @@ const generateDesignOptions = (classSelector, designOptions) => {
         return css.resolve`
             .mgz-column :global(.mgz-element-inner) {
                 ${(margin_top || margin_right || margin_bottom || margin_left) ? `
-                    margin: ${margin_top || 0}px ${margin_right || 0}px ${margin_bottom || 0}px ${margin_left || 0}px;
+                    margin: ${Number(margin_top) || 0}px ${Number(margin_right) || 0}px ${Number(margin_bottom) || 0}px ${Number(margin_left) || 0}px;
                 ` : ''}
                 ${(padding_top || padding_right || padding_bottom || padding_left) ? `
-                    padding: ${padding_top || 0}px ${padding_right || 0}px ${padding_bottom || 0}px ${padding_left || 0}px;
-                ` : ''}
-                ${border_top_left_radius ? `border-top-left-radius: ${border_top_left_radius || 0}px;` : ''}
-                ${border_top_right_radius ? `border-top-right-radius: ${border_top_right_radius || 0}px;` : ''}
-                ${border_bottom_left_radius ? `border-bottom-left-radius: ${border_bottom_left_radius || 0}px;` : ''}
-                ${border_bottom_right_radius ? `border-bottom-right-radius: ${border_bottom_left_radius || 0}px;` : ''}
+                    padding: ${Number(padding_top) || 0}px ${Number(padding_right) || 0}px ${Number(padding_bottom) || 0}px ${Number(padding_left) || 0}px;
+                ` : 'padding: 10px; margin: 0px -10px;'}
+                ${border_top_left_radius ? `border-top-left-radius: ${Number(border_top_left_radius) || 0}px;` : ''}
+                ${border_top_right_radius ? `border-top-right-radius: ${Number(border_top_right_radius) || 0}px;` : ''}
+                ${border_bottom_left_radius ? `border-bottom-left-radius: ${Number(border_bottom_left_radius) || 0}px;` : ''}
+                ${border_bottom_right_radius ? `border-bottom-right-radius: ${Number(border_bottom_left_radius) || 0}px;` : ''}
                 ${border_style ? `border-style: ${border_style};` : ''}
                 ${background_position ? `background-position: ${background_position?.split('-').join(' ')};` : ''}
-                ${border_top_width ? `border-top-width: ${border_top_width || 0}px;` : ''}
-                ${border_right_width ? `border-right-width: ${border_right_width || 0}px;` : ''}
-                ${border_bottom_width ? `border-bottom-width: ${border_bottom_width || 0}px;` : ''}
-                ${border_left_width ? `border-left-width: ${border_left_width || 0}px;` : ''}
+                ${border_top_width ? `border-top-width: ${Number(border_top_width) || 0}px;` : ''}
+                ${border_right_width ? `border-right-width: ${Number(border_right_width) || 0}px;` : ''}
+                ${border_bottom_width ? `border-bottom-width: ${Number(border_bottom_width) || 0}px;` : ''}
+                ${border_left_width ? `border-left-width: ${Number(border_left_width) || 0}px;` : ''}
                 ${background_color ? `background-color: ${background_color};` : ''}
             }
 
@@ -129,21 +130,21 @@ const generateDesignOptions = (classSelector, designOptions) => {
     return css.resolve`
         .${classSelector} {
             ${(margin_top || margin_right || margin_bottom || margin_left) ? `
-                margin: ${margin_top || 0}px ${margin_right || 0}px ${margin_bottom || 0}px ${margin_left || 0}px;
+                margin: ${Number(margin_top) || 0}px ${Number(margin_right) || 0}px ${Number(margin_bottom) || 0}px ${Number(margin_left) || 0}px;
             ` : ''}
             ${(padding_top || padding_right || padding_bottom || padding_left) ? `
-                padding: ${padding_top || 0}px ${padding_right || 0}px ${padding_bottom || 0}px ${padding_left || 0}px;
+                padding: ${Number(padding_top) || 0}px ${Number(padding_right) || 0}px ${Number(padding_bottom) || 0}px ${Number(padding_left) || 0}px;
             ` : ''}
-            ${border_top_left_radius ? `border-top-left-radius: ${border_top_left_radius || 0}px;` : ''}
-            ${border_top_right_radius ? `border-top-right-radius: ${border_top_right_radius || 0}px;` : ''}
-            ${border_bottom_left_radius ? `border-bottom-left-radius: ${border_bottom_left_radius || 0}px;` : ''}
-            ${border_bottom_right_radius ? `border-bottom-right-radius: ${border_bottom_left_radius || 0}px;` : ''}
+            ${border_top_left_radius ? `border-top-left-radius: ${Number(border_top_left_radius) || 0}px;` : ''}
+            ${border_top_right_radius ? `border-top-right-radius: ${Number(border_top_right_radius) || 0}px;` : ''}
+            ${border_bottom_left_radius ? `border-bottom-left-radius: ${Number(border_bottom_left_radius) || 0}px;` : ''}
+            ${border_bottom_right_radius ? `border-bottom-right-radius: ${Number(border_bottom_left_radius) || 0}px;` : ''}
             ${border_style ? `border-style: ${border_style};` : ''}
             ${background_position ? `background-position: ${background_position?.split('-').join(' ')};` : ''}
-            ${border_top_width ? `border-top-width: ${border_top_width || 0}px;` : ''}
-            ${border_right_width ? `border-right-width: ${border_right_width || 0}px;` : ''}
-            ${border_bottom_width ? `border-bottom-width: ${border_bottom_width || 0}px;` : ''}
-            ${border_left_width ? `border-left-width: ${border_left_width || 0}px;` : ''}
+            ${border_top_width ? `border-top-width: ${Number(border_top_width) || 0}px;` : ''}
+            ${border_right_width ? `border-right-width: ${Number(border_right_width) || 0}px;` : ''}
+            ${border_bottom_width ? `border-bottom-width: ${Number(border_bottom_width) || 0}px;` : ''}
+            ${border_left_width ? `border-left-width: ${Number(border_left_width) || 0}px;` : ''}
             ${background_color ? `background-color: ${background_color};` : ''}
         }
 
