@@ -10,11 +10,15 @@ function showInstallPromotion() {
         const expired = localStorage.getItem('expiredHideInstallPopup');
         const el = document.getElementById('popup-mobile__install');
         // hidden popup
-        if (el && (hide !== 'true'
-        || (hide === 'true' && date.getDate() >= parseInt(expired)))) {
+        if (el && (hide !== 'true' || (hide === 'true' && date.getDate() >= parseInt(expired)))) {
             localStorage.removeItem('hideInstallPopup');
             localStorage.removeItem('expiredHideInstallPopup');
             el.style.display = 'flex';
+        }
+    } else if (window.innerWidth >= 768 && window.innerWidth < 1200) {
+        const elTablet = document.getElementById('popup-tablet__install');
+        if (elTablet) {
+            elTablet.style.display = 'block';
         }
     } else {
         const elDesktop = document.getElementById('popup-desktop__install');
@@ -24,10 +28,17 @@ function showInstallPromotion() {
     }
 
     // run instalation
-    const buttonInstall = window.innerWidth <= 768 ? document.getElementById('btn-install__mobile')
-        : document.getElementById('btn-install');
+    let buttonInstall;
+    if (window.innerWidth < 768) {
+        buttonInstall = document.getElementById('btn-install__mobile');
+    } else if (window.innerWidth >= 768 && window.innerWidth < 1200) {
+        buttonInstall = document.getElementById('btn-install__tablet');
+    } else {
+        buttonInstall = document.getElementById('btn-install');
+    }
     if (buttonInstall) {
         buttonInstall.addEventListener('click', (e) => {
+            console.log('click install');
             deferredPrompt.prompt();
         });
     }
@@ -46,11 +57,6 @@ function hideInstallPromotion() {
         date.setDate(date.getDate() + 1);
         localStorage.removeItem('hideInstallPopup', true);
         localStorage.removeItem('expiredHideInstallPopup', date.getDate());
-    } else {
-        const elDesktop = document.getElementById('popup-desktop__install');
-        if (elDesktop) {
-            elDesktop.style.display = 'none';
-        }
     }
 }
 

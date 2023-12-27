@@ -23,9 +23,12 @@ import { formatPrice } from '@helper_currency';
 import formatDate from '@helper_date';
 
 import Badge from '@common_badge';
+import Button from '@common_button';
 import Select from '@common_forms/Select';
 import Pagination from '@common_pagination';
 import Typography from '@common_typography';
+
+import ExclamationTriangleIcon from '@heroicons/react/24/outline/ExclamationTriangleIcon';
 
 const DefaultView = (props) => {
     const {
@@ -146,52 +149,82 @@ const DefaultView = (props) => {
                                         </tr>
                                     ))}
                                 </>
-                            ) : null}
+                            ) : (
+                                <tr>
+                                    <td colSpan={6}>
+                                        <Button
+                                            icon={<ExclamationTriangleIcon />}
+                                            iconProps={{
+                                                className: cx('!text-yellow-500'),
+                                            }}
+                                            iconPosition="left"
+                                            className={cx(
+                                                'w-full',
+                                                'bg-yellow-50',
+                                                'hover:bg-yellow-50',
+                                                'focus:bg-yellow-50',
+                                                'active:bg-yellow-50',
+                                                'hover:shadow-none',
+                                                'focus:shadow-none',
+                                                'active:shadow-none',
+                                                'cursor-auto',
+                                                'hover:cursor-auto',
+                                                'focus:cursor-auto',
+                                                'active:cursor-auto',
+                                            )}
+                                        >
+                                            <Typography className={cx('!text-yellow-600')}>{t('customer:order:emptyMessage')}</Typography>
+                                        </Button>
+                                    </td>
+                                </tr>
+                            )}
                         </tbody>
                     </table>
                 </div>
-                <div className={cx('table-data', 'pt-6', 'flex', 'flex-row', 'justify-between')}>
-                    <div className={cx('pt-2')}>
-                        <Typography className={cx('font-normal', 'leading-2lg')}>
-                            {data && data.total_count && `${data.total_count} Item(s)`}
-                        </Typography>
+                {data && data.items && data.items.length > 0 ? (
+                    <div className={cx('table-data', 'pt-6', 'flex', 'flex-row', 'justify-between')}>
+                        <div className={cx('pt-2')}>
+                            <Typography className={cx('font-normal', 'leading-2lg')}>
+                                {data && data.total_count && `${data.total_count} Item(s)`}
+                            </Typography>
+                        </div>
+                        <div className={cx('flex', 'flex-row')}>
+                            <Typography className={cx('font-normal', 'leading-2lg', 'p-3')}>Show</Typography>
+                            <Select
+                                name="show"
+                                value={pageSize}
+                                onChange={handleChangePageSize}
+                                options={[
+                                    {
+                                        label: 10,
+                                        value: 10,
+                                    },
+                                    {
+                                        label: 20,
+                                        value: 20,
+                                    },
+                                    {
+                                        label: 50,
+                                        value: 50,
+                                    },
+                                    {
+                                        label: 'All',
+                                        value: data && data.total_count,
+                                    },
+                                ]}
+                                textFiledProps={{ className: cx('w-[80px]') }}
+                                inputProps={{ className: cx('!py-0') }}
+                            />
+                            <Pagination
+                                handleChangePage={handleChangePage}
+                                page={data && data.current_page}
+                                siblingCount={1}
+                                className={cx('!p-0')}
+                                totalPage={data && data.total_pages}
+                            />
+                        </div>
                     </div>
-                    <div className={cx('flex', 'flex-row')}>
-                        <Typography className={cx('font-normal', 'leading-2lg', 'p-3')}>Show</Typography>
-                        <Select
-                            name="show"
-                            value={pageSize}
-                            onChange={handleChangePageSize}
-                            options={[
-                                {
-                                    label: 10,
-                                    value: 10,
-                                },
-                                {
-                                    label: 20,
-                                    value: 20,
-                                },
-                                {
-                                    label: 50,
-                                    value: 50,
-                                },
-                                {
-                                    label: 'All',
-                                    value: data && data.total_count,
-                                },
-                            ]}
-                            textFiledProps={{ className: cx('w-[80px]') }}
-                            inputProps={{ className: cx('!py-0') }}
-                        />
-                        <Pagination
-                            handleChangePage={handleChangePage}
-                            page={data && data.current_page}
-                            siblingCount={1}
-                            className={cx('!p-0')}
-                            totalPage={data && data.total_pages}
-                        />
-                    </div>
-                </div>
+                ) : null}
             </div>
         </Layout>
     );

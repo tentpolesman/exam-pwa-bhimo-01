@@ -116,7 +116,7 @@ const TabletHeader = (props) => {
                             iconPosition="left"
                             variant="tertiary"
                             classNameText={cx('!text-neutral-700')}
-                            id="btn-install"
+                            id="btn-install__tablet"
                         >
                             <Typography>Download Apps</Typography>
                         </Button>
