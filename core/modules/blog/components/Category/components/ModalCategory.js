@@ -1,20 +1,15 @@
+import React from 'react';
 import Button from '@common_button';
 import Header from '@common_headermobile';
 import Typography from '@common_typography';
-import { modules } from '@config';
-import Dialog from '@material-ui/core/Dialog';
-import Slide from '@material-ui/core/Slide';
+import Dialog from '@common_dialog';
 import Router from 'next/router';
-import React from 'react';
-import useStyles from '@core_modules/blog/components/Category/components/style';
-
-const Transition = React.forwardRef((props, ref) => <Slide direction="left" ref={ref} {...props} />);
+import { modules } from '@config';
 
 const ModalCategory = (props) => {
     const {
         open, setOpen, data, t,
     } = props;
-    const styles = useStyles();
     const { link } = modules.blog;
     const handleClick = (item) => {
         Router.push(
@@ -24,12 +19,8 @@ const ModalCategory = (props) => {
         setOpen();
     };
     return (
-        <Dialog
-            fullScreen
-            open={open}
-            TransitionComponent={Transition}
-        >
-            <div className={styles.container}>
+        <Dialog open={open}>
+            <div className="container-modal-category">
                 <Header
                     LeftComponent={{
                         onClick: setOpen,
@@ -39,26 +30,26 @@ const ModalCategory = (props) => {
                         header: 'relative',
                     }}
                 />
-                <div className={styles.body}>
-                    <div className={styles.item}>
+                <div className="flex flex-col px-[80px] pt-[20px] pb-[80px]">
+                    <div className="m-0 flex flex-col text-center">
                         <Button
-                            variant="text"
+                            variant="plain"
                             onClick={() => Router.push(link.default.href)}
                         >
 
-                            <Typography type="semiBold" variant="title" align="center">
-                                All
+                            <Typography className="font-semibold text-center">
+                                {t('common:label:all')}
                             </Typography>
                         </Button>
                         {
                             data.map((item, key) => (
                                 <Button
-                                    variant="text"
+                                    variant="plain"
                                     onClick={() => handleClick(item)}
                                     key={key}
                                 >
 
-                                    <Typography type="semiBold" variant="title" align="center">
+                                    <Typography className="font-semibold text-center">
                                         {item.name}
                                     </Typography>
                                 </Button>

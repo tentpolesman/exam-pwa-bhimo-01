@@ -5,7 +5,6 @@ import Dialog from '@common_dialog';
 import Layout from '@layout_customer';
 import { updateRma, cancelRma } from '@core_modules/rma/services/graphql';
 import ItemField from '@core_modules/rma/pages/detail/components/ItemField';
-import useStyles from '@core_modules/rma/pages/detail/components/styles';
 
 const DetailContent = (props) => {
     const {
@@ -13,7 +12,6 @@ const DetailContent = (props) => {
         refetch, ItemProduct, ListMessage, FormComment, Footer, loading, loadCustomerData, WarningInfo, error,
         Detail, ...other
     } = props;
-    const styles = useStyles();
     const currency = storeConfig ? storeConfig.base_currency_code : 'IDR';
     const requestFieldValue = detail_rma.custom_fields.map(({ field, value }) => ({
         field: field.id,
@@ -210,10 +208,10 @@ const DetailContent = (props) => {
             <div className="flex flex-col">
                 {
                     detail_rma.confirm_shipping.status
-                        ? (<div className={styles.block} dangerouslySetInnerHTML={{ __html: detail_rma.confirm_shipping.step }} />)
+                        ? (<div className="" dangerouslySetInnerHTML={{ __html: detail_rma.confirm_shipping.step }} />)
                         : null
                 }
-                <div className={classNames(styles.detail)}>
+                <div className={classNames('')}>
                     <Detail
                         detail_rma={detail_rma}
                         t={t}
@@ -242,7 +240,7 @@ const DetailContent = (props) => {
                         })
                     }
                 </div>
-                <div className={styles.block}>
+                <div className="">
                     {
                         detail_rma.items.map((item, index) => (
                             <ItemProduct key={index} {...item} currency={currency} storeConfig={storeConfig} />

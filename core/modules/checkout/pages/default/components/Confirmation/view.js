@@ -4,27 +4,19 @@
 /* eslint-disable react/no-danger */
 import React from 'react';
 import Typography from '@common_typography';
-import Button from '@material-ui/core/Button';
-import Checkbox from '@material-ui/core/Checkbox';
-import Skeleton from '@material-ui/lab/Skeleton';
-import Grid from '@material-ui/core/Grid';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import useStyles from '@core_modules/checkout/pages/default/components/Confirmation/style';
+import Button from '@common_button';
+import CheckBox from '@common_forms/CheckBox';
+import Skeleton from '@common_skeleton';
+import Dialog from '@common_dialog';
 
 const ConfirmationView = ({
     t, loading, agreements, checkList, modalList, handleCheckbox, handleOpenModal, handleCloseModal,
 }) => {
-    const styles = useStyles();
-
     const Loader = () => (
-        <div className={styles.container}>
-            <Skeleton variant="text" width="40%" height={35} />
-            <Skeleton variant="text" width="80%" height={30} />
-            <Skeleton variant="text" width="80%" height={30} />
+        <div className="flex flex-col px-[20px] w-full mt-[13px]">
+            <Skeleton width="40%" height={35} />
+            <Skeleton width="80%" height={30} />
+            <Skeleton width="80%" height={30} />
         </div>
     );
 
@@ -34,14 +26,15 @@ const ConfirmationView = ({
 
     return (
         <>
-            <div className={styles.container} id="checkoutAgreements">
+            <div className="flex flex-col px-[20px] w-full mt-[13px]" id="checkoutAgreements">
                 {
                     agreements && agreements.checkoutAgreements.map((item, index) => (
-                        <Grid id="agreement-row" container spacing={0} key={index}>
-                            <Grid item md={12} xs={12}>
+                        <div id="agreement-row" className="grid grid-cols-1" key={index}>
+                            <div item md={12} xs={12}>
                                 {
                                     item.mode === 'MANUAL' ? (
-                                        <Checkbox
+                                        <CheckBox
+                                            variant="single"
                                             checked={(checkList.length === 0) ? false : checkList[index].isChecked}
                                             onChange={() => handleCheckbox(index)}
                                             inputProps={{ 'aria-label': 'primary checkbox' }}
@@ -50,7 +43,8 @@ const ConfirmationView = ({
                                         />
                                     )
                                         : (
-                                            <Checkbox
+                                            <CheckBox
+                                                variant="single"
                                                 disabled
                                                 checked
                                                 inputProps={{ 'aria-label': 'primary checkbox' }}
@@ -74,13 +68,11 @@ const ConfirmationView = ({
                                     aria-labelledby="customized-dialog-title"
                                     open={modalList.length && modalList[index].isOpen}
                                 >
-                                    <DialogTitle>{item.name}</DialogTitle>
-                                    <DialogContent dividers>
-                                        <DialogContentText>
-                                            <div dangerouslySetInnerHTML={{ __html: item.content }} />
-                                        </DialogContentText>
-                                    </DialogContent>
-                                    <DialogActions>
+                                    <div className="dialog-title">{item.name}</div>
+                                    <div className="dialog-content">
+                                        <div dangerouslySetInnerHTML={{ __html: item.content }} />
+                                    </div>
+                                    <div className="dialog-footer">
                                         <Button
                                             variant="contained"
                                             onClick={() => handleCloseModal(index)}
@@ -88,10 +80,10 @@ const ConfirmationView = ({
                                         >
                                             {t('checkout:close')}
                                         </Button>
-                                    </DialogActions>
+                                    </div>
                                 </Dialog>
-                            </Grid>
-                        </Grid>
+                            </div>
+                        </div>
                     ))
                 }
             </div>

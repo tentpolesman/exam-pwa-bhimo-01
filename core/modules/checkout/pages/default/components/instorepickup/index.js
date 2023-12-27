@@ -1,18 +1,10 @@
 import Button from '@common_button';
 import TextField from '@common_forms/TextField';
 import Typography from '@common_typography';
-import useModalStyles from '@core_modules/checkout/pages/default/components/ModalSelectStore/style';
-import useStyles from '@core_modules/checkout/pages/default/components/PickupInformation/style';
-import useParentStyles from '@core_modules/checkout/pages/default/components/style';
+import Dialog from '@common_dialog';
+import XMarkIcon from '@heroicons/react/24/solid/XMarkIcon';
+import cx from 'classnames';
 import { pickupLocations, setInstoreShippingAddress, setShippingMethod } from '@core_modules/checkout/services/graphql';
-import AppBar from '@material-ui/core/AppBar';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
-import Alert from '@material-ui/lab/Alert';
-import classNames from 'classnames';
 import { useEffect, useState } from 'react';
 
 const ModalPickupLocations = (props) => {
@@ -24,7 +16,6 @@ const ModalPickupLocations = (props) => {
     const [listLocations, setListLocations] = useState(locations);
     const [selected, setSelected] = useState(checkout);
     const [search, setSearch] = useState('');
-    const styles = useModalStyles();
     const [setShipMethod] = setShippingMethod();
     const [setInstoreAddress] = setInstoreShippingAddress();
 
@@ -98,17 +89,21 @@ const ModalPickupLocations = (props) => {
     /* eslint-disable */
     return (
         <Dialog open={open} onClose={() => setOpen(!open)} fullWidth={true} maxWidth="sm">
-            <AppBar className={styles.appBar}>
-                <IconButton className={styles.btnClose} edge="start" onClick={() => setOpen(!open)} aria-label="close">
-                    <CloseIcon className={styles.iconClose} />
-                </IconButton>
-                <Typography variant="label" type="bold" align="center" letter="uppercase" className={styles.title}>
+            <div className={
+                cx(
+                    'relative bg-neutral-white p-[10px] shadow-none h-[51px] flex flex-row justify-center items-center'
+                )
+            }>
+                <Button className="absolute left-[10px]" onClick={() => setOpen(!open)} aria-label="close">
+                    <XMarkIcon className="text-[30px] text-primary" />
+                </Button>
+                <Typography className="justify-center my-[16px font-bold text-center uppercase]">
                     {t('checkout:pickupInformation:label')}
                 </Typography>
-            </AppBar>
-            <DialogContent dividers>
-                <div className={styles.container}>
-                    <div className={styles.body}>
+            </div>
+            <div className='dialog-content'>
+                <div className="w-full h-[80vh]">
+                    <div className="flex flex-col relative h-full">
                         <TextField label="Search" value={search} onChange={handleSearch} />
                         {listLocations && listLocations.length > 0 ? (
                             listLocations.map((loc) => {
@@ -116,12 +111,12 @@ const ModalPickupLocations = (props) => {
                                     <div
                                         key={loc.pickup_location_code}
                                         onClick={() => setSelected(loc)}
-                                        className={classNames(
-                                            styles.card,
-                                            selected && selected.pickup_location_code === loc.pickup_location_code && styles.cardActive
+                                        className={cx(
+                                            "w-full my-[10px] p-[17px] flex flex-col justify-between items-start border border-neutral-400 rounded-[10px]",
+                                            selected && selected.pickup_location_code === loc.pickup_location_code && "border border-primary-700"
                                         )}
                                     >
-                                        <Typography variant="span" type="bold">
+                                        <Typography className="font-bold">
                                             {loc.name}
                                         </Typography>
                                         <Typography>
@@ -141,20 +136,20 @@ const ModalPickupLocations = (props) => {
                                 );
                             })
                         ) : (
-                            <Alert className="m-15" severity="warning">
+                            <div className="alert-warning-container p-2 m-15 bg-yellow-500 text-neutral-white">
                                 {t('checkout:storesNotFound')}
-                            </Alert>
+                            </div>
                         )}
                     </div>
                 </div>
-            </DialogContent>
-            <DialogActions>
-                <div className={styles.footer}>
-                    <Button className={styles.btnSave} type="button" onClick={handleSave} loading={loading} disabled={loading}>
+            </div>
+            <div className='dialog-footer'>
+                <div className="flex flex-row w-full justify-around items-center bottom-0 bg-neutral-white p-[10px]">
+                    <Button className="block m-auto w-[calc(100%-12px)] h-[41px]" type="button" onClick={handleSave} loading={loading} disabled={loading}>
                         {t('common:button:save')}
                     </Button>
                 </div>
-            </DialogActions>
+            </div>
         </Dialog>
     );
 };
@@ -164,8 +159,6 @@ const InStorePickup = (props) => {
     const [getPickupLocations, results] = pickupLocations();
     const [open, setOpen] = useState(false);
     const locations = results.data?.pickupLocations.items;
-    const classes = useStyles();
-    const styles = useParentStyles();
     const { pickup_location_code } = checkout;
     const { address } = checkout.selected;
 
@@ -174,7 +167,7 @@ const InStorePickup = (props) => {
     }, [results.called]);
 
     return (
-        <div className={styles.block}>
+        <div className="border-b border-b-neutral-400 p-[30px]">
             <ModalPickupLocations
                 t={t}
                 open={open}
@@ -188,11 +181,11 @@ const InStorePickup = (props) => {
                 {t('checkout:pickupInformation:label')}
             </Typography>
             <Typography>{t('checkout:pickupInformation:pickupAtLabel')}</Typography>
-            <div className={classNames(styles.cardPoint, classes.card)}>
+            <div className={cx("mb-[15px] ml-0 mr-0")}>
                 <div className="flex flex-col">
                     {address && pickup_location_code && Object.keys(address).length > 0 && (
                         <>
-                            <Typography variant="span" type="bold">
+                            <Typography className="font-bold">
                                 {address.name}
                             </Typography>
                             <Typography>
@@ -210,7 +203,7 @@ const InStorePickup = (props) => {
                             </Typography>
                         </>
                     )}
-                    <Button align="left" variant="text" className="clear-margin-padding" onClick={() => setOpen(!open)}>
+                    <Button className="clear-margin-padding text-left p-0 m-0" onClick={() => setOpen(!open)}>
                         <Typography variant="span" letter="uppercase" type="bold">
                             {t('checkout:pickupInformation:changePickupLocation')}
                         </Typography>

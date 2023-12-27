@@ -1,28 +1,21 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/destructuring-assignment */
-import AppBar from '@material-ui/core/AppBar';
-import Dialog from '@material-ui/core/Dialog';
-import IconButton from '@material-ui/core/IconButton';
-import Slide from '@material-ui/core/Slide';
-import Toolbar from '@material-ui/core/Toolbar';
-import ArrowBack from '@material-ui/icons/ArrowBack';
-import SearchIcon from '@material-ui/icons/Search';
+import React from 'react';
+import Dialog from '@common_dialog';
+import ArrowLeftIcon from '@heroicons/react/24/solid/ArrowLeftIcon';
+import MagnifyingGlassIcon from '@heroicons/react/24/solid/MagnifyingGlassIcon';
 import Router from 'next/router';
-import React, { useState } from 'react';
+import Button from '@common_button';
 import AutoComplete from '@core_modules/theme/components/header/desktop/components/autocomplete';
 import OptionsItem from '@core_modules/theme/components/header/desktop/components/autocomplete/view';
 import CategoryWrapper from '@common_searchmodal/CategoryWrapper';
 import VesMenuWrapper from '@common_searchmodal/VesMenuWrapper';
-import useStyles from '@common_searchmodal/style';
-
-const Transition = React.forwardRef((props, ref) => <Slide direction="left" ref={ref} {...props} />);
 
 const SearchPage = (props) => {
-    const styles = useStyles();
-    const [openedCategory, setOpenedCategory] = useState([]);
-    const [showCat, setShowCat] = useState(true);
-    const [showSubCat, setShowSubCat] = useState(false);
-    const [slideCat, setSlideCat] = useState(false);
+    const [openedCategory, setOpenedCategory] = React.useState([]);
+    const [showCat, setShowCat] = React.useState(true);
+    const [showSubCat, setShowSubCat] = React.useState(false);
+    const [slideCat, setSlideCat] = React.useState(false);
     const [value, setValue] = React.useState('');
     const { open, storeConfig = {} } = props;
     const vesMenu = storeConfig && storeConfig.pwa && storeConfig.pwa?.ves_menu_enable;
@@ -63,20 +56,17 @@ const SearchPage = (props) => {
     return (
         <>
             <Dialog
-                fullScreen
                 open={open}
-                TransitionComponent={Transition}
             >
-                <div className={styles.container}>
-                    <AppBar className={styles.appBar}>
-                        <Toolbar>
-                            <IconButton
-                                edge="start"
+                <div className="w-full h-full">
+                    <div className="app-bar relative bg-neutral-white shadow-none">
+                        <div className="toolbar">
+                            <Button
                                 onClick={handleCloseModal}
                                 aria-label="close"
                             >
-                                <ArrowBack className={styles.iconClose} />
-                            </IconButton>
+                                <ArrowLeftIcon className="text-[30px]" />
+                            </Button>
                             <AutoComplete
                                 setValue={setValue}
                                 handleSearch={handleSearch}
@@ -85,16 +75,15 @@ const SearchPage = (props) => {
                                 OptionsItem={OptionsItem}
                                 storeConfig={storeConfig}
                             />
-                            <IconButton
+                            <Button
                                 disabled={value === ''}
-                                edge="start"
                                 onClick={searchByClick}
                                 aria-label="close"
                             >
-                                <SearchIcon className={styles.iconClose} />
-                            </IconButton>
-                        </Toolbar>
-                    </AppBar>
+                                <MagnifyingGlassIcon className="text-[30px]" />
+                            </Button>
+                        </div>
+                    </div>
                     {open ? vesMenu ? (
                         <VesMenuWrapper
                             handleCloseModal={handleCloseModal}

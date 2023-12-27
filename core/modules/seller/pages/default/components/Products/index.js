@@ -2,7 +2,6 @@
 import { getEtalase } from '@core_modules/seller/services/graphql';
 import TabView from '@common_tabs';
 import Typography from '@common_typography';
-import useStyles from '@core_modules/seller/pages/default/components/style';
 import DetailProductView from '@plugin_productitem/components/Detail';
 import ImageProductView from '@plugin_productitem/components/Image';
 import CoreBase from '@plugin_productlist/core';
@@ -22,7 +21,6 @@ const ContentProducts = (props) => {
     const {
         storeConfig, t, dataSeller, errorSeller, loadingSeller, link, sellerId, isLogin, route, handleChat, showChat, banner, ...other
     } = props;
-    const styles = useStyles();
 
     const { data } = getEtalase({
         variables: {
@@ -42,7 +40,7 @@ const ContentProducts = (props) => {
             {dataSeller && dataSeller.getSeller.length > 0 && (
                 <>
                     <SellerInfo {...props} />
-                    <div className={styles.sellerProduct}>
+                    <div className="">
                         <TabLayout noBanner={banner} t={t}>
                             <div className="flex flex-row">
                                 {

@@ -4,18 +4,16 @@ import Button from '@common_button';
 import TextField from '@common_textfield';
 import ReCAPTCHA from 'react-google-recaptcha';
 import dynamic from 'next/dynamic';
-import useStyles from '@core_modules/contact/pages/default/components/style';
 
 const Message = dynamic(() => import('@common_toast'), { ssr: false });
 
 const ContactForm = (props) => {
-    const styles = useStyles();
     const {
         t, formik, sitekey, handleChangeCaptcha, recaptchaRef,
         message, setMessage, load, enableRecaptcha,
     } = props;
     return (
-        <form className={styles.container} onSubmit={formik.handleSubmit}>
+        <form onSubmit={formik.handleSubmit}>
             <Message
                 open={message.open}
                 variant={message.variant}
@@ -24,7 +22,6 @@ const ContactForm = (props) => {
             />
             <TextField
                 label={t('contact:fullName')}
-                className={styles.fullName}
                 name="fullName"
                 value={formik.values.fullName}
                 onChange={formik.handleChange}
@@ -33,7 +30,6 @@ const ContactForm = (props) => {
             />
             <TextField
                 label={t('contact:email')}
-                className={styles.email}
                 name="email"
                 value={formik.values.email}
                 onChange={formik.handleChange}
@@ -42,7 +38,6 @@ const ContactForm = (props) => {
             />
             <TextField
                 label={t('contact:telephone')}
-                className={styles.telephone}
                 name="telephone"
                 value={formik.values.telephone}
                 onChange={formik.handleChange}
@@ -51,7 +46,6 @@ const ContactForm = (props) => {
             />
             <TextField
                 label={t('contact:message')}
-                className={styles.message}
                 name="message"
                 multiline
                 rows="4"
@@ -98,19 +92,18 @@ const ContactForm = (props) => {
 };
 
 const ContactPage = (props) => {
-    const styles = useStyles();
     const {
         data, t, loading, Skeleton,
     } = props;
     return (
         <>
             {/* eslint-disable-next-line react/no-danger */}
-            <Typography variant="h1" type="bold" align="left" className={styles.pageTitles}>
+            <Typography variant="h1" type="bold" align="left">
                 {t('contact:contactUs')}
             </Typography>
             <div className="flex flex-row">
                 <div className="md:basis-1/2 xs:basis-full">
-                    {(!loading && <div className={styles.container} dangerouslySetInnerHTML={{ __html: data.cmsBlocks.items[0].content }} />)}
+                    {(!loading && <div dangerouslySetInnerHTML={{ __html: data.cmsBlocks.items[0].content }} />)}
                     {(loading && <Skeleton />)}
                 </div>
                 <div className="md:basis-1/2 xs:basis-full">

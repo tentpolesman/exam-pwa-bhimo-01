@@ -2,18 +2,13 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import cx from 'classnames';
-
-import Alert from '@material-ui/lab/Alert';
 import Link from 'next/link';
-
 import Button from '@common_button';
 import ButtonQty from '@common_buttonqty';
 import Thumbor from '@common_image';
 import Typography from '@common_typography';
-
 import TrashIcon from '@heroicons/react/24/solid/TrashIcon';
-
+import cx from 'classnames';
 import { formatPrice } from '@helper_currency';
 import { useTranslation } from 'next-i18next';
 
@@ -211,7 +206,7 @@ const Item = (props) => {
             </div>
             {errorCartItems && errorCartItems.length > 0 && errorCartItems[0] !== null && (
                 <div className="error-status-qty">
-                    <Alert severity="warning">{errorCartItems[0]}</Alert>
+                    <div className="bg-yellow-600 text-neutral-white p-2">{errorCartItems[0]}</div>
                 </div>
             )}
         </li>

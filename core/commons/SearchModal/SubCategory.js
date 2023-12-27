@@ -1,25 +1,16 @@
 import React from 'react';
 import Typography from '@common_typography';
 import Button from '@common_button';
-import IconButton from '@material-ui/core/IconButton';
-import Slide from '@material-ui/core/Slide';
-import ArrowBack from '@material-ui/icons/ArrowBack';
-import useStyles from '@common_searchmodal/style';
+import ArrowLeftIcon from '@heroicons/react/24/solid/ArrowLeftIcon';
 
 const SubCategory = ({
     open, data, setOpenModal, onBack,
     handleClickMenu,
 }) => {
-    const styles = useStyles();
+    if (!open) return null;
     return (
-        <Slide
-            direction="left"
-            in={open}
-            timeout={300}
-            mountOnEnter
-            unmountOnExit
-        >
-            <div className={styles.body}>
+        <div className="slide-container">
+            <div className="flex flex-col justify-center items-center pt-[20px] pb-[20px] px-[80px]">
                 <Button
                     fullWidth
                     variant="text"
@@ -30,11 +21,11 @@ const SubCategory = ({
                         }, 200);
                     }}
                 >
-                    <Typography variant="label" size="14" letter="uppercase" type="bold" align="center">
+                    <Typography className="font-bold text-md uppercase text-center">
                         {data[0].name}
                     </Typography>
                 </Button>
-                <div className={styles.item}>
+                <div className="m-0 flex flex-col justify-center items-center">
                     {data[0].children.map((item, indx) => (
                         <Button
                             key={indx}
@@ -46,25 +37,19 @@ const SubCategory = ({
                                     handleClickMenu(item);
                                 }, 300);
                             }}
-                            className={indx === data[0].children.length - 1 ? styles.lastCat : styles.cat}
+                            className={indx === data[0].children.length - 1 ? 'm-0 p-[2px] h-auto !mb-[40px]' : 'p-[2px] h-auto'}
                         >
-                            <Typography
-                                variant="span"
-                                letter="capitalize"
-                                size="14"
-                                align="center"
-                            >
+                            <Typography className="first-letter:uppercase text-md text-center">
                                 {item.name}
                             </Typography>
-
                         </Button>
                     ))}
                 </div>
-                <IconButton onClick={() => onBack()}>
-                    <ArrowBack />
-                </IconButton>
+                <Button onClick={() => onBack()}>
+                    <ArrowLeftIcon />
+                </Button>
             </div>
-        </Slide>
+        </div>
     );
 };
 

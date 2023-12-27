@@ -1,6 +1,5 @@
 import React from 'react';
 import Typography from '@common_typography';
-import useStyles from '@core_modules/paypal/pages/review/components/ShippingAddress/style';
 import classNames from 'classnames';
 // import Link from 'next/link';
 
@@ -11,8 +10,6 @@ const ShippingAddress = (props) => {
         paypallShippingAddress = checkout.shippingAddress;
     }
 
-    const styles = useStyles();
-
     return (
         <div className="flex flex-row">
             <div className="xs:basis-full">
@@ -20,7 +17,7 @@ const ShippingAddress = (props) => {
                     {t('checkout:shippingAddress')}
                 </Typography>
             </div>
-            <div className={classNames('xs:basis-full', styles.detail)}>
+            <div className={classNames('xs:basis-full')}>
                 {
                     paypallShippingAddress && paypallShippingAddress.firstname && (
                         <Typography variant="span" letter="capitalize">

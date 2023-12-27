@@ -1,25 +1,14 @@
+import React from 'react';
 import Button from '@common_button';
 import TextField from '@common_forms/TextField';
 import Typography from '@common_typography';
+import Dialog from '@common_dialog';
+import XMarkIcon from '@heroicons/react/24/solid/XMarkIcon';
+import gqlService from '@core_modules/checkout/services/graphql';
 import { regexPhone } from '@helper_regex';
 import { useTranslation } from 'next-i18next';
-import AppBar from '@material-ui/core/AppBar';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import IconButton from '@material-ui/core/IconButton';
-import Slide from '@material-ui/core/Slide';
-import CloseIcon from '@material-ui/icons/Close';
 import { useFormik } from 'formik';
-import React from 'react';
 import * as Yup from 'yup';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import gqlService from '@core_modules/checkout/services/graphql';
-import useStyles from '@core_modules/checkout/pages/default/components/ModalPickupInformation/style';
-
-const Transition = React.forwardRef((props, ref) => (
-    <Slide direction="up" ref={ref} {...props} />
-));
 
 const ModalPickupInformation = ({
     open,
@@ -28,9 +17,7 @@ const ModalPickupInformation = ({
     setCheckout,
 }) => {
     const { t } = useTranslation(['common', 'checkout', 'validate']);
-    const styles = useStyles();
     const [setPickupStore] = gqlService.setPickupStore();
-    const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
 
     const validationSchema = Yup.object().shape({
         email: Yup.string().email(t('validate:email:wrong')).required(t('validate:email:required')),
@@ -115,34 +102,26 @@ const ModalPickupInformation = ({
     return (
         <Dialog
             open={open}
-            TransitionComponent={Transition}
             onClose={setOpen}
-            maxWidth="sm"
-            fullWidth={!!isDesktop}
-            fullScreen={!isDesktop}
         >
-            <AppBar className={styles.appBar}>
-                <IconButton
-                    className={styles.btnClose}
+            <div className="app-bar relative bg-neutral-white p-[10px] shadow-none h-[51px] flex flex-row justify-center items-center">
+                <Button
+                    className="absolute left-[10px]"
                     edge="start"
                     onClick={setOpen}
                     aria-label="close"
                 >
-                    <CloseIcon className={styles.iconClose} />
-                </IconButton>
+                    <XMarkIcon className="text-[30px] text-primary" />
+                </Button>
                 <Typography
-                    variant="label"
-                    type="bold"
-                    align="center"
-                    letter="uppercase"
-                    className={styles.title}
+                    className="font-bold text-center uppercase self-center my-[16px]"
                 >
                     {t('checkout:pickupInformation:label')}
                 </Typography>
-            </AppBar>
+            </div>
             <form onSubmit={formik.handleSubmit}>
-                <DialogContent dividers>
-                    <div className={styles.body}>
+                <div className="dialog-content">
+                    <div className="flex flex-row w-full justify-around items-center bottom-0 bg-neutral-white p-[10px]">
                         <TextField
                             label={t('checkout:pickupInformation:pickupPerson')}
                             name="person"
@@ -168,15 +147,15 @@ const ModalPickupInformation = ({
                             errorMessage={(formik.touched.email && formik.errors.email) || null}
                         />
                     </div>
-                </DialogContent>
+                </div>
 
-                <DialogActions>
-                    <div className={styles.footer}>
-                        <Button loading={loading} className={styles.btnSave} type="submit">
+                <div className="dialog-footer">
+                    <div className="flex flex-row w-full justify-around items-center bottom-0 bg-neutral-white p-[10px]">
+                        <Button loading={loading} className="block m-auto w-[calc(100% - 12px)] h-[41px]" type="submit">
                             {t('common:button:save')}
                         </Button>
                     </div>
-                </DialogActions>
+                </div>
             </form>
         </Dialog>
     );

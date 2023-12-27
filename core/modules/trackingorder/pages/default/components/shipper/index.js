@@ -5,7 +5,7 @@
 
 import Typography from '@common_typography';
 import formatDate from '@helper_date';
-import LaunchIcon from '@material-ui/icons/Launch';
+import ArrowTopRightOnSquareIcon from '@heroicons/react/20/solid/ArrowTopRightOnSquareIcon';
 import Link from 'next/link';
 
 const ShipperView = (props) => {
@@ -167,7 +167,7 @@ const ShipperView = (props) => {
                                     <a>
                                         <div style={{ display: 'flex', alignItems: 'center' }}>
                                             <span>{t('trackingorder:track')}</span>
-                                            <LaunchIcon fontSize="small" />
+                                            <ArrowTopRightOnSquareIcon className="text-sm" />
                                         </div>
                                     </a>
                                 </Link>

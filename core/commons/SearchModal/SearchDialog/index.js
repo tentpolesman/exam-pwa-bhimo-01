@@ -1,19 +1,15 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
+import React from 'react';
 import TextField from '@common_forms/TextField';
 import Typography from '@common_typography';
-import { useTranslation } from 'next-i18next';
-import Dialog from '@material-ui/core/Dialog';
-import Grow from '@material-ui/core/Grow';
-import IconButton from '@material-ui/core/IconButton';
-import Toolbar from '@material-ui/core/Toolbar';
-import AppBar from '@material-ui/core/AppBar';
-import CloseIcon from '@material-ui/icons/Close';
+import Dialog from '@common_dialog';
+import XMarkIcon from '@heroicons/react/24/solid/XMarkIcon';
 import classNames from 'classnames';
 import Router from 'next/router';
-import React from 'react';
-import useStyles from '@common_searchmodal/SearchDialog/style';
+import Button from '@common_button';
+import { useTranslation } from 'next-i18next';
 
 const data = [
     {
@@ -34,37 +30,33 @@ const category = [
     },
 ];
 
-const Transition = React.forwardRef((props, ref) => <Grow ref={ref} {...props} timeout={600} />);
-
 const TextSearch = ({
     text = '', searchValue = '', value = 3, subText = '',
 }) => {
-    const styles = useStyles();
     const textArray = text.split('');
     const valueArray = searchValue.split('');
     return (
-        <div className={styles.textSearch}>
-            <div className={styles.textValue}>
-                <Typography variant="span" type="bold" letter="capitalize" className={styles.rmMargin}>
+        <div className="flex flex-row justify-between pr-[15%]">
+            <div className="flex flex-col my-[10px]">
+                <Typography className="m-0">
                     {valueArray.map((txt, key) => textArray[key])}
-                    <Typography variant="span" letter="lowercase" className={styles.rmMargin} type="regular">
+                    <Typography className="m-0">
                         {textArray.map((txt, idx) => idx >= valueArray.length && txt)}
                     </Typography>
                 </Typography>
-                <Typography variant="p" type="regular" className={styles.rmMargin}>
+                <Typography className="m-0">
                     {subText}
                 </Typography>
             </div>
-            <Typography variant="p">{value}</Typography>
+            <Typography>{value}</Typography>
         </div>
     );
 };
 
 const SearchDialog = ({ open, setOpen }) => {
     const { t } = useTranslation(['common']);
-    const styles = useStyles();
     const [value, setValue] = React.useState('');
-    const classBody = value === '' ? classNames(styles.body, styles.hide) : classNames(styles.body, styles.show);
+    const classBody = value === '' ? classNames('mr-[10px] mb-[10px] ml-[15%]', 'hidden') : classNames('mr-[10px] mb-[10px] ml-[15%]', 'block');
     const handleSearch = (ev) => {
         if (ev.key === 'Enter') {
             Router.push(`/catalogsearch/result?q=${encodeURIComponent(value)}`);
@@ -76,20 +68,20 @@ const SearchDialog = ({ open, setOpen }) => {
     };
 
     return (
-        <Dialog fullScreen open={open} TransitionComponent={Transition} onClose={setOpen}>
-            <AppBar className={styles.appBar}>
-                <Toolbar>
-                    <IconButton edge="start" onClick={setOpen} aria-label="close">
-                        <CloseIcon className={styles.iconClose} />
-                    </IconButton>
+        <Dialog open={open} onClose={setOpen}>
+            <div className="app-bar relative bg-neutral-white shadow-none">
+                <div className="toolbar">
+                    <Button edge="start" onClick={setOpen} aria-label="close">
+                        <XMarkIcon className="text-[30px] text-primary" />
+                    </Button>
                     <TextField placeholder="Search ..." value={value} onChange={handleAutoComplete} onKeyPress={handleSearch} />
-                </Toolbar>
-            </AppBar>
+                </div>
+            </div>
             <div className={classBody}>
-                <Typography variant="span" type="bold" letter="uppercase" className={styles.title}>
+                <Typography variant="span" type="bold" letter="uppercase" className="my-[16px]">
                     {t('common:title:brand')}
                 </Typography>
-                <div className={styles.result}>
+                <div className="flex flex-col mt-[16px] mb-[30px]">
                     {data.map((dt, idx) => (
                         <a
                             key={idx}
@@ -101,10 +93,10 @@ const SearchDialog = ({ open, setOpen }) => {
                         </a>
                     ))}
                 </div>
-                <Typography variant="span" type="bold" letter="uppercase" className={styles.title}>
+                <Typography variant="span" type="bold" letter="uppercase" className="my-[16px]">
                     {t('common:title:category')}
                 </Typography>
-                <div className={styles.result}>
+                <div className="flex flex-col mt-[16px] mb-[30px]">
                     {category.map((dt, idx) => (
                         <a key={idx} onClick={() => Router.push('/category/[id]', `/category/${dt.cat.toLowerCase()}`)}>
                             <TextSearch text={dt.text} searchValue={value} value={dt.value} subText={`in ${dt.cat}`} />

@@ -1,17 +1,13 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable semi-style */
 import Button from '@common_button';
 import CircularProgress from '@common_circularprogress';
 import Typography from '@common_typography';
-import useStyles from '@core_modules/checkout/pages/default/components/summary/style';
+import cx from 'classnames';
 import { formatPrice } from '@helper_currency';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpandLess from '@material-ui/icons/ExpandLess';
-import ExpandMore from '@material-ui/icons/ExpandMore';
 import { useState } from 'react';
 
 const SummaryView = (props) => {
-    const styles = useStyles();
     const {
         handlePlaceOrder, loading, data, total, t, disabled,
     } = props;
@@ -20,8 +16,8 @@ const SummaryView = (props) => {
         setExpanded(newExpanded ? panel : false);
     };
     return (
-        <div className={styles.footer}>
-            <ExpansionPanel expanded={expanded === 1} onChange={handleChange(1)} className={styles.expand}>
+        <div className="flex flex-col w-full max-w-[960px] bottom-0 shadow-sm px-[20px] pt-0 pb-[20px]">
+            {/* <ExpansionPanel expanded={expanded === 1} onChange={handleChange(1)} className={styles.expand}>
                 <ExpansionPanelSummary
                     classes={{
                         root: styles.expanHead,
@@ -42,17 +38,26 @@ const SummaryView = (props) => {
                         </div>
                     ))}
                 </ExpansionPanelDetails>
-            </ExpansionPanel>
+            </ExpansionPanel> */}
 
-            <div className={styles.listSummary}>
-                <Typography variant="title" type="bold" letter="capitalize">
+            <div className="flex flex-row justify-between">
+                <Typography className="font-bold first-letter:uppercase">
                     Total
                 </Typography>
                 <Typography variant="title" type="bold" letter="uppercase">
                     {total.currency ? formatPrice(total.value, total.currency) : null}
                 </Typography>
             </div>
-            <Button onClick={handlePlaceOrder} className={styles.btnSave} disabled={loading || disabled}>
+            <Button
+                onClick={handlePlaceOrder}
+                className={
+                    cx(
+                        'mt-[13px] mr-[8px] absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2',
+                        'w-[316px] max-w-[85%] h-[41px]',
+                    )
+                }
+                disabled={loading || disabled}
+            >
                 {t('checkout:placeOrder')}
                 {loading && <CircularProgress />}
             </Button>

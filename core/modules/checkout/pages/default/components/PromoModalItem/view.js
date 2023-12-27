@@ -1,17 +1,15 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-unused-vars */
+/* eslint-disable max-len */
 import React from 'react';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import MuiDialogTitle from '@material-ui/core/DialogTitle';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
+import Button from '@common_button';
+import Dialog from '@common_dialog';
+import XMarkIcon from '@heroicons/react/20/solid/XMarkIcon';
 import Typography from '@common_typography';
 import classNames from 'classnames';
 import dynamic from 'next/dynamic';
-import RedeemIcon from '@material-ui/icons/Redeem';
+import GiftTopIcon from '@heroicons/react/24/solid/GiftTopIcon';
 import ProductItem from '@plugin_productitem';
-import useStyles from '@core_modules/checkout/pages/default/components/PromoModalItem/style';
 
 const Caraousel = dynamic(() => import('@common_slick/Caraousel'), { ssr: false });
 
@@ -20,7 +18,6 @@ const PromoModalItemView = (props) => {
         items, handleAddToCart, handleClickOpen, handleClose, open,
         availableMaxQty, customQty,
     } = props;
-    const styles = useStyles();
 
     const [triger, setTriger] = React.useState(false);
     const maxHeigtToShow = 51;
@@ -50,12 +47,17 @@ const PromoModalItemView = (props) => {
     return (
         <>
             {availableMaxQty > 0 ? (
-                <div className={triger ? styles.freeItemContainerMobileFixed : styles.freeItemContainer}>
-                    <RedeemIcon />
+                <div className={
+                    triger
+                        ? 'flex flex-row justify-center items-center bg-yellow-700 sticky top-[37px] text-neutral-white [&>span]:text-neutral-white mobile:p-[10px] mobile:fixed mobile:top-0 mobile:w-full'
+                        : 'flex flex-row justify-center items-center bg-yellow-700 sticky top-[37px] text-neutral-white [&>span]:text-neutral-white mobile:p-[10px] mobile:absolute mobile:top-0 mobile:w-full'
+                }
+                >
+                    <GiftTopIcon />
             &nbsp;
                     <span>
                         Select your
-                        <Button variant="text" color="primary" onClick={handleClickOpen}>
+                        <Button variant="plain" color="primary" onClick={handleClickOpen}>
                             <Typography type="bold" letter="uppercase">
                                 Free Gift!
                             </Typography>
@@ -64,16 +66,16 @@ const PromoModalItemView = (props) => {
                 </div>
             ) : null }
             <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open} fullWidth maxWidth="md">
-                <MuiDialogTitle disableTypography className={styles.root} id="customized-dialog-title">
+                <div class="dalog-title" disableTypography className="m-0 p-[2px]" id="customized-dialog-title">
                     <Typography variant="h6">Free Promo Items</Typography>
                     <Typography variant="span">{`Available max quatity : ${availableMaxQty}`}</Typography>
                     {handleClose ? (
-                        <IconButton aria-label="close" className={styles.closeButton} onClick={handleClose}>
-                            <CloseIcon />
-                        </IconButton>
+                        <Button aria-label="close" className="absolute right-[1px] top-[1px] text-neutral-400" onClick={handleClose}>
+                            <XMarkIcon />
+                        </Button>
                     ) : null}
-                </MuiDialogTitle>
-                <div className={classNames(styles.carouselContainer, 'xs:basis-full lg:basis-full')}>
+                </div>
+                <div className={classNames('p-[20px] mobile:pb-[70px] mobile:pl-0 mobile:pr-0', 'xs:basis-full lg:basis-full')}>
                     <Caraousel
                         data={items}
                         Item={ProductItem}

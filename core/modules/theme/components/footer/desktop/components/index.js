@@ -1,5 +1,4 @@
 import CmsRenderer from '@core_modules/cms/components/cms-renderer';
-import Alert from '@material-ui/lab/Alert';
 import { MAX_WIDTH } from '@theme_vars';
 import { useEffect, useRef, useState } from 'react';
 
@@ -26,9 +25,9 @@ const FooterView = (props) => {
 
     if (error) {
         return (
-            <Alert className="m-15" severity="error">
+            <div className="m-15 p-2 bg-red-500 text-neutral-white">
                 {t('common:error:fetchError')}
-            </Alert>
+            </div>
         );
     }
 

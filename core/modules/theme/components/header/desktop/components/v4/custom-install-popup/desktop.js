@@ -1,11 +1,8 @@
 /* eslint-disable react/jsx-one-expression-per-line */
-import Button from '@material-ui/core/Button';
+import Button from '@common_button';
 import TagManager from 'react-gtm-module';
-import useStyles from './style';
 
 const DesktopInstall = ({ installMessage = 'Install' }) => {
-    const styles = useStyles();
-
     const onClick = () => {
         const timestamp = Date.now();
         const identifier = `${Math.floor(Math.random() * 100) * Math.floor(Math.random() * 100)}_${timestamp}`;
@@ -20,9 +17,9 @@ const DesktopInstall = ({ installMessage = 'Install' }) => {
     };
 
     return (
-        <div id="popup-desktop__install" className={styles.popupInstallDesktop}>
+        <div id="popup-desktop__install">
             {installMessage}
-            <Button id="btn-install" variant="contained" color="primary" className={styles.btnInstallDesktop} onClick={onClick}>
+            <Button id="btn-install" variant="contained" color="primary" onClick={onClick}>
                 Install
             </Button>{' '}
         </div>

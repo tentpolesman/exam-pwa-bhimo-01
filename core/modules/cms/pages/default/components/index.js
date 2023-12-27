@@ -1,5 +1,4 @@
 import Backdrop from '@common_backdrop';
-import Alert from '@material-ui/lab/Alert';
 import CmsRenderer from '@core_modules/cms/components/cms-renderer';
 
 const CmsPage = (props) => {
@@ -8,9 +7,9 @@ const CmsPage = (props) => {
     } = props;
     if (error) {
         return (
-            <Alert className="m-15" severity="error">
+            <div className="alert m-15" severity="error">
                 {t('common:error:fetchError')}
-            </Alert>
+            </div>
         );
     }
 
