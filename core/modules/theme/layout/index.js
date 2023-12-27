@@ -36,6 +36,7 @@ import { frontendConfig } from '@helpers/frontendOptions';
 import { localTotalCart } from '@services/graphql/schema/local';
 import localFont from 'next/font/local';
 import Script from 'next/script';
+import { BREAKPOINTS } from '@root/core/theme/vars';
 
 /**
  * Set font family using nextjs helper,
@@ -332,7 +333,7 @@ const Layout = (props) => {
     };
 
     const generateClasses = () => {
-        let classes = `${!isCms ? 'tablet:max-w-[720px] desktop:max-w-[1200px]' : ''} ${font.variable} font-sans !font-pwa-default`;
+        let classes = `${!isCms ? 'tablet:max-w-[768px] desktop:max-w-[1280px]' : ''} ${font.variable} font-sans !font-pwa-default`;
         if (showGlobalPromo) {
             classes += ' mobile:max-tablet:mt-2 tablet:max-desktop:mt-[145px] desktop:mt-[196px]';
         } else {
@@ -565,7 +566,7 @@ const Layout = (props) => {
             ) : null} */}
             {allowHeaderCheckout && (
                 <header ref={refHeader} className={cx(font.variable, 'font-sans', '!font-pwa-default')}>
-                    {typeof window !== 'undefined' && storeConfig.global_promo && storeConfig.global_promo.enable && deviceWidth > 768 && (
+                    {typeof window !== 'undefined' && storeConfig.global_promo && storeConfig.global_promo.enable && deviceWidth > BREAKPOINTS.md && (
                         <GlobalPromoMessage
                             t={t}
                             storeConfig={storeConfig}
@@ -573,7 +574,7 @@ const Layout = (props) => {
                             handleClose={handleClosePromo}
                             appName={appName}
                             installMessage={installMessage}
-                            isMobile={deviceWidth < 768}
+                            isMobile={deviceWidth < BREAKPOINTS.md}
                         />
                     )}
                     {/* <div className="hidden-mobile">

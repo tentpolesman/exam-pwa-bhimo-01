@@ -61,7 +61,7 @@ const NewsletterView = (props) => {
                 <div
                     className={cx(
                         'relative',
-                        'tablet:max-desktop:max-w-[768px] desktop:max-w-[1200px] m-[0_auto]',
+                        'tablet:max-desktop:max-w-[768px] desktop:max-w-[1280px] m-[0_auto]',
                         'tablet:flex',
                         'tablet:flex-row',
                         'tablet:justify-between',

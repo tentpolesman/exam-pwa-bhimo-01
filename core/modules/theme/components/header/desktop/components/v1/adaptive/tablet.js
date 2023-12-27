@@ -22,6 +22,7 @@ import Bars3Icon from '@heroicons/react/24/solid/Bars3Icon';
 import DevicePhoneMobileIcon from '@heroicons/react/24/solid/DevicePhoneMobileIcon';
 
 import { getCategories } from '@core_modules/theme/services/graphql';
+import { BREAKPOINTS } from '@root/core/theme/vars';
 
 const Autocomplete = dynamic(() => import('@core_modules/theme/components/header/desktop/components/autocomplete'), { ssr: false });
 const BurgerMenuCategories = dynamic(() => import('@core_modules/theme/components/header/desktop/components/burgermenu/categories'), { ssr: false });
@@ -79,7 +80,7 @@ const TabletHeader = (props) => {
                 'ease-in-out',
                 'shadow-md',
                 {
-                    'hidden-this-tablet': deviceWidth < 768 || deviceWidth > 1200,
+                    'hidden-this-tablet': deviceWidth < BREAKPOINTS.md || deviceWidth > BREAKPOINTS.xl,
                 },
             )}
         >
@@ -92,7 +93,7 @@ const TabletHeader = (props) => {
                         'flex-row',
                         'justify-between',
                         'gap-x-4',
-                        'tablet:max-w-[720px] desktop:hidden mobile:max-tablet:hidden',
+                        'tablet:max-w-[768px] desktop:hidden mobile:max-tablet:hidden',
                         'px-6',
                         'm-[0_auto]',
                     )}
@@ -144,7 +145,7 @@ const TabletHeader = (props) => {
                         'justify-between',
                         'gap-x-5',
                         'm-[0_auto]',
-                        'tablet:max-w-[720px]',
+                        'tablet:max-w-[768px]',
                         'px-6',
                     )}
                 >
