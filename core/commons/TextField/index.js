@@ -1,15 +1,11 @@
-import { useReactiveVar } from '@apollo/client';
-import { storeConfigVar } from '@root/core/services/graphql/cache';
 import React from 'react';
 import dynamic from 'next/dynamic';
 import classNames from 'classnames';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import FormControl from '@material-ui/core/FormControl';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-
-import useStyles from '@common_textfield/style';
+import CircularProgress from '@common_circularprogress';
+import TextField from '@common_forms/TextField';
 import Typography from '@common_typography';
+import { useReactiveVar } from '@apollo/client';
+import { storeConfigVar } from '@root/core/services/graphql/cache';
 import 'react-phone-number-input/style.css';
 
 const PhoneInput = dynamic(() => import('react-phone-number-input'));
@@ -31,17 +27,15 @@ const CustomTextField = ({
     footer,
     ...other
 }) => {
-    const styles = useStyles();
-    const customClass = classNames(styles.container, className);
+    const customClass = classNames('form-control w-full h-full max-h-[100px] mt-[10px] mb-[20px]', className);
     const pwaConfig = useReactiveVar(storeConfigVar);
 
     let customTextFieldInput = (
-        <FormControl disabled={disabled || loading} fullWidth={fullWidth} error={error} variant={variant} className={customClass}>
-            <InputLabel shrink={shrink} htmlFor={label} className={styles.label}>
+        <div disabled={disabled || loading} fullWidth={fullWidth} error={error} variant={variant} className={customClass}>
+            <div shrink={shrink} htmlFor={label} className="first-letter:uppercase input-label">
                 {label}
-            </InputLabel>
-            <Input
-                // id={label}
+            </div>
+            <TextField
                 type={type}
                 value={value}
                 onChange={onChange}
@@ -52,11 +46,11 @@ const CustomTextField = ({
             {React.isValidElement(footer) ? (
                 footer
             ) : (
-                <Typography variant="p" color={error ? 'red' : 'default'}>
+                <Typography color={error ? 'red' : 'default'}>
                     {errorMessage}
                 </Typography>
             )}
-        </FormControl>
+        </div>
     );
     if (type === 'phone') {
         let inputValue = value;
@@ -65,10 +59,10 @@ const CustomTextField = ({
         }
         customTextFieldInput = (
             <>
-                <FormControl disabled={disabled || loading} fullWidth={fullWidth} error={error} variant={variant} className={customClass}>
-                    <InputLabel shrink={shrink} htmlFor={label} className={styles.label}>
+                <div disabled={disabled || loading} fullWidth={fullWidth} error={error} variant={variant} className={customClass}>
+                    <div shrink={shrink} htmlFor={label} className="first-letter:uppercase input-label">
                         {label}
-                    </InputLabel>
+                    </div>
 
                     <PhoneInput
                         international
@@ -81,11 +75,11 @@ const CustomTextField = ({
                     {React.isValidElement(footer) ? (
                         footer
                     ) : (
-                        <Typography variant="p" color={error ? 'red' : 'default'}>
+                        <Typography color={error ? 'red' : 'default'}>
                             {errorMessage}
                         </Typography>
                     )}
-                </FormControl>
+                </div>
                 <style jsx global>
                     {`
                         .PhoneInput {

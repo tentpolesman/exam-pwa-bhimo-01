@@ -1,18 +1,15 @@
 import React from 'react';
-import Alert from '@material-ui/lab/Alert';
 import AddressFormDialog from '@plugin_addressform';
 import Button from '@common_button';
 import Typography from '@common_typography';
 import _ from 'lodash';
 import ModalAddress from '@core_modules/checkout/pages/default/components/ModalAddress';
-import useStyles from '@core_modules/checkout/pages/default/components/style';
 import { useReactiveVar } from '@apollo/client';
 import { storeConfigVar } from '@root/core/services/graphql/cache';
 
 const CLOSE_ADDRESS_DIALOG = 100;
 
 const AddressView = (props) => {
-    const styles = useStyles();
     const {
         data,
         checkout,
@@ -36,7 +33,7 @@ const AddressView = (props) => {
     const [openAddress, setOpenAddress] = React.useState(false);
 
     return (
-        <div className={styles.block} id="checkoutAddress">
+        <div className="border border-neutral-400 p-[30px]" id="checkoutAddress">
             <style jsx>
                 {`
                     .alert-empty-pin-point :global(.MuiAlert-icon) {
@@ -54,8 +51,8 @@ const AddressView = (props) => {
                 manageCustomer={manageCustomer}
                 {...other}
             />
-            <div className={styles.addressContainer}>
-                <div className={styles.addressText}>
+            <div className="flex flex-row justify-between items-center">
+                <div className="flex flex-col max-w-[60%]">
                     <Typography variant="h2" type="bold" letter="uppercase">
                         {isOnlyVirtualProductOnCart ? t('checkout:billingAddress') : t('checkout:shippingAddress')}
                     </Typography>
@@ -132,16 +129,16 @@ const AddressView = (props) => {
             <div className="alert-empty-pin-point">
                 {
                     showEmptyPinpoint && gmapKey && (
-                        <Alert style={{ fontSize: 10 }} severity="warning">
+                        <div className="text-xs p-2 bg-yellow-400 text-neutral-white">
                             {t('customer:address:emptyPinPointMessage')}
-                        </Alert>
+                        </div>
                     )
                 }
                 {
                     checkout.error.shippingAddress && (
-                        <Alert style={{ fontSize: 10 }} severity="error">
+                        <div className="text-xs p-2 bg-red-600 text-neutral-white">
                             {t('checkout:address:invalidAddress')}
-                        </Alert>
+                        </div>
                     )
                 }
             </div>

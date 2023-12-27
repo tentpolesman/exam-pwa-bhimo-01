@@ -6,7 +6,6 @@ this component use some dependency and **required**, so you need to install
 
 | Depedency   | Description | Type |
 | :---        | :---        |:---  |
-| `@material-ui/core` | depedency ui <br/> link docs [here](https://material-ui.com/getting-started/installation/)| external dependency |
 | classnames   | dependency for merge className | external dependency |
 
 ## How To Install
@@ -46,7 +45,7 @@ const ItemComponents = (color = 'red', item) => (<p>{color, item}<p>)
 | `data`       | true    | props for looping list data to grid  | `array` |
 | `ItemComponent`       | true    |  components item for looping at grid item | `components` |
 | `itemProps`       | false    | object props for `ItemComponents`  | `object` |
-| `gridItemProps`       | false    | object props for `Grid` container <br> show detail [here](https://material-ui.com/api/grid/)  | `object` |
+| `gridItemProps`       | false    | div props  | `object` |
 | `className`       | false    | custom className  | `string` |
-| `gridContainerProps`       | false    |  object props for `Grid` items <br> show detail [here](https://material-ui.com/api/grid/)   | `object` |
+| `gridContainerProps`       | false    |  div props of container  | `object` |
 

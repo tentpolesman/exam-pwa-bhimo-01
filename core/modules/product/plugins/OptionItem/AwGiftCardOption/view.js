@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable semi-style */
 /* eslint-disable react/jsx-curly-brace-presence */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable arrow-body-style */
@@ -14,7 +16,6 @@ import DateDayJs from '@date-io/dayjs';
 import Dialog from '@common_dialog';
 import dynamic from 'next/dynamic';
 import cx from 'classnames';
-import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { formatPrice } from '@helper_currency';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -28,8 +29,8 @@ const AwGiftCardProduct = (props) => {
     const {
         data,
         qty = 1,
-        setQty = () => {},
-        handleAddToCart = () => {},
+        setQty = () => { },
+        handleAddToCart = () => { },
         t,
         loading = false,
         disabled = false,
@@ -180,7 +181,7 @@ const AwGiftCardProduct = (props) => {
                     {`${t('validate:composeEmail')}`}
                 </Typography>
                 <form>
-                    {aw_gc_allow_delivery_date && (
+                    {/* {aw_gc_allow_delivery_date && (
                         <DatePicker
                             fullWidth
                             label={t('validate:deliveryDate')}
@@ -190,7 +191,7 @@ const AwGiftCardProduct = (props) => {
                             error={!!(formik.touched.aw_gc_delivery_date && formik.errors.aw_gc_delivery_date)}
                             helperText={(formik.touched.aw_gc_delivery_date && formik.errors.aw_gc_delivery_date) || null}
                         />
-                    )}
+                    )} */}
                     <div className="flex flex-row">
                         <TextField
                             className="textfield xs:basis-full md:basis-1/2"
@@ -493,9 +494,9 @@ const AwGiftCardProduct = (props) => {
 };
 
 const ViewProvider = (props) => (
-    <MuiPickersUtilsProvider utils={DateDayJs}>
-        <AwGiftCardProduct {...props} />
-    </MuiPickersUtilsProvider>
+    // <MuiPickersUtilsProvider utils={DateDayJs}>
+    // </MuiPickersUtilsProvider>
+    <AwGiftCardProduct {...props} />
 );
 
 export default ViewProvider;

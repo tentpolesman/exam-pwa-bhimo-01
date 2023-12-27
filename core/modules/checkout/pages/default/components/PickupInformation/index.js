@@ -2,20 +2,16 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import Button from '@common_button';
 import Typography from '@common_typography';
-import classNames from 'classnames';
-import Skeleton from '@material-ui/lab/Skeleton';
-import useStyles from '@core_modules/checkout/pages/default/components/PickupInformation/style';
+import cx from 'classnames';
+import Skeleton from '@common_skeleton';
 import ModalPickupInformation from '@core_modules/checkout/pages/default/components/ModalPickupInformation';
 import ModalSelectStore from '@core_modules/checkout/pages/default/components/ModalSelectStore';
 import gqlService from '@core_modules/checkout/services/graphql';
-import useParentStyles from '@core_modules/checkout/pages/default/components/style';
 
 const PickupInformation = (props) => {
     const {
         t, checkout, setCheckout, formik,
     } = props;
-    const classes = useStyles();
-    const styles = useParentStyles();
     const { cart } = checkout.data;
     let listStores = [];
     const pickupStores = gqlService.getPickupStore({
@@ -36,7 +32,7 @@ const PickupInformation = (props) => {
         });
     };
     return (
-        <div className={styles.block} id="checkoutPickupStore">
+        <div className="border-b border-b-neutral-400 p-[30px]" id="checkoutPickupStore">
             <ModalPickupInformation
                 open={openModal.openModalInfo}
                 setOpen={() => handleOpen('openModalInfo')}
@@ -50,10 +46,14 @@ const PickupInformation = (props) => {
                 checkout={checkout}
                 listStores={listStores}
             />
-            <Typography variant="title" type="bold" letter="uppercase">
+            <Typography className="font-bold uppercase">
                 {t('checkout:pickupInformation:label')}
             </Typography>
-            <div className={classNames(styles.cardPoint, classes.card)}>
+            <div className={cx(
+                'my-[5px] p-[17px] flex flex-row items-center justify-between border border-neutral-400 rounded-[10px] max-w-[480px]',
+                'mb-[15px] ml-0 mr-0 [&>strong]:font-medium [&>td]:text-sm',
+            )}
+            >
                 <div className="flex flex-col">
                     {
                         (Object.keys(checkout.pickupInformation).length > 0) && (
@@ -98,7 +98,11 @@ const PickupInformation = (props) => {
             <Typography>
                 {t('checkout:pickupInformation:pickupAtLabel')}
             </Typography>
-            <div className={classNames(styles.cardPoint, classes.card)}>
+            <div className={cx(
+                'my-[5px] p-[17px] flex flex-row items-center justify-between border border-neutral-400 rounded-[10px] max-w-[480px]',
+                'mb-[15px] ml-0 mr-0 [&>strong]:font-medium [&>td]:text-sm',
+            )}
+            >
                 <div className="flex flex-col">
                     {
                         (Object.keys(checkout.selectStore).length > 0) && (
@@ -124,7 +128,7 @@ const PickupInformation = (props) => {
                     }
                     {
                         pickupStores.loading || !pickupStores.data ? (
-                            <Skeleton variant="text" animation="wave" width={270} height={30} />
+                            <Skeleton width={270} height={30} />
                         ) : (
                             <Button
                                 align="left"

@@ -1,16 +1,15 @@
+/* eslint-disable max-len */
 import Button from '@common_button';
 import CircularProgress from '@common_circularprogress';
 import Typography from '@common_typography';
-import useStyles from '@core_modules/checkout/pages/default/components/style';
 import { formatPrice } from '@helper_currency';
 
 const RewardPointView = (props) => {
-    const styles = useStyles();
     const {
         checkout, t, handleUsePoint, loading, reward_point, total, currencyCache,
     } = props;
     return (
-        <div className={styles.cardPoint} id="checkoutRewardPoint">
+        <div className="my-[5px] p-[17px] flex flex-row justify-between items-center border border-neutral-400 rounded-[10px] max-w-[480px]" id="checkoutRewardPoint">
             <div className="flex flex-col">
                 <Typography variant="span" letter="capitalize">
                     {checkout.data.cart.applied_reward_points.is_use_reward_points
@@ -19,7 +18,7 @@ const RewardPointView = (props) => {
                         ${t('checkout:myPoint:rewardPoints')}`
                         : t('checkout:myPoint:title')}
                 </Typography>
-                <Typography variant="span" type="bold" className={styles.pointText}>
+                <Typography variant="span" type="bold" className="text-lg mb-[5px]">
                     {checkout.data.cart.applied_reward_points.is_use_reward_points
                         ? formatPrice(
                             checkout.data.cart.applied_reward_points.reward_points_amount,
@@ -37,7 +36,7 @@ const RewardPointView = (props) => {
             <div>
                 <Button
                     variant="outlined"
-                    className={styles.btnPoint}
+                    className="max-w-[140px] flex flex-col justify-center items-center p-[5px]"
                     onClick={handleUsePoint}
                     disabled={loading || (!reward_point.is_use_reward_points && total === 0)}
                 >

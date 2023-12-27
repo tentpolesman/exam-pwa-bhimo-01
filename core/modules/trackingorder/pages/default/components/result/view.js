@@ -1,26 +1,13 @@
 /* eslint-disable prefer-destructuring */
 import Typography from '@common_typography';
-import { formatPrice } from '@helper_currency';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import ListItemText from '@material-ui/core/ListItemText';
-import Alert from '@material-ui/lab/Alert';
 import Button from '@common_button';
-import classNames from 'classnames';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableRow from '@material-ui/core/TableRow';
-
+import cx from 'classnames';
+import { formatPrice } from '@helper_currency';
 import { checkJson } from '@core_modules/trackingorder/pages/default/helpers/checkJson';
-import useStyles from '@core_modules/trackingorder/pages/default/components/style';
 
 const resultItem = ({
     t, orders, storeConfig, openModal,
 }) => {
-    const styles = useStyles();
     const data = orders.data[0];
     if (orders.data.length > 0) {
         let { detail } = data;
@@ -65,7 +52,6 @@ const resultItem = ({
                                     variant="text"
                                     onClick={() => openModal(shipping.trackorder_type, dt)}
                                     align="left"
-                                    className={styles.btnTrackOrder}
                                 >
                                     <Typography type="bold" decoration="underline" align="left">
                                         {shipping.track_number}
@@ -90,54 +76,53 @@ const resultItem = ({
             });
         }
         return (
-            <div className={classNames(styles.container, 'row')}>
+            <div className={cx('row')}>
                 <div className="xs:basis-full">
-                    <Typography variant="title" size="16" className="label-result">
+                    <Typography className="label-result text-md">
                         {t('trackingorder:trackingInformation')}
                     </Typography>
                 </div>
                 <div className="xs:basis-full hidden-mobile">
-                    <TableContainer className={styles.tableContainer}>
-                        <Table className={styles.table} aria-label="simple table">
-                            <TableBody>
+                    <div className="table-container">
+                        <table className="table">
+                            <tbody>
                                 {items.map((item, index) => (
-                                    <TableRow key={index}>
-                                        <TableCell component="th" scope="row" className={styles.labelTable}>
-                                            <Typography align="left" letter="capitalize" className="clear-margin-padding">
+                                    <tr key={index}>
+                                        <td>
+                                            <Typography className="clear-margin-padding first-letter:uppercase text-left">
                                                 {item.primary}
                                             </Typography>
-                                        </TableCell>
-                                        <TableCell align="left" className={styles.valueTable}>
-                                            <Typography variant="span" type="regular" className="clear-margin-padding">
+                                        </td>
+                                        <td>
+                                            <Typography className="clear-margin-padding">
                                                 {item.secondary}
                                             </Typography>
-                                        </TableCell>
-                                    </TableRow>
+                                        </td>
+                                    </tr>
                                 ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <div className="xs:basis-full hidden-desktop">
-                    <List>
+                    <div className="list-container">
                         {items.map((item, i) => (
-                            <ListItem key={i}>
-                                <ListItemText
-                                    className={styles.label}
+                            <div key={i} className="list-item-container">
+                                <div
                                     primary={(
-                                        <Typography align="left" letter="capitalize" className="clear-margin-padding">
+                                        <Typography className="clear-margin-padding first-letter:uppercase text-left">
                                             {item.primary}
                                         </Typography>
                                     )}
                                 />
-                                <ListItemSecondaryAction className={styles.detail}>
-                                    <Typography variant="span" type="regular" className="clear-margin-padding">
+                                <div className="list-item-secondary-container">
+                                    <Typography className="clear-margin-padding">
                                         {item.secondary}
                                     </Typography>
-                                </ListItemSecondaryAction>
-                            </ListItem>
+                                </div>
+                            </div>
                         ))}
-                    </List>
+                    </div>
                 </div>
                 <style jsx global>
                     {`
@@ -150,7 +135,7 @@ const resultItem = ({
             </div>
         );
     }
-    return <Alert severity="warning">{t('trackingorder:orderNotFound')}</Alert>;
+    return <div className="p-2 bg-yellow-500 text-neutral-white">{t('trackingorder:orderNotFound')}</div>;
 };
 
 export default resultItem;

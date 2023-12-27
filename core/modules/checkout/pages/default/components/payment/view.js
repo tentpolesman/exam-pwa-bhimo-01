@@ -1,36 +1,28 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable semi-style */
 /* eslint-disable no-plusplus */
 /* eslint-disable no-shadow */
 /* eslint-disable @next/next/no-img-element */
-import MuiExpansionPanel from '@material-ui/core/Accordion';
-import MuiExpansionPanelDetails from '@material-ui/core/AccordionDetails';
-import MuiExpansionPanelSummary from '@material-ui/core/AccordionSummary';
-import Grid from '@material-ui/core/Grid';
-import { withStyles } from '@material-ui/core/styles';
+import React from 'react';
 
 import Button from '@common_button';
-import Radio from '@common_forms/Radio';
+// import Radio from '@common_forms/Radio';
 import Typography from '@common_typography';
-import commonConfig, { basePath } from '@config';
-import FieldPoint from '@core_modules/checkout/components/fieldcode';
-import RadioItem from '@core_modules/checkout/components/radioitem';
+import commonConfig from '@config';
+// import commonConfig, { basePath } from '@config';
+// import FieldPoint from '@core_modules/checkout/components/fieldcode';
+// import RadioItem from '@core_modules/checkout/components/radioitem';
 import ModalHowtoPay from '@core_modules/checkout/pages/default/components/ModalHowtoPay';
-import StripeCheckoutForm from '@core_modules/checkout/pages/default/components/payment/components/StripeCheckoutForm';
-import useStyles from '@core_modules/checkout/pages/default/components/style';
-import Arrow from '@material-ui/icons/ArrowDropDown';
-import Skeleton from '@material-ui/lab/Skeleton';
-import { PayPalButtons, PayPalScriptProvider } from '@paypal/react-paypal-js';
+// import StripeCheckoutForm from '@core_modules/checkout/pages/default/components/payment/components/StripeCheckoutForm';
+import Skeleton from '@common_skeleton';
+// import { PayPalButtons, PayPalScriptProvider } from '@paypal/react-paypal-js';
 
-import { Elements } from '@stripe/react-stripe-js';
+// import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
-import React from 'react';
-import { ExpanDetailStyle, ExpanPanelStyle, ExpanSummaryStyle } from './style';
 
-const ExpansionPanel = withStyles(ExpanPanelStyle)(MuiExpansionPanel);
-const ExpansionPanelSummary = withStyles(ExpanSummaryStyle)(MuiExpansionPanelSummary);
-const ExpansionPanelDetails = withStyles(ExpanDetailStyle)(MuiExpansionPanelDetails);
-const PO = 'purchaseorder';
-const PaypalCode = 'paypal_express';
-const stripePayments = 'stripe_payments';
+// const PO = 'purchaseorder';
+// const PaypalCode = 'paypal_express';
+// const stripePayments = 'stripe_payments';
 
 /**
  * Loader
@@ -38,44 +30,43 @@ const stripePayments = 'stripe_payments';
  */
 const Loader = () => (
     <>
-        <Skeleton variant="rect" width="100%" height={20} animation="wave" style={{ marginBottom: 10 }} />
-        <Skeleton variant="rect" width="100%" height={20} animation="wave" style={{ marginBottom: 10 }} />
-        <Skeleton variant="rect" width="100%" height={20} animation="wave" style={{ marginBottom: 10 }} />
+        <Skeleton className="rounded-[50%] mb-[10px]" width="100%" height={20} />
+        <Skeleton className="rounded-[50%] mb-[10px]" width="100%" height={20} />
+        <Skeleton className="rounded-[50%] mb-[10px]" width="100%" height={20} />
     </>
 );
 
-const PaymentGroupIcon = (props) => {
-    const { baseMediaUrl, src } = props;
-    const fallbacks = [`${baseMediaUrl}checkout/payment/paymenticons-${src.replace('pg-', '')}.svg`, null];
-    const styles = useStyles();
+// const PaymentGroupIcon = (props) => {
+//     const { baseMediaUrl, src } = props;
+//     const fallbacks = [`${baseMediaUrl}checkout/payment/paymenticons-${src.replace('pg-', '')}.svg`, null];
 
-    // check if image exist on the backoffice, otherwise use fallback image from PWA
-    const [imageSrc, setImageSrc] = React.useState(`${basePath}/assets/img/paymenticons-${src.replace('pg-', '')}.svg`);
-    const [fallbackImageIndex, setFallbackImageIndex] = React.useState(0);
+//     // check if image exist on the backoffice, otherwise use fallback image from PWA
+//     const [imageSrc, setImageSrc] = React.useState(`${basePath}/assets/img/paymenticons-${src.replace('pg-', '')}.svg`);
+//     const [fallbackImageIndex, setFallbackImageIndex] = React.useState(0);
 
-    // set image fallback url
-    const getFallbackImageSrc = () => {
-        if (fallbackImageIndex > fallbacks.length) {
-            return;
-        }
-        setImageSrc(fallbacks[fallbackImageIndex]);
-        setFallbackImageIndex(fallbackImageIndex + 1);
-    };
+//     // set image fallback url
+//     const getFallbackImageSrc = () => {
+//         if (fallbackImageIndex > fallbacks.length) {
+//             return;
+//         }
+//         setImageSrc(fallbacks[fallbackImageIndex]);
+//         setFallbackImageIndex(fallbackImageIndex + 1);
+//     };
 
-    return (
-        <>
-            {(imageSrc && (
-                <img
-                    className={styles.paymentGroupStyleIcon}
-                    src={imageSrc}
-                    alt={src.replace('pg-', '')}
-                    onError={() => getFallbackImageSrc()}
-                />
-            ))
-                || ''}
-        </>
-    );
-};
+//     return (
+//         <>
+//             {(imageSrc && (
+//                 <img
+//                     className="w-[45px] h-[45px]"
+//                     src={imageSrc}
+//                     alt={src.replace('pg-', '')}
+//                     onError={() => getFallbackImageSrc()}
+//                 />
+//             ))
+//                 || ''}
+//         </>
+//     );
+// };
 
 /**
  * [VIEW] Payment
@@ -83,22 +74,21 @@ const PaymentGroupIcon = (props) => {
  * @returns
  */
 const PaymentView = (props) => {
-    const styles = useStyles();
     const {
         loading,
         data,
-        clientSecret,
+        // clientSecret,
         checkout,
-        setCheckout,
+        // setCheckout,
         t,
         paymentMethodList,
-        handlePayment,
-        handlePurchaseOrder,
-        handlePurchaseOrderSubmit,
+        // handlePayment,
+        // handlePurchaseOrder,
+        // handlePurchaseOrderSubmit,
         selected,
-        paypalTokenData,
-        paypalHandlingProps,
-        initialOptionPaypal,
+        // paypalTokenData,
+        // paypalHandlingProps,
+        // initialOptionPaypal,
         storeConfig,
         displayHowToPay,
         setDisplayHowToPay,
@@ -197,122 +187,123 @@ const PaymentView = (props) => {
             <div>
                 <Typography variant="p">{t('checkout:paymentSubtitle')}</Typography>
                 {paymentConfig && (
-                    <div className={styles.paymentExpansionContainer}>
+                    <div className="mt-[10px]">
                         {paymentConfig.map((item, index) => {
                             if (item.data.length !== 0) {
-                                return (
-                                    <ExpansionPanel
-                                        expanded={
-                                            expanded === index // if key index same with expanded active
-                                            || (item.active && expandedActive) // expand if item active and not change expand
-                                            || (!itemActive && expandedActive && index === 0)
-                                        } // if dont have item active, set index 0 to active
-                                        onChange={handleChange(index)}
-                                        key={index}
-                                    >
-                                        <ExpansionPanelSummary
-                                            aria-controls="panel1d-content"
-                                            id={`panel-${item.group}`}
-                                            expandIcon={<Arrow className={styles.icon} />}
-                                            IconButtonProps={{
-                                                className: 'checkout-paymentGroupping-expand',
-                                            }}
-                                        >
-                                            <div className={styles.labelSummary}>
-                                                <PaymentGroupIcon src={item.group} baseMediaUrl={storeConfig.base_media_url} />
-                                                <Typography letter="uppercase" variant="span" type="bold">
-                                                    {t(`checkout:paymentGrouping:${item.group.replace('pg-', '')}`)
-                                                        === `paymentGrouping.${item.group.replace('pg-', '')}`
-                                                        ? item.group.replace('pg-', '')
-                                                        : t(`checkout:paymentGrouping:${item.group.replace('pg-', '')}`)}
-                                                </Typography>
-                                            </div>
-                                        </ExpansionPanelSummary>
-                                        <ExpansionPanelDetails>
-                                            <Grid container>
-                                                {item.data.length !== 0 ? (
-                                                    <Grid item xs={12}>
-                                                        <Radio
-                                                            key={`${index}-${item.group}`}
-                                                            value={selected.payment}
-                                                            onChange={handlePayment}
-                                                            data={item.data}
-                                                            CustomItem={RadioItem}
-                                                            ComponentOptional={(item) => {
-                                                                // prettier-ignore
-                                                                const isPurchaseOrder = item.code === PO && selected.payment === PO;
-                                                                const isPaypal = item.code === PaypalCode && selected.payment === PaypalCode;
-                                                                const isStripe = item.code === stripePayments && selected.payment === stripePayments;
+                                return null;
+                                // return (
+                                //     <ExpansionPanel
+                                //         expanded={
+                                //             expanded === index // if key index same with expanded active
+                                //             || (item.active && expandedActive) // expand if item active and not change expand
+                                //             || (!itemActive && expandedActive && index === 0)
+                                //         } // if dont have item active, set index 0 to active
+                                //         onChange={handleChange(index)}
+                                //         key={index}
+                                //     >
+                                //         <ExpansionPanelSummary
+                                //             aria-controls="panel1d-content"
+                                //             id={`panel-${item.group}`}
+                                //             expandIcon={<Arrow />}
+                                //             IconButtonProps={{
+                                //                 className: 'checkout-paymentGroupping-expand',
+                                //             }}
+                                //         >
+                                //             <div className="flex flex-row items-center">
+                                //                 <PaymentGroupIcon src={item.group} baseMediaUrl={storeConfig.base_media_url} />
+                                //                 <Typography letter="uppercase" variant="span" type="bold">
+                                //                     {t(`checkout:paymentGrouping:${item.group.replace('pg-', '')}`)
+                                //                         === `paymentGrouping.${item.group.replace('pg-', '')}`
+                                //                         ? item.group.replace('pg-', '')
+                                //                         : t(`checkout:paymentGrouping:${item.group.replace('pg-', '')}`)}
+                                //                 </Typography>
+                                //             </div>
+                                //         </ExpansionPanelSummary>
+                                //         <ExpansionPanelDetails>
+                                //             <Grid container>
+                                //                 {item.data.length !== 0 ? (
+                                //                     <Grid item xs={12}>
+                                //                         <Radio
+                                //                             key={`${index}-${item.group}`}
+                                //                             value={selected.payment}
+                                //                             onChange={handlePayment}
+                                //                             data={item.data}
+                                //                             CustomItem={RadioItem}
+                                //                             ComponentOptional={(item) => {
+                                //                                 // prettier-ignore
+                                //                                 const isPurchaseOrder = item.code === PO && selected.payment === PO;
+                                //                                 const isPaypal = item.code === PaypalCode && selected.payment === PaypalCode;
+                                //                                 const isStripe = item.code === stripePayments && selected.payment === stripePayments;
 
-                                                                if (isPurchaseOrder) {
-                                                                    return (
-                                                                        <Grid item xs={12}>
-                                                                            <FieldPoint
-                                                                                id="purchase-order"
-                                                                                name="purchase-order"
-                                                                                placeholder={t('checkout:purchaseOrderNumber')}
-                                                                                action={handlePurchaseOrderSubmit}
-                                                                                onChange={handlePurchaseOrder}
-                                                                                value={checkout.selected.purchaseOrderNumber || ''}
-                                                                                disabled={checkout.loading.purchaseOrderNumber}
-                                                                                loading={checkout.loading.purchaseOrderNumber}
-                                                                                styleFrame={{ marginTop: 0, marginBottom: 0 }}
-                                                                                styleFrameText={{ marginTop: 0, marginBottom: 0 }}
-                                                                                styleTextField={{ marginTop: 0, marginBottom: 0 }}
-                                                                            />
-                                                                        </Grid>
-                                                                    );
-                                                                }
-                                                                if (
-                                                                    isPaypal
-                                                                    && !paypalTokenData.loading
-                                                                    && initialOptionPaypal['data-order-id'] !== ''
-                                                                ) {
-                                                                    return (
-                                                                        <Grid item xs={12} lg="3" md="4">
-                                                                            <PayPalScriptProvider defer options={initialOptionPaypal}>
-                                                                                <PayPalButtons
-                                                                                    style={{ layout: 'horizontal' }}
-                                                                                    {...paypalHandlingProps}
-                                                                                />
-                                                                            </PayPalScriptProvider>
-                                                                        </Grid>
-                                                                    );
-                                                                }
-                                                                if (isStripe
-                                                                    && storeConfig
-                                                                    && storeConfig.stripe_config
-                                                                    && storeConfig.stripe_config.stripe_enable
-                                                                    && (storeConfig.stripe_config.live_pk || storeConfig.stripe_config.test_pk)
-                                                                ) {
-                                                                    return (
-                                                                        <>
-                                                                            {stripePromise && clientSecret && (
-                                                                                <Elements
-                                                                                    stripe={stripePromise}
-                                                                                    options={{ clientSecret }}
-                                                                                >
-                                                                                    <StripeCheckoutForm {...props} setCheckout={setCheckout} />
-                                                                                </Elements>
-                                                                            )}
-                                                                        </>
-                                                                    );
-                                                                }
+                                //                                 if (isPurchaseOrder) {
+                                //                                     return (
+                                //                                         <Grid item xs={12}>
+                                //                                             <FieldPoint
+                                //                                                 id="purchase-order"
+                                //                                                 name="purchase-order"
+                                //                                                 placeholder={t('checkout:purchaseOrderNumber')}
+                                //                                                 action={handlePurchaseOrderSubmit}
+                                //                                                 onChange={handlePurchaseOrder}
+                                //                                                 value={checkout.selected.purchaseOrderNumber || ''}
+                                //                                                 disabled={checkout.loading.purchaseOrderNumber}
+                                //                                                 loading={checkout.loading.purchaseOrderNumber}
+                                //                                                 styleFrame={{ marginTop: 0, marginBottom: 0 }}
+                                //                                                 styleFrameText={{ marginTop: 0, marginBottom: 0 }}
+                                //                                                 styleTextField={{ marginTop: 0, marginBottom: 0 }}
+                                //                                             />
+                                //                                         </Grid>
+                                //                                     );
+                                //                                 }
+                                //                                 if (
+                                //                                     isPaypal
+                                //                                     && !paypalTokenData.loading
+                                //                                     && initialOptionPaypal['data-order-id'] !== ''
+                                //                                 ) {
+                                //                                     return (
+                                //                                         <Grid item xs={12} lg="3" md="4">
+                                //                                             <PayPalScriptProvider defer options={initialOptionPaypal}>
+                                //                                                 <PayPalButtons
+                                //                                                     style={{ layout: 'horizontal' }}
+                                //                                                     {...paypalHandlingProps}
+                                //                                                 />
+                                //                                             </PayPalScriptProvider>
+                                //                                         </Grid>
+                                //                                     );
+                                //                                 }
+                                //                                 if (isStripe
+                                //                                     && storeConfig
+                                //                                     && storeConfig.stripe_config
+                                //                                     && storeConfig.stripe_config.stripe_enable
+                                //                                     && (storeConfig.stripe_config.live_pk || storeConfig.stripe_config.test_pk)
+                                //                                 ) {
+                                //                                     return (
+                                //                                         <>
+                                //                                             {stripePromise && clientSecret && (
+                                //                                                 <Elements
+                                //                                                     stripe={stripePromise}
+                                //                                                     options={{ clientSecret }}
+                                //                                                 >
+                                //                                                     <StripeCheckoutForm {...props} setCheckout={setCheckout} />
+                                //                                                 </Elements>
+                                //                                             )}
+                                //                                         </>
+                                //                                     );
+                                //                                 }
 
-                                                                return null;
-                                                            }}
-                                                            propsItem={{
-                                                                borderBottom: false,
-                                                                RightComponent: true,
-                                                            }}
-                                                            disabled={loading.order || loading.all}
-                                                        />
-                                                    </Grid>
-                                                ) : null}
-                                            </Grid>
-                                        </ExpansionPanelDetails>
-                                    </ExpansionPanel>
-                                );
+                                //                                 return null;
+                                //                             }}
+                                //                             propsItem={{
+                                //                                 borderBottom: false,
+                                //                                 RightComponent: true,
+                                //                             }}
+                                //                             disabled={loading.order || loading.all}
+                                //                         />
+                                //                     </Grid>
+                                //                 ) : null}
+                                //             </Grid>
+                                //         </ExpansionPanelDetails>
+                                //     </ExpansionPanel>
+                                // );
                             }
                             return null;
                         })}
@@ -327,19 +318,19 @@ const PaymentView = (props) => {
     }
 
     return (
-        <div className={styles.block} id="checkoutPayment">
+        <div className="border-b border-b-neutral-400 p-[30px]" id="checkoutPayment">
             <ModalHowtoPay
                 open={openModal}
                 setOpen={() => handleModal(false)}
                 setDisplayHowToPay={setDisplayHowToPay}
             />
-            <div className={styles.paymentHeader}>
-                <Typography variant="h2" type="bold" letter="uppercase">
+            <div className="flex flex-row justify-between">
+                <Typography variant="h2" className="font-bold uppercase">
                     {t('checkout:payment')}
                 </Typography>
                 {(modules.checkout.howtoPay.enabled && displayHowToPay) ? (
                     <div>
-                        <Button className={styles.howToPay} onClick={() => handleModal(true)}>
+                        <Button className="my-[5px] mx-[15px]" onClick={() => handleModal(true)}>
                             {t('checkout:howtoPay')}
                         </Button>
                     </div>

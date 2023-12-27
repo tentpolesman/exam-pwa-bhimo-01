@@ -1,4 +1,4 @@
-import Skeleton from '@material-ui/lab/Skeleton';
+import Skeleton from '@common_skeleton';
 
 const SkeletonLoader = () => (
     <div className="flex flex-col">

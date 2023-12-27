@@ -36,9 +36,6 @@ export const removeToken = () =>
 export const getCmsBlocks = (variables, options = {}) =>
     useQuery(getCmsBlocksSchema, {
         variables,
-        context: {
-            request: 'internal',
-        },
         ...options,
     });
 

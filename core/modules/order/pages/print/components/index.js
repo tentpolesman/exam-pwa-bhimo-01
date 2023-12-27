@@ -3,13 +3,13 @@
 /* eslint-disable consistent-return */
 /* eslint-disable no-unused-expressions */
 /* eslint-disable array-callback-return */
+/* eslint-disable @next/next/no-img-element */
 import React from 'react';
 import Typography from '@common_typography';
 import classNames from 'classnames';
 import formatDate from '@helper_date';
 import { formatPrice } from '@helper_currency';
 import { modules } from '@config';
-import useStyles from '@core_modules/order/pages/print/style';
 import Table from '@core_modules/order/pages/print/components/TableListItem';
 import Link from 'next/link';
 
@@ -17,7 +17,6 @@ const PrintOrder = (props) => {
     const {
         t, detail, currency, storeConfig, currencyCache,
     } = props;
-    const styles = useStyles();
 
     let items = [];
 
@@ -37,8 +36,8 @@ const PrintOrder = (props) => {
 
     return (
         <>
-            <div className={classNames('flex flex-col', styles.blockContainer)}>
-                <div className={classNames(styles.blockHeader)}>
+            <div className={classNames('flex flex-col', '')}>
+                <div className={classNames('')}>
                     <div className="header-middle__left">
                         <div className="box header-middle__logo">
                             <Link href="/" legacyBehavior>
@@ -54,7 +53,7 @@ const PrintOrder = (props) => {
                             variant="h1"
                             letter="uppercase"
                             type="semiBold"
-                            className={classNames('clear-margin-padding', styles.headerTitle)}
+                            className={classNames('clear-margin-padding', '')}
                         >
                             {t('order:order')}
                             {' # '}
@@ -68,14 +67,14 @@ const PrintOrder = (props) => {
                         {formatDate(detail[0].created_at)}
                     </Typography>
                 </div>
-                <div className={styles.block}>
+                <div className="">
                     <div className="flex flex-row start-xs start-sm start-sm start-md start-lg">
                         {/* <div className="xs:basis-full">
                         <Typography
                             variant="span"
                             letter="capitalize"
                             type="regular"
-                            className={classNames('clear-margin-padding', styles.blockLabel)}
+                            className={classNames('clear-margin-padding', '')}
                         >
                             {t('order:orderItem')}
                         </Typography>
@@ -87,8 +86,8 @@ const PrintOrder = (props) => {
                     </div> */}
                     </div>
                 </div>
-                <div className={classNames(styles.block)}>
-                    <div className={styles.wrapper}>
+                <div className={classNames('')}>
+                    <div className="">
                         <div className="xs:basis-full">
                             <div>
                                 <Table
@@ -109,8 +108,8 @@ const PrintOrder = (props) => {
                         <div className="flex flex-row end-xs end-sm end-md">
                             <div className="md:basis-4/12 sm:basis-4/12">
                                 {(detail[0].detail[0].subtotal || detail[0].detail[0].subtotal_incl_tax) && (
-                                    <div className={styles.listSummary}>
-                                        <Typography variant="span" letter="capitalize" className={styles.labelSummary}>
+                                    <div className="">
+                                        <Typography variant="span" letter="capitalize" className="">
                                             Sub total
                                         </Typography>
                                         <Typography variant="span" letter="capitalize">
@@ -123,8 +122,8 @@ const PrintOrder = (props) => {
                                     </div>
                                 )}
                                 {/* {detail[0].detail[0].tax_amount && (
-                            <div className={styles.listSummary}>
-                                <Typography variant="span" letter="capitalize" className={styles.labelSummary}>
+                            <div className={''}>
+                                <Typography variant="span" letter="capitalize" className={''}>
                                     {t('order:tax')}
                                 </Typography>
                                 <Typography variant="span" letter="capitalize">
@@ -133,8 +132,8 @@ const PrintOrder = (props) => {
                             </div>
                         )} */}
                                 {detail[0].detail[0].payment && (
-                                    <div className={styles.listSummary}>
-                                        <Typography variant="span" letter="capitalize" className={styles.labelSummary}>
+                                    <div className="">
+                                        <Typography variant="span" letter="capitalize" className="">
                                             {t('order:shipping')}
                                         </Typography>
                                         <Typography variant="span" letter="capitalize">
@@ -143,8 +142,8 @@ const PrintOrder = (props) => {
                                     </div>
                                 )}
                                 {detail[0].detail[0].discount_amount ? (
-                                    <div className={styles.listSummary}>
-                                        <Typography variant="span" letter="capitalize" className={styles.labelSummary}>
+                                    <div className="">
+                                        <Typography variant="span" letter="capitalize" className="">
                                             {t('order:discount')}
                                         </Typography>
                                         <Typography variant="span" letter="capitalize">
@@ -153,8 +152,8 @@ const PrintOrder = (props) => {
                                     </div>
                                 ) : null}
                                 {detail[0].detail[0].aw_store_credit.is_use_store_credit ? (
-                                    <div className={styles.listSummary}>
-                                        <Typography variant="span" letter="capitalize" className={styles.labelSummary}>
+                                    <div className="">
+                                        <Typography variant="span" letter="capitalize" className="">
                                             {t('order:credit')}
                                         </Typography>
                                         <Typography variant="span" letter="capitalize">
@@ -163,8 +162,8 @@ const PrintOrder = (props) => {
                                     </div>
                                 ) : null}
                                 {modules.giftcard.enabled && detail[0].detail[0] && detail[0].detail[0].aw_giftcard.giftcard_amount ? (
-                                    <div className={styles.listSummary}>
-                                        <Typography variant="span" letter="capitalize" className={styles.labelSummary}>
+                                    <div className="">
+                                        <Typography variant="span" letter="capitalize" className="">
                                             {t('order:giftcard')}
                                             {' '}
                                             (
@@ -177,8 +176,8 @@ const PrintOrder = (props) => {
                                     </div>
                                 ) : null}
                                 {detail[0].detail[0].applied_extra_fee ? (
-                                    <div className={styles.listSummary}>
-                                        <Typography variant="span" letter="capitalize" className={styles.labelSummary}>
+                                    <div className="">
+                                        <Typography variant="span" letter="capitalize" className="">
                                             {detail[0].detail[0].applied_extra_fee.title}
                                         </Typography>
                                         <Typography variant="span" letter="capitalize">
@@ -190,8 +189,8 @@ const PrintOrder = (props) => {
                                         </Typography>
                                     </div>
                                 ) : null}
-                                <div className={styles.listSummary}>
-                                    <Typography variant="title" type="bold" letter="capitalize" className={styles.labelSummary}>
+                                <div className="">
+                                    <Typography variant="title" type="bold" letter="capitalize" className="">
                                         Total
                                     </Typography>
                                     <Typography variant="title" type="bold" letter="capitalize">
@@ -202,14 +201,14 @@ const PrintOrder = (props) => {
                         </div>
                     </div>
                 </div>
-                <div className={classNames(styles.block)}>
+                <div className={classNames('')}>
                     <div className="flex flex-row start-xs start-sm start-sm start-md start-lg">
                         <div className="xs:basis-full">
                             <Typography
                                 variant="span"
                                 letter="capitalize"
                                 type="regular"
-                                className={classNames('clear-margin-padding', styles.blockLabel)}
+                                className={classNames('clear-margin-padding', '')}
                             >
                                 {t('order:orderInfo')}
                             </Typography>
@@ -218,7 +217,7 @@ const PrintOrder = (props) => {
                         {Object.keys(detail[0].detail[0].shipping_address).length > 0 && (
                         // shipped to block
                             <div className="xs:basis-full col-xs-print-4 sm:basis-4/12 md:basis-4/12">
-                                <Typography variant="p" type="bold" letter="uppercase" className={styles.labelDetail}>
+                                <Typography variant="p" type="bold" letter="uppercase" className="">
                                     {detail[0].detail[0].pickup_store && detail[0].detail[0].pickup_store.is_using_pickup_store
                                         ? t('order:pickupAt')
                                         : t('order:shippedTo')}
@@ -245,7 +244,7 @@ const PrintOrder = (props) => {
                         {detail[0].detail[0].pickup_store && detail[0].detail[0].pickup_store.is_using_pickup_store && (
                         // pickup store
                             <div className="xs:basis-full col-xs-print-3 sm:basis-3/12 md:basis-3/12">
-                                <Typography variant="p" type="bold" letter="uppercase" className={styles.labelDetail}>
+                                <Typography variant="p" type="bold" letter="uppercase" className="">
                                     {t('order:pickupBy')}
                                 </Typography>
                                 <Typography variant="span" className="clear-margin-padding">
@@ -264,7 +263,7 @@ const PrintOrder = (props) => {
                         )}
                         {/* orderstatus */}
                         {/* <div className="col-xs-3">
-                    <Typography variant="p" type="bold" letter="uppercase" className={styles.labelDetail}>
+                    <Typography variant="p" type="bold" letter="uppercase" className={''}>
                         {t('order:orderStatus')}
                     </Typography>
                     <Typography variant="span" className="clear-margin-padding">
@@ -274,7 +273,7 @@ const PrintOrder = (props) => {
                         {/* shipping method */}
                         {Object.keys(detail[0].detail[0].shipping_address).length > 0 && (
                             <div className="xs:basis-3/12 col-xs-print-3">
-                                <Typography variant="p" type="bold" letter="uppercase" className={styles.labelDetail}>
+                                <Typography variant="p" type="bold" letter="uppercase" className="">
                                     {t('order:shippingMethod')}
                                 </Typography>
                                 <Typography variant="span" className="clear-margin-padding">
@@ -284,7 +283,7 @@ const PrintOrder = (props) => {
                         )}
                         {/* billing address */}
                         <div className="xs:basis-full col-xs-print-3 sm:basis-3/12 md:basis-3/12">
-                            <Typography variant="p" type="bold" letter="uppercase" className={styles.labelDetail}>
+                            <Typography variant="p" type="bold" letter="uppercase" className="">
                                 {t('order:billingAddress')}
                             </Typography>
                             <Typography variant="span" className="clear-margin-padding">
@@ -306,7 +305,7 @@ const PrintOrder = (props) => {
                             </Typography>
                         </div>
                         <div className="xs:basis-full col-xs-print-2 sm:basis-2/12 md:basis-2/12">
-                            <Typography variant="p" type="bold" letter="uppercase" className={styles.labelDetail}>
+                            <Typography variant="p" type="bold" letter="uppercase" className="">
                                 {t('order:paymentMethod')}
                             </Typography>
                             {Object.keys(detail[0].detail[0].payment.payment_additional_info).map((item) => {
@@ -317,7 +316,7 @@ const PrintOrder = (props) => {
                                 ) {
                                     return (
                                         <React.Fragment key={item}>
-                                            <Typography variant="p" type="bold" letter="capitalize" className={styles.labelDetailSm}>
+                                            <Typography variant="p" type="bold" letter="capitalize" className="">
                                                 {item.replace('_', ' ')}
                                             </Typography>
                                             <Typography variant="span" className="clear-margin-padding">

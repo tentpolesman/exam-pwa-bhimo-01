@@ -1,5 +1,7 @@
 /* eslint-disable no-use-before-define */
 /* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable no-unused-vars */
+/* eslint-disable semi-style */
 import { compose, withProps } from 'recompose';
 import {
     withScriptjs, withGoogleMap, GoogleMap, Marker, Circle,

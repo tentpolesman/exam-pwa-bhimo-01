@@ -1,10 +1,6 @@
-import Alert from '@material-ui/lab/Alert';
-
-const Info = ({ variant, text }) => (
-    <div>
-        <Alert className="m-15" severity={variant}>
-            {text}
-        </Alert>
+const Info = ({ text }) => (
+    <div className="alert-info m-15 p-2">
+        {text}
     </div>
 );
 

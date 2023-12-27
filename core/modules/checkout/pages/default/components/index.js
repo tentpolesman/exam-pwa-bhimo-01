@@ -1,3 +1,4 @@
+import React from 'react';
 import Button from '@common_button';
 import Dialog from '@common_dialog';
 import Typography from '@common_typography';
@@ -16,12 +17,10 @@ import Promo from '@core_modules/checkout/pages/default/components/promo';
 import PromoModalItem from '@core_modules/checkout/pages/default/components/PromoModalItem';
 import RewardPoint from '@core_modules/checkout/pages/default/components/rewardpoint';
 import Shipping from '@core_modules/checkout/pages/default/components/shipping';
-import useStyles from '@core_modules/checkout/pages/default/components/style';
 import Summary from '@core_modules/checkout/pages/default/components/summary';
 import classNames from 'classnames';
 import dynamic from 'next/dynamic';
 import Router from 'next/router';
-import React, { useState } from 'react';
 
 const GimmickBanner = dynamic(() => import('@plugin_gimmickbanner'), { ssr: false });
 
@@ -72,16 +71,15 @@ const Content = (props) => {
         currencyCache,
     } = props;
 
-    const styles = useStyles();
     const SummaryRef = React.createRef();
     const { order: loading, all: disabled } = checkout.loading;
     const isSelectedPurchaseOrder = checkout.selected.payment === 'purchaseorder';
     // prettier-ignore
     const isPurchaseOrderApply = isSelectedPurchaseOrder && checkout.status.purchaseOrderApply;
     const stripeRef = React.useRef();
-    const [clientSecret, setClientSecret] = useState(null);
+    const [clientSecret, setClientSecret] = React.useState(null);
 
-    const [displayHowToPay, setDisplayHowToPay] = useState(false);
+    const [displayHowToPay, setDisplayHowToPay] = React.useState(false);
     const enableMultiSeller = storeConfig.enable_oms_multiseller === '1';
     const errorItems = checkout?.data?.errorItems;
 
@@ -100,12 +98,12 @@ const Content = (props) => {
      * [VIEW]
      */
     return (
-        <div id="checkout" className={classNames(styles.mobileBottomSpace, 'row between-lg')}>
+        <div id="checkout" className={classNames('mobile:mb-[140px]', 'row between-lg')}>
             <div className="xs:basis-full center hidden-mobile">
                 <HeaderView storeConfig={storeConfig} />
             </div>
-            <Typography variant="h1" style={{ display: 'none' }}>
-                Checkout
+            <Typography variant="h1" className="hidden">
+                {t('common:button:checkout')}
             </Typography>
             <Dialog
                 open={checkoutTokenState}
@@ -216,8 +214,8 @@ const Content = (props) => {
                         currencyCache={currencyCache}
                     />
 
-                    <div className={classNames(styles.block)}>
-                        <Typography variant="h2" type="bold" letter="uppercase">
+                    <div className={classNames("border border-neutral-400 p-[30px]")}>
+                        <Typography variant="h2" className="font-bold uppercase">
                             {t('checkout:feePromoLabel')}
                         </Typography>
                         <div className="flex flex-row">
@@ -319,7 +317,7 @@ const Content = (props) => {
                     <Confirmation t={t} checkout={checkout} setCheckout={setCheckout} storeConfig={storeConfig} ConfirmationView={ConfirmationView} />
                     
                     {!enableMultiSeller ? (
-                        <div className={classNames(styles.block)}>
+                        <div className={classNames("border border-neutral-400 p-[30px]")}>
                             <div className="xs:basis-full sm:basis-full md:basis-full xl:basis-full">
                                 <OrderComment
                                     t={t}
@@ -373,7 +371,7 @@ const Content = (props) => {
                         (isSelectedPurchaseOrder && !isPurchaseOrderApply) ||
                         (storeConfig.minimum_order_enable && checkout.data.cart.prices.grand_total.value < storeConfig.minimum_order_amount)
                     }
-                    className={classNames(styles.placeOrderDesktop, 'checkout-placeOrder-btn')}
+                    className={classNames("m-w-[500px] h-[50px]", 'checkout-placeOrder-btn')}
                 >
                     <Typography variant="span" letter="uppercase" type="bold" color="white">
                         {t('checkout:placeOrder')}

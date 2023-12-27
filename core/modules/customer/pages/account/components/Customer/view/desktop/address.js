@@ -92,13 +92,17 @@ const AddressView = (props) => {
             ) : (
                 <Button
                     icon={<ExclamationTriangleIcon />}
+                    iconProps={{
+                        className: cx('!text-yellow-500'),
+                    }}
                     iconPosition="left"
                     className={cx(
+                        'mt-4',
                         'w-full',
-                        'bg-yellow-500',
-                        'hover:bg-yellow-500',
-                        'focus:bg-yellow-500',
-                        'active:bg-yellow-500',
+                        'bg-yellow-50',
+                        'hover:bg-yellow-50',
+                        'focus:bg-yellow-50',
+                        'active:bg-yellow-50',
                         'hover:shadow-none',
                         'focus:shadow-none',
                         'active:shadow-none',
@@ -106,10 +110,9 @@ const AddressView = (props) => {
                         'hover:cursor-auto',
                         'focus:cursor-auto',
                         'active:cursor-auto',
-                        'mt-[18px]',
                     )}
                 >
-                    <Typography className={cx('!text-neutral-white')}>{t('customer:address:emptyMessage')}</Typography>
+                    <Typography className={cx('!text-yellow-600')}>{t('customer:address:emptyMessage')}</Typography>
                 </Button>
             )}
         </div>

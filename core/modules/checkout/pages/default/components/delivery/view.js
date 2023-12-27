@@ -1,24 +1,20 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import Typography from '@common_typography';
+import cx from 'classnames';
 import { modules } from '@config';
-import useStyles from '@core_modules/checkout/pages/default/components/delivery/style';
-import useStylesRoot from '@core_modules/checkout/pages/default/components/style';
-import classNames from 'classnames';
 
 const ShippingView = (props) => {
     const {
         checkout, handleSelect, t,
     } = props;
-    const classes = useStyles();
-    const styles = useStylesRoot();
     const checkStyles = (delivery) => ((checkout.selected.delivery === delivery)
-        ? classNames(classes.item, classes.active, `${delivery}Delivery`)
-        : classNames(classes.item, `${delivery}Delivery`));
+        ? cx('p-[17px] flex flex-row justify-center items-center border border-primary rounded-[10px] cursor-pointer', `${delivery}Delivery`)
+        : cx('p-[17px] flex flex-row justify-center items-center border border-neutral-400 rounded-[10px] cursor-pointer', `${delivery}Delivery`));
 
     return (
-        <div id="checkoutDeliveryMethod" className={classNames(styles.block, styles.deliveryCard)}>
-            <Typography variant="h2" type="bold" letter="uppercase">
+        <div id="checkoutDeliveryMethod" className={cx('border-b border-b-neutral-400 p-[30px] mobile:mt-[20px]')}>
+            <Typography variant="h2" className="font-bold uppercase">
                 {t('checkout:deliveryMethod:label')}
             </Typography>
             <div className="flex flex-row">

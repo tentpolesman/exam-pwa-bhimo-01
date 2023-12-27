@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable semi-style */
 import { StandaloneSearchBox } from 'react-google-maps/lib/components/places/StandaloneSearchBox';
 import { useTranslation } from 'next-i18next';
 import TextField from '@common/Forms/TextField';
