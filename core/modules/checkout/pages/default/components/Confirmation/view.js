@@ -13,7 +13,7 @@ const ConfirmationView = ({
     t, loading, agreements, checkList, modalList, handleCheckbox, handleOpenModal, handleCloseModal,
 }) => {
     const Loader = () => (
-        <div className="flex flex-col px-[20px] w-full mt-[13px]">
+        <div className="flex flex-col py-5 w-full">
             <Skeleton width="40%" height={35} />
             <Skeleton width="80%" height={30} />
             <Skeleton width="80%" height={30} />
@@ -26,11 +26,11 @@ const ConfirmationView = ({
 
     return (
         <>
-            <div className="flex flex-col px-[20px] w-full mt-[13px]" id="checkoutAgreements">
+            <div className="flex flex-col py-5 w-full" id="checkoutAgreements">
                 {
                     agreements && agreements.checkoutAgreements.map((item, index) => (
-                        <div id="agreement-row" className="grid grid-cols-1" key={index}>
-                            <div item md={12} xs={12}>
+                        <div className="flex flex-col" id="agreement-row" key={index}>
+                            <div>
                                 {
                                     item.mode === 'MANUAL' ? (
                                         <CheckBox
@@ -55,33 +55,29 @@ const ConfirmationView = ({
                                 }
                                 <Button onClick={() => handleOpenModal(index)}>
                                     <Typography
-                                        variant="span"
-                                        type="regular"
-                                        decoration="underline"
-                                        size="12"
+                                        variant="p-3"
+                                        className="underline"
                                     >
                                         {item.checkbox_text}
                                     </Typography>
                                 </Button>
                                 <Dialog
                                     onClose={() => handleCloseModal(index)}
-                                    aria-labelledby="customized-dialog-title"
                                     open={modalList.length && modalList[index].isOpen}
-                                >
-                                    <div className="dialog-title">{item.name}</div>
-                                    <div className="dialog-content">
-                                        <div dangerouslySetInnerHTML={{ __html: item.content }} />
-                                    </div>
-                                    <div className="dialog-footer">
-                                        <Button
-                                            variant="contained"
-                                            onClick={() => handleCloseModal(index)}
-                                            color="primary"
-                                        >
-                                            {t('checkout:close')}
-                                        </Button>
-                                    </div>
-                                </Dialog>
+                                    title={item.name}
+                                    content={(
+                                        <div className="flex flex-col gap-4 border-t border-t-neutral-200">
+                                            <div dangerouslySetInnerHTML={{ __html: item.content }} />
+                                            <Button
+                                                variant="contained"
+                                                onClick={() => handleCloseModal(index)}
+                                                color="primary"
+                                            >
+                                                {t('checkout:close')}
+                                            </Button>
+                                        </div>
+                                    )}
+                                />
                             </div>
                         </div>
                     ))

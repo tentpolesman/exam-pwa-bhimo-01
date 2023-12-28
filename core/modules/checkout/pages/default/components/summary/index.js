@@ -497,7 +497,7 @@ const Summary = ({
         actUpdateItem({
             variables: {
                 cartId: checkout.data.cart.id,
-                cart_item_id: parseInt(id, 0),
+                cart_item_id: parseInt(id, 10),
                 quantity: qty,
             },
             context: {
@@ -524,7 +524,7 @@ const Summary = ({
         actDeleteItem({
             variables: {
                 cartId: checkout.data.cart.id,
-                cart_item_id: parseInt(id, 0),
+                cart_item_id: parseInt(id, 10),
             },
             context: {
                 request: 'internal',
@@ -574,41 +574,26 @@ const Summary = ({
         return (
             <>
                 <ModalXendit open={openXendit} setOpen={() => setOpenXendit(!openXendit)} iframeUrl={xenditIframeUrl} {...xenditState} />
-                <div className="hidden-desktop">
-                    <SummaryPlugin
-                        t={t}
-                        loadTotal={totalPrice}
-                        loading={loading}
-                        isLoader={checkout.loading.order}
-                        disabled={errorItems || disabled || (isSelectedPurchaseOrder && !isPurchaseOrderApply) || checkout.error.shippingAddress}
-                        handleActionSummary={handlePlaceOrder}
-                        dataCart={checkout.data.cart}
-                        isDesktop={false}
-                        showItems
-                        label={t('checkout:placeOrder')}
-                        globalCurrency={globalCurrency}
-                        updateCart={updateCart}
-                        deleteCart={deleteCart}
-                        withAction
-                        storeConfig={storeConfig}
-                    />
-                </div>
                 <SummaryPlugin
                     t={t}
-                    loading={loading}
                     loadTotal={totalPrice}
+                    loading={loading}
                     isLoader={checkout.loading.order}
-                    handleActionSummary={handlePlaceOrder}
-                    dataCart={checkout.data.cart}
                     disabled={errorItems || disabled || (isSelectedPurchaseOrder && !isPurchaseOrderApply) || checkout.error.shippingAddress}
-                    isDesktop
+                    handleActionSummary={() => {
+                        if (!loading) {
+                            handlePlaceOrder();
+                        }
+                    }}
+                    dataCart={checkout.data.cart}
                     showItems
-                    hideButton
+                    label={t('checkout:placeOrder')}
                     globalCurrency={globalCurrency}
                     updateCart={updateCart}
                     deleteCart={deleteCart}
                     withAction
                     storeConfig={storeConfig}
+                    mobilePosition="bottom" // top: static on top, bottom: assolute on bottom like bottom sheet
                 />
             </>
         );

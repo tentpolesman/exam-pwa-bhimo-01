@@ -11,7 +11,6 @@ const Content = (props) => {
     const {
         wishlistItem, t, handleToCart, handleAddAlltoBag, SharedSkeleton,
     } = props;
-
     /* eslint-disable */
     const handleAddToCart = (item) => {
         handleToCart({

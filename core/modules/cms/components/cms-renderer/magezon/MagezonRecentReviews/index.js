@@ -93,41 +93,41 @@ const MagezonRecentReviews = (props) => {
     let defaultWidth = storeConfig?.pwa?.image_product_width;
     let defaultHeight = storeConfig?.pwa?.image_product_height;
 
-    if (typeof defaultWidth === 'string') defaultWidth = parseInt(defaultWidth, 0);
-    if (typeof defaultHeight === 'string') defaultHeight = parseInt(defaultHeight, 0);
+    if (typeof defaultWidth === 'string') defaultWidth = parseInt(defaultWidth, 10);
+    if (typeof defaultHeight === 'string') defaultHeight = parseInt(defaultHeight, 10);
 
     return (
-<>
-        <div className="mgz-recent-reviews">
-            <div className={`mgz-recent-reviews-heading ${showLineClass} ${linePosClass}`}>
-                <div className="mgz-recent-reviews-heading-title">
-                    <Typography variant={title_tag} align={title_align}>
-                        {title.toUpperCase()}
-                    </Typography>
+        <>
+            <div className="mgz-recent-reviews">
+                <div className={`mgz-recent-reviews-heading ${showLineClass} ${linePosClass}`}>
+                    <div className="mgz-recent-reviews-heading-title">
+                        <Typography variant={title_tag} align={title_align}>
+                            {title.toUpperCase()}
+                        </Typography>
+                    </div>
+                    <div>{description}</div>
                 </div>
-                <div>{description}</div>
-            </div>
-            <div className="mgz-recent-reviews-content">
-                <Slider ref={(slider) => (sliderRef = slider)} {...settings}>
-                    {reviewData.reviews.items.map((review, index) => (
-                        <div key={index} className="mgz-recent-reviews-content-container">
-                            {review_customer && (
+                <div className="mgz-recent-reviews-content">
+                    <Slider ref={(slider) => (sliderRef = slider)} {...settings}>
+                        {reviewData.reviews.items.map((review, index) => (
+                            <div key={index} className="mgz-recent-reviews-content-container">
+                                {review_customer && (
                                 <Typography variant="h3" type="bold" className="review-nickname">
                                     {review.nickname}
                                 </Typography>
                             )}
-                            <div className="rating-star" style={{ display: 'flex' }}>
-                                {review_rating_star && <RatingStar value={review.ratings_breakdown[0].value} />}
-                                {review_title && (
+                                <div className="rating-star" style={{ display: 'flex' }}>
+                                    {review_rating_star && <RatingStar value={review.ratings_breakdown[0].value} />}
+                                    {review_title && (
                                     <Link href={reviewData.url_key} legacyBehavior>
                                         <a className="review-link">
                                             <Typography type="bold">{review.summary}</Typography>
                                         </a>
                                     </Link>
                                 )}
-                            </div>
-                            {review_date && <div className="review-date">{formatDate(review.created_at, 'M/DD/YY')}</div>}
-                            {review_product_name && (
+                                </div>
+                                {review_date && <div className="review-date">{formatDate(review.created_at, 'M/DD/YY')}</div>}
+                                {review_product_name && (
                                 <Link href={reviewData.url_key} legacyBehavior>
                                     <a className="review-link">
                                         <Typography variant="h4" type="bold">
@@ -136,8 +136,8 @@ const MagezonRecentReviews = (props) => {
                                     </a>
                                 </Link>
                             )}
-                            <div style={{ display: 'flex' }}>
-                                {review_product_image && (
+                                <div style={{ display: 'flex' }}>
+                                    {review_product_image && (
                                     <div style={{ width: defaultWidth, maxWidth: '20%', display: 'flex' }}>
                                         <Thumbor
                                             src={reviewData.small_image.url}
@@ -147,12 +147,12 @@ const MagezonRecentReviews = (props) => {
                                         />
                                     </div>
                                 )}
-                                {review_content && <div className="review-text">{review.text}</div>}
+                                    {review_content && <div className="review-text">{review.text}</div>}
+                                </div>
                             </div>
-                        </div>
                     ))}
-                </Slider>
-                {owl_nav && showNav && (
+                    </Slider>
+                    {owl_nav && showNav && (
                     <div className="mgz-recent-reviews-nav">
                         <div className="mgz-recent-reviews-nav--btn" onClick={() => sliderRef.slickPrev()}>
                             <ChevronLeftIcon />
@@ -162,10 +162,10 @@ const MagezonRecentReviews = (props) => {
                         </div>
                     </div>
                 )}
+                </div>
             </div>
-        </div>
-        <style jsx>
-            {`
+            <style jsx>
+                {`
                 .mgz-recent-reviews-heading {
                     text-align: ${title_align};
                     position: relative;
@@ -215,9 +215,9 @@ const MagezonRecentReviews = (props) => {
                     color: ${review_link_color || '#007bdb'};
                 }
             `}
-        </style>
-        <style jsx>
-            {`
+            </style>
+            <style jsx>
+                {`
                 .mgz-recent-reviews {
                     ${isSm ? 'min-height: 600px;' : isXs ? 'min-height: 700px;' : ''}
                 }
@@ -292,8 +292,8 @@ const MagezonRecentReviews = (props) => {
                     margin: 5px;
                 }
             `}
-        </style>
-</>
+            </style>
+        </>
 );
 };
 

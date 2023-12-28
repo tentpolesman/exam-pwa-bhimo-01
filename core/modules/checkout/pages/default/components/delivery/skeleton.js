@@ -1,7 +1,7 @@
 import Skeleton from '@common_skeleton';
 
 const SkeletonDelivery = () => (
-    <div className="border-b border-b-neutral-400 p-[30px]">
+    <div className="border-b border-b-neutral-400">
         <Skeleton width="60%" height={30} />
         <Skeleton className="rounded-[50%]" width="90%" height={70} />
     </div>

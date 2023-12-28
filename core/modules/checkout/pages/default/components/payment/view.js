@@ -2,27 +2,28 @@
 /* eslint-disable semi-style */
 /* eslint-disable no-plusplus */
 /* eslint-disable no-shadow */
-/* eslint-disable @next/next/no-img-element */
 import React from 'react';
 
 import Button from '@common_button';
-// import Radio from '@common_forms/Radio';
+import Radio from '@common_forms/Radio';
 import Typography from '@common_typography';
-import commonConfig from '@config';
-// import commonConfig, { basePath } from '@config';
-// import FieldPoint from '@core_modules/checkout/components/fieldcode';
-// import RadioItem from '@core_modules/checkout/components/radioitem';
+import commonConfig, { basePath } from '@config';
+import FieldPoint from '@core_modules/checkout/components/fieldcode';
+import RadioItem from '@core_modules/checkout/components/radioitem';
 import ModalHowtoPay from '@core_modules/checkout/pages/default/components/ModalHowtoPay';
-// import StripeCheckoutForm from '@core_modules/checkout/pages/default/components/payment/components/StripeCheckoutForm';
+import StripeCheckoutForm from '@core_modules/checkout/pages/default/components/payment/components/StripeCheckoutForm';
 import Skeleton from '@common_skeleton';
-// import { PayPalButtons, PayPalScriptProvider } from '@paypal/react-paypal-js';
+import classNames from 'classnames';
+import Accordion from '@common_acccordion';
 
-// import { Elements } from '@stripe/react-stripe-js';
+import { PayPalButtons, PayPalScriptProvider } from '@paypal/react-paypal-js';
+
+import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 
-// const PO = 'purchaseorder';
-// const PaypalCode = 'paypal_express';
-// const stripePayments = 'stripe_payments';
+const PO = 'purchaseorder';
+const PaypalCode = 'paypal_express';
+const stripePayments = 'stripe_payments';
 
 /**
  * Loader
@@ -36,37 +37,37 @@ const Loader = () => (
     </>
 );
 
-// const PaymentGroupIcon = (props) => {
-//     const { baseMediaUrl, src } = props;
-//     const fallbacks = [`${baseMediaUrl}checkout/payment/paymenticons-${src.replace('pg-', '')}.svg`, null];
+const PaymentGroupIcon = (props) => {
+    const { baseMediaUrl, src } = props;
+    const fallbacks = [`${baseMediaUrl}checkout/payment/paymenticons-${src.replace('pg-', '')}.svg`, null];
 
-//     // check if image exist on the backoffice, otherwise use fallback image from PWA
-//     const [imageSrc, setImageSrc] = React.useState(`${basePath}/assets/img/paymenticons-${src.replace('pg-', '')}.svg`);
-//     const [fallbackImageIndex, setFallbackImageIndex] = React.useState(0);
+    // check if image exist on the backoffice, otherwise use fallback image from PWA
+    const [imageSrc, setImageSrc] = React.useState(`${basePath}/assets/img/paymenticons-${src.replace('pg-', '')}.svg`);
+    const [fallbackImageIndex, setFallbackImageIndex] = React.useState(0);
 
-//     // set image fallback url
-//     const getFallbackImageSrc = () => {
-//         if (fallbackImageIndex > fallbacks.length) {
-//             return;
-//         }
-//         setImageSrc(fallbacks[fallbackImageIndex]);
-//         setFallbackImageIndex(fallbackImageIndex + 1);
-//     };
+    // set image fallback url
+    const getFallbackImageSrc = () => {
+        if (fallbackImageIndex > fallbacks.length) {
+            return;
+        }
+        setImageSrc(fallbacks[fallbackImageIndex]);
+        setFallbackImageIndex(fallbackImageIndex + 1);
+    };
 
-//     return (
-//         <>
-//             {(imageSrc && (
-//                 <img
-//                     className="w-[45px] h-[45px]"
-//                     src={imageSrc}
-//                     alt={src.replace('pg-', '')}
-//                     onError={() => getFallbackImageSrc()}
-//                 />
-//             ))
-//                 || ''}
-//         </>
-//     );
-// };
+    return (
+        <>
+            {(imageSrc && (
+                <img
+                    className="w-11 h-11 mr-3"
+                    src={imageSrc}
+                    alt={src.replace('pg-', '')}
+                    onError={() => getFallbackImageSrc()}
+                />
+            ))
+                || ''}
+        </>
+    );
+};
 
 /**
  * [VIEW] Payment
@@ -77,25 +78,24 @@ const PaymentView = (props) => {
     const {
         loading,
         data,
-        // clientSecret,
+        clientSecret,
         checkout,
-        // setCheckout,
+        setCheckout,
         t,
         paymentMethodList,
-        // handlePayment,
-        // handlePurchaseOrder,
-        // handlePurchaseOrderSubmit,
+        handlePayment,
+        handlePurchaseOrder,
+        handlePurchaseOrderSubmit,
         selected,
-        // paypalTokenData,
-        // paypalHandlingProps,
-        // initialOptionPaypal,
+        paypalTokenData,
+        paypalHandlingProps,
+        initialOptionPaypal,
         storeConfig,
         displayHowToPay,
         setDisplayHowToPay,
     } = props;
     const { modules } = commonConfig;
     const [expanded, setExpanded] = React.useState(null);
-    const [expandedActive, setExpandedActive] = React.useState(true);
     const [openModal, setModal] = React.useState(false);
     const [stripePromise, setStripePromise] = React.useState(null);
 
@@ -114,16 +114,6 @@ const PaymentView = (props) => {
     let content;
 
     /**
-     * [METHOD] handle change
-     * @param {*} panel
-     * @returns
-     */
-    const handleChange = (panel) => (event, newExpanded) => {
-        setExpanded(newExpanded ? panel : false);
-        setExpandedActive(false);
-    };
-
-    /**
      * [METHOD] handle modal
      * @param {*} state
      */
@@ -137,7 +127,7 @@ const PaymentView = (props) => {
     if (loading.payment || loading.all) {
         content = <Loader />;
     } else if (data.cart.prices.grand_total.value === 0) {
-        content = <Typography variant="p">{t('checkout:noNeedPayment')}</Typography>;
+        content = <Typography>{t('checkout:noNeedPayment')}</Typography>;
     } else if (data.paymentMethod.length !== 0 && paymentMethodList && paymentMethodList.storeConfig) {
         let paymentConfig = JSON.parse(`${paymentMethodList.storeConfig.payments_configuration}`);
         const groups = paymentConfig ? Object.keys(paymentConfig) : [];
@@ -185,125 +175,127 @@ const PaymentView = (props) => {
         }
         content = (
             <div>
-                <Typography variant="p">{t('checkout:paymentSubtitle')}</Typography>
+                <Typography>{t('checkout:paymentSubtitle')}</Typography>
                 {paymentConfig && (
-                    <div className="mt-[10px]">
+                    <div className="mt-4">
                         {paymentConfig.map((item, index) => {
                             if (item.data.length !== 0) {
-                                return null;
-                                // return (
-                                //     <ExpansionPanel
-                                //         expanded={
-                                //             expanded === index // if key index same with expanded active
-                                //             || (item.active && expandedActive) // expand if item active and not change expand
-                                //             || (!itemActive && expandedActive && index === 0)
-                                //         } // if dont have item active, set index 0 to active
-                                //         onChange={handleChange(index)}
-                                //         key={index}
-                                //     >
-                                //         <ExpansionPanelSummary
-                                //             aria-controls="panel1d-content"
-                                //             id={`panel-${item.group}`}
-                                //             expandIcon={<Arrow />}
-                                //             IconButtonProps={{
-                                //                 className: 'checkout-paymentGroupping-expand',
-                                //             }}
-                                //         >
-                                //             <div className="flex flex-row items-center">
-                                //                 <PaymentGroupIcon src={item.group} baseMediaUrl={storeConfig.base_media_url} />
-                                //                 <Typography letter="uppercase" variant="span" type="bold">
-                                //                     {t(`checkout:paymentGrouping:${item.group.replace('pg-', '')}`)
-                                //                         === `paymentGrouping.${item.group.replace('pg-', '')}`
-                                //                         ? item.group.replace('pg-', '')
-                                //                         : t(`checkout:paymentGrouping:${item.group.replace('pg-', '')}`)}
-                                //                 </Typography>
-                                //             </div>
-                                //         </ExpansionPanelSummary>
-                                //         <ExpansionPanelDetails>
-                                //             <Grid container>
-                                //                 {item.data.length !== 0 ? (
-                                //                     <Grid item xs={12}>
-                                //                         <Radio
-                                //                             key={`${index}-${item.group}`}
-                                //                             value={selected.payment}
-                                //                             onChange={handlePayment}
-                                //                             data={item.data}
-                                //                             CustomItem={RadioItem}
-                                //                             ComponentOptional={(item) => {
-                                //                                 // prettier-ignore
-                                //                                 const isPurchaseOrder = item.code === PO && selected.payment === PO;
-                                //                                 const isPaypal = item.code === PaypalCode && selected.payment === PaypalCode;
-                                //                                 const isStripe = item.code === stripePayments && selected.payment === stripePayments;
+                                const open = expanded === index || (expanded === null && item.active)
+                                || (!itemActive && expanded === null && index === 0);
+                                return (
+                                    <Accordion
+                                        key={index}
+                                        open={open}
+                                        handleOpen={() => setExpanded(index)}
+                                        handleClose={() => setExpanded(null)}
+                                        label={(
+                                            <div className="flex flex-row items-center px-2">
+                                                <PaymentGroupIcon src={item.group} baseMediaUrl={storeConfig.base_media_url} />
+                                                <Typography className="uppercase" variant="bd-2" type="bold">
+                                                    {t(`checkout:paymentGrouping:${item.group.replace('pg-', '')}`)
+                                                        === `paymentGrouping.${item.group.replace('pg-', '')}`
+                                                        ? item.group.replace('pg-', '')
+                                                        : t(`checkout:paymentGrouping:${item.group.replace('pg-', '')}`)}
+                                                </Typography>
+                                            </div>
+                                        )}
+                                        classSummary={classNames(
+                                            'border-x h-[45px] border-neutral',
+                                            'pl-2 pr-4',
+                                            index === 0 ? 'rounded-t-lg border-t' : '',
+                                            open ? 'border-b' : '',
+                                            index === paymentConfig.length - 1 ? 'rounded-b-lg border-y' : '',
+                                            (index > 0 && index < paymentConfig.length - 0) ? 'border-t' : '',
+                                            (open && index === paymentConfig.length - 1) ? 'rounded-b-none' : '',
+                                        )}
+                                        classIcon="w-3 h-3"
+                                        classContent={classNames(
+                                            'border-x border-neutral !mt-0',
+                                            (open && index === paymentConfig.length - 1) ? 'border-b rounded-b-lg' : '',
+                                        )}
+                                    >
+                                        <div className="flex flex-col p-4">
+                                            <Radio
+                                                key={`${index}-${item.group}`}
+                                                value={selected.payment}
+                                                onChange={handlePayment}
+                                                data={item.data}
+                                                CustomItem={RadioItem}
+                                                ComponentOptional={(item) => {
+                                                    // prettier-ignore
+                                                    const isPurchaseOrder = item.code === PO && selected.payment === PO;
+                                                    const isPaypal = item.code === PaypalCode && selected.payment === PaypalCode;
+                                                    const isStripe = item.code === stripePayments && selected.payment === stripePayments;
+                                                    // eslint-disable-next-line max-len
 
-                                //                                 if (isPurchaseOrder) {
-                                //                                     return (
-                                //                                         <Grid item xs={12}>
-                                //                                             <FieldPoint
-                                //                                                 id="purchase-order"
-                                //                                                 name="purchase-order"
-                                //                                                 placeholder={t('checkout:purchaseOrderNumber')}
-                                //                                                 action={handlePurchaseOrderSubmit}
-                                //                                                 onChange={handlePurchaseOrder}
-                                //                                                 value={checkout.selected.purchaseOrderNumber || ''}
-                                //                                                 disabled={checkout.loading.purchaseOrderNumber}
-                                //                                                 loading={checkout.loading.purchaseOrderNumber}
-                                //                                                 styleFrame={{ marginTop: 0, marginBottom: 0 }}
-                                //                                                 styleFrameText={{ marginTop: 0, marginBottom: 0 }}
-                                //                                                 styleTextField={{ marginTop: 0, marginBottom: 0 }}
-                                //                                             />
-                                //                                         </Grid>
-                                //                                     );
-                                //                                 }
-                                //                                 if (
-                                //                                     isPaypal
-                                //                                     && !paypalTokenData.loading
-                                //                                     && initialOptionPaypal['data-order-id'] !== ''
-                                //                                 ) {
-                                //                                     return (
-                                //                                         <Grid item xs={12} lg="3" md="4">
-                                //                                             <PayPalScriptProvider defer options={initialOptionPaypal}>
-                                //                                                 <PayPalButtons
-                                //                                                     style={{ layout: 'horizontal' }}
-                                //                                                     {...paypalHandlingProps}
-                                //                                                 />
-                                //                                             </PayPalScriptProvider>
-                                //                                         </Grid>
-                                //                                     );
-                                //                                 }
-                                //                                 if (isStripe
-                                //                                     && storeConfig
-                                //                                     && storeConfig.stripe_config
-                                //                                     && storeConfig.stripe_config.stripe_enable
-                                //                                     && (storeConfig.stripe_config.live_pk || storeConfig.stripe_config.test_pk)
-                                //                                 ) {
-                                //                                     return (
-                                //                                         <>
-                                //                                             {stripePromise && clientSecret && (
-                                //                                                 <Elements
-                                //                                                     stripe={stripePromise}
-                                //                                                     options={{ clientSecret }}
-                                //                                                 >
-                                //                                                     <StripeCheckoutForm {...props} setCheckout={setCheckout} />
-                                //                                                 </Elements>
-                                //                                             )}
-                                //                                         </>
-                                //                                     );
-                                //                                 }
+                                                    if (isPurchaseOrder) {
+                                                        return (
+                                                            <FieldPoint
+                                                                id="purchase-order"
+                                                                name="purchase-order"
+                                                                placeholder={t('checkout:purchaseOrderNumber')}
+                                                                action={handlePurchaseOrderSubmit}
+                                                                onChange={handlePurchaseOrder}
+                                                                value={checkout.selected.purchaseOrderNumber || ''}
+                                                                disabled={checkout.loading.purchaseOrderNumber}
+                                                                loading={checkout.loading.purchaseOrderNumber}
+                                                                styleFrame={{ marginTop: 0, marginBottom: 0 }}
+                                                                styleFrameText={{ marginTop: 0, marginBottom: 0 }}
+                                                                styleTextField={{ marginTop: 0, marginBottom: 0 }}
+                                                            />
+                                                        );
+                                                    }
+                                                    if (
+                                                        isPaypal
+                                                                    && !paypalTokenData.loading
+                                                                    && initialOptionPaypal['data-order-id'] !== ''
+                                                    ) {
+                                                        return (
+                                                            <PayPalScriptProvider defer options={initialOptionPaypal}>
+                                                                <PayPalButtons
+                                                                    style={{ layout: 'horizontal' }}
+                                                                    {...paypalHandlingProps}
+                                                                />
+                                                            </PayPalScriptProvider>
+                                                        );
+                                                    }
+                                                    if (isStripe
+                                                                    && storeConfig
+                                                                    && storeConfig.stripe_config
+                                                                    && storeConfig.stripe_config.stripe_enable
+                                                                    && (storeConfig.stripe_config.live_pk || storeConfig.stripe_config.test_pk)
+                                                    ) {
+                                                        return (
+                                                            <>
+                                                                {stripePromise && clientSecret && (
+                                                                    <Elements
+                                                                        stripe={stripePromise}
+                                                                        options={{ clientSecret }}
+                                                                    >
+                                                                        <StripeCheckoutForm {...props} setCheckout={setCheckout} />
+                                                                    </Elements>
+                                                                )}
+                                                            </>
+                                                        );
+                                                    }
 
-                                //                                 return null;
-                                //                             }}
-                                //                             propsItem={{
-                                //                                 borderBottom: false,
-                                //                                 RightComponent: true,
-                                //                             }}
-                                //                             disabled={loading.order || loading.all}
-                                //                         />
-                                //                     </Grid>
-                                //                 ) : null}
-                                //             </Grid>
-                                //         </ExpansionPanelDetails>
-                                //     </ExpansionPanel>
-                                // );
+                                                    return null;
+                                                }}
+                                                propsItem={{
+                                                    borderBottom: false,
+                                                    classContent: '',
+                                                    RightComponent: true,
+                                                }}
+                                                className="!mb-0"
+                                                classNames={{
+                                                    radioGroupClasses: '!gap-2',
+                                                }}
+                                                size="sm"
+                                                disabled={loading.order || loading.all}
+                                            />
+                                        </div>
+                                    </Accordion>
+                                );
                             }
                             return null;
                         })}
@@ -312,25 +304,35 @@ const PaymentView = (props) => {
             </div>
         );
     } else if (checkout.selected.delivery === 'pickup') {
-        content = <Typography variant="p">{t('checkout:noPaymentPickup')}</Typography>;
+        content = <Typography>{t('checkout:noPaymentPickup')}</Typography>;
     } else {
-        content = <Typography variant="p">{t('checkout:noPayment')}</Typography>;
+        content = <Typography>{t('checkout:noPayment')}</Typography>;
     }
 
     return (
-        <div className="border-b border-b-neutral-400 p-[30px]" id="checkoutPayment">
+        <div
+            id="checkoutPayment"
+            className={classNames(
+                'flex flex-col border-b border-b-neutral-200',
+                'w-full py-6 gap-4',
+            )}
+        >
             <ModalHowtoPay
                 open={openModal}
                 setOpen={() => handleModal(false)}
                 setDisplayHowToPay={setDisplayHowToPay}
             />
-            <div className="flex flex-row justify-between">
-                <Typography variant="h2" className="font-bold uppercase">
+            <div className="flex flex-row justify-between items-start">
+                <Typography variant="h2" className="uppercase">
                     {t('checkout:payment')}
                 </Typography>
                 {(modules.checkout.howtoPay.enabled && displayHowToPay) ? (
                     <div>
-                        <Button className="my-[5px] mx-[15px]" onClick={() => handleModal(true)}>
+                        <Button
+                            className="px-2 py-2"
+                            onClick={() => handleModal(true)}
+                            disabled={loading.order || loading.all}
+                        >
                             {t('checkout:howtoPay')}
                         </Button>
                     </div>

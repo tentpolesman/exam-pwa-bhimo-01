@@ -2,13 +2,16 @@
 /* eslint-disable semi-style */
 /* eslint-disable max-len */
 import Typography from '@common_typography';
-import TextField from '@common_forms/TextField';
 import Button from '@common_button';
-import CircularProgress from '@common_circularprogress';
+import classNames from 'classnames';
+import TextField from '@common/Forms/TextField';
+import ArrowPath from '@heroicons/react/24/outline/ArrowPathIcon';
+import QuestionMarkCircleIcon from '@heroicons/react/24/outline/QuestionMarkCircleIcon';
+import Popover from '@common/Popover';
 
 const EmailView = (props) => {
     const {
-        t, formik, setAnchorEl, anchorEl, idButton, open, config,
+        t, formik, setAnchorEl, anchorEl, config,
         handleBlur, load,
     } = props;
 
@@ -25,69 +28,57 @@ const EmailView = (props) => {
         return '/customer/account/login?redirect=/checkout';
     };
 
+    const HelpIcon = (prop) => (
+        <Popover
+            content={<p>{t('checkout:emailHelper')}</p>}
+            open={anchorEl}
+            setOpen={setAnchorEl}
+            contentClassName="w-full"
+        >
+            <QuestionMarkCircleIcon {...prop} />
+        </Popover>
+    );
+
     return (
-        <div className="border-b border-b-neutral-400 p-[30px]" id="checkoutEmailSetup">
-            <Typography variant="h2" className="font-bold uppercase">
+        <div
+            id="checkoutEmailSetup"
+            className={classNames(
+                'flex flex-col border-b border-b-neutral-200',
+                'w-full py-6 gap-4',
+            )}
+        >
+            <Typography variant="h2" type="bold" className="uppercase">
                 {t('checkout:emailAddress')}
             </Typography>
-            <div className="m-[5px]">
-                <div
-                    error={!!(formik.errors.email && formik.touched.email)}
-                    className="form-control mt-[10px] mb-[20px]"
-                >
-                    <TextField
-                        id="checkout-email-input"
-                        name="email"
-                        placeholder="john.doe@gmail.com"
-                        value={formik.values.email}
-                        onChange={formik.handleChange}
-                        onBlur={handleBlur}
-                        endAdornment={(
-                            <>
-                                {
-                                    load ? (
-                                        <CircularProgress size="1rem" />
-                                    ) : null
-                                }
-                                {/* <InputAdornment position="end">
-                                    <Button
-                                        aria-describedby={idButton}
-                                        aria-label="toggle password visibility"
-                                        onClick={(event) => {
-                                            setAnchorEl(event.currentTarget);
-                                        }}
-                                    >
-                                        <InformationCircleIcon />
-                                    </Button>
-                                    <Popover
-                                        id={idButton}
-                                        open={open}
-                                        anchorEl={anchorEl}
-                                        anchorOrigin={{
-                                            vertical: 'center',
-                                            horizontal: 'left',
-                                        }}
-                                        transformOrigin={{
-                                            vertical: 'center',
-                                            horizontal: 'right',
-                                        }}
-                                        onClose={() => {
-                                            setAnchorEl(null);
-                                        }}
-                                    >
-                                        <Typography variant="p">{t('checkout:emailHelper')}</Typography>
-                                    </Popover>
-                                </InputAdornment> */}
-                            </>
-                        )}
-                    />
-                    {(formik.touched.email && formik.errors.email) ? <div className="form-control-error text-red">{formik.errors.email || null}</div> : null}
-                </div>
+            <div className={classNames(
+                'w-full',
+                formik.errors.email ? 'mb-4' : '',
+            )}
+            >
+                <TextField
+                    id="checkout-email-input"
+                    name="email"
+                    placeholder="john.doe@gmail.com"
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
+                    onBlur={handleBlur}
+                    className="w-full"
+                    hintProps={{
+                        displayHintText: !!((formik.touched.email && formik.errors.email)),
+                        hintText: formik.errors.email,
+                        hintType: 'error',
+                    }}
+                    rightIcon={load ? <ArrowPath /> : <HelpIcon />}
+                    rightIconProps={{
+                        className: !load ? 'cursor-pointer !p-2 mr-0 !text-neutral' : '!p-2 animate-spin',
+                        onClick: load ? null : () => setAnchorEl(!anchorEl),
+                    }}
+                />
             </div>
             {!isExternalLoginLink
                 ? (
-                    <Button align="left" variant="text" href={generateLoginRedirect()} className="clear-margin-padding">
-                        <Typography variant="span" type="regular" decoration="underline" size="14">
+                    <Button align="left" variant="plain" href={generateLoginRedirect()} className="clear-margin-padding">
+                        <Typography variant="bd-2a" type="regular" decoration="underline" size="14">
                             {t('checkout:haveAccount')}
                         </Typography>
                     </Button>
@@ -95,11 +86,11 @@ const EmailView = (props) => {
                 : (
                     <Button
                         align="left"
-                        variant="text"
+                        variant="plain"
                         className="clear-margin-padding"
                         onClick={() => { window.location.href = generateLoginRedirect(); }}
                     >
-                        <Typography variant="span" type="regular" decoration="underline" size="14">
+                        <Typography variant="bd-2a" type="regular" decoration="underline" size="14">
                             {t('checkout:haveAccount')}
                         </Typography>
                     </Button>
