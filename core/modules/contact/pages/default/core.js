@@ -175,7 +175,6 @@ const Contact = (props) => {
         return (
             <Content
                 t={t}
-                Content={Content}
                 handleChangeCaptcha={handleChangeCaptcha}
                 formik={formik}
                 error={error}
@@ -188,12 +187,14 @@ const Contact = (props) => {
                 Skeleton={Skeleton}
                 load={load}
                 enableRecaptcha={enableRecaptcha}
+                isCms={isCms}
             />
         );
     }
+
     return (
         <Layout pageConfig={pageConfig || Config} {...props}>
-            {!cmsContactIdentifiers || error ? (
+            {(!load && !loading && !loadingConfig) && (!dataContactConfig || error) ? (
                 <Alert severity="error" className="capitalize">
                     {!cmsContactIdentifiers
                         ? t('contact:nullCmsIdentifer')
@@ -204,7 +205,6 @@ const Contact = (props) => {
             ) : (
                 <Content
                     t={t}
-                    Content={Content}
                     handleChangeCaptcha={handleChangeCaptcha}
                     formik={formik}
                     error={error}

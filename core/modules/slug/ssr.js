@@ -18,7 +18,7 @@ const getSSRProps = async (ctx) => {
     const allcookie = ctx.req ? ctx.req.cookies : {};
     const obj = {
         slug: ctx?.query?.slug,
-        ...(await serverSideTranslations(ctx.locale, ['common', 'product', 'category', 'validate', 'catalog'])),
+        ...(await serverSideTranslations(ctx.locale, ['common', 'product', 'category', 'validate', 'catalog', 'contact'])),
         token: (ctx.query && allcookie[customerTokenKey]) ? allcookie[customerTokenKey] : '',
         isLogin: allcookie.isLogin || 0,
         url_key: '',

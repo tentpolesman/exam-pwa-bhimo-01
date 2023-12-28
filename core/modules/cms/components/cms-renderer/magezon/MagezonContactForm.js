@@ -1,6 +1,7 @@
 import React from 'react';
 import ContactForm from '@core_modules/contact/pages/default/index';
 import cx from 'classnames';
+import { useTranslation } from 'next-i18next';
 
 const MagezonContactForm = (props) => {
     const {
@@ -13,6 +14,8 @@ const MagezonContactForm = (props) => {
         form_width,
     } = props;
 
+    const { t } = useTranslation(['common', 'contact', 'validate']);
+
     if (!disable_element) {
         return (
             <div
@@ -23,7 +26,7 @@ const MagezonContactForm = (props) => {
                     'max-xl:hidden': lg_hide,
                 })}
             >
-                <ContactForm isCms />
+                <ContactForm isCms t={t} />
                 <style jsx>
                     {`
                         .mgz-contact-form {

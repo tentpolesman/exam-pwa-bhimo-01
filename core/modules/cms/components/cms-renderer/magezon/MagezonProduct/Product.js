@@ -151,9 +151,9 @@ const Product = (props) => {
 
     if (type === 'product_grid' && data?.products?.items) {
         content = (
-            <div className="product-grid flex flex-wrap items-stretch -mx-2">
+            <div className="product-grid flex flex-wrap items-stretch desktop:!gap-4 tablet:!gap-3 mobile:!gap-2">
                 {data?.products?.items.map((product, index) => (
-                    <div className={cx('product-grid-item p-2', productProps.className)}>
+                    <div className={cx('product-grid-item', productProps.className)}>
                         <ProductItem
                             //
                             key={index}
