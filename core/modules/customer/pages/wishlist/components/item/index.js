@@ -13,7 +13,7 @@ const WishlistComp = ({
     price_range, price_tiers, __typename, imageSrc,
     name, wishlistItemId, t, sku, url_key,
     handleRemove, handleToCart, special_from_date, special_to_date,
-    storeConfig,
+    storeConfig, noBorderTop,
 }) => {
     const [openDelete, setOpenDelete] = React.useState(false);
     const handleDelete = () => {
@@ -53,7 +53,7 @@ const WishlistComp = ({
             <div
                 className={cx(
                     'border-[1px] border-neutral-200 flex items-center w-full',
-                    'desktop:mb-[15px] mb-[0px]',
+                    noBorderTop && 'tablet:border-t-[1px] mobile:border-t-[0px]',
                 )}
             >
                 <div
@@ -100,7 +100,7 @@ const WishlistComp = ({
                         onClick={handleAddToCart}
                         className="mt-2"
                     >
-                        <Typography className={cx('!text-neutral-white uppercase')}>
+                        <Typography className={cx('!text-neutral-white uppercase line-clamp-1')}>
                             {t('customer:wishlist:addToBag')}
                         </Typography>
                     </Button>

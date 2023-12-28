@@ -27,7 +27,7 @@ const DefaultView = (props) => {
 
     return (
         <Layout t={t} wishlist={[]}>
-            <div className={cx('pt-5')}>
+            <div className={cx('pt-5 mobile:max-desktop:px-4')}>
                 <div className={cx('relative', 'overflow-x-auto', 'rounded-lg')}>
                     <table className={cx('w-full', 'text-md', 'border-[1px]', 'border-neutral-100')}>
                         <thead>
@@ -106,18 +106,18 @@ const DefaultView = (props) => {
                         </tbody>
                     </table>
                 </div>
-            </div>
-            <div className={cx('pt-8 flex items-center justify-between')}>
-                <Typography variant="p-2" className={cx('')}>
-                    {`${itemCount} Item(s)`}
-                </Typography>
-                <Pagination
-                    handleChangePage={handleChangePage}
-                    page={page}
-                    siblingCount={0}
-                    className={cx('!p-0')}
-                    totalPage={totalPage}
-                />
+                <div className={cx('pt-8 flex items-center justify-between')}>
+                    <Typography variant="p-2" className={cx('')}>
+                        {`${itemCount} Item(s)`}
+                    </Typography>
+                    <Pagination
+                        handleChangePage={handleChangePage}
+                        page={page}
+                        siblingCount={0}
+                        className={cx('!p-0')}
+                        totalPage={totalPage}
+                    />
+                </div>
             </div>
         </Layout>
     );
