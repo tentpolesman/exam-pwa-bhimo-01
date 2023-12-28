@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 import {
     BREAKPOINTS, COLORS, FONT_FAMILY, FONT_SIZE, LETTER_SPACING, LINE_HEIGHT, SPACING, ZINDEX,
 } from './core/theme/vars';
@@ -75,10 +76,10 @@ module.exports = {
         },
     },
     plugins: [
-        // eslint-disable-next-line global-require
         require('@tailwindcss/forms')({
             strategy: 'class',
         }),
+        require('@tailwindcss/typography'),
         plugin(({ addUtilities }) => {
             addUtilities({
                 '.scrollbar-none': {

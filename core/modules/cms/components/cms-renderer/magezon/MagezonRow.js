@@ -31,13 +31,20 @@ const MagezonRow = (props) => {
                 })}
             >
                 <div
-                    className={cx('mgz-row relative', 'flex', 'flex-wrap', row_type, className, {
-                        'mgz-element-row-max-width': max_width && max_width !== '',
-                        'max-sm:hidden': xs_hide,
-                        'max-md:hidden': sm_hide,
-                        'max-lg:hidden': md_hide,
-                        'max-xl:hidden': lg_hide,
-                    })}
+                    className={cx(
+                        'mgz-row relative',
+                        'flex',
+                        'flex-wrap',
+                        row_type,
+                        className,
+                        {
+                            'mgz-element-row-max-width': max_width && max_width !== '',
+                            'max-sm:hidden': xs_hide,
+                            'max-md:hidden': sm_hide,
+                            'max-lg:hidden': md_hide,
+                            'max-xl:hidden': lg_hide,
+                        },
+                    )}
                 >
                     {elements && elements.length > 0 && elements.map((item, key) => <MagezonColumn key={key} {...item} storeConfig={storeConfig} />)}
                 </div>

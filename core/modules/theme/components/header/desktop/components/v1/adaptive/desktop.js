@@ -116,7 +116,13 @@ const DesktopHeader = (props) => {
             >
                 <div
                     id="top-header__content"
-                    className={cx('top-header__content', 'grid grid-cols-[75%_25%]', 'tablet:max-w-[768px] desktop:max-w-[1280px]', 'm-[0_auto]')}
+                    className={cx(
+                        'top-header__content',
+                        'grid grid-cols-[75%_25%]',
+                        'tablet:max-w-[768px] desktop:max-w-[1280px]',
+                        'm-[0_auto]',
+                        'desktop:px-10 tablet:px-6 mobile:px-4',
+                    )}
                 >
                     <div className={cx('top-header__content__popup-installation')} id="popup-desktop__install">
                         <Button

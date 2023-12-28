@@ -25,6 +25,7 @@ const generateDesignOptions = (classSelector, designOptions) => {
         background_position,
         background_color,
         device_type,
+        type,
         ...otherDeviceSizeDesignOpts
     } = designOptions;
     const prefixes = ['lg', 'md', 'sm', 'xs'];
@@ -83,7 +84,7 @@ const generateDesignOptions = (classSelector, designOptions) => {
     };
 
     // prettier-ignore
-    if (classSelector === 'mgz-column') {
+    if (type === 'column') {
         return css.resolve`
             .mgz-column :global(.mgz-element-inner) {
                 ${(margin_top || margin_right || margin_bottom || margin_left) ? `
@@ -127,8 +128,52 @@ const generateDesignOptions = (classSelector, designOptions) => {
             }
         `;
     }
+    if (type === 'row') {
+        return css.resolve`
+            .mgz-row {
+                ${(margin_top || margin_right || margin_bottom || margin_left) ? `
+                    margin: ${Number(margin_top) || 0}px ${Number(margin_right) || 0}px ${Number(margin_bottom) || 0}px ${Number(margin_left) || 0}px;
+                ` : ''}
+                ${(padding_top || padding_right || padding_bottom || padding_left) ? `
+                    padding: ${Number(padding_top) || 0}px ${Number(padding_right) || 0}px ${Number(padding_bottom) || 0}px ${Number(padding_left) || 0}px;
+                ` : ''}
+                ${border_top_left_radius ? `border-top-left-radius: ${Number(border_top_left_radius) || 0}px;` : ''}
+                ${border_top_right_radius ? `border-top-right-radius: ${Number(border_top_right_radius) || 0}px;` : ''}
+                ${border_bottom_left_radius ? `border-bottom-left-radius: ${Number(border_bottom_left_radius) || 0}px;` : ''}
+                ${border_bottom_right_radius ? `border-bottom-right-radius: ${Number(border_bottom_left_radius) || 0}px;` : ''}
+                ${border_style ? `border-style: ${border_style};` : ''}
+                ${background_position ? `background-position: ${background_position?.split('-').join(' ')};` : ''}
+                ${border_top_width ? `border-top-width: ${Number(border_top_width) || 0}px;` : ''}
+                ${border_right_width ? `border-right-width: ${Number(border_right_width) || 0}px;` : ''}
+                ${border_bottom_width ? `border-bottom-width: ${Number(border_bottom_width) || 0}px;` : ''}
+                ${border_left_width ? `border-left-width: ${Number(border_left_width) || 0}px;` : ''}
+                ${background_color ? `background-color: ${background_color};` : ''}
+            }
+
+            @media screen and (min-width: ${BREAKPOINTS.lg}px) and (max-width: ${BREAKPOINTS.xl}px) {
+                .mgz-row {
+                    ${generateStyles()?.lg || ''}
+                }
+            }
+            @media screen and (min-width: ${BREAKPOINTS.md}px) and (max-width: ${BREAKPOINTS.lg}px) {
+                .mgz-row {
+                    ${generateStyles()?.md || ''}
+                }
+            }
+            @media screen and (min-width: ${BREAKPOINTS.sm}px) and (max-width: ${BREAKPOINTS.md}px) {
+                .mgz-row {
+                    ${generateStyles()?.sm || ''}
+                }
+            }
+            @media screen and (min-width: ${BREAKPOINTS.xs}px) and (max-width: ${BREAKPOINTS.sm}px) {
+                .mgz-row {
+                    ${generateStyles()?.xs || ''}
+                }
+            }
+        `;
+    }
     return css.resolve`
-        .${classSelector} {
+        .${classSelector} :global(> *) {
             ${(margin_top || margin_right || margin_bottom || margin_left) ? `
                 margin: ${Number(margin_top) || 0}px ${Number(margin_right) || 0}px ${Number(margin_bottom) || 0}px ${Number(margin_left) || 0}px;
             ` : ''}
@@ -149,22 +194,22 @@ const generateDesignOptions = (classSelector, designOptions) => {
         }
 
         @media screen and (min-width: ${BREAKPOINTS.lg}px) and (max-width: ${BREAKPOINTS.xl}px) {
-            .${classSelector} {
+            .${classSelector} :global(> *) {
                 ${generateStyles()?.lg || ''}
             }
         }
         @media screen and (min-width: ${BREAKPOINTS.md}px) and (max-width: ${BREAKPOINTS.lg}px) {
-            .${classSelector} {
+            .${classSelector} :global(> *) {
                 ${generateStyles()?.md || ''}
             }
         }
         @media screen and (min-width: ${BREAKPOINTS.sm}px) and (max-width: ${BREAKPOINTS.md}px) {
-            .${classSelector} {
+            .${classSelector} :global(> *) {
                 ${generateStyles()?.sm || ''}
             }
         }
         @media screen and (min-width: ${BREAKPOINTS.xs}px) and (max-width: ${BREAKPOINTS.sm}px) {
-            .${classSelector} {
+            .${classSelector} :global(> *) {
                 ${generateStyles()?.xs || ''}
             }
         }

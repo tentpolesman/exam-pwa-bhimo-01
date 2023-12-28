@@ -67,21 +67,6 @@ const Content = (props) => {
                 'flex flex-col justify-center items-center pb-[30px]': !useCms,
             })}
         >
-            {/* {props.storeConfig && props.storeConfig.pwa && props.storeConfig.pwa.mobile_navigation !== 'burger_menu' && (
-                <div className="sm:max-md:w-screen w-full flex justify-center bg-neutral-50">
-                    <div className="absolute z-[99] left-[50%] -translate-x-[50%] hidden-desktop">
-                        <Thumbor
-                            className="mt-[25%] w-full h-full relative"
-                            classContainer="!pt-[unset]"
-                            src={logoUrl}
-                            alt="logo"
-                            width={100}
-                            height={32}
-                            storeConfig={storeConfig}
-                        />
-                    </div>
-                </div>
-            )} */}
             {content}
         </div>
     );
