@@ -33,7 +33,7 @@ const Content = (props) => {
                     )
                 }
                 {wishlist.length === 0 && (
-                    <Alert severity="warning" className={cx('mt-5')}>
+                    <Alert severity="warning">
                         <Typography
                             variant="p-2a"
                             className={cx()}
@@ -44,23 +44,24 @@ const Content = (props) => {
                 )}
                 <div
                     className={cx(
-                        'flex items-stretch flex-wrap',
+                        'grid tablet:grid-cols-3 tablet:gap-3 mobile:grid-cols-1',
                     )}
                 >
                     {wishlist.map((item, index) => (
                         <div
+                            key={index}
                             className={cx(
-                                'tablet:flex-[0_0_33.33%] mobile:flex-[0_0_100%]',
+                                '',
                             )}
                         >
                             <Item
-                                key={index}
                                 {...item}
                                 {...props}
                                 refetch={refetch}
                                 handleRemove={handleRemove}
                                 handleToCart={handleToCart}
                                 storeConfig={storeConfig}
+                                noBorderTop={index > 0}
                             />
                         </div>
                     ))}
@@ -68,7 +69,7 @@ const Content = (props) => {
                 <div
                     className={cx(
                         'flex items-center justify-center flex-wrap',
-                        'desktop:mt-0 mt-[15px]',
+                        'mt-[24px]',
                     )}
                 >
                     <div
