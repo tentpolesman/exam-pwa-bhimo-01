@@ -108,13 +108,17 @@ const StoreCreditPage = (props) => {
                                         <td colSpan={5}>
                                             <Button
                                                 icon={<ExclamationTriangleIcon />}
+                                                iconProps={{
+                                                    className: cx('!text-yellow-500'),
+                                                }}
                                                 iconPosition="left"
                                                 className={cx(
+                                                    'mt-4',
                                                     'w-full',
-                                                    'bg-yellow-500',
-                                                    'hover:bg-yellow-500',
-                                                    'focus:bg-yellow-500',
-                                                    'active:bg-yellow-500',
+                                                    'bg-yellow-50',
+                                                    'hover:bg-yellow-50',
+                                                    'focus:bg-yellow-50',
+                                                    'active:bg-yellow-50',
                                                     'hover:shadow-none',
                                                     'focus:shadow-none',
                                                     'active:shadow-none',
@@ -124,7 +128,7 @@ const StoreCreditPage = (props) => {
                                                     'active:cursor-auto',
                                                 )}
                                             >
-                                                <Typography className={cx('!text-neutral-white')}>{t('storecredit:emptyMessage')}</Typography>
+                                                <Typography className={cx('!text-yellow-600')}>{t('storecredit:emptyMessage')}</Typography>
                                             </Button>
                                         </td>
                                     </Show>
@@ -139,9 +143,7 @@ const StoreCreditPage = (props) => {
                             </Show>
                             <Show when={!loading}>
                                 <Typography className={cx('font-normal', 'leading-2lg')}>
-                                    {`${totalCount ?? 0} ${t(
-                                        'common:label:items',
-                                    )}`}
+                                    {`${totalCount ?? 0} ${t('common:label:items')}`}
                                 </Typography>
                             </Show>
                         </div>
