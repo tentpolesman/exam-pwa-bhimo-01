@@ -1,14 +1,12 @@
 import Typography from '@common_typography';
 import Chip from '@core_modules/checkout/pages/default/components/giftcard/Chip';
 import FieldPoint from '@core_modules/checkout/components/fieldcode';
-import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
 
 const GiftCardView = (props) => {
     const {
-        handleApplyGift, handleRemoveGift, formik, appliedGiftCards, checkout, giftCards,
+        handleApplyGift, handleRemoveGift, formik, appliedGiftCards, checkout, giftCards, t,
     } = props;
-    const { t } = useTranslation(['common', 'checkout']);
     return (
         <>
             <FieldPoint

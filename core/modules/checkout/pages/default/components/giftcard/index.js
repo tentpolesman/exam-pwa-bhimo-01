@@ -57,7 +57,7 @@ const GiftCard = (props) => {
         });
 
         state = { ...checkout };
-        if (result && result.data) {
+        if (result && result.data && result.data?.applyGiftCardToCart?.cart) {
             const updatedCart = {
                 ...state.data.cart,
                 ...result.data.applyGiftCardToCart.cart,
@@ -148,6 +148,7 @@ const GiftCard = (props) => {
                 formik={formik}
                 appliedGiftCards={appliedGiftCards}
                 checkout={checkout}
+                t={t}
             />
         );
     }

@@ -16,7 +16,7 @@ const Chip = ({
         type="button"
         className={classNames(
             'py-1 px-2 rounded-full',
-            'disabled:bg-neutral-100 disabled:border-neutral-150',
+            'disabled:bg-neutral-200 disabled:border-neutral-150',
             'bg-neutral-white border border-neutral hover:bg-primary hover:border-primary-600',
             'hover:text-neutral-white',
             active ? 'border-primary-600 bg-primary text-neutral-white' : '',

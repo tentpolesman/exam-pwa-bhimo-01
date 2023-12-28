@@ -210,7 +210,7 @@ const View = (props) => {
                     </Typography>
                 </div>
             ) : null}
-            <div className={cx('mt-5 mb-4 flex flex-col items-center justify-center w-full', 'hidden-mobile')}>
+            <div className={cx('mt-5 mb-4 flex flex-col items-center justify-center w-full gap-2', 'hidden-mobile')}>
                 {ordersFilter && ordersFilter.data[0].detail[0].payment.method === 'banktransfer' ? (
                     <>
                         <Button onClick={handleConfirmPayment} variant="primary">
@@ -220,9 +220,10 @@ const View = (props) => {
                         </Button>
                         <Button
                             onClick={handleCotinue}
-                            variant="tertiary"
+                            variant="plain"
                             icon={<IconArrow className="w-4 h-4" />}
                             iconPosition="right"
+                            classNameText="!text-primary"
                         >
                             {t('thanks:continue')}
                         </Button>
@@ -232,7 +233,7 @@ const View = (props) => {
                         onClick={handleCotinue}
                         icon={<IconArrow className="w-4 h-4" />}
                         iconPosition="right"
-                        variant="tertiary"
+                        variant="plain"
                     >
                         <Typography varaint="bd-2" className="uppercase">
                             {t('thanks:continue')}

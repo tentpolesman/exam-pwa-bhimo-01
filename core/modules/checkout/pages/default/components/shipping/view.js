@@ -377,7 +377,7 @@ const ShippingView = (props) => {
                                                         </div>
                                                     )}
                                                     classSummary={classNames(
-                                                        'border-x h-[45px] border-neutral',
+                                                        'border-x h-[45px] border-neutral-200',
                                                         'pl-2 pr-4',
                                                         keyIndex === 0 ? 'rounded-t-lg border-t' : '',
                                                         open ? 'border-b' : '',
@@ -387,7 +387,7 @@ const ShippingView = (props) => {
                                                     )}
                                                     classIcon="w-3 h-3"
                                                     classContent={classNames(
-                                                        'border-x border-neutral !mt-0',
+                                                        'border-x border-neutral-200 !mt-0',
                                                         (open && keyIndex === shipping.length - 1) ? 'border-b rounded-b-lg' : '',
                                                     )}
                                                 >
@@ -456,7 +456,7 @@ const ShippingView = (props) => {
                                                 </div>
                                             )}
                                             classSummary={classNames(
-                                                'border-x h-[45px] border-neutral',
+                                                'border-x h-[55px] border-neutral-200',
                                                 'pl-2 pr-4',
                                                 keyIndex === 0 ? 'rounded-t-lg border-t' : '',
                                                 open ? 'border-b' : '',
@@ -466,7 +466,7 @@ const ShippingView = (props) => {
                                             )}
                                             classIcon="w-3 h-3"
                                             classContent={classNames(
-                                                'border-x border-neutral !mt-0',
+                                                'border-x border-neutral-200 !mt-0',
                                                 (open && keyIndex === shipping.length - 1) ? 'border-b rounded-b-lg' : '',
                                             )}
                                         >

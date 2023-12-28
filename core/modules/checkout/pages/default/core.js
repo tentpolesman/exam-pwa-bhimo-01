@@ -1375,7 +1375,7 @@ const Checkout = (props) => {
     };
 
     return (
-        <Layout pageConfig={configPage || pageConfig} {...props} showRecentlyBar={false} isCheckout>
+        <Layout pageConfig={configPage || pageConfig} {...props} showRecentlyBar={false} withLayoutHeader={false} isCheckout>
             <Head>
                 <script type="text/javascript" src={url} data-client-key="SB-Mid-client-1F64CqNZz3Nzvai2" />
                 <meta name="viewport" content="initial-scale=1.0, width=device-width" />
