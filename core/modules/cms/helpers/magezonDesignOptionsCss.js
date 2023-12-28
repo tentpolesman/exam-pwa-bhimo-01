@@ -130,7 +130,7 @@ const generateDesignOptions = (classSelector, designOptions) => {
     }
     if (type === 'row') {
         return css.resolve`
-            .${classSelector} :global(.mgz-row) {
+            .mgz-row {
                 ${(margin_top || margin_right || margin_bottom || margin_left) ? `
                     margin: ${Number(margin_top) || 0}px ${Number(margin_right) || 0}px ${Number(margin_bottom) || 0}px ${Number(margin_left) || 0}px;
                 ` : ''}
@@ -151,22 +151,22 @@ const generateDesignOptions = (classSelector, designOptions) => {
             }
 
             @media screen and (min-width: ${BREAKPOINTS.lg}px) and (max-width: ${BREAKPOINTS.xl}px) {
-                .${classSelector} :global(.mgz-row) {
+                .mgz-row {
                     ${generateStyles()?.lg || ''}
                 }
             }
             @media screen and (min-width: ${BREAKPOINTS.md}px) and (max-width: ${BREAKPOINTS.lg}px) {
-                .${classSelector} :global(.mgz-row) {
+                .mgz-row {
                     ${generateStyles()?.md || ''}
                 }
             }
             @media screen and (min-width: ${BREAKPOINTS.sm}px) and (max-width: ${BREAKPOINTS.md}px) {
-                .${classSelector} :global(.mgz-row) {
+                .mgz-row {
                     ${generateStyles()?.sm || ''}
                 }
             }
             @media screen and (min-width: ${BREAKPOINTS.xs}px) and (max-width: ${BREAKPOINTS.sm}px) {
-                .${classSelector} :global(.mgz-row) {
+                .mgz-row {
                     ${generateStyles()?.xs || ''}
                 }
             }

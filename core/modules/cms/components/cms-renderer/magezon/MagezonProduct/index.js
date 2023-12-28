@@ -20,7 +20,6 @@ const MagezonProduct = (props) => {
     const linePosClass = show_line && line_position === 'bottom' ? 'mgz-product-heading-line--bottom' : '';
     const magezonProductRef = useRef();
     const [display, setDisplay] = useState(false);
-    const { className, styles } = magezonDesignOptionsCss('mgz-product', { ...other });
 
     useEffect(() => {
         const observer = new IntersectionObserver((entries) => {
@@ -38,7 +37,7 @@ const MagezonProduct = (props) => {
 
     return (
         <>
-            <div className={cx('mgz-product box-border', className)} ref={magezonProductRef}>
+            <div className={cx('mgz-product box-border')} ref={magezonProductRef}>
                 {(title || description) && (
                     <div className={`mgz-product-heading ${showLineClass} ${linePosClass}`}>
                         {title && (
@@ -113,7 +112,6 @@ const MagezonProduct = (props) => {
                     }
                 `}
             </style>
-            {/* {styles} */}
         </>
     );
 };
