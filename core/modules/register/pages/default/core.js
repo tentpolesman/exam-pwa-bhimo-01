@@ -321,8 +321,9 @@ const Register = (props) => {
     const handleWa = () => {
         if (phoneIsWa === false) {
             // eslint-disable-next-line no-use-before-define
-
             formik.setFieldValue('whatsappNumber', formik.values.phoneNumber);
+        } else {
+            formik.setFieldValue('whatsappNumber', '');
         }
         setPhoneIsWa(!phoneIsWa);
     };

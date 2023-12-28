@@ -17,7 +17,7 @@ const PageStoreCredit = (props) => {
     // cache currency
     const currencyCache = useReactiveVar(currencyVar);
 
-    const [page, setPage] = React.useState(0);
+    const [page, setPage] = React.useState(1);
     const [perPage, setRowsPerPage] = React.useState(rowsPerPage);
 
     const handleChangePage = (value) => {
@@ -37,12 +37,10 @@ const PageStoreCredit = (props) => {
             items: [],
         },
     };
-    const { data, loading } = getStoreCredit(
-        {
-            pageSizeStoreCredit: perPage,
-            currentPageStoreCredit: page + 1,
-        },
-    );
+    const { data, loading } = getStoreCredit({
+        pageSizeStoreCredit: perPage,
+        currentPageStoreCredit: page,
+    });
     if (data) {
         storeCredit = data.customer.store_credit;
     }
