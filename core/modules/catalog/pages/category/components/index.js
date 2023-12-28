@@ -110,7 +110,7 @@ const CategoryPage = ({
                 `}
             </style>
 
-            <div className="w-full h-full flex flex-col px-4 py-5 tablet:px-6 desktop:px-0 desktop:py-0">
+            <div className="w-full h-full flex flex-col py-5 desktop:py-0">
                 <BreadcrumbView iconHomeOnly withHome data={dataCategory.breadcrumb || []} />
                 <Typography
                     variant="h1"
