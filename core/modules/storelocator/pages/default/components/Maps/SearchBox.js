@@ -21,6 +21,7 @@ const SearchBox = React.forwardRef((props, ref) => {
                 fullWidth
                 placeholder={t('common:search:location')}
                 rightIcon={<Magnify />}
+                className="!w-full"
             />
         </StandaloneSearchBox>
     );

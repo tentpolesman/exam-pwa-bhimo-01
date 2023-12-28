@@ -78,8 +78,8 @@ const StoreList = ({
                     .store-list {
                         border: 2px solid #ddd;
                         padding: 12px;
-                        height: calc(50vh + 48px);
-                        max-height: calc(50vh + 48px);
+                        height: calc(50vh + 72px);
+                        max-height: calc(50vh + 72px);
                         margin-bottom: 16px;
                         overflow: auto;
                     }
