@@ -45,7 +45,7 @@ const DefaultView = (props) => {
                         </thead>
                         <tbody>
                             <Show when={data?.length > 0}>
-                                {itemList?.transaction_history?.items.map((val, index) => (
+                                {itemList?.[page - 1]?.map((val, index) => (
                                     <tr className={cx('even:bg-white', 'odd:bg-neutral-50')} key={index}>
                                         <td className={cx('text-neutral-700', 'text-md', 'font-normal', 'leading-2lg', 'p-4')}>
                                             <Link
