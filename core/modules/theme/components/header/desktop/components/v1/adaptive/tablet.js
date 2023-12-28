@@ -192,7 +192,7 @@ const TabletHeader = (props) => {
                             </Drawer>
                         )}
                     </div>
-                    <div className={cx('middle-header-tablet__logo', 'flex', 'items-center')}>
+                    <div className={cx('middle-header-tablet__logo', 'flex', 'items-center', 'cursor-pointer')}>
                         <Link href="/" legacyBehavior>
                             <a>
                                 <Image
