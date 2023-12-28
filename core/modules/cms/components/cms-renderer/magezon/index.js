@@ -311,11 +311,7 @@ const MagezonElement = (props) => {
                 `}
             </style>
             <style jsx global>
-                {`  
-                    .mgz-column > * {
-                        padding: 0px;
-                    }
-
+                {`
                     @media screen and (max-width: 768px) {
                         .mgz-element.full_height > .mgz-element-inner >  .mgz-row > .mgz-column > .mgz-element {
                             margin-top: -15px;

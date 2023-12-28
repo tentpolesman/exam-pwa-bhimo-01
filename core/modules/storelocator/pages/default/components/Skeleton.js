@@ -1,17 +1,12 @@
-import Skeleton from '@common_skeleton';
-
 const SkeletonStoreLocator = () => (
-    <>
-        <div className="flex flex-row">
-            <div className="md:basis-3/12">
-                <Skeleton className="rounded-[50%]" width="100%" height={515} />
-            </div>
-            <div className="md:basis-9/12">
-                <Skeleton className="rounded-[50%]" width="100%" height={467} />
-                <Skeleton className="rounded-[50%] mt-[12px]" width="100%" height={36} />
+    <div className="flex flex-col">
+        <div className="md:basis-3/12">
+            <div className="flex flex-col gap-2 tablet:gap-2 animate-pulse">
+                <div className="h-[515px] w-full bg-neutral-100" />
+                <div className="h-5 w-full bg-neutral-100" />
             </div>
         </div>
-    </>
+    </div>
 );
 
 export default SkeletonStoreLocator;

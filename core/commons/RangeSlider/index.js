@@ -7,7 +7,7 @@ import cx from 'classnames';
 const RangeSlider = (props) => {
     const {
         disabled = false, onChange = () => {}, value = [0, 10], disableInput = false,
-        storeConfig, minValue = 0, maxValue = 100, formatLabel,
+        storeConfig, minValue = 0, maxValue = 100, formatLabel, hideLabel = false,
     } = props;
     let min = value[0];
     if (typeof min === 'string') {
@@ -62,63 +62,65 @@ const RangeSlider = (props) => {
                 'flex flex-col w-full gap-4',
             )}
             >
-                <div className="flex flex-row justify-between items-center">
-                    {
-                        disableInput
-                            ? (
-                                <Typography>
-                                    {
-                                        formatLabel && typeof formatLabel === 'function'
-                                            ? formatLabel(minVal)
-                                            : formatPrice(minVal, storeConfig && storeConfig.base_currency_code)
-                                    }
-                                </Typography>
-                            )
-                            : (
-                                <TextField
-                                    classWrapper="max-w-[45%]"
-                                    className="max-w-full"
-                                    value={minVal}
-                                    onChange={(event) => {
-                                        const valueMin = Math.min(Number(event.target.value), maxVal - 1);
-                                        setMinVal(valueMin);
-                                        onChange([valueMin, maxVal]);
-                                        minValRef.current = valueMin;
-                                    }}
-                                    disabled={disabled}
-                                />
-                            )
-                    }
+                {!hideLabel ? (
+                    <div className="flex flex-row justify-between items-center">
+                        {
+                            disableInput
+                                ? (
+                                    <Typography>
+                                        {
+                                            formatLabel && typeof formatLabel === 'function'
+                                                ? formatLabel(minVal)
+                                                : formatPrice(minVal, storeConfig && storeConfig.base_currency_code)
+                                        }
+                                    </Typography>
+                                )
+                                : (
+                                    <TextField
+                                        classWrapper="max-w-[45%]"
+                                        className="max-w-full"
+                                        value={minVal}
+                                        onChange={(event) => {
+                                            const valueMin = Math.min(Number(event.target.value), maxVal - 1);
+                                            setMinVal(valueMin);
+                                            onChange([valueMin, maxVal]);
+                                            minValRef.current = valueMin;
+                                        }}
+                                        disabled={disabled}
+                                    />
+                                )
+                        }
 
-                    { !disableInput && <span className="text-neutral-900 font-bold">-</span> }
+                        { !disableInput && <span className="text-neutral-900 font-bold">-</span> }
 
-                    {
-                        disableInput
-                            ? (
-                                <Typography>
-                                    {
-                                        formatLabel && typeof formatLabel === 'function'
-                                            ? formatLabel(maxVal)
-                                            : formatPrice(maxVal, storeConfig && storeConfig.base_currency_code)
-                                    }
-                                </Typography>
-                            )
-                            : (
-                                <TextField
-                                    classWrapper="max-w-[45%]"
-                                    className="max-w-full"
-                                    value={maxVal}
-                                    onChange={(event) => {
-                                        const valueMax = Math.max(Number(event.target.value), minVal + 1);
-                                        setMaxVal(valueMax);
-                                        onChange([minVal, valueMax]);
-                                        maxValRef.current = valueMax;
-                                    }}
-                                    disabled={disabled}
-                                />
-                            )
-                    }
-                </div>
+                        {
+                            disableInput
+                                ? (
+                                    <Typography>
+                                        {
+                                            formatLabel && typeof formatLabel === 'function'
+                                                ? formatLabel(maxVal)
+                                                : formatPrice(maxVal, storeConfig && storeConfig.base_currency_code)
+                                        }
+                                    </Typography>
+                                )
+                                : (
+                                    <TextField
+                                        classWrapper="max-w-[45%]"
+                                        className="max-w-full"
+                                        value={maxVal}
+                                        onChange={(event) => {
+                                            const valueMax = Math.max(Number(event.target.value), minVal + 1);
+                                            setMaxVal(valueMax);
+                                            onChange([minVal, valueMax]);
+                                            maxValRef.current = valueMax;
+                                        }}
+                                        disabled={disabled}
+                                    />
+                                )
+                        }
+                    </div>
+                ) : null}
 
                 <div className={cx(
                     'slider',
