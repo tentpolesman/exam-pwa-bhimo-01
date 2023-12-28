@@ -20,7 +20,7 @@ const Content = (props) => {
 
     return (
         <Layout {...props}>
-            <div className={cx('pt-5')}>
+            <div className={cx('pt-5 mobile:max-desktop:px-4')}>
                 {
                     openShare && (
                         <ShareWishlistComponent
