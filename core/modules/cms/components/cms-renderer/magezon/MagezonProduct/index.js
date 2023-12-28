@@ -113,7 +113,7 @@ const MagezonProduct = (props) => {
                     }
                 `}
             </style>
-            {styles}
+            {/* {styles} */}
         </>
     );
 };

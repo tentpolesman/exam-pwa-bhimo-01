@@ -1,11 +1,13 @@
 /* eslint-disable max-len */
 /* eslint-disable react/no-unknown-property */
 import generateCustomCssAnimation from '@core_modules/cms/helpers/magezonCustomCssAnimationGenerator';
+import magezonDesignOptionsCss from '@core_modules/cms/helpers/magezonDesignOptionsCss';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'animate.css';
 import dynamic from 'next/dynamic';
 import 'open-iconic/font/css/open-iconic-bootstrap.css';
 import React from 'react';
+import cx from 'classnames';
 
 const MagezonSlider = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonSlider'));
 const MagezonCaraousel = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonCaraousel'), { ssr: false });
@@ -67,6 +69,8 @@ const MagezonElement = (props) => {
         el_id,
         el_inner_class,
         storeConfig,
+        id,
+        ...other
     } = props;
     const { base_media_url } = storeConfig;
     let childrenContent;
@@ -74,6 +78,10 @@ const MagezonElement = (props) => {
     let customId = '';
     let innerClasses = 'mgz-element-inner ';
     const { className, styles } = generateCustomCssAnimation(animation_duration, animation_delay, animation_infinite);
+    const { className: designOptionClassName, styles: designOptionStyles } = magezonDesignOptionsCss(id, { ...other, type });
+
+    // console.log('props', props);
+
     const enumCustomAnimation = {
         topToBottom: 'mgz_top-to-bottom',
         bottomToTop: 'mgz_bottom-to-top',
@@ -249,7 +257,7 @@ const MagezonElement = (props) => {
     return (
         <>
             <div className={classes} id={customId || null}>
-                <div className={innerClasses}>
+                <div className={cx(innerClasses, id, designOptionClassName)}>
                     {background_image && (
                         <>
                             <div className="parallax-wrapper mouse-parallax">
@@ -369,6 +377,7 @@ const MagezonElement = (props) => {
                 `}
             </style>
             {styles}
+            {designOptionStyles}
         </>
     );
 };
