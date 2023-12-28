@@ -14,6 +14,9 @@ import { features } from '@config';
 import OtpView from '@plugin_otpfield';
 import Show from '@common_show';
 import cx from 'classnames';
+import dynamic from 'next/dynamic';
+
+const Breadcrumb = dynamic(() => import('@common_breadcrumb'), { ssr: false });
 
 const Login = (props) => {
     const {
@@ -38,6 +41,7 @@ const Login = (props) => {
 
     const [activeTabs, setActiveTabs] = useState(0);
     const tabsData = [{ title: 'Email' }, { title: t('login:Phone') }];
+    const breadcrumbsData = [{ label: t('login:login'), link: '#', active: true }];
     const signInOptions = [];
     if (features.firebase.config.apiKey !== '' && firebase && firebase.auth && socialLoginMethodData && socialLoginMethodData.length > 0) {
         for (let idx = 0; idx < socialLoginMethodData.length; idx += 1) {
@@ -82,7 +86,13 @@ const Login = (props) => {
         }
     }, [firebaseLoaded]);
     return (
-        <div>
+        <div className={cx('login-container')}>
+            <Breadcrumb
+                withHome
+                iconHomeOnly
+                className={cx('mb-[40px]', 'desktop:mt-[10px]', 'tablet:mt-[0px]', 'mobile:mt-[16px] mobile:ml-[16px]')}
+                data={breadcrumbsData}
+            />
             <Typography className="flex justify-center mb-10 mt-14 tablet:mt-0" variant="h1">
                 {t('login:login')}
             </Typography>
