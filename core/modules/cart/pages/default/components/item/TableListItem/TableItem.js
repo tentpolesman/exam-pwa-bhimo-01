@@ -89,7 +89,7 @@ const TableItem = (props) => {
                                         <div className="flex flex-col">
                                             {value.values.map((item, idt) => (
                                                 <Typography variant="bd-2b" key={idt}>
-                                                    {item.quantity}
+                                                    <span className="plugin-tableCart-itemQty">{item.quantity}</span>
                                                     {' '}
                                                     x
                                                     {item.label}
@@ -159,7 +159,7 @@ const TableItem = (props) => {
                     </Typography>
                     <Button
                         iconOnly
-                        className="!px-0 !py-4"
+                        className="!px-0 !py-4 cart-tableCart-removeCartBtn"
                         iconPosition="right"
                         icon={<TrashIcon />}
                         variant="plain"

@@ -557,11 +557,9 @@ const ProductItem = (props) => {
                         'shadow border border-neutral-100 rounded-lg p-2 lg:p-4',
                         'desktop:hover:shadow-lg',
                         'min-w-[160px] tablet:max-w-[230px] desktop:min-w-[288px] desktop:max-w-full',
-                        'flex',
-                        'flex-col',
+                        'flex flex-col catalog-item-product',
                         className,
                     )}
-                    id="catalog-item-product"
                 >
                     <div className="w-full relative group overflow-hidden">
                         {!isOos && storeConfig?.pwa?.label_enable && LabelView ? (

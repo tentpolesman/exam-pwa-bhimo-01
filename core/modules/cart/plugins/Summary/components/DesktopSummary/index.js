@@ -513,7 +513,7 @@ const Summary = (props) => {
                             loading={loading}
                             disabled={disabled}
                             onClick={handleActionSummary}
-                            className="w-full"
+                            className="w-full plugin-cart-checkoutBtn"
                             classNameText="justify-center"
                         >
                             <Typography variant="bd-2a" color="white" className="uppercase">

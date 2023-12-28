@@ -39,7 +39,12 @@ const Item = (props) => {
 
     return (
         <li className={cx('px-6', 'py-4')}>
-            <div id="plugin-minicart-itemsProduct" className={cx('minicart__item--wrapper', 'tablet:max-desktop:py-4', 'flex', 'flex-row', 'gap-4')}>
+            <div
+                className={cx(
+                    'minicart__item--wrapper tablet:max-desktop:py-4 flex',
+                    'flex-row gap-4 plugin-minicart-itemsProduct',
+                )}
+            >
                 <div className={cx('minicart__item--photo-wrapper', 'rounded-[4px]')}>
                     <Link
                         href="/[...slug]"
