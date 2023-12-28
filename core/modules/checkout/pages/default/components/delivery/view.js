@@ -10,12 +10,12 @@ const ShippingView = (props) => {
     } = props;
     const checkStyles = (delivery) => ((checkout.selected.delivery === delivery)
         ? cx(
-            'p-4 border border-neutral-100 rounded-xl flex flex-row items-center cursor-pointer',
+            'p-4 border border-neutral-200 rounded-xl flex flex-row items-center cursor-pointer',
             'border-primary',
             `${delivery}Delivery`,
         )
         : cx(
-            'p-4 border border-neutral-100 rounded-xl flex flex-row items-center cursor-pointer',
+            'p-4 border border-neutral-200 rounded-xl flex flex-row items-center cursor-pointer',
             `${delivery}Delivery`,
         ));
     const checkActiveColor = (delivery) => (((checkout.selected.delivery === delivery))

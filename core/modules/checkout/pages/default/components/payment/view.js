@@ -200,7 +200,7 @@ const PaymentView = (props) => {
                                             </div>
                                         )}
                                         classSummary={classNames(
-                                            'border-x h-[45px] border-neutral',
+                                            'border-x h-[55px] border-neutral-200',
                                             'pl-2 pr-4',
                                             index === 0 ? 'rounded-t-lg border-t' : '',
                                             open ? 'border-b' : '',
@@ -210,7 +210,7 @@ const PaymentView = (props) => {
                                         )}
                                         classIcon="w-3 h-3"
                                         classContent={classNames(
-                                            'border-x border-neutral !mt-0',
+                                            'border-x border-neutral-200 !mt-0',
                                             (open && index === paymentConfig.length - 1) ? 'border-b rounded-b-lg' : '',
                                         )}
                                     >

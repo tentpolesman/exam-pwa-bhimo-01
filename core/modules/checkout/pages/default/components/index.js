@@ -36,6 +36,11 @@ import PromoView from '@core_modules/checkout/components/fieldcode';
 import RewardPointView from '@core_modules/checkout/pages/default/components/rewardpoint/view';
 import StoreCreditView from '@core_modules/checkout/pages/default/components/credit/view';
 import ExtraFeeView from '@core_modules/checkout/pages/default/components/ExtraFee/view';
+import Button from '@common/Button';
+import ArrowLeftIcon from '@heroicons/react/24/solid/ArrowLeftIcon';
+
+import { getStoreHost } from '@helpers/config';
+import { getAppEnv } from '@root/core/helpers/env';
 
 const GimmickBanner = dynamic(() => import('@plugin_gimmickbanner'), { ssr: false });
 
@@ -79,12 +84,35 @@ const Content = (props) => {
     const [displayHowToPay, setDisplayHowToPay] = React.useState(false);
     const enableMultiSeller = storeConfig.enable_oms_multiseller === '1' || storeConfig.enable_oms_multiseller === 1;
 
+    const backToStore = () => {
+        if (modules.checkout.checkoutOnly) {
+            window.location.replace(getStoreHost(getAppEnv()));
+        } else {
+            Router.push('/');
+        }
+    };
+
     /**
      * [VIEW]
      */
     return (
-        <div id="checkout" className="flex flex-col py-8 desktop:py-0">
-            <div className="xs:basis-full center hidden-mobile">
+        <div id="checkout" className="flex flex-col pb-8 desktop:py-0 relative">
+            <div className={classNames(
+                'flex flex-row items-center justify-center relative',
+                'desktop:hidden w-full sticky top-0',
+                'shadow-lg bg-neutral-white z-scroll-to-top h-[45px] tablet:h-[50px]',
+            )}
+            >
+                <Button
+                    variant="plain"
+                    onClick={backToStore}
+                    iconOnly
+                    icon={<ArrowLeftIcon />}
+                    className="absolute left-4 !p-0"
+                />
+                <Typography variant="h1" className="!text-md tablet:!text-lg uppercase">Checkout</Typography>
+            </div>
+            <div className="xs:basis-full center hidden desktop:inline">
                 <HeaderView storeConfig={storeConfig} />
             </div>
             <Typography variant="h1" className="hidden">
