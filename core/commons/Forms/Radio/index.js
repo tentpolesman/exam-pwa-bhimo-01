@@ -81,7 +81,7 @@ const Radio = (props) => {
 
     if (isVariantSingle) {
         return (
-            <div className="common-radio-container">
+            <div className={cx('common-radio-container cursor-pointer', className)}>
                 <input
                     type="radio"
                     id={id}
@@ -106,7 +106,7 @@ const Radio = (props) => {
                         'focus:shadow-primary-50',
                         'focus:ring-offset-0',
                         'checked:bg-[length:150%]',
-                        'visible',
+                        'visible cursor-pointer',
                         {
                             'border-neutral-300 text-neutral-300': !disabled,
                             'w-5 h-5': size === 'md',
@@ -134,6 +134,10 @@ const Radio = (props) => {
             ) : null}
             <div className={cx('flex', 'flex-col', 'mt-2', radioGroupClasses)}>
                 {mappedData.map((item, index) => {
+                    // generate unique id
+                    const uniqueIdName = item?.value
+                        ? `${String(item.value).toLowerCase().replace(/[^a-z^0-9]+/g, '')}-radio-${index}`
+                        : `radio-${index}`;
                     if (CustomItem) {
                         return (
                             <>
@@ -184,9 +188,9 @@ const Radio = (props) => {
                                 value={item.value}
                                 checked={item.value === value}
                                 onChange={handleChange}
-                                id={item.id || `radio-${index}`}
+                                id={uniqueIdName}
                             />
-                            <label htmlFor={item.id || `radio-${index}`} className="cursor-pointer flex items-center group">
+                            <label htmlFor={uniqueIdName} className="cursor-pointer flex items-center group">
                                 {type === 'check' ? (
                                     item.value === value ? (
                                         <div className={cx(

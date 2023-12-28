@@ -1,11 +1,16 @@
-import classNames from 'classnames';
+import cx from 'classnames';
+import Alert from '@common/Alert';
+import Typography from '@common_typography';
 
 const ErrorView = ({ type, message }) => (
-    <div className={classNames('')}>
-        <div className="alert m-15" severity={type}>
+    <Alert severity={type} className={cx('mt-5')}>
+        <Typography
+            variant="p-2a"
+            className={cx()}
+        >
             {message}
-        </div>
-    </div>
+        </Typography>
+    </Alert>
 );
 
 export default ErrorView;

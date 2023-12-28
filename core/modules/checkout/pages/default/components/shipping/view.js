@@ -4,15 +4,17 @@
 /* eslint-disable operator-linebreak */
 /* eslint-disable max-len */
 /* eslint-disable comma-dangle */
-// import Radio from '@common_forms/Radio';
+import Radio from '@common_forms/Radio';
 import React from 'react';
 import Typography from '@common_typography';
 import DeliveryItem from '@core_modules/checkout/components/radioitem';
-import Skeleton from '@common_skeleton';
+import RadioMultiseller from '@core_modules/checkout/pages/default/components/shipping/plugin/Radio';
+import { basePath } from '@config';
 import { formatPrice } from '@helper_currency';
-// import RadioMultiseller from '@core_modules/checkout/pages/default/components/shipping/plugin/Radio';
-// import { basePath } from '@config';
-// import ArrowDownIcon from '@heroicons/react/20/solid/ArrowDownIcon';
+import Alert from '@common_alert';
+import Skeleton from '@common_skeleton';
+import classNames from 'classnames';
+import Accordion from '@common_acccordion';
 
 const Loader = () => (
     <>
@@ -22,37 +24,37 @@ const Loader = () => (
     </>
 );
 
-// const ShippingGroupIcon = (props) => {
-//     const { baseMediaUrl, src } = props;
-//     const fallbacks = [`${baseMediaUrl}checkout/shipping/shipping-${src.replace('sg-', '')}.svg`, null];
+const ShippingGroupIcon = (props) => {
+    const { baseMediaUrl, src } = props;
+    const fallbacks = [`${baseMediaUrl}checkout/shipping/shipping-${src.replace('sg-', '')}.svg`, null];
 
-//     // check if image exist on the backoffice, otherwise use fallback image from PWA
-//     const [imageSrc, setImageSrc] = React.useState(`${basePath}/assets/img/shipping-${src.replace('sg-', '')}.svg`);
-//     const [fallbackImageIndex, setFallbackImageIndex] = React.useState(0);
+    // check if image exist on the backoffice, otherwise use fallback image from PWA
+    const [imageSrc, setImageSrc] = React.useState(`${basePath}/assets/img/shipping-${src.replace('sg-', '')}.svg`);
+    const [fallbackImageIndex, setFallbackImageIndex] = React.useState(0);
 
-//     // set image fallback url
-//     const getFallbackImageSrc = () => {
-//         if (fallbackImageIndex > fallbacks.length) {
-//             return;
-//         }
-//         setImageSrc(fallbacks[fallbackImageIndex]);
-//         setFallbackImageIndex(fallbackImageIndex + 1);
-//     };
+    // set image fallback url
+    const getFallbackImageSrc = () => {
+        if (fallbackImageIndex > fallbacks.length) {
+            return;
+        }
+        setImageSrc(fallbacks[fallbackImageIndex]);
+        setFallbackImageIndex(fallbackImageIndex + 1);
+    };
 
-//     return (
-//         <>
-//             {(imageSrc && (
-//                 <img
-//                     className="w-[45px] h-[45px]"
-//                     src={imageSrc}
-//                     alt={src.replace('sg-', '')}
-//                     onError={() => getFallbackImageSrc()}
-//                 />
-//             ))
-//                 || ''}
-//         </>
-//     );
-// };
+    return (
+        <>
+            {(imageSrc && (
+                <img
+                    className="w-11 h-11 mr-3"
+                    src={imageSrc}
+                    alt={src.replace('sg-', '')}
+                    onError={() => getFallbackImageSrc()}
+                />
+            ))
+                || ''}
+        </>
+    );
+};
 
 const ShippingView = (props) => {
     const {
@@ -72,11 +74,6 @@ const ShippingView = (props) => {
     let content;
     const unique = [];
     const [expanded, setExpanded] = React.useState(null);
-    const [expandedActive, setExpandedActive] = React.useState(true);
-    const handleChange = (panel) => (event, newExpanded) => {
-        setExpandedActive(false);
-        setExpanded(newExpanded ? panel : false);
-    };
     const [expandedMulti, setExpandedMulti] = React.useState([]);
     const [expandedActiveMulti, setExpandedActiveMulti] = React.useState([]);
     const handleChangeMulti = (panel, seller_id) => (event, newExpanded) => {
@@ -339,14 +336,15 @@ const ShippingView = (props) => {
                     });
                 }
             }
-            if (storeConfig.enable_oms_multiseller === '1') {
+            const isMultiSeller = storeConfig.enable_oms_multiseller === '1' || storeConfig.enable_oms_multiseller === 1;
+            if (isMultiSeller) {
                 content = unique.map((seller) => (
                     <>
-                        <Typography letter="uppercase" variant="span" type="bold">
+                        <Typography className="uppercase" variant="bd-2" type="bold">
                             {`${seller.seller_name} - ${seller.seller_city}`}
                         </Typography>
                         <div className="flex flex-col">
-                            <div className="mt-[10px]">
+                            <div className="mt-4">
                                 {seller.sellerData === null && <Typography variant="p">{t('checkout:noShipping')}</Typography>}
                                 {/* eslint-disable-next-line consistent-return, array-callback-return */}
                                 {seller.sellerData !== null &&
@@ -355,70 +353,78 @@ const ShippingView = (props) => {
                                         if (item.data.length !== 0) {
                                             const indexes = expandedMulti.findIndex((items) => items.seller_id === seller.seller_id);
                                             const indexesActive = expandedActiveMulti.findIndex((items) => items.seller_id === seller.seller_id);
-                                            return null;
-                                            // return (
-                                            //     <Accordion
-                                            //         expanded={
-                                            //             (expandedMulti[indexes] && expandedMulti[indexes].expanded === keyIndex) || // if key index same with expanded active
-                                            //             (item.active && expandedMulti[indexes] && expandedActiveMulti[indexesActive].expanded) || // expand if item active and not change expand
-                                            //             (!itemActive &&
-                                            //                 expandedMulti[indexes] &&
-                                            //                 expandedActiveMulti[indexesActive].expanded &&
-                                            //                 keyIndex === 0)
-                                            //         } // if dont have item active, set index 0 to active
-                                            //         onChange={handleChangeMulti(keyIndex, seller.seller_id)}
-                                            //         key={keyIndex}
-                                            //     >
-                                            //         <AccordionSummary
-                                            //             aria-controls="panel1d-content"
-                                            //             id={`panel-${item.group}`}
-                                            //             expandIcon={<Arrow />}
-                                            //             IconButtonProps={{
-                                            //                 className: 'checkout-shippingGroupping-expand',
-                                            //             }}
-                                            //         >
-                                            //             <div className="flex flex-row items-center">
-                                            //                 <ShippingGroupIcon src={item.group} baseMediaUrl={storeConfig.base_media_url} />
-                                            //                 <Typography letter="uppercase" variant="span" type="bold">
-                                            //                     {t(`checkout:shippingGrouping:${item.group.replace('sg-', '')}`) ===
-                                            //                     `shippingGrouping.${item.group.replace('sg-', '')}`
-                                            //                         ? item.group.replace('sg-', '')
-                                            //                         : t(`checkout:shippingGrouping:${item.group.replace('sg-', '')}`)}
-                                            //                 </Typography>
-                                            //             </div>
-                                            //         </AccordionSummary>
-                                            //         <AccordionDetails>
-                                            //             <div className="flex flex-col">
-                                            //                 {item.data.length !== 0 ? (
-                                            //                     <RadioMultiseller
-                                            //                         value={selected.shipping}
-                                            //                         onChange={handleShipping}
-                                            //                         valueData={item.data}
-                                            //                         CustomItem={DeliveryItem}
-                                            //                         classContainer="!w-full"
-                                            //                         storeConfig={storeConfig}
-                                            //                         propsItem={{
-                                            //                             borderBottom: false,
-                                            //                             classContent: "flex justify-between relative w-full",
-                                            //                         }}
-                                            //                         isShipping
-                                            //                     />
-                                            //                 ) : null}
-                                            //             </div>
-                                            //         </AccordionDetails>
-                                            //     </Accordion>
-                                            // );
+                                            const open = (expandedMulti[indexes] && expandedMulti[indexes].expanded === keyIndex) || // if key index same with expanded active
+                                            (item.active && expandedMulti[indexes] && expandedActiveMulti[indexesActive].expanded) || // expand if item active and not change expand
+                                            (!itemActive &&
+                                                expandedMulti[indexes] &&
+                                                expandedActiveMulti[indexesActive].expanded &&
+                                                keyIndex === 0);
+                                            return (
+                                                <Accordion
+                                                    key={keyIndex}
+                                                    open={open}
+                                                    handleOpen={() => handleChangeMulti(keyIndex, seller.seller_id)}
+                                                    handleClose={() => handleChangeMulti(null, seller.seller_id)}
+                                                    label={(
+                                                        <div className="flex flex-row items-center px-2">
+                                                            <ShippingGroupIcon src={item.group} baseMediaUrl={storeConfig.base_media_url} />
+                                                            <Typography letter="uppercase" variant="bd-2" type="bold">
+                                                                {t(`checkout:shippingGrouping:${item.group.replace('sg-', '')}`) ===
+                                                                `shippingGrouping.${item.group.replace('sg-', '')}`
+                                                                    ? item.group.replace('sg-', '')
+                                                                    : t(`checkout:shippingGrouping:${item.group.replace('sg-', '')}`)}
+                                                            </Typography>
+                                                        </div>
+                                                    )}
+                                                    classSummary={classNames(
+                                                        'border-x h-[45px] border-neutral',
+                                                        'pl-2 pr-4',
+                                                        keyIndex === 0 ? 'rounded-t-lg border-t' : '',
+                                                        open ? 'border-b' : '',
+                                                        keyIndex === shipping.length - 1 ? 'rounded-b-lg border-y' : '',
+                                                        (keyIndex > 0 && keyIndex < shipping.length - 0) ? 'border-t' : '',
+                                                        (open && keyIndex === shipping.length - 1) ? 'rounded-b-none' : ''
+                                                    )}
+                                                    classIcon="w-3 h-3"
+                                                    classContent={classNames(
+                                                        'border-x border-neutral !mt-0',
+                                                        (open && keyIndex === shipping.length - 1) ? 'border-b rounded-b-lg' : '',
+                                                    )}
+                                                >
+                                                    <div className="flex flex-col">
+                                                        {item.data.length !== 0 ? (
+                                                            <RadioMultiseller
+                                                                value={selected.shipping}
+                                                                onChange={handleShipping}
+                                                                valueData={item.data}
+                                                                CustomItem={DeliveryItem}
+                                                                classContainer="w-full"
+                                                                storeConfig={storeConfig}
+                                                                propsItem={{
+                                                                    borderBottom: false,
+                                                                    classContent: '',
+                                                                }}
+                                                                className="!mb-0"
+                                                                classNames={{
+                                                                    radioGroupClasses: '!gap-2'
+                                                                }}
+                                                                isShipping
+                                                            />
+                                                        ) : null}
+                                                    </div>
+                                                </Accordion>
+                                            );
                                         }
                                     })}
                             </div>
 
-                            <div className="flex flex-col mt-[20px]">
+                            <div className="flex flex-col gap-2 mt-5">
                                 {error &&
                                     error.length > 0 &&
                                     error.map((msg, key) => (
-                                        <div className="text-sm mb-[5px] p-2 bg-red-600 text-neutral-white">
+                                        <Alert key={key} className="my-4" severity="error">
                                             {msg}
-                                        </div>
+                                        </Alert>
                                     ))}
                             </div>
                         </div>
@@ -427,86 +433,102 @@ const ShippingView = (props) => {
             } else {
                 content = (
                     <div className="flex flex-col">
-                        <div className="mt-[10px]">
+                        <div className="">
                             {shipping.map((item, keyIndex) => {
                                 if (item.data.length !== 0) {
-                                    return null;
-                                    // return (
-                                    //     <Accordion
-                                    //         expanded={
-                                    //             expanded === keyIndex || // if key index same with expanded active
-                                    //             (item.active && expandedActive) || // expand if item active and not change expand
-                                    //             (!itemActive && expandedActive && keyIndex === 0)
-                                    //         } // if dont have item active, set index 0 to active
-                                    //         onChange={handleChange(keyIndex)}
-                                    //         key={keyIndex}
-                                    //     >
-                                    //         <AccordionSummary
-                                    //             aria-controls="panel1d-content"
-                                    //             id={`panel-${item.group}`}
-                                    //             expandIcon={<ArrowDownIcon />}
-                                    //             IconButtonProps={{
-                                    //                 className: 'checkout-shippingGroupping-expand',
-                                    //             }}
-                                    //         >
-                                    //             <div className="flex flex-row items-center">
-                                    //                 <ShippingGroupIcon src={item.group} baseMediaUrl={storeConfig.base_media_url} />
-                                    //                 <Typography letter="uppercase" variant="span" type="bold">
-                                    //                     {t(`checkout:shippingGrouping:${item.group.replace('sg-', '')}`) ===
-                                    //                     `shippingGrouping.${item.group.replace('sg-', '')}`
-                                    //                         ? item.group.replace('sg-', '')
-                                    //                         : t(`checkout:shippingGrouping:${item.group.replace('sg-', '')}`)}
-                                    //                 </Typography>
-                                    //             </div>
-                                    //         </AccordionSummary>
-                                    //         <AccordionDetails>
-                                    //             <div className="flex flex-col">
-                                    //                 {item.data.length !== 0 ? (
-                                    //                     <Radio
-                                    //                         value={selected.shipping}
-                                    //                         onChange={handleShipping}
-                                    //                         data={item.data}
-                                    //                         CustomItem={DeliveryItem}
-                                    //                         classContainer="!w-full"
-                                    //                         storeConfig={storeConfig}
-                                    //                         propsItem={{
-                                    //                             borderBottom: false,
-                                    //                             classContent: "flex justify-between relative w-full",
-                                    //                         }}
-                                    //                         disabled={loading.order || loading.all}
-                                    //                     />
-                                    //                 ) : null}
-                                    //             </div>
-                                    //         </AccordionDetails>
-                                    //     </Accordion>
-                                    // );
+                                    const open = expanded === keyIndex || (expanded === null && item.active)
+                                    || (!itemActive && expanded === null && keyIndex === 0);
+                                    return (
+                                        <Accordion
+                                            key={keyIndex}
+                                            open={open}
+                                            handleOpen={() => setExpanded(keyIndex)}
+                                            handleClose={() => setExpanded(null)}
+                                            label={(
+                                                <div className="flex flex-row items-center px-2">
+                                                    <ShippingGroupIcon src={item.group} baseMediaUrl={storeConfig.base_media_url} />
+                                                    <Typography letter="uppercase" variant="bd-2" type="bold">
+                                                        {t(`checkout:shippingGrouping:${item.group.replace('sg-', '')}`) ===
+                                                            `shippingGrouping.${item.group.replace('sg-', '')}`
+                                                            ? item.group.replace('sg-', '')
+                                                            : t(`checkout:shippingGrouping:${item.group.replace('sg-', '')}`)}
+                                                    </Typography>
+                                                </div>
+                                            )}
+                                            classSummary={classNames(
+                                                'border-x h-[45px] border-neutral',
+                                                'pl-2 pr-4',
+                                                keyIndex === 0 ? 'rounded-t-lg border-t' : '',
+                                                open ? 'border-b' : '',
+                                                keyIndex === shipping.length - 1 ? 'rounded-b-lg border-y' : '',
+                                                (keyIndex > 0 && keyIndex < shipping.length - 0) ? 'border-t' : '',
+                                                (open && keyIndex === shipping.length - 1) ? 'rounded-b-none' : ''
+                                            )}
+                                            classIcon="w-3 h-3"
+                                            classContent={classNames(
+                                                'border-x border-neutral !mt-0',
+                                                (open && keyIndex === shipping.length - 1) ? 'border-b rounded-b-lg' : '',
+                                            )}
+                                        >
+                                            <div className="flex flex-col p-4">
+                                                {item.data.length !== 0 ? (
+                                                    <Radio
+                                                        value={selected.shipping}
+                                                        onChange={handleShipping}
+                                                        data={item.data}
+                                                        CustomItem={DeliveryItem}
+                                                        classContainer=""
+                                                        storeConfig={storeConfig}
+                                                        propsItem={{
+                                                            borderBottom: false,
+                                                            classContent: '',
+                                                        }}
+                                                        className="!mb-0"
+                                                        classNames={{
+                                                            radioGroupClasses: '!gap-2'
+                                                        }}
+                                                        size="sm"
+                                                        disabled={loading.order || loading.all}
+                                                    />
+                                                ) : null}
+                                            </div>
+                                        </Accordion>
+                                    );
                                 }
                                 return null;
                             })}
                         </div>
 
-                        <div className="flex flex-col mt-[20px]">
+                        <div className="flex flex-col gap-3 mt-4">
                             {error &&
                                 error.length > 0 &&
                                 error.map((msg, key) => (
-                                    <div key={key} className="text-sm mb-[5px] p-2 bg-red-600 text-neutral-white">
+                                    <Alert key={key} className="my-4" severity="error">
                                         {msg}
-                                    </div>
+                                    </Alert>
                                 ))}
                         </div>
                     </div>
                 );
             }
         } else {
-            content = <Typography variant="p">{t('checkout:noShipping')}</Typography>;
+            content = <Typography>{t('checkout:noShipping')}</Typography>;
         }
     } else {
-        content = <Typography variant="p">{t('checkout:noShipping')}</Typography>;
+        content = <Typography>{t('checkout:noShipping')}</Typography>;
     }
 
-    return isOnlyVirtualProductOnCart ? null : (
-        <div className="border-b border-b-neutral-400 p-[30px]" id="checkoutShipping">
-            <Typography variant="h2" type="bold" letter="uppercase">
+    if (isOnlyVirtualProductOnCart) return <></>;
+
+    return (
+        <div
+            id="checkoutShipping"
+            className={classNames(
+                'flex flex-col border-b border-b-neutral-200',
+                'w-full py-6 gap-4',
+            )}
+        >
+            <Typography variant="h2" className="uppercase">
                 {t('checkout:shippingMethod')}
             </Typography>
             {content}

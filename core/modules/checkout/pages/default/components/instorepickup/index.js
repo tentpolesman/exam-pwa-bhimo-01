@@ -1,11 +1,11 @@
 import Button from '@common_button';
 import TextField from '@common_forms/TextField';
 import Typography from '@common_typography';
-import Dialog from '@common_dialog';
-import XMarkIcon from '@heroicons/react/24/solid/XMarkIcon';
-import cx from 'classnames';
 import { pickupLocations, setInstoreShippingAddress, setShippingMethod } from '@core_modules/checkout/services/graphql';
+import Alert from '@common_alert';
+import cx from 'classnames';
 import { useEffect, useState } from 'react';
+import Dialog from '@common_dialog';
 
 const ModalPickupLocations = (props) => {
     const {
@@ -86,71 +86,64 @@ const ModalPickupLocations = (props) => {
         setListLocations(locations);
     }, [locations]);
 
+    const styleCard = 'w-full p-4 my-3 flex flex-col justify-between items-center border border-neutral-200 rouded-lg';
+    const styleCardActive = '!border-primary';
+
     /* eslint-disable */
     return (
-        <Dialog open={open} onClose={() => setOpen(!open)} fullWidth={true} maxWidth="sm">
-            <div className={
-                cx(
-                    'relative bg-neutral-white p-[10px] shadow-none h-[51px] flex flex-row justify-center items-center'
-                )
-            }>
-                <Button className="absolute left-[10px]" onClick={() => setOpen(!open)} aria-label="close">
-                    <XMarkIcon className="text-[30px] text-primary" />
-                </Button>
-                <Typography className="justify-center my-[16px font-bold text-center uppercase]">
-                    {t('checkout:pickupInformation:label')}
-                </Typography>
-            </div>
-            <div className='dialog-content'>
-                <div className="w-full h-[80vh]">
-                    <div className="flex flex-col relative h-full">
-                        <TextField label="Search" value={search} onChange={handleSearch} />
-                        {listLocations && listLocations.length > 0 ? (
-                            listLocations.map((loc) => {
-                                return (
-                                    <div
-                                        key={loc.pickup_location_code}
-                                        onClick={() => setSelected(loc)}
-                                        className={cx(
-                                            "w-full my-[10px] p-[17px] flex flex-col justify-between items-start border border-neutral-400 rounded-[10px]",
-                                            selected && selected.pickup_location_code === loc.pickup_location_code && "border border-primary-700"
-                                        )}
-                                    >
-                                        <Typography className="font-bold">
-                                            {loc.name}
-                                        </Typography>
-                                        <Typography>
-                                            {loc.street}
-                                            <br />
-                                            {loc.city}
-                                            <br />
-                                            {loc.region}
-                                            <br />
-                                            {loc.country_id}
-                                            <br />
-                                            {loc.postcode}
-                                            <br />
-                                            {loc.telephone}
-                                        </Typography>
-                                    </div>
-                                );
-                            })
-                        ) : (
-                            <div className="alert-warning-container p-2 m-15 bg-yellow-500 text-neutral-white">
-                                {t('checkout:storesNotFound')}
-                            </div>
-                        )}
-                    </div>
-                </div>
-            </div>
-            <div className='dialog-footer'>
-                <div className="flex flex-row w-full justify-around items-center bottom-0 bg-neutral-white p-[10px]">
-                    <Button className="block m-auto w-[calc(100%-12px)] h-[41px]" type="button" onClick={handleSave} loading={loading} disabled={loading}>
-                        {t('common:button:save')}
+        <Dialog
+            open={open}
+            closeOnBackdrop
+            onClose={() => setOpen()}
+            onClickCloseTitle={() => setOpen()}
+            title={t('checkout:pickupInformation:label')}
+            useCloseTitleButton
+            content={(
+                <div className="flex flex-col border-t border-neutral-200">
+                    <div className="flex flex-col">
+                            <TextField label="Search" value={search} onChange={handleSearch} />
+                            {listLocations && listLocations.length > 0 ? (
+                                listLocations.map((loc) => {
+                                    return (
+                                        <div
+                                            key={loc.pickup_location_code}
+                                            onClick={() => setSelected(loc)}
+                                            className={cx(
+                                                styleCard,
+                                                (selected && selected.pickup_location_code === loc.pickup_location_code) ? styleCardActive : ''
+                                            )}
+                                        >
+                                            <Typography variant="bd-2">
+                                                {loc.name}
+                                            </Typography>
+                                            <Typography>
+                                                {loc.street}
+                                                <br />
+                                                {loc.city}
+                                                <br />
+                                                {loc.region}
+                                                <br />
+                                                {loc.country_id}
+                                                <br />
+                                                {loc.postcode}
+                                                <br />
+                                                {loc.telephone}
+                                            </Typography>
+                                        </div>
+                                    );
+                                })
+                            ) : (
+                                <Alert className="m-15" severity="warning">
+                                    {t('checkout:storesNotFound')}
+                                </Alert>
+                            )}
+                        </div>
+                    <Button className="w-full" classNameText="justify-center" type="button" onClick={handleSave} loading={loading} disabled={loading}>
+                            {t('common:button:save')}
                     </Button>
                 </div>
-            </div>
-        </Dialog>
+            )}
+        />
     );
 };
 
@@ -167,7 +160,13 @@ const InStorePickup = (props) => {
     }, [results.called]);
 
     return (
-        <div className="border-b border-b-neutral-400 p-[30px]">
+        <div
+            id="pickupInStore"
+            className={cx(
+                'flex flex-col border-b border-b-neutral-200',
+                'w-full py-6 gap-4',
+            )}
+        >
             <ModalPickupLocations
                 t={t}
                 open={open}
@@ -177,15 +176,19 @@ const InStorePickup = (props) => {
                 setCheckout={setCheckout}
                 handleOpenMessage={handleOpenMessage}
             />
-            <Typography variant="title" type="bold" letter="uppercase">
+            <Typography variant="h2" className="uppercase">
                 {t('checkout:pickupInformation:label')}
             </Typography>
             <Typography>{t('checkout:pickupInformation:pickupAtLabel')}</Typography>
-            <div className={cx("mb-[15px] ml-0 mr-0")}>
+            <div className={cx(
+                'my-2 p-4 flex flex-row items-center justify-between',
+                'border rounded-lg border-neutral-200 max-w-lg',
+                'mb-4',
+            )}>
                 <div className="flex flex-col">
                     {address && pickup_location_code && Object.keys(address).length > 0 && (
                         <>
-                            <Typography className="font-bold">
+                            <Typography variant="bd-2">
                                 {address.name}
                             </Typography>
                             <Typography>
@@ -203,8 +206,8 @@ const InStorePickup = (props) => {
                             </Typography>
                         </>
                     )}
-                    <Button className="clear-margin-padding text-left p-0 m-0" onClick={() => setOpen(!open)}>
-                        <Typography variant="span" letter="uppercase" type="bold">
+                    <Button align="left" variant="plain" className="!p-0 !m-0" onClick={() => setOpen(!open)}>
+                        <Typography variant="bd-2" className="uppercase">
                             {t('checkout:pickupInformation:changePickupLocation')}
                         </Typography>
                     </Button>

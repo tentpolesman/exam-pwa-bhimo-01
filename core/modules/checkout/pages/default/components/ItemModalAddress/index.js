@@ -3,7 +3,10 @@ import Component from '@core_modules/checkout/pages/default/components/ItemModal
 import { updateCustomerAddress } from '@core_modules/checkout/services/graphql';
 
 const ItemAddressCore = (props) => {
-    const { manageCustomer, handleChange, handleCloseDiff } = props;
+    const {
+        manageCustomer, handleChange, handleCloseDiff, selectedAddressId,
+        country, id,
+    } = props;
     const [updateAddress] = updateCustomerAddress();
     const [open, setOpen] = React.useState(false);
     const [loading, setLoading] = React.useState(false);
@@ -16,7 +19,7 @@ const ItemAddressCore = (props) => {
             },
         })
             .then(async () => {
-                if (data.defaultShippingBilling || data.addressId === props.selectedAddressId) {
+                if (data.defaultShippingBilling || data.addressId === selectedAddressId) {
                     await handleChange(
                         {
                             target: {
@@ -24,9 +27,9 @@ const ItemAddressCore = (props) => {
                                 valueAddress: data.addressDetail,
                             },
                         },
-                        data.addressId === props.selectedAddressId,
+                        data.addressId === selectedAddressId,
                     );
-                } else if (data.addressId !== props.selectedAddressId) {
+                } else if (data.addressId !== selectedAddressId) {
                     await handleCloseDiff();
                 }
                 setSuccess(true);
@@ -44,7 +47,21 @@ const ItemAddressCore = (props) => {
             });
     };
 
-    return <Component {...props} loading={loading} handleSave={handleSave} setOpen={setOpen} success={success} open={open} />;
+    return (
+        <Component
+            {...props}
+            loading={loading}
+            handleSave={handleSave}
+            setOpen={setOpen}
+            success={success}
+            open={open}
+            checked={id === selectedAddressId}
+            country={{
+                id: country.code,
+                full_name_locale: country.label,
+            }}
+        />
+    );
 };
 
 export default ItemAddressCore;
