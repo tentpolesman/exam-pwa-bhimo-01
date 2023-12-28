@@ -6,28 +6,13 @@ import { getOrderDownloadable } from '@core_modules/order/services/graphql';
 
 const HistoryDownload = (props) => {
     const {
-        t, Content, Skeleton, ErrorView, size,
+        t, Content, Skeleton, ErrorView,
     } = props;
-    const [page, setPage] = React.useState(0);
-    const [pageSize, setPageSize] = React.useState(size || 10);
-    const [loadMore, setLoadMore] = React.useState(false);
     const pageConfig = {
         title: t('customer:menu:myDownload'),
         header: 'relative', // available values: "absolute", "relative", false (default)
         headerTitle: t('customer:menu:myDownload'),
         bottomNav: false,
-    };
-    const handleChangePage = (event, newPage) => {
-        if (newPage > page) {
-            setLoadMore(true);
-        }
-        setPage(newPage);
-    };
-
-    const handleChangePageSize = (event) => {
-        setLoadMore(true);
-        setPageSize(parseInt(event.target.value, 10));
-        setPage(0);
     };
 
     const {
@@ -59,13 +44,7 @@ const HistoryDownload = (props) => {
         <Layout pageConfig={pageConfig} {...props}>
             <Content
                 {...props}
-                data={data.customerDownloadableProducts.items}
-                page={page}
-                pageSize={pageSize}
-                loading={loading}
-                loadMore={loadMore}
-                handleChangePage={handleChangePage}
-                handleChangePageSize={handleChangePageSize}
+                data={data?.customerDownloadableProducts?.items || []}
             />
         </Layout>
     );
