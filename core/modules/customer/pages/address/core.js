@@ -1,22 +1,21 @@
+/* eslint-disable object-curly-newline */
 /* eslint-disable consistent-return */
 /* eslint-disable radix */
 /* eslint-disable no-plusplus */
 /* eslint-disable import/named */
-import React, { useEffect, useState } from 'react';
-import Layout from '@layout';
-import _ from 'lodash';
 import {
     createCustomerAddress,
+    getCustomerAddress,
     removeAddress as gqlRemoveAddress,
-    updateCustomerAddress,
     updatedDefaultAddress as gqlUpdateDefaulAddress,
-    getCustomer as gqlGetCustomer,
+    updateCustomerAddress,
 } from '@core_modules/customer/services/graphql';
+import Layout from '@layout';
+import _ from 'lodash';
+import React, { useEffect, useState } from 'react';
 
 const AddressCustomer = (props) => {
-    const {
-        t, pageConfig, Content, storeConfig,
-    } = props;
+    const { t, pageConfig, Content } = props;
     const config = {
         title: t('customer:address:pageTitle'),
         headerTitle: t('customer:address:pageTitle'),
@@ -29,13 +28,13 @@ const AddressCustomer = (props) => {
     const [updateAddress] = updateCustomerAddress();
     const [addAddress] = createCustomerAddress();
     const [removeAddress] = gqlRemoveAddress();
-    const getCustomer = gqlGetCustomer(storeConfig);
+    const [actGetCustomerAddress, { data: dataAddress, loading: loadingGetAddress }] = getCustomerAddress();
     // state
     const [address, setAddress] = useState([]);
     const [selectedAddressId, setSelectedAddressId] = useState(null);
     const [loadingAddress, setLoadingAddress] = useState(false);
     const [success, setSuccess] = useState(false);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [openNew, setOpenDialogNew] = useState(false);
     const [, setMapPosition] = useState({
         lat: -6.197361,
@@ -51,11 +50,23 @@ const AddressCustomer = (props) => {
         });
     };
 
+    useEffect(() => {
+        actGetCustomerAddress();
+    }, []);
+
+    useEffect(() => {
+        if (loadingGetAddress) {
+            setLoading(true);
+        } else {
+            setLoading(false);
+        }
+    }, [loadingGetAddress]);
+
     // didmount
     useEffect(() => {
         setLoading(true);
-        if (!getCustomer.loading && getCustomer.data) {
-            const { customer } = getCustomer.data;
+        if (dataAddress) {
+            const { customer } = dataAddress;
 
             if (customer) {
                 const selectedAddress = customer.addresses.find((addr) => addr.default_shipping);
@@ -68,7 +79,7 @@ const AddressCustomer = (props) => {
         if (navigator.geolocation) {
             return navigator.geolocation.getCurrentPosition(displayLocationInfo);
         }
-    }, [getCustomer]);
+    }, [dataAddress]);
 
     // handle open modal add adress button
     const handleOpenNew = () => {
@@ -92,15 +103,15 @@ const AddressCustomer = (props) => {
                 street: detail.street[0],
             },
         });
-        await getCustomer.refetch();
+        await actGetCustomerAddress();
         window.backdropLoader(false);
     };
 
     // handle edit address
     const handleDialogSubmit = async () => {
         setLoading(true);
-        await getCustomer.refetch();
-        setAddress(getCustomer.data.customer.addresses);
+        const { data } = await actGetCustomerAddress();
+        setAddress(data.customer.addresses);
         setLoading(false);
     };
 
@@ -126,7 +137,7 @@ const AddressCustomer = (props) => {
         setSuccess(true);
         setLoadingAddress(false);
 
-        _.delay(() => {
+        _.delay(async () => {
             if (openNew) {
                 setOpenDialogNew(false);
             }
@@ -149,7 +160,7 @@ const AddressCustomer = (props) => {
         }
 
         _.delay(async () => {
-            await getCustomer.refetch();
+            await actGetCustomerAddress();
             setSuccess(true);
             setLoadingAddress(false);
             setLoading(false);
@@ -170,6 +181,7 @@ const AddressCustomer = (props) => {
                 loadingAddress={loadingAddress}
                 success={success}
                 openNew={openNew}
+                setOpenDialogNew={setOpenDialogNew}
             />
         </Layout>
     );
