@@ -14,12 +14,10 @@ const AddressView = ({ customer, t }) => (
             <div className={cx('mobile:basis-full', 'desktop:basis-1/2', 'border-[1px]', 'border-neutral-200', 'rounded-md', 'pl-5', 'py-5')}>
                 <Typography variant="bd-1a">{t('customer:menu:contactInformation')}</Typography>
                 <p className={cx('pt-5')}>
-                    <Typography variant="p2" className={cx('block', 'font-normal')}>
+                    <Typography className={cx('block', 'font-normal')}>
                         {customer.firstname} {customer.lastname}
                     </Typography>
-                    <Typography variant="p2" className={cx('block', 'pt-3', 'font-normal')}>
-                        {customer.email}
-                    </Typography>
+                    <Typography className={cx('block', 'pt-3', 'font-normal')}>{customer.email}</Typography>
                     <div className={cx('account-action', 'pt-5', 'grid', 'grid-cols-[2fr_10fr]')}>
                         <div className={cx('account-action-btn', 'border-r-[1px]', 'border-neutral-700')}>
                             <Button link="/customer/account/profile" variant="plain" className={cx('pl-0', '!py-0')}>
@@ -41,7 +39,7 @@ const AddressView = ({ customer, t }) => (
             <div className={cx('mobile:basis-full', 'desktop:basis-1/2', 'border-[1px]', 'border-neutral-200', 'rounded-md', 'pl-5', 'py-5')}>
                 <Typography variant="bd-1a">{t('customer:menu:newsletter')}</Typography>
                 <p className={cx('pt-5')}>
-                    <Typography variant="p2" className={cx('block', 'font-normal')}>
+                    <Typography className={cx('block', 'font-normal')}>
                         {customer.is_subscribed ? t('customer:menu:subcription') : t('customer:menu:noSubcription')}
                     </Typography>
                     <div className={cx('account-action', 'pt-5', 'grid', 'grid-cols-[2fr_10fr]')}>

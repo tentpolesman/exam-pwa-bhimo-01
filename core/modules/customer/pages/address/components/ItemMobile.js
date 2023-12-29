@@ -1,10 +1,16 @@
 /* eslint-disable no-unused-vars */
+import React, { useState } from 'react';
+
+import Button from '@common_button';
+import Radio from '@common_forms/Radio';
 import Typography from '@common_typography';
 import AddressFormDialog from '@plugin_addressform';
-import React, { useState } from 'react';
+
+import cx from 'classnames';
 
 const ItemAddress = (props) => {
     const {
+        addressId,
         firstname = '',
         lastname = '',
         street = '',
@@ -21,65 +27,76 @@ const ItemAddress = (props) => {
         t,
         selectedAddressId,
         handleChange,
-        first,
-        // eslint-disable-next-line no-unused-vars
     } = props;
+
     const [open, setOpen] = useState(false);
     React.useEffect(() => {
         if (open && success) {
             setOpen(false);
         }
     }, [loadingAddress]);
-    return null;
-    // return (
-    //     <>
-    //         <AddressFormDialog
-    //             {...props}
-    //             open={open}
-    //             onSubmitAddress={handleAddress}
-    //             loading={loadingAddress}
-    //             success={success}
-    //             setOpen={() => setOpen(!open)}
-    //             pageTitle={t('customer:address:editTitle')}
-    //         />
-    //         <div className="flex flex-col">
-    //             <div className={[styles.address_content, first ? styles.address_content_first : ''].join(' ')}>
-    //                 <RadioGroup row aria-label="position" onChange={handleChange} name="position" value={selectedAddressId}>
-    //                     <FormControlLabel
-    //                         className={[styles.address_shipping].join(' ')}
-    //                         value={value}
-    //                         checked={checked}
-    //                         control={<Radio color="secondary" size="small" />}
-    //                         label={(
-    //                             <>
-    //                                 <Typography className={[styles.address_text].join(' ')} variant="p">
-    //                                     {`${firstname} ${lastname}`}
-    //                                 </Typography>
-    //                                 <Typography className={[styles.address_text].join(' ')} variant="p">
-    //                                     {street}
-    //                                     ,
-    //                                 </Typography>
-    //                                 <Typography className={[styles.address_text].join(' ')} variant="p">
-    //                                     {city !== '' && `${city}, `}
-    //                                     {region !== '' && `${region}, `}
-    //                                     {country !== '' && `${country.full_name_locale || ''}, `}
-    //                                     {postcode !== '' && postcode}
-    //                                 </Typography>
-    //                                 <Typography className={[styles.address_text].join(' ')} variant="p">
-    //                                     {telephone}
-    //                                 </Typography>
-    //                             </>
-    //                         )}
-    //                         labelPlacement="end"
-    //                     />
-    //                 </RadioGroup>
-    //                 <Typography className={[styles.address_edit, styles.address_edit_mobile].join(' ')} variant="span" onClick={() => setOpen(!open)}>
-    //                     {t('customer:address:editTitle')}
-    //                 </Typography>
-    //             </div>
-    //         </div>
-    //     </>
-    // );
+
+    return (
+        <div className={cx('py-2')}>
+            <AddressFormDialog
+                {...props}
+                open={open}
+                onSubmitAddress={handleAddress}
+                loading={loadingAddress}
+                success={success}
+                setOpen={() => setOpen(!open)}
+                pageTitle={t('customer:address:editTitle')}
+            />
+            <div
+                className={cx('flex', 'flex-row', 'shadow-sm', 'p-4', 'justify-start', 'rounded-lg', 'gap-x-4', 'border-[1px]', 'border-neutral-300')}
+            >
+                <div className={cx('flex', 'justify-center', 'items-center', 'basis-1/12')}>
+                    <Radio
+                        color="default"
+                        size="sm"
+                        variant="single"
+                        value={addressId}
+                        checked={!loadingAddress && checked && addressId === selectedAddressId}
+                        onClick={handleChange}
+                        id={`${addressId}_${value}`.replace(/ /g, '_')}
+                        className={cx('text-center')}
+                        classNames={{
+                            radioClasses: cx('cursor-pointer', '!mr-0', {
+                                'border-[3px] border-primary': addressId === selectedAddressId,
+                            }),
+                        }}
+                    />
+                </div>
+                <div>
+                    {country.id === 'ID' ? (
+                        <div className={cx('flex', 'flex-col', 'gap-y-0', 'pb-4')}>
+                            <p>{`${firstname} ${lastname}`}</p>
+                            <p>{`${city.split(', ')[0]}`}</p>
+                            <p>{`${street},`}</p>
+                            <p>{`Kec. ${city.split(', ')[1]}, Kel. ${city.split(', ')[2]}`}</p>
+                            <p>{`${city.split(', ')[0]} ${postcode}`}</p>
+                            <p>{`${region}, ${country.full_name_locale || ''}`}</p>
+                            <p>{`T: ${telephone}`}</p>
+                        </div>
+                    ) : (
+                        <div className={cx('flex', 'flex-col', 'gap-y-0', 'pb-4')}>
+                            <p>{`${firstname} ${lastname}`}</p>
+                            <p>{`${city.split(', ')[0]},`}</p>
+                            <p>{`${street}`}</p>
+                            <p>{`${city}, ${region},`}</p>
+                            <p>{`${country.full_name_locale || ''}, ${postcode},`}</p>
+                            <p>{`T: ${telephone}`}</p>
+                        </div>
+                    )}
+                    <Button variant="plain" className={cx('pl-0', '!py-0')} onClick={() => setOpen(true)}>
+                        <Typography className={cx('underline', 'underline-offset-2', 'cursor-pointer')}>
+                            {t('customer:address:editAddress')}
+                        </Typography>
+                    </Button>
+                </div>
+            </div>
+        </div>
+    );
 };
 
 export default ItemAddress;

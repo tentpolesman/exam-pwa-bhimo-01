@@ -10,13 +10,11 @@ import ExclamationTriangleIcon from '@heroicons/react/24/outline/ExclamationTria
 
 const generateData = (data, { t }) => (
     <p className={cx('pt-5')}>
-        <Typography variant="p2" className={cx('block', 'font-normal')}>
+        <Typography className={cx('block', 'font-normal')}>
             {data.firstname} {data.lastname}
         </Typography>
-        <Typography variant="p2" className={cx('block', 'font-normal', 'pt-3')}>
-            {data.city.split(', ')[0]}
-        </Typography>
-        <Typography variant="p2" className={cx('block', 'font-normal')}>
+        <Typography className={cx('block', 'font-normal', 'pt-3')}>{data.city.split(', ')[0]}</Typography>
+        <Typography className={cx('block', 'font-normal')}>
             {data.country_code === 'ID' ? (
                 <>
                     <p>{`${data.street[0]},`}</p>
@@ -26,12 +24,8 @@ const generateData = (data, { t }) => (
                 `${data.street[0]}, ${data.city.split(', ')[2]}, ${data.city.split(', ')[1]}`
             )}
         </Typography>
-        <Typography variant="p2" className={cx('block', 'font-normal')}>
-            {`${data.city.split(', ')[0]} ${data.postcode}`}
-        </Typography>
-        <Typography variant="p2" className={cx('block', 'font-normal')}>
-            {`T: ${data.telephone}`}
-        </Typography>
+        <Typography className={cx('block', 'font-normal')}>{`${data.city.split(', ')[0]} ${data.postcode}`}</Typography>
+        <Typography className={cx('block', 'font-normal')}>{`T: ${data.telephone}`}</Typography>
         <Button link="/customer/account/address" variant="plain" className={cx('pl-0', '!pb-0', 'pt-5')}>
             <Typography variant="bd-2a" className={cx('!text-primary-700')}>
                 {t('customer:address:changeAddress')}

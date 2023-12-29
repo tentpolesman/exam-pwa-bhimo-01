@@ -5,10 +5,11 @@
 /* eslint-disable react/forbid-prop-types */
 import TextField from '@common_forms/TextField';
 import Popover from '@common_popover';
-import MagnifyingGlassIcon from '@heroicons/react/24/outline/MagnifyingGlassIcon';
 import cx from 'classnames';
 import { useTranslation } from 'next-i18next';
 import React from 'react';
+
+import MagnifyingGlassIcon from '@heroicons/react/24/outline/MagnifyingGlassIcon';
 
 const CustomAutocomplete = (props) => {
     const {
@@ -20,11 +21,17 @@ const CustomAutocomplete = (props) => {
         value,
         primaryKey,
         className,
+        inputClassName,
+        popoverWrapperClassName,
+        popoverClassName,
+        popoverContentClassName,
         enableCustom,
         placeholder,
         CustomPopover,
         itemOptions,
         useKey,
+        inputProps = {},
+        openOnFocus = false,
     } = props;
 
     const { t } = useTranslation(['common']);
@@ -32,6 +39,8 @@ const CustomAutocomplete = (props) => {
     const [open, setOpen] = React.useState(false);
 
     const [filteredItem, setFilteredItem] = React.useState(itemOptions);
+
+    const { hintProps } = inputProps;
 
     const handleAutocomplete = (e) => {
         if (e.target.value !== '') {
@@ -62,21 +71,34 @@ const CustomAutocomplete = (props) => {
             let optionValue;
 
             if (useKey) {
-                optionLabel = propsPopoverItem.item[labelKey].toUpperCase();
+                optionLabel = propsPopoverItem.item[labelKey];
                 optionValue = propsPopoverItem.item[primaryKey];
             } else {
-                optionLabel = propsPopoverItem.optionLabel.toUpperCase();
+                optionLabel = propsPopoverItem.optionLabel;
                 optionValue = propsPopoverItem.optionValue;
             }
 
             const handleSelectItem = () => {
-                onChange(optionLabel.toUpperCase());
-                setOpen(false);
+                if (useKey) {
+                    onChange(propsPopoverItem.item);
+                    setOpen(false);
+                } else {
+                    onChange(optionLabel);
+                    setOpen(false);
+                }
             };
 
             return (
                 <div
-                    className={cx('grid', 'py-4', 'text-neutral-300', 'hover:text-primary-300', 'hover:bg-neutral-50', 'hover:cursor-pointer')}
+                    className={cx(
+                        'grid',
+                        'py-4',
+                        'text-neutral-300',
+                        'hover:text-primary-300',
+                        'hover:bg-neutral-50',
+                        'hover:cursor-pointer',
+                        popoverContentClassName,
+                    )}
                     onClick={() => handleSelectItem(propsPopoverItem)}
                     role="presentation"
                 >
@@ -89,7 +111,8 @@ const CustomAutocomplete = (props) => {
 
         return (
             <>
-                {open && value.length !== 0 && (filteredItem === null || (typeof filteredItem === 'object' && filteredItem.length === 0)) ? (
+                {/* {open && (value.length !== 0) && (filteredItem === null || (typeof filteredItem === 'object' && filteredItem.length === 0)) ? ( */}
+                {open && (filteredItem === null || (typeof filteredItem === 'object' && filteredItem.length === 0)) ? (
                     <div className={cx('breadcrumbs', 'block', 'text-sm', 'text-neutral-200', 'uppercase', 'italic')}>
                         {t('common:error:notFound')}
                     </div>
@@ -102,7 +125,14 @@ const CustomAutocomplete = (props) => {
 
     return (
         <div cx={className}>
-            <Popover content={enableCustom ? <CustomPopover /> : <PopoverContent />} open={open && !loading} setOpen={setOpen}>
+            <Popover
+                content={enableCustom ? <CustomPopover /> : <PopoverContent />}
+                open={open && !loading}
+                setOpen={setOpen}
+                className={popoverClassName}
+                wrapperClassName={popoverWrapperClassName}
+                contentClassName={popoverContentClassName}
+            >
                 <TextField
                     value={value}
                     placeholder={placeholder || t('common:search:title')}
@@ -110,12 +140,19 @@ const CustomAutocomplete = (props) => {
                         onChange(e.target.value);
                         handleAutocomplete(e);
                     }}
+                    onFocus={() => {
+                        if (openOnFocus) {
+                            setOpen(true);
+                        }
+                    }}
                     rightIcon={<MagnifyingGlassIcon />}
                     rightIconProps={{
                         className: 'text-neutral-300 h-10 w-10',
                     }}
                     disabled={disabled}
                     label={label}
+                    className={inputClassName}
+                    hintProps={hintProps}
                 />
             </Popover>
         </div>
