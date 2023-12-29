@@ -49,7 +49,7 @@ const FooterView = (props) => {
                             padding-right: 16px;
                         }
                         .wrapper-footer #footer-bottom .footer-subtitle p {
-                            padding-top: 32px !important;
+                            padding-top: 12px !important;
                         }
                     }
                     .container-footer {

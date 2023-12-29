@@ -1,25 +1,18 @@
-import Typography from '@common_typography';
 import Button from '@common_button';
-import Link from 'next/link';
 import classNames from 'classnames';
+import Alert from '@common/Alert';
 
 const EmptyView = (props) => {
     const { t } = props;
     return (
-        <div className={classNames('row center-xs')}>
+        <div className={classNames('flex flex-col items-center justify-center')}>
             <div className="xs:basis-full">
-                <Typography variant="span" type="regular" align="center">
-                    <span className="">{t('common:productCompare:emptyCompare')}</span>
-                </Typography>
+                <Alert severity="warning">{t('common:productCompare:emptyCompare')}</Alert>
             </div>
             <div className={classNames('', 'xs:basis-full')}>
-                <Link href="/">
-
-                    <Button className="">
-                        {t('common:button:continueShopping')}
-                    </Button>
-
-                </Link>
+                <Button variant="tertiary" link="/">
+                    {t('common:button:continueShopping')}
+                </Button>
             </div>
 
         </div>

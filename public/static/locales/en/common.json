@@ -44,7 +44,9 @@
         "addToCart": "Add To Cart",
         "allowCookies": "Allow Cookies",
         "simulateQrCode": "Simulate Qrcode Payment",
-        "submitReview": "Submit Review"
+        "submitReview": "Submit Review",
+        "apply": "Apply",
+        "remove": "Remove"
     },
     "cart": {
         "myCart": "My Cart",

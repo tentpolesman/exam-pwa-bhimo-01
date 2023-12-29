@@ -1,39 +1,45 @@
 import Typography from '@common_typography';
-import Badge from '@common_badge';
+import Chip from '@core_modules/checkout/pages/default/components/giftcard/Chip';
 import FieldPoint from '@core_modules/checkout/components/fieldcode';
+import classNames from 'classnames';
 
 const GiftCardView = (props) => {
     const {
-        handleApplyGift, handleRemoveGift, formik, appliedGiftCards, checkout, giftCards,
+        handleApplyGift, handleRemoveGift, formik, appliedGiftCards, checkout, giftCards, t,
     } = props;
     return (
         <>
             <FieldPoint
                 id="giftCard"
                 name="giftCard"
-                placeholder="Gift Card Code"
+                placeholder={t('checkout:giftCard:placeholderField')}
                 action={() => {
                     handleApplyGift();
                 }}
                 onChange={formik.handleChange}
                 value={formik.values.giftCard}
-                disabled={checkout.loading.giftCard}
+                disabled={checkout.loading.giftCard || !checkout.data.cart}
                 error={!!formik.errors.giftCard}
                 errorMessage={formik.errors.giftCard}
                 loading={checkout.loading.giftCard}
             />
             {appliedGiftCards.length || giftCards.length ? (
-                <div className="-mt-[30px] mr-[10px] mb-[30px] ml-[5px]">
+                <div
+                    id="checkoutGiftCard"
+                    className={classNames(
+                        'flex flex-col border-b border-b-neutral-200',
+                        'w-full py-6 gap-4',
+                    )}
+                >
                     {giftCards.length === 0 ? null : (
-                        <div>
-                            <Typography variant="p" letter="capitalize">
-                                Your Gift Card
+                        <div className="flex flex-col gap-3">
+                            <Typography letter="capitalize">
+                                {t('checkout:giftCard:yourGiftCard')}
                             </Typography>
-                            <div className="gift-card-item-container">
+                            <div className="flex flex-row flex-wrap gap-2">
                                 {giftCards.map((item, index) => (
-                                    <Badge
+                                    <Chip
                                         disabled={checkout.loading.giftCard}
-                                        className="mx-[5px]"
                                         key={index}
                                         size="small"
                                         label={item.giftcard_code}
@@ -46,15 +52,15 @@ const GiftCardView = (props) => {
                         </div>
                     )}
                     {appliedGiftCards.length === 0 ? null : (
-                        <div>
-                            <Typography variant="p" letter="capitalize">
-                                Applied Gift Card
+                        <div className="flex flex-col gap-3">
+                            <Typography letter="capitalize">
+                                {t('checkout:giftCard:appliedGiftCard')}
                             </Typography>
-                            <div className="gift-card-item-container">
+                            <div className="flex flex-row flex-wrap gap-2">
                                 {appliedGiftCards.map((item, index) => (
-                                    <Badge
+                                    <Chip
                                         disabled={checkout.loading.giftCard}
-                                        className="mx-[5px]"
+                                        active
                                         color="primary"
                                         key={index}
                                         size="small"

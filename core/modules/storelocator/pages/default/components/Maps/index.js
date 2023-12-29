@@ -103,15 +103,16 @@ const StoreLocatorMaps = compose(
     };
 
     return (
-        <div className="mt-1">
-            <div className="flex flex-row">
-                <div className="xs:basis-full sm:basis-5/12">
+        <div className="mt-4 tablet:mt-3">
+            <div className="flex flex-row flex-wrap">
+                <div className="xs:basis-full sm:basis-5/12 my-4">
                     <SearchBox ref={searchBoxRef} handleSearch={handleSearch} value={querySearch} setValue={setQuerySearch} />
                 </div>
-                <div className="xs:basis-8/12 sm:basis-4/12 md:basis-5/12 mt-1">
-                    <SliderRadius radius={radius} setRadius={handleRadius} />
-                </div>
-                <div className="xs:basis-4/12 sm:basis-3/12 md:basis-2/12 mt-1 ml-4">
+
+                <div className="flex-1 flex justify-between my-4">
+                    <div className="flex-1 mt-1 mr-2 tablet:mx-4">
+                        <SliderRadius radius={radius} setRadius={handleRadius} />
+                    </div>
                     <Button onClick={handleReset}>
                         Reset
                     </Button>

@@ -42,8 +42,8 @@ const StoreLocatorContent = ({ gmapKey, storeLocations, t }) => {
     }
 
     return (
-        <div className="flex flex-row" style={{ padding: '0 16px' }}>
-            <div className="xs:basis-full sm:basis-4/12 md:basis-3/12 last-xs first-sm">
+        <div className="flex flex-row flex-wrap tablet:flex-nowrap gap-1">
+            <div className="xs:basis-full sm:basis-4/12 md:basis-3/12 order-1 tablet:order-[0]">
                 <StoreList
                     t={t}
                     storeList={storeList}
@@ -54,7 +54,7 @@ const StoreLocatorContent = ({ gmapKey, storeLocations, t }) => {
                     }}
                 />
             </div>
-            <div className="xs:basis-full sm:basis-8/12 md:basis-9/12">
+            <div className="xs:basis-full xs:max-w-full sm:basis-8/12 md:basis-9/12">
                 <StoreLocatorMaps
                     t={t}
                     centerPosition={centerPosition}
@@ -73,7 +73,7 @@ const StoreLocatorContentWrapper = (props) => {
         loading, storeLocations, storeConfig, t,
     } = props;
     return (
-        <div className="desktop:max-w-[1280px] desktop:px-10 tablet:max-w-[768px] tablet:px-6 mobile:px-4 my-0 mx-auto]">
+        <div className="mobile:mt-[20%]">
             {loading || typeof window === 'undefined' ? (
                 <SkeletonStoreLocator />
             ) : (

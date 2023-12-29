@@ -2,7 +2,6 @@
 /* eslint-disable react/forbid-prop-types */
 /* eslint-disable max-len */
 /* eslint-disable no-unused-expressions */
-import React from 'react';
 import Typography from '@common_typography';
 import Radio from '@common_forms/Radio';
 import cx from 'classnames';
@@ -11,11 +10,12 @@ import { getCartId } from '@helper_cartid';
 import { getLocalStorage } from '@helper_localstorage';
 import { useReactiveVar } from '@apollo/client';
 import { storeConfigVar } from '@root/core/services/graphql/cache';
+import React from 'react';
 
 const RadioItem = (props) => {
     const { value, label, className } = props;
-    const customStyle = cx('form-control-label', className);
-    return <div value={value || ''} control={<Radio color="default" size="small" />} label={label || ''} className={customStyle} />;
+    const customStyle = cx('', className);
+    return <Radio variant="single" value={value} size="sm" label={label || ''} className={customStyle} />;
 };
 
 // Inspired by blueprintjs
@@ -41,13 +41,8 @@ function CustomRadio({
 }) {
     const storeConfigLocalStorage = useReactiveVar(storeConfigVar);
 
-    const rootStyle = cx('m-0 mb-[10px] w-full flex flex-col', className);
-    const containerStyle = cx(
-        'flex mb-0',
-        flex === 'column' && 'flex-column',
-        flex === 'row' && 'flex-row',
-        classContainer,
-    );
+    const rootStyle = cx('flex', className);
+    const containerStyle = cx(flex === 'column' ? 'flex flex-col' : 'flex flex-row', classContainer, '');
 
     const handleChange = (event) => {
         !disabled && onChange(event.target.value);
@@ -58,7 +53,7 @@ function CustomRadio({
     };
     return (
         <div className={rootStyle}>
-            <Typography className="font-bold uppercase">
+            <Typography variant="bd-2" className="uppercase">
                 {label}
             </Typography>
             <Radio
@@ -172,7 +167,7 @@ function CustomRadio({
                 })}
             </Radio>
             {error && (
-                <Typography variant="p" color="red">
+                <Typography color="text-red">
                     {errorMessage}
                 </Typography>
             )}

@@ -1,3 +1,4 @@
+import PromoView from '@core_modules/checkout/components/fieldcode';
 import gqlService from '@core_modules/checkout/services/graphql';
 
 const DiscountSection = (props) => {
@@ -7,7 +8,6 @@ const DiscountSection = (props) => {
         setCheckout,
         handleOpenMessage,
         formik,
-        PromoView,
     } = props;
     const [applyCouponTocart] = gqlService.applyCouponToCart({ onError: () => { } });
     const [removeCouponFromCart] = gqlService.removeCouponFromCart({ onError: () => { } });

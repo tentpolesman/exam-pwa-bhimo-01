@@ -7,6 +7,7 @@ import Empty from '@core_modules/productcompare/pages/default/components/empty';
 import ErrorView from '@core_modules/productcompare/pages/default/components/ErrorInfo';
 import { localCompare } from '@services/graphql/schema/local';
 import { useQuery } from '@apollo/client';
+import Backdrop from '@common/Backdrop';
 
 const HomeCore = (props) => {
     const {
@@ -84,7 +85,8 @@ const HomeCore = (props) => {
     if (loading) {
         return (
             <Layout {...props} pageConfig={config}>
-                <ViewSkeleton t={t} />
+                <div className="w-full h-[calc(100vh*1/3)]" />
+                <Backdrop open />
             </Layout>
         );
     }

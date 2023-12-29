@@ -58,7 +58,12 @@ const Detail = (props) => {
                 </div>
             </Show>
             <Show when={enableProductName}>
-                <Link href="/[...slug]" as={`/${urlKey}`} className="w-full" onClick={() => handleClick(props)} id="plugin-productTitle-typography">
+                <Link
+                    href="/[...slug]"
+                    as={`/${urlKey}`}
+                    className="w-full plugin-productTitle-typography"
+                    onClick={() => handleClick(props)}
+                >
                     <Typography
                         className={cx(
                             'font-medium line-clamp-2 mb-[6px] capitalize',
@@ -79,10 +84,18 @@ const Detail = (props) => {
 
             <Show when={showRating}>
                 <div className="hidden desktop:flex">
-                    <RatingStar value={ratingValue} sizeIcon="lg" />
+                    <RatingStar
+                        value={ratingValue}
+                        sizeIcon="lg"
+                        prefixName={urlKey}
+                    />
                 </div>
                 <div className="flex desktop:hidden">
-                    <RatingStar value={ratingValue} sizeIcon="sm" />
+                    <RatingStar
+                        value={ratingValue}
+                        sizeIcon="sm"
+                        prefixName={urlKey}
+                    />
                 </div>
             </Show>
             {Pricing && Pricing}

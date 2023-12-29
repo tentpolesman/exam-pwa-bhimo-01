@@ -324,7 +324,7 @@ const Layout = (props) => {
     };
 
     const generateClasses = () => {
-        let classes = `${!isCms ? 'tablet:max-w-[768px] desktop:max-w-[1280px]' : ''} ${font.variable} font-sans !font-pwa-default`;
+        let classes = `${!isCms ? 'desktop:max-w-[1280px] desktop:px-10 tablet:max-w-[768px] tablet:px-6 mobile:px-4 my-0 mx-auto' : ''} ${font.variable} font-sans !font-pwa-default`;
         if (showGlobalPromo) {
             classes += ' mobile:max-tablet:mt-2 tablet:max-desktop:mt-[145px] desktop:mt-[196px]';
         } else {
@@ -343,7 +343,7 @@ const Layout = (props) => {
         }
 
         if (isCheckout) {
-            classes += ' relative';
+            classes += ' !mt-0 tablet:!mt-0 desktop:!mt-0 relative';
         }
 
         return classes;

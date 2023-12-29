@@ -162,8 +162,9 @@ const CheckBox = (props) => {
                                 value={item.value}
                                 onChange={(e) => setCheckedFilter(e.target.value)}
                                 checked={selected.indexOf(item.value) !== -1}
+                                id={item.id || `${item.value.replace(/ /g, '')}_${idx}`}
                             />
-                            <label>
+                            <label for={item.id || `${item.value.replace(/ /g, '')}_${idx}`}>
                                 <Typography
                                     variant="bd-1b"
                                     className={cx({

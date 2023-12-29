@@ -406,6 +406,15 @@ const ProductList = (props) => {
         handleLoadMore,
         errorGetProduct,
     };
+
+    if (errorGetProduct || errorPrice) {
+        return (
+            <Alert severity="error">
+                {t('catalog:emptyProductSearchResult')}
+            </Alert>
+        );
+    }
+
     return (
         <Content
             {...contentProps}

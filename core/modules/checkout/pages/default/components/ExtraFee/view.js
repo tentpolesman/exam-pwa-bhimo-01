@@ -12,10 +12,10 @@ const ExtraFeeView = ({
     cart, globalCurrency, t, state, handleChange, loading, currencyCache,
 }) => {
     const Loader = () => (
-        <div className="flex flex-col px-[20px] w-full">
-            <Skeleton width="40%" height={35} />
-            <Skeleton width="80%" height={30} />
-            <Skeleton width="80%" height={30} />
+        <div className="w-full flex flex-col gap-3">
+            <Skeleton variant="text" width="40%" height={35} />
+            <Skeleton variant="text" width="80%" height={30} />
+            <Skeleton variant="text" width="80%" height={30} />
         </div>
     );
     if (loading.all || loading.extraFee) {
@@ -23,7 +23,8 @@ const ExtraFeeView = ({
     }
     return (
         <>
-            <div className="flex flex-col px-[20px] w-full" id="checkoutExtraFee">
+            <div className="w-full flex flex-col gap-3" id="checkoutExtraFee">
+                {/* <Typography variant="title" type="bold" className={classanames(styles.title)}>{t('common:title:extraFee')}</Typography> */}
                 {
                     cart.addtional_fees.data.map((item, key) => {
                         const data = item.options.map((option) => ({
@@ -34,8 +35,8 @@ const ExtraFeeView = ({
                         }));
                         if (item.frontend_type === 'checkbox' && item.enabled) {
                             return (
-                                <div className="my-[10px]" key={key}>
-                                    <Typography className="clear-margin-padding font-bold p-0 m-0">
+                                <div className="flex flex-col" key={key}>
+                                    <Typography variant="bd-2">
                                         {item.fee_name}
                                     </Typography>
                                     <Checkbox
@@ -44,8 +45,6 @@ const ExtraFeeView = ({
                                         flex="column"
                                         data={data}
                                         value={state[item.id_fee] ? state[item.id_fee] : []}
-                                        classCheckbox="pt-0 mt-0"
-                                        classContainer="p-0 mt-0"
                                         onChange={(val) => handleChange(item.id_fee, val)}
                                     />
                                 </div>
@@ -53,8 +52,8 @@ const ExtraFeeView = ({
                         }
                         if (item.frontend_type === 'radio' && item.enabled) {
                             return (
-                                <div className="my-[10px]" key={key}>
-                                    <Typography className="clear-margin-padding font-bold p-0 m-0">
+                                <div className="flex flex-col" key={key}>
+                                    <Typography variant="bd-2">
                                         {item.fee_name}
                                     </Typography>
                                     <Radio
@@ -62,19 +61,17 @@ const ExtraFeeView = ({
                                         data={data}
                                         value={state[item.id_fee] ? state[item.id_fee] : ''}
                                         onChange={(val) => handleChange(item.id_fee, val)}
-                                        classContainer="mt-0"
                                     />
                                 </div>
                             );
                         }
                         if (item.frontend_type === 'dropdown' && item.enabled) {
                             return (
-                                <div className="my-[10px]" key={key}>
+                                <div className="flex flex-col" key={key}>
                                     <Select
                                         options={data}
                                         label={item.fee_name}
                                         value={state[item.id_fee] ? state[item.id_fee] : ''}
-                                        className="mt-0"
                                         onChange={(event) => handleChange(item.id_fee, event.target.value)}
                                         helperText={t('common:form:select')}
                                     />

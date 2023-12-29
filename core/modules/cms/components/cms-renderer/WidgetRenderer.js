@@ -81,7 +81,7 @@ const WidgetRenderer = (props) => {
                     return <ImageRenderer storeConfig={storeConfig} domNode={domNode} />;
                 }
                 if (domNode.name === 'a' && domNode.attribs?.href) {
-                    return <LinkRenderer domNode={domNode} />
+                    return <LinkRenderer domNode={domNode} />;
                 }
 
                 if (domNode.name === DOM_NAME && domNode.attribs) {
@@ -119,7 +119,11 @@ const WidgetRenderer = (props) => {
     };
     /* eslint-enable */
 
-    return <WidgetComponent {...props} />;
+    return (
+        <div className="prose">
+            <WidgetComponent {...props} />
+        </div>
+    );
 };
 
 const notRenderIf = (prevProps, nextProps) => prevProps.content === nextProps.content;

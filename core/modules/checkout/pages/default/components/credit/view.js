@@ -1,8 +1,8 @@
 import Button from '@common_button';
 import CircularProgress from '@common_circularprogress';
 import Typography from '@common_typography';
-import cx from 'classnames';
 import { formatPrice } from '@helper_currency';
+import cx from 'classnames';
 
 const StoreCreditView = (props) => {
     const {
@@ -10,19 +10,18 @@ const StoreCreditView = (props) => {
     } = props;
     return (
         <div
-            className={
-                cx(
-                    'mt-[5px] p-[17px] flex flex-row justify-between items-center',
-                    'border border-primary rounded-[10px] m-w-[480px]',
-                )
-            }
+            className={cx(
+                'border border-neutral-200 rounded-lg',
+                'w-full max-w-[420px]',
+                'flex flex-row items-center justify-between p-3',
+            )}
             id="checkoutUserCredit"
         >
-            <div className="flex flex-col">
-                <Typography variant="span" letter="capitalize">
+            <div className="flex flex-col gap-2">
+                <Typography variant="bd-2a" letter="capitalize">
                     {store_credit.is_use_store_credit ? t('checkout:myCredit:used') : t('checkout:myCredit:title')}
                 </Typography>
-                <Typography variant="span" type="bold" className="text-lg ml-[5px]">
+                <Typography variant="bd-2" className="text-lg">
                     {formatPrice(
                         `${credit}`.toLocaleString(undefined, {
                             minimumFractionDigits: 0,
@@ -35,16 +34,14 @@ const StoreCreditView = (props) => {
             <div>
                 <Button
                     variant="outlined"
-                    className="max-w-[140px] flex flex-col justify-center items-center p-[5px]"
+                    size="sm"
                     disabled={!!(checkout.loading.storeCredit || !!(total === 0 && !store_credit.is_use_store_credit))}
                     onClick={handleUseCredit}
                 >
                     <Typography
                         color={checkout.loading.storeCredit || (total === 0 && !store_credit.is_use_store_credit) ? 'gray' : 'default'}
-                        variant="p"
-                        type="bold"
-                        letter="uppercase"
-                        align="center"
+                        variant="bd-3"
+                        className="uppercase"
                     >
                         {store_credit.is_use_store_credit ? t('checkout:myCredit:removeButton') : t('checkout:myCredit:button')}
                     </Typography>
