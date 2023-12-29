@@ -12,7 +12,7 @@ const PageReview = (props) => {
         bottomNav: false,
     };
 
-    const [page, setPage] = React.useState(0);
+    const [page, setPage] = React.useState(1);
     const [perPage, setRowsPerPage] = React.useState(rowsPerPage);
 
     const handleChangePage = (value) => {
@@ -24,12 +24,10 @@ const PageReview = (props) => {
         setPage(0);
     };
     let reviewCustomer = null;
-    const { data, loading } = getReview(
-        {
-            pageSizeReview: perPage,
-            currentPageReview: page + 1,
-        },
-    );
+    const { data, loading } = getReview({
+        pageSizeReview: perPage,
+        currentPageReview: page,
+    });
     if (data) {
         reviewCustomer = data.customer.reviews;
     }
