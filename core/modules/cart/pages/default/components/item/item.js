@@ -12,7 +12,8 @@ import { formatPrice } from '@root/core/helpers/currency';
 import Button from '@common/Button';
 import { TrashIcon } from '@heroicons/react/24/outline';
 import ButtonQty from '@common/ButtonQty';
-import OrderNote from './OrderNote';
+import Badge from '@common/Badge';
+import OrderNote from '@core_modules/cart/pages/default/components/item/OrderNote';
 
 const ItemView = (props) => {
     const {
@@ -49,7 +50,7 @@ const ItemView = (props) => {
     return (
         <div className="flex flex-row gap-4">
             <ConfirmationDelete t={t} open={confirmDel} handleDelete={handleDelete} handleCancel={() => setConfirmDel(false)} />
-            <div className="w-[110px] tablet:w-[120px] h-[110px] tablet:h-[120px] rounded-lg">
+            <div className="w-[110px] tablet:w-[120px] h-[110px] tablet:h-[120px] rounded-lg relative">
                 <Image
                     src={product.small_image.url}
                     className="!w-[110px] tablet:!w-[120px] !h-[110px] tablet:!h-[120px]"
@@ -60,7 +61,9 @@ const ItemView = (props) => {
                     quality={80}
                     storeConfig={storeConfig}
                 />
-                {prices.price_incl_tax.value === 0 ? <span>{t('common:title:free')}</span> : null}
+                {prices.price_incl_tax.value === 0 ? (
+                    <Badge fontSize={10} success label={t('common:title:free')} className="z-3 absolute top-1 left-1" />
+                ) : null}
             </div>
             <div className="flex flex-col justify-between gap-4 w-full">
                 <div className="flex flex-row justify-between items-start w-full">
@@ -166,11 +169,11 @@ const ItemView = (props) => {
                         max={10000}
                     />
                     <Typography variant="p-2a">
-                        {formatPrice(
+                        {prices.row_total_incl_tax.value > 0 ? formatPrice(
                             prices.row_total_incl_tax.value,
                             prices.row_total_incl_tax.currency,
                             currencyCache,
-                        )}
+                        ) : t('common:title:free')}
                     </Typography>
                 </div>
             </div>

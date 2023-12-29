@@ -93,7 +93,7 @@ const PromoModalItemView = (props) => {
                             enableAddToCart
                             enableOption
                             handleAddToCart={handleAddToCart}
-                            enableWishlist={false}
+                            enableWishlist
                             enablePrice={false}
                             enableRating={false}
                             enableQuickView={false}

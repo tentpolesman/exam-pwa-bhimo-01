@@ -27,7 +27,6 @@ const ModalXenditView = (props) => {
         >
             <Button
                 color="primary"
-                size="medium"
                 className="xendit-btn-close"
                 onClick={() => {
                     setOpen();

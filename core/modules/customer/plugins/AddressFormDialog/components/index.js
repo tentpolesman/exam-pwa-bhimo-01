@@ -7,13 +7,15 @@ import Button from '@common_button';
 import Dialog from '@common_dialog';
 import Checkbox from '@common_forms/CheckBox';
 import TextField from '@common_forms/TextField';
-import GoogleMaps from '@common_googlemaps';
 import Header from '@common_headermobile';
 import Typography from '@common_typography';
 
 import { BREAKPOINTS } from '@root/core/theme/vars';
 
 import cx from 'classnames';
+import dynamic from 'next/dynamic';
+
+const GoogleMaps = dynamic(() => import('@common_googlemaps'), { ssr: false });
 
 const AddressView = (props) => {
     const {
