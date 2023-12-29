@@ -289,6 +289,46 @@ export const getCustomer = (config = {}) => gql`
   }
 `;
 
+export const getCustomerAddress = gql`
+    {
+        customer {
+            id
+            firstname
+            lastname
+            email
+            is_subscribed
+            phonenumber
+            whatsapp_number
+            addresses {
+                id
+                city
+                default_billing
+                default_shipping
+                extension_attributes {
+                    attribute_code
+                    value
+                }
+                firstname
+                lastname
+                postcode
+                country_code
+                country {
+                    code
+                    label
+                }
+                region {
+                    region
+                    region_code
+                }
+                street
+                telephone
+                latitude
+                longitude
+            }
+        }
+    }
+`;
+
 export const removeToken = gql`
 mutation {
   internalDeleteCustomerToken{

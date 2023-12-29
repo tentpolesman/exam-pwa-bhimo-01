@@ -1,10 +1,10 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React from 'react';
 import Typography from '@common_typography';
 import cx from 'classnames';
 import { useTranslation } from 'next-i18next';
+import React from 'react';
 
 const CheckBox = (props) => {
     const {
@@ -52,7 +52,7 @@ const CheckBox = (props) => {
         if (value && !isVariantSingle) {
             setSelected(value);
         }
-    }, [value]);
+    }, [value, isVariantSingle]);
 
     const setCheckedFilter = (v) => {
         if (!isVariantSingle) {

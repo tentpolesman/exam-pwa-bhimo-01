@@ -47,11 +47,7 @@ const DefaultView = (props) => {
                     softColor
                     warning
                     className={cx('rounded-md', 'w-fit')}
-                    label={
-                        <Typography variant="body-sm" className={cx('text-yellow-800', 'leading-md')}>
-                            {status_label}
-                        </Typography>
-                    }
+                    label={<Typography className={cx('text-yellow-800', 'leading-md')}>{status_label}</Typography>}
                 />
             );
         }
@@ -61,11 +57,7 @@ const DefaultView = (props) => {
                     softColor
                     error
                     className={cx('rounded-md', 'w-fit')}
-                    label={
-                        <Typography variant="body-sm" className={cx('text-red-800', 'leading-md')}>
-                            {status_label}
-                        </Typography>
-                    }
+                    label={<Typography className={cx('text-red-800', 'leading-md')}>{status_label}</Typography>}
                 />
             );
         }
@@ -75,11 +67,7 @@ const DefaultView = (props) => {
                     softColor
                     success
                     className={cx('rounded-md', 'w-fit')}
-                    label={
-                        <Typography variant="body-sm" className={cx('text-green-800', 'leading-md')}>
-                            {status_label}
-                        </Typography>
-                    }
+                    label={<Typography className={cx('text-green-800', 'leading-md')}>{status_label}</Typography>}
                 />
             );
         }
@@ -88,11 +76,7 @@ const DefaultView = (props) => {
                 softColor
                 secondary
                 className={cx('rounded-md', 'w-fit')}
-                label={
-                    <Typography variant="body-sm" className={cx('text-primary-800', 'leading-md')}>
-                        {status_label}
-                    </Typography>
-                }
+                label={<Typography className={cx('text-primary-800', 'leading-md')}>{status_label}</Typography>}
             />
         );
     };

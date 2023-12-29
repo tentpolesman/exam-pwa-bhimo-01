@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/control-has-associated-label */
 import Skeleton from '@common_skeleton';
 
 import cx from 'classnames';
@@ -42,13 +43,10 @@ export const SkeletonTable = () => {
 export const SkeletonMobile = () => {
     const SkeletonData = [1, 2, 3];
     return (
-        <div style={{ padding: 20 }}>
+        <div className={cx('desktop:hidden')}>
             {SkeletonData.map((item) => (
                 <div style={{ marginBottom: 30 }} key={item}>
-                    <Skeleton width="50%" variant="text" animation="wave" height={30} />
-                    <Skeleton width="90%" variant="text" animation="wave" height={30} />
-                    <Skeleton width="90%" variant="text" animation="wave" height={30} />
-                    <Skeleton width="90%" variant="text" animation="wave" height={30} />
+                    <Skeleton className={cx('!w-full', 'mobile:!h-[240px]')} />
                 </div>
             ))}
         </div>

@@ -66,6 +66,14 @@ export const getCustomer = (otherConfig = {}) => useQuery(Schema.getCustomer(oth
     fetchPolicy: 'no-cache',
 });
 
+export const getCustomerAddress = () =>
+    useLazyQuery(Schema.getCustomerAddress, {
+        context: {
+            request: 'internal',
+        },
+        fetchPolicy: 'net',
+    });
+
 export const getCustomerOrder = () => useQuery(Schema.getCustomerOrder, {
     context: {
         request: 'internal',
