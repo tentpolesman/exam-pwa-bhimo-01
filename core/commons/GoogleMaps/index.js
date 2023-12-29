@@ -1,13 +1,15 @@
+/* eslint-disable object-curly-newline */
+/* eslint-disable operator-linebreak */
 /* eslint-disable max-len */
 /* eslint-disable react/destructuring-assignment */
 import TextField from '@common_forms/TextField';
-import {
-    Autocomplete, GoogleMap, Marker, useJsApiLoader,
-} from '@react-google-maps/api';
+import { Autocomplete, GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 import { encrypt } from '@root/core/helpers/clientEncryption';
 import { capitalizeEachWord } from '@root/core/helpers/text';
 import { useTranslation } from 'next-i18next';
 import React, { useEffect, useState } from 'react';
+
+import cx from 'classnames';
 
 // Set initial refs for google maps instance
 const refs = {
@@ -43,6 +45,7 @@ const GoogleMaps = (props) => {
         markerDraggable = true,
         useCustomMarkerIcon = false,
         useLabel = false,
+        inputClassName = '',
         containerStyle = {
             width: '100%',
             height: '250px',
@@ -95,24 +98,21 @@ const GoogleMaps = (props) => {
                     if (street_name[0].long_name === name) {
                         if (tempInputValue === street_name[0].long_name || tempInputValue === street_name[0].short_name) {
                             formik.setFieldValue('addressDetail', `${street_name[0].long_name}`);
-                        } else if (
-                            tempInputValue.length < street_name[0].long_name.length
-                            || tempInputValue.length === street_name[0].long_name.length
-                        ) {
+                        } else if (tempInputValue.length < street_name[0].long_name.length || tempInputValue.length === street_name[0].long_name.length) {
                             formik.setFieldValue('addressDetail', `${street_name[0].long_name}`);
                         } else {
                             formik.setFieldValue('addressDetail', capitalizeEachWord(tempInputValue));
                         }
                     } else if (tempInputValue.length > name.length) {
                         if (
-                            tempInputValue.toLowerCase().includes(street_name[0].long_name.toLowerCase())
-                            || tempInputValue.toLowerCase().includes(street_name[0].short_name.toLowerCase())
-                            || tempInputValue.toLowerCase().includes(name.toLowerCase())
+                            tempInputValue.toLowerCase().includes(street_name[0].long_name.toLowerCase()) ||
+                            tempInputValue.toLowerCase().includes(street_name[0].short_name.toLowerCase()) ||
+                            tempInputValue.toLowerCase().includes(name.toLowerCase())
                         ) {
                             // eslint-disable-next-line max-len
                             if (
-                                tempInputValue.toLowerCase().includes(`${street_name[0].long_name.toLowerCase()} ${name.toLowerCase()}`)
-                                || tempInputValue.toLowerCase().includes(`${street_name[0].short_name.toLowerCase()} ${name.toLowerCase()}`)
+                                tempInputValue.toLowerCase().includes(`${street_name[0].long_name.toLowerCase()} ${name.toLowerCase()}`) ||
+                                tempInputValue.toLowerCase().includes(`${street_name[0].short_name.toLowerCase()} ${name.toLowerCase()}`)
                             ) {
                                 formik.setFieldValue('addressDetail', capitalizeEachWord(tempInputValue));
                             } else {
@@ -122,9 +122,9 @@ const GoogleMaps = (props) => {
                             formik.setFieldValue('addressDetail', capitalizeEachWord(tempInputValue));
                         }
                     } else if (
-                        name.length > street_name[0].short_name.length
-                        && (name.toLowerCase().includes(street_name[0].short_name.toLowerCase())
-                            || name.toLowerCase().includes(street_name[0].long_name.toLowerCase()))
+                        name.length > street_name[0].short_name.length &&
+                        (name.toLowerCase().includes(street_name[0].short_name.toLowerCase()) ||
+                            name.toLowerCase().includes(street_name[0].long_name.toLowerCase()))
                     ) {
                         formik.setFieldValue('addressDetail', name);
                     } else if (name.toLowerCase().includes('street')) {
@@ -290,13 +290,15 @@ const GoogleMaps = (props) => {
                     >
                         <TextField
                             id="addressForm-addressDetail-textField"
+                            className={inputClassName}
                             autoComplete="new-password"
-                            label={useLabel ? t('common:search:addressDetail') : null}
+                            label={useLabel ? t('common:form:addressDetail') : null}
                             placeholder={t('common:search:addressDetail')}
                             inputProps={{
                                 name: 'addressDetail',
                             }}
                             hintProps={{
+                                className: cx('z-10', '-bottom-[35%]'),
                                 displayHintText: !!(formik.touched.addressDetail && formik.errors.addressDetail),
                                 hintType: 'error',
                                 hintText: (formik.touched.addressDetail && formik.errors.addressDetail) || null,

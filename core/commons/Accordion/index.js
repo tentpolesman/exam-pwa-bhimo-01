@@ -1,8 +1,10 @@
-import React from 'react';
-import Arrow from '@heroicons/react/24/outline/ChevronDownIcon';
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import Typography from '@common_typography';
-import propTypes from 'prop-types';
+import Arrow from '@heroicons/react/24/outline/ChevronDownIcon';
 import cx from 'classnames';
+import propTypes from 'prop-types';
+import React from 'react';
 
 const Accordion = (props) => {
     const {
@@ -35,10 +37,7 @@ const Accordion = (props) => {
         <details className={cx('group flex flex-col common-accordion', className)} open={open}>
             <summary
                 onClick={handleShow}
-                className={cx(
-                    'flex justify-between items-center font-medium cursor-pointer list-none w-full',
-                    classSummary,
-                )}
+                className={cx('flex justify-between items-center font-medium cursor-pointer list-none w-full', classSummary)}
             >
                 {React.isValidElement(CustomAccordionSummary) ? (
                     React.cloneElement(CustomAccordionSummary, {

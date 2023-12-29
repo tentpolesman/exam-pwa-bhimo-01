@@ -35,6 +35,7 @@
     "pageTitle" : "Address book",
     "addTitle" : "Add new address",
     "editTitle": "Manage Address",
+    "editAddressTitle": "Edit Address",
     "editAddress": "Edit",
     "changeAddress": "Change",
     "removeTitle": "Remove",

@@ -1,15 +1,16 @@
+/* eslint-disable operator-linebreak */
 /* eslint-disable array-callback-return */
 /* eslint-disable consistent-return */
+import { useReactiveVar } from '@apollo/client';
+import { modules, storeConfigNameCookie } from '@config';
+import { getCountries as getAllCountries, getCityByRegionId, getRegions } from '@core_modules/customer/services/graphql';
+import helperCookies from '@helper_cookies';
 import { regexPhone } from '@helper_regex';
+import { groupingCity, groupingSubCity } from '@helpers/city';
+import { storeConfigVar } from '@root/core/services/graphql/cache';
 import { useFormik } from 'formik';
 import React, { useEffect, useState } from 'react';
 import * as Yup from 'yup';
-import { groupingCity, groupingSubCity } from '@helpers/city';
-import { modules, storeConfigNameCookie } from '@config';
-import helperCookies from '@helper_cookies';
-import { getCityByRegionId, getCountries as getAllCountries, getRegions } from '@core_modules/customer/services/graphql';
-import { useReactiveVar } from '@apollo/client';
-import { storeConfigVar } from '@root/core/services/graphql/cache';
 
 const AddressFormDialog = (props) => {
     const {
@@ -21,8 +22,8 @@ const AddressFormDialog = (props) => {
             id: 'ID',
             full_name_locale: 'Indonesia',
         },
-        region = null,
-        city = null,
+        region = '',
+        city = '',
         telephone = '',
         maps = '',
         open,
@@ -105,7 +106,7 @@ const AddressFormDialog = (props) => {
     const ValidationAddress = {
         firstname: Yup.string().required(t('validate:firstName:required')),
         lastname: Yup.string().required(t('validate:lastName:required')),
-        telephone: Yup.string().required(t('validate:telephone:required')).matches(regexPhone, t('validate:phoneNumber:wrong')),
+        telephone: Yup.string().required(t('validate:phoneNumber:required')).matches(regexPhone, t('validate:phoneNumber:wrong')),
         addressDetail: Yup.string().required(t('validate:street:required')),
         postcode: Yup.string().required(t('validate:postal:required')).min(3, t('validate:postal:wrong')).max(20, t('validate:postal:wrong')),
         country: Yup.string().nullable().required(t('validate:country:required')),
@@ -189,7 +190,7 @@ const AddressFormDialog = (props) => {
                 if (!addressId) {
                     setTimeout(() => {
                         resetForm();
-                    }, 1500);
+                    }, 1000);
                 }
             }
         },
@@ -201,6 +202,12 @@ const AddressFormDialog = (props) => {
         setEnableSplitCity(countryId === 'ID' && modules.customer.plugin.address.splitCity);
         if (!formik.values.country) formik.setFieldValue('region', '');
     }, [formik.values.country]);
+
+    React.useEffect(() => {
+        if (open) {
+            getCountries();
+        }
+    }, [open]);
 
     const [getCities, responCities] = getCityByRegionId({});
     React.useMemo(() => {
@@ -237,11 +244,11 @@ const AddressFormDialog = (props) => {
             }
 
             if (
-                region
-                && typeof region === 'string'
-                && addressState.dropdown.region
-                && addressState.dropdown.region.length
-                && addressState.dropdown.region.length > 0
+                region &&
+                typeof region === 'string' &&
+                addressState.dropdown.region &&
+                addressState.dropdown.region.length &&
+                addressState.dropdown.region.length > 0
             ) {
                 const selectRegion = addressState.dropdown.region.filter((item) => item.name === region);
                 if (selectRegion && selectRegion.length > 0) formik.setFieldValue('region', selectRegion[0]);
@@ -340,16 +347,16 @@ const AddressFormDialog = (props) => {
                 formik.setFieldValue('village', '');
                 // formik.setFieldValue('postcode', '');
             } else if (
-                enableSplitCity
-                && responCities
-                && responCities.data
-                && !responCities.loading
-                && !responCities.error
-                && responCities.data.getCityByRegionId
+                enableSplitCity &&
+                responCities &&
+                responCities.data &&
+                !responCities.loading &&
+                !responCities.error &&
+                responCities.data.getCityByRegionId
             ) {
                 const { data } = responCities;
-                const district = data && data.getCityByRegionId
-                    ? groupingSubCity(formik.values.city.label, 'district', data.getCityByRegionId.item) : null;
+                const district =
+                    data && data.getCityByRegionId ? groupingSubCity(formik.values.city.label, 'district', data.getCityByRegionId.item) : null;
                 state.dropdown.district = district;
                 state.dropdown.village = null;
                 if (city && !formik.values.district) {
@@ -390,13 +397,13 @@ const AddressFormDialog = (props) => {
                 // formik.setFieldValue('postcode', formik.values.postcode || postcode);
             }
         } else if (
-            formik.values.district
-            && enableSplitCity
-            && responCities
-            && responCities.data
-            && !responCities.loading
-            && !responCities.error
-            && responCities.data.getCityByRegionId
+            formik.values.district &&
+            enableSplitCity &&
+            responCities &&
+            responCities.data &&
+            !responCities.loading &&
+            !responCities.error &&
+            responCities.data.getCityByRegionId
         ) {
             const { data } = responCities;
             const village = groupingSubCity(formik.values.district.label, 'village', data.getCityByRegionId.item, formik.values.city);
@@ -446,6 +453,7 @@ const AddressFormDialog = (props) => {
     return (
         <Content
             t={t}
+            addressId={addressId}
             open={open}
             setOpen={setOpen}
             pageTitle={pageTitle}

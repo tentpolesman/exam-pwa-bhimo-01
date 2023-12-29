@@ -35,6 +35,7 @@
     "pageTitle" : "Daftar alamat",
     "addTitle" : "Tambah alamat baru",
     "editTitle" : "Ubah",
+    "editAddressTitle": "Ubah Alamat",
     "editAddress": "Ubah",
     "changeAddress": "Ubah",
     "removeTitle": "Hapus",
