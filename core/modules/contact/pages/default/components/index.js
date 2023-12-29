@@ -117,18 +117,22 @@ const ContactPage = (props) => {
     return (
         <div
             className={cx('tablet:max-desktop:mt-[145px]', 'mb-0', {
-                'mt-[20%] desktop:mt-[196px]': !isCms,
+                'mt-[10%] desktop:mt-[196px]': !isCms,
             })}
         >
             {/* eslint-disable-next-line react/no-danger */}
-            <Typography variant="h1" className="my-4">
-                {t('contact:contactUs')}
-            </Typography>
+            {!isCms ? (
+                <Typography variant="h1" className="my-4">
+                    {t('contact:contactUs')}
+                </Typography>
+            ) : null}
             <div className="flex flex-row flex-wrap tablet:flex-nowrap">
-                <div className="md:basis-1/2 xs:basis-full">
-                    {!loading && <div dangerouslySetInnerHTML={{ __html: data?.cmsBlocks?.items[0]?.content }} />}
-                    {loading && <Skeleton />}
-                </div>
+                {!isCms ? (
+                    <div className="md:basis-1/2 xs:basis-full">
+                        {!loading && <div dangerouslySetInnerHTML={{ __html: data?.cmsBlocks?.items[0]?.content }} />}
+                        {loading && <Skeleton />}
+                    </div>
+                ) : null}
                 <div className="md:basis-1/2 xs:basis-full max-tablet:mt-4 tablet:px-8">
                     <ContactForm {...props} />
                 </div>
