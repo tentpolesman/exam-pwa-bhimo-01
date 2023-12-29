@@ -72,7 +72,12 @@ const ProductReviewPage = (props) => {
                                                         {val.text}
                                                     </td>
                                                     <td className={cx('text-neutral-700', 'text-md', 'font-normal', 'leading-2lg', 'p-4')}>
-                                                        <button type="button" onClick={() => openDetail(true, val)} aria-label="see-details">
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => openDetail(true, val)}
+                                                            aria-label="see-details"
+                                                            className="w-max"
+                                                        >
                                                             <a className={cx('text-md', 'text-primary-700', 'hover:underline')}>
                                                                 {t('productreview:seeDetails')}
                                                             </a>
