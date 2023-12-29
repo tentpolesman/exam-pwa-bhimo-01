@@ -158,11 +158,16 @@ const Summary = (props) => {
                                                                 <Typography variant="bd-2b" className="line-clamp-2">
                                                                     {parser(item.product.name)}
                                                                 </Typography>
-                                                                <Typography variant="bd-2b" size="14" letter="uppercase">
-                                                                    {item.prices.row_total.value === 0
-                                                                        ? t('common:title:free')
-                                                                        : formatPrice(item.prices.row_total.value, item.prices.row_total.currency || 'IDR', currencyCache)}
-                                                                </Typography>
+
+                                                                {
+                                                                    item?.prices?.row_total?.value && (
+                                                                        <Typography variant="bd-2b" size="14" letter="uppercase">
+                                                                            {item?.prices?.row_total?.value && item?.prices?.row_total?.value === 0
+                                                                                ? t('common:title:free')
+                                                                                : formatPrice(item.prices.row_total.value, item.prices.row_total.currency || 'IDR', currencyCache)}
+                                                                        </Typography>
+                                                                    )
+                                                                }
                                                             </div>
                                                             <div className={cx('xs:basis-8/12', 'flex flex-col')}>
                                                                 {item.configurable_options && item.configurable_options.length ? (
@@ -225,11 +230,15 @@ const Summary = (props) => {
                                                     <Typography variant="bd-2b" className="line-clamp-2">
                                                         {parser(item.product.name)}
                                                     </Typography>
-                                                    <Typography variant="bd-2b" size="14" letter="uppercase">
-                                                        {item.prices.row_total.value === 0
-                                                            ? t('common:title:free')
-                                                            : formatPrice(item.prices.row_total.value, item.prices.row_total.currency || 'IDR', currencyCache)}
-                                                    </Typography>
+                                                    {
+                                                        item?.prices?.row_total?.value && (
+                                                            <Typography variant="bd-2b" size="14" letter="uppercase">
+                                                                {item?.prices?.row_total?.value && item?.prices?.row_total?.value === 0
+                                                                    ? t('common:title:free')
+                                                                    : formatPrice(item.prices.row_total.value, item.prices.row_total.currency || 'IDR', currencyCache)}
+                                                            </Typography>
+                                                        )
+                                                    }
                                                 </div>
                                                 <div className={cx('xs:basis-8/12', 'flex flex-col')}>
                                                     {item.configurable_options && item.configurable_options.length ? (
