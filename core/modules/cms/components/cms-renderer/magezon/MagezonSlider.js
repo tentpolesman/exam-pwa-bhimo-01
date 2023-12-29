@@ -211,7 +211,13 @@ const MagezonSliderContent = (props) => {
                                 </div>
                             )}
                             {link_type === 'button' && (
-                                <div className="magezon-slide-button">
+                                <div
+                                    className={cx('magezon-slide-button', {
+                                        'justify-start': content_align === 'left',
+                                        'justify-end': content_align === 'right',
+                                        'justify-center': content_align === 'center',
+                                    })}
+                                >
                                     {button1 && (
                                         <MagezonButton
                                             link={button1_link}
@@ -289,9 +295,9 @@ const MagezonSliderContent = (props) => {
                         ${content_wrapper_width ? `max-width: ${content_wrapper_width}px;` : ''}
                     }
                     .magezon-slide-captions > div {
-                        max-width: ${content_width}px;
+                        ${content_width ? `max-width: ${content_width}px;` : ''}
                         text-align: ${content_align};
-                        padding: ${content_padding}px;
+                        ${content_padding ? `padding: ${content_padding}px;` : ''}
                     }
                     .magezon-slide-heading {
                         background-color: ${heading_bg_color};
