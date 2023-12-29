@@ -74,7 +74,7 @@ const NotificationList = (props) => {
     const [page, setPage] = useState(1);
     const notifCount = data.customerNotificationList.items.length;
     const notifLimit = 10;
-    const totalPage = notifCount < notifLimit ? 1 : Math.round(notifCount / notifLimit);
+    const totalPage = notifCount < notifLimit ? 1 : Math.ceil(notifCount / notifLimit);
 
     const notifList = Array.from({ length: totalPage }, (_, i) =>
         data.customerNotificationList.items.slice(i * notifLimit, i * notifLimit + notifLimit));

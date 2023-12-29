@@ -16,7 +16,7 @@ const DefaultView = (props) => {
     const [page, setPage] = useState(1);
     const itemCount = data?.length;
     const itemLimit = 10;
-    const totalPage = itemCount < itemLimit ? 1 : Math.round(itemCount / itemLimit);
+    const totalPage = itemCount < itemLimit ? 1 : Math.ceil(itemCount / itemLimit);
 
     const itemList = Array.from({ length: totalPage }, (_, i) =>
         data.slice(i * itemLimit, i * itemLimit + itemLimit));
