@@ -1,12 +1,11 @@
 import { withTranslation } from 'next-i18next';
 import { withApollo } from '@lib_apollo';
-import Core from '@core_modules/rewardpoint/pages/default/core';
-import Content from '@core_modules/rewardpoint/pages/default/components';
-import Skeleton from '@core_modules/rewardpoint/pages/default/components/skeleton';
-import ErrorView from '@core_modules/rewardpoint/pages/default/components/error';
+import dynamic from 'next/dynamic';
 
-const DefaultOrder = (props) => (
-    <Core {...props} Content={Content} Skeleton={Skeleton} ErrorView={ErrorView} />
-);
+const Core = dynamic(() => import('@core_modules/rewardpoint/pages/default/core'), { ssr: false });
+const Content = dynamic(() => import('@core_modules/rewardpoint/pages/default/components'), { ssr: false });
+const ErrorView = dynamic(() => import('@core_modules/rewardpoint/pages/default/components/error'), { ssr: false });
 
-export default withApollo({ ssr: true })(withTranslation()(DefaultOrder));
+const RewardPoint = (props) => <Core {...props} Content={Content} ErrorView={ErrorView} />;
+
+export default withApollo({ ssr: true })(withTranslation()(RewardPoint));

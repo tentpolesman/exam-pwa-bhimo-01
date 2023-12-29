@@ -142,9 +142,7 @@ const StoreCreditPage = (props) => {
                                 <Skeleton width={50} height={25} />
                             </Show>
                             <Show when={!loading}>
-                                <Typography className={cx('font-normal', 'leading-2lg')}>
-                                    {`${totalCount ?? 0} ${t('common:label:items')}`}
-                                </Typography>
+                                <Typography className={cx('font-normal', 'leading-2lg')}>{`${totalCount ?? 0} ${t('common:label:data')}`}</Typography>
                             </Show>
                         </div>
                         <div className={cx('flex', 'flex-row')}>
