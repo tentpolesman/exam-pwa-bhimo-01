@@ -130,7 +130,7 @@ const PromoModalItem = (props) => {
                 }
             }
         }
-    }, [checkout.data.cart]);
+    }, [checkout]);
 
     React.useEffect(() => {
         if (dataArray && dataArray.length > 0) {

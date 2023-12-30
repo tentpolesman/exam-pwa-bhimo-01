@@ -1,6 +1,5 @@
 import React from 'react';
 import Alert from '@common/Alert';
-import AddressFormDialog from '@plugin_addressform';
 import Button from '@common_button';
 import Typography from '@common_typography';
 import _ from 'lodash';
@@ -9,6 +8,9 @@ import { useReactiveVar } from '@apollo/client';
 import { storeConfigVar } from '@root/core/services/graphql/cache';
 import classNames from 'classnames';
 import Show from '@common/Show';
+import dynamic from 'next/dynamic';
+
+const AddressFormDialog = dynamic(() => import('@plugin_addressform'), { ssr: false });
 
 const CLOSE_ADDRESS_DIALOG = 100;
 

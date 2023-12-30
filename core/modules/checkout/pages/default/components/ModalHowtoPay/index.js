@@ -35,15 +35,15 @@ const ModalHowtoPay = ({
                 closeOnBackdrop
                 useCloseTitleButton
                 content={(
-                    <div className="flex !max-h-[calc(100vh-36px)] flex-col gap-4 py-4 border-t border-neutral-200">
+                    <div className="flex !max-h-[calc(100vh-36px)] flex-col gap-4 desktop:border-t desktop:border-neutral-200">
                         <div className={cx(
-                            'flex flex-col relative max-h-[calc(100vh-300px)] p-4 !overflow-scroll',
+                            'flex flex-col relative max-h-[calc(100vh-300px)] !overflow-y-scroll overflow-x-hidden',
                             'max-w-full',
                         )}
                         >
                             <CmsRenderer content={data.cmsPage.content} />
                         </div>
-                        <div className="flex flex-row justify-end bg-neutral-white p-3">
+                        <div className="flex flex-row justify-end bg-neutral-white">
                             <Button loading={loadingTutor} classNameText="justify-center" className="w-[100px]" onClick={setOpen} type="submit">
                                 {t('checkout:buttonOk')}
                             </Button>
