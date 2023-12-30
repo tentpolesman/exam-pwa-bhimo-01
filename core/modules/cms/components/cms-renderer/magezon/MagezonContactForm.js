@@ -30,7 +30,7 @@ const MagezonContactForm = (props) => {
                 <style jsx>
                     {`
                         .mgz-contact-form {
-                            width: ${form_width}px;
+                            max-width: ${form_width}px;
                         }
                     `}
                 </style>
