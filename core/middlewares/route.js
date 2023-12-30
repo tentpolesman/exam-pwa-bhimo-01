@@ -30,6 +30,13 @@ export const routeWithAuth = (path) => {
         '/inboxnotification/notification',
         '/customer/newsletter',
         '/rma/customer',
+        '/sales/order/view/order_id/[id]',
+        '/sales/order/print/order_id/[id]',
+        '/wishlist',
+        '/sales/downloadable/history',
+        '/review/customer',
+        '/customer/newsletter',
+        '/customer/account',
     ];
 
     const found = route.find((val) => val === path);

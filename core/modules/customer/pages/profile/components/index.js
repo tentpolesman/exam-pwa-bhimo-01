@@ -84,17 +84,18 @@ const ProfileForm = (props) => {
                     error={!!(formik.touched.phonenumber && formik.errors.phonenumber)}
                     errorMessage={(formik.touched.phonenumber && formik.errors.phonenumber) || null}
                 />
-                <div className={cx('checkbox-wa-wrapper flex content-center mb-[24px]')}>
+                <div className={cx('flex content-center mb-[24px]')}>
                     <Checkbox
-                        name="whastapptrue"
+                        id="profile-whatsapptrue"
                         label={t('customer:isWhatsapp')}
                         variant="single"
-                        size="sm"
                         checked={phoneIsWa}
                         onChange={handleWa}
                         classNames={{ checkboxContainerClasses: cx('flex', 'items-center') }}
                     >
-                        <Typography variant="bd-2b">{t('customer:isWhatsapp')}</Typography>
+                        <label for="profile-whatsapptrue">
+                            <Typography variant="bd-2b">{t('customer:isWhatsapp')}</Typography>
+                        </label>
                     </Checkbox>
                 </div>
                 <Show when={!phoneIsWa}>
@@ -116,17 +117,18 @@ const ProfileForm = (props) => {
                         errorMessage={(formik.touched.whatsapp_number && formik.errors.whatsapp_number) || null}
                     />
                 </Show>
-                <div className={cx('checkbox-wa-wrapper flex content-center mb-[24px]')}>
+                <div className={cx('flex content-center mb-[24px]')}>
                     <Checkbox
-                        name="emailtrue"
+                        id="profile-emailtrue"
                         label={`${t('common:button:change')} Email`}
                         variant="single"
-                        size="sm"
                         checked={editEmail}
                         onChange={() => setEditEmail(!editEmail)}
                         classNames={{ checkboxContainerClasses: cx('flex', 'items-center') }}
                     >
-                        <Typography variant="bd-2b">{`${t('common:button:change')} Email`}</Typography>
+                        <label for="profile-emailtrue">
+                            <Typography variant="bd-2b">{`${t('common:button:change')} Email`}</Typography>
+                        </label>
                     </Checkbox>
                 </div>
                 <Show when={editEmail}>
@@ -148,17 +150,18 @@ const ProfileForm = (props) => {
                         }}
                     />
                 </Show>
-                <div className={cx('checkbox-wa-wrapper flex content-center mb-[24px]')}>
+                <div className={cx('flex content-center mb-[24px]')}>
                     <Checkbox
-                        name="passwordtrue"
+                        id="profile-passwordtrue"
                         label={`${t('common:button:change')} Password`}
                         variant="single"
-                        size="sm"
                         checked={editPass}
                         onChange={() => setEditPass(!editPass)}
                         classNames={{ checkboxContainerClasses: cx('flex', 'items-center') }}
                     >
-                        <Typography variant="bd-2b">{`${t('common:button:change')} Password`}</Typography>
+                        <label for="profile-passwordtrue">
+                            <Typography variant="bd-2b">{`${t('common:button:change')} Password`}</Typography>
+                        </label>
                     </Checkbox>
                 </div>
                 <Show when={editPass}>
