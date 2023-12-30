@@ -1,14 +1,13 @@
-import React from 'react';
-import Router from 'next/router';
 import { useTranslation } from 'next-i18next';
 import dynamic from 'next/dynamic';
+import Router from 'next/router';
+import React from 'react';
 
-const Autocomplete = dynamic(() => import('@core_modules/theme/components/header/desktop/components/autocomplete'), { ssr: false });
+const Autocomplete = dynamic(() => import('@core_modules/theme/components/header/components/autocomplete'), { ssr: false });
 
 const MagezonSearchForm = (props) => {
     const {
-        placeholder, form_width, input_background_color, input_text_color,
-        storeConfig,
+        placeholder, form_width, input_background_color, input_text_color, storeConfig,
     } = props;
     const [setValue] = React.useState('');
     const { t } = useTranslation();

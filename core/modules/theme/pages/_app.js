@@ -11,10 +11,10 @@ import { custDataNameCookie, features, modules, sentry } from '@config';
 import { getLastPathWithoutLogin, getLoginInfo } from '@helper_auth';
 import { getLocalStorage, setLocalStorage, setResolver, testLocalStorage } from '@helper_localstorage';
 import { getAppEnv } from '@root/core/helpers/env';
+import { cmsPageVar, currencyVar, storeConfigVar } from '@root/core/services/graphql/cache';
 import { RewriteFrames } from '@sentry/integrations';
 import { Integrations } from '@sentry/tracing';
-import { getCategories, getVesMenu, storeConfig as ConfigSchema } from '@services/graphql/schema/config';
-import { currencyVar, storeConfigVar, cmsPageVar } from '@root/core/services/graphql/cache';
+import { storeConfig as ConfigSchema, getCategories, getVesMenu } from '@services/graphql/schema/config';
 import { appWithTranslation } from 'next-i18next';
 // import { RewriteFrames } from '@sentry/integrations';
 // import { Integrations } from '@sentry/tracing';
@@ -26,15 +26,15 @@ import React from 'react';
 import { gql } from '@apollo/client';
 import PageProgressLoader from '@common_pageprogress';
 import graphRequest from '@graphql_request';
-import Notification from '@lib_firebase/notification';
 import firebase from '@lib_firebase/index';
+import Notification from '@lib_firebase/notification';
 import routeMiddleware from '@middleware_route';
 import getConfig from 'next/config';
 import TagManager from 'react-gtm-module';
 
 import ModalCookies from '@core_modules/theme/components/modalCookies';
-import * as Sentry from '@sentry/node';
 import { getDeviceByUA, getUAString } from '@root/core/helpers/deviceDection';
+import * as Sentry from '@sentry/node';
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -126,7 +126,7 @@ class MyApp extends App {
          * GET CONFIGURATIONS FROM COOKIES
          * TO BE PROVIDED INTO PAGE PROPS
          */
-        let dataVesMenu;
+        let dataMenu;
         let frontendOptions;
         let { storeConfig } = pageProps;
 
@@ -146,9 +146,7 @@ class MyApp extends App {
             }
             storeConfig = storeConfig.storeConfig;
             if (!modules.checkout.checkoutOnly) {
-                dataVesMenu = storeConfig.pwa.ves_menu_enable
-                    ? await graphRequest(getVesMenu, { alias: storeConfig.pwa.ves_menu_alias }, {}, { method: 'GET' })
-                    : await graphRequest(getCategories, {}, {}, { method: 'GET' });
+                dataMenu = await graphRequest(getCategories, {}, {}, { method: 'GET' });
             }
             frontendOptions = frontendOptions.storeConfig;
             removeDecimalConfig = storeConfig?.pwa?.remove_decimal_price_enable !== null ? storeConfig?.pwa?.remove_decimal_price_enable : false;
@@ -173,24 +171,15 @@ class MyApp extends App {
             }
 
             if (!modules.checkout.checkoutOnly) {
-                dataVesMenu = getLocalStorage('pwa_vesmenu');
-                if (!dataVesMenu) {
-                    dataVesMenu = storeConfig.pwa.ves_menu_enable
-                        ? await pageProps.apolloClient
-                            .query({
-                                query: gql`
-                                      ${getVesMenu}
-                                  `,
-                                variables: { alias: storeConfig.pwa.ves_menu_alias },
-                            })
-                            .then(({ data }) => data)
-                        : await pageProps.apolloClient
-                            .query({
-                                query: gql`
-                                      ${getCategories}
-                                  `,
-                            })
-                            .then(({ data }) => data);
+                dataMenu = getLocalStorage('pwa_vesmenu');
+                if (!dataMenu) {
+                    dataMenu = await pageProps.apolloClient
+                        .query({
+                            query: gql`
+                                ${getCategories}
+                            `,
+                        })
+                        .then(({ data }) => data);
                 }
             }
             frontendOptions = storeConfig;
@@ -211,7 +200,7 @@ class MyApp extends App {
                 lastPathNoAuth,
                 customerData,
                 removeDecimalConfig,
-                dataVesMenu,
+                dataMenu,
                 frontendOptions,
                 deviceType,
             },

@@ -1,11 +1,11 @@
 /* eslint-disable react/jsx-wrap-multilines */
 /* eslint-disable no-unused-vars */
 /* eslint-disable semi-style */
-import dynamic from 'next/dynamic';
 import classNames from 'classnames';
+import dynamic from 'next/dynamic';
 
 import Typography from '@common_typography';
-import BrowseModal from '@common_searchmodal';
+// import BrowseModal from '@common_searchmodal';
 import ShoppingBagIcon from '@plugin_shoppingbag';
 
 const CategoryList = dynamic(() => import('@core_modules/theme/components/header/mobile/CategoryList'), { ssr: true });
