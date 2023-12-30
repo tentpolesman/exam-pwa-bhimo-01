@@ -174,7 +174,6 @@ const DetailOrder = (props) => {
                             </Button>
                         </div>
                     </div>
-                    {console.log('detail', detail)}
                     <div className={cx('flex', 'flex-row', 'justify-center', 'items-center')}>
                         <OrderStatusIcon status={detail[0].status} t={t} />
                     </div>

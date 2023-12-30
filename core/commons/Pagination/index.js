@@ -1,8 +1,8 @@
-import React, { useMemo } from 'react';
-import propTypes from 'prop-types';
-import cx from 'classnames';
 import ChevronLeftIcon from '@heroicons/react/24/outline/ChevronLeftIcon';
 import ChevronRightIcon from '@heroicons/react/24/outline/ChevronRightIcon';
+import cx from 'classnames';
+import propTypes from 'prop-types';
+import React, { useMemo } from 'react';
 
 function generateRange(start, end) {
     const length = end - start + 1;
@@ -11,13 +11,7 @@ function generateRange(start, end) {
 
 const Pagination = (props) => {
     const {
-        handleChangePage,
-        mobile,
-        showArrowButton,
-        page,
-        totalPage,
-        className,
-        siblingCount,
+        handleChangePage, mobile, showArrowButton, page, totalPage, className, siblingCount,
     } = props;
     const longPage = totalPage && totalPage > siblingCount;
 
@@ -42,10 +36,7 @@ const Pagination = (props) => {
             }
 
             const leftSiblingIndex = Math.max(page - siblingCount, 1);
-            const rightSiblingIndex = Math.min(
-                page + siblingCount,
-                totalPage,
-            );
+            const rightSiblingIndex = Math.min(page + siblingCount, totalPage);
 
             const shouldShowLeftDots = leftSiblingIndex > 2;
             const shouldShowRightDots = rightSiblingIndex < totalPage - 2;
@@ -62,10 +53,7 @@ const Pagination = (props) => {
 
             if (shouldShowLeftDots && !shouldShowRightDots) {
                 const rightItemCount = 3 + 2 * siblingCount;
-                const rightRange = generateRange(
-                    totalPage - rightItemCount + 1,
-                    totalPage,
-                );
+                const rightRange = generateRange(totalPage - rightItemCount + 1, totalPage);
                 return [firstPageIndex, 'dot', ...rightRange];
             }
 
@@ -99,68 +87,51 @@ const Pagination = (props) => {
     };
 
     return (
-        <div className={
-            cx('flex flex-row p-[10px] bg-neutral-white gap-1', className)
-        }
-        >
-            {
-                showArrowButton && (
-                    <div
-                        role="button"
-                        disabled={page === 1}
-                        tabIndex={0}
-                        onClick={handlePrevious}
-                        onKeyUp={() => {}}
-                        className={cx(
-                            'w-10 h-10 flex items-center justify-center bg-neutral-white rounded-md',
-                            page === 1 && 'text-neutral-150',
-                        )}
-                    >
-                        <ChevronLeftIcon className="w-5 h-5" />
-                    </div>
-                )
-            }
-            {
-                pageArray.map((item, idx) => (
-                    <div
-                        key={idx}
-                        role="button"
-                        onClick={() => handeClickPage(item)}
-                        tabIndex={item}
-                        onKeyUp={() => {}}
-                        className={
-                            cx(
-                                'w-10 h-10 flex items-center justify-center bg-neutral-white rounded-md',
-                                (item !== 'dot' && !mobile) ? 'hover:bg-primary hover:text-neutral-50' : '',
-                                (item === page && !mobile) ? 'bg-primary text-neutral-50' : '',
-                                (item === 'dot') ? 'bg-neutral-white hover:bg-neutral-white text-neutral-300' : '',
-                            )
-                        }
-                    >
-                        {
-                            item === 'dot' ? '...' : item
-                        }
-                    </div>
-                ))
-            }
+        <div className={cx('flex flex-row p-[10px] bg-neutral-white gap-1', className)}>
+            {showArrowButton && (
+                <div
+                    aria-label="Previous"
+                    role="button"
+                    disabled={page === 1}
+                    tabIndex={0}
+                    onClick={handlePrevious}
+                    onKeyUp={() => {}}
+                    className={cx('w-10 h-10 flex items-center justify-center bg-neutral-white rounded-md', page === 1 && 'text-neutral-150')}
+                >
+                    <ChevronLeftIcon className="w-5 h-5" />
+                </div>
+            )}
+            {pageArray.map((item, idx) => (
+                <div
+                    key={idx}
+                    role="button"
+                    onClick={() => handeClickPage(item)}
+                    tabIndex={item}
+                    onKeyUp={() => {}}
+                    className={cx(
+                        'w-10 h-10 flex items-center justify-center bg-neutral-white rounded-md',
+                        item !== 'dot' && !mobile ? 'hover:bg-primary hover:text-neutral-50' : '',
+                        item === page && !mobile ? 'bg-primary text-neutral-50' : '',
+                        item === 'dot' ? 'bg-neutral-white hover:bg-neutral-white text-neutral-300' : '',
+                    )}
+                >
+                    {item === 'dot' ? '...' : item}
+                </div>
+            ))}
 
-            {
-                showArrowButton && (
-                    <div
-                        role="button"
-                        disabled={page === 1}
-                        tabIndex={0}
-                        onClick={handleNext}
-                        onKeyUp={() => {}}
-                        className={cx(
-                            'w-10 h-10 flex items-center justify-center bg-neutral-white rounded-md',
-                            page === totalPage && 'text-neutral-150',
-                        )}
-                    >
-                        <ChevronRightIcon className="w-5 h-5" />
-                    </div>
-                )
-            }
+            {showArrowButton && (
+                <div
+                    aria-label="Next"
+                    role="button"
+                    disabled={page === 1}
+                    tabIndex={0}
+                    onClick={handleNext}
+                    onKeyUp={() => {}}
+                    className={cx('w-10 h-10 flex items-center justify-center bg-neutral-white rounded-md', page === totalPage && 'text-neutral-150')}
+                >
+                    <ChevronRightIcon className="w-5 h-5" />
+                </div>
+            )}
         </div>
     );
 };
