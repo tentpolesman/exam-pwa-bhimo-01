@@ -558,7 +558,7 @@ const Layout = (props) => {
             ) : null} */}
             {allowHeaderCheckout && (
                 <header ref={refHeader} className={cx(font.variable, 'font-sans', '!font-pwa-default')}>
-                    {typeof window !== 'undefined' && storeConfig.global_promo && storeConfig.global_promo.enable && deviceWidth > BREAKPOINTS.md && (
+                    {typeof window !== 'undefined' && storeConfig.global_promo && storeConfig.global_promo.enable && (
                         <GlobalPromoMessage
                             t={t}
                             storeConfig={storeConfig}
