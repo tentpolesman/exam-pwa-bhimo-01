@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import ShoppingCartIcon from '@heroicons/react/24/solid/ShoppingCartIcon';
 import cx from 'classnames';
 
@@ -7,8 +9,11 @@ const WithLink = (props) => {
     const { cartData, handleLink } = props;
 
     return (
-        <div className={cx('group')}>
-            <BadgeCounter value={cartData} className={cx('hover:cursor-pointer')}>
+        <div
+            className={cx('group hover:cursor-pointer')}
+            onClick={handleLink}
+        >
+            <BadgeCounter value={cartData}>
                 <ShoppingCartIcon
                     className={cx(
                         'mobile:max-tablet:w-[20px]',
@@ -20,7 +25,6 @@ const WithLink = (props) => {
                         'tablet:mt-3',
                         'hover:cursor-pointer',
                     )}
-                    onClick={handleLink}
                 />
             </BadgeCounter>
         </div>
