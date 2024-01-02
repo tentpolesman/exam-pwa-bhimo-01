@@ -75,7 +75,7 @@ const OrderView = (props) => {
     };
 
     return (
-        <div className={cx('pt-10', 'mobile:max-tablet:px-4')}>
+        <div className={cx('pt-10', '')}>
             <div className={cx('address-title-section', 'pb-[18px]', 'border-b-[1.5px]', 'border-neutral-200', 'flex', 'flex-row')}>
                 <Typography variant="h3" className={cx('desktop:hidden', 'pl-0')}>
                     {t('customer:order:recentOrder')}

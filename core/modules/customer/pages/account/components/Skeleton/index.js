@@ -5,7 +5,7 @@ import cx from 'classnames';
 const SkeletonLoader = () => (
     <>
         <div className={cx('flex', 'flex-row', 'tablet:border-t-[1px]', 'tablet:border-neutral-200', 'tablet:mt-3')}>
-            <div className="mobile:max-tablet:basis-full desktop:basis-10/12 pt-5 mobile:max-tablet:px-4">
+            <div className="mobile:max-tablet:basis-full desktop:basis-10/12 pt-5">
                 <Skeleton
                     animation="wave"
                     variant="rect"
