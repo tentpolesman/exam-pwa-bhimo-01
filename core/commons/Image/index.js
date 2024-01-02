@@ -38,6 +38,7 @@ const CustomImage = ({
     deviceType,
     preload = false,
     useNextImage = true,
+    unoptimized = true,
     ...other
 }) => {
     const enable = storeConfig && storeConfig.pwa && storeConfig.pwa.thumbor_enable;
@@ -182,19 +183,38 @@ const CustomImage = ({
     if (useNextImage) {
         return (
             <Container enable={useContainer} className={classContainer} style={styleContainer}>
-                <NextImage
-                    src={srcMobile ? imgSourceMobile : imgSource}
-                    data-pagespeed-no-defer={!lazy}
-                    style={styleImage}
-                    className={cx('img', className)}
-                    alt={alt}
-                    {...imgTagDimensions}
-                    onLoad={lazy ? onLoad : null}
-                    onError={lazy ? onError : null}
-                    unoptimized={enable}
-                    priority={preload}
-                    {...other}
-                />
+                <picture>
+                    { srcMobile ? (
+                        <>
+                            <source srcSet={imgSourceMobile} media={`(max-width: ${BREAKPOINTS.sm - 1}px)`} type="image/webp" />
+                            <source
+                                srcSet={getImageFallbackUrl(imgSourceMobile)}
+                                media={`(max-width: ${BREAKPOINTS.sm - 1}px)`}
+                                type="image/jpeg"
+                            />
+                            <source srcSet={imgSource} media={`(min-width: ${BREAKPOINTS.sm}px)`} type="image/webp" />
+                            <source srcSet={getImageFallbackUrl(imgSource)} media={`(min-width: ${BREAKPOINTS.sm}px)`} type="image/jpeg" />
+                        </>
+                    ) : (
+                        <>
+                            <source srcSet={imgSource} type="image/webp" />
+                            <source srcSet={getImageFallbackUrl(imgSource)} type="image/jpeg" />
+                        </>
+                    )}
+                    <NextImage
+                        src={srcMobile ? imgSourceMobile : imgSource}
+                        data-pagespeed-no-defer={!lazy}
+                        style={styleImage}
+                        className={cx('img', className)}
+                        alt={alt}
+                        {...imgTagDimensions}
+                        onLoad={lazy ? onLoad : null}
+                        onError={lazy ? onError : null}
+                        unoptimized={unoptimized}
+                        priority={preload}
+                        {...other}
+                    />
+                </picture>
             </Container>
         );
     }

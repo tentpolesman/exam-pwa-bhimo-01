@@ -11,7 +11,9 @@ const withPWA = require('next-pwa')({
     disable: process.env.NODE_ENV === 'development',
 });
 const { i18n } = require('./next-i18next.config');
-const { basePath, assetsVersion, graphqlEndpoint } = require('./swift.config');
+const {
+    basePath, assetsVersion, graphqlEndpoint, features,
+} = require('./swift.config');
 
 const baseHostUrl = graphqlEndpoint[process.env.APP_ENV];
 
@@ -34,7 +36,7 @@ module.exports = withPWA({
         remotePatterns: [
             {
                 protocol: 'https',
-                hostname: 'thumbor.sirclocdn.com',
+                hostname: features.thumbor.domainThumborConfig,
                 port: '',
                 pathname: '/**',
             },
