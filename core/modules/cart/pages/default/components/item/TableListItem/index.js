@@ -110,6 +110,7 @@ const TableListProduct = ({
                                             storeConfig={storeConfig}
                                             currencyCache={currencyCache}
                                             confirmDelete={confirmDelete}
+                                            t={t}
                                             {...other}
                                         />
                                     </React.Fragment>
@@ -140,6 +141,7 @@ const TableListProduct = ({
                                                 storeConfig={storeConfig}
                                                 currencyCache={currencyCache}
                                                 confirmDelete={confirmDelete}
+                                                t={t}
                                                 {...other}
                                             />
                                         ))

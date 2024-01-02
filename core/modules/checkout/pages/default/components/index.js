@@ -99,7 +99,7 @@ const Content = (props) => {
         <div id="checkout" className="flex flex-col pb-8 desktop:py-0 relative">
             <div className={classNames(
                 'flex flex-row items-center justify-center relative',
-                'desktop:hidden w-full sticky top-0',
+                'desktop:hidden w-full absolute top-0',
                 'shadow-lg bg-neutral-white z-scroll-to-top h-[45px] tablet:h-[50px]',
             )}
             >
@@ -288,6 +288,7 @@ const Content = (props) => {
                                             formik={formik}
                                             storeConfig={storeConfig}
                                             PromoView={PromoView}
+                                            refetchItemCart={refetchItemCart}
                                         />
                                     </div>
                                 ) : null}

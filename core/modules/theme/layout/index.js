@@ -345,7 +345,7 @@ const Layout = (props) => {
         }
 
         if (isCheckout) {
-            classes += ' !mt-0 tablet:!mt-0 desktop:!mt-0 relative';
+            classes += ' !mt-0 !px-0 tablet:!mt-0 desktop:!mt-0 relative';
         }
 
         return classes;

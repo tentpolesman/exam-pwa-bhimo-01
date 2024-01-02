@@ -45,8 +45,8 @@ const Caraousel = (props) => {
                                 'desktop:!h-[256px]',
                             ),
                         }}
-                        {...other}
                         enableQuickView
+                        {...other}
                     />
                 ))}
             </ContainerScroll>

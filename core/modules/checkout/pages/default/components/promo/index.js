@@ -8,6 +8,7 @@ const DiscountSection = (props) => {
         setCheckout,
         handleOpenMessage,
         formik,
+        refetchItemCart,
     } = props;
     const [applyCouponTocart] = gqlService.applyCouponToCart({ onError: () => { } });
     const [removeCouponFromCart] = gqlService.removeCouponFromCart({ onError: () => { } });
@@ -74,6 +75,7 @@ const DiscountSection = (props) => {
 
         const finalState = {
             ...state,
+            refetchItemOnly: true,
             loading: {
                 ...checkout.loading,
                 all: false,
@@ -84,6 +86,9 @@ const DiscountSection = (props) => {
             },
         };
         setCheckout(finalState);
+        if (refetchItemCart && typeof refetchItemCart === 'function') {
+            refetchItemCart();
+        }
     };
 
     return (

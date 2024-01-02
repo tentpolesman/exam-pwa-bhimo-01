@@ -8,7 +8,7 @@ import { formatPrice } from '@helper_currency';
 import { useReactiveVar } from '@apollo/client';
 import { storeConfigVar } from '@root/core/services/graphql/cache';
 import cx from 'classnames';
-import React from 'react';
+import React, { useEffect } from 'react';
 import Show from '@common/Show';
 import Skeleton from '@common/Skeleton';
 import Arrow from '@heroicons/react/24/outline/ChevronDownIcon';
@@ -18,6 +18,7 @@ import PaypalButtonView from '@plugin_paypalbutton';
 import Accordion from '@common/Accordion';
 import Divider from '@common/Divider';
 import parser from 'html-react-parser';
+import Badge from '@common/Badge';
 
 const Summary = (props) => {
     const {
@@ -29,6 +30,15 @@ const Summary = (props) => {
     } = props;
     const storeConfigLocalStorage = useReactiveVar(storeConfigVar);
     const [openItem, setOpenItem] = React.useState(false);
+    const [openItemMobile, setOpenItemMobile] = React.useState(false);
+
+    useEffect(() => {
+        if (mobilePosition === 'bottom' && openItemMobile) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style = '';
+        }
+    }, [mobilePosition, openItemMobile]);
 
     const Loader = () => (
         <div
@@ -124,8 +134,11 @@ const Summary = (props) => {
                 'p-4 shadow-inner bg-neutral-white',
             )}
             >
-                <Show when={mobilePosition === 'bottom'}>
+                <Show when={mobilePosition === 'bottom' && showItems}>
                     <Accordion
+                        open={openItemMobile}
+                        handleOpen={() => setOpenItemMobile(true)}
+                        handleClose={() => setOpenItemMobile(false)}
                         CustomAccordionSummary={(
                             <div>
                                 <span className="transition group-open:rotate-180">
@@ -138,9 +151,10 @@ const Summary = (props) => {
                         )}
                         classSummary="w-full text-center flex flex-col gap-2 items-center justify-center"
                         className="mb-3"
+                        classContent="pb-2 !max-h-[80vh]"
                     >
                         <div className="w-full flex flex-col gap-3 my-5">
-                            <div className="flex fle-col">
+                            <div className="flex fle-col max-h-[50vh] overflow-y-auto">
                                 {isMultiSeller ? (
                                     <div className={cx('flex flex-col w-full')}>
                                         {
@@ -158,11 +172,16 @@ const Summary = (props) => {
                                                                 <Typography variant="bd-2b" className="line-clamp-2">
                                                                     {parser(item.product.name)}
                                                                 </Typography>
-                                                                <Typography variant="bd-2b" size="14" letter="uppercase">
-                                                                    {item.prices.row_total.value === 0
-                                                                        ? t('common:title:free')
-                                                                        : formatPrice(item.prices.row_total.value, item.prices.row_total.currency || 'IDR', currencyCache)}
-                                                                </Typography>
+
+                                                                {
+                                                                    item?.prices?.row_total?.value && (
+                                                                        <Typography variant="bd-2b" size="14" letter="uppercase">
+                                                                            {item?.prices?.row_total?.value && item?.prices?.row_total?.value === 0
+                                                                                ? t('common:title:free')
+                                                                                : formatPrice(item.prices.row_total.value, item.prices.row_total.currency || 'IDR', currencyCache)}
+                                                                        </Typography>
+                                                                    )
+                                                                }
                                                             </div>
                                                             <div className={cx('xs:basis-8/12', 'flex flex-col')}>
                                                                 {item.configurable_options && item.configurable_options.length ? (
@@ -225,11 +244,17 @@ const Summary = (props) => {
                                                     <Typography variant="bd-2b" className="line-clamp-2">
                                                         {parser(item.product.name)}
                                                     </Typography>
-                                                    <Typography variant="bd-2b" size="14" letter="uppercase">
-                                                        {item.prices.row_total.value === 0
-                                                            ? t('common:title:free')
-                                                            : formatPrice(item.prices.row_total.value, item.prices.row_total.currency || 'IDR', currencyCache)}
-                                                    </Typography>
+                                                    {
+                                                        item?.prices?.row_total?.value ? (
+                                                            <Typography variant="bd-2b" size="14" letter="uppercase">
+                                                                {item?.prices?.row_total?.value && item?.prices?.row_total?.value === 0
+                                                                    ? t('common:title:free')
+                                                                    : formatPrice(item.prices.row_total.value, item.prices.row_total.currency || 'IDR', currencyCache)}
+                                                            </Typography>
+                                                        ) : (
+                                                            <Typography variant="bd-2b" size="14" letter="uppercase">{t('common:title:free')}</Typography>
+                                                        )
+                                                    }
                                                 </div>
                                                 <div className={cx('xs:basis-8/12', 'flex flex-col')}>
                                                     {item.configurable_options && item.configurable_options.length ? (
@@ -330,151 +355,166 @@ const Summary = (props) => {
                         </Typography>
                     </div>
                 </Show>
-                <Show when={showItems}>
-                    <Accordion
-                        label={`${items.length} items in Cart`}
-                        open={openItem}
-                        handleOpen={() => setOpenItem(true)}
-                        handleClose={() => setOpenItem(false)}
-                        className="px-5"
-                    >
-                        <div className="flex flex-col">
-                            {isMultiSeller && openItem ? (
-                                <div className={cx('flex flex-row')}>
-                                    {
-                                        cartItemBySeller.map((seller) => (
-                                            <>
-                                                <div className={cx('xs:basis-full bg-neutral-100 py-4')}>
-                                                    <Typography variant="bd-2b">{seller.seller_name}</Typography>
-                                                </div>
-                                                {seller.productList.map((item, index) => (
-                                                    <div
-                                                        id="divProductSummary"
-                                                        className={cx('xs:basis-full row between-xs', '', 'relative p-5')}
-                                                        key={index}
-                                                    >
-                                                        <div className="xs:basis-4/12">
-                                                            <Thumbor
-                                                                className="product-image-photo"
-                                                                src={item.product.small_image.url}
-                                                                alt={item.product.name}
-                                                                width={61}
-                                                                height={75}
-                                                            />
-                                                        </div>
-                                                        <div className={cx('xs:basis-8/12', 'flex flex-col')}>
-                                                            <Typography variant="bd-2b" className="line-clamp-2">{item.product.name}</Typography>
-                                                            {item.configurable_options && item.configurable_options.length ? (
-                                                                <div className="m-1">
-                                                                    {item.configurable_options.map((val, idx) => (
-                                                                        <div className="text-xs" key={idx}>
-                                                                            <strong>{val.option_label}</strong>
-                                                                            {' '}
-                                                                            :
-                                                                            {val.value_label}
-                                                                        </div>
-                                                                    ))}
-                                                                </div>
-                                                            ) : null}
-                                                            <div className="flex-grow" />
-                                                            <div>
-                                                                <span className="px-0 py-3" style={{ padding: '0' }}>
-                                                                    <Typography variant="bd-2b" type="regular">
-                                                                        Qty:
-                                                                        {` ${item.quantity}`}
-                                                                    </Typography>
-                                                                </span>
+                {
+                    showItems && (
+                        <Accordion
+                            label={`${items.length} items in Cart`}
+                            open={openItem}
+                            handleOpen={() => setOpenItem(true)}
+                            handleClose={() => setOpenItem(false)}
+                            classSummary="px-5"
+                            classContent="pb-2"
+                        >
+                            <div className="flex flex-col">
+                                {isMultiSeller && openItem ? (
+                                    <div className={cx('flex flex-row')}>
+                                        {
+                                            cartItemBySeller.map((seller) => (
+                                                <>
+                                                    <div className={cx('xs:basis-full bg-neutral-100 py-4')}>
+                                                        <Typography variant="bd-2b">{seller.seller_name}</Typography>
+                                                    </div>
+                                                    {seller.productList.map((item, index) => (
+                                                        <div
+                                                            id="divProductSummary"
+                                                            className={cx('xs:basis-full row between-xs', '', 'relative p-5')}
+                                                            key={index}
+                                                        >
+                                                            <div className="xs:basis-4/12">
+                                                                <Thumbor
+                                                                    className="product-image-photo"
+                                                                    src={item.product.small_image.url}
+                                                                    alt={item.product.name}
+                                                                    width={61}
+                                                                    height={75}
+                                                                />
                                                             </div>
-                                                            <Typography variant="bd-2b" size="14" letter="uppercase">
-                                                                {item.prices.row_total.value === 0
-                                                                    ? t('common:title:free')
-                                                                    : formatPrice(item.prices.row_total.value, item.prices.row_total.currency || 'IDR', currencyCache)}
-                                                            </Typography>
+                                                            <div className={cx('xs:basis-8/12', 'flex flex-col')}>
+                                                                <Typography variant="bd-2b" className="line-clamp-2">{item.product.name}</Typography>
+                                                                {item.configurable_options && item.configurable_options.length ? (
+                                                                    <div className="m-1">
+                                                                        {item.configurable_options.map((val, idx) => (
+                                                                            <div className="text-xs" key={idx}>
+                                                                                <strong>{val.option_label}</strong>
+                                                                                {' '}
+                                                                                :
+                                                                                {val.value_label}
+                                                                            </div>
+                                                                        ))}
+                                                                    </div>
+                                                                ) : null}
+                                                                <div className="flex-grow" />
+                                                                <div>
+                                                                    <span className="px-0 py-3" style={{ padding: '0' }}>
+                                                                        <Typography variant="bd-2b" type="regular">
+                                                                            Qty:
+                                                                            {` ${item.quantity}`}
+                                                                        </Typography>
+                                                                    </span>
+                                                                </div>
+                                                                <Typography variant="bd-2b" size="14" letter="uppercase">
+                                                                    {item.prices.row_total.value === 0
+                                                                        ? t('common:title:free')
+                                                                        : formatPrice(item.prices.row_total.value, item.prices.row_total.currency || 'IDR', currencyCache)}
+                                                                </Typography>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                ))}
-                                            </>
-                                        ))
-                                    }
-                                </div>
-                            ) : null}
-                            {!isMultiSeller && openItem ? (
-                                <div className={cx('flex flex-col gap-3')}>
-                                    {items.map((item, index) => (
-                                        <div
-                                            id="divProductSummary"
-                                            className={cx('flex flex-row gap-2', 'relative')}
-                                            key={index}
-                                        >
-                                            {withAction && (
-                                                <div
-                                                    className="absolute -top-1 right-1"
-                                                    onClick={() => {
-                                                        deleteCart(item.id);
-                                                    }}
-                                                >
-                                                    x
-                                                </div>
-                                            )}
-                                            <div className="xs:basis-4/12">
-                                                <Thumbor
-                                                    className="!w-[105px] !h-[105px]"
-                                                    classContainer="!w-[105px] !h-[105px]"
-                                                    src={item.product.small_image.url}
-                                                    alt={item.product.name}
-                                                    width={105}
-                                                    height={105}
-                                                    storeConfig={storeConfig}
-                                                />
-                                            </div>
-                                            <div className={cx('xs:basis-8/12', 'flex flex-col')}>
-                                                <Typography variant="bd-2b" className="line-clamp-2">
-                                                    {parser(item.product.name)}
-                                                </Typography>
-                                                {item.configurable_options && item.configurable_options.length ? (
-                                                    <div className="my-1 flex flex-col">
-                                                        {item.configurable_options.map((val, idx) => (
-                                                            <Typography variant="bd-3b" key={idx}>
-                                                                <strong>{val.option_label}</strong>
-                                                                {' '}
-                                                                :
-                                                                {val.value_label}
-                                                            </Typography>
-                                                        ))}
-                                                    </div>
-                                                ) : null}
+                                                    ))}
+                                                </>
+                                            ))
+                                        }
+                                    </div>
+                                ) : null}
+                                {!isMultiSeller && openItem ? (
+                                    <div className={cx('flex flex-col gap-3')}>
+                                        {items.map((item, index) => (
+                                            <div
+                                                id="divProductSummary"
+                                                className={cx('flex flex-row gap-2 px-5', 'relative')}
+                                                key={index}
+                                            >
                                                 {withAction && (
-                                                    <div className="flex flex-row my-2">
-                                                        <span
-                                                            className="cursor-pointer after:content-['<'] qty-update"
-                                                            onClick={() => {
-                                                                if (item.quantity > 1) {
-                                                                    updateCart(item.id, item.quantity - 1);
-                                                                }
-                                                            }}
-                                                        />
-                                                        <span className="px-2 py-0">{item.quantity}</span>
-
-                                                        <span
-                                                            className="cursor-pointer after:content-['>'] qty-update"
-                                                            onClick={() => {
-                                                                updateCart(item.id, item.quantity + 1);
-                                                            }}
-                                                        />
+                                                    <div
+                                                        className="absolute -top-1.5 right-5 cursor-pointer"
+                                                        onClick={() => {
+                                                            deleteCart(item.id);
+                                                        }}
+                                                    >
+                                                        x
                                                     </div>
                                                 )}
-                                                <Typography variant="bd-2b" size="14" letter="uppercase">
-                                                    {item.prices.row_total.value === 0
-                                                        ? t('common:title:free')
-                                                        : formatPrice(item.prices.row_total.value, item.prices.row_total.currency || 'IDR', currencyCache)}
-                                                </Typography>
+                                                <div className="xs:basis-4/12 relative">
+                                                    <Thumbor
+                                                        className="!w-[105px] !h-[105px]"
+                                                        classContainer="!w-[105px] !h-[105px]"
+                                                        src={item.product.small_image.url}
+                                                        alt={item.product.name}
+                                                        width={105}
+                                                        height={105}
+                                                        storeConfig={storeConfig}
+                                                    />
+                                                    <Show when={item.prices.row_total.value === 0}>
+                                                        <Badge
+                                                            fontSize={10}
+                                                            success
+                                                            label={t('common:title:free')}
+                                                            className="absolute top-1 left-1"
+                                                        />
+                                                    </Show>
+
+                                                </div>
+                                                <div className={cx('xs:basis-8/12', 'flex flex-col')}>
+                                                    <Typography variant="bd-2b" className="line-clamp-2 max-w-[90%]">
+                                                        {parser(item.product.name)}
+                                                    </Typography>
+                                                    {item.configurable_options && item.configurable_options.length ? (
+                                                        <div className="my-1 flex flex-col">
+                                                            {item.configurable_options.map((val, idx) => (
+                                                                <Typography variant="bd-3b" key={idx}>
+                                                                    <strong>{val.option_label}</strong>
+                                                                    {' '}
+                                                                    :
+                                                                    {val.value_label}
+                                                                </Typography>
+                                                            ))}
+                                                        </div>
+                                                    ) : null}
+                                                    {withAction && (
+                                                        <div className="flex flex-row my-2">
+                                                            <span
+                                                                className="cursor-pointer after:content-['<'] qty-update"
+                                                                onClick={() => {
+                                                                    if (item.quantity > 1) {
+                                                                        updateCart(item.id, item.quantity - 1);
+                                                                    }
+                                                                }}
+                                                            />
+                                                            <span className="px-2 py-0">{item.quantity}</span>
+
+                                                            <span
+                                                                className="cursor-pointer after:content-['>'] qty-update"
+                                                                onClick={() => {
+                                                                    updateCart(item.id, item.quantity + 1);
+                                                                }}
+                                                            />
+                                                        </div>
+                                                    )}
+                                                    <Typography variant="bd-2b" size="14" letter="uppercase">
+                                                        {item.prices.row_total.value === 0
+                                                            ? t('common:title:free')
+                                                            : formatPrice(item.prices.row_total.value, item.prices.row_total.currency || 'IDR', currencyCache)}
+                                                    </Typography>
+                                                </div>
                                             </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            ) : null}
-                        </div>
-                    </Accordion>
+                                        ))}
+                                    </div>
+                                ) : null}
+                            </div>
+                        </Accordion>
+                    )
+                }
+                <Show when={openItem}>
+                    <Divider className="my-2" />
                 </Show>
                 <div className="flex flex-col px-5 pt-2 pb-4 gap-2">
                     {summary.data.map((dt, index) => (

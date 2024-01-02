@@ -40,7 +40,7 @@ const MagezonHeading = (props) => {
                 </MagezonLink>
             ) : (
                 <Typography variant={heading_type || 'h2'} style={style}>
-                    {text || ''}
+                    <span dangerouslySetInnerHTML={{ __html: text || '' }} />
                 </Typography>
             )}
             <style jsx>

@@ -217,8 +217,9 @@ const ReviewList = ({
                 {review && review.items.map((item, index) => <ReviewCard key={index} {...item} />)}
                 <PaginationSection
                     page={page}
-                    totalPage={review.totalCount / reviewParams.pageSize}
+                    totalPage={review.totalCount < reviewParams.pageSize ? 1 : Math.ceil(review.totalCount / reviewParams.pageSize)}
                     handleChangePage={handleChangePage}
+                    siblingCount={0}
                 />
             </div>
         </div>

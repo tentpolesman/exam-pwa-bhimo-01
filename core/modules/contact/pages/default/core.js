@@ -169,7 +169,7 @@ const Contact = (props) => {
         formik.setFieldValue('captcha', value || '');
     };
 
-    const { error, loading, data } = gqlService.getCmsBlocks({ identifiers: [cmsContactIdentifiers] }, { skip: !cmsContactIdentifiers });
+    const { error, loading, data } = gqlService.getCmsBlocks({ identifiers: [cmsContactIdentifiers] }, { skip: isCms || !cmsContactIdentifiers });
 
     if (isCms) {
         return (

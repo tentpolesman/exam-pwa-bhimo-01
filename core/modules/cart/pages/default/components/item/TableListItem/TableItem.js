@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable radix */
 import React from 'react';
 import Image from '@common_image';
@@ -8,7 +9,8 @@ import ButtonQty from '@common/ButtonQty';
 import Show from '@common/Show';
 import Button from '@common/Button';
 import { TrashIcon } from '@heroicons/react/24/outline';
-import OrderNote from '../OrderNote';
+import Badge from '@common/Badge';
+import OrderNote from '@core_modules/cart/pages/default/components/item/OrderNote';
 
 const TableItem = (props) => {
     const {
@@ -29,7 +31,7 @@ const TableItem = (props) => {
         <tr className="border-b-[1px] border-b-neutral-200">
             <td align="left" valign="top" className="py-4">
                 <div className="flex flex-row w-max">
-                    <div className="w-[120px] h-[120px] overflow-hidden justify-center items-center rounded-lg">
+                    <div className="w-[120px] h-[120px] overflow-hidden justify-center items-center rounded-lg relative">
                         <Link
                             href="/[...slug]"
                             as={`/${product.url_key}`}
@@ -46,7 +48,9 @@ const TableItem = (props) => {
                                 storeConfig={storeConfig}
                             />
                         </Link>
-                        {custom_price.price_incl_tax.value === 0 ? <span>Free</span> : null}
+                        {custom_price.price_incl_tax.value === 0 ? (
+                            <Badge fontSize={10} success label={t('common:title:free')} className="z-3 absolute top-1 left-1" />
+                        ) : null}
                     </div>
                     <div className="flex flex-col px-4 w-max">
                         <div className="flex flex-col gap-2">

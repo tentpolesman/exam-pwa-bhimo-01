@@ -211,7 +211,13 @@ const MagezonSliderContent = (props) => {
                                 </div>
                             )}
                             {link_type === 'button' && (
-                                <div className="magezon-slide-button">
+                                <div
+                                    className={cx('magezon-slide-button', {
+                                        'justify-start': content_align === 'left',
+                                        'justify-end': content_align === 'right',
+                                        'justify-center': content_align === 'center',
+                                    })}
+                                >
                                     {button1 && (
                                         <MagezonButton
                                             link={button1_link}
@@ -289,9 +295,9 @@ const MagezonSliderContent = (props) => {
                         ${content_wrapper_width ? `max-width: ${content_wrapper_width}px;` : ''}
                     }
                     .magezon-slide-captions > div {
-                        max-width: ${content_width}px;
+                        ${content_width ? `max-width: ${content_width}px;` : ''}
                         text-align: ${content_align};
-                        padding: ${content_padding}px;
+                        ${content_padding ? `padding: ${content_padding}px;` : ''}
                     }
                     .magezon-slide-heading {
                         background-color: ${heading_bg_color};
@@ -474,10 +480,11 @@ const MagezonSlider = (props) => {
                                 'hidden',
                                 'group-hover:flex',
                                 'shadow-md',
+                                'ml-10',
                             )}
                             onClick={() => sliderRef.slickPrev()}
                         >
-                            <ChevronLeft className="w-6 h-6 text-primary" />
+                            <ChevronLeft className="w-6 h-6 hover:text-primary" />
                         </div>
                         <div
                             className={cx(
@@ -497,10 +504,11 @@ const MagezonSlider = (props) => {
                                 'hidden',
                                 'group-hover:flex',
                                 'shadow-md',
+                                'mr-10',
                             )}
                             onClick={() => sliderRef.slickNext()}
                         >
-                            <ChevronRight className="w-6 h-6 text-primary" />
+                            <ChevronRight className="w-6 h-6 hover:text-primary" />
                         </div>
                     </div>
                 ) : null}
@@ -633,7 +641,6 @@ const MagezonSlider = (props) => {
                         background-color: ${owl_background_color || '#eee'};
                         width: ${navSize * 2}px;
                         height: ${navSize * 2}px;
-                        margin: ${navSize / 2}px 4px;
                         display: flex;
                         align-items: center;
                         justify-content: center;
