@@ -11,7 +11,11 @@ const withPWA = require('next-pwa')({
     disable: process.env.NODE_ENV === 'development',
 });
 const { i18n } = require('./next-i18next.config');
-const { basePath, assetsVersion } = require('./swift.config');
+const {
+    basePath, assetsVersion, graphqlEndpoint, features,
+} = require('./swift.config');
+
+const baseHostUrl = graphqlEndpoint[process.env.APP_ENV];
 
 module.exports = withPWA({
     i18n,
@@ -27,6 +31,24 @@ module.exports = withPWA({
         appEnv: process.env.APP_ENV,
         rootDir: __dirname,
     },
+    // Images
+    images: {
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: features.thumbor.domainThumborConfig,
+                port: '',
+                pathname: '/**',
+            },
+            {
+                protocol: 'https',
+                hostname: baseHostUrl.replace('http://', '').replace('https://', ''),
+                port: '',
+                pathname: '/**',
+            },
+        ],
+    },
+    // Webpack
     webpack: (config, { isServer, webpack }) => {
         // Note: we provide webpack above so you should not `require` it
         // Perform customizations to webpack config
