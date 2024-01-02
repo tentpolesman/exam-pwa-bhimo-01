@@ -34,33 +34,34 @@ import TagManager from 'react-gtm-module';
 
 import ModalCookies from '@core_modules/theme/components/modalCookies';
 import { getDeviceByUA, getUAString } from '@root/core/helpers/deviceDection';
-import * as Sentry from '@sentry/node';
+// import * as Sentry from '@sentry/node';
 
 const { publicRuntimeConfig } = getConfig();
 
 /*
  * ---------------------------------------------
  * SENTRY INITIALIZATION
+ * code is commented avoid Sentry in js bundle (performance purposed). feel free to uncoment if you need to implement sentry
  */
-if (sentry.enabled && typeof publicRuntimeConfig !== 'undefined' && sentry.dsn[publicRuntimeConfig.appEnv]) {
-    const distDir = `${publicRuntimeConfig.rootDir}/.next`;
-    Sentry.init({
-        enabled: process.env.NODE_ENV === sentry.enableMode,
-        integrations: [
-            new RewriteFrames({
-                iteratee: (frame) => {
-                    // eslint-disable-next-line no-param-reassign
-                    frame.filename = frame.filename.replace(distDir, 'app:///_next');
-                    return frame;
-                },
-            }),
-            new Integrations.BrowserTracing(),
-        ],
-        environment: publicRuntimeConfig.appEnv,
-        dsn: sentry.dsn[publicRuntimeConfig.appEnv],
-        tracesSampleRate: 0.5,
-    });
-}
+// if (sentry.enabled && typeof publicRuntimeConfig !== 'undefined' && sentry.dsn[publicRuntimeConfig.appEnv]) {
+//     const distDir = `${publicRuntimeConfig.rootDir}/.next`;
+//     Sentry.init({
+//         enabled: process.env.NODE_ENV === sentry.enableMode,
+//         integrations: [
+//             new RewriteFrames({
+//                 iteratee: (frame) => {
+//                     // eslint-disable-next-line no-param-reassign
+//                     frame.filename = frame.filename.replace(distDir, 'app:///_next');
+//                     return frame;
+//                 },
+//             }),
+//             new Integrations.BrowserTracing(),
+//         ],
+//         environment: publicRuntimeConfig.appEnv,
+//         dsn: sentry.dsn[publicRuntimeConfig.appEnv],
+//         tracesSampleRate: 0.5,
+//     });
+// }
 
 class MyApp extends App {
     constructor(props) {
