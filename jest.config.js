@@ -139,7 +139,6 @@ module.exports = {
         '^@common_span': ['<rootDir>/src/commons/Span', '<rootDir>/core/commons/Span'],
         '^@common_skeleton': ['<rootDir>/src/commons/Skeleton', '<rootDir>/core/commons/Skeleton'],
         '^@common_scrolltotop': ['<rootDir>/src/commons/ScrollToTop', '<rootDir>/core/commons/ScrollToTop'],
-        '^@common_headermobile': ['<rootDir>/src/modules/theme/components/header/mobile', '<rootDir>/core/modules/theme/components/header/mobile'],
         '^@common_header': ['<rootDir>/src/modules/theme/components/header', '<rootDir>/core/modules/theme/components/header'],
         '^@common_restrictionPopup': [
             '<rootDir>/src/modules/theme/components/restrictionPopup',
@@ -160,10 +159,6 @@ module.exports = {
         '^@common_span/(.*)$': ['<rootDir>/src/commons/Span/$1', '<rootDir>/core/commons/Span/$1'],
         '^@common_skeleton/(.*)$': ['<rootDir>/src/commons/Skeleton/$1', '<rootDir>/core/commons/Skeleton/$1'],
         '^@common_scrolltotop/(.*)$': ['<rootDir>/src/commons/ScrollToTop/$1', '<rootDir>/core/commons/ScrollToTop/$1'],
-        '^@common_headermobile/(.*)$': [
-            '<rootDir>/src/modules/theme/components/header/mobile/$1',
-            '<rootDir>/core/modules/theme/components/header/mobile/$1',
-        ],
         '^@common_header/(.*)$': ['<rootDir>/src/modules/theme/components/header/$1', '<rootDir>/core/modules/theme/components/header/$1'],
         '^@common_restrictionPopup/(.*)$': [
             '<rootDir>/src/modules/theme/components/restrictionPopup/$1',

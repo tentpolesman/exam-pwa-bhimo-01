@@ -14,7 +14,7 @@ import { getAppEnv } from '@root/core/helpers/env';
 import { cmsPageVar, currencyVar, storeConfigVar } from '@root/core/services/graphql/cache';
 import { RewriteFrames } from '@sentry/integrations';
 import { Integrations } from '@sentry/tracing';
-import { storeConfig as ConfigSchema, getCategories, getVesMenu } from '@services/graphql/schema/config';
+import { storeConfig as ConfigSchema, getCategories } from '@services/graphql/schema/config';
 import { appWithTranslation } from 'next-i18next';
 // import { RewriteFrames } from '@sentry/integrations';
 // import { Integrations } from '@sentry/tracing';

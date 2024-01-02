@@ -3,7 +3,6 @@
 import React from 'react';
 import TagManager from 'react-gtm-module';
 import generateSchemaOrg from '@core_modules/product/helpers/schema.org';
-import Header from '@core_modules/product/pages/default/components/header';
 import Backdrop from '@common_backdrop';
 import Layout from '@layout';
 import Error from 'next/error';
@@ -284,7 +283,7 @@ const PageDetail = (props) => {
 
     if (isError) {
         return (
-            <Layout pageConfig={{}} CustomHeader={CustomHeader ? <CustomHeader /> : <Header />} {...props}>
+            <Layout pageConfig={{}} CustomHeader={CustomHeader ? <CustomHeader /> : <></>} {...props}>
                 <div className="product-detail-error">
                     {errorMessage}
                 </div>
@@ -294,7 +293,7 @@ const PageDetail = (props) => {
 
     if (isLoadingPDP) {
         return (
-            <Layout pageConfig={{}} CustomHeader={CustomHeader ? <CustomHeader /> : <Header />} {...props}>
+            <Layout pageConfig={{}} CustomHeader={CustomHeader ? <CustomHeader /> : <></>} {...props}>
                 <Backdrop open />
             </Layout>
         );
@@ -347,7 +346,7 @@ const PageDetail = (props) => {
         <Layout
             isShowChat={false}
             pageConfig={pageConfig || config}
-            CustomHeader={CustomHeader ? <CustomHeader /> : <Header />}
+            CustomHeader={CustomHeader ? <CustomHeader /> : <></>}
             data={data}
             isPdp
             {...props}

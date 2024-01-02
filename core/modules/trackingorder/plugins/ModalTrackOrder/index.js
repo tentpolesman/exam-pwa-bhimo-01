@@ -1,7 +1,6 @@
 /* eslint-disable operator-linebreak */
 /* eslint-disable react/jsx-wrap-multilines */
 
-import Header from '@common_headermobile';
 import Typography from '@common_typography';
 import ShipperView from '@core_modules/trackingorder/pages/default/components/shipper';
 import formatDate from '@helper_date';
@@ -164,18 +163,6 @@ const ModalResult = (props) => {
                 open={open}
                 onClose={() => setOpen(false)}
             >
-                <div className="dialog-title">
-                    <Header
-                        LeftComponent={{
-                            onClick: () => setOpen(false),
-                        }}
-                        pageConfig={{
-                            headerTitle: t('trackingorder:trackingInformation'),
-                            headerBackIcon: 'close',
-                            header: 'relative',
-                        }}
-                    />
-                </div>
                 <div className="dialog-content">{content()}</div>
             </Dialog>
         </>
