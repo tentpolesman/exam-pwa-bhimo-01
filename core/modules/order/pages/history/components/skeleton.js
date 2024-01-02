@@ -3,7 +3,7 @@ import cx from 'classnames';
 import Skeleton from '@common_skeleton';
 
 const SkeletonLoader = () => (
-    <div className={cx('pt-5 mobile:max-desktop:px-4')}>
+    <div className={cx('pt-5')}>
         <Skeleton
             width="100%"
             height={500}

@@ -14,7 +14,7 @@ const SettingPage = (props) => {
 
     return (
         <Layout {...props} title={t('customer:setting:newsletter')}>
-            <div className={cx('pt-5 mobile:max-desktop:px-4')}>
+            <div className={cx('pt-5')}>
                 {typeof customer.is_subscribed !== 'undefined' ? (
                     <Checkbox
                         label={t('customer:setting:newsletter_subscription')}

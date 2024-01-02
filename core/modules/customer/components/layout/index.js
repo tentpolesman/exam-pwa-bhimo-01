@@ -62,7 +62,7 @@ const Layout = (props) => {
         <>
             <div className="desktop:hidden">
                 <div className="grid grid-cols-1">
-                    <div className={cx('mobile:max-tablet:px-4')}>
+                    <div className={cx('')}>
                         <Accordion
                             label={<Typography className={cx('!text-lg', 'font-semibold', 'leading-7')}>{title || titlePage}</Typography>}
                             classLabel={cx('p-2')}
