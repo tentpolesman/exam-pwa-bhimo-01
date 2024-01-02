@@ -7,6 +7,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { BREAKPOINTS } from '@theme_vars';
 import Head from 'next/head';
 import cx from 'classnames';
+import NextImage from 'next/image';
 
 const gcd = (a, b) => ((b === 0) ? a : gcd(b, a % b));
 
@@ -36,6 +37,7 @@ const CustomImage = ({
     slickBanner = false,
     deviceType,
     preload = false,
+    useNextImage = true,
     ...other
 }) => {
     const enable = storeConfig && storeConfig.pwa && storeConfig.pwa.thumbor_enable;
@@ -176,6 +178,26 @@ const CustomImage = ({
         width: !deviceType?.isMobile ? width || null : widthMobile || null,
         height: !deviceType?.isMobile ? height || null : heightMobile || null,
     };
+
+    if (useNextImage) {
+        return (
+            <Container enable={useContainer} className={classContainer} style={styleContainer}>
+                <NextImage
+                    src={srcMobile ? imgSourceMobile : imgSource}
+                    data-pagespeed-no-defer={!lazy}
+                    style={styleImage}
+                    className={cx('img', className)}
+                    alt={alt}
+                    {...imgTagDimensions}
+                    onLoad={lazy ? onLoad : null}
+                    onError={lazy ? onError : null}
+                    unoptimized={enable}
+                    priority={preload}
+                    {...other}
+                />
+            </Container>
+        );
+    }
 
     return (
         <Container enable={useContainer} className={classContainer} style={styleContainer}>
