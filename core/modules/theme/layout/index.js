@@ -57,7 +57,7 @@ const font = localFont({
     variable: '--font-inter', // set the font css variable name, which we refer in tailwind.config.js
 });
 
-const Header = dynamic(() => import('@common_headerdesktop'), { ssr: true });
+const Header = dynamic(() => import('@common_header'), { ssr: true });
 const Toast = dynamic(() => import('@common_toast'), { ssr: false });
 const Backdrop = dynamic(() => import('@common_backdrop'), { ssr: false });
 const Dialog = dynamic(() => import('@common_dialog'), { ssr: false });
@@ -76,7 +76,7 @@ const Footer = dynamic(() => import('@common_footer'), { ssr: true });
 
 const Layout = (props) => {
     const {
-        dataVesMenu,
+        dataMenu,
         pageConfig = {},
         children,
         app_cookies,
@@ -575,7 +575,7 @@ const Layout = (props) => {
                         enablePopupInstallation={showPopup}
                         appName={appName}
                         installMessage={installMessage}
-                        dataVesMenu={dataVesMenu}
+                        dataMenu={dataMenu}
                         isHomepage={isHomepage}
                         deviceType={deviceType}
                         handleClosePromo={handleClosePromo}

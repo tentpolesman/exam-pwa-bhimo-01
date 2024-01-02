@@ -140,7 +140,7 @@ module.exports = {
         '^@common_skeleton': ['<rootDir>/src/commons/Skeleton', '<rootDir>/core/commons/Skeleton'],
         '^@common_scrolltotop': ['<rootDir>/src/commons/ScrollToTop', '<rootDir>/core/commons/ScrollToTop'],
         '^@common_headermobile': ['<rootDir>/src/modules/theme/components/header/mobile', '<rootDir>/core/modules/theme/components/header/mobile'],
-        '^@common_headerdesktop': ['<rootDir>/src/modules/theme/components/header/desktop', '<rootDir>/core/modules/theme/components/header/desktop'],
+        '^@common_header': ['<rootDir>/src/modules/theme/components/header', '<rootDir>/core/modules/theme/components/header'],
         '^@common_restrictionPopup': [
             '<rootDir>/src/modules/theme/components/restrictionPopup',
             '<rootDir>/core/modules/theme/components/restrictionPopup',
@@ -164,10 +164,7 @@ module.exports = {
             '<rootDir>/src/modules/theme/components/header/mobile/$1',
             '<rootDir>/core/modules/theme/components/header/mobile/$1',
         ],
-        '^@common_headerdesktop/(.*)$': [
-            '<rootDir>/src/modules/theme/components/header/desktop/$1',
-            '<rootDir>/core/modules/theme/components/header/desktop/$1',
-        ],
+        '^@common_header/(.*)$': ['<rootDir>/src/modules/theme/components/header/$1', '<rootDir>/core/modules/theme/components/header/$1'],
         '^@common_restrictionPopup/(.*)$': [
             '<rootDir>/src/modules/theme/components/restrictionPopup/$1',
             '<rootDir>/core/modules/theme/components/restrictionPopup/$1',

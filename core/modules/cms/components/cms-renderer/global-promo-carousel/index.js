@@ -9,6 +9,7 @@ import propTypes from 'prop-types';
 import React from 'react';
 
 import Button from '@common_button';
+import { BREAKPOINTS } from '@root/core/theme/vars';
 
 import ChevronLeftIcon from '@heroicons/react/20/solid/ChevronLeftIcon';
 import ChevronRightIcon from '@heroicons/react/20/solid/ChevronRightIcon';
@@ -133,7 +134,7 @@ const WidgetSliderCarousel = (props) => {
                             justify-content: center;
                         }
 
-                        @media (max-width: 768px) {
+                        @media (max-width: ${BREAKPOINTS.md - 1}px) {
                             .slider-container {
                                 height: auto;
                                 padding: 5px 10px;
