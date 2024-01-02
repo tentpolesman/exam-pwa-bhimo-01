@@ -90,9 +90,16 @@
   },
   "giftCard": {
     "notFound": "Anda tidak memiliki gift card",
+    "searchNotFound": "Kode gift card tidak ditemukan",
     "inputSearch": "Masukan kode gift card",
     "buttonSearch": "Cek sisa dan status",
-    "required": "Code tidak boleh kosong"
+    "required": "Kode tidak boleh kosong",
+    "labelResponse": {
+      "balance": "Sisa Saldo",
+      "initial_balance":"Saldo Awal",
+      "code": "Kode",
+      "expiration_date": "Tanggal Kadaluwarsa"
+    }
   },
   "haveAccount": "Jika sudah punya akun",
   "notHaveAccount": "Belum mempunyai akun ?",
