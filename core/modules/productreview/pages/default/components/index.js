@@ -7,12 +7,11 @@ import Show from '@common_show';
 import Typography from '@common_typography';
 import Select from '@common_forms/Select';
 import Pagination from '@common_pagination';
-import Button from '@common_button';
 import Link from 'next/link';
 import cx from 'classnames';
 import SkeletonProductReview from '@core_modules/productreview/pages/default/components/skeleton';
 import DetailProductReview from '@core_modules/productreview/pages/default/components/detail';
-import ExclamationTriangleIcon from '@heroicons/react/24/outline/ExclamationTriangleIcon';
+import AlertWithIcon from '@common_alertwithicon';
 
 const ProductReviewPage = (props) => {
     const {
@@ -89,30 +88,7 @@ const ProductReviewPage = (props) => {
                                     </Show>
                                     <Show when={!hasReview}>
                                         <td colSpan={5}>
-                                            <Button
-                                                icon={<ExclamationTriangleIcon />}
-                                                iconProps={{
-                                                    className: cx('!text-yellow-500'),
-                                                }}
-                                                iconPosition="left"
-                                                className={cx(
-                                                    'mt-4',
-                                                    'w-full',
-                                                    'bg-yellow-50',
-                                                    'hover:bg-yellow-50',
-                                                    'focus:bg-yellow-50',
-                                                    'active:bg-yellow-50',
-                                                    'hover:shadow-none',
-                                                    'focus:shadow-none',
-                                                    'active:shadow-none',
-                                                    'cursor-auto',
-                                                    'hover:cursor-auto',
-                                                    'focus:cursor-auto',
-                                                    'active:cursor-auto',
-                                                )}
-                                            >
-                                                <Typography className={cx('!text-yellow-600')}>{t('productreview:emptyMessage')}</Typography>
-                                            </Button>
+                                            <AlertWithIcon severity="warning">{t('productreview:emptyMessage')}</AlertWithIcon>
                                         </td>
                                     </Show>
                                 </Show>

@@ -96,6 +96,7 @@
             "@common_badgecounter": ["src/commons/BadgeCounter", "core/commons/BadgeCounter"],
             "@common_show": ["src/commons/Show", "core/commons/Show"],
             "@common_alert": ["src/commons/Alert", "core/commons/Alert"],
+            "@common_alertwithicon": ["src/commons/AlertWithIcon", "core/commons/AlertWithIcon"],
 
             "@common_button/*": ["src/commons/Button/*", "core/commons/Button/*"],
             "@common_buttonqty/*": ["src/commons/ButtonQty/*", "core/commons/ButtonQty/*"],

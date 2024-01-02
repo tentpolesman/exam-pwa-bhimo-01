@@ -6,8 +6,8 @@ import Loader from '@core_modules/customer/pages/giftcard/components/skeleton';
 import cx from 'classnames';
 import XMarkIcon from '@heroicons/react/24/solid/XMarkIcon';
 import formatDate from '@helper_date';
-import Alert from '@common_alert';
 import Show from '@common_show';
+import AlertWithIcon from '@common_alertwithicon';
 
 const DetailView = (props) => {
     const {
@@ -41,11 +41,11 @@ const DetailView = (props) => {
                             <Loader />
                         </Show>
                         <Show when={error}>
-                            <Alert className="m-15" severity="error">
+                            <AlertWithIcon className="m-15" severity="error">
                                 {error?.message?.includes('No such entity with giftcardCode')
                                     ? t('customer:giftCard:searchNotFound')
                                     : error?.message}
-                            </Alert>
+                            </AlertWithIcon>
                         </Show>
                         <Show when={data}>
                             <div className={cx('mt-[20px]', 'px-[10px]')}>

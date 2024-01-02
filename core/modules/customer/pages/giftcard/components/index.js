@@ -1,5 +1,4 @@
 import Typography from '@common_typography';
-import Alert from '@common_alert';
 import Show from '@common_show';
 import React from 'react';
 import Button from '@common_button';
@@ -11,6 +10,7 @@ import ModalDetail from '@core_modules/customer/pages/giftcard/components/detail
 import DetailView from '@core_modules/customer/pages/giftcard/components/detail/view';
 import Loader from '@core_modules/customer/pages/giftcard/components/skeleton';
 import cx from 'classnames';
+import AlertWithIcon from '@common_alertwithicon';
 
 const GiftCard = (props) => {
     const {
@@ -43,9 +43,9 @@ const GiftCard = (props) => {
         return (
             <Layout {...props}>
                 <div className={cx('giftcard-container', 'mt-[15px]')}>
-                    <Alert className="m-15" severity="error">
+                    <AlertWithIcon className="mb-[10px]" severity="error">
                         {debuging.originalError ? error.message.split(':')[1] : t('common:error:fetchError')}
-                    </Alert>
+                    </AlertWithIcon>
                 </div>
             </Layout>
         );
@@ -66,9 +66,9 @@ const GiftCard = (props) => {
                     currencyCache={currencyCache}
                 />
                 <Show when={noGiftCardData}>
-                    <Alert className="mb-[15px]" severity="warning">
+                    <AlertWithIcon className="mb-[10px]" severity="warning">
                         {t('customer:giftCard:notFound')}
-                    </Alert>
+                    </AlertWithIcon>
                 </Show>
                 <Show when={!noGiftCardData}>
                     <div className="flex flex-row w-max">
