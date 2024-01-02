@@ -14,7 +14,7 @@ import { BREAKPOINTS } from '@root/core/theme/vars';
 
 const TabletHeader = dynamic(() => import('@core_modules/theme/components/header/components/v1/adaptive/tablet'), { ssr: true });
 
-const ViewTopNavigation = (props) => {
+const HeaderV1 = (props) => {
     const { storeConfig, handleSearch, setValue, data, loading, t, isLogin, customer, handleLogout, deviceWidth, appName, installMessage, ...other } =
         props;
     const [showGlobalPromo, setShowGlobalPromo] = React.useState(false);
@@ -189,4 +189,4 @@ const ViewTopNavigation = (props) => {
     );
 };
 
-export default ViewTopNavigation;
+export default HeaderV1;

@@ -3,10 +3,10 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import dynamic from 'next/dynamic';
 
-const NavbarV1 = dynamic(() => import('@core_modules/theme/components/header/components/v1'));
-const NavbarV2 = dynamic(() => import('@core_modules/theme/components/header/components/v2'));
-const NavbarV3 = dynamic(() => import('@core_modules/theme/components/header/components/v3'));
-const NavbarV4 = dynamic(() => import('@core_modules/theme/components/header/components/v4'));
+const HeaderV1 = dynamic(() => import('@core_modules/theme/components/header/components/v1'));
+const HeaderV2 = dynamic(() => import('@core_modules/theme/components/header/components/v2'));
+const HeaderV3 = dynamic(() => import('@core_modules/theme/components/header/components/v3'));
+const HeaderV4 = dynamic(() => import('@core_modules/theme/components/header/components/v4'));
 
 const ViewTopNavigation = (props) => {
     const { storeConfig } = props;
@@ -14,16 +14,16 @@ const ViewTopNavigation = (props) => {
 
     if (storeConfig && storeConfig.pwa) {
         if (storeConfig.pwa.header_version === 'v1') {
-            content = <NavbarV1 {...props} />;
+            content = <HeaderV1 {...props} />;
         }
         if (storeConfig.pwa.header_version === 'v2') {
-            content = <NavbarV2 {...props} />;
+            content = <HeaderV2 {...props} />;
         }
         if (storeConfig.pwa.header_version === 'v3') {
-            content = <NavbarV3 {...props} />;
+            content = <HeaderV3 {...props} />;
         }
         if (storeConfig.pwa.header_version === 'v4') {
-            content = <NavbarV4 {...props} />;
+            content = <HeaderV4 {...props} />;
         }
     }
 
