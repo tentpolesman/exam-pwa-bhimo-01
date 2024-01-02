@@ -324,14 +324,8 @@ const Layout = (props) => {
     };
 
     const generateClasses = () => {
-        let classes = `${!isCms ? 'desktop:max-w-[1280px] desktop:px-10 tablet:max-w-[768px] tablet:px-6 mobile:px-4 my-0 mx-auto' : ''} ${
-            font.variable
-        } font-sans !font-pwa-default`;
-        if (showGlobalPromo) {
-            classes += ' mobile:max-tablet:mt-2 tablet:max-desktop:mt-[145px] desktop:mt-[196px]';
-        } else {
-            classes += ' mobile:max-tablet:mt-2 tablet:max-desktop:mt-[107px] desktop:mt-[158px]';
-        }
+        let classes = `${!isCms ? 'desktop:max-w-[1280px] desktop:px-10 tablet:max-w-[768px] tablet:px-6 mobile:px-4 my-0 mx-auto' : ''} ${font.variable} font-sans !font-pwa-default`;
+
         if (pageConfig.bottomNav && storeConfig?.pwa?.mobile_navigation === 'bottom_navigation' && storeConfig?.pwa?.enabler_footer_mobile) {
             classes += ' mb-[60px]';
         } else {
@@ -341,7 +335,7 @@ const Layout = (props) => {
         if (storeConfig?.pwa?.mobile_navigation === 'burger_menu' && !isHomepage && !isPdp) {
             classes += ' mt-[55px]';
         } else {
-            classes += ' mt-0';
+            classes += ' xs:mt-6 xl:mt-10';
         }
 
         if (isCheckout) {

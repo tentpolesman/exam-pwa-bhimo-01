@@ -23,7 +23,7 @@ import DevicePhoneMobileIcon from '@heroicons/react/24/solid/DevicePhoneMobileIc
 import { BREAKPOINTS } from '@root/core/theme/vars';
 
 const Autocomplete = dynamic(() => import('@core_modules/theme/components/header/components/autocomplete'), { ssr: false });
-const Menu = dynamic(() => import('@core_modules/theme/components/header/components/v1/mcategory'), { ssr: false });
+const Menu = dynamic(() => import('@core_modules/theme/components/header/components/v1/mcategory'), { ssr: true });
 const ProductCompareIcon = dynamic(() => import('@core_modules/catalog/plugins/ProductCompare'), { ssr: true });
 const ShoppingBagIcon = dynamic(() => import('@plugin_shoppingbag'), { ssr: true });
 const NotificationBell = dynamic(() => import('@plugin_notificationbell'), { ssr: true });
@@ -33,7 +33,6 @@ const UserInfo = dynamic(() => import('@core_modules/theme/components/header/com
 
 const DesktopHeader = (props) => {
     const { t, storeConfig, isLogin, customer, setValue, handleSearch, dataMenu, loadingMenu, handleLogout, deviceWidth } = props;
-
     const { modules } = config;
     // const adminId = Cookies.get('admin_id');
     const router = useRouter();
@@ -237,7 +236,7 @@ const DesktopHeader = (props) => {
             </div>
             <div className={cx('bottom-header', 'tablet:max-w-[768px]', 'desktop:max-w-[1280px]', 'm-[0_auto]', 'px-6', 'mobile:max-desktop:hidden')}>
                 <div className="flex flex-row menu-category">
-                    <div className="xs:basis-full menu-middle">{loadingMenu ? null : <Menu data={dataMenu} storeConfig={storeConfig} />}</div>
+                    <div className="xs:basis-full menu-middle">{loadingMenu ? <>qwepoiqpwoe</> : <Menu data={dataMenu} storeConfig={storeConfig} />}</div>
                 </div>
             </div>
         </div>

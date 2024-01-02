@@ -4,7 +4,6 @@ import Button from '@common_button';
 import TextField from '@common_forms/TextField';
 import ReCAPTCHA from 'react-google-recaptcha';
 import dynamic from 'next/dynamic';
-import cx from 'classnames';
 
 const Message = dynamic(() => import('@common_toast'), { ssr: false });
 
@@ -115,11 +114,7 @@ const ContactPage = (props) => {
         isCms,
     } = props;
     return (
-        <div
-            className={cx('tablet:max-desktop:mt-[145px]', 'mb-0', {
-                'mt-[10%] desktop:mt-[196px]': !isCms,
-            })}
-        >
+        <div>
             {/* eslint-disable-next-line react/no-danger */}
             {!isCms ? (
                 <Typography variant="h1" className="my-4">

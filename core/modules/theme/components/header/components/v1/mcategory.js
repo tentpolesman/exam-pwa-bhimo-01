@@ -16,7 +16,6 @@ const MenuChildren = dynamic(() => import('@common_header/components/v1/mcategor
 
 const Menu = (props) => {
     const { data, storeConfig } = props;
-
     // WIP : Custom Header Menu
     // const cmsPages = storeConfig && storeConfig.cms_page ? storeConfig.cms_page.split(',') : [];
     let menu = data?.categories?.items[0]?.children;
@@ -78,7 +77,6 @@ const Menu = (props) => {
                     if ((val.include_in_menu || storeConfig.pwa.ves_menu_enable) && val.name) {
                         const linkEl = useRef(null);
                         const megaMenuRef = useRef(null);
-                        const refLi = useRef(null);
 
                         let prefix = '';
 
@@ -95,7 +93,6 @@ const Menu = (props) => {
                                 key={idx}
                                 role="menuitem"
                                 id={`header-menuitem-${idx}`}
-                                ref={refLi}
                                 onMouseEnter={() => {
                                     if (megaMenuRef && val.dropdown_animation_in) {
                                         megaMenuRef.current.classList.add('animate__animated');
@@ -175,8 +172,7 @@ const Menu = (props) => {
 
                                 {val.children.length > 0 ? (
                                     <div
-                                        className={cx('mega-menu', 'grid', 'bg-neutral-white', 'shadow-md', 'grid-cols-1', 'rounded-lg')}
-                                        style={{ left: `${refLi.offsetLeft}px` }}
+                                        className={cx('mega-menu', 'grid', 'bg-neutral-white', 'shadow-md', 'grid-cols-1', 'rounded-lg', 'z-10')}
                                         aria-hidden="true"
                                         role="menu"
                                         ref={megaMenuRef}
@@ -312,6 +308,7 @@ const Menu = (props) => {
                         transition: all 0s ease 0s;
                         visibility: hidden;
                         margin-left: 0%;
+                        margin-top: 14px
                     }
                     li:hover > .mega-menu {
                         opacity: 1;
