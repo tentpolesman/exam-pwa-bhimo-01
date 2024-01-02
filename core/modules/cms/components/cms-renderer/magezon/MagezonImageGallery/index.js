@@ -4,12 +4,12 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable no-restricted-globals */
 
-import Image from '@common_image';
-import ArrowLeftIcon from '@material-ui/icons/ArrowLeft';
-import ArrowRightIcon from '@material-ui/icons/ArrowRight';
-import ZoomOutMapIcon from '@material-ui/icons/ZoomOutMap';
-import dynamic from 'next/dynamic';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
+import Image from '@common_image';
+import ArrowLeftIcon from '@heroicons/react/20/solid/ArrowLeftIcon';
+import ArrowRightIcon from '@heroicons/react/20/solid/ArrowRightIcon';
+import ArrowsPointingOutIcon from '@heroicons/react/20/solid/ArrowsPointingOutIcon';
+import dynamic from 'next/dynamic';
 import Slider from 'react-slick';
 
 const ImageElement = dynamic(import('@core_modules/cms/components/cms-renderer/magezon/MagezonImageGallery/ImageElement'), { ssr: false });
@@ -196,7 +196,7 @@ const MagezonImageGallery = (props) => {
                 <div className="mgz-img-gallery-container" ref={elementRef} onClick={clickNavigate}>
                     {allowfullscreen && (
                         <div className="mgz-img-gallery-zoom-btn" onClick={zoomHandler}>
-                            <ZoomOutMapIcon />
+                            <ArrowsPointingOutIcon />
                         </div>
                     )}
                     <Slider ref={(slider) => (sliderRef = slider)} {...settings}>
@@ -209,6 +209,7 @@ const MagezonImageGallery = (props) => {
                                 height={calculateHeight()}
                                 fit={fit}
                                 captions={captions}
+                                storeConfig={storeConfig}
                             />
                         ))}
                     </Slider>

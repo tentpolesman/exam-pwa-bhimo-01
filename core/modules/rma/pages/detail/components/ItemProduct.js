@@ -3,7 +3,6 @@ import { formatPrice } from '@helper_currency';
 import React from 'react';
 import { useTranslation } from 'next-i18next';
 import Image from '@common_image';
-import useStyles from '@core_modules/rma/pages/detail/components/styles';
 
 const ItemProduct = (props) => {
     const {
@@ -11,21 +10,20 @@ const ItemProduct = (props) => {
         currency = 'IDR', custom_fields, storeConfig = {},
     } = props;
     const { t } = useTranslation(['return']);
-    const styles = useStyles();
 
     let defaultWidth = storeConfig?.pwa?.image_product_width;
     let defaultHeight = storeConfig?.pwa?.image_product_height;
 
-    if (typeof defaultWidth === 'string') defaultWidth = parseInt(defaultWidth, 0);
-    if (typeof defaultHeight === 'string') defaultHeight = parseInt(defaultHeight, 0);
+    if (typeof defaultWidth === 'string') defaultWidth = parseInt(defaultWidth, 10);
+    if (typeof defaultHeight === 'string') defaultHeight = parseInt(defaultHeight, 10);
 
     return (
-        <div className="column">
-            <div className={styles.itemContainer}>
-                <div className={styles.productImgContainer}>
+        <div className="flex flex-col">
+            <div className="">
+                <div className="">
                     <Image
                         src={image_url}
-                        className={styles.productImg}
+                        className=""
                         alt={name}
                         width={defaultWidth}
                         height={defaultHeight}
@@ -33,10 +31,10 @@ const ItemProduct = (props) => {
                         storeConfig={storeConfig}
                     />
                 </div>
-                <div className={styles.detailItem}>
+                <div className="">
                     <Typography variant="span">{name}</Typography>
                     <Typography variant="span">{formatPrice(price_incl_tax, currency)}</Typography>
-                    <Typography variant="span" className={styles.textDetail}>
+                    <Typography variant="span" className="">
                         {t('common:title:qty')}
                         {' '}
                         :
@@ -45,7 +43,7 @@ const ItemProduct = (props) => {
                     </Typography>
                     {
                         custom_fields.map((field, indx) => (
-                            <Typography key={indx} variant="span" className={styles.textDetail}>
+                            <Typography key={indx} variant="span" className="">
                                 {field.field.frontend_labels[0].value}
                                 {' '}
                                 :

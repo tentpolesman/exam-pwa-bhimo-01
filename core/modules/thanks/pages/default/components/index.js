@@ -1,19 +1,20 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable eqeqeq */
+/* eslint-disable no-unused-vars */
 import Button from '@common_button';
 import Typography from '@common_typography';
 import Router from 'next/router';
-import { formatPrice } from '@helper_currency';
 import formatDate from '@helper_date';
-import IconArrow from '@material-ui/icons/ArrowForwardIos';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import classNames from 'classnames';
-import useStyles from '@core_modules/thanks/pages/default/components/style';
+import cx from 'classnames';
 import ModalXendit from '@core_modules/checkout/pages/default/components/ModalXendit';
-import { modules } from '@config';
 import dayjs from 'dayjs';
-import Alert from '@material-ui/lab/Alert';
+import { formatPrice } from '@helper_currency';
+import { modules } from '@config';
+import Alert from '@common/Alert';
+import IconArrow from '@heroicons/react/24/outline/ArrowRightIcon';
+import AccountCircleIcon from '@heroicons/react/24/outline/UserCircleIcon';
 
 const View = (props) => {
     const {
@@ -29,7 +30,6 @@ const View = (props) => {
         paymentInformation,
         currencyCache,
     } = props;
-    const styles = useStyles();
     const goToRegisterPage = () => {
         const registerLink = `/customer/account/create?order_id=${checkoutData.order_id}`;
         Router.push(registerLink);
@@ -39,7 +39,13 @@ const View = (props) => {
 
     const registerGuestEnabled = storeConfig.weltpixel_thankyoupage_create_account_enable;
     return (
-        <div className={classNames(styles.container, 'thanks-pages')}>
+        <div className={cx(
+            'thanks-pages',
+            'w-full flex flex-col items-center justify-center',
+            'px-20 py-8',
+            'bg-no-repeat bg-cover bg-center',
+        )}
+        >
             {
                 ordersFilter && paymentInformation && paymentInformation.OrderPaymentInformation
                 && paymentInformation.OrderPaymentInformation.invoice_url && (
@@ -57,25 +63,25 @@ const View = (props) => {
             }
             {
                 checkoutData?.infoMsg && (
-                    <div className={styles.divMessage}>
+                    <div className="">
                         <Alert className="m-15" severity="warning">{checkoutData.infoMsg}</Alert>
                     </div>
                 )
             }
-            <div className={styles.info}>
-                <Typography variant="h1" type="bold" letter="uppercase" className={styles.title}>
+            <div className="mt-5 mb-4 flex flex-col items-center justify-center w-full">
+                <Typography variant="h1" type="bold" className="uppercase text-2xl">
                     {t('thanks:thanks')}
                 </Typography>
-                <Typography variant="span" className="clear-margin-padding" letter="none">
+                <Typography className="">
                     {t('thanks:placeInfo')}
                 </Typography>
             </div>
-            <div className={styles.info}>
-                <Typography variant="span" className={styles.infoOrderId} letter="none">
+            <div className="mt-5 mb-4 flex flex-col items-center justify-center w-full gap-2">
+                <Typography className="text-center">
                     {`${t('thanks:yourOrderId')} : `}
-                    {isLogin && isLogin === 1 ? (
+                    {isLogin && isLogin == 1 ? (
                         <>
-                            <a onClick={handleDetailOrder} className={styles.link}>
+                            <a onClick={handleDetailOrder} className="cursor-pointer">
                                 <b>{checkoutData?.order_number}</b>
                             </a>
                         </>
@@ -83,25 +89,38 @@ const View = (props) => {
                         <b>{checkoutData?.order_number}</b>
                     )}
                 </Typography>
-                <Typography variant="span" className="clear-margin-padding" letter="none">
+                <Typography className="">
                     {`${t('thanks:amount')} : `}
-                    {ordersFilter && formatPrice(ordersFilter.data[0].detail[0].grand_total, storeConfig.base_currency_code || 'IDR', currencyCache)}
+                    <b>
+                        {ordersFilter && formatPrice(
+                            ordersFilter.data[0].detail[0].grand_total,
+                            storeConfig.base_currency_code || 'IDR', currencyCache,
+                        )}
+                    </b>
                 </Typography>
             </div>
             {ordersFilter && ordersFilter.data[0].detail[0].payment.method === 'banktransfer' ? (
-                <div className={styles.wrapperBank}>
+                <div className="mt-5 grid grid-cols-1 tablet:grid-cols-3 gap-4">
                     {bankList.map((item, index) => (
-                        <div key={index} className={styles.bankItem}>
-                            <Typography variant="span" letter="uppercase" className="clear-margin-padding">
+                        <div
+                            key={index}
+                            className={cx(
+                                'flex flex-col justify-center items-center',
+                                'w-full h-max p-6',
+                                'border-[0.5px] border-neutral-200',
+
+                            )}
+                        >
+                            <Typography letter="uppercase" className="">
                                 {item.bankname}
                             </Typography>
-                            <Typography variant="span" letter="uppercase" className="clear-margin-padding">
+                            <Typography letter="uppercase" className="">
                                 {t('thanks:bankNumber')}
                             </Typography>
-                            <Typography variant="span" type="bold" letter="uppercase" className="clear-margin-padding">
+                            <Typography type="bold" letter="uppercase" className="">
                                 {item.banknumber}
                             </Typography>
-                            <Typography variant="span" letter="uppercase" className="clear-margin-padding">
+                            <Typography letter="uppercase" className="">
                                 {`a.n. ${item.placeholder}`}
                             </Typography>
                         </div>
@@ -116,42 +135,42 @@ const View = (props) => {
                 )
                 && (modules.checkout.xendit.paymentPrefixCodeOnSuccess.includes(paymentInformation.OrderPaymentInformation.method_code)
                 || paymentInformation.OrderPaymentInformation.method_code === 'qr_codes') && (
-                <div className={styles.info}>
-                    <Typography variant="span" className={styles.dateOver} letter="none">
+                <div className="mt-5 mb-4 flex flex-col items-center justify-center w-full">
+                    <Typography className="mt-4">
                         {t('thanks:onboarding')}
                     </Typography>
-                    <Typography variant="span" className={styles.dateOver} letter="none">
+                    <Typography className="mt-4">
                         {t('thanks:paymentMethod')}
                         {' : '}
-                        <b className={styles.payment}>{paymentInformation.OrderPaymentInformation.method_title}</b>
+                        <b className="lowercase">{paymentInformation.OrderPaymentInformation.method_title}</b>
                     </Typography>
                     {
                         paymentInformation.OrderPaymentInformation.is_virtual_account
                                         && paymentInformation.OrderPaymentInformation.virtual_account
                             && (
-                                <Typography variant="span" className={styles.dateOver} letter="none">
+                                <Typography className="mt-4">
                                     {t('thanks:virtualAccount')}
                                     {' : '}
-                                    <b className={styles.payment}>{paymentInformation.OrderPaymentInformation.virtual_account}</b>
+                                    <b className="lowercase">{paymentInformation.OrderPaymentInformation.virtual_account}</b>
                                 </Typography>
                             )
                     }
                     {
                         paymentInformation.OrderPaymentInformation.xendit_retail_outlet
                             && paymentInformation.OrderPaymentInformation.payment_code && (
-                            <Typography variant="span" className={styles.dateOver} letter="none">
+                            <Typography className="mt-4">
                                 {t('thanks:paymentCode')}
                                 {' : '}
-                                <b className={styles.payment}>{paymentInformation.OrderPaymentInformation.payment_code}</b>
+                                <b className="lowercase">{paymentInformation.OrderPaymentInformation.payment_code}</b>
                             </Typography>
                         )
                     }
                     {
                         paymentInformation.OrderPaymentInformation.due_date && (
-                            <Typography variant="span" className={styles.dateOver} letter="none">
+                            <Typography className="mt-4">
                                 {t('thanks:duedate')}
                                 {' : '}
-                                <b className={styles.payment}>{paymentInformation.OrderPaymentInformation.due_date}</b>
+                                <b className="lowercase">{paymentInformation.OrderPaymentInformation.due_date}</b>
                             </Typography>
                         )
                     }
@@ -162,23 +181,23 @@ const View = (props) => {
                     }
                     <Button
                         onClick={() => setOpenXendit(!openXendit)}
-                        className={styles.btnConfirm}
                         align="center"
+                        variant="primary"
                     >
-                        <Typography size="10" type="bold" color="white" letter="uppercase" className={styles.txtConfirm}>
+                        <Typography variant="bd-3" color="text-neutral-white" className="uppercase">
                             {t('thanks:paynow')}
                         </Typography>
                     </Button>
                 </div>
             )}
             {ordersFilter && ordersFilter.data[0].detail[0].payment.method === 'banktransfer' ? (
-                <div className={styles.info}>
-                    <Typography variant="span" className={styles.dateOver} letter="none">
+                <div className="mt-5 mb-4 flex flex-col items-center justify-center w-full">
+                    <Typography className="mt-4">
                         {t('thanks:bankInfo').split('$')[0]}
-                        <b className={styles.payment}>{`${ordersFilter.data[0].detail[0].payment.payment_additional_info.method_title},`}</b>
+                        <b className="lowercase">{`${ordersFilter.data[0].detail[0].payment.payment_additional_info.method_title},`}</b>
                         {t('thanks:bankInfo').split('$')[1]}
                     </Typography>
-                    <Typography variant="span" className={styles.dateOver}>
+                    <Typography className="mt-4">
                         {ordersFilter
                             && paymentInformation
                             && paymentInformation.OrderPaymentInformation
@@ -191,20 +210,20 @@ const View = (props) => {
                     </Typography>
                 </div>
             ) : null}
-            <div className={classNames(styles.info, 'hidden-mobile')}>
+            <div className={cx('mt-5 mb-4 flex flex-col items-center justify-center w-full gap-2', 'hidden-mobile')}>
                 {ordersFilter && ordersFilter.data[0].detail[0].payment.method === 'banktransfer' ? (
                     <>
-                        <Button onClick={handleConfirmPayment} className={[styles.btnConfirmFirst].join(' ')} align="center">
-                            <Typography variant="span" letter="uppercase" color="white" type="bold">
+                        <Button onClick={handleConfirmPayment} variant="primary">
+                            <Typography letter="uppercase" color="white" type="bold">
                                 {t('thanks:paymentConfirmation')}
                             </Typography>
                         </Button>
                         <Button
                             onClick={handleCotinue}
-                            className={styles.btnConfirm}
-                            variant="text"
-                            align="center"
-                            endIcon={<IconArrow className={styles.btnConfirmIcon} />}
+                            variant="plain"
+                            icon={<IconArrow className="w-4 h-4" />}
+                            iconPosition="right"
+                            classNameText="!text-primary"
                         >
                             {t('thanks:continue')}
                         </Button>
@@ -212,19 +231,19 @@ const View = (props) => {
                 ) : (
                     <Button
                         onClick={handleCotinue}
-                        className={styles.btnConfirm}
-                        align="center"
-                        endIcon={<IconArrow className={styles.btnConfirmIcon} />}
+                        icon={<IconArrow className="w-4 h-4" />}
+                        iconPosition="right"
+                        variant="plain"
                     >
-                        <Typography size="10" type="bold" color="white" letter="uppercase" className={styles.txtConfirm}>
+                        <Typography varaint="bd-2" className="uppercase">
                             {t('thanks:continue')}
                         </Typography>
                     </Button>
                 )}
             </div>
             {registerGuestEnabled && !isLogin ? (
-                <div className={styles.wrapperRegister}>
-                    <AccountCircleIcon className={styles.btnAccountIcon} />
+                <div className="flex flex-col items-center justify-center mt-5">
+                    <AccountCircleIcon className="w-4 h-4" />
                     <Typography variant="p" color="black" align="center">
                         {t('thanks:registerInfo')}
                     </Typography>
@@ -236,33 +255,33 @@ const View = (props) => {
                                 ? ordersFilter.data[0].detail[0].customer_email : checkoutData.email
                         }
                     </Typography>
-                    <Button className={styles.generalButton} fullWidth={false} onClick={() => goToRegisterPage()} align="center">
-                        <Typography variant="span" type="bold" letter="uppercase">
+                    <Button variant="tertiary" className="mt-5" onClick={() => goToRegisterPage()}>
+                        <Typography type="bold" letter="uppercase">
                             {t('login:registerTitle')}
                         </Typography>
                     </Button>
                 </div>
             ) : null}
-            <div className={classNames(styles.footer, 'hidden-desktop')}>
+            <div className={cx('p-4 tablet:p-5', 'hidden-desktop')}>
                 {ordersFilter && ordersFilter.data[0].detail[0].payment.method === 'banktransfer' ? (
                     <>
-                        <Button onClick={handleConfirmPayment} className={[styles.btnConfirm, styles.btnConfirmFirst].join(' ')}>
+                        <Button onClick={handleConfirmPayment}>
                             <Typography variant="p" letter="uppercase" color="white" type="bold" align="center">
                                 {t('thanks:paymentConfirmation')}
                             </Typography>
                         </Button>
                         <Button
                             onClick={handleCotinue}
-                            className={styles.btnConfirm}
-                            variant="text"
-                            endIcon={<IconArrow className={styles.btnConfirmIcon} />}
+                            variant="tertiary"
+                            iconPosition="right"
+                            icon={<IconArrow className="w-4 h-4" />}
                         >
                             {t('thanks:continue')}
                         </Button>
                     </>
                 ) : (
-                    <Button onClick={handleCotinue} className={styles.btnConfirm} endIcon={<IconArrow className={styles.btnConfirmIcon} />}>
-                        <Typography size="10" type="bold" color="white" letter="uppercase" className={styles.txtConfirm}>
+                    <Button onClick={handleCotinue} iconPosition="right" icon={<IconArrow className="w-4 h-4" />}>
+                        <Typography size="10" type="bold" color="white" letter="uppercase">
                             {t('thanks:continue')}
                         </Typography>
                     </Button>

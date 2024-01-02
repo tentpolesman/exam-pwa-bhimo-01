@@ -4,18 +4,34 @@
 import React from 'react';
 import Slider from 'react-slick';
 import classNames from 'classnames';
-import LeftArrowIcon from '@material-ui/icons/ArrowBackIos';
-import RightArrowIcon from '@material-ui/icons/ArrowForwardIos';
-import useStyles from '@core_modules/cms/components/cms-renderer/magezon/MagezonCaraousel/components/style';
+import ChevronLeftIcon from '@heroicons/react/24/outline/ChevronLeftIcon';
+import ChevronRightIcon from '@heroicons/react/24/outline/ChevronRightIcon';
+import Button from '@common_button';
 
 const Caraousel = (props) => {
     const {
-        data = [], slideXs = 1, slideSm = 2, slideMd = 3, slideLg = 4, slideXl = 5,
-        infinite = false, Item, autoplay = false, autoplaySpeed = 3000, pauseOnHover = false,
-        rtl = false, centerMode = false, dots = false, slidesToScroll = 1, speed = 500,
-        adaptiveHeight = false, arrows = true, lazyLoad = false, initialSlide = 0, centerPadding = '50px',
+        data = [],
+        slideXs = 1,
+        slideSm = 2,
+        slideMd = 3,
+        slideLg = 4,
+        slideXl = 5,
+        infinite = false,
+        Item,
+        autoplay = false,
+        autoplaySpeed = 3000,
+        pauseOnHover = false,
+        rtl = false,
+        centerMode = false,
+        dots = false,
+        slidesToScroll = 1,
+        speed = 500,
+        adaptiveHeight = false,
+        arrows = true,
+        lazyLoad = false,
+        initialSlide = 0,
+        centerPadding = '50px',
     } = props;
-    const styles = useStyles();
     const [slickHeight, setSlickHeight] = React.useState(0);
     let sliderRef = React.createRef();
 
@@ -106,33 +122,46 @@ const Caraousel = (props) => {
     };
 
     return (
-        <div
-            className={classNames('carousel', styles.caraousel)}
-        >
-            <Slider ref={(slider) => sliderRef = slider} {...settings}>
-                {
-                    data && data.length > 0 && data.map((item, key) => (
-                        <Item key={key} item={item} />
-                    ))
-                }
+        <div className={classNames('carousel', 'w-full', 'h-full', 'relative', 'sm:h-auto', 'max-sm:max-w-[100vw]', 'group/mgz-carousel')}>
+            <Slider ref={(slider) => (sliderRef = slider)} {...settings}>
+                {data && data.length > 0 && data.map((item, key) => <Item key={key} item={item} />)}
             </Slider>
-            {
-                arrows ? (
-                    <>
-                        <div className={classNames('mgz-carousel-arrow mgz-carousel-arrow-left', styles.arrow)} onClick={handleLeftArrow}>
-                            <LeftArrowIcon fontSize="inherit" />
-                        </div>
-                        <div className={classNames('mgz-carousel-arrow mgz-carousel-arrow-right', styles.arrow)} onClick={handleRightArrow}>
-                            <RightArrowIcon fontSize="inherit" />
-                        </div>
-                    </>
-                ) : null
-            }
+            {arrows ? (
+                <>
+                    <div
+                        className={classNames(
+                            'container-scroll-arrow flex justify-between w-[100%]',
+                            'px-[5px]',
+                            'absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2',
+                            'opacity-0',
+                            'group-hover/mgz-carousel:opacity-100',
+                            'z-[1000]',
+                            'pointer-events-none',
+                            'order-0',
+                        )}
+                    >
+                        <Button
+                            variant="tertiary"
+                            className={classNames('container-scroll-arrow-left', '!px-[10px]', 'pointer-events-auto', 'shadow-md')}
+                            onClick={handleLeftArrow}
+                        >
+                            <ChevronLeftIcon className="w-6 h-6 text-primary" />
+                        </Button>
+                        <Button
+                            variant="tertiary"
+                            className={classNames('container-scroll-arrow-right', '!px-[10px]', 'pointer-events-auto', 'shadow-md')}
+                            onClick={handleRightArrow}
+                        >
+                            <ChevronRightIcon className="w-6 h-6 text-primary" />
+                        </Button>
+                    </div>
+                </>
+            ) : null}
             <style jsx>
                 {`
                     .carousel :global(.slick-list) {
                         height: ${slickHeight}px !important;
-                        transition: all .25s ease;
+                        transition: all 0.25s ease;
                     }
                 `}
             </style>

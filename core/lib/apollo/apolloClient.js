@@ -22,13 +22,19 @@ const uri = graphqlEndpoint[appEnv] ? graphqlEndpoint[appEnv] : graphqlEndpoint.
 
 const host = HOST[appEnv] ? HOST[appEnv] : HOST.dev;
 
-const uriInternal = `${host}/graphql`;
+const uriInternal = `${host}/api/graphql`;
 // handle if token expired
 const logoutLink = onError((err) => {
     const { graphQLErrors, networkError } = err;
-    if (networkError && typeof window !== 'undefined' && graphQLErrors && graphQLErrors.length > 0 && graphQLErrors[0].status > 500) {
+    const isErrorGQL = graphQLErrors && graphQLErrors.length > 0;
+    const message = isErrorGQL ? graphQLErrors[0].message : undefined;
+    if (networkError && typeof window !== 'undefined' && isErrorGQL && graphQLErrors[0].status > 500) {
         window.location.href = '/maintenance';
-    } else if (graphQLErrors && graphQLErrors[0] && graphQLErrors[0].status === 401 && typeof window !== 'undefined') {
+    } else if (
+        (isErrorGQL && graphQLErrors[0].status === 401 && typeof window !== 'undefined')
+        || message.includes('The request is allowed for logged in customer')
+        || message.includes("The current customer isn't authorized.")
+    ) {
         removeCartId();
         removeIsLoginFlagging();
         removeCookies('uid_product_compare');
@@ -62,11 +68,8 @@ const link = new RetryLink().split(
 export default function createApolloClient(initialState, ctx) {
     // The `ctx` (NextPageContext) will only be present on the server.
     // use it to extract auth headers (ctx.req) or similar.
-    let token = '';
     let store_code_storage = cookies.get('store_code_storage');
     if (ctx && ctx.req) {
-        token = ctx.req.session.token;
-
         if (typeof window === 'undefined') {
             store_code_storage = ctx.req.cookies.store_code_storage || store_code_storage;
         }
@@ -77,10 +80,6 @@ export default function createApolloClient(initialState, ctx) {
      */
     const middlewareHeader = new ApolloLink((operation, forward) => {
         const additionalHeader = {};
-
-        if (token && token !== '') {
-            additionalHeader.Authorization = token;
-        }
 
         if (storeCode !== '') {
             additionalHeader.store = storeCode;

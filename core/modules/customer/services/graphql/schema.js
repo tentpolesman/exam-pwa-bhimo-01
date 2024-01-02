@@ -156,7 +156,7 @@ export const getCustomerSettings = gql`
   }
 `;
 
-const productDetail = (config = {}) => `
+const productDetail = () => `
     id
     name
     sku
@@ -167,36 +167,6 @@ const productDetail = (config = {}) => `
     small_image{
       url
     }
-    ${config?.pwa?.label_weltpixel_enable ? `
-        weltpixel_labels {
-        categoryLabel {
-            css
-            customer_group
-            image
-            page_position
-            position
-            priority
-            text
-            text_padding
-            text_bg_color
-            text_font_size
-            text_font_color          
-        }
-        productLabel {
-            css
-            customer_group
-            image
-            page_position
-            position
-            priority
-            text
-            text_padding
-            text_bg_color
-            text_font_size
-            text_font_color  
-        }
-    }        
-    ` : ''}
     image{
       url
     }
@@ -317,6 +287,46 @@ export const getCustomer = (config = {}) => gql`
     }
     }
   }
+`;
+
+export const getCustomerAddress = gql`
+    {
+        customer {
+            id
+            firstname
+            lastname
+            email
+            is_subscribed
+            phonenumber
+            whatsapp_number
+            addresses {
+                id
+                city
+                default_billing
+                default_shipping
+                extension_attributes {
+                    attribute_code
+                    value
+                }
+                firstname
+                lastname
+                postcode
+                country_code
+                country {
+                    code
+                    label
+                }
+                region {
+                    region
+                    region_code
+                }
+                street
+                telephone
+                latitude
+                longitude
+            }
+        }
+    }
 `;
 
 export const removeToken = gql`

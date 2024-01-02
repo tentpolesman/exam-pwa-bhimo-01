@@ -1,58 +1,77 @@
-/* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable react/no-danger */
 /* eslint-disable no-undef */
 /* eslint-disable radix */
 /* eslint-disable no-plusplus */
-import Select from '@material-ui/core/Select';
-import FormControl from '@material-ui/core/FormControl';
-import { formatPrice } from '@helper_currency';
-import useStyles from '@plugin_optionitem/BundleOption/style';
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable guard-for-in */
 import React from 'react';
+import Select from '@common_forms/Select';
+import cx from 'classnames';
+import { formatPrice } from '@helper_currency';
 
-const Multiple = ({
+const SelectItem = ({
     data, options = [], selectOptions, currencyCache, dynamicPrice,
 }) => {
-    const styles = useStyles();
     const defaultValue = React.useMemo(() => {
-        const tempValue = [];
+        let tempValue = 0;
         if (options && options.length > 0) {
             for (let index = 0; index < options.length; index++) {
                 const element = options[index];
                 if (element.is_default) {
-                    tempValue.push(element.id);
+                    tempValue = element.id;
                 }
             }
         }
         return tempValue;
     }, [options]);
 
+    const selectedValue = React.useMemo(() => {
+        let selectedLabel = '';
+        const filterOption = options.filter((item) => item.id === defaultValue);
+        if (filterOption.length > 0) {
+            const option_item = filterOption[0];
+            selectedLabel = `${option_item.label} - ${formatPrice(dynamicPrice === false
+                ? option_item.price : option_item.product.price_range.minimum_price.final_price.value,
+            option_item.product.price_range.minimum_price.final_price.currency,
+            currencyCache)}`;
+        }
+        return selectedLabel;
+    }, [defaultValue]);
+
+    const listOptions = React.useMemo(() => {
+        const dataOptions = [];
+        if (options) {
+            for (const option_index in options) {
+                const option_item = options[option_index];
+                dataOptions.push({
+                    id: option_item.id,
+                    value: option_item.id,
+                    label: `${option_item.label} - ${formatPrice(dynamicPrice === false
+                        ? option_item.price : option_item.product.price_range.minimum_price.final_price.value,
+                    option_item.product.price_range.minimum_price.final_price.currency,
+                    currencyCache)}`,
+                });
+            }
+        }
+        return dataOptions;
+    }, [options]);
+
     return (
-        <FormControl className={styles.selectItem}>
+        <div className={cx('cutomize-option-select-multiple')}>
             <Select
-                multiple
-                native
-                value={defaultValue}
-                onChange={(e) => selectOptions(data, parseInt(e.target.value))}
-                inputProps={{
-                    id: 'select-multiple-native',
+                id="demo-simple-select-multiple"
+                value={selectedValue}
+                options={listOptions}
+                optionProps={{
+                    className: 'absolute',
                 }}
-            >
-                {options.map((val, idx) => (
-                    <option
-                        key={idx}
-                        value={val.id}
-                        dangerouslySetInnerHTML={{
-                            __html: `${val.label} + <b>${formatPrice(dynamicPrice === false
-                                ? val.price
-                                : val.product.price_range.minimum_price.final_price.value,
-                            val.product.price_range.minimum_price.final_price.currency, currencyCache)}</b>`,
-                        }}
-                    />
-                ))}
-            </Select>
-        </FormControl>
+                onChange={(value) => {
+                    selectOptions(data, parseInt(value));
+                }}
+            />
+        </div>
     );
 };
 
-export default Multiple;
+export default SelectItem;

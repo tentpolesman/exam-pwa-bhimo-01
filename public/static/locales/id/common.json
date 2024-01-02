@@ -1,14 +1,15 @@
 {
     "variant": "Varian",
     "home": {
-        "logoName": "LOGO"
+        "logoName": "LOGO",
+        "title": "Beranda"
     },
     "product": {
         "title_product": "Nama Produk",
         "name": "Produk"
     },
     "search": {
-        "title": "Cari",
+        "title": "Apa yang anda cari?",
         "mainTitle": "Koleksi terbaru",
         "backTitle": "kembali ke produk",
         "location": "Cari Lokasi",
@@ -39,17 +40,22 @@
         "viewandedit": "Lihat dan Ubah",
         "addToCart": "Tambah ke Keranjang",
         "allowCookies": "Ijinkan Cookie",
-        "simulateQrCode": "Sumulasi Pembayaran Qrcode"
+        "simulateQrCode": "Sumulasi Pembayaran Qrcode",
+        "submitReview": "Kirim Ulasan",
+        "viewItem": "Lihat Item",
+        "apply": "Terapkan",
+        "remove": "Hapus"
     },
     "cart": {
         "myCart": "Cart Saya",
-        "cardTotal": "Cart Subtotal",
+        "cardTotal": "Subtotal",
         "deleteSuccess": "Hapus item cart berhasil",
         "deleteFailed": "Hapus item cart gagal",
         "updateSuccess": "Update item cart berhasil",
         "updateFailed": "Update item cart gagal",
         "emptyCart": "ANDA TIDAK MEMILIKI ITEM DI KERANJANG BELANJA ANDA.",
         "oos": "Stok habis",
+        "inStock": "Stok tersedia",
         "cartError": "Ada kesalahan di keranjang anda, silahkan bersihkan dan ulangi kembali"
     },
     "subtotal": "Subtotal",
@@ -63,6 +69,8 @@
         "lastName": "Nama Belakang",
         "phoneNumber": "Nomor Telepon",
         "gender": "Jenis Kelamin",
+        "emailAddress": "Alamat Email",
+        "email": "Email",
         "dob": "Tanggal Lahir",
         "confirm": "Konfirmasi Password",
         "currentPasword": "Password Lama",
@@ -75,7 +83,13 @@
         "select": "Pilih Salah Satu",
         "addressDetail": "Detil Alamat",
         "mapError": "Tidak dapat memuat peta. Silahkan periksa koneksi internet anda.",
-        "mapLoading": "Memuat peta..."
+        "mapLoading": "Memuat peta...",
+        "maxChar": "Maksimal {{length}} Karakter"
+    },
+    "placeholder": {
+        "email": "contoh: user@gmail.com",
+        "firstName": "contoh: John Doe",
+        "lastName": "contoh: Doe"
     },
     "title": {
         "qty": "Jumlah",
@@ -86,12 +100,12 @@
         "search": "Pencarian ...",
         "brand": "Brand",
         "category": "Kategory",
-        "summary": "Ringkasan",
+        "summary": "Ringkasan order",
         "price": "Harga",
         "shortQty": "Jml",
         "action": "Aksi",
         "extraFee": "Biaya Tambahan",
-        "relatedProduct": "Relasi Produk",
+        "relatedProduct": "Anda mungkin juga menyukainya",
         "sale": "Diskon",
         "new": "Baru",
         "free": "Free",
@@ -103,12 +117,13 @@
         "fileReject": "Tidak dapat mengupload file harus ber type ",
         "fetchError": "Terjadi kesalahan. Silakan coba lagi nanti",
         "browser": "Browser tidak didukung",
-        "videoNotSupported": "Browser anda tidak mendukung elemen video."
+        "videoNotSupported": "Browser anda tidak mendukung elemen video.",
+        "captcha": "Gagal verifikasi recaptcha, Silakan coba lagi."
     },
     "fileUpload": {
         "reject": "Tidak dapat mengupload, file harus ber type  ",
-        "dragActive": "Taruh file kesini ...",
-        "dragNonActive": "Tarik dan taruh file kesini, atau klik untuk pilih file",
+        "dragActive": "Tarik file kesini",
+        "dragNonActive": "Pilih atau tarik file disini",
         "maxSizeImage": "Maksimal ukuran gambar "
     },
     "menu": {
@@ -132,7 +147,8 @@
         "feedSuccess": "Produk berhasil di tambahkan ke wishlist",
         "feedFailed": "Tambah wishlist gagal",
         "browserError": "Silahkan ganti browser atau cek setingan cookies, javascript atau lainnya",
-        "restrictionCookies": "Kami menggunakan cookie untuk membuat pengalaman Anda lebih baik. Untuk mematuhi arahan e-Privacy yang baru, kami perlu meminta persetujuan Anda untuk menyetel cookie. Pelajari lebih lanjut."
+        "restrictionCookies": "Kami menggunakan cookie untuk membuat pengalaman Anda lebih baik. Untuk mematuhi arahan e-Privacy yang baru, kami perlu meminta persetujuan Anda untuk menyetel cookie. Pelajari lebih lanjut.",
+        "selectOptionFailed": "Silahkan pilih opsi produk terlebih dahulu"
     },
     "newsletter": {
         "title": "DAFTAR NEWSLETTER",
@@ -185,5 +201,48 @@
         "storeCredit": "Kredit toko",
         "rewardPoint": "Poin reward",
         "giftCard": "Gift card (hadiah)"
+    },
+    "label": {
+        "invalidPrice": "Harga tidak valid",
+        "seeMore": "Lihat Selebihnya",
+        "seeLess": "Lihat Sedikitnya",
+        "chooseFile": "Pilih File",
+        "pleaseWait": "Mohon Menunggu",
+        "addToWishlist": "Tambahkan Favorit",
+        "addToCompare": "Tambahkan Komparasi",
+        "allItems": "Semua Barang",
+        "egJohnDoe": "Contoh: John Doe",
+        "addReviewTitle": "Masukkan Judul Ulasan",
+        "addReview": "Masukkan Ulasan",
+        "writeReview": "Tulis Ulasan",
+        "detail": "Detail",
+        "moreInfo": "Info Selebihnya",
+        "shareToYourFriend": "Bagian kepada teman dan keluarga Anda!",
+        "showMore": "Lihat Selengkapnya",
+        "showLess": "Lihat Sedikitnya",
+        "show":"Lihat",
+        "items": "Barang",
+        "data": "Data",
+        "action": "Aksi",
+        "selectProduct": "Pilih Produk",
+        "preview": "Pratinjau",
+        "giftCard": "Kartu Hadiah",
+        "giftCardCode": "Kode Kartu Hadiah",
+        "to": "Kepada",
+        "from": "Dari",
+        "value": "Nilai",
+        "shopNow": "Belanja Sekarang",
+        "applyShopNow": "Terapkan di halaman keranjang belanja.",
+        "customize": "Penyesuaian",
+        "trailer": "Trailer",
+        "viewSample": "Lihat Contoh",
+        "loading": "Memuat",
+        "all": "Semua",
+        "total": "Total",
+        "remove": "Hapus",
+        "apply": "Terapkan"
+    },
+    "cms": {
+        "unableToRender": "Gagal menampilkan konten"
     }
 }

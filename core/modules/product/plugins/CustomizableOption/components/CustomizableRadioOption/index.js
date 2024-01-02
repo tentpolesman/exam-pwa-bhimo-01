@@ -1,10 +1,11 @@
 /* eslint-disable no-underscore-dangle */
 import React, { useState, useMemo } from 'react';
+import getPrice from '@core_modules/product/helpers/getPrice';
+import View from '@plugin_customizableitem/components/CustomizableRadioOption/view';
+import Typography from '@common_typography';
 import { useQuery } from '@apollo/client';
 import { formatPrice } from '@helpers/currency';
 import { useTranslation } from 'next-i18next';
-import getPrice from '@core_modules/product/helpers/getPrice';
-import View from '@plugin_customizableitem/components/CustomizableRadioOption/view';
 import { getCustomizableRadioOption } from '@core_modules/product/services/graphql/customizableSchema';
 
 const CustomizableCheckboxOption = ({
@@ -88,6 +89,7 @@ const CustomizableCheckboxOption = ({
                     }
                     return {
                         ...item,
+                        id: option[0].option_type_id,
                         option_id: option[0].option_id,
                         label: `${item.title} + ${formatPrice(price)}`,
                         value: JSON.stringify(item.option_type_id),
@@ -108,8 +110,8 @@ const CustomizableCheckboxOption = ({
 
     let error = '';
     useMemo(() => {
-        if (options.option_id && errorCustomizableOptions.length > 0) {
-            const findError = errorCustomizableOptions.filter((op) => op.option_id === options.option_id);
+        if (options.option_id && errorCustomizableOptions?.length > 0) {
+            const findError = errorCustomizableOptions?.filter((op) => op.option_id === options.option_id);
             if (findError && findError.length > 0) {
                 error = t('product:validate:fieldRequired');
             }
@@ -117,7 +119,7 @@ const CustomizableCheckboxOption = ({
     }, [options, errorCustomizableOptions]);
 
     if (loading || !data) {
-        return <p>Loading...</p>;
+        return <Typography>{`${t('common:label:loading')}...`}</Typography>;
     }
 
     return (

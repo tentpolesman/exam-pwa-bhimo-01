@@ -3,33 +3,14 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable eqeqeq */
+/* eslint-disable no-unused-vars */
 import Button from '@common_button';
 import Typography from '@common_typography';
-
-import useStyles from '@core_modules/thanks/pages/default/components/style';
-import Paper from '@material-ui/core/Paper';
-import { withStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import IconArrow from '@material-ui/icons/ArrowForwardIos';
-import { GRAY_PRIMARY } from '@theme_color';
-import classNames from 'classnames';
+import cx from 'classnames';
 import Link from 'next/link';
 import propTypes from 'prop-types';
-
-const StyledTableCell = withStyles((theme) => ({
-    head: {
-        backgroundColor: GRAY_PRIMARY,
-        color: theme.palette.common.black,
-    },
-    body: {
-        fontSize: 14,
-    },
-}))(TableCell);
+import IconArrow from '@heroicons/react/24/outline/ArrowRightIcon';
 
 const ViewThanksMultiSeller = (props) => {
     const {
@@ -39,58 +20,62 @@ const ViewThanksMultiSeller = (props) => {
         customerOrder,
     } = props;
 
-    const styles = useStyles();
-
     return (
-        <div className={classNames(styles.container, 'thanks-pages')}>
-            <div className={styles.info}>
-                <Typography variant="h1" type="bold" letter="uppercase" className={styles.title}>
+        <div className={cx(
+            'thanks-pages',
+            'w-full flex flex-col items-center justify-center',
+            'px-20 py-8',
+            'bg-no-repeat bg-cover bg-center',
+        )}
+        >
+            <div className="mt-5 mb-4 flex flex-col items-center justify-center w-full">
+                <Typography variant="h1" className="uppercase">
                     {t('thanks:thanks')}
                 </Typography>
-                <Typography variant="span" className="clear-margin-padding" letter="none">
+                <Typography variant="span">
                     {t('thanks:placeInfo')}
                 </Typography>
             </div>
-            <TableContainer component={Paper} className={styles.table}>
-                <Table aria-label="customized table">
-                    <TableHead>
-                        <TableRow>
-                            <StyledTableCell>{`${t('thanks:seller')}`}</StyledTableCell>
-                            <StyledTableCell align="right">Order ID</StyledTableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {customerOrder
+            <table class="table-auto my-5">
+                <thead>
+                    <tr>
+                        <th>{`${t('thanks:seller')}`}</th>
+                        <th>Order ID</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {customerOrder
                             && customerOrder.length > 0
                             && customerOrder.map((item, key) => (
-                                <TableRow key={key}>
-                                    <StyledTableCell component="th" scope="row">
+                                <tr key={key}>
+                                    <td>
                                         {item.seller_name && `${item.seller_name}`}
                                         {item.seller_city && ` - ${item.seller_city}`}
-                                    </StyledTableCell>
-                                    <StyledTableCell align="right">
-                                        {isLogin && isLogin === 1 ? (
-                                            (<Link href={`/sales/order/view/order_id/${item?.order_number}`} passhref>
+                                    </td>
+                                    <td align="right">
+                                        {isLogin && isLogin == 1 ? (
+                                            (
+                                                <Link href={`/sales/order/view/order_id/${item?.order_number}`} passhref>
 
-                                                <b>{`#${item?.order_number}`}</b>
+                                                    <b>{`#${item?.order_number}`}</b>
 
-                                            </Link>)
+                                                </Link>
+                                            )
                                         ) : (
                                             <b>{`#${item?.order_number}`}</b>
                                         )}
-                                    </StyledTableCell>
-                                </TableRow>
+                                    </td>
+                                </tr>
                             ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+                </tbody>
+            </table>
             <Link href="/sales/order/history" passHref legacyBehavior>
-                <Typography size="10" type="bold" color="primary" letter="uppercase" className={styles.txtConfirmMultiseller}>
+                <Typography variant="bd-3" color="text-primary" className="uppercase">
                     {t('thanks:orderInfo')}
                 </Typography>
             </Link>
-            <Button onClick={handleContinue} className={styles.btnConfirmMultiseller} endIcon={<IconArrow className={styles.btnConfirmIcon} />}>
-                <Typography size="10" type="bold" color="white" letter="uppercase" className={styles.txtConfirm}>
+            <Button onClick={handleContinue} endIcon={<IconArrow className="w-4 h-4" />}>
+                <Typography variant="bd-3" color="text-neutral-white" className="uppercase">
                     {t('thanks:continue')}
                 </Typography>
             </Button>

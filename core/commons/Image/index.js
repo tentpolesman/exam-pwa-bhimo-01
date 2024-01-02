@@ -6,10 +6,10 @@ import { getHost, getHostProd } from '@helpers/config';
 import React, { useEffect, useState, useCallback } from 'react';
 import { BREAKPOINTS } from '@theme_vars';
 import Head from 'next/head';
+import cx from 'classnames';
+import NextImage from 'next/image';
 
-function gcd(a, b) {
-    return (b === 0) ? a : gcd(b, a % b);
-}
+const gcd = (a, b) => ((b === 0) ? a : gcd(b, a % b));
 
 const Container = ({
     children, enable, className, style,
@@ -30,16 +30,17 @@ const CustomImage = ({
     styleContainer: initStyleContainer = {},
     className = '',
     alt = 'Image',
-    quality,
+    quality = 80,
     // style = {},
     lazy = true,
     storeConfig = {},
     slickBanner = false,
     deviceType,
     preload = false,
+    useNextImage = true,
+    unoptimized = true,
     ...other
 }) => {
-    // console.log('deviceType', deviceType);
     const enable = storeConfig && storeConfig.pwa && storeConfig.pwa.thumbor_enable;
     const useHttpsOrHttp = storeConfig && storeConfig.pwa && storeConfig.pwa.thumbor_https_http;
     const thumborUrl = storeConfig && storeConfig.pwa && storeConfig.pwa.thumbor_url;
@@ -70,8 +71,10 @@ const CustomImage = ({
             draftHeightMobile *= 3;
         }
     } else {
-        // if dimension is not set, generate default draft with dimension width 5px, auto height
-        draftWidthMobile = 5;
+        // if dimension is not set, generate default draft with dimension width 3px, auto height
+        draftWidth = 3;
+        draftHeight = 0;
+        draftWidthMobile = 3;
         draftHeightMobile = 0;
     }
     const draft = generateThumborUrl(src, draftWidth, draftHeight, enable, useHttpsOrHttp, thumborUrl, 70, 'full-fit-in', 70);
@@ -116,6 +119,7 @@ const CustomImage = ({
 
     const onLoad = useCallback((event) => {
         event.target.classList.add('loaded');
+        event.target.classList.remove('has-error');
     }, []);
 
     const onError = useCallback((event) => {
@@ -176,6 +180,45 @@ const CustomImage = ({
         height: !deviceType?.isMobile ? height || null : heightMobile || null,
     };
 
+    if (useNextImage) {
+        return (
+            <Container enable={useContainer} className={classContainer} style={styleContainer}>
+                <picture>
+                    { srcMobile ? (
+                        <>
+                            <source srcSet={imgSourceMobile} media={`(max-width: ${BREAKPOINTS.sm - 1}px)`} type="image/webp" />
+                            <source
+                                srcSet={getImageFallbackUrl(imgSourceMobile)}
+                                media={`(max-width: ${BREAKPOINTS.sm - 1}px)`}
+                                type="image/jpeg"
+                            />
+                            <source srcSet={imgSource} media={`(min-width: ${BREAKPOINTS.sm}px)`} type="image/webp" />
+                            <source srcSet={getImageFallbackUrl(imgSource)} media={`(min-width: ${BREAKPOINTS.sm}px)`} type="image/jpeg" />
+                        </>
+                    ) : (
+                        <>
+                            <source srcSet={imgSource} type="image/webp" />
+                            <source srcSet={getImageFallbackUrl(imgSource)} type="image/jpeg" />
+                        </>
+                    )}
+                    <NextImage
+                        src={srcMobile ? imgSourceMobile : imgSource}
+                        data-pagespeed-no-defer={!lazy}
+                        style={styleImage}
+                        className={cx('img', className)}
+                        alt={alt}
+                        {...imgTagDimensions}
+                        onLoad={lazy ? onLoad : null}
+                        onError={lazy ? onError : null}
+                        unoptimized={unoptimized}
+                        priority={preload}
+                        {...other}
+                    />
+                </picture>
+            </Container>
+        );
+    }
+
     return (
         <Container enable={useContainer} className={classContainer} style={styleContainer}>
             {
@@ -207,8 +250,8 @@ const CustomImage = ({
                 <img
                     data-pagespeed-no-defer={!lazy}
                     style={styleImage}
-                    className={`img ${className}`}
-                    src={getImageFallbackUrl(imgSource)}
+                    className={cx('img', className)}
+                    src={imgSource}
                     alt={alt}
                     // width={width !== 0 && desktop ? width : widthMobile}
                     // height={height !== 0 && desktop ? height : heightMobile}

@@ -1,9 +1,11 @@
 import { withTranslation } from 'next-i18next';
 import { withApollo } from '@lib_apollo';
+import dynamic from 'next/dynamic';
 
-import Content from '@core_modules/productreview/pages/default/components';
-import Core from '@core_modules/productreview/pages/default/core';
+const Core = dynamic(() => import('@core_modules/productreview/pages/default/core'), { ssr: false });
+const Content = dynamic(() => import('@core_modules/productreview/pages/default/components'), { ssr: false });
+const ErrorView = dynamic(() => import('@core_modules/productreview/pages/default/components/error'), { ssr: false });
 
-const MyProductReview = (props) => <Core {...props} Content={Content} />;
+const MyProductReview = (props) => <Core {...props} Content={Content} ErrorView={ErrorView} />;
 
 export default withApollo({ ssr: true })(withTranslation()(MyProductReview));

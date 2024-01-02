@@ -1,35 +1,35 @@
-/* eslint-disable no-undef */
 /* eslint-disable no-nested-ternary */
-import TextField from '@common_textfield';
+// import TextField from '@common_textfield';
+import TextField from '@common_forms/TextField';
 import Typography from '@common_typography';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import IconButton from '@material-ui/core/IconButton';
-import Visibility from '@material-ui/icons/Visibility';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
-import classNames from 'classnames';
+import { passwordStrength, storeConfigNameCookie } from '@config';
+import cx from 'classnames';
 import Cookies from 'js-cookie';
-import { storeConfigNameCookie, passwordStrength } from '@config';
-import useStyles from '@common_forms/Password/style';
+import { useState } from 'react';
+import EyeIcon from '@heroicons/react/24/outline/EyeIcon';
+import EyeSlashIcon from '@heroicons/react/24/outline/EyeSlashIcon';
+import Show from '@common_show';
 
-const PasswordField = ({
-    label = 'Password',
-    value = '',
-    onChange = () => {},
-    showPasswordMeter = false,
-    showVisible = false,
-    error = false,
-    errorMessage = '',
-    ...other
-}) => {
-    const styles = useStyles();
-    const [show, setShow] = React.useState(false);
-    const [errorPaswd, setErrorPasswd] = React.useState({
+const Password = (props) => {
+    const {
+        label = 'Password',
+        value = '',
+        onChange = () => {},
+        showPasswordMeter = false,
+        showVisible = false,
+        error = false,
+        errorMessage = '',
+        classLabel = {},
+        placeholder = '********',
+        absolute = true,
+        hintClassName = '',
+        required = false,
+        ...restProps
+    } = props;
+    const [show, setShow] = useState(false);
+    const [errorPaswd, setErrorPasswd] = useState({
         status: 'No Password',
     });
-
-    const handleMouseDownPassword = (event) => {
-        event.preventDefault();
-    };
 
     let { numberOfRequiredClass, minValue } = passwordStrength;
 
@@ -54,85 +54,55 @@ const PasswordField = ({
     };
 
     return (
-        <TextField
-            label={label}
-            type={show ? 'text' : 'password'}
-            value={value}
-            onChange={handleChange}
-            error={error}
-            errorMessage={errorMessage}
-            footer={
-                showPasswordMeter && (
-                    <>
-                        <div className={styles.passwordStrength}>
-                            <Typography
-                                variant="p"
-                                type="semiBold"
-                                className={styles.txtPasswdStr}
-                            >
-                                Password Strength:
-                                {' '}
-                                {errorPaswd.status}
-                            </Typography>
-                            <div
-                                className={classNames(
-                                    styles.passwdStrPrgsBar,
-                                    errorPaswd.status.toLocaleLowerCase()
-                                        === 'no password'
-                                        ? styles.zeroBar
-                                        : errorPaswd.status.toLocaleLowerCase()
-                                          === 'weak'
-                                            ? styles.per3Bar
-                                            : errorPaswd.status.toLocaleLowerCase()
-                                          === 'medium'
-                                                ? styles.halfBar
-                                                : errorPaswd.status.toLocaleLowerCase()
-                                          === 'strong'
-                                                    ? styles.per7
-                                                    : styles.full,
-                                )}
-                            />
-                            <div
-                                className={classNames(
-                                    styles.passwdStrPrgsCtr,
-                                    errorPaswd.status.toLocaleLowerCase()
-                                        === 'no password'
-                                        ? styles.full
-                                        : errorPaswd.status.toLocaleLowerCase()
-                                          === 'weak'
-                                            ? styles.per7
-                                            : errorPaswd.status.toLocaleLowerCase()
-                                          === 'medium'
-                                                ? styles.half
-                                                : errorPaswd.status.toLocaleLowerCase()
-                                          === 'strong'
-                                                    ? styles.per3
-                                                    : styles.zero,
-                                )}
-                            />
-                        </div>
-                        <Typography variant="p" type="semiBold" color="red">
-                            {errorPaswd.message || ''}
-                        </Typography>
-                    </>
-                )
-            }
-            endAdornment={
-                showVisible && (
-                    <InputAdornment position="end">
-                        <IconButton
-                            aria-label="toggle password visibility"
-                            onClick={() => setShow(!show)}
-                            onMouseDown={handleMouseDownPassword}
+        <div className="flex flex-col w-[320px]" {...restProps}>
+            {label ? (
+                <Typography variant="bd-2" className={cx('uppercase', classLabel)}>
+                    {label.replace(/_/g, ' ')}
+
+                    <Show when={required}>
+                        <span className={cx('text-red-600')}> *</span>
+                    </Show>
+                </Typography>
+            ) : null}
+            <TextField
+                className="password-field mt-2 w-full"
+                type={show ? 'text' : 'password'}
+                rightIcon={showVisible && show ? <EyeIcon /> : showVisible ? <EyeSlashIcon /> : <></>}
+                rightIconProps={{ className: showVisible ? 'cursor-pointer' : '', onClick: () => setShow(!show) }}
+                hintProps={{
+                    displayHintText: error,
+                    hintType: error ? 'error' : '',
+                    hintText: errorMessage,
+                    className: hintClassName,
+                }}
+                value={value}
+                onChange={handleChange}
+                placeholder={placeholder}
+                absolute={absolute}
+            />
+            {showPasswordMeter && (
+                <>
+                    <div>
+                        <div
+                            className={cx('px-4 py-[10px] flex items-center', {
+                                '!bg-neutral-100': errorPaswd.status.toLocaleLowerCase() === 'no password',
+                                'bg-red-50': errorPaswd.status.toLocaleLowerCase() === 'weak',
+                                'bg-yellow': errorPaswd.status.toLocaleLowerCase() === 'medium',
+                                'bg-green-100': errorPaswd.status.toLocaleLowerCase().indexOf('strong') !== -1,
+                            })}
                         >
-                            {show ? <Visibility /> : <VisibilityOff />}
-                        </IconButton>
-                    </InputAdornment>
-                )
-            }
-            {...other}
-        />
+                            <Typography className="">{`Password Strength: ${errorPaswd.status}`}</Typography>
+                        </div>
+                    </div>
+                    {errorPaswd?.message ? (
+                        <Typography className="text-red" color="red">
+                            {errorPaswd.message}
+                        </Typography>
+                    ) : null}
+                </>
+            )}
+        </div>
     );
 };
 
-export default PasswordField;
+export default Password;

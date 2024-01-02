@@ -1,4 +1,6 @@
-const { decrypt, encrypt } = require('../../../helpers/encryption');
+const { serialize } = require('cookie');
+const { expiredToken, customerTokenKey } = require('../../../../swift.config');
+const { decrypt } = require('../../../helpers/encryption');
 const requestGraph = require('../request');
 
 const query = `
@@ -44,7 +46,16 @@ const internalGenerateSession = async (parent, { state }, context) => {
                 adminId,
             };
         }
-        context.session.token = encrypt(token);
+        if (context?.res) {
+            const serialized = serialize(customerTokenKey, token, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: 'strict',
+                maxAge: expiredToken,
+                path: '/',
+            });
+            context.res.setHeader('Set-Cookie', serialized);
+        }
         return {
             result: true,
             cartId,
@@ -56,7 +67,16 @@ const internalGenerateSession = async (parent, { state }, context) => {
     }
     if (typeof state !== 'undefined' && state) {
         if (token && token !== '') {
-            context.session.token = encrypt(token);
+            if (context?.res) {
+                const serialized = serialize(customerTokenKey, token, {
+                    httpOnly: true,
+                    secure: process.env.NODE_ENV === 'production',
+                    sameSite: 'strict',
+                    maxAge: expiredToken,
+                    path: '/',
+                });
+                context.res.setHeader('Set-Cookie', serialized);
+            }
         }
         return {
             result: true,

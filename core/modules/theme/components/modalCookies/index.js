@@ -1,5 +1,4 @@
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
+import Dialog from '@common_dialog';
 import { useTranslation } from 'next-i18next';
 
 const ModalCookies = () => {
@@ -7,12 +6,12 @@ const ModalCookies = () => {
     return (
         <>
             <Dialog onClose={() => {}} aria-labelledby="dialog-cookies-warning" open>
-                <DialogContent>
+                <div className="dialog-content">
                     <div>
                         <h2 id="server-modal-title">{t('common:error:browser')}</h2>
                         <p id="server-modal-description">{t('common:message:browserError')}</p>
                     </div>
-                </DialogContent>
+                </div>
             </Dialog>
         </>
     );

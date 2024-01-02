@@ -1,52 +1,66 @@
-import Typography from '@common_typography';
+import React from 'react';
+import Accordion from '@common/Accordion';
+import cx from 'classnames';
+import GenerateFilter from '@core_modules/catalog/plugins/ProductList/components/Filter/GenerateFilter';
 import Button from '@common_button';
-import Tune from '@material-ui/icons/Tune';
-import AppsIcon from '@material-ui/icons/Apps';
-import ListAltIcon from '@material-ui/icons/ListAlt';
-import useStyles from '@plugin_productlist/components/style';
+import Divider from '@common_divider';
 
 const FilterView = (props) => {
     const {
-        products, t, setOpenFilter, setGrid,
+        filter = [], handleSave, handleReset,
+        scrollContent = true, t,
     } = props;
-    const styles = useStyles();
+
     return (
-        <div className={styles.filterContainer}>
-            <div className={styles.leftWrapperFilter}>
+        <div className={cx(
+            'flex flex-col gap-5 w-full relative desktop:max-w-[280px] overflow-y-scroll overflow-x-hidden scrollbar-none pb-[50%]',
+            scrollContent ? ' max-h-screen' : 'h-full',
+        )}
+        >
+            {
+                filter && filter.length > 0 && filter.map((itemFilter, key) => {
+                    if ((itemFilter.field === 'cat' || itemFilter.field === 'attribute_set_id')) {
+                        return null;
+                    }
+                    if (itemFilter.field === 'indexed_attributes' || itemFilter.field === 'category_uid') {
+                        return null;
+                    }
+                    return (
+                        <React.Fragment
+                            key={key}
+                        >
+                            <Accordion
+                                label={itemFilter.label ? itemFilter.label.replace(/_/g, ' ') : ''}
+                                open
+                            >
+                                <GenerateFilter
+                                    itemFilter={itemFilter}
+                                    idx={key}
+                                    {...props}
+                                />
+                            </Accordion>
+                            <Divider />
+                        </React.Fragment>
+                    );
+                })
+            }
+
+            <div className="flex flex-col gap-4 w-full desktop:hidden fixed bottom-0 left-0 p-4 bg-neutral-white shadow-inner z-10">
                 <Button
-                    variant="text"
-                    customRootStyle={{ width: 'fit-content' }}
-                    className={styles.btnFilter}
-                    onClick={() => setGrid(true)}
+                    onClick={handleReset}
+                    className="w-full"
+                    classNameText="justify-center"
+                    variant="tertiary"
                 >
-                    <AppsIcon className={styles.iconGrid} />
+                    {t('catalog:filter:reset')}
                 </Button>
                 <Button
-                    variant="text"
-                    customRootStyle={{ width: 'fit-content' }}
-                    className={styles.btnFilter}
-                    onClick={() => setGrid(false)}
+                    onClick={handleSave}
+                    className="w-full"
+                    classNameText="justify-center"
                 >
-                    <ListAltIcon className={styles.iconList} />
+                    {t('catalog:filter:viewResult')}
                 </Button>
-                <Typography variant="p" type="regular" className={styles.countProductText}>
-                    {products.total_count}
-                    {' '}
-                    {t('catalog:product:name')}
-                </Typography>
-            </div>
-            <div className={styles.filterBtnContainer}>
-                <Button
-                    variant="text"
-                    customRootStyle={{ width: 'fit-content' }}
-                    className={styles.btnFilter}
-                    onClick={() => setOpenFilter(true)}
-                >
-                    <Tune className={styles.iconFilter} />
-                </Button>
-                <Typography type="bold" variant="span" letter="capitalize">
-                    {t('catalog:title:shortFilter')}
-                </Typography>
             </div>
         </div>
     );

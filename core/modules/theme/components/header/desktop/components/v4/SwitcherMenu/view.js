@@ -1,23 +1,8 @@
+/* eslint-disable no-unused-vars */
 import React, { useRef } from 'react';
 import { useRouter } from 'next/router';
-import Popover from '@material-ui/core/Popover';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import Button from '@material-ui/core/Button';
-import Skeleton from '@material-ui/lab/Skeleton';
-
-import { makeStyles } from '@material-ui/core/styles';
-
-/**
- * useStyle
- */
-const useStyles = makeStyles(() => ({
-    listItemText: {
-        fontSize: '.6rem', // Insert your required size
-        textTransform: 'uppercase',
-    },
-}));
+import Button from '@common_button';
+import Skeleton from '@common_skeleton';
 
 const ViewSwitcherCurrency = (props) => {
     const {
@@ -26,7 +11,6 @@ const ViewSwitcherCurrency = (props) => {
 
     const router = useRouter();
 
-    const classes = useStyles();
     const buttonRef = useRef();
     const anchorOrigin = { vertical: 'bottom', horizontal: 'right' };
     const transforOrigin = { vertical: 'top', horizontal: 'right' };
@@ -49,55 +33,56 @@ const ViewSwitcherCurrency = (props) => {
     /**
      * rendering
      */
-    return (
-        <div>
-            {/* [CURRENCY] TITLE */}
-            {currencyState?.exchange_rates.length > 1 && title && (
-                <div>
-                    <strong style={styleTitle}>{title}</strong>
-                </div>
-            )}
+    return null;
+    // return (
+    //     <div>
+    //         {/* [CURRENCY] TITLE */}
+    //         {currencyState?.exchange_rates.length > 1 && title && (
+    //             <div>
+    //                 <strong style={styleTitle}>{title}</strong>
+    //             </div>
+    //         )}
 
-            {/* [CURRENCY] BUTTON */}
-            <Button ref={buttonRef} onClick={handleClick} style={styleButton}>
-                <strong>More...</strong>
-            </Button>
+    //         {/* [CURRENCY] BUTTON */}
+    //         <Button ref={buttonRef} onClick={handleClick} style={styleButton}>
+    //             <strong>More...</strong>
+    //         </Button>
 
-            {/* [CURRENCY] LIST */}
-            <Popover
-                id={id}
-                open={open}
-                anchorEl={anchorEl}
-                onClose={handleClose}
-                anchorOrigin={anchorOrigin}
-                transformOrigin={transforOrigin}
-                container={buttonRef.current}
-            >
-                <List component="nav">
-                    <ListItem
-                        button
-                        key="menu-1"
-                        onClick={() => router.push('/confirmpayment')}
-                    >
-                        <ListItemText
-                            classes={{ primary: classes.listItemText }}
-                            primary={t('common:menu:confirmpayment')}
-                        />
-                    </ListItem>
-                    <ListItem
-                        button
-                        key="menu-2"
-                        onClick={() => router.push('/sales/order/track')}
-                    >
-                        <ListItemText
-                            classes={{ primary: classes.listItemText }}
-                            primary={t('common:menu:trackingorder')}
-                        />
-                    </ListItem>
-                </List>
-            </Popover>
-        </div>
-    );
+    //         {/* [CURRENCY] LIST */}
+    //         <Popover
+    //             id={id}
+    //             open={open}
+    //             anchorEl={anchorEl}
+    //             onClose={handleClose}
+    //             anchorOrigin={anchorOrigin}
+    //             transformOrigin={transforOrigin}
+    //             container={buttonRef.current}
+    //         >
+    //             <List component="nav">
+    //                 <ListItem
+    //                     button
+    //                     key="menu-1"
+    //                     onClick={() => router.push('/confirmpayment')}
+    //                 >
+    //                     <ListItemText
+    //                         classes={{ primary: classes.listItemText }}
+    //                         primary={t('common:menu:confirmpayment')}
+    //                     />
+    //                 </ListItem>
+    //                 <ListItem
+    //                     button
+    //                     key="menu-2"
+    //                     onClick={() => router.push('/sales/order/track')}
+    //                 >
+    //                     <ListItemText
+    //                         classes={{ primary: classes.listItemText }}
+    //                         primary={t('common:menu:trackingorder')}
+    //                     />
+    //                 </ListItem>
+    //             </List>
+    //         </Popover>
+    //     </div>
+    // );
 };
 
 export default ViewSwitcherCurrency;

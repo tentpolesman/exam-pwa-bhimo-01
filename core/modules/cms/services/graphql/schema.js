@@ -200,6 +200,13 @@ export const getProductList = gql`
                     label
                     url
                 }
+                review {
+                    rating_summary
+                    reviews_count
+                }
+                new_from_date
+                new_to_date
+                stock_status
             }
         }
     }

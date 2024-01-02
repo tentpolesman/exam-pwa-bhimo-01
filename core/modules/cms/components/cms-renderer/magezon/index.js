@@ -1,64 +1,50 @@
 /* eslint-disable max-len */
 /* eslint-disable react/no-unknown-property */
-import React from 'react';
 import generateCustomCssAnimation from '@core_modules/cms/helpers/magezonCustomCssAnimationGenerator';
-import dynamic from 'next/dynamic';
+import magezonDesignOptionsCss from '@core_modules/cms/helpers/magezonDesignOptionsCss';
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import 'open-iconic/font/css/open-iconic-bootstrap.css';
 import 'animate.css';
+import dynamic from 'next/dynamic';
+import 'open-iconic/font/css/open-iconic-bootstrap.css';
+import React from 'react';
+import cx from 'classnames';
 
-const MagezonSlider = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonSlider'), { ssr: false });
+const MagezonSlider = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonSlider'));
 const MagezonCaraousel = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonCaraousel'), { ssr: false });
 const MagezonColumn = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonColumn'));
 const MagezonRow = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonRow'));
-// const MagezonHeading = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonHeading'));
+const MagezonHeading = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonHeading'));
 const MagezonSingleImage = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonSingleImage'));
 const MagezonText = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonText'));
 const MagezonButton = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonButton'));
 const MagezonRawHtml = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonRawHtml'), { ssr: false });
 const MagezonWidget = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonWidget'), { ssr: false });
-const MagezonIcon = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezoneIcon'), { ssr: false });
-const MagezonIconList = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonIconList'), { ssr: false });
+const MagezonIcon = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonIcon'), { ssr: false });
 const MagezonSeparator = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonSeparator'), { ssr: false });
 const MagezonEmpty = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonEmpty'), { ssr: false });
-const MagezonFanspage = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonFanspage'), { ssr: false });
 const MagezonToggle = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonToggle'), { ssr: false });
-const MagezonFlipBox = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonFlipBox'), { ssr: false });
-const MagezonCounter = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonCounter/index'), { ssr: false });
-const MagezonMessageBox = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonMessageBox'), { ssr: false });
 const MagezonNewsletter = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonNewsletter'), { ssr: false });
 const MagezonContactForm = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonContactForm'), { ssr: false });
-const MagezonCta = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonCta'), { ssr: false });
 const MagezonSearchForm = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonSearchForm'), { ssr: false });
 const MagezonStaticBlock = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonStaticBlock'));
 const MagezonPagebuilderTemplate = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonPageBuilderTemplate'), {
     ssr: false,
 });
 const MagezonVideoPlayer = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonVideoPlayer'), { ssr: false });
-const MagezonPricingTable = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonPricingTable'), { ssr: false });
 const MagezonImageGallery = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonImageGallery'), { ssr: false });
-const MagezonCategories = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonCategories'), { ssr: false });
-const MagezonContentSlider = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonContentSlider'), { ssr: false });
-const MagezonTestimonials = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonTestimonials'), { ssr: false });
 const MagezonRecentReviews = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonRecentReviews'), { ssr: false });
 const MagezonGoogleMaps = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonGoogleMaps'), { ssr: false });
-const MagezonProgressBar = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonProgressBar'), { ssr: false });
 const MagezonAccordion = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonAccordion'), { ssr: false });
 const MagezonSection = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonSection'), { ssr: false });
-const MagezonPageableContainer = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonPageableContainer'), { ssr: false });
 const MagezonProduct = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonProduct'));
 
 const MagezonInstagram = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonInstagramFeed'), { ssr: false });
-const MagezonPinterest = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonPinterest'), { ssr: false });
-const MagezonTwitter = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonTwitter'), { ssr: false });
 const MagezonParallax = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonParallax'), { ssr: false });
-const MagezonFlickr = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonFlickr'), { ssr: false });
-const MagezonCountdown = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonCountdown'), { ssr: false });
-const MagezonSocialIcons = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonSocialIcons'), { ssr: false });
 const MagezonTabs = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonTabs'), { ssr: false });
 
 const MagezonElement = (props) => {
     const {
+        align,
         type,
         content,
         animation_in,
@@ -71,7 +57,6 @@ const MagezonElement = (props) => {
         mouse_parallax_size,
         mouse_parallax_speed,
         background_image,
-        background_color,
         full_height,
         xs_hide,
         sm_hide,
@@ -84,6 +69,8 @@ const MagezonElement = (props) => {
         el_id,
         el_inner_class,
         storeConfig,
+        id,
+        ...other
     } = props;
     const { base_media_url } = storeConfig;
     let childrenContent;
@@ -91,6 +78,10 @@ const MagezonElement = (props) => {
     let customId = '';
     let innerClasses = 'mgz-element-inner ';
     const { className, styles } = generateCustomCssAnimation(animation_duration, animation_delay, animation_infinite);
+    const { className: designOptionClassName, styles: designOptionStyles } = magezonDesignOptionsCss(id, { ...other, type });
+
+    // console.log('props', props);
+
     const enumCustomAnimation = {
         topToBottom: 'mgz_top-to-bottom',
         bottomToTop: 'mgz_bottom-to-top',
@@ -172,7 +163,7 @@ const MagezonElement = (props) => {
             childrenContent = <MagezonColumn {...props} />;
             break;
         case 'heading':
-            // childrenContent = <MagezonHeading {...props} />;
+            childrenContent = <MagezonHeading {...props} />;
             break;
         case 'single_image':
             childrenContent = <MagezonSingleImage {...props} />;
@@ -192,20 +183,8 @@ const MagezonElement = (props) => {
         case 'instagram':
             childrenContent = <MagezonInstagram {...props} />;
             break;
-        case 'pinterest':
-            childrenContent = <MagezonPinterest {...props} />;
-            break;
-        case 'twitter_button':
-            childrenContent = <MagezonTwitter {...props} />;
-            break;
-        case 'twitter_timeline':
-            childrenContent = <MagezonTwitter {...props} />;
-            break;
         case 'icon':
             childrenContent = <MagezonIcon {...props} />;
-            break;
-        case 'icon_list':
-            childrenContent = <MagezonIconList {...props} />;
             break;
         case 'separator':
             childrenContent = <MagezonSeparator {...props} />;
@@ -213,23 +192,8 @@ const MagezonElement = (props) => {
         case 'empty_space':
             childrenContent = <MagezonEmpty {...props} />;
             break;
-        case 'facebook_page':
-            childrenContent = <MagezonFanspage {...props} />;
-            break;
-        case 'facebook_comments':
-            childrenContent = <MagezonFanspage {...props} />;
-            break;
-        case 'facebook_like':
-            childrenContent = <MagezonFanspage {...props} />;
-            break;
         case 'toggle':
             childrenContent = <MagezonToggle {...props} />;
-            break;
-        case 'number_counter':
-            childrenContent = <MagezonCounter {...props} />;
-            break;
-        case 'message_box':
-            childrenContent = <MagezonMessageBox {...props} />;
             break;
         case 'newsletter_form':
             childrenContent = <MagezonNewsletter {...props} />;
@@ -237,20 +201,8 @@ const MagezonElement = (props) => {
         case 'contact_form':
             childrenContent = <MagezonContactForm {...props} />;
             break;
-        case 'flip_box':
-            childrenContent = <MagezonFlipBox {...props} />;
-            break;
         case 'static_block':
             childrenContent = <MagezonStaticBlock {...props} />;
-            break;
-        case 'flickr':
-            childrenContent = <MagezonFlickr {...props} />;
-            break;
-        case 'call_to_action':
-            childrenContent = <MagezonCta {...props} />;
-            break;
-        case 'countdown':
-            childrenContent = <MagezonCountdown {...props} />;
             break;
         case 'slider':
             childrenContent = <MagezonSlider {...props} />;
@@ -261,26 +213,14 @@ const MagezonElement = (props) => {
         case 'search_form':
             childrenContent = <MagezonSearchForm {...props} />;
             break;
-        case 'social_icons':
-            childrenContent = <MagezonSocialIcons {...props} />;
-            break;
         case 'pagebuilder_template':
             childrenContent = <MagezonPagebuilderTemplate {...props} />;
             break;
         case 'video':
             childrenContent = <MagezonVideoPlayer {...props} />;
             break;
-        case 'pricing_table':
-            childrenContent = <MagezonPricingTable {...props} />;
-            break;
         case 'image_gallery':
             childrenContent = <MagezonImageGallery {...props} />;
-            break;
-        case 'categories':
-            childrenContent = <MagezonCategories {...props} />;
-            break;
-        case 'content_slider':
-            childrenContent = <MagezonContentSlider {...props} />;
             break;
         case 'recent_reviews':
             childrenContent = <MagezonRecentReviews {...props} />;
@@ -297,23 +237,14 @@ const MagezonElement = (props) => {
         case 'product_slider':
             childrenContent = <MagezonProduct {...props} />;
             break;
-        case 'testimonials':
-            childrenContent = <MagezonTestimonials {...props} />;
-            break;
         case 'gmaps':
             childrenContent = <MagezonGoogleMaps {...props} />;
-            break;
-        case 'progress_bar':
-            childrenContent = <MagezonProgressBar {...props} />;
             break;
         case 'section':
             childrenContent = <MagezonSection {...props} />;
             break;
         case 'accordion':
             childrenContent = <MagezonAccordion {...props} />;
-            break;
-        case 'pageable_container':
-            childrenContent = <MagezonPageableContainer {...props} />;
             break;
         case 'tabs':
             childrenContent = <MagezonTabs {...props} />;
@@ -326,7 +257,7 @@ const MagezonElement = (props) => {
     return (
         <>
             <div className={classes} id={customId || null}>
-                <div className={innerClasses}>
+                <div className={cx(innerClasses, id, designOptionClassName)}>
                     {background_image && (
                         <>
                             <div className="parallax-wrapper mouse-parallax">
@@ -343,12 +274,14 @@ const MagezonElement = (props) => {
                     {childrenContent}
                 </div>
             </div>
+            {/* prettier-ignore */}
             <style jsx>
                 {`
                     .mgz-element {
+                        ${align ? `text-align: ${align};` : ''}
                         position: relative;
                         width: 100%;
-                        ${background_color ? `background-color: ${background_color};` : ''}
+                        box-sizing: border-box;
                     }
                     @media screen and (max-width: 360px) {
                         .full_height {
@@ -387,16 +320,6 @@ const MagezonElement = (props) => {
             </style>
             <style jsx global>
                 {`
-                    .mgz-column > * {
-                        padding: 0px;
-                    }
-
-                    @media screen and (min-width: 768px) {
-                        .mgz-element:not(.full_height) > .mgz-element-inner >.mgz-row > .mgz-column > * {
-                            padding: 10px;
-                        }
-                    }
-
                     @media screen and (max-width: 768px) {
                         .mgz-element.full_height > .mgz-element-inner >  .mgz-row > .mgz-column > .mgz-element {
                             margin-top: -15px;
@@ -454,6 +377,7 @@ const MagezonElement = (props) => {
                 `}
             </style>
             {styles}
+            {designOptionStyles}
         </>
     );
 };

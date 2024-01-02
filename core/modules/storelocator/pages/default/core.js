@@ -1,9 +1,10 @@
 import Layout from '@layout';
 import { getStoreLocations } from '@core_modules/storelocator/services/graphql';
+import Content from '@core_modules/storelocator/pages/default/components';
 
 const PageStoreLocator = (props) => {
     const {
-        t, Content, pageConfig,
+        t, pageConfig,
     } = props;
     const config = {
         title: t('storelocator:title'),

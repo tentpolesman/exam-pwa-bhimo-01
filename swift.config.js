@@ -22,7 +22,7 @@ const HOST = {
 
 /* Magento GraphQL Endpoint */
 const graphqlEndpoint = {
-    local: 'https://b2cdemo.getswift.asia/graphql',
+    local: 'https://swift-dev.testingnow.me/graphql',
     dev: 'https://swift.testingnow.me/graphql',
     stage: 'https://b2cdemonew.gcp-staging.testingnow.me/graphql',
     prod: 'https://b2cdemo.getswift.asia/graphql',
@@ -99,12 +99,16 @@ const nameToken = 'sk';
 const expiredToken = 60 * 60 * 1000;
 const expiredDefault = 365;
 const localResolverKey = 'resolver';
+const customerTokenKey = 'ct';
 
 const keyLocalStorage = {
     home: 'homePageConfig',
 };
 
 const features = {
+    thumbor: {
+        domainThumborConfig: 'thumbor.sirclocdn.com',
+    },
     useCustomStyle: false,
     ssrCache: false,
     magezon: {
@@ -169,6 +173,50 @@ const features = {
 
 const modules = {
     product: {
+        imageSize: {
+            thumbnail: {
+                desktop: {
+                    width: 78,
+                    height: 78,
+                },
+                tablet: {
+                    width: 78,
+                    height: 78,
+                },
+                mobile: {
+                    width: 78,
+                    height: 78,
+                },
+            },
+            main: {
+                desktop: {
+                    width: 533,
+                    height: 533,
+                },
+                tablet: {
+                    width: 352,
+                    height: 352,
+                },
+                mobile: {
+                    width: 329,
+                    height: 329,
+                },
+            },
+            main_preview: {
+                desktop: {
+                    width: 603,
+                    height: 603,
+                },
+                tablet: {
+                    width: 603,
+                    height: 603,
+                },
+                mobile: {
+                    width: 329,
+                    height: 329,
+                },
+            },
+        },
         customizableOptions: {
             enabled: true,
             availableOptions: {
@@ -216,6 +264,22 @@ const modules = {
     catalog: {
         enabled: true,
         productListing: {
+            quickView: {
+                bannerImage: {
+                    mobile: {
+                        width: 296,
+                        height: 296,
+                    },
+                    tablet: {
+                        width: 296,
+                        height: 296,
+                    },
+                    desktop: {
+                        width: 400,
+                        height: 400,
+                    },
+                },
+            },
             sort: {
                 relevance: true,
                 position: true,
@@ -231,6 +295,10 @@ const modules = {
                 toprated: true,
                 featured: true,
                 free: true,
+            },
+            imageSize: {
+                width: 250,
+                height: 250,
             },
         },
     },
@@ -459,4 +527,5 @@ module.exports = {
     translation,
     keyLocalStorage,
     requestTimeout,
+    customerTokenKey,
 };

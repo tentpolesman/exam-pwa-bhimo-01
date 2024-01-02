@@ -1,19 +1,20 @@
 import StoreLocatorMaps from '@core_modules/storelocator/pages/default/components/Maps';
 import SkeletonStoreLocator from '@core_modules/storelocator/pages/default/components/Skeleton';
 import StoreList from '@core_modules/storelocator/pages/default/components/StoreList';
-import WarningIcon from '@material-ui/icons/Warning';
+import Alert from '@common/Alert';
 
 const StoreLocatorContent = ({ gmapKey, storeLocations, t }) => {
     // state
     const [centerPosition, setCenterPosition] = React.useState({});
     const [selectedStore, setSelectedStore] = React.useState();
-    const [storeList, setStoreList] = storeLocations !== null ? React.useState(
-        storeLocations.map((storeLocation) => ({
-            ...storeLocation,
-            lat: storeLocation.latitude,
-            lng: storeLocation.longitude,
-        })),
-    ) : React.useState(null);
+    const [storeList, setStoreList] = React.useState(
+        (storeLocations?.length > 0
+            && storeLocations?.map((storeLocation) => ({
+                ...storeLocation,
+                lat: storeLocation.latitude,
+                lng: storeLocation.longitude,
+            }))) || null,
+    );
 
     // effect
     React.useEffect(() => {
@@ -32,17 +33,17 @@ const StoreLocatorContent = ({ gmapKey, storeLocations, t }) => {
 
     if (storeList === null) {
         return (
-            <div style={{ textAlign: 'center', paddingTop: '20vh' }}>
-                <WarningIcon style={{ fontSize: '100px' }} />
-                <br />
-                <span style={{ fontSize: '2rem' }}>{t('storelocator:noAvailableStore')}</span>
+            <div className="pt-[20vh] text-center">
+                <Alert severity="error" className="capitalize">
+                    {t('storelocator:noAvailableStore')}
+                </Alert>
             </div>
         );
     }
 
     return (
-        <div className="row" style={{ padding: '0 16px' }}>
-            <div className="col-xs-12 col-sm-4 col-md-3 last-xs first-sm">
+        <div className="flex flex-row flex-wrap tablet:flex-nowrap gap-1">
+            <div className="xs:basis-full sm:basis-4/12 md:basis-3/12 order-1 tablet:order-[0]">
                 <StoreList
                     t={t}
                     storeList={storeList}
@@ -53,7 +54,7 @@ const StoreLocatorContent = ({ gmapKey, storeLocations, t }) => {
                     }}
                 />
             </div>
-            <div className="col-xs-12 col-sm-8 col-md-9">
+            <div className="xs:basis-full xs:max-w-full sm:basis-8/12 md:basis-9/12">
                 <StoreLocatorMaps
                     t={t}
                     centerPosition={centerPosition}
@@ -72,19 +73,13 @@ const StoreLocatorContentWrapper = (props) => {
         loading, storeLocations, storeConfig, t,
     } = props;
     return (
-        <>
-            {
-                loading || typeof window === 'undefined'
-                    ? <SkeletonStoreLocator />
-                    : (
-                        <StoreLocatorContent
-                            t={t}
-                            gmapKey={storeConfig.icube_pinlocation_gmap_key}
-                            storeLocations={storeLocations}
-                        />
-                    )
-            }
-        </>
+        <div className="mobile:mt-[20%]">
+            {loading || typeof window === 'undefined' ? (
+                <SkeletonStoreLocator />
+            ) : (
+                <StoreLocatorContent t={t} gmapKey={storeConfig.icube_pinlocation_gmap_key} storeLocations={storeLocations} />
+            )}
+        </div>
     );
 };
 

@@ -1,25 +1,12 @@
+import React from 'react';
 import Button from '@common_button';
 import TextField from '@common_forms/TextField';
-import Typography from '@common_typography';
 import { regexPhone } from '@helper_regex';
 import { useTranslation } from 'next-i18next';
-import AppBar from '@material-ui/core/AppBar';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import IconButton from '@material-ui/core/IconButton';
-import Slide from '@material-ui/core/Slide';
-import CloseIcon from '@material-ui/icons/Close';
+import Dialog from '@common_dialog';
 import { useFormik } from 'formik';
-import React from 'react';
 import * as Yup from 'yup';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
 import gqlService from '@core_modules/checkout/services/graphql';
-import useStyles from '@core_modules/checkout/pages/default/components/ModalPickupInformation/style';
-
-const Transition = React.forwardRef((props, ref) => (
-    <Slide direction="up" ref={ref} {...props} />
-));
 
 const ModalPickupInformation = ({
     open,
@@ -28,9 +15,7 @@ const ModalPickupInformation = ({
     setCheckout,
 }) => {
     const { t } = useTranslation(['common', 'checkout', 'validate']);
-    const styles = useStyles();
     const [setPickupStore] = gqlService.setPickupStore();
-    const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
 
     const validationSchema = Yup.object().shape({
         email: Yup.string().email(t('validate:email:wrong')).required(t('validate:email:required')),
@@ -115,70 +100,68 @@ const ModalPickupInformation = ({
     return (
         <Dialog
             open={open}
-            TransitionComponent={Transition}
-            onClose={setOpen}
-            maxWidth="sm"
-            fullWidth={!!isDesktop}
-            fullScreen={!isDesktop}
-        >
-            <AppBar className={styles.appBar}>
-                <IconButton
-                    className={styles.btnClose}
-                    edge="start"
-                    onClick={setOpen}
-                    aria-label="close"
-                >
-                    <CloseIcon className={styles.iconClose} />
-                </IconButton>
-                <Typography
-                    variant="label"
-                    type="bold"
-                    align="center"
-                    letter="uppercase"
-                    className={styles.title}
-                >
-                    {t('checkout:pickupInformation:label')}
-                </Typography>
-            </AppBar>
-            <form onSubmit={formik.handleSubmit}>
-                <DialogContent dividers>
-                    <div className={styles.body}>
-                        <TextField
-                            label={t('checkout:pickupInformation:pickupPerson')}
-                            name="person"
-                            value={formik.values.person}
-                            onChange={formik.handleChange}
-                            error={!!(formik.touched.person && formik.errors.person)}
-                            errorMessage={(formik.touched.person && formik.errors.person) || null}
-                        />
-                        <TextField
-                            label={t('common:form:phoneNumber')}
-                            name="phoneNumber"
-                            value={formik.values.phoneNumber}
-                            onChange={formik.handleChange}
-                            error={!!(formik.touched.phoneNumber && formik.errors.phoneNumber)}
-                            errorMessage={(formik.touched.phoneNumber && formik.errors.phoneNumber) || null}
-                        />
-                        <TextField
-                            label="email"
-                            name="email"
-                            value={formik.values.email}
-                            onChange={formik.handleChange}
-                            error={!!(formik.touched.email && formik.errors.email)}
-                            errorMessage={(formik.touched.email && formik.errors.email) || null}
-                        />
-                    </div>
-                </DialogContent>
+            closeOnBackdrop
+            onClose={() => setOpen()}
+            onClickCloseTitle={() => setOpen()}
+            title={t('checkout:pickupInformation:label')}
+            useCloseTitleButton
+            content={(
+                <>
+                    <form onSubmit={formik.handleSubmit} className="flex flex-col gap-4">
+                        <div className="flex flex-col gap-4 py-4 border-t border-neutral-200">
+                            <TextField
+                                label={t('checkout:pickupInformation:pickupPerson')}
+                                name="person"
+                                className="w-full"
+                                value={formik.values.person}
+                                onChange={formik.handleChange}
+                                hintProps={{
+                                    displayHintText: !!((formik.touched.person && formik.errors.person)),
+                                    hintText: formik.errors.person,
+                                    hintType: 'error',
+                                }}
+                                absolute={false}
+                            />
+                            <TextField
+                                label={t('common:form:phoneNumber')}
+                                name="phoneNumber"
+                                className="w-full"
+                                value={formik.values.phoneNumber}
+                                onChange={formik.handleChange}
+                                hintProps={{
+                                    displayHintText: !!((formik.touched.phoneNumber && formik.errors.phoneNumber)),
+                                    hintText: formik.errors.phoneNumber,
+                                    hintType: 'error',
+                                }}
+                                absolute={false}
+                            />
+                            <TextField
+                                label="email"
+                                name="email"
+                                className="w-full"
+                                value={formik.values.email}
+                                onChange={formik.handleChange}
+                                hintProps={{
+                                    displayHintText: !!((formik.touched.email && formik.errors.email)),
+                                    hintText: formik.errors.email,
+                                    hintType: 'error',
+                                }}
+                                absolute={false}
+                            />
+                        </div>
 
-                <DialogActions>
-                    <div className={styles.footer}>
-                        <Button loading={loading} className={styles.btnSave} type="submit">
+                        <Button
+                            loading={loading}
+                            className=""
+                            type="submit"
+                            classNameText="justify-center"
+                        >
                             {t('common:button:save')}
                         </Button>
-                    </div>
-                </DialogActions>
-            </form>
-        </Dialog>
+                    </form>
+                </>
+            )}
+        />
     );
 };
 

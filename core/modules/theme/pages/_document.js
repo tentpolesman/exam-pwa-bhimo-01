@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable max-len */
 /* eslint-disable react/no-danger */
 import React from 'react';
@@ -6,7 +7,6 @@ import HeadCustom from '@next_headcustom';
 import NextScriptCustom from '@next_nextscriptcustom';
 import theme from '@theme_theme';
 
-import { ServerStyleSheets } from '@material-ui/core/styles';
 import {
     rollbar, basePath,
 } from '@config';
@@ -20,44 +20,20 @@ export default class MyDocument extends Document {
                 environment: process.env.APP_ENV || 'prod',
             };
         }
-        // eslint-disable-next-line no-underscore-dangle
-        const currentLang = this.props.__NEXT_DATA__.props.initialLanguage;
+
+        let lang = 'en';
+
+        if (this.props?.__NEXT_DATA__?.props?.initialLanguage) {
+            lang = this.props?.__NEXT_DATA__?.props?.initialLanguage;
+        }
+
         return (
-            <Html lang={currentLang}>
+            <Html lang={lang}>
                 <HeadCustom>
                     {/* PWA primary color */}
                     <meta name="theme-color" content={theme.palette.primary.main} />
                     <link rel="manifest" href={`${basePath}/manifest.json`} />
                     <link rel="shortcut icon" href={`${basePath}/favicon.ico`} />
-                    {/* preload font */}
-                    <link
-                        rel="preload"
-                        href="/assets/fonts/montserrat-v18-vietnamese_latin-ext_latin_cyrillic-ext_cyrillic-regular.woff2"
-                        as="font"
-                        type="font/woff2"
-                        crossOrigin
-                    />
-                    <link
-                        rel="preload"
-                        href="/assets/fonts/montserrat-v18-vietnamese_latin-ext_latin_cyrillic-ext_cyrillic-500.woff2"
-                        as="font"
-                        type="font/woff2"
-                        crossOrigin
-                    />
-                    <link
-                        rel="preload"
-                        href="/assets/fonts/montserrat-v18-vietnamese_latin-ext_latin_cyrillic-ext_cyrillic-700.woff2"
-                        as="font"
-                        type="font/woff2"
-                        crossOrigin
-                    />
-                    <link
-                        rel="preload"
-                        href="/assets/fonts/montserrat-v18-vietnamese_latin-ext_latin_cyrillic-ext_cyrillic-900.woff2"
-                        as="font"
-                        type="font/woff2"
-                        crossOrigin
-                    />
                     {rollbar && rollbar.enabled ? (
                         <script
                             dangerouslySetInnerHTML={{
@@ -70,11 +46,6 @@ export default class MyDocument extends Document {
                             }}
                         />
                     ) : null}
-                    <script
-                        dangerouslySetInnerHTML={{
-                            __html: `window.APP_ENV = '${process.env.APP_ENV || 'prod'}'`,
-                        }}
-                    />
                 </HeadCustom>
                 <body className="loading">
                     <Main />
@@ -109,11 +80,10 @@ MyDocument.getInitialProps = async (ctx) => {
     // 4. page.render
 
     // Render app and page and get the context of the page with collected side effects.
-    const sheets = new ServerStyleSheets();
     const originalRenderPage = ctx.renderPage;
 
     ctx.renderPage = () => originalRenderPage({
-        enhanceApp: (App) => (props) => sheets.collect(<App {...props} />),
+        enhanceApp: (App) => (props) => <App {...props} />,
     });
 
     const initialProps = await Document.getInitialProps(ctx);
@@ -121,6 +91,6 @@ MyDocument.getInitialProps = async (ctx) => {
     return {
         ...initialProps,
         // Styles fragment is rendered after the app and page rendering finish.
-        styles: [...React.Children.toArray(initialProps.styles), sheets.getStyleElement()],
+        styles: [...React.Children.toArray(initialProps.styles)],
     };
 };

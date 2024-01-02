@@ -9,11 +9,11 @@ const Content = ({
     t, data, loadMore, loading, handleLoadMore, page, loadCategory,
     storeConfig, ContentCategory, ContentItem, ...other
 }) => (
-    <div className="row">
-        <div className="col-xs-12 col-sm-2">
+    <div className="flex flex-row">
+        <div className="xs:basis-full sm:basis-2/12">
             <Category t={t} {...other} />
         </div>
-        <div className="col-xs-12 col-sm-10">
+        <div className="xs:basis-full sm:basis-10/12">
             <Typography variant="h1" style={{ display: 'none' }}>
                 Blog
             </Typography>
@@ -21,7 +21,7 @@ const Content = ({
                     && data.getBlogByFilter.items.length > 0
                     && data.getBlogByFilter.items.map((blog, index) => <ContentItem storeConfig={storeConfig} key={index} short {...blog} t={t} />)}
             {data && data.getBlogByFilter.total_count > data.getBlogByFilter.items.length && data.getBlogByFilter.total_pages > page && (
-                <Button variant="text" onClick={handleLoadMore} disabled={loading || loadMore} fullWidth>
+                <Button variant="plain" onClick={handleLoadMore} disabled={loading || loadMore} fullWidth>
                     <Typography variant="span" type="bold" letter="uppercase" color="gray">
                         {loadMore || loading ? 'Loading ...' : t('blog:loadMore')}
                     </Typography>

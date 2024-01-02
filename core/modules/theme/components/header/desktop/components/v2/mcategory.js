@@ -4,6 +4,8 @@
 /* eslint-disable react/no-danger */
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable no-unused-vars */
+/* eslint-disable semi-style */
 import React, { useRef } from 'react';
 import { WHITE, PRIMARY } from '@theme_color';
 import getPath from '@helper_getpath';
@@ -12,7 +14,6 @@ import classNames from 'classnames';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import CmsRenderer from '@core_modules/cms/components/cms-renderer';
-import { makeStyles } from '@material-ui/core/styles';
 import { useRouter } from 'next/router';
 import 'animate.css';
 import { basePath } from '@config';
@@ -73,25 +74,6 @@ const Menu = (props) => {
             <ul className="nav" role="menubar" id="header-nav-menubar">
                 {menu.map((val, idx) => {
                     if ((val.include_in_menu || storeConfig.pwa.ves_menu_enable) && val.name) {
-                        const useStyles = makeStyles(() => ({
-                            linkStyle: {
-                                backgroundColor: `${val.bg_color} !important` || WHITE,
-                                color: `${val.color} !important` || PRIMARY,
-                                '&:hover': {
-                                    backgroundColor: `${val.bg_hover_color} !important` || '#F3F3F3',
-                                    color: `${val.hover_color} !important` || '#FF0000',
-                                },
-                            },
-                            vesMegaMenu: {
-                                backgroundColor: val.dropdown_bgcolor || WHITE,
-                            },
-                            animationDuration: {
-                                animationDuration: `${val.dropdown_animation_time || '1'}s`,
-                            },
-                        }));
-
-                        const styles = useStyles();
-
                         const linkEl = useRef(null);
                         const megaMenuRef = useRef(null);
 
@@ -153,7 +135,6 @@ const Menu = (props) => {
                                                             linkEl.current.innerHTML = linkEl.current.innerHTML.replace(val.hover_caret, val.caret);
                                                         }
                                                     }}
-                                                    className={styles.linkStyle}
                                                 />
                                                 {val.after_html && <div dangerouslySetInnerHTML={{ __html: val.after_html }} />}
                                             </>
@@ -166,7 +147,7 @@ const Menu = (props) => {
 
                                 {val.children.length > 0 ? (
                                     <div
-                                        className={classNames('mega-menu', 'grid', styles.vesMegaMenu, styles.animationDuration)}
+                                        className={classNames('mega-menu', 'grid')}
                                         aria-hidden="true"
                                         role="menu"
                                         ref={megaMenuRef}

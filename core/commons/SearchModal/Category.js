@@ -1,27 +1,23 @@
 import React from 'react';
 import Typography from '@common_typography';
 import Button from '@common_button';
-import Slide from '@material-ui/core/Slide';
 import { modules } from '@config';
-import useStyles from '@common_searchmodal/style';
+import { useTranslation } from 'next-i18next';
 
 const Category = ({
-    open,
     setOpenModal,
     data,
     onClick,
-    direction = 'left',
-    slide = false,
     handleClickMenu,
 }) => {
-    const styles = useStyles();
+    const { t } = useTranslation(['common']);
 
     const content = () => (
-        <div className={styles.body}>
-            <div className={styles.item}>
+        <div className="flex flex-col justify-center items-center">
+            <div className="flex flex-col justify-center items-center m-0">
                 {data.length
                     ? data.map((catlvl1, index) => (
-                        <div key={index} className="column">
+                        <div key={index} className="flex flex-col">
                             <Button
                                 fullWidth
                                 variant="text"
@@ -32,7 +28,7 @@ const Category = ({
                                     }, 200);
                                 }}
                             >
-                                <Typography variant="label" size="14" letter="uppercase" type="bold" align="center">
+                                <Typography>
                                     {catlvl1.name}
                                 </Typography>
                             </Button>
@@ -42,14 +38,9 @@ const Category = ({
                                     fullWidth
                                     variant="text"
                                     onClick={() => onClick(catlvl2)}
-                                    className={indx === catlvl1.children.length - 1 ? styles.lastCat : styles.cat}
+                                    className={indx === catlvl1.children.length - 1 ? 'm-0 p-[2px] h-auto !mb-[40px]' : 'p-[2px] h-auto'}
                                 >
-                                    <Typography
-                                        variant="span"
-                                        letter="capitalize"
-                                        size="14"
-                                        align="center"
-                                    >
+                                    <Typography>
                                         {catlvl2.name}
                                     </Typography>
 
@@ -71,8 +62,8 @@ const Category = ({
                         }}
                         fullWidth
                     >
-                        <Typography type="bold" letter="uppercase" variant="span" align="center" size="14">
-                            Brands
+                        <Typography>
+                            {t('common:title:brand')}
                         </Typography>
                     </Button>
 
@@ -81,20 +72,6 @@ const Category = ({
             </div>
         </div>
     );
-
-    if (slide === true) {
-        return (
-            <Slide
-                direction={direction}
-                in={open}
-                timeout={300}
-                mountOnEnter
-                unmountOnExit
-            >
-                {content()}
-            </Slide>
-        );
-    }
 
     return <>{content()}</>;
 };

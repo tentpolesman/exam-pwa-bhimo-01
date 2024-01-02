@@ -1,24 +1,22 @@
 import React from 'react';
-import CheckBox from '@common_checkbox';
+import CheckBox from '@common_forms/CheckBox';
 import Typography from '@common_typography';
 import classNames from 'classnames';
-import useStyles from '@plugin_customizableitem/components/style';
 
 const ViewCustomizableCheckboxOption = ({
     title = 'test', data = [], selected = [], disabled,
     onChange = () => {}, error = '', required = false,
 }) => {
-    const styles = useStyles();
-    const customClass = classNames('column', styles.container, styles.customizableCheckboxOption);
+    const customClass = classNames('flex flex-col', 'w-[100%]');
     return (
         <div className={customClass}>
             {
                 data && data.length > 0 && (
                     <>
-                        <Typography variant="label" type="bold" letter="uppercase">
+                        <Typography variant="bd-2a">
                             {title.replace(/_/g, ' ')}
                             {' '}
-                            {required && <Typography color="red" type="bold" variant="label">*</Typography>}
+                            {required && <Typography variant="bd-2a" color="text-red">*</Typography>}
                         </Typography>
                         <CheckBox
                             name={title}

@@ -1,45 +1,32 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable semi-style */
 /* eslint-disable implicit-arrow-linebreak */
 /* eslint-disable operator-linebreak */
 /* eslint-disable max-len */
 /* eslint-disable comma-dangle */
 import Radio from '@common_forms/Radio';
+import React from 'react';
 import Typography from '@common_typography';
 import DeliveryItem from '@core_modules/checkout/components/radioitem';
 import RadioMultiseller from '@core_modules/checkout/pages/default/components/shipping/plugin/Radio';
-import useStyles from '@core_modules/checkout/pages/default/components/style';
 import { basePath } from '@config';
 import { formatPrice } from '@helper_currency';
-import MuiAccordion from '@material-ui/core/Accordion';
-import MuiAccordionDetails from '@material-ui/core/AccordionDetails';
-import MuiAccordionSummary from '@material-ui/core/AccordionSummary';
-import { withStyles } from '@material-ui/core/styles';
-import Arrow from '@material-ui/icons/ArrowDropDown';
-import Alert from '@material-ui/lab/Alert';
-import Skeleton from '@material-ui/lab/Skeleton';
-import React from 'react';
-
-import {
-    ExpanDetailStyle, ExpanPanelStyle, ExpanSummaryStyle
-} from './style';
-
-const Accordion = withStyles(ExpanPanelStyle)(MuiAccordion);
-
-const AccordionSummary = withStyles(ExpanSummaryStyle)(MuiAccordionSummary);
-
-const AccordionDetails = withStyles(ExpanDetailStyle)(MuiAccordionDetails);
+import Alert from '@common_alert';
+import Skeleton from '@common_skeleton';
+import classNames from 'classnames';
+import Accordion from '@common_acccordion';
 
 const Loader = () => (
     <>
-        <Skeleton variant="rect" width="100%" height={20} animation="wave" style={{ marginBottom: 10 }} />
-        <Skeleton variant="rect" width="100%" height={20} animation="wave" style={{ marginBottom: 10 }} />
-        <Skeleton variant="rect" width="100%" height={20} animation="wave" style={{ marginBottom: 10 }} />
+        <Skeleton className="rounded-[50%] mb-[10px]" width="100%" height={20} />
+        <Skeleton className="rounded-[50%] mb-[10px]" width="100%" height={20} />
+        <Skeleton className="rounded-[50%] mb-[10px]" width="100%" height={20} />
     </>
 );
 
 const ShippingGroupIcon = (props) => {
     const { baseMediaUrl, src } = props;
     const fallbacks = [`${baseMediaUrl}checkout/shipping/shipping-${src.replace('sg-', '')}.svg`, null];
-    const styles = useStyles();
 
     // check if image exist on the backoffice, otherwise use fallback image from PWA
     const [imageSrc, setImageSrc] = React.useState(`${basePath}/assets/img/shipping-${src.replace('sg-', '')}.svg`);
@@ -58,7 +45,7 @@ const ShippingGroupIcon = (props) => {
         <>
             {(imageSrc && (
                 <img
-                    className={styles.shippingGroupStyleIcon}
+                    className="w-11 h-11 mr-3"
                     src={imageSrc}
                     alt={src.replace('sg-', '')}
                     onError={() => getFallbackImageSrc()}
@@ -70,7 +57,6 @@ const ShippingGroupIcon = (props) => {
 };
 
 const ShippingView = (props) => {
-    const styles = useStyles();
     const {
         isOnlyVirtualProductOnCart,
         checkout,
@@ -88,11 +74,6 @@ const ShippingView = (props) => {
     let content;
     const unique = [];
     const [expanded, setExpanded] = React.useState(null);
-    const [expandedActive, setExpandedActive] = React.useState(true);
-    const handleChange = (panel) => (event, newExpanded) => {
-        setExpandedActive(false);
-        setExpanded(newExpanded ? panel : false);
-    };
     const [expandedMulti, setExpandedMulti] = React.useState([]);
     const [expandedActiveMulti, setExpandedActiveMulti] = React.useState([]);
     const handleChangeMulti = (panel, seller_id) => (event, newExpanded) => {
@@ -355,14 +336,15 @@ const ShippingView = (props) => {
                     });
                 }
             }
-            if (storeConfig.enable_oms_multiseller === '1') {
+            const isMultiSeller = storeConfig.enable_oms_multiseller === '1' || storeConfig.enable_oms_multiseller === 1;
+            if (isMultiSeller) {
                 content = unique.map((seller) => (
                     <>
-                        <Typography letter="uppercase" variant="span" type="bold">
+                        <Typography className="uppercase" variant="bd-2" type="bold">
                             {`${seller.seller_name} - ${seller.seller_city}`}
                         </Typography>
-                        <div className="column">
-                            <div className={styles.paymentExpansionContainer}>
+                        <div className="flex flex-col">
+                            <div className="mt-4">
                                 {seller.sellerData === null && <Typography variant="p">{t('checkout:noShipping')}</Typography>}
                                 {/* eslint-disable-next-line consistent-return, array-callback-return */}
                                 {seller.sellerData !== null &&
@@ -371,67 +353,76 @@ const ShippingView = (props) => {
                                         if (item.data.length !== 0) {
                                             const indexes = expandedMulti.findIndex((items) => items.seller_id === seller.seller_id);
                                             const indexesActive = expandedActiveMulti.findIndex((items) => items.seller_id === seller.seller_id);
+                                            const open = (expandedMulti[indexes] && expandedMulti[indexes].expanded === keyIndex) || // if key index same with expanded active
+                                            (item.active && expandedMulti[indexes] && expandedActiveMulti[indexesActive].expanded) || // expand if item active and not change expand
+                                            (!itemActive &&
+                                                expandedMulti[indexes] &&
+                                                expandedActiveMulti[indexesActive].expanded &&
+                                                keyIndex === 0);
                                             return (
                                                 <Accordion
-                                                    expanded={
-                                                        (expandedMulti[indexes] && expandedMulti[indexes].expanded === keyIndex) || // if key index same with expanded active
-                                                        (item.active && expandedMulti[indexes] && expandedActiveMulti[indexesActive].expanded) || // expand if item active and not change expand
-                                                        (!itemActive &&
-                                                            expandedMulti[indexes] &&
-                                                            expandedActiveMulti[indexesActive].expanded &&
-                                                            keyIndex === 0)
-                                                    } // if dont have item active, set index 0 to active
-                                                    onChange={handleChangeMulti(keyIndex, seller.seller_id)}
                                                     key={keyIndex}
-                                                >
-                                                    <AccordionSummary
-                                                        aria-controls="panel1d-content"
-                                                        id={`panel-${item.group}`}
-                                                        expandIcon={<Arrow className={styles.icon} />}
-                                                        IconButtonProps={{
-                                                            className: 'checkout-shippingGroupping-expand',
-                                                        }}
-                                                    >
-                                                        <div className={styles.labelAccordion}>
+                                                    open={open}
+                                                    handleOpen={() => handleChangeMulti(keyIndex, seller.seller_id)}
+                                                    handleClose={() => handleChangeMulti(null, seller.seller_id)}
+                                                    label={(
+                                                        <div className="flex flex-row items-center px-2">
                                                             <ShippingGroupIcon src={item.group} baseMediaUrl={storeConfig.base_media_url} />
-                                                            <Typography letter="uppercase" variant="span" type="bold">
+                                                            <Typography letter="uppercase" variant="bd-2" type="bold">
                                                                 {t(`checkout:shippingGrouping:${item.group.replace('sg-', '')}`) ===
                                                                 `shippingGrouping.${item.group.replace('sg-', '')}`
                                                                     ? item.group.replace('sg-', '')
                                                                     : t(`checkout:shippingGrouping:${item.group.replace('sg-', '')}`)}
                                                             </Typography>
                                                         </div>
-                                                    </AccordionSummary>
-                                                    <AccordionDetails>
-                                                        <div className="column">
-                                                            {item.data.length !== 0 ? (
-                                                                <RadioMultiseller
-                                                                    value={selected.shipping}
-                                                                    onChange={handleShipping}
-                                                                    valueData={item.data}
-                                                                    CustomItem={DeliveryItem}
-                                                                    classContainer={styles.radioShiping}
-                                                                    storeConfig={storeConfig}
-                                                                    propsItem={{
-                                                                        borderBottom: false,
-                                                                        classContent: styles.listShippingGroup,
-                                                                    }}
-                                                                    isShipping
-                                                                />
-                                                            ) : null}
-                                                        </div>
-                                                    </AccordionDetails>
+                                                    )}
+                                                    classSummary={classNames(
+                                                        'border-x h-[45px] border-neutral-200',
+                                                        'pl-2 pr-4',
+                                                        keyIndex === 0 ? 'rounded-t-lg border-t' : '',
+                                                        open ? 'border-b' : '',
+                                                        keyIndex === shipping.length - 1 ? 'rounded-b-lg border-y' : '',
+                                                        (keyIndex > 0 && keyIndex < shipping.length - 0) ? 'border-t' : '',
+                                                        (open && keyIndex === shipping.length - 1) ? 'rounded-b-none' : ''
+                                                    )}
+                                                    classIcon="w-3 h-3"
+                                                    classContent={classNames(
+                                                        'border-x border-neutral-200 !mt-0',
+                                                        (open && keyIndex === shipping.length - 1) ? 'border-b rounded-b-lg' : '',
+                                                    )}
+                                                >
+                                                    <div className="flex flex-col">
+                                                        {item.data.length !== 0 ? (
+                                                            <RadioMultiseller
+                                                                value={selected.shipping}
+                                                                onChange={handleShipping}
+                                                                valueData={item.data}
+                                                                CustomItem={DeliveryItem}
+                                                                classContainer="w-full"
+                                                                storeConfig={storeConfig}
+                                                                propsItem={{
+                                                                    borderBottom: false,
+                                                                    classContent: '',
+                                                                }}
+                                                                className="!mb-0"
+                                                                classNames={{
+                                                                    radioGroupClasses: '!gap-2'
+                                                                }}
+                                                                isShipping
+                                                            />
+                                                        ) : null}
+                                                    </div>
                                                 </Accordion>
                                             );
                                         }
                                     })}
                             </div>
 
-                            <div className={styles.listError}>
+                            <div className="flex flex-col gap-2 mt-5">
                                 {error &&
                                     error.length > 0 &&
                                     error.map((msg, key) => (
-                                        <Alert key={key} style={{ fontSize: 10, marginBottom: 5 }} severity="error">
+                                        <Alert key={key} className="my-4" severity="error">
                                             {msg}
                                         </Alert>
                                     ))}
@@ -441,57 +432,66 @@ const ShippingView = (props) => {
                 ));
             } else {
                 content = (
-                    <div className="column">
-                        <div className={styles.paymentExpansionContainer}>
+                    <div className="flex flex-col">
+                        <div className="">
                             {shipping.map((item, keyIndex) => {
                                 if (item.data.length !== 0) {
+                                    const open = expanded === keyIndex || (expanded === null && item.active)
+                                    || (!itemActive && expanded === null && keyIndex === 0);
                                     return (
                                         <Accordion
-                                            expanded={
-                                                expanded === keyIndex || // if key index same with expanded active
-                                                (item.active && expandedActive) || // expand if item active and not change expand
-                                                (!itemActive && expandedActive && keyIndex === 0)
-                                            } // if dont have item active, set index 0 to active
-                                            onChange={handleChange(keyIndex)}
                                             key={keyIndex}
-                                        >
-                                            <AccordionSummary
-                                                aria-controls="panel1d-content"
-                                                id={`panel-${item.group}`}
-                                                expandIcon={<Arrow className={styles.icon} />}
-                                                IconButtonProps={{
-                                                    className: 'checkout-shippingGroupping-expand',
-                                                }}
-                                            >
-                                                <div className={styles.labelAccordion}>
+                                            open={open}
+                                            handleOpen={() => setExpanded(keyIndex)}
+                                            handleClose={() => setExpanded(null)}
+                                            label={(
+                                                <div className="flex flex-row items-center px-2">
                                                     <ShippingGroupIcon src={item.group} baseMediaUrl={storeConfig.base_media_url} />
-                                                    <Typography letter="uppercase" variant="span" type="bold">
+                                                    <Typography letter="uppercase" variant="bd-2" type="bold">
                                                         {t(`checkout:shippingGrouping:${item.group.replace('sg-', '')}`) ===
-                                                        `shippingGrouping.${item.group.replace('sg-', '')}`
+                                                            `shippingGrouping.${item.group.replace('sg-', '')}`
                                                             ? item.group.replace('sg-', '')
                                                             : t(`checkout:shippingGrouping:${item.group.replace('sg-', '')}`)}
                                                     </Typography>
                                                 </div>
-                                            </AccordionSummary>
-                                            <AccordionDetails>
-                                                <div className="column">
-                                                    {item.data.length !== 0 ? (
-                                                        <Radio
-                                                            value={selected.shipping}
-                                                            onChange={handleShipping}
-                                                            valueData={item.data}
-                                                            CustomItem={DeliveryItem}
-                                                            classContainer={styles.radioShiping}
-                                                            storeConfig={storeConfig}
-                                                            propsItem={{
-                                                                borderBottom: false,
-                                                                classContent: styles.listShippingGroup,
-                                                            }}
-                                                            disabled={loading.order || loading.all}
-                                                        />
-                                                    ) : null}
-                                                </div>
-                                            </AccordionDetails>
+                                            )}
+                                            classSummary={classNames(
+                                                'border-x h-[55px] border-neutral-200',
+                                                'pl-2 pr-4',
+                                                keyIndex === 0 ? 'rounded-t-lg border-t' : '',
+                                                open ? 'border-b' : '',
+                                                keyIndex === shipping.length - 1 ? 'rounded-b-lg border-y' : '',
+                                                (keyIndex > 0 && keyIndex < shipping.length - 0) ? 'border-t' : '',
+                                                (open && keyIndex === shipping.length - 1) ? 'rounded-b-none' : ''
+                                            )}
+                                            classIcon="w-3 h-3"
+                                            classContent={classNames(
+                                                'border-x border-neutral-200 !mt-0',
+                                                (open && keyIndex === shipping.length - 1) ? 'border-b rounded-b-lg' : '',
+                                            )}
+                                        >
+                                            <div className="flex flex-col p-4">
+                                                {item.data.length !== 0 ? (
+                                                    <Radio
+                                                        value={selected.shipping}
+                                                        onChange={handleShipping}
+                                                        data={item.data}
+                                                        CustomItem={DeliveryItem}
+                                                        classContainer=""
+                                                        storeConfig={storeConfig}
+                                                        propsItem={{
+                                                            borderBottom: false,
+                                                            classContent: '',
+                                                        }}
+                                                        className="!mb-0"
+                                                        classNames={{
+                                                            radioGroupClasses: '!gap-2'
+                                                        }}
+                                                        size="sm"
+                                                        disabled={loading.order || loading.all}
+                                                    />
+                                                ) : null}
+                                            </div>
                                         </Accordion>
                                     );
                                 }
@@ -499,11 +499,11 @@ const ShippingView = (props) => {
                             })}
                         </div>
 
-                        <div className={styles.listError}>
+                        <div className="flex flex-col gap-3 mt-4">
                             {error &&
                                 error.length > 0 &&
                                 error.map((msg, key) => (
-                                    <Alert key={key} style={{ fontSize: 10, marginBottom: 5 }} severity="error">
+                                    <Alert key={key} className="my-4" severity="error">
                                         {msg}
                                     </Alert>
                                 ))}
@@ -512,15 +512,23 @@ const ShippingView = (props) => {
                 );
             }
         } else {
-            content = <Typography variant="p">{t('checkout:noShipping')}</Typography>;
+            content = <Typography>{t('checkout:noShipping')}</Typography>;
         }
     } else {
-        content = <Typography variant="p">{t('checkout:noShipping')}</Typography>;
+        content = <Typography>{t('checkout:noShipping')}</Typography>;
     }
 
-    return isOnlyVirtualProductOnCart ? null : (
-        <div className={styles.block} id="checkoutShipping">
-            <Typography variant="h2" type="bold" letter="uppercase">
+    if (isOnlyVirtualProductOnCart) return <></>;
+
+    return (
+        <div
+            id="checkoutShipping"
+            className={classNames(
+                'flex flex-col border-b border-b-neutral-200',
+                'w-full py-6 gap-4',
+            )}
+        >
+            <Typography variant="h2" className="uppercase">
                 {t('checkout:shippingMethod')}
             </Typography>
             {content}

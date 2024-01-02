@@ -1,5 +1,6 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable semi-style */
 import Typography from '@common_typography';
-import useStyles from '@core_modules/paypal/pages/review/components/PaymentMethod/style';
 import classNames from 'classnames';
 import React from 'react';
 
@@ -29,24 +30,24 @@ const PaymentMethod = (props) => {
         };
     }
 
-    const styles = useStyles();
+    return null;
 
-    return (
-        <div className="row">
-            <div className="col-xs-12">
-                <Typography variant="span" letter="capitalize" type="bold">
-                    {t('checkout:paymentMethod')}
-                </Typography>
-            </div>
-            <div className={classNames('col-xs-12', styles.detail)}>
-                <Typography variant="p" letter="capitalize">
-                    {paymentMethod.title || ''}
-                </Typography>
-                {paymentMethod && paymentMethod.email_address && <Typography variant="p">{paymentMethod.email_address}</Typography>}
-                <img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/pp-acceptance-medium.png" alt="Buy now with paypal" />
-            </div>
-        </div>
-    );
+    // return (
+    //     <div className="flex flex-row">
+    //         <div className="xs:basis-full">
+    //             <Typography variant="span" letter="capitalize" type="bold">
+    //                 {t('checkout:paymentMethod')}
+    //             </Typography>
+    //         </div>
+    //         <div className={classNames('xs:basis-full', styles.detail)}>
+    //             <Typography variant="p" letter="capitalize">
+    //                 {paymentMethod.title || ''}
+    //             </Typography>
+    //             {paymentMethod && paymentMethod.email_address && <Typography variant="p">{paymentMethod.email_address}</Typography>}
+    //             <img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/pp-acceptance-medium.png" alt="Buy now with paypal" />
+    //         </div>
+    //     </div>
+    // );
 };
 
 export default PaymentMethod;

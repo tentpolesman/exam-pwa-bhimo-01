@@ -1,7 +1,6 @@
 /* eslint-disable consistent-return */
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-// import TextField from '@material-ui/core/TextField';
 import dynamic from 'next/dynamic';
 
 const NavbarV1 = dynamic(() => import('@core_modules/theme/components/header/desktop/components/v1'));
@@ -28,11 +27,7 @@ const ViewTopNavigation = (props) => {
         }
     }
 
-    return (
-        <div>
-            {content}
-        </div>
-    );
+    return content;
 };
 
 export default ViewTopNavigation;

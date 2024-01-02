@@ -1,8 +1,9 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable semi-style */
 import { StandaloneSearchBox } from 'react-google-maps/lib/components/places/StandaloneSearchBox';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import TextField from '@material-ui/core/TextField';
-import SearchIcon from '@material-ui/icons/SearchOutlined';
 import { useTranslation } from 'next-i18next';
+import TextField from '@common/Forms/TextField';
+import Magnify from '@heroicons/react/24/outline/MagnifyingGlassIcon';
 
 const SearchBox = React.forwardRef((props, ref) => {
     const { t } = useTranslation(['common']);
@@ -19,13 +20,8 @@ const SearchBox = React.forwardRef((props, ref) => {
                 onChange={(e) => props.setValue(e.target.value)}
                 fullWidth
                 placeholder={t('common:search:location')}
-                InputProps={{
-                    startAdornment: (
-                        <InputAdornment position="start">
-                            <SearchIcon color="secondary" />
-                        </InputAdornment>
-                    ),
-                }}
+                rightIcon={<Magnify />}
+                className="!w-full"
             />
         </StandaloneSearchBox>
     );

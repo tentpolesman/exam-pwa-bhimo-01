@@ -1,29 +1,26 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-// import Badge from '@material-ui/core/Badge';
-// import NotificationsIcon from '@material-ui/icons/Notifications';
+import BellIcon from '@heroicons/react/24/solid/BellIcon';
+import cx from 'classnames';
 import Link from 'next/link';
+
+import BadgeCounter from '@common_badgecounter';
 
 // eslint-disable-next-line no-unused-vars
 const Content = ({ withLink, totalUnread }) => {
     if (withLink) {
         return (
-            <Link href={withLink && '/inboxnotification/notification'} className="cursor-pointer m-[20px]">
-                {/* <Badge color="secondary" badgeContent={totalUnread || 0}>
-                    <NotificationsIcon color="secondary" />
-                </Badge> */}
-                <i className="fa fa-bell text-[20px]" aria-hidden="true" />
-                {/* <div className="bg-blue-500">test</div> */}
+            <Link href={withLink && '/inboxnotification/notification'} className={cx('cursor-pointer', 'group')}>
+                <BadgeCounter value={totalUnread}>
+                    <BellIcon className={cx('w-[24px]', 'text-neutral-600', 'hover:text-primary-700', 'group-hover:text-primary-700', 'mt-3')} />
+                </BadgeCounter>
             </Link>
         );
     }
 
     return (
-        <div className="cursor-pointer m-[20px]">
-            <i className="fa fa-bell" aria-hidden="true" />
-            {/* <Badge color="secondary" badgeContent={totalUnread || 0}>
-                <NotificationsIcon color="secondary" />
-            </Badge> */}
+        <div className={cx('cursor-pointer', 'group')}>
+            <BellIcon className={cx('w-[24px]', 'text-neutral-600', 'hover:text-primary-700', 'group-hover:text-primary-700', 'mt-3')} />
         </div>
     );
 };

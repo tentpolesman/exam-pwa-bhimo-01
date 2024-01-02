@@ -1,72 +1,67 @@
+/* eslint-disable object-curly-newline */
+/* eslint-disable @next/next/no-img-element */
+/* eslint-disable no-unused-vars */
+/* eslint-disable semi-style */
+import Alert from '@common/Alert';
 import Typography from '@common_typography';
-import useStyles from '@core_modules/order/pages/detail/components/TableListItem/style';
+
 import { formatPrice } from '@helper_currency';
-import Paper from '@material-ui/core/Paper';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Alert from '@material-ui/lab/Alert';
+
+import cx from 'classnames';
+
 import { basePath } from '@config';
 
-const TableListProduct = ({
-    data, t, currency, currencyCache,
-}) => {
-    const styles = useStyles();
+const TableListProduct = (props) => {
+    const { data, t, currency, currencyCache } = props;
+
     return (
-        <TableContainer component={Paper} className={styles.tableContainer}>
-            <Table className={styles.table} size="small" aria-label="a dense table">
-                <TableHead>
-                    <TableRow className={styles.tableRowHead}>
-                        <TableCell align="left">
-                            <Typography variant="span" type="bold">
-                                #
-                            </Typography>
-                        </TableCell>
-                        <TableCell align="left">
-                            <Typography variant="span" type="bold">
-                                {t('common:product:titleProduct')}
-                            </Typography>
-                        </TableCell>
-                        <TableCell align="left">
-                            <Typography variant="span" type="bold">
-                                SKU
-                            </Typography>
-                        </TableCell>
-                        <TableCell align="left">
-                            <Typography variant="span" type="bold">
-                                {t('common:title:note')}
-                            </Typography>
-                        </TableCell>
-                        <TableCell align="right">
-                            <Typography variant="span" type="bold">
-                                {t('common:title:price')}
-                            </Typography>
-                        </TableCell>
-                        <TableCell align="right">
-                            <Typography variant="span" type="bold">
-                                {t('common:title:shortQty')}
-                            </Typography>
-                        </TableCell>
-                        <TableCell align="right">
-                            <Typography variant="span" type="bold">
-                                {t('common:subtotal')}
-                            </Typography>
-                        </TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
+        <div className={cx('relative', 'overflow-x-auto', 'rounded-lg')}>
+            <table className={cx('mt-[30px]', 'shadow-none', 'w-full', 'border-[1px]', 'border-neutral-100')}>
+                <thead>
+                    <tr className={cx('mobile:max-tablet:hidden')}>
+                        <th className={cx('px-4', 'py-3')}>
+                            <Typography type="bold">#</Typography>
+                        </th>
+                        <th className={cx('px-4', 'py-3')}>
+                            <Typography type="bold">{t('common:product:titleProduct')}</Typography>
+                        </th>
+                        <th className={cx('px-4', 'py-3')}>
+                            <Typography type="bold">SKU</Typography>
+                        </th>
+                        <th className={cx('px-4', 'py-3')}>
+                            <Typography type="bold">{t('common:title:note')}</Typography>
+                        </th>
+                        <th className={cx('px-4', 'py-3')}>
+                            <Typography type="bold">{t('common:title:price')}</Typography>
+                        </th>
+                        <th className={cx('px-4', 'py-3')}>
+                            <Typography type="bold">{t('common:title:shortQty')}</Typography>
+                        </th>
+                        <th className={cx('px-4', 'py-3')}>
+                            <Typography type="bold">{t('common:subtotal')}</Typography>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
                     {data && data.length > 0 ? (
                         <>
                             {data.map((val, index) => (
-                                <TableRow className={styles.tableRowResponsive} key={index}>
-                                    <TableCell align="center">
-                                        <div className={styles.productImgContainer}>
+                                <tr
+                                    className={cx(
+                                        'mobile:max-tablet:grid',
+                                        'mobile:max-tablet:border-b-[1px]',
+                                        'mobile:max-tablet:border-b-neutral-200',
+                                        'mobile:max-tablet:p-2',
+                                        'even:bg-white',
+                                        'odd:bg-neutral-50',
+                                    )}
+                                    key={index}
+                                >
+                                    <td>
+                                        <div className={cx('h-[130px]', 'w-[105px]')}>
                                             <img
                                                 src={val.image_url || `${basePath}/assets/img/placeholder.png`}
-                                                className={styles.productImg}
+                                                className={cx('w-[105px]', 'h-auto')}
                                                 alt={val.name}
                                                 onError={(e) => {
                                                     e.target.onerror = null;
@@ -74,50 +69,32 @@ const TableListProduct = ({
                                                 }}
                                             />
                                         </div>
-                                    </TableCell>
-                                    <TableCell align="left">
-                                        <Typography variant="span" letter="capitalize">
-                                            {val.name}
-                                        </Typography>
-                                    </TableCell>
-                                    <TableCell align="left">
-                                        <Typography variant="span" letter="capitalize">
-                                            {val.sku}
-                                        </Typography>
-                                    </TableCell>
-                                    <TableCell align="left">
-                                        <Typography variant="span" letter="capitalize">
-                                            {val.note}
-                                        </Typography>
-                                    </TableCell>
-                                    <TableCell align="right">
-                                        <Typography variant="span" align="right" letter="capitalize">
-                                            {formatPrice(val.price_incl_tax, currency, currencyCache)}
-                                        </Typography>
-                                    </TableCell>
-                                    <TableCell align="right">
-                                        <Typography variant="span" align="right" letter="capitalize">
-                                            {val.qty_ordered}
-                                        </Typography>
-                                    </TableCell>
-                                    <TableCell align="right">
-                                        <Typography variant="span" align="right" letter="capitalize">
-                                            {formatPrice(val.row_total_incl_tax, currency, currencyCache)}
-                                        </Typography>
-                                    </TableCell>
-                                </TableRow>
+                                    </td>
+                                    <td className="tablet:text-center">
+                                        <Typography>{val.name}</Typography>
+                                    </td>
+                                    <td className="tablet:text-center">
+                                        <Typography>{val.sku}</Typography>
+                                    </td>
+                                    <td className="tablet:text-center">
+                                        <Typography>{val.note}</Typography>
+                                    </td>
+                                    <td className="tablet:text-center">
+                                        <Typography>{formatPrice(val.price_incl_tax, currency, currencyCache)}</Typography>
+                                    </td>
+                                    <td className="tablet:text-center">
+                                        <Typography>{val.qty_ordered}</Typography>
+                                    </td>
+                                    <td className="tablet:text-center">
+                                        <Typography>{formatPrice(val.row_total_incl_tax, currency, currencyCache)}</Typography>
+                                    </td>
+                                </tr>
                             ))}
                         </>
-                    ) : (
-                        <TableRow>
-                            <TableCell colSpan={6}>
-                                <Alert severity="warning">{t('order:notFound')}</Alert>
-                            </TableCell>
-                        </TableRow>
-                    )}
-                </TableBody>
-            </Table>
-        </TableContainer>
+                    ) : null}
+                </tbody>
+            </table>
+        </div>
     );
 };
 

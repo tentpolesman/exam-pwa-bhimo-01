@@ -1,35 +1,9 @@
+/* eslint-disable @next/next/no-img-element */
 import React from 'react';
-import MuiDialog from '@material-ui/core/Dialog';
-import Slide from '@material-ui/core/Slide';
-import { withStyles } from '@material-ui/core/styles';
-import MuiDialogContent from '@material-ui/core/DialogContent';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/CancelRounded';
+import Dialog from '@common_dialog';
 import Button from '@common_button';
+import XMarkIcon from '@heroicons/react/20/solid/XMarkIcon';
 import Typography from '@common_typography';
-
-const Transition = React.forwardRef((props, ref) => <Slide direction="up" ref={ref} {...props} />);
-
-const DialogContent = withStyles(() => ({
-    root: {
-        padding: 0,
-        background: 'transparent',
-    },
-}))(MuiDialogContent);
-
-const Dialog = withStyles(() => ({
-    root: {
-        padding: 0,
-        '& :first-child': {
-            padding: 0,
-        },
-    },
-    paper: {
-        boxShadow: 'none',
-        padding: 0,
-        background: 'white',
-    },
-}))(MuiDialog);
 
 const ModalXenditView = (props) => {
     const {
@@ -40,7 +14,6 @@ const ModalXenditView = (props) => {
 
     return (
         <Dialog
-            TransitionComponent={Transition}
             aria-labelledby="customized-dialog-title"
             open={open}
             disableBackdropClick
@@ -52,9 +25,8 @@ const ModalXenditView = (props) => {
                 },
             }}
         >
-            <IconButton
+            <Button
                 color="primary"
-                size="medium"
                 className="xendit-btn-close"
                 onClick={() => {
                     setOpen();
@@ -62,9 +34,9 @@ const ModalXenditView = (props) => {
                 }}
                 disabled={loadSimulate}
             >
-                <CloseIcon fontSize="large" />
-            </IconButton>
-            <DialogContent classes={{ root: 'modal-xendit-box' }}>
+                <XMarkIcon className="text-lg" />
+            </Button>
+            <div className="dialog-content p-0 bg-none">
                 {
                     payment_code === 'qr_codes' && mode && mode === 'test' && (
                         <div className="form qr-simulate">
@@ -75,7 +47,7 @@ const ModalXenditView = (props) => {
                                 onClick={() => handleSimulateQr()}
                                 loading={loadSimulate}
                             >
-                                <Typography variant="span" letter="uppercase" type="bold" color="white">
+                                <Typography variant="bd-2" letter="uppercase" type="bold" color="white">
                                     {t('common:button:simulateQrCode')}
                                 </Typography>
 
@@ -101,7 +73,7 @@ const ModalXenditView = (props) => {
                             />
                         )
                 }
-            </DialogContent>
+            </div>
             <style jsx global>
                 {`
 

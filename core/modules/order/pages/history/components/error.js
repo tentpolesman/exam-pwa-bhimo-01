@@ -1,16 +1,18 @@
-import classNames from 'classnames';
-import Alert from '@material-ui/lab/Alert';
-import useStyles from '@core_modules/order/pages/history/style';
+import cx from 'classnames';
+import Alert from '@common/Alert';
+import Typography from '@common_typography';
 
-const ErrorView = ({ type, message }) => {
-    const styles = useStyles();
-    return (
-        <div className={classNames(styles.container, styles.rowCenter)}>
-            <Alert className="m-15" severity={type}>
+const ErrorView = ({ type, message }) => (
+    <div className={cx('pt-5')}>
+        <Alert severity={type}>
+            <Typography
+                variant="p-2a"
+                className={cx()}
+            >
                 {message}
-            </Alert>
-        </div>
-    );
-};
+            </Typography>
+        </Alert>
+    </div>
+);
 
 export default ErrorView;

@@ -1,19 +1,21 @@
 /* eslint-disable react/no-danger */
 import React from 'react';
-import useStyles from '@core_modules/cms/components/cms-renderer/magezon/style';
+import cx from 'classnames';
 
 const MagezonRawHtml = (props) => {
     const {
         xs_hide, sm_hide, md_hide, lg_hide, content,
     } = props;
-    const styles = useStyles(props);
-    let classes = '';
-    if (xs_hide) classes += 'hidden-mobile ';
-    if (sm_hide) classes += 'hidden-sm ';
-    if (md_hide) classes += 'hidden-md ';
-    if (lg_hide) classes += 'hidden-lg ';
+
     return (
-        <div className={`${styles.container} ${classes}`}>
+        <div
+            className={cx('mgz-html', 'flex', 'flex-wrap', {
+                'max-sm:hidden': xs_hide,
+                'max-md:hidden': sm_hide,
+                'max-lg:hidden': md_hide,
+                'max-xl:hidden': lg_hide,
+            })}
+        >
             <div className="magezone-html" dangerouslySetInnerHTML={{ __html: content }} />
         </div>
     );

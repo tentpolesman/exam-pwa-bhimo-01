@@ -1,170 +1,105 @@
-/* eslint-disable no-console */
-/* eslint-disable no-use-before-define */
-import IconButton from '@material-ui/core/IconButton';
 import Typography from '@common_typography';
 import Image from '@common_image';
-import classNames from 'classnames';
 import RatingStar from '@common_ratingstar';
-import Divider from '@material-ui/core/Divider';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import CloseIcon from '@material-ui/icons/Close';
 import formatDate from '@helper_date';
-import Slide from '@material-ui/core/Slide';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
+import Dialog from '@common/Dialog';
 import Link from 'next/link';
 import React from 'react';
-import useStyles from '@core_modules/productreview/pages/default/components/style';
+import cx from 'classnames';
+import XMarkIcon from '@heroicons/react/24/solid/XMarkIcon';
 
-const Transition = React.forwardRef((props, ref) => (
-    <Slide direction="up" ref={ref} {...props} />
-));
 const ProductReview = (props) => {
-    const styles = useStyles();
     const {
-        open, setOpen, reviewItem, t, storeConfig,
+        open, setOpen, reviewItem, t,
     } = props;
-    console.log('prodrev', storeConfig);
-    const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
-    if (reviewItem) {
-        return (
-            <Dialog
-                open={open}
-                TransitionComponent={Transition}
-                onClose={setOpen}
-                maxWidth="sm"
-                fullWidth={!!isDesktop}
-                fullScreen={!isDesktop}
-            >
-                <div>
-                    <DialogContent dividers>
-                        <div className={classNames('col-md-12', styles.container)}>
-                            <IconButton
-                                style={{
-                                    position: 'absolute',
-                                    right: 5,
-                                    top: 0,
-                                }}
-                                edge="start"
+
+    if (!reviewItem) {
+        return <></>;
+    }
+
+    const ratingProduct = reviewItem?.product?.rating_summary ? parseInt(reviewItem.product.rating_summary, 10) / 20 : 0;
+
+    return (
+        <Dialog variant="plain" open={open} onClose={setOpen}>
+            <div>
+                <div
+                    className={cx(
+                        'desktop:w-[500px] tablet:w-[400px] mobile:w-[300px]',
+                        'bg-neutral-white',
+                        'rounded-[10px]',
+                        'p-[15px]',
+                        'm-[15px]',
+                    )}
+                >
+                    <div className={cx('overflow-y-auto', 'max-h-[85vh]')}>
+                        <div className={cx('pb-[10px]', 'flex justify-end')}>
+                            <div
                                 onClick={setOpen}
                                 aria-label="close"
+                                aria-hidden="true"
+                                className={cx('bg-neutral-white', 'h-[30px]', 'w-[30px]', 'hover:cursor-pointer')}
                             >
-                                <CloseIcon />
-                            </IconButton>
-                            <div className="row">
-                                <div className="col-md-5">
-                                    <Image
-                                        src={reviewItem.product.image.url}
-                                        lazy
-                                        height={300}
-                                        width={300}
-                                        storeConfig={storeConfig}
-                                    />
-                                </div>
-                                <div className="col-md-5 col">
-                                    <Typography variant="h1" align="left" style={{ textTransform: 'uppercase' }}>
-                                        {reviewItem.product.name}
-                                    </Typography>
-                                    <div style={{
-                                        display: 'flex',
-                                        flexDirection: 'row',
-                                        justifyContent: 'space-between',
-                                        marginTop: 15,
-                                    }}
-                                    >
-                                        <Typography variant="p" align="left">
-                                            <RatingStar value={
-                                                reviewItem.ratings_breakdown.length > 0
-                                                    ? reviewItem.ratings_breakdown[0].value : 0
-                                            }
-                                            />
-                                        </Typography>
-                                        <Typography variant="p" align="left">
-                                            1 &nbsp;
-                                            <Link href={`/${reviewItem.product.url_key}`} legacyBehavior>
-                                                {t('productreview:review')}
-                                            </Link>
-                                        </Typography>
-                                        <Typography variant="p" align="left">
-                                            <Link href={`/${reviewItem.product.url_key}`} legacyBehavior>
-                                                {t('productreview:addYourReview')}
-                                            </Link>
-                                        </Typography>
-                                    </div>
-                                </div>
+                                <XMarkIcon className="text-neutral-500" />
                             </div>
-                            <Typography
-                                variant="h6"
-                                align="left"
-                                style={{
-                                    marginTop: 40,
-                                    marginLeft: 0,
-                                }}
-                            >
-                                {t('productreview:yourReview')}
-                            </Typography>
-                            <Divider />
-                            <div style={{
-                                display: 'flex',
-                                marginTop: 20,
-                            }}
-                            >
-                                <div style={{
-                                    flex: 0.2,
-                                    display: 'flex',
-                                    justifyContent: 'space-between',
-                                }}
-                                >
-                                    <Typography variant="label" align="left">
-                                        {t('productreview:rating')}
-                                    </Typography>
-                                    <RatingStar value={
-                                        reviewItem.ratings_breakdown.length > 0
-                                            ? reviewItem.ratings_breakdown[0].value : 0
-                                    }
-                                    />
-                                </div>
-                            </div>
-                            <Typography
-                                variant="label"
-                                align="left"
-                                style={{
-                                    fontWeight: 'bold',
-                                    marginTop: 15,
-                                }}
-                            >
-                                {reviewItem.summary}
-                            </Typography>
-                            <Typography variant="label" align="left" style={{ marginTop: 15 }}>
-                                {reviewItem.text}
-                            </Typography>
-                            <Typography
-                                variant="label"
-                                align="left"
-                                style={{
-                                    marginTop: 15,
-                                    color: 'grey',
-                                }}
-                            >
-                                {t('productreview:submittedOn')}
-                                {' '}
-                                {
-                                    formatDate(reviewItem.created_at, 'MMM DD, YYYY')
-                                }
-                            </Typography>
                         </div>
-                    </DialogContent>
+
+                        <div className="flex desktop:flex-row tablet:flex-row mobile:flex-col">
+                            <div className={cx('desktop:w-[250px] tablet:w-[200px] mobile:w-[150px]', 'self-center')}>
+                                <Image src={reviewItem.product.image.url} height={250} width={250} heightMobile={150} widthMobile={150} />
+                            </div>
+                            <div className={cx('desktop:w-[calc(100%-250px)] tablet:w-[calc(100%-200px)]')}>
+                                <Typography variant="bd-b2" className={cx('uppercase', 'font-bold')}>
+                                    {reviewItem.product.name}
+                                </Typography>
+                                <div className={cx('flex', 'flex-col', 'justify-between', 'mt-[15px]', 'gap-[10px]')}>
+                                    <div className="flex">
+                                        <RatingStar value={ratingProduct} />
+                                    </div>
+                                    <Typography variant="bd-b2" className={cx('!text-primary-700', '!hover:underline')}>
+                                        <Link href={`/${reviewItem.product.url_key}`} legacyBehavior>
+                                            <a target="_blank" rel="noopener noreferrer">
+                                                {t('productreview:review')}
+                                            </a>
+                                        </Link>
+                                    </Typography>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className={cx('mt-[20px]', 'px-[10px]')}>
+                            <div className={cx('text-center', 'border-b-[2px]', 'border-neutral-100', 'pb-[10px]')}>
+                                <Typography variant="bd-2a" className={cx('ml-[0px]')}>
+                                    {t('productreview:yourReview')}
+                                </Typography>
+                            </div>
+
+                            <div className={cx('flex', 'mt-[10px]', 'flex-col')}>
+                                <div className={cx('flex', 'flex-row', 'content-center', 'gap-[15px]')}>
+                                    <Typography variant="bd-3a">{t('productreview:rating')}</Typography>
+                                    <RatingStar value={reviewItem.ratings_breakdown.length > 0 ? reviewItem.ratings_breakdown[0].value : 0} />
+                                </div>
+                            </div>
+                            <div className={cx('flex', 'justify-between', 'flex-col')}>
+                                <Typography variant="bd-3a" className={cx('!font-bold', 'mt-[10px]')}>
+                                    {reviewItem.summary}
+                                </Typography>
+                                <Typography variant="bd-3a" className={cx('mt-[15px]')}>
+                                    {reviewItem.text}
+                                </Typography>
+                                <Typography variant="bd-3a" className={cx('!text-neutral-500', 'mt-[15px]')}>
+                                    {t('productreview:submittedOn')}
+                                    {' '}
+                                    {formatDate(reviewItem.created_at, 'DD/MM/YYYY')}
+                                </Typography>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </Dialog>
-        );
-    }
-    return null;
+            </div>
+        </Dialog>
+    );
 };
 
-const DetailProductReview = (props) => (
-    <ProductReview
-        {...props}
-    />
-);
+const DetailProductReview = (props) => <ProductReview {...props} />;
 
 export default DetailProductReview;

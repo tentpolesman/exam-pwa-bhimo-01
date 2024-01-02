@@ -17,5 +17,9 @@
     "valid": "OTP benar",
     "invalid": "OTP tidak benar",
     "registerOtpFailed": "Nomor telepon {{phoneNumber}} telah terdaftar sebelumnya. Silahkan daftar dengan nomor lain.",
-    "registerOtpTooManyRetries": "Anda telah mengirim kode verifikasi otp terlalu banyak. Silahkan coba lagi nanti : {{phoneNumber}}"
+    "registerOtpTooManyRetries": "Anda telah mengirim kode verifikasi otp terlalu banyak. Silahkan coba lagi nanti : {{phoneNumber}}",
+    "sentOtp": "Kami telah mengirimkan OTP melalui SMS / WhatsApp ke nomor anda yang telah terdaftar",
+    "haventRecieved": "Belum menerima kodenya?",
+    "resendCode": "Kirim Ulang Kode",
+    "otpCode": "Kode OTP"
   }

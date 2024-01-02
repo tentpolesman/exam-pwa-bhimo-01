@@ -1,9 +1,21 @@
+/* eslint-disable object-curly-newline */
+/* eslint-disable react/destructuring-assignment */
 /* eslint-disable no-plusplus */
 import { getCategoryByName, getProduct, getSellerByName } from '@core_modules/theme/services/graphql';
+import cx from 'classnames';
 import { useTranslation } from 'next-i18next';
-import TextField from '@material-ui/core/TextField';
-import Autocomplete from '@material-ui/lab/Autocomplete';
 import Router from 'next/router';
+import React from 'react';
+
+import TextField from '@common_forms/TextField';
+import Popover from '@common_popover';
+import PriceFormat from '@common_priceformat';
+
+import Image from '@common_image';
+import BuildingStorefrontIcon from '@heroicons/react/24/outline/BuildingStorefrontIcon';
+
+import Magnify from '@heroicons/react/24/outline/MagnifyingGlassIcon';
+import XMarkIcon from '@heroicons/react/24/outline/XMarkIcon';
 
 let globalTimeout = null;
 
@@ -59,127 +71,284 @@ const generateItemData = (product, category, seller, enableMultiseller) => {
     return result;
 };
 
-export default function ComboBox(props) {
-    const {
-        placeholder, handleSearch, setValue, OptionsItem, forcePopupIcon = true, width = 300, maxHeight = '80vh', storeConfig,
-    } = props;
+export default function AutocompleteSearch(props) {
+    const { placeholder, handleSearch, storeConfig, popoverProps = {}, textfieldProps = {} } = props;
     const { t } = useTranslation(['common']);
-    const [item, setItem] = React.useState([]);
-    const [open, setOpen] = React.useState(false);
-    const [close, setClose] = React.useState(false);
-    const [search, setSearch] = React.useState('');
+    const [item, setItem] = React.useState(null);
+    const [isShow, setIsShow] = React.useState(false);
+    const [searchKeyword, setSearchKeyword] = React.useState('');
 
     const enableMultiseller = storeConfig.enable_oms_multiseller === '1';
 
-    const [actGetProduct, { loading, data, called }] = getProduct(search);
+    const [actGetProduct, { loading, data, called }] = getProduct(searchKeyword);
+    const [actGetCategory, { data: dCategory, loading: lCategory, called: cCategory }] = getCategoryByName(searchKeyword);
+    const [actGetSeller, { data: dSeller, loading: lSeller, called: cSeller }] = getSellerByName(searchKeyword);
 
-    const [actGetCategory, { data: dCategory }] = getCategoryByName(search);
-
-    const [actGetSeller, { data: dSeller }] = getSellerByName(search);
-
-    let itemData = [];
-    if (enableMultiseller && data && dCategory && dSeller && !open && !loading) {
-        itemData = generateItemData(data.products, dCategory.categoryList, dSeller.getSeller, enableMultiseller);
-    } else if (!enableMultiseller && data && dCategory && !open && !loading) {
-        itemData = generateItemData(data.products, dCategory.categoryList, enableMultiseller);
-    }
+    const inputRef = React.useRef(null);
 
     React.useEffect(() => {
-        if (itemData.length > 0) {
-            setItem(itemData);
-            if (!close) {
-                setOpen(true);
-            }
+        if (enableMultiseller && data && dCategory && dSeller && !loading && !lCategory && !lSeller) {
+            setItem(generateItemData(data.products, dCategory.categoryList, dSeller.getSeller, enableMultiseller));
+        } else if (!enableMultiseller && data && dCategory && !loading && !lCategory) {
+            setItem(generateItemData(data.products, dCategory.categoryList, enableMultiseller));
         }
-    }, [itemData.length]);
-
-    const startAutocomplete = (e) => {
-        setValue(e.target.value);
-        const val = e.target.value;
-        if (globalTimeout) {
-            clearTimeout(globalTimeout);
-        }
-
-        globalTimeout = setTimeout(() => {
-            setOpen(false);
-            setClose(false);
-            setSearch(val);
-            if (!called) {
-                actGetProduct();
-                actGetCategory();
-                actGetSeller();
-            }
-        }, 150);
-    };
+    }, [data, dCategory, dSeller, enableMultiseller, loading, lCategory, lSeller]);
 
     const handleKeyPress = (e) => {
         handleSearch(e);
     };
 
-    return (
-        <Autocomplete
-            id="combo-box-demo"
-            options={item}
-            getOptionLabel={(option) => option.name}
-            getOptionSelected={(option, value) => option.name === value.name}
-            forcePopupIcon={forcePopupIcon}
-            style={{ width, padding: '2px 5px 5px 5px' }}
-            openOnFocus={false}
-            open={open}
-            ListboxProps={{ style: { maxHeight, height: 'auto' } }}
-            renderOption={(option) => <OptionsItem {...option} />}
-            renderInput={(params) => (
-                <TextField
-                    id="standard-basic"
-                    label={placeholder || t('common:title:search')}
-                    margin="normal"
-                    onBlur={() => {
-                        setClose(true);
-                        setOpen(false);
-                    }}
-                    {...params}
-                />
-            )}
-            onInputChange={(e) => startAutocomplete(e)}
-            onKeyPress={(e) => handleKeyPress(e)}
-            onChange={(e, value) => {
-                if (value) {
-                    const sharedProp = {
-                        name: value?.name || '',
-                        small_image: value?.small_image || {},
-                        price: value?.price_range ? { priceRange: value.price_range, priceTiers: value.price_tiers || [] } : {},
-                    };
+    const handleAutocomplete = (e) => {
+        if (e.target.value === '') {
+            setSearchKeyword('');
+            setIsShow(false);
+            setItem(null);
+        } else {
+            if (globalTimeout) {
+                clearTimeout(globalTimeout);
+            }
 
-                    setOpen(false);
-                    setClose(true);
+            globalTimeout = setTimeout(() => {
+                if (!loading && !lCategory && !called && !cCategory) {
+                    actGetProduct();
+                    actGetCategory();
 
-                    if (value.type === 'seller') {
-                        Router.push(
-                            {
-                                pathname: '/[...slug]',
-                                query: {
-                                    productProps: JSON.stringify(sharedProp),
-                                },
-                            },
-                            `/seller/${value.id}`,
-                        );
-                    } else {
-                        Router.push(
-                            {
-                                pathname: '/[...slug]',
-                                query: {
-                                    productProps: JSON.stringify(sharedProp),
-                                },
-                            },
-                            `/${value.url_key}`,
-                        );
+                    if (enableMultiseller) {
+                        if (!cSeller) {
+                            actGetSeller();
+                        }
                     }
                 }
-            }}
-            onClose={() => {
-                setClose(true);
-                setOpen(false);
-            }}
-        />
+            }, 150);
+        }
+    };
+
+    React.useEffect(() => {
+        if (isShow === false) {
+            setSearchKeyword('');
+            setItem(null);
+        }
+    }, [isShow]);
+
+    React.useEffect(() => {
+        if (item !== null && item.length > 0) {
+            setIsShow(true);
+        }
+    }, [item]);
+
+    const PopoverContent = () => {
+        const PopoverItem = (propsPopoverItem, key) => {
+            const {
+                name, type, position, small_image, breadcrumbs, logo, city, seller_name,
+            } = propsPopoverItem;
+
+            const sharedProp = {
+                name: propsPopoverItem?.name || '',
+                small_image: propsPopoverItem?.small_image || {},
+                price: propsPopoverItem?.price_range
+                    ? {
+                        priceRange: propsPopoverItem.price_range,
+                        priceTiers: propsPopoverItem.price_tiers || [],
+                    }
+                    : {},
+            };
+
+            const handleOnClickItem = (onClickProps) => {
+                const { result: resultType, id: seller_id, url_key } = onClickProps;
+                if (resultType === 'seller') {
+                    Router.push(
+                        {
+                            pathname: '/[...slug]',
+                            query: {
+                                productProps: JSON.stringify(sharedProp),
+                            },
+                        },
+                        `/seller/${seller_id}`,
+                    );
+                } else {
+                    Router.push(
+                        {
+                            pathname: '/[...slug]',
+                            query: {
+                                productProps: JSON.stringify(sharedProp),
+                            },
+                        },
+                        `/${url_key}`,
+                    );
+                }
+            };
+
+            const citySplit = city?.split(',');
+            let breadcrumbsText = '';
+            if (breadcrumbs) {
+                for (let i = 0; i < breadcrumbs.length; i++) {
+                    const element = breadcrumbs[i];
+                    breadcrumbsText += `${element.category_name} / `;
+                }
+            }
+
+            return (
+                <>
+                    {type === 'product' ? (
+                        <>
+                            {position === 0 ? (
+                                <div className={cx('top-title', 'py-2', 'normal-case', 'font-semibold', 'leading-5', 'text-md')}>Products</div>
+                            ) : null}
+                            <div
+                                className={cx('grid', 'xs:grid-cols-[48px_1fr]', 'gap-x-2', 'py-2', 'hover:bg-neutral-50', 'hover:cursor-pointer')}
+                                key={key}
+                                onClick={() => handleOnClickItem(propsPopoverItem)}
+                                role="presentation"
+                            >
+                                <div className="image-container">
+                                    <Image alt={name} src={small_image.url} width={64} height={64} />
+                                </div>
+                                <div className={cx('title-search-item', 'text-md', 'normal-case', 'leading-5', 'font-[500]')}>
+                                    {name.length > 47 ? `${name.substr(0, 47)}...` : `${name}`}
+                                    <br />
+                                    <PriceFormat
+                                        priceRange={sharedProp.price.priceRange}
+                                        priceTiers={sharedProp.price.priceTiers}
+                                        textClassName={cx('!text-sm', '!leading-4', '!font-normal', '!text-neutral-500')}
+                                    />
+                                </div>
+                                {seller_name && enableMultiseller && (
+                                    <div className="info-seller">
+                                        <BuildingStorefrontIcon />
+                                        <div className="title-seller">{seller_name}</div>
+                                    </div>
+                                )}
+                            </div>
+                        </>
+                    ) : null}
+                    {type === 'category' ? (
+                        <>
+                            {position === 0 ? (
+                                <div className={cx('top-title', 'py-2', 'normal-case', 'font-semibold', 'leading-5', 'text-md')}>Categories</div>
+                            ) : null}
+                            <div
+                                className={cx('grid', 'py-2', 'hover:bg-neutral-50', 'hover:cursor-pointer')}
+                                key={key}
+                                onClick={() => handleOnClickItem(propsPopoverItem)}
+                                role="presentation"
+                            >
+                                <div className={cx('breadcrumbs', 'block', 'text-md', 'text-neutral-400')}>
+                                    {breadcrumbsText}
+                                    <div className="title-category inline-block text-md !text-neutral-600">{name}</div>
+                                </div>
+                            </div>
+                        </>
+                    ) : null}
+                    {type === 'seller' ? (
+                        <>
+                            {position === 0 ? (
+                                <div className={cx('top-title', 'py-2', 'normal-case', 'font-semibold', 'leading-5', 'text-md')}>Merchants</div>
+                            ) : null}
+                            <div
+                                className={cx('grid', 'xs:grid-cols-[48px_1fr]', 'gap-x-2', 'py-2', 'hover:bg-neutral-50', 'hover:cursor-pointer')}
+                                key={key}
+                                onClick={() => handleOnClickItem(propsPopoverItem)}
+                                role="presentation"
+                            >
+                                <div className="image-container">
+                                    <Image alt={name} src={logo} width={48} height={48} />
+                                </div>
+                                <div className="seller-info">{`${name} - ${citySplit ? citySplit[0] : ''}`}</div>
+                            </div>
+                        </>
+                    ) : null}
+                </>
+            );
+        };
+
+        return (
+            <div className={cx('px-4')}>
+                {isShow && searchKeyword.length !== 0 && (item === null || (typeof item === 'object' && item.length === 0)) ? (
+                    <div className={cx('breadcrumbs', 'block', 'text-sm', 'text-neutral-500', 'uppercase', 'py-4')}>{t('common:error:notFound')}</div>
+                ) : (
+                    item !== null && item.map((items, index) => <PopoverItem key={index} {...items} />)
+                )}
+            </div>
+        );
+    };
+
+    return (
+        <div className={cx('mobile:max-tablet:mt-2', 'mobile:max-tablet:pb-3', 'flex', 'flex-row', 'justify-center')}>
+            <Popover content={<PopoverContent />} open={isShow} setOpen={setIsShow} {...popoverProps}>
+                <TextField
+                    value={searchKeyword}
+                    placeholder={placeholder || t('common:search:title')}
+                    onChange={(e) => {
+                        setSearchKeyword(e.target.value);
+                        handleAutocomplete(e);
+                    }}
+                    ref={inputRef}
+                    rightIcon={searchKeyword === '' ? <Magnify /> : <XMarkIcon />}
+                    rightIconProps={{
+                        className: cx(
+                            'mobile:max-tablet:pr-3',
+                            'mobile:max-tablet:w-[40px]',
+                            'mobile:max-tablet:h-[44px]',
+                            'tablet:max-desktop:w-[42px]',
+                            'tablet:max-desktop:h-[44px]',
+                            'desktop:w-[42px]',
+                            'desktop:h-[46px]',
+                            'desktop:p-[10px]',
+                            'text-neutral-600',
+                            'bg-neutral-100',
+                            'rounded-r-lg',
+                            'rounded-l-none',
+                            'tablet:max-desktop:py-[14px]',
+                            'hover:cursor-pointer',
+                            'border-b-[1px]',
+                            'border-r-[1px]',
+                            'border-t-[1px]',
+                            'border-neutral-200',
+                        ),
+                        onClick: () => {
+                            setSearchKeyword('');
+                            setIsShow(false);
+                            setItem(null);
+                        },
+                    }}
+                    onKeyPress={(e) => {
+                        handleKeyPress({
+                            key: e.key,
+                            target: {
+                                value: searchKeyword,
+                            },
+                        });
+                    }}
+                    className={cx(
+                        'mobile:max-tablet:w-[87.5vw]',
+                        'tablet:max-desktop:w-[100%]',
+                        'tablet:max-desktop:max-w-[480px]',
+                        'desktop:w-[560px]',
+                        'border-none',
+                        textfieldProps?.className || '',
+                    )}
+                    inputProps={{
+                        className:
+                            // eslint-disable-next-line max-len
+                            cx(
+                                'placeholder:text-neutral-400',
+                                'bg-neutral-100',
+                                'rounded-r-none',
+                                'rounded-l-lg',
+                                'pl-4',
+                                'py-[12px]',
+                                'tablet:max-desktop:w-[380px]',
+                                'desktop:w-[520px]',
+                                'mobile:max-desktop:h-[44px]',
+                                'leading-[20px]',
+                                'border-t-[1px]',
+                                'border-l-[1px]',
+                                'border-b-[1px]',
+                                'border-neutral-200',
+                            ),
+                    }}
+                />
+            </Popover>
+        </div>
     );
 }

@@ -1,12 +1,10 @@
 /* eslint-disable indent */
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-// import TextField from '@material-ui/core/TextField';
-import SearchIcon from '@material-ui/icons/Search';
 import NotificationBell from '@plugin_notificationbell';
 import ShoppingBagIcon from '@plugin_shoppingbag';
 import ProductCompareIcon from '@core_modules/catalog/plugins/ProductCompare';
-import IconButton from '@material-ui/core/IconButton';
+import Button from '@common_button';
 import Link from 'next/link';
 import DesktopInstallApp from '@core_modules/theme/components/custom-install-popup/desktop';
 import Menu from '@core_modules/theme/components/header/desktop/components/v3/mcategory';
@@ -41,7 +39,7 @@ const ViewTopNavigation = (props) => {
 
     return (
         <div id="header-inner">
-            <div className="row header-top">
+            <div className="flex flex-row header-top">
                 <main style={{ width: '97%' }}>
                     {enablePopupInstallation ? <DesktopInstallApp appName={appName} installMessage={installMessage} /> : null}
                     <TopMenu
@@ -75,8 +73,8 @@ const ViewTopNavigation = (props) => {
                             </div>
                         </div>
                         <div className="header-middle__center">
-                            <div className="row menu-category">
-                                <div className="col-xs-12 menu-middle">
+                            <div className="flex flex-row menu-category">
+                                <div className="xs:basis-full menu-middle">
                                     {loading ? null : <Menu vesMenuConfig={vesMenuConfig} data={data} storeConfig={storeConfig} />}
                                 </div>
                             </div>
@@ -114,9 +112,9 @@ const ViewTopNavigation = (props) => {
                                         storeConfig={storeConfig}
                                     />
                                     <div className="search-icon">
-                                        <IconButton disabled={value === ''} edge="start" onClick={searchByClick} aria-label="close">
-                                            <SearchIcon />
-                                        </IconButton>
+                                        <Button disabled={value === ''} edge="start" onClick={searchByClick} aria-label="close">
+                                            {/* <SearchIcon /> */}
+                                        </Button>
                                     </div>
                                 </div>
                             </div>
@@ -125,8 +123,11 @@ const ViewTopNavigation = (props) => {
                 </div>
             </main>
             <div className="header-tab">
-                <div className="row menu-category">
-                    <div className="col-xs-12">{loading ? null : <Menu vesMenuConfig={vesMenuConfig} data={data} storeConfig={storeConfig} />}</div>
+                <div className="flex flex-row menu-category">
+                    <div className="xs:basis-full">
+                        {loading ? null : <Menu vesMenuConfig={vesMenuConfig} data={data} storeConfig={storeConfig} />}
+
+                    </div>
                 </div>
                 <div className="header-small__menu">
                     {loading ? null : <Menu vesMenuConfig={vesMenuConfig} data={data} storeConfig={storeConfig} />}

@@ -4,47 +4,22 @@
 /* eslint-disable react/no-danger */
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useRef } from 'react';
-import { WHITE, PRIMARY } from '@theme_color';
-import getPath from '@helper_getpath';
-import { setResolver, getResolver } from '@helper_localstorage';
-import classNames from 'classnames';
-import Link from 'next/link';
-import dynamic from 'next/dynamic';
 import CmsRenderer from '@core_modules/cms/components/cms-renderer';
-import '@fortawesome/fontawesome-free/css/all.min.css';
-import 'animate.css';
-import css from 'styled-jsx/css';
+import getPath from '@helper_getpath';
+import { getResolver, setResolver } from '@helper_localstorage';
+// import { PRIMARY, WHITE } from '@theme_color';
+import cx from 'classnames';
+import dynamic from 'next/dynamic';
+import Link from 'next/link';
+import React, { useRef } from 'react';
 
 const MenuChildren = dynamic(() => import('@common_headerdesktop/components/v1/mcategoryChildren'), { ssr: false });
-
-const generateMenuStyles = (props) => {
-    const {
-        bg_color, color, bg_hover_color, hover_color,
-        dropdown_bgcolor, dropdown_animation_time,
-    } = props;
-
-    return css.resolve`
-        a {
-            background-color: ${bg_color ? `${bg_color} !important` : WHITE};
-            color: ${color ? `${color} !important` : PRIMARY};
-        }
-        a:hover {
-            background-color: ${bg_hover_color ? `${bg_hover_color} !important` : '#F3F3F3'};
-            color: ${hover_color ? `${hover_color} !important` : '#FF0000'};
-        }
-        .mega-menu {
-            background-color: ${dropdown_bgcolor || WHITE};
-            animation-duration: ${dropdown_animation_time || '1'}s;
-        }
-    `;
-};
 
 const Menu = (props) => {
     const { data, storeConfig } = props;
 
     const cmsPages = storeConfig && storeConfig.cms_page ? storeConfig.cms_page.split(',') : [];
-    let menu = storeConfig.pwa.ves_menu_enable ? data?.vesMenu?.items : data?.categoryList[0].children;
+    let menu = storeConfig.pwa.ves_menu_enable ? data?.vesMenu?.items : data?.categories?.items[0]?.children;
     if (!menu) {
         menu = [];
     }
@@ -84,33 +59,37 @@ const Menu = (props) => {
         } else {
             urlResolver[link] = {
                 type: 'CATEGORY',
-                id: cat.id,
+                id: cat.uid,
             };
             await setResolver(urlResolver);
         }
     };
+
+    const chevronDownSvg = `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 inline-block ml-1">
+            <path
+                fill-rule="evenodd"
+                d="M12.53 16.28a.75.75 0 01-1.06 0l-7.5-7.5a.75.75 0 011.06-1.06L12 14.69l6.97-6.97a.75.75 0 111.06 1.06l-7.5 7.5z"
+                clip-rule="evenodd"
+            />
+        </svg>
+    `;
+
     return (
-        <div className="menu-wrapper" role="navigation">
+        <nav className="menu-wrapper" role="navigation">
             <ul className="nav" role="menubar" id="header-nav-menubar">
                 {menu.map((val, idx) => {
                     if ((val.include_in_menu || storeConfig.pwa.ves_menu_enable) && val.name) {
-                        const { className, styles } = generateMenuStyles(val);
-
                         const linkEl = useRef(null);
                         const megaMenuRef = useRef(null);
+                        const refLi = useRef(null);
 
                         let prefix = '';
-                        if (val.icon_classes !== '') {
-                            prefix = `<i class='${val.icon_classes}'></i>`;
-                        }
-                        if (val.show_icon === true && val.icon !== '') {
-                            prefix += `<img src='${val.icon}' />`;
-                        }
 
                         prefix += ` ${val.name} `;
 
-                        if (val.caret !== '') {
-                            prefix += `<i class='${val.caret}'></i>`;
+                        if (val.children.length > 0) {
+                            prefix += chevronDownSvg;
                         }
 
                         const generatedLink = generateLink(val);
@@ -120,6 +99,7 @@ const Menu = (props) => {
                                 key={idx}
                                 role="menuitem"
                                 id={`header-menuitem-${idx}`}
+                                ref={refLi}
                                 onMouseEnter={() => {
                                     if (megaMenuRef && val.dropdown_animation_in) {
                                         megaMenuRef.current.classList.add('animate__animated');
@@ -132,12 +112,30 @@ const Menu = (props) => {
                                         megaMenuRef.current.classList.remove(`animate__${val.dropdown_animation_in}`);
                                     }
                                 }}
+                                className={cx(
+                                    'text-md',
+                                    'font-medium',
+                                    '!leading-lg',
+                                    'tracking-normal',
+                                    'px-4',
+                                    'py-[13px]',
+                                    'hover:text-primary-700',
+                                )}
                             >
                                 {val.link && val.link !== '#' ? (
                                     <>
-                                        {val.before_html && <div dangerouslySetInnerHTML={{ __html: val.before_html }} />}
+                                        {val.before_html && (
+                                            <div
+                                                dangerouslySetInnerHTML={{
+                                                    __html: val.before_html,
+                                                }}
+                                            />
+                                        )}
                                         <Link
-                                            href={{ pathname: generatedLink[0], query: generatedLink[1] }}
+                                            href={{
+                                                pathname: generatedLink[0],
+                                                query: generatedLink[1],
+                                            }}
                                             as={generatedLink[1]}
                                             prefetch={false}
                                             legacyBehavior
@@ -158,19 +156,31 @@ const Menu = (props) => {
                                                         linkEl.current.innerHTML = linkEl.current.innerHTML.replace(val.hover_caret, val.caret);
                                                     }
                                                 }}
-                                                className={className}
                                             />
                                         </Link>
-                                        {val.after_html && <div dangerouslySetInnerHTML={{ __html: val.after_html }} />}
-                                        {val.children.length > 0 ? <div className="pointer" /> : null}
+                                        {val.after_html && (
+                                            <div
+                                                dangerouslySetInnerHTML={{
+                                                    __html: val.after_html,
+                                                }}
+                                            />
+                                        )}
                                     </>
                                 ) : (
-                                    <a href="#" dangerouslySetInnerHTML={{ __html: val.name }} />
+                                    <Link key={idx} href={generateLink(val)[0]} as={generateLink(val)[1]} prefetch={false} legacyBehavior>
+                                        <a
+                                            onClick={() => handleClick(val)}
+                                            dangerouslySetInnerHTML={{
+                                                __html: prefix !== '' ? `${prefix}` : val.name,
+                                            }}
+                                        />
+                                    </Link>
                                 )}
 
                                 {val.children.length > 0 ? (
                                     <div
-                                        className={classNames(className, 'mega-menu', 'grid')}
+                                        className={cx('mega-menu', 'grid', 'bg-neutral-white', 'shadow-md', 'grid-cols-1', 'rounded-lg')}
+                                        style={{ left: `${refLi.offsetLeft}px` }}
                                         aria-hidden="true"
                                         role="menu"
                                         ref={megaMenuRef}
@@ -188,7 +198,7 @@ const Menu = (props) => {
                                         )}
                                     </div>
                                 ) : null}
-                                {styles}
+                                {/* {styles} */}
                             </li>
                         );
                     }
@@ -201,49 +211,29 @@ const Menu = (props) => {
                         display: grid;
                     }
                     /* ves menu config */
-                    .header-html, .footer-html {
+                    .header-html,
+                    .footer-html {
                         color: black;
                     }
-                    .header-html ul, .footer-html ul {
+                    .header-html ul,
+                    .footer-html ul {
                         display: flex;
                         align-items: center;
                         height: 100%;
                     }
-                    .header-html ul li, .footer-html ul li {
+                    .header-html ul li,
+                    .footer-html ul li {
                         text-align: center;
                         flex-grow: 1;
                     }
                     .main-content {
                         display: flex;
                     }
-                    /* mini reset */
-                    .nav {
-                        width: 100%;
-                    }
-                    .nav,
-                    .nav a,
-                    .nav form,
-                    .nav input,
-                    .nav li,
-                    .nav ul {
-                        border: none;
-                        margin: 0;
-                        padding: 0;
-                    }
                     .nav a {
                         text-decoration: none;
                     }
                     .nav li {
                         list-style: none;
-                    }
-
-                    /* menu container */
-                    .nav {
-                        height: 49px;
-                        cursor: default;
-                        display: inline-block;
-                        position: relative;
-                        z-index: 500;
                     }
 
                     /* menu list */
@@ -254,14 +244,11 @@ const Menu = (props) => {
                     /* menu links */
                     .nav > li > a {
                         display: block;
-                        font-weight: bold;
-                        line-height: 3.5;
-                        padding: 0 1.25em;
                         transition: all 0.3s ease;
-                        z-index: 510;
+                        z-index: 20;
                         position: relative;
                     }
-                    .nav > li:hover > a  + .pointer {
+                    .nav > li:hover > a + .pointer {
                         visibility: visible;
                     }
                     .pointer {
@@ -270,7 +257,7 @@ const Menu = (props) => {
                         width: 0;
                         height: 0;
                         border-style: solid;
-                        border-width: 0 7.5px 13.0px 7.5px;
+                        border-width: 0 7.5px 13px 7.5px;
                         border-color: transparent transparent #212426 transparent;
                     }
                     .nav > li:first-child > a {
@@ -284,7 +271,7 @@ const Menu = (props) => {
                         height: 3.5em;
                         position: relative;
                         width: inherit;
-                        z-index: 510;
+                        z-index: 20;
                     }
                     .nav-search input[type='text'] {
                         background: #372f2b;
@@ -324,63 +311,16 @@ const Menu = (props) => {
                     }
                     /* menu dropdown */
                     .mega-menu {
-                        background: #fff;
-                        border: 1px solid #ddd;
-                        border-top: 5px solid #000000;
-                        border-radius: 0 0 3px 3px;
                         opacity: 0;
                         position: absolute;
                         transition: all 0s ease 0s;
                         visibility: hidden;
-                        width: 1000px;
-                        left: 0;
                         margin-left: 0%;
-                        min-height: 300px;
-                        grid-template-columns: 1fr;
-
                     }
                     li:hover > .mega-menu {
                         opacity: 1;
                         overflow: visible;
                         visibility: visible;
-
-                    }
-
-                    @media (max-width: 1249px) {
-                        .mega-menu {
-                            background: #fff;
-                            border: 1px solid #ddd;
-                            border-top: 5px solid #000000;
-                            border-radius: 0 0 3px 3px;
-                            opacity: 0;
-                            position: absolute;
-                            transition: all 0s ease 0s;
-                            visibility: hidden;
-                            width: 1000px;
-                            left: 0;
-                            padding: auto;
-                            margin: auto;
-                            min-height: 300px; 
-                        }
-                        li:hover > .mega-menu {
-                            opacity: 1;
-                            overflow: visible;
-                            visibility: visible;
-                        }
-                        .nav-column a {
-                            color: #000000 !important;
-                            display: block;
-                            font-weight: bold;
-                            line-height: 1.75;
-                            margin: 0;
-                            padding: 7px;
-                        }
-                    }
-                    
-                    @media (min-width: 1600px) {
-                        .mega-menu {
-                            width: 1200px;
-                        }
                     }
 
                     /* menu content */
@@ -393,12 +333,12 @@ const Menu = (props) => {
                         padding: 7px;
                     }
                     .nav-column a:hover {
-                        color: #000000 !important;
+                        color: #be1f93 !important;
                     }
 
                     .nav-column .active {
-                        color: #000000 !important;
-                        background: #DCDCDC;
+                        color: #be1f93 !important;
+                        background: #ffffff;
                     }
                     .nav-column h3 {
                         color: #372f2b;
@@ -409,19 +349,18 @@ const Menu = (props) => {
                         text-transform: uppercase;
                     }
                     .cat-label-v2 {
-                        top: -6px;
-                        position: absolute;
-                        background: red;
-                        z-index: 99;
-                        left: 10px;
-                        height: 20px;
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
+                        background: #fef2f2;
+                        color: #dc2626;
+                        font-size: 10px;
+                        font-style: normal;
+                        font-weight: 700;
+                        line-height: 12px;
+                        letter-spacing: 0.1px;
+                        text-transform: uppercase;
                     }
                 `}
             </style>
-        </div>
+        </nav>
     );
 };
 

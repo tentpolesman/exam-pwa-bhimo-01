@@ -1,19 +1,15 @@
-import { debuging } from '@config';
-import { useTranslation } from 'next-i18next';
-import Alert from '@material-ui/lab/Alert';
-import { getVesMenu } from '@core_modules/theme/services/graphql/index';
 import React from 'react';
 import Router from 'next/router';
 import getPath from '@helper_getpath';
-import { setResolver, getResolver } from '@helper_localstorage';
 import CategorySkeleton from '@common_searchmodal/CategorySkeleton';
 import SubVesMenu from '@common_searchmodal/SubVesMenu';
 import VesMenu from '@common_searchmodal/VesMenu';
+import { debuging } from '@config';
+import { useTranslation } from 'next-i18next';
+import { getVesMenu } from '@core_modules/theme/services/graphql/index';
+import { setResolver, getResolver } from '@helper_localstorage';
 
 const CategoryWrapper = ({ handleCloseModal = () => {}, storeConfig = {} }) => {
-    // const {
-    //     openedCategory, showCat, openSub, slideCat, showSubCat, closeSub,
-    // } = props;
     const { t } = useTranslation(['common']);
     const [dataCat, setDataCat] = React.useState(null);
     const [historyData, setHistoryData] = React.useState([]);
@@ -47,18 +43,18 @@ const CategoryWrapper = ({ handleCloseModal = () => {}, storeConfig = {} }) => {
     if (error) {
         return (
             <div>
-                <Alert className="m-15" severity="error">
+                <div className="alert m-15 p-2 bg-red-500 text-neutral-white">
                     {debuging.originalError ? error.message.split(':')[1] : t('common:error:fetchError')}
-                </Alert>
+                </div>
             </div>
         );
     }
     if (!data) {
         return (
             <div>
-                <Alert className="m-15" severity="error">
+                <div className="alert m-15 p-2 bg-red-500 text-neutral-white">
                     {t('common:error:notFound')}
-                </Alert>
+                </div>
             </div>
         );
     }

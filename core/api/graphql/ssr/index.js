@@ -1,14 +1,14 @@
 /* eslint-disable no-console */
 /* eslint-disable no-nested-ternary */
 const { GraphQLClient } = require('graphql-request');
-const { graphqlEndpoint, storeCode } = require('../../../../swift.config');
+const { graphqlEndpoint, storeCode, customerTokenKey } = require('../../../../swift.config');
 const { getAppEnv } = require('../../../helpers/env');
 
 function gqlSSR(query, variables = {}, context = {}, config = {}) {
     let token = '';
     if (context.session || context.headers) {
-        token = context.session.token
-            ? context.session.token
+        token = context.cookies[customerTokenKey]
+            ? context.cookies[customerTokenKey]
             : context.headers.authorization
                 ? context.headers.authorization
                 : '';

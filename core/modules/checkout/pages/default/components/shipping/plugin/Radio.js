@@ -2,24 +2,20 @@
 /* eslint-disable react/forbid-prop-types */
 /* eslint-disable max-len */
 /* eslint-disable no-unused-expressions */
-import useStyles from '@common_forms/Radio/style';
 import Typography from '@common_typography';
+import Radio from '@common_forms/Radio';
+import cx from 'classnames';
+import propTypes from 'prop-types';
 import { getCartId } from '@helper_cartid';
 import { getLocalStorage } from '@helper_localstorage';
 import { useReactiveVar } from '@apollo/client';
 import { storeConfigVar } from '@root/core/services/graphql/cache';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import classNames from 'classnames';
-import propTypes from 'prop-types';
 import React from 'react';
 
 const RadioItem = (props) => {
-    const styles = useStyles();
     const { value, label, className } = props;
-    const customStyle = classNames(styles.radioContainer, className);
-    return <FormControlLabel value={value || ''} control={<Radio color="default" size="small" />} label={label || ''} className={customStyle} />;
+    const customStyle = cx('', className);
+    return <Radio variant="single" value={value} size="sm" label={label || ''} className={customStyle} />;
 };
 
 // Inspired by blueprintjs
@@ -44,10 +40,9 @@ function CustomRadio({
     isShipping = false,
 }) {
     const storeConfigLocalStorage = useReactiveVar(storeConfigVar);
-    const styles = useStyles();
 
-    const rootStyle = classNames(styles.root, className);
-    const containerStyle = classNames(styles[flex], classContainer, styles.error);
+    const rootStyle = cx('flex', className);
+    const containerStyle = cx(flex === 'column' ? 'flex flex-col' : 'flex flex-row', classContainer, '');
 
     const handleChange = (event) => {
         !disabled && onChange(event.target.value);
@@ -58,11 +53,11 @@ function CustomRadio({
     };
     return (
         <div className={rootStyle}>
-            <Typography variant="label" type="bold" letter="uppercase">
+            <Typography variant="bd-2" className="uppercase">
                 {label}
             </Typography>
-            <RadioGroup
-                aria-label={ariaLabel}
+            <Radio
+                ariaLabel={ariaLabel}
                 name={name}
                 value={value}
                 onChange={handleChange}
@@ -170,9 +165,9 @@ function CustomRadio({
                     }
                     return <RadioItem key={index} {...item} {...propsItem} className={classItem} />;
                 })}
-            </RadioGroup>
+            </Radio>
             {error && (
-                <Typography variant="p" color="red">
+                <Typography color="text-red">
                     {errorMessage}
                 </Typography>
             )}

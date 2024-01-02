@@ -1,39 +1,37 @@
-import useStyles from '@core_modules/order/pages/detail/style';
-import Skeleton from '@material-ui/lab/Skeleton';
-import classNames from 'classnames';
+import Skeleton from '@common_skeleton';
+import cx from 'classnames';
 
-const SkeletonLoader = () => {
-    const styles = useStyles();
-    return (
-        <>
-            <Skeleton animation="wave" variant="rect" width="100%" height={40} style={{ marginBottom: 15 }} />
-            <div className={classNames(styles.block, styles.detail)} style={{ height: '50%' }}>
-                <Skeleton animation="wave" variant="text" width="60%" height={25} />
-                <Skeleton animation="wave" variant="text" width="75%" height={25} />
-                <Skeleton animation="wave" variant="text" width="60%" height={25} />
-                <Skeleton animation="wave" variant="text" width="75%" height={25} />
-                <Skeleton animation="wave" variant="text" width="60%" height={25} />
-                <Skeleton animation="wave" variant="text" width="75%" height={25} />
-            </div>
-            <div className={styles.block}>
-                <div className={styles.itemContainer}>
-                    <Skeleton animation="wave" variant="rect" width={105} height={130} />
-                    <div className={styles.detailItem}>
-                        <Skeleton animation="wave" variant="text" width={90} height={15} />
-                        <Skeleton animation="wave" variant="text" width={120} height={15} />
-                        <Skeleton animation="wave" variant="text" width={120} height={15} />
-                        <Skeleton animation="wave" variant="text" width={120} height={15} />
-                        <div className="flex-grow" />
-                    </div>
-                </div>
-            </div>
-            <div className={styles.block}>
-                <Skeleton animation="wave" variant="text" width={120} height={15} />
-                <Skeleton animation="wave" variant="text" width={120} height={15} />
-                <Skeleton animation="wave" variant="text" width={120} height={15} />
-            </div>
-        </>
-    );
-};
+const SkeletonLoader = () => (
+    <>
+        <div className={cx('mobile:max-tablet:hidden', 'tablet:flex', 'tablet:flex-col', 'tablet:gap-y-5')}>
+            <Skeleton className={cx('tablet:max-desktop:!hidden', 'tablet:w-[120px]', '!rounded-lg')} />
+            <Skeleton className={cx('tablet:max-desktop:mt-5', 'tablet:!w-[430px]', 'tablet:!h-[56px]', '!rounded-lg')} />
+            <Skeleton
+                className={cx(
+                    'tablet:max-desktop:!w-full',
+                    'tablet:max-desktop:max-w-[720px]',
+                    'desktop:!w-[896px]',
+                    'tablet:!h-[160px]',
+                    '!rounded-lg',
+                )}
+            />
+            <Skeleton
+                className={cx(
+                    'tablet:max-desktop:!w-full',
+                    'tablet:max-desktop:max-w-[720px]',
+                    'desktop:!w-[896px]',
+                    'tablet:!h-[524px]',
+                    'desktop:!h-[320px]',
+                    '!rounded-lg',
+                )}
+            />
+        </div>
+        <div className={cx('tablet:hidden', 'tablet:flex', 'tablet:flex-col', 'tablet:gap-y-5', 'px-4', 'mt-4')}>
+            <Skeleton className={cx('tablet:max-desktop:mt-5', '!w-full', 'max-w-[320px]', '!h-[120px]', '!rounded-lg')} />
+            <Skeleton className={cx('!w-full', 'max-w-[320px]', '!h-[80px]', '!rounded-lg')} />
+            <Skeleton className={cx('!w-full', 'max-w-[320px]', '!h-[480px]', '!rounded-lg')} />
+        </div>
+    </>
+);
 
 export default SkeletonLoader;

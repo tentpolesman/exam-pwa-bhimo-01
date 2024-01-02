@@ -3,13 +3,11 @@
 /* eslint-disable max-len */
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import SearchIcon from '@material-ui/icons/Search';
-import PersonIcon from '@material-ui/icons/Person';
-import Badge from '@material-ui/core/Badge';
+import Badge from '@common_badge';
 import NotificationBell from '@plugin_notificationbell';
 import ShoppingBagIcon from '@plugin_shoppingbag';
 import ProductCompareIcon from '@core_modules/catalog/plugins/ProductCompare';
-import IconButton from '@material-ui/core/IconButton';
+import Button from '@common_button';
 import Link from 'next/link';
 import DesktopInstallAppV2 from '@core_modules/theme/components/header/desktop/components/v2/custom-install-popup/desktop';
 import Menu from '@core_modules/theme/components/header/desktop/components/v2/mcategory';
@@ -73,106 +71,107 @@ const ViewTopNavigation = (props) => {
         }
     }, [triger]);
 
-    return <>
-        <div id="header-inner">
-            <main style={{ width: '100%', maxWidth: 'unset' }}>
-                <div id="submenu-center" className="header-main hidden-submenu">
-                    <div className="header-middle">
-                        <div className="header-middle__left">
-                            <div className="box header-middle__logo">
-                                <Link href="/" legacyBehavior>
-                                    <a>
-                                        <Image
-                                            className="header-middle__logo-link"
-                                            src={`${storeConfig.secure_base_media_url}logo/${storeConfig.header_logo_src}`}
-                                            alt={storeConfig.default_title}
-                                            width={120}
-                                            height={52}
-                                            storeConfig={storeConfig}
-                                            lazy={false}
-                                        />
-                                    </a>
-                                </Link>
+    return (
+        <>
+            <div id="header-inner">
+                <main style={{ width: '100%', maxWidth: 'unset' }}>
+                    <div id="submenu-center" className="header-main hidden-submenu">
+                        <div className="header-middle">
+                            <div className="header-middle__left">
+                                <div className="box header-middle__logo">
+                                    <Link href="/" legacyBehavior>
+                                        <a>
+                                            <Image
+                                                className="header-middle__logo-link"
+                                                src={`${storeConfig.secure_base_media_url}logo/${storeConfig.header_logo_src}`}
+                                                alt={storeConfig.default_title}
+                                                width={120}
+                                                height={52}
+                                                storeConfig={storeConfig}
+                                                lazy={false}
+                                            />
+                                        </a>
+                                    </Link>
+                                </div>
                             </div>
-                        </div>
-                        <div className="header-middle__center">
-                            <div className="row menu-category">
-                                <div className="col-xs-12 menu-middle">
+                            <div className="header-middle__center">
+                                <div className="flex flex-row menu-category">
+                                    <div className="xs:basis-full menu-middle">
+                                        {loading ? null : <Menu vesMenuConfig={vesMenuConfig} data={data} storeConfig={storeConfig} />}
+                                    </div>
+                                </div>
+                                <div className="header-small__menu">
                                     {loading ? null : <Menu vesMenuConfig={vesMenuConfig} data={data} storeConfig={storeConfig} />}
                                 </div>
                             </div>
-                            <div className="header-small__menu">
-                                {loading ? null : <Menu vesMenuConfig={vesMenuConfig} data={data} storeConfig={storeConfig} />}
-                            </div>
-                        </div>
-                        <div className="header-middle__right">
-                            <div className="box">
-                                <div className="header-middle__icons">
-                                    <div className="signin">
-                                        <Link href="/customer/account" passHref legacyBehavior>
-                                            <Badge color="secondary">
-                                                <PersonIcon color="secondary" />
-                                            </Badge>
-                                        </Link>
-                                    </div>
-                                    <div className="notification">
-                                        <NotificationBell withLink />
-                                    </div>
-                                    {modules.productcompare.enabled && (
+                            <div className="header-middle__right">
+                                <div className="box">
+                                    <div className="header-middle__icons">
+                                        <div className="signin">
+                                            <Link href="/customer/account" passHref legacyBehavior>
+                                                <Badge color="secondary">
+                                                    {/* <PersonIcon color="secondary" /> */}
+                                                </Badge>
+                                            </Link>
+                                        </div>
+                                        <div className="notification">
+                                            <NotificationBell withLink />
+                                        </div>
+                                        {modules.productcompare.enabled && (
                                         <div className="shopping-bag">
                                             <ProductCompareIcon withLink isLogin={isLogin} />
                                         </div>
                                     )}
-                                    <div id="header-shoppingBag-icon" className="shopping-bag">
-                                        <ShoppingBagIcon withLink storeConfig={storeConfig} />
+                                        <div id="header-shoppingBag-icon" className="shopping-bag">
+                                            <ShoppingBagIcon withLink storeConfig={storeConfig} />
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="header-middle__search margin-top-1rem">
-                                    <Autocomplete
-                                        setValue={setValue}
-                                        handleSearch={handleSearch}
-                                        OptionsItem={OptionAutocomplete}
-                                        t={t}
-                                        storeConfig={storeConfig}
-                                    />
-                                    <div className="search-icon">
-                                        <IconButton disabled={value === ''} edge="start" onClick={searchByClick} aria-label="close">
-                                            <SearchIcon />
-                                        </IconButton>
+                                    <div className="header-middle__search margin-top-1rem">
+                                        <Autocomplete
+                                            setValue={setValue}
+                                            handleSearch={handleSearch}
+                                            OptionsItem={OptionAutocomplete}
+                                            t={t}
+                                            storeConfig={storeConfig}
+                                        />
+                                        <div className="search-icon">
+                                            <Button disabled={value === ''} edge="start" onClick={searchByClick} aria-label="close">
+                                                {/* <SearchIcon /> */}
+                                            </Button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div id="submenu-left" className="header-main">
-                    <div className="header-middle">
-                        <div className="header-middle__left">
-                            <div className="box header-middle__logo">
-                                <Link href="/" legacyBehavior>
-                                    <a>
-                                        <Image
-                                            className="header-middle__logo-link"
-                                            src={`${storeConfig.secure_base_media_url}logo/${storeConfig.header_logo_src}`}
-                                            alt={storeConfig.default_title}
-                                            width={120}
-                                            height={52}
-                                            storeConfig={storeConfig}
-                                            lazy={false}
-                                        />
-                                    </a>
-                                </Link>
+                    <div id="submenu-left" className="header-main">
+                        <div className="header-middle">
+                            <div className="header-middle__left">
+                                <div className="box header-middle__logo">
+                                    <Link href="/" legacyBehavior>
+                                        <a>
+                                            <Image
+                                                className="header-middle__logo-link"
+                                                src={`${storeConfig.secure_base_media_url}logo/${storeConfig.header_logo_src}`}
+                                                alt={storeConfig.default_title}
+                                                width={120}
+                                                height={52}
+                                                storeConfig={storeConfig}
+                                                lazy={false}
+                                            />
+                                        </a>
+                                    </Link>
+                                </div>
                             </div>
-                        </div>
-                        <div className="header-middle__right-condensed">
-                            <div className="box">
-                                <div className="header-middle__icons">
-                                    <ul className="special-ul">
-                                        {enablePopupInstallation ? (
-                                            <DesktopInstallAppV2 appName={appName} installMessage={installMessage} />
+                            <div className="header-middle__right-condensed">
+                                <div className="box">
+                                    <div className="header-middle__icons">
+                                        <ul className="special-ul">
+                                            {enablePopupInstallation ? (
+                                                <DesktopInstallAppV2 appName={appName} installMessage={installMessage} />
                                         ) : null}
-                                        <li>
-                                            {!isLogin ? (
+                                            <li>
+                                                {!isLogin ? (
                                                 t('common:header:welcome')
                                             ) : (
                                                 <>
@@ -208,77 +207,77 @@ const ViewTopNavigation = (props) => {
                                                     </ul>
                                                 </>
                                             )}
-                                        </li>
-                                        {modules.trackingorder.enabled ? (
-                                            <li>
-                                                <Link href="/sales/order/track" legacyBehavior>
-                                                    <a>{t('common:menu:trackingorder')}</a>
-                                                </Link>
                                             </li>
+                                            {modules.trackingorder.enabled ? (
+                                                <li>
+                                                    <Link href="/sales/order/track" legacyBehavior>
+                                                        <a>{t('common:menu:trackingorder')}</a>
+                                                    </Link>
+                                                </li>
                                         ) : null}
-                                        <li>
-                                            <SwitcherLanguage {...props} />
-                                        </li>
-                                        <li>
-                                            <SwitcherCurrency {...props} />
-                                        </li>
-                                    </ul>
-                                    <div className="signin">
-                                        <Link href="/customer/account" passHref legacyBehavior>
-                                            <Badge color="secondary">
-                                                <PersonIcon color="secondary" />
-                                            </Badge>
-                                        </Link>
-                                    </div>
-                                    <div className="notification">
-                                        <NotificationBell withLink />
-                                    </div>
-                                    {modules.productcompare.enabled && (
+                                            <li>
+                                                <SwitcherLanguage {...props} />
+                                            </li>
+                                            <li>
+                                                <SwitcherCurrency {...props} />
+                                            </li>
+                                        </ul>
+                                        <div className="signin">
+                                            <Link href="/customer/account" passHref legacyBehavior>
+                                                <Badge color="secondary">
+                                                    {/* <PersonIcon color="secondary" /> */}
+                                                </Badge>
+                                            </Link>
+                                        </div>
+                                        <div className="notification">
+                                            <NotificationBell withLink />
+                                        </div>
+                                        {modules.productcompare.enabled && (
                                         <div className="shopping-bag">
                                             <ProductCompareIcon withLink isLogin={isLogin} />
                                         </div>
                                     )}
-                                    <div id="header-shoppingBag-icon" className="shopping-bag">
-                                        <ShoppingBagIcon withLink storeConfig={storeConfig} />
+                                        <div id="header-shoppingBag-icon" className="shopping-bag">
+                                            <ShoppingBagIcon withLink storeConfig={storeConfig} />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div className="header-middle second-level-header">
-                        <div className="header-middle__center">
-                            <div className="row menu-category">
-                                <div className="col-xs-12 menu-middle">
+                        <div className="header-middle second-level-header">
+                            <div className="header-middle__center">
+                                <div className="flex flex-row menu-category">
+                                    <div className="xs:basis-full menu-middle">
+                                        {loading ? null : <Menu vesMenuConfig={vesMenuConfig} data={data} storeConfig={storeConfig} />}
+                                    </div>
+                                </div>
+                                <div className="header-small__menu">
                                     {loading ? null : <Menu vesMenuConfig={vesMenuConfig} data={data} storeConfig={storeConfig} />}
                                 </div>
                             </div>
-                            <div className="header-small__menu">
-                                {loading ? null : <Menu vesMenuConfig={vesMenuConfig} data={data} storeConfig={storeConfig} />}
-                            </div>
-                        </div>
-                        <div>
-                            <div className="box">
-                                <div className="header-middle__search">
-                                    <Autocomplete
-                                        setValue={setValue}
-                                        handleSearch={handleSearch}
-                                        OptionsItem={OptionAutocomplete}
-                                        t={t}
-                                        storeConfig={storeConfig}
-                                    />
-                                    <div className="search-icon">
-                                        <IconButton disabled={value === ''} edge="start" onClick={searchByClick} aria-label="close">
-                                            <SearchIcon />
-                                        </IconButton>
+                            <div>
+                                <div className="box">
+                                    <div className="header-middle__search">
+                                        <Autocomplete
+                                            setValue={setValue}
+                                            handleSearch={handleSearch}
+                                            OptionsItem={OptionAutocomplete}
+                                            t={t}
+                                            storeConfig={storeConfig}
+                                        />
+                                        <div className="search-icon">
+                                            <Button disabled={value === ''} edge="start" onClick={searchByClick} aria-label="close">
+                                                {/* <SearchIcon /> */}
+                                            </Button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </main>
-            <style jsx>
-                {`
+                </main>
+                <style jsx>
+                    {`
                     .signin {
                         cursor: pointer;
                     }
@@ -486,9 +485,9 @@ const ViewTopNavigation = (props) => {
                         background-color: red;
                     }
                 `}
-            </style>
-            <style global jsx>
-                {`
+                </style>
+                <style global jsx>
+                    {`
                     .header-middle__search .MuiAutocomplete-popupIndicator {
                         display: none !important;
                     }
@@ -526,9 +525,10 @@ const ViewTopNavigation = (props) => {
                         }
                     }
                 `}
-            </style>
-        </div>
-    </>;
+                </style>
+            </div>
+        </>
+);
 };
 
 export default ViewTopNavigation;

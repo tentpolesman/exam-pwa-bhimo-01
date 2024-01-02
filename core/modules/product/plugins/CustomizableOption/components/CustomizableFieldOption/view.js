@@ -1,15 +1,14 @@
 import React from 'react';
 import Typography from '@common_typography';
-import TextField from '@common_textfield';
+import TextField from '@common_forms/TextField';
 import classNames from 'classnames';
-import useStyles from '@plugin_customizableitem/components/style';
 
 const ViewCustomizableFieldOption = ({
     title = 'test', data = {}, value = '', disabled,
     onChange = () => {}, error = '', required = false,
 }) => {
-    const styles = useStyles();
-    const customClass = classNames('column', styles.container, styles.customizableFieldOption);
+    const customClass = classNames('flex flex-col', 'w-[100%]');
+    console.log(data);
     return (
         <div className={customClass}>
             {
@@ -18,19 +17,23 @@ const ViewCustomizableFieldOption = ({
                         options={data}
                         name={title}
                         disabled={disabled}
-                        label={(
-                            <>
-                                <Typography variant="title" type="bold" letter="uppercase">
-                                    {data.label}
-                                    {' '}
-                                    {required && <Typography color="red" type="bold" variant="label">*</Typography>}
-                                </Typography>
-                            </>
-                        )}
+                        className="w-full"
+                        classNameLabel="mb-[6px]"
                         onChange={onChange}
                         value={value}
-                        error={error}
-                        errorMessage={error}
+                        label={(
+                            <Typography variant="bd-2a">
+                                {data.label}
+                                {' '}
+                                {required && <Typography variant="bd-2a" color="text-red">*</Typography>}
+                            </Typography>
+                        )}
+                        hintProps={{
+                            displayHintText: error !== '',
+                            hintType: error !== '' ? 'error' : '',
+                            hintText: error,
+                            className: '!static mt-[6px]',
+                        }}
                     />
                 )
             }

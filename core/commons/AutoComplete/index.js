@@ -3,227 +3,160 @@
 /* eslint-disable react/require-default-props */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/forbid-prop-types */
+import TextField from '@common_forms/TextField';
+import Popover from '@common_popover';
+import cx from 'classnames';
+import { useTranslation } from 'next-i18next';
 import React from 'react';
-import TextField from '@material-ui/core/TextField';
-import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import PropTypes from 'prop-types';
 
-function usePrevious(value) {
-    const ref = React.useRef();
-    React.useEffect(() => {
-        ref.current = value;
-    });
-    return ref.current;
-}
-
-const filter = createFilterOptions();
-
-// debounced value will change only once every certain delay (ms)
-function useDebounce(value, delay) {
-    const [debouncedValue, setDebouncedValue] = React.useState(value);
-
-    React.useEffect(() => {
-        const handleTimeout = setTimeout(() => {
-            setDebouncedValue(value);
-        }, delay);
-
-        return () => {
-            clearTimeout(handleTimeout);
-        };
-    }, [value]);
-
-    return debouncedValue;
-}
+import MagnifyingGlassIcon from '@heroicons/react/24/outline/MagnifyingGlassIcon';
 
 const CustomAutocomplete = (props) => {
     const {
-        error,
-        disableCloseOnSelect,
-        getOptions,
-        getOptionsVariables,
-        getOptionLabel,
-        helperText,
+        disabled,
         label,
         labelKey,
         loading,
-        mode,
-        multiple,
         onChange,
-        options,
-        primaryKey,
         value,
-        variant,
-        inputLabelProps,
+        primaryKey,
+        className,
+        inputClassName,
+        popoverWrapperClassName,
+        popoverClassName,
+        popoverContentClassName,
         enableCustom,
-        ...others
+        placeholder,
+        CustomPopover,
+        itemOptions,
+        useKey,
+        inputProps = {},
+        openOnFocus = false,
     } = props;
+
+    const { t } = useTranslation(['common']);
+
     const [open, setOpen] = React.useState(false);
-    const [query, setQuery] = React.useState();
-    const debouncedQuery = useDebounce(query, 700);
-    const prevGetOptionsVariables = usePrevious(getOptionsVariables);
-    const [allowGetOptions, setAllowGetOptions] = React.useState(true);
 
-    React.useEffect(() => {
-        if (open) {
-            if (mode === 'lazy' && allowGetOptions) {
-                setAllowGetOptions(false);
-                getOptions(getOptionsVariables);
+    const [filteredItem, setFilteredItem] = React.useState(itemOptions);
+
+    const { hintProps } = inputProps;
+
+    const handleAutocomplete = (e) => {
+        if (e.target.value !== '') {
+            const isFound = filteredItem.find((item) => {
+                if (useKey) {
+                    return item[labelKey].toLowerCase().includes(e.target.value.toLowerCase());
+                }
+                return item.toLowerCase().includes(e.target.value.toLowerCase());
+            });
+            if (isFound) {
+                const filteredArray = filteredItem.filter((item) => {
+                    if (useKey) {
+                        return item[labelKey].toLowerCase().includes(e.target.value.toLowerCase());
+                    }
+                    return item.toLowerCase().includes(e.target.value.toLowerCase());
+                });
+                setFilteredItem(filteredArray);
+                setOpen(true);
             }
-            if (mode === 'server') {
-                const variables = {
-                    variables: {
-                        ...getOptionsVariables.variables,
-                        ...(query && { querySearch: query }),
-                    },
-                };
-                getOptions(variables);
+        } else {
+            setFilteredItem(itemOptions);
+        }
+    };
+
+    const PopoverContent = () => {
+        const PopoverItem = (propsPopoverItem) => {
+            let optionLabel;
+            let optionValue;
+
+            if (useKey) {
+                optionLabel = propsPopoverItem.item[labelKey];
+                optionValue = propsPopoverItem.item[primaryKey];
+            } else {
+                optionLabel = propsPopoverItem.optionLabel;
+                optionValue = propsPopoverItem.optionValue;
             }
-        }
-    }, [open, debouncedQuery]);
 
-    React.useEffect(() => {
-        if (!open) {
-            setQuery('');
-        }
-    }, [open]);
+            const handleSelectItem = () => {
+                if (useKey) {
+                    onChange(propsPopoverItem.item);
+                    setOpen(false);
+                } else {
+                    onChange(optionLabel);
+                    setOpen(false);
+                }
+            };
 
-    React.useEffect(() => {
-        const prev = JSON.stringify(prevGetOptionsVariables);
-        const current = JSON.stringify(getOptionsVariables);
-        // need better deep comparison
-        // setAllowGetOptions when there is change in getOptionsVariables
-        if (prev !== current) setAllowGetOptions(true);
-    }, [getOptionsVariables]);
+            return (
+                <div
+                    className={cx(
+                        'grid',
+                        'py-4',
+                        'text-neutral-300',
+                        'hover:text-primary-300',
+                        'hover:bg-neutral-50',
+                        'hover:cursor-pointer',
+                        popoverContentClassName,
+                    )}
+                    onClick={() => handleSelectItem(propsPopoverItem)}
+                    role="presentation"
+                >
+                    <div className={cx('title-category', 'block', 'text-sm', 'uppercase')} aria-current={optionValue}>
+                        {optionLabel}
+                    </div>
+                </div>
+            );
+        };
 
-    const renderInput = (params) => (
-        <TextField
-            {...params}
-            label={label}
-            variant={variant}
-            error={error}
-            helperText={helperText}
-            InputProps={{
-                ...params.InputProps,
-                autoComplete: 'no-autocomplete',
-                autoCorrect: 'off',
-                autoCapitalize: 'none',
-                spellCheck: 'false',
-                endAdornment: (
-                    <>
-                        {loading ? (
-                            <CircularProgress color="inherit" size={20} />
-                        ) : null}
-                        {params.InputProps.endAdornment}
-                    </>
-                ),
-            }}
-            InputLabelProps={{
-                shrink: true,
-                type: 'search',
-                ...inputLabelProps,
-            }}
-            inputProps={{
-                ...params.inputProps,
-                autoComplete: 'no-autocomplete',
-            }}
-        />
-    );
+        return (
+            <>
+                {/* {open && (value.length !== 0) && (filteredItem === null || (typeof filteredItem === 'object' && filteredItem.length === 0)) ? ( */}
+                {open && (filteredItem === null || (typeof filteredItem === 'object' && filteredItem.length === 0)) ? (
+                    <div className={cx('breadcrumbs', 'block', 'text-sm', 'text-neutral-200', 'uppercase', 'italic')}>
+                        {t('common:error:notFound')}
+                    </div>
+                ) : (
+                    filteredItem !== null && filteredItem.map((items, index) => <PopoverItem item={items} key={index} />)
+                )}
+            </>
+        );
+    };
 
     return (
-        <Autocomplete
-            value={multiple ? (value || []) : value}
-            open={open}
-            getOptionSelected={(option, selectedValue) => option[primaryKey] === selectedValue[primaryKey]}
-            getOptionLabel={getOptionLabel || ((option) => {
-                if (typeof option === 'string' && enableCustom) {
-                    return option;
-                }
-                // Add "xxx" option created dynamically
-                if (option.inputValue && enableCustom) {
-                    return option.inputValue;
-                }
-                // Regular option
-                return option[labelKey] || '';
-            })}
-            multiple={multiple}
-            disableCloseOnSelect={disableCloseOnSelect || multiple}
-            onChange={(event, newValue) => {
-                // onChange(newValue);
-                if (typeof newValue === 'string' && enableCustom) {
-                    onChange({
-                        [labelKey]: newValue,
-                    });
-                } else if (newValue && newValue.inputValue && enableCustom) {
-                    // Create a new value from the user input
-                    onChange({
-                        [labelKey]: newValue.inputValue,
-                    });
-                } else {
-                    onChange(newValue);
-                }
-            }}
-            filterOptions={(option, params) => {
-                const filtered = filter(option, params);
-
-                // Suggest the creation of a new value
-                if (params.inputValue !== '' && enableCustom) {
-                    filtered.push({
-                        inputValue: params.inputValue,
-                        title: `Add "${params.inputValue}"`,
-                    });
-                }
-
-                return filtered;
-            }}
-            selectOnFocus
-            clearOnBlur
-            handleHomeEndKeys
-            onInputChange={(e) => setQuery((e && e.target && e.target.value) || '')}
-            onOpen={() => setOpen(true)}
-            onClose={() => setOpen(false)}
-            options={options || []}
-            loading={loading}
-            renderInput={renderInput}
-            freeSolo={enableCustom}
-            {...others}
-        />
+        <div cx={className}>
+            <Popover
+                content={enableCustom ? <CustomPopover /> : <PopoverContent />}
+                open={open && !loading}
+                setOpen={setOpen}
+                className={popoverClassName}
+                wrapperClassName={popoverWrapperClassName}
+                contentClassName={popoverContentClassName}
+            >
+                <TextField
+                    value={value}
+                    placeholder={placeholder || t('common:search:title')}
+                    onChange={(e) => {
+                        onChange(e.target.value);
+                        handleAutocomplete(e);
+                    }}
+                    onFocus={() => {
+                        if (openOnFocus) {
+                            setOpen(true);
+                        }
+                    }}
+                    rightIcon={<MagnifyingGlassIcon />}
+                    rightIconProps={{
+                        className: 'text-neutral-300 h-10 w-10',
+                    }}
+                    disabled={disabled}
+                    label={label}
+                    className={inputClassName}
+                    hintProps={hintProps}
+                />
+            </Popover>
+        </div>
     );
-};
-
-CustomAutocomplete.propTypes = {
-    enableCustom: PropTypes.bool,
-    error: PropTypes.bool,
-    inputLabelProps: PropTypes.object,
-    disableCloseOnSelect: PropTypes.bool,
-    getOptions: PropTypes.func,
-    getOptionsVariables: PropTypes.object,
-    getOptionLabel: PropTypes.func,
-    helperText: PropTypes.string,
-    label: PropTypes.string,
-    labelKey: PropTypes.string,
-    loading: PropTypes.bool,
-    mode: PropTypes.oneOf(['default', 'lazy', 'server']),
-    multiple: PropTypes.bool,
-    onChange: PropTypes.func,
-    options: PropTypes.array,
-    primaryKey: PropTypes.string,
-    value: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
-    variant: PropTypes.string,
-};
-
-CustomAutocomplete.defaultProps = {
-    getOptionsVariables: { variables: { pageSize: 20, currentPage: 1 } },
-    labelKey: 'name',
-    loading: false,
-    mode: 'default',
-    multiple: false,
-    options: [],
-    primaryKey: 'id',
-    value: null,
-    variant: 'standard',
-    inputLabelProps: {},
-    enableCustom: true,
 };
 
 export default CustomAutocomplete;

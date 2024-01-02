@@ -21,23 +21,23 @@ const DefaultContent = (props) => {
         position = 2;
     }
     return (
-        <div className="row">
-            <div className="col-xs-12 col-sm-2 hidden-mobile">
+        <div className="flex flex-row">
+            <div className="xs:basis-full sm:basis-2/12 hidden-mobile">
                 <Category {...props} />
             </div>
-            <div className="col-xs-12 col-sm-10 row">
-                <div className="col-xs-12 col-md-12">
+            <div className="xs:basis-full sm:basis-10/12 row">
+                <div className="xs:basis-full md:basis-full">
                     <Body storeConfig={storeConfig} {...props} />
                 </div>
                 {
                     position !== 0
                     && (
-                        <div className={position === 2 ? 'col-xs-12 col-md-12' : 'hidden'}>
+                        <div className={position === 2 ? 'xs:basis-full md:basis-full' : 'hidden'}>
                             <RelatedProduct relatedProduct={relatedProduct.slice(0, limit)} t={t} storeConfig={storeConfig} layout={layout} />
                         </div>
                     )
                 }
-                <div className="col-xs-12 col-md-12 comment-container">
+                <div className="xs:basis-full md:basis-full comment-container">
                     {
                         storeConfig.aw_blog_general_comments_enabled && (
                             <DiscussionEmbed
@@ -56,7 +56,7 @@ const DefaultContent = (props) => {
                 {
                     position !== 0
                     && (
-                        <div className={position === 1 ? 'col-xs-12 col-md-12' : 'hidden'}>
+                        <div className={position === 1 ? 'xs:basis-full md:basis-full' : 'hidden'}>
                             <RelatedProduct relatedProduct={relatedProduct.slice(0, limit)} t={t} storeConfig={storeConfig} layout={layout} />
                         </div>
                     )

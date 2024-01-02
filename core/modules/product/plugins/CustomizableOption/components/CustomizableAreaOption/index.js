@@ -12,7 +12,7 @@ const CustomizableAreaOption = ({
     errorCustomizableOptions, additionalPrice, setAdditionalPrice,
     stock_status, ...other
 }) => {
-    const { t } = useTranslation(['product']);
+    const { t } = useTranslation(['common', 'product']);
     const productPrice = getPrice(other.price);
     const [value, setValue] = useState(null);
     const [options, setOptions] = useState({});

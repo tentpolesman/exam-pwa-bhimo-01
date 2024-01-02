@@ -1,6 +1,5 @@
 import React from 'react';
 import Typography from '@common_typography';
-import useStyles from '@core_modules/rma/pages/new/components/styles';
 import ItemField from '@core_modules/rma/pages/new/components/ItemField';
 
 const ItemProduct = (props) => {
@@ -10,7 +9,6 @@ const ItemProduct = (props) => {
         image_url, name, other_rma_request, price, currency = 'USD',
         errorForm, ItemFieldView, OtherRmaLink, ...other
     } = props;
-    const styles = useStyles();
     const checked = dataValues.indexOf(value) !== -1;
     const [selectedData, setSelectedData] = React.useState({
         item_id: '',
@@ -92,7 +90,7 @@ const ItemProduct = (props) => {
     };
 
     return (
-        <div className="column">
+        <div className="flex flex-col">
             <ItemProductView
                 checked={checked}
                 disabled={disabled}
@@ -104,7 +102,7 @@ const ItemProduct = (props) => {
                 {...other}
             />
 
-            <div className={styles.selectItemBox}>
+            <div className="">
                 {disabled ? <Typography color="red">{t('rma:noItemReturn')}</Typography> : null}
                 {other_rma_request && other_rma_request.length > 0 ? (
                     <OtherRmaLink

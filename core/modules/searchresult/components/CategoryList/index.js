@@ -2,6 +2,7 @@
 import React from 'react';
 import { getCategoryByName } from '@core_modules/searchresult/services/graphql/index';
 import CategoryItem from '@core_modules/searchresult/components/CategoryList/view';
+import Show from '@common/Show';
 
 const categoryList = (props) => {
     const { q } = props;
@@ -42,11 +43,9 @@ const categoryList = (props) => {
     }
 
     return (
-        <>
-            {itemData && itemData.length > 0 ? (
-                <CategoryItem {...props} data={itemData} slice={slice} loadMore={loadMore} loading={loading} />
-            ) : null}
-        </>
+        <Show when={itemData && itemData.length > 0}>
+            <CategoryItem {...props} data={itemData} slice={slice} loadMore={loadMore} loading={loading} />
+        </Show>
     );
 };
 

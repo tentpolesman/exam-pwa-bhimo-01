@@ -1,45 +1,58 @@
 /* eslint-disable import/prefer-default-export */
 export const getCategories = `
-    {
-        categoryList {
+{
+    categories {
+        items {
+            uid
+            name
+            level
+            path
+            url_path
+            url_key
+            include_in_menu
             children_count
             children {
-                id
-                level
+                uid
                 name
+                level
                 path
                 url_path
                 url_key
                 include_in_menu
+                children_count
                 children {
-                    id
-                    level
+                    uid
                     name
+                    level
                     path
                     url_path
                     url_key
-                    image
-                    image_path
+                    include_in_menu
+                    children_count
                     children {
-                        id
-                        level
+                        uid
                         name
+                        level
                         path
                         url_path
                         url_key
+                        include_in_menu
+                        children_count
                         children {
-                            id
-                            level
+                            uid
                             name
+                            level
                             path
                             url_path
                             url_key
+                            include_in_menu
                         }
                     }
                 }
             }
         }
     }
+}
 `;
 
 export const getVesMenu = `
@@ -181,9 +194,6 @@ export const storeConfig = `
       minimum_order_enable
       oauth_access_token_lifetime_customer
       payments_configuration
-      payment_travelokapay_bin_whitelist
-      payment_travelokapay_public_key
-      payment_travelokapay_user_id
       pickup_store
       pin_location_latitude
       pin_location_longitude
@@ -339,9 +349,6 @@ export const storeConfig = `
       }
       oms_channel_code
       snap_is_production
-      payment_travelokapay_user_id
-      payment_travelokapay_public_key
-      payment_travelokapay_bin_whitelist
       snap_client_key
       stripe_config {
         stripe_enable

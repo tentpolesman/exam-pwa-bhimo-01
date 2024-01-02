@@ -1,76 +1,206 @@
-/* eslint-disable react/forbid-prop-types */
-/* eslint-disable react/require-default-props */
-import Slider from '@material-ui/core/Slider';
-import withStyles from '@material-ui/core/styles/withStyles';
-import Typography from '@common_typography';
-import PropTypes from 'prop-types';
+import TextField from '@common/Forms/TextField';
+import Typography from '@common/Typography';
 import { formatPrice } from '@helper_currency';
-import { sliderStyle, useStyles } from '@common_rangeslider/style';
+import cx from 'classnames';
 
-const CustomSlider = withStyles(sliderStyle)(Slider);
+// eslint-disable-next-line object-curly-newline
+const RangeSlider = (props) => {
+    const {
+        disabled = false, onChange = () => {}, value = [0, 10], disableInput = false,
+        storeConfig, minValue = 0, maxValue = 100, formatLabel, hideLabel = false,
+    } = props;
+    let min = value[0];
+    if (typeof min === 'string') {
+        min = Number(min);
+    }
+    let max = value[1];
+    if (typeof max === 'string') {
+        max = Number(max);
+    }
+    const [minVal, setMinVal] = React.useState(min);
+    const [maxVal, setMaxVal] = React.useState(max);
+    const minValRef = React.useRef(min);
+    const maxValRef = React.useRef(max);
+    const range = React.useRef(null);
 
-let globalTimeout = null;
+    const getPercent = React.useCallback((valueX) => Math.round(((valueX - minValue) / (maxValue - minValue)) * 100), [min, max, maxValue, minValue]);
 
-const RangeSlider = ({
-    maxValue = 100,
-    onChange = () => {},
-    value = [0, 10],
-    label = '',
-    noLabel = false,
-    storeConfig,
-}) => {
-    const styles = useStyles();
-    const [values, setValue] = React.useState(value);
-    const handleChange = (event, newValue) => {
-        if (globalTimeout) {
-            clearTimeout(globalTimeout);
+    React.useEffect(() => {
+        if (maxValue > 0) {
+            const minPercent = getPercent(minVal);
+            const maxPercent = getPercent(maxVal);
+
+            if (range.current) {
+                range.current.style.left = `${minPercent}%`;
+                range.current.style.width = `${maxPercent - minPercent}%`;
+            }
         }
-        setValue(newValue);
-        globalTimeout = setTimeout(() => {
-            onChange(newValue);
-        }, 1000);
-    };
+    }, [maxValue, range]);
+
+    React.useEffect(() => {
+        const minPercent = getPercent(minVal);
+        const maxPercent = getPercent(maxValRef.current);
+
+        if (range.current) {
+            range.current.style.left = `${minPercent}%`;
+            range.current.style.width = `${maxPercent - minPercent}%`;
+        }
+    }, [minVal, getPercent]);
+
+    React.useEffect(() => {
+        const minPercent = getPercent(minValRef.current);
+        const maxPercent = getPercent(maxVal);
+
+        if (range.current) {
+            range.current.style.width = `${maxPercent - minPercent}%`;
+        }
+    }, [maxVal, getPercent]);
 
     return (
-        <div className={styles.container}>
-            {!noLabel ? (
-                <Typography variant="label" type="bold" letter="uppercase">
-                    {label}
-                </Typography>
-            ) : null}
+        <>
+            <div className={cx(
+                'flex flex-col w-full gap-4',
+            )}
+            >
+                {!hideLabel ? (
+                    <div className="flex flex-row justify-between items-center">
+                        {
+                            disableInput
+                                ? (
+                                    <Typography>
+                                        {
+                                            formatLabel && typeof formatLabel === 'function'
+                                                ? formatLabel(minVal)
+                                                : formatPrice(minVal, storeConfig && storeConfig.base_currency_code)
+                                        }
+                                    </Typography>
+                                )
+                                : (
+                                    <TextField
+                                        classWrapper="max-w-[45%]"
+                                        className="max-w-full"
+                                        value={minVal}
+                                        onChange={(event) => {
+                                            const valueMin = Math.min(Number(event.target.value), maxVal - 1);
+                                            setMinVal(valueMin);
+                                            onChange([valueMin, maxVal]);
+                                            minValRef.current = valueMin;
+                                        }}
+                                        disabled={disabled}
+                                    />
+                                )
+                        }
 
-            <div className={styles.spanLabelPrice}>
-                <Typography variant="label" type="regular" letter="uppercase">
-                    {
-                        formatPrice(
-                            values[0], storeConfig && storeConfig.base_currency_code,
-                        )
-                    }
-                </Typography>
-                <Typography variant="label" type="regular" letter="uppercase">
-                    {
-                        formatPrice(
-                            values[1], storeConfig && storeConfig.base_currency_code,
-                        )
-                    }
-                </Typography>
+                        { !disableInput && <span className="text-neutral-900 font-bold">-</span> }
+
+                        {
+                            disableInput
+                                ? (
+                                    <Typography>
+                                        {
+                                            formatLabel && typeof formatLabel === 'function'
+                                                ? formatLabel(maxVal)
+                                                : formatPrice(maxVal, storeConfig && storeConfig.base_currency_code)
+                                        }
+                                    </Typography>
+                                )
+                                : (
+                                    <TextField
+                                        classWrapper="max-w-[45%]"
+                                        className="max-w-full"
+                                        value={maxVal}
+                                        onChange={(event) => {
+                                            const valueMax = Math.max(Number(event.target.value), minVal + 1);
+                                            setMaxVal(valueMax);
+                                            onChange([minVal, valueMax]);
+                                            maxValRef.current = valueMax;
+                                        }}
+                                        disabled={disabled}
+                                    />
+                                )
+                        }
+                    </div>
+                ) : null}
+
+                <div className={cx(
+                    'slider',
+                    'relative w-full',
+                )}
+                >
+                    <div className={cx('slider__track', 'absolute', 'rounded', 'h-[5px]', 'bg-neutral-200', 'w-[100%]', 'z-[1]')} />
+                    { !disabled && <div ref={range} className={cx('slider__range', 'absolute', 'rounded', 'h-[5px]', 'bg-primary-700', 'z-[2]')} /> }
+
+                    <input
+                        type="range"
+                        min={minValue}
+                        max={maxValue}
+                        value={minVal}
+                        onChange={(event) => {
+                            const valueMin = Math.min(Number(event.target.value), maxVal - 1);
+                            setMinVal(valueMin);
+                            onChange([valueMin, maxVal]);
+                            minValRef.current = valueMin;
+                        }}
+                        disabled={disabled}
+                        className={cx('thumb', 'thumb--left', 'pointer-events-none', 'absolute', 'h-[0]', 'w-full', 'outline-none', 'z-[3]')}
+                        style={{
+                            zIndex: minVal > maxValue - 100 && '5',
+                        }}
+                    />
+                    <input
+                        type="range"
+                        min={minValue}
+                        max={maxValue}
+                        value={maxVal}
+                        onChange={(event) => {
+                            const valueMax = Math.max(Number(event.target.value), minVal + 1);
+                            setMaxVal(valueMax);
+                            onChange([minVal, valueMax]);
+                            maxValRef.current = valueMax;
+                        }}
+                        disabled={disabled}
+                        className={cx('thumb', 'thumb--right', 'pointer-events-none', 'absolute', 'h-[0]', 'w-full', 'outline-none', 'z-[4]')}
+                    />
+                </div>
+
             </div>
-            <CustomSlider
-                value={values}
-                onChange={handleChange}
-                valueLabelDisplay="off"
-                aria-labelledby="range-slider"
-                max={maxValue}
-            />
-        </div>
-    );
-};
+            <style jsx>
+                {`
+                    /* Removing the default appearance - cannot be done by tailwind */
+                    .thumb,
+                    .thumb::-webkit-slider-thumb {
+                        -webkit-appearance: none;
+                    }
 
-RangeSlider.propTypes = {
-    maxValue: PropTypes.number,
-    onChange: PropTypes.func,
-    value: PropTypes.array,
-    label: PropTypes.string,
+                    /* For Chrome browsers */
+                    .thumb::-webkit-slider-thumb {
+                        background-color: white;
+                        border: 1.5px solid #be1f93;
+                        border-radius: 50%;
+                        cursor: pointer;
+                        height: 24px;
+                        width: 24px;
+                        margin-top: 4px;
+                        pointer-events: all;
+                        position: relative;
+                    }
+
+                    /* For Firefox browsers */
+                    .thumb::-moz-range-thumb {
+                        background-color: white;
+                        border: 1.5px solid #be1f93;
+                        border-radius: 50%;
+                        cursor: pointer;
+                        height: 24px;
+                        width: 24px;
+                        margin-top: 4px;
+                        pointer-events: all;
+                        position: relative;
+                    }
+                `}
+            </style>
+        </>
+    );
 };
 
 export default RangeSlider;

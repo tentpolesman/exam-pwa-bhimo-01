@@ -1,5 +1,10 @@
+import Button from '@common_button';
+import TextField from '@common_forms/TextField';
+import Typography from '@common_typography';
+
 import React from 'react';
-import CircularProgress from '@material-ui/core/CircularProgress';
+
+import cx from 'classnames';
 
 const NewsletterView = (props) => {
     // base props
@@ -49,99 +54,93 @@ const NewsletterView = (props) => {
         }
     }, [totalHeight]);
     /* eslint-disable */
+
     return (
         <div>
-            <div className="newsletter-container">
-                <div className="wrapper">
-                {type === 'pwa-newsletter-subscribe' ? null :
-                    <div className="title">
-                        <h3>{isCms && title ? title : t('common:newsletter:title')}</h3>
+            <div className={cx('relative', 'h-full', 'border-y-[1px]', 'border-neutral-200')}>
+                <div
+                    className={cx(
+                        'relative',
+                        'tablet:max-desktop:max-w-[768px] desktop:max-w-[1280px] m-[0_auto]',
+                        'tablet:flex',
+                        'tablet:flex-row',
+                        'tablet:justify-between',
+                        'tablet:py-6',
+                        'max-tablet:px-4',
+                        'max-tablet:py-6',
+                        'tablet:px-0',
+                    )}
+                >
+                    <div className={cx('left-section-newsletter', 'max-tablet:grid', 'max-tablet:grid-cols-1')}>
+                        {type === 'pwa-newsletter-subscribe' ? null : (
+                            <div
+                                className={cx(
+                                    'text-lg',
+                                    'font-semibold',
+                                    'leading-6',
+                                    'tracking-[-0.04px]',
+                                    'title',
+                                    'max-tablet:text-center',
+                                    'tablet:text-left',
+                                )}
+                            >
+                                {isCms && title ? title : t('common:newsletter:title')}
+                            </div>
+                        )}
+                        {isCms && description ? (
+                            <div className={cx('tablet:text-left', 'max-tablet:text-center')}>
+                                <p className={cx('text-md', 'leading-5', 'font-normal')}>{description}</p>
+                            </div>
+                        ) : null}
                     </div>
-                }
-                    {isCms && description ? (
-                        <div className="description">
-                            <p>{description}</p>
-                        </div>
-                    ) : null}
-                    <div className="block-newsletter">
-                        <div className="content">
-                            <form className="form subscribe" noValidate id="newsletter-validate-detail" onSubmit={formik.handleSubmit}>
-                                <div className="field-newsletter">
-                                    <div className="control">
-                                        <label htmlFor="newsletter">
-                                            <input
-                                                name="email"
-                                                type="email"
-                                                id="newsletter"
-                                                placeholder={t('common:newsletter:placeholder')}
-                                                value={formik.values.email}
-                                                onChange={formik.handleChange}
-                                                error={(!!formik.errors.email).toString()}
-                                                errormessage={formik.errors.email || null}
-                                            />
-                                            {formik.errors.email ? (
-                                                <p className='error-validation'>{formik.errors.email}</p>
-                                            ) : null}
-                                        </label>
-                                    </div>
-                                </div>
-                                {show_firstname && isCms ? (
-                                    <div className="field-newsletter">
-                                        <div className="control">
-                                            <label htmlFor="newsletter">
-                                                <input
-                                                    name="firstname"
-                                                    type="text"
-                                                    id="newsletter"
-                                                    placeholder={t('common:newsletter:firstname')}
-                                                    value={formik.values.firstname}
-                                                    onChange={formik.handleChange}
-                                                    error={(!!formik.errors.firstname).toString()}
-                                                    errormessage={formik.errors.firstname || null}
-                                                />
-                                            </label>
-                                        </div>
-                                    </div>
-                                ) : null}
-                                {show_lastname && isCms ? (
-                                    <div className="field-newsletter">
-                                        <div className="control">
-                                            <label htmlFor="newsletter">
-                                                <input
-                                                    name="lastname"
-                                                    type="text"
-                                                    id="newsletter"
-                                                    placeholder={t('common:newsletter:lastname')}
-                                                    value={formik.values.lastname}
-                                                    onChange={formik.handleChange}
-                                                    error={(!!formik.errors.lastname).toString()}
-                                                    errormessage={formik.errors.lastname || null}
-                                                />
-                                            </label>
-                                        </div>
-                                    </div>
-                                ) : null}
-                                <div className="actions">
-                                    <button
-                                        className="action subscribe primary"
-                                        title="Subscribe"
-                                        type="submit"
+                    <div className={cx('right-section-newsletter')}>
+                        <div className="block-newsletter">
+                            <div className="content">
+                                <form
+                                    className={cx(
+                                        'tablet:flex',
+                                        'tablet:w-full',
+                                        'tablet:justify-start',
+                                        'tablet:items-start',
+                                        'max-tablet:grid',
+                                        'max-tablet:grid-cols-1',
+                                        'max-tablet:mt-6',
+                                    )}
+                                    id="newsletter-validate-detail"
+                                    onSubmit={formik.handleSubmit}
+                                >
+                                    <TextField
+                                        className={cx('max-tablet:w-full', 'tablet:max-desktop:w-[247px]')}
+                                        value={formik.values.email}
+                                        id="email"
+                                        name="email"
+                                        placeholder={t('common:newsletter:placeholder')}
+                                        onChange={formik.handleChange}
+                                        hintProps={{
+                                            displayHintText: !!(formik.touched.email && formik.errors.email),
+                                            hintType: 'error',
+                                            hintText: (formik.touched.email && formik.errors.email) || null,
+                                        }}
+                                    />
+                                    <Button
+                                        className={cx('py-[12px]', 'tablet:ml-2', 'max-tablet:mt-4', 'max-tablet:w-full', 'max-tablet:text-center')}
+                                        variant="primary"
+                                        loading={loading}
                                         disabled={loading}
-                                        aria-label="Subscribe"
                                         onClick={() =>
                                             formik.values.email === ''
                                                 ? window.toastMessage({
-                                                    open: true,
-                                                    variant: 'error',
-                                                    text: t('common:newsletter:emptyValue'),
-                                                })
-                                                : ''
+                                                      open: true,
+                                                      variant: 'error',
+                                                      text: t('common:newsletter:emptyValue'),
+                                                  })
+                                                : formik.handleSubmit()
                                         }
                                     >
-                                        {loading ? <CircularProgress color="inherit" size={14} /> : <span>{storeConfig?.pwa?.footer_version !== 'pwa_footer_v2' ? 'Sign Up' : t('common:newsletter:buttonLabel')}</span>}
-                                    </button>
-                                </div>
-                            </form>
+                                        <Typography className={cx('!text-neutral-white', 'max-tablet:m-[0_auto]')}>Subscribe</Typography>
+                                    </Button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -150,14 +149,12 @@ const NewsletterView = (props) => {
                 {`
                     .newsletter-container {
                         position: relative;
-                        margin-bottom: -40px;
+                        // margin-bottom: -40px;
                         height: ${layout_type === 'box'
                             ? `${title_font_size ? Number(title_font_size) + totalHeight + 40 : totalHeight}px`
                             : title_font_size
-                            ? `${170 + Number(title_font_size) + 20}px`
-                            : '170px'};
-                        background: #f4f4f4;
-                        padding: 10px 10px 10px 10px;
+                              ? `${170 + Number(title_font_size) + 20}px`
+                              : '170px'};
                     }
                     .wrapper {
                         position: absolute;
@@ -167,9 +164,7 @@ const NewsletterView = (props) => {
                         transform: translate(-50%, -50%);
                     }
                     .title {
-                        font-size: ${isCms ? `${title_font_size}px` : '16px'};
-                        text-align: ${isCms ? 'left' : 'center'};
-                        margin-left: 10px;
+                        font-size: ${isCms && title_font_size ? `${title_font_size}px` : '20px'};
                         color: ${title_color ? title_color : 'black'};
                     }
                     .title h3 {
@@ -179,15 +174,9 @@ const NewsletterView = (props) => {
                     .block-newsletter {
                         margin: 0 auto;
                         max-width: ${layout_type === 'box' ? '100%' : '100%'};
-                        width: ${layout_type === 'box' ? '100%' : isCms ? '100%' : 'max-content'};
                     }
                     .form.subscribe {
-                        display: flex;
                         flex-direction: ${layout_type === 'box' ? 'column' : 'row'};
-                        width: 100%;
-                        margin-top: 20px;
-                        justify-content: flex-start;
-                        align-items: flex-start;
                     }
                     .actions {
                         display: table-cell;
@@ -240,12 +229,8 @@ const NewsletterView = (props) => {
                         .wrapper {
                             top: 50%;
                         }
-                        .title {
-                            display: ${isCms ? '' : 'none'};
-                        }
                         .block-newsletter {
                             max-width: 100%;
-                            width: 90%;
                         }
                         .actions {
                             display: block;

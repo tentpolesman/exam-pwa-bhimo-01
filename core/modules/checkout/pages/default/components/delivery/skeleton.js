@@ -1,14 +1,10 @@
-import Skeleton from '@material-ui/lab/Skeleton';
-import useStyles from '@core_modules/checkout/pages/default/components/style';
+import Skeleton from '@common_skeleton';
 
-const SkeletonDelivery = () => {
-    const styles = useStyles();
-    return (
-        <div className={styles.block}>
-            <Skeleton variant="text" animation="wave" width="60%" height={30} />
-            <Skeleton variant="rect" animation="wave" width="90%" height={70} />
-        </div>
-    );
-};
+const SkeletonDelivery = () => (
+    <div className="border-b border-b-neutral-200">
+        <Skeleton width="60%" height={30} />
+        <Skeleton className="rounded-[50%]" width="90%" height={70} />
+    </div>
+);
 
 export default SkeletonDelivery;

@@ -87,12 +87,13 @@ const OptionsItemsBundle = (props) => {
         loading: customLoading,
         setLoading: setCustomLoading,
         customButton,
+        ...other
     } = props;
 
     // cache currency
     const currencyCache = useReactiveVar(currencyVar);
 
-    const reviewValue = parseInt(review.rating_summary, 0) / 20;
+    const reviewValue = parseInt(review?.rating_summary || 0, 0) / 20;
     const [items, setItems] = React.useState([]);
     let [loadingAdd, setLoadingAdd] = React.useState(false);
     const mount = React.useRef(null);
@@ -275,8 +276,10 @@ const OptionsItemsBundle = (props) => {
             loading={loading || loadingAdd}
             t={t}
             disabled={stock_status === 'OUT_OF_STOCK'}
+            stockStatus={stock_status}
             customButton={customButton}
             currencyCache={currencyCache}
+            {...other}
         />
     );
 };

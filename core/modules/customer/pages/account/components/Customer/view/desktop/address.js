@@ -1,33 +1,43 @@
+/* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable no-plusplus */
 /* eslint-disable react/no-unescaped-entities */
-import Link from 'next/link';
+import cx from 'classnames';
 
-const generateData = (data, { t, styles }) => (
-    <p>
-        {data.firstname}
-        {' '}
-        {data.lastname}
-        <br />
-        {data.street[0]}
-        <br />
-        {data.city}
-        {', '}
-        {data.region.region}
-        {', '}
-        {data.postcode}
-        <br />
-        Indonesia
-        <br />
-        <Link href="/customer/account/address" className={styles.desktopLink}>
-            {t('customer:address:editTitle')}
-        </Link>
+import Button from '@common_button';
+import Typography from '@common_typography';
+
+import ExclamationTriangleIcon from '@heroicons/react/24/outline/ExclamationTriangleIcon';
+
+const generateData = (data, { t }) => (
+    <p className={cx('pt-5')}>
+        <Typography className={cx('block', 'font-normal')}>
+            {data.firstname} {data.lastname}
+        </Typography>
+        <Typography className={cx('block', 'font-normal', 'pt-3')}>{data.city.split(', ')[0]}</Typography>
+        <Typography className={cx('block', 'font-normal')}>
+            {data.country_code === 'ID' ? (
+                <>
+                    <p>{`${data.street[0]},`}</p>
+                    <p>{`Kec. ${data.city.split(', ')[2]}, Kel. ${data.city.split(', ')[1]}`}</p>
+                </>
+            ) : (
+                `${data.street[0]}, ${data.city.split(', ')[2]}, ${data.city.split(', ')[1]}`
+            )}
+        </Typography>
+        <Typography className={cx('block', 'font-normal')}>{`${data.city.split(', ')[0]} ${data.postcode}`}</Typography>
+        <Typography className={cx('block', 'font-normal')}>{`T: ${data.telephone}`}</Typography>
+        <Button link="/customer/account/address" variant="plain" className={cx('pl-0', '!pb-0', 'pt-5')}>
+            <Typography variant="bd-2a" className={cx('!text-primary-700')}>
+                {t('customer:address:changeAddress')}
+            </Typography>
+        </Button>
     </p>
 );
 
 const AddressView = (props) => {
-    const { customer, styles, t } = props;
+    const { customer, t } = props;
     const { addresses } = customer;
-    let defaultShiping = {};
+    let defaultShipping = {};
     let defaultBilling = {};
     let defaultAddress = false;
 
@@ -37,8 +47,8 @@ const AddressView = (props) => {
             defaultBilling = addr;
         }
 
-        if (addr.default_shipping && !defaultShiping.id) {
-            defaultShiping = addr;
+        if (addr.default_shipping && !defaultShipping.id) {
+            defaultShipping = addr;
         }
 
         if (addr.default_billing === true || addr.default_shipping === true) {
@@ -46,28 +56,61 @@ const AddressView = (props) => {
         }
     }
 
-    return <>
-        <h2 className={styles.infoTitle}>
-            {t('customer:menu:address')}
-            <Link href="/customer/account/address" className={styles.desktopLinkHeader}>
-                {t('customer:address:editTitle')}
-            </Link>
-        </h2>
-        <hr />
-        {addresses.length > 0 && defaultAddress ? (
-            <div className="row">
-                <div className="col-sm-6 col-lg-6">
-                    <h3>{t('customer:address:defaultBilling')}</h3>
-                    {generateData(defaultBilling, props)}
-                </div>
-                <div className="col-sm-6 col-lg-6">
-                    <h3>{t('customer:address:defaultShiping')}</h3>
-                    {generateData(defaultShiping, props)}
-                </div>
+    return (
+        <div className={cx('pt-10')}>
+            <div className={cx('address-title-section', 'pb-[18px]', 'border-b-[1.5px]', 'border-neutral-200', 'flex', 'flex-row')}>
+                <Typography variant="h3" className={cx('mobile:max-desktop:hidden', 'pl-0')}>
+                    {t('customer:menu:address')}
+                </Typography>
+                <Button link="/customer/account/profile" variant="plain" className={cx('pl-6', '!py-0')}>
+                    <Typography variant="bd-2a" className={cx('!text-neutral-500', 'underline', 'underline-offset-2')}>
+                        {t('customer:address:editTitle')}
+                    </Typography>
+                </Button>
             </div>
-        ) : <div style={{ textAlign: 'center' }}>{t('customer:address:emptyMessage')}</div>}
-
-    </>;
+            {addresses.length > 0 && defaultAddress ? (
+                <div className={cx('flex', 'flex-row', 'pt-[18px]', 'gap-x-5')}>
+                    <div className={cx('sm:basis-1/2', 'lg:basis-1/2', 'border-[1px]', 'border-neutral-200', 'rounded-md', 'pl-5', 'py-5')}>
+                        <Typography variant="bd-1a" className={cx('!text-neutral-800')}>
+                            {t('customer:address:defaultBilling')}
+                        </Typography>
+                        {generateData(defaultBilling, props)}
+                    </div>
+                    <div className={cx('sm:basis-1/2', 'lg:basis-1/2', 'border-[1px]', 'border-neutral-200', 'rounded-md', 'pl-5', 'py-5')}>
+                        <Typography variant="bd-1a" className={cx('!text-neutral-800')}>
+                            {t('customer:address:defaultShipping')}
+                        </Typography>
+                        {generateData(defaultShipping, props)}
+                    </div>
+                </div>
+            ) : (
+                <Button
+                    icon={<ExclamationTriangleIcon />}
+                    iconProps={{
+                        className: cx('!text-yellow-500'),
+                    }}
+                    iconPosition="left"
+                    className={cx(
+                        'mt-4',
+                        'w-full',
+                        'bg-yellow-50',
+                        'hover:bg-yellow-50',
+                        'focus:bg-yellow-50',
+                        'active:bg-yellow-50',
+                        'hover:shadow-none',
+                        'focus:shadow-none',
+                        'active:shadow-none',
+                        'cursor-auto',
+                        'hover:cursor-auto',
+                        'focus:cursor-auto',
+                        'active:cursor-auto',
+                    )}
+                >
+                    <Typography className={cx('!text-yellow-600')}>{t('customer:address:emptyMessage')}</Typography>
+                </Button>
+            )}
+        </div>
+    );
 };
 
 export default AddressView;

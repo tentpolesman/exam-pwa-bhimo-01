@@ -3,17 +3,16 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable max-len */
 /* eslint-disable react/no-danger */
-import Link from 'next/link';
-import Typography from '@common_typography';
 import Button from '@common_button';
-import router from 'next/router';
-import { setResolver, getResolver } from '@helper_localstorage';
+import Typography from '@common_typography';
 import NewsletterDialog from '@core_modules/customer/pages/account/components/Newsletter';
-import useStyles from '@core_modules/customer/pages/account/components/Footer/style';
+import { getResolver, setResolver } from '@helper_localstorage';
+import Link from 'next/link';
+import router from 'next/router';
 
 // eslint-disable-next-line consistent-return
 const FooterView = (props) => {
-    const styles = useStyles();
+    const styles = {};
     const {
         t, isLogin, handleLogout, modules, data,
     } = props;
@@ -53,7 +52,7 @@ const FooterView = (props) => {
 
                         {isLogin ? (
                             <li className={styles.account_navigation_item}>
-                                <Button fullWidth className={styles.logoutBtn} onClick={handleLogout} variant="contained">
+                                <Button fullWidth className={styles.logoutBtn} onClick={handleLogout} variant="primary">
                                     <Typography className={styles.logOutTxt} color="white" variant="span" type="bold" letter="uppercase">
                                         {t('customer:button:logout')}
                                     </Typography>

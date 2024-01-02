@@ -1,11 +1,13 @@
 import Layout from '@layout';
+import CustomerLayout from '@layout_customer';
+import { debuging } from '@config';
 import { getStoreCredit } from '@core_modules/storecredit/services/graphql';
 import { useReactiveVar } from '@apollo/client';
 import { currencyVar } from '@root/core/services/graphql/cache';
 
 const PageStoreCredit = (props) => {
     const {
-        t, Content, pageConfig, rowsPerPage = 10,
+        t, Content, pageConfig, rowsPerPage = 10, ErrorView,
     } = props;
     const config = {
         title: t('storecredit:title'),
@@ -17,7 +19,7 @@ const PageStoreCredit = (props) => {
     // cache currency
     const currencyCache = useReactiveVar(currencyVar);
 
-    const [page, setPage] = React.useState(0);
+    const [page, setPage] = React.useState(1);
     const [perPage, setRowsPerPage] = React.useState(rowsPerPage);
 
     const handleChangePage = (value) => {
@@ -26,7 +28,7 @@ const PageStoreCredit = (props) => {
 
     const handleChangeRowsPerPage = (value) => {
         setRowsPerPage(value);
-        setPage(0);
+        setPage(1);
     };
     let storeCredit = {
         current_balance: {
@@ -37,12 +39,20 @@ const PageStoreCredit = (props) => {
             items: [],
         },
     };
-    const { data, loading } = getStoreCredit(
-        {
-            pageSizeStoreCredit: perPage,
-            currentPageStoreCredit: page + 1,
-        },
-    );
+    const { data, loading, error } = getStoreCredit({
+        pageSizeStoreCredit: perPage,
+        currentPageStoreCredit: page,
+    });
+    if (error) {
+        return (
+            <Layout {...props} pageConfig={pageConfig || config}>
+                <CustomerLayout {...props}>
+                    <ErrorView {...props} message={debuging.originalError ? error.message.split(':')[1] : t('common:error:fetchError')} />
+                </CustomerLayout>
+            </Layout>
+        );
+    }
+
     if (data) {
         storeCredit = data.customer.store_credit;
     }

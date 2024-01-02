@@ -1,18 +1,20 @@
 import React from 'react';
-import Alert from '@material-ui/lab/Alert';
-import AddressFormDialog from '@plugin_addressform';
+import Alert from '@common/Alert';
 import Button from '@common_button';
 import Typography from '@common_typography';
 import _ from 'lodash';
 import ModalAddress from '@core_modules/checkout/pages/default/components/ModalAddress';
-import useStyles from '@core_modules/checkout/pages/default/components/style';
 import { useReactiveVar } from '@apollo/client';
 import { storeConfigVar } from '@root/core/services/graphql/cache';
+import classNames from 'classnames';
+import Show from '@common/Show';
+import dynamic from 'next/dynamic';
+
+const AddressFormDialog = dynamic(() => import('@plugin_addressform'), { ssr: false });
 
 const CLOSE_ADDRESS_DIALOG = 100;
 
 const AddressView = (props) => {
-    const styles = useStyles();
     const {
         data,
         checkout,
@@ -36,7 +38,13 @@ const AddressView = (props) => {
     const [openAddress, setOpenAddress] = React.useState(false);
 
     return (
-        <div className={styles.block} id="checkoutAddress">
+        <div
+            id="checkoutAddress"
+            className={classNames(
+                'flex flex-col border-b border-b-neutral-200',
+                'w-full py-6 gap-4',
+            )}
+        >
             <style jsx>
                 {`
                     .alert-empty-pin-point :global(.MuiAlert-icon) {
@@ -54,12 +62,12 @@ const AddressView = (props) => {
                 manageCustomer={manageCustomer}
                 {...other}
             />
-            <div className={styles.addressContainer}>
-                <div className={styles.addressText}>
-                    <Typography variant="h2" type="bold" letter="uppercase">
+            <div className="flex flex-row items-center justify-between">
+                <div className="flex flex-col gap-2">
+                    <Typography variant="h2" type="bold" className="uppercase">
                         {isOnlyVirtualProductOnCart ? t('checkout:billingAddress') : t('checkout:shippingAddress')}
                     </Typography>
-                    <Typography variant="p">{content}</Typography>
+                    <Typography>{content}</Typography>
                 </div>
                 <div>
                     <AddressFormDialog
@@ -120,7 +128,7 @@ const AddressView = (props) => {
                                     : () => setOpenAddress(true)
                             }
                         >
-                            <Typography variant="p" type="bold" letter="uppercase">
+                            <Typography variant="p-3" type="bold" letter="uppercase">
                                 {data.isGuest && !address
                                     ? t('common:button:addAddress')
                                     : t(_.isNull(address) ? 'common:button:manage' : 'common:button:change')}
@@ -129,32 +137,24 @@ const AddressView = (props) => {
                     )}
                 </div>
             </div>
-            <div className="alert-empty-pin-point">
-                {
-                    showEmptyPinpoint && gmapKey && (
-                        <Alert style={{ fontSize: 10 }} severity="warning">
-                            {t('customer:address:emptyPinPointMessage')}
-                        </Alert>
-                    )
-                }
-                {
-                    checkout.error.shippingAddress && (
-                        <Alert style={{ fontSize: 10 }} severity="error">
-                            {t('checkout:address:invalidAddress')}
-                        </Alert>
-                    )
-                }
-            </div>
-            <style jsx global>
-                {`
-                    .alert-empty-pin-point {
-                        display: flex;
-                        flex-direction: column;
-                        justify-content: space-between;
-                        height: 100px;
+            <Show when={showEmptyPinpoint || checkout.error.shippingAddress}>
+                <div className="flex flex-col justify-between h-[100px]">
+                    {
+                        showEmptyPinpoint && gmapKey && (
+                            <Alert style={{ fontSize: 10 }} severity="warning">
+                                {t('customer:address:emptyPinPointMessage')}
+                            </Alert>
+                        )
                     }
-                `}
-            </style>
+                    {
+                        checkout.error.shippingAddress && (
+                            <Alert style={{ fontSize: 10 }} severity="error">
+                                {t('checkout:address:invalidAddress')}
+                            </Alert>
+                        )
+                    }
+                </div>
+            </Show>
         </div>
     );
 };

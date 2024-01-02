@@ -1,7 +1,6 @@
 import { useMutation } from '@apollo/client';
 import Button from '@common_button';
 import Typography from '@common_typography';
-import useStyles from '@core_modules/cms/components/cms-renderer/widget-newsletter-popup/style';
 import { subscribeNewsletter } from '@core_modules/customer/services/graphql/schema';
 import { useFormik } from 'formik';
 import parse, { domToReact } from 'html-react-parser';
@@ -14,7 +13,6 @@ const Newsletter = (props) => {
             request: 'internal',
         },
     });
-    const styles = useStyles();
 
     const formik = useFormik({
         initialValues: {
@@ -53,10 +51,9 @@ const Newsletter = (props) => {
 
     return (
         <form noValidate onSubmit={formik.handleSubmit}>
-            <div className={styles.fieldNewsletterControl}>
+            <div>
                 <label htmlFor="newsletter">
                     <input
-                        className={styles.fieldNewsletter}
                         name="email"
                         type="email"
                         id="newsletter"
@@ -65,7 +62,7 @@ const Newsletter = (props) => {
                         onChange={formik.handleChange}
                     />
                 </label>
-                <Button type="submit" loading={result.loading} className={styles.subscribeBtn}>
+                <Button type="submit" loading={result.loading}>
                     {t('common:newsletter:buttonLabel')}
                 </Button>
             </div>
@@ -101,12 +98,12 @@ const WidgetNewsletterPopup = (props) => {
                     );
                 }
 
-                if (attribs.class === 'col-md-7 newsletter-left') {
-                    return <div className="col-xs-12 col-sm-7 col-md-7 newsletter-left">{domToReact(children, options)}</div>;
+                if (attribs.class === 'md:basis-7/12 newsletter-left') {
+                    return <div className="xs:basis-full sm:basis-7/12 md:basis-7/12 newsletter-left">{domToReact(children, options)}</div>;
                 }
 
-                if (attribs.class === 'col-md-5 newsletter-right') {
-                    return <div className="col-sm-5 col-md-5 newsletter-right">{domToReact(children, options)}</div>;
+                if (attribs.class === 'md:basis-5/12 newsletter-right') {
+                    return <div className="sm:basis-5/12 md:basis-5/12 newsletter-right">{domToReact(children, options)}</div>;
                 }
             }
         },

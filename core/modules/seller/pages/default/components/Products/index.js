@@ -2,7 +2,6 @@
 import { getEtalase } from '@core_modules/seller/services/graphql';
 import TabView from '@common_tabs';
 import Typography from '@common_typography';
-import useStyles from '@core_modules/seller/pages/default/components/style';
 import DetailProductView from '@plugin_productitem/components/Detail';
 import ImageProductView from '@plugin_productitem/components/Image';
 import CoreBase from '@plugin_productlist/core';
@@ -22,7 +21,6 @@ const ContentProducts = (props) => {
     const {
         storeConfig, t, dataSeller, errorSeller, loadingSeller, link, sellerId, isLogin, route, handleChat, showChat, banner, ...other
     } = props;
-    const styles = useStyles();
 
     const { data } = getEtalase({
         variables: {
@@ -42,13 +40,13 @@ const ContentProducts = (props) => {
             {dataSeller && dataSeller.getSeller.length > 0 && (
                 <>
                     <SellerInfo {...props} />
-                    <div className={styles.sellerProduct}>
+                    <div className="">
                         <TabLayout noBanner={banner} t={t}>
-                            <div className="row">
+                            <div className="flex flex-row">
                                 {
                                     dataEtalase && (
                                         <>
-                                            <div className="col-md-2 hidden-mobile">
+                                            <div className="md:basis-2/12 hidden-mobile">
                                                 <EtalaseDesktop noBanner={banner} t={t} data={dataEtalase} route={route} />
                                             </div>
                                             <div className="hidden-desktop" style={{ width: '100%' }}>
@@ -57,7 +55,7 @@ const ContentProducts = (props) => {
                                         </>
                                     )
                                 }
-                                <div className={dataEtalase ? 'col-md-10 col-12' : 'col-md-12'} style={{ width: '100%' }}>
+                                <div className={dataEtalase ? 'md:basis-10/12 basis-full' : 'md:basis-full'} style={{ width: '100%' }}>
                                     <CoreBase
                                         t={t}
                                         ErrorMessage={ErrorMessage}

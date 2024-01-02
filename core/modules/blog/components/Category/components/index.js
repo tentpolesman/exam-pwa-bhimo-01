@@ -1,18 +1,15 @@
 import Button from '@common_button';
 import Typography from '@common_typography';
-import Menu from '@material-ui/icons/Menu';
 import React from 'react';
+import Router from 'next/router';
+import Divider from '@common_divider';
+import ModalContent from '@core_modules/blog/components/Category/components/ModalCategory';
 import classNames from 'classnames';
 import { breakPointsUp } from '@helper_theme';
 import { modules } from '@config';
-import Router from 'next/router';
-import Divider from '@material-ui/core/Divider';
-import useStyles from '@core_modules/blog/components/Category/components/style';
-import ModalContent from '@core_modules/blog/components/Category/components/ModalCategory';
 
 const ContentCategory = (props) => {
     const { t, data } = props;
-    const styles = useStyles();
     const desktop = breakPointsUp('sm');
     const [openModal, setOpenModal] = React.useState(false);
     const { link } = modules.blog;
@@ -27,39 +24,38 @@ const ContentCategory = (props) => {
             <ModalContent t={t} open={openModal} setOpen={() => setOpenModal(false)} {...props} />
             {
                 desktop ? (
-                    <div className={styles.categoryDesktop}>
-                        <Button variant="text" className={styles.labelCategory}>
-                            <Typography variant="span" letter="uppercase">
+                    <div className="pt-[10px] pr-[20px] pb-[15px] pl-[30px]">
+                        <Button variant="plain" className="mb-[20px] cursor-default">
+                            <Typography className="uppercase hover:bg-none">
                                 {t('blog:category')}
                             </Typography>
                         </Button>
                         {
                             data.map((item, key) => (
                                 <Button
-                                    variant="text"
+                                    variant="plain"
                                     onClick={() => handleClick(item)}
                                     key={key}
                                 >
 
-                                    <Typography variant="span" align="center">
+                                    <Typography className="text-center">
                                         {item.name}
                                     </Typography>
                                 </Button>
                             ))
                         }
-                        <Divider light className={styles.divider} />
+                        <Divider className="mt-[10px] ml-[10px]" />
                     </div>
                 ) : (
-                    <div className={classNames(styles.btnCategoryContainer, 'hidden-desktop')}>
+                    <div className={classNames('flex flex-row justify-start items-center pr-[20px] w-auto', 'hidden-desktop')}>
                         <Button
-                            variant="text"
-                            customRootStyle={{ width: 'fit-content' }}
-                            className={styles.btnFilter}
+                            variant="plain"
+                            className="object-contain"
                             onClick={() => setOpenModal(true)}
                         >
-                            <Menu className={styles.iconFilter} />
+                            <div className="menu" />
                         </Button>
-                        <Typography type="bold" variant="span" letter="capitalize">
+                        <Typography className="font-bold uppercase">
                             {t('blog:category')}
                         </Typography>
                     </div>

@@ -1,26 +1,21 @@
-/* eslint-disable indent */
-/* eslint-disable no-unused-expressions */
-/* eslint-disable object-curly-newline */
 /* eslint-disable consistent-return */
-/* eslint-disable operator-linebreak */
-/* eslint-disable no-use-before-define */
-/* eslint-disable eqeqeq */
-/* eslint-disable no-shadow */
+import React, { useRef } from 'react';
+import dynamic from 'next/dynamic';
+import Router from 'next/router';
+import * as Yup from 'yup';
+import { useFormik } from 'formik';
+import firebase from 'firebase/app';
+import Cookies from 'js-cookie';
+
 import { useQuery, useReactiveVar } from '@apollo/client';
 import { custDataNameCookie, expiredToken } from '@config';
+
 import { getAppEnv } from '@helpers/env';
 import { getLastPathWithoutLogin, setLogin } from '@helper_auth';
 import { getCartId, setCartId } from '@helper_cartid';
 import { getCookies, setCookies } from '@helper_cookies';
 import { regexEmail, regexPhone } from '@helper_regex';
 import Layout from '@layout';
-import firebase from 'firebase/app';
-import { useFormik } from 'formik';
-import Cookies from 'js-cookie';
-import dynamic from 'next/dynamic';
-import Router from 'next/router';
-import React, { useRef } from 'react';
-import * as Yup from 'yup';
 
 import {
     getCustomerCartId,
@@ -32,6 +27,7 @@ import {
     otpConfig as queryOtpConfig,
     removeToken as deleteToken,
     socialLogin,
+    requestOtpLogin,
 } from '@core_modules/login/services/graphql';
 import { getCustomer } from '@core_modules/login/services/graphql/schema';
 import { assignCompareListToCustomer } from '@core_modules/productcompare/service/graphql';
@@ -43,77 +39,25 @@ const Message = dynamic(() => import('@common_toast'), { ssr: false });
 const appEnv = getAppEnv();
 
 const Login = (props) => {
-    const { t, storeConfig, query, lastPathNoAuth, Content, pageConfig } = props;
+    const {
+        t, storeConfig, query, lastPathNoAuth, Content, pageConfig,
+    } = props;
     const config = {
-        title: t('login:pageTitle'),
+        title: t('login:login'),
         header: 'relative', // available values: "absolute", "relative", false (default)
-        headerTitle: t('login:pageTitle'),
+        headerTitle: t('login:login'),
         headerBackIcon: 'close',
         bottomNav: false,
     };
-    const [isOtp, setIsOtp] = React.useState(false);
-    const [isDidUpdate, setIsDidUpdate] = React.useState({});
+    // state
+    const [showOtp, setShowOtp] = React.useState(false);
+    const [manySendOtp, setManySendOtp] = React.useState(0);
+    const [time, setTime] = React.useState(0);
+
     const [isRevokeToken, setRevokeToken] = React.useState(false);
-    const [disabled, setDisabled] = React.useState(false);
     const [loading, setLoading] = React.useState(false);
     const [cusIsLogin, setIsLogin] = React.useState(0);
-    // cache price
-    const cachePrice = useReactiveVar(priceVar);
-
-    // Listen to the Firebase Auth state and set the local state.
-
-    React.useEffect(() => {
-        if (firebase.app()) {
-            try {
-                const unregisterAuthObserver = firebase.auth().onAuthStateChanged((user) => {
-                    if (firebase.auth().currentUser) {
-                        const fullname = user.displayName.split(' ');
-                        const firstName = fullname[0];
-                        let lastName = '';
-                        const { email } = user;
-                        fullname.forEach((entry) => {
-                            if (entry != firstName) {
-                                lastName += `${entry} `;
-                            }
-                        });
-                        firebase
-                            .auth()
-                            .currentUser.getIdToken(true)
-                            .then((user) => {
-                                setDisabled(true);
-                                setLoading(true);
-                                window.backdropLoader(true);
-                                actSocialLogin({
-                                    variables: {
-                                        email,
-                                        socialtoken: user,
-                                        firstname: firstName,
-                                        lastname: lastName,
-                                    },
-                                })
-                                    .then(async () => {
-                                        setLogin(1, expired);
-                                        await setIsLogin(1);
-                                    })
-                                    .catch((e) => {
-                                        setDisabled(false);
-                                        setLoading(false);
-                                        window.backdropLoader(false);
-                                        window.toastMessage({
-                                            open: true,
-                                            variant: 'error',
-                                            text: e.message.split(':')[0] || t('login:failed'),
-                                        });
-                                    });
-                            });
-                    }
-                });
-                return () => unregisterAuthObserver();
-            } catch {
-                null;
-            }
-        }
-    }, []);
+    const [disabled, setDisabled] = React.useState(false);
 
     const [state, setState] = React.useState({
         toastMessage: {
@@ -123,6 +67,39 @@ const Login = (props) => {
         },
         backdropLoader: false,
     });
+
+    const recaptchaRef = useRef();
+
+    // gql
+    const [deleteTokenGql] = deleteToken();
+    const [getCustomerToken] = getToken();
+    const [getCustomerTokenOtp] = getTokenOtp();
+    const [getCustomerTokenPhoneEmail] = getTokenPhoneEmail();
+
+    const cartData = getCustomerCartId({
+        skip: !cusIsLogin,
+    });
+    const [mergeCart] = mutationMergeCart();
+    const [mergeCompareProduct, { client }] = assignCompareListToCustomer();
+
+    const [actSocialLogin] = socialLogin();
+
+    // otp
+    const [actRequestOtpLogin] = requestOtpLogin();
+
+    // get login method social login
+    const socialLoginMethod = getSigninMethodSocialLogin();
+    const otpConfig = queryOtpConfig();
+    const custData = useQuery(getCustomer, {
+        context: {
+            request: 'internal',
+        },
+        skip: !cusIsLogin,
+        fetchPolicy: 'no-cache',
+    });
+
+    // cache price
+    const cachePrice = useReactiveVar(priceVar);
 
     let cartId = '';
     const handleCloseMessage = () => {
@@ -163,52 +140,6 @@ const Login = (props) => {
         }
     }
 
-    const [deleteTokenGql] = deleteToken();
-    const [getCustomerToken] = getToken();
-    const [getCustomerTokenOtp] = getTokenOtp();
-    const [getCustomerTokenPhoneEmail] = getTokenPhoneEmail();
-    const cartData = getCustomerCartId({
-        skip: !cusIsLogin,
-    });
-    const [mergeCart] = mutationMergeCart();
-    const [mergeCompareProduct, { client }] = assignCompareListToCustomer();
-
-    const [actSocialLogin] = socialLogin();
-
-    // get login method social login
-    const socialLoginMethod = getSigninMethodSocialLogin();
-    const otpConfig = queryOtpConfig();
-    const custData = useQuery(getCustomer, {
-        context: {
-            request: 'internal',
-        },
-        skip: !cusIsLogin,
-        fetchPolicy: 'no-cache',
-    });
-
-    // handle revoke token
-    React.useEffect(() => {
-        if (!isRevokeToken && typeof window !== 'undefined') {
-            setRevokeToken(true);
-            deleteTokenGql();
-        }
-    }, [isRevokeToken]);
-
-    // togle disabled when user just switch to otp mode
-    React.useEffect(() => {
-        if (isDidUpdate.isOtp && formik.dirty) {
-            /* only validate form when:
-                isOtp changed for not first time / initial && formik is dirty
-            */
-            formik.validateForm();
-        } else {
-            setIsDidUpdate({ isOtp: true });
-        }
-
-        // disabled when user switch to otp mode
-        setDisabled(isOtp);
-    }, [isOtp]);
-
     // enable recaptcha
     let enableRecaptcha = false;
 
@@ -219,42 +150,84 @@ const Login = (props) => {
         }
     }
 
-    const LoginSchema = Yup.object().shape({
-        username: Yup.string().email(t('validate:email:wrong')).required(t('validate:email:required')),
-        password: Yup.string().required(t('validate:password:required')),
-        captcha: enableRecaptcha && Yup.string().required(t('validate:captcha:required')),
-    });
+    let socialLoginMethodData = [];
+    if (
+        socialLoginMethod.data
+        && socialLoginMethod.data.getSigninMethodSocialLogin
+        && socialLoginMethod.data.getSigninMethodSocialLogin.signin_method_allowed
+        && socialLoginMethod.data.getSigninMethodSocialLogin.signin_method_allowed !== ''
+    ) {
+        socialLoginMethodData = socialLoginMethod.data.getSigninMethodSocialLogin.signin_method_allowed.split(',');
+    }
 
-    const LoginPhoneEmailSchema = Yup.object().shape({
-        username:
-            otpConfig.data && otpConfig.data.otpConfig.otp_enable && otpConfig.data.otpConfig.otp_enable[0].enable_otp_login
-                ? Yup.string().email(t('validate:email:wrong')).required(t('validate:email:required'))
-                : Yup.string()
-                      .required(t('validate:phoneEmail:required'))
-                      .test('phoneEmail', t('validate:phoneEmail:wrong'), (value) => {
-                          const emailRegex = regexEmail.test(value);
-                          const phoneRegex = regexPhone.test(value);
-                          if (!emailRegex && !phoneRegex) {
-                              return false;
-                          }
-                          return true;
-                      }),
-        password: Yup.string().required(t('validate:password:required')),
-    });
+    let sitekey;
 
-    const LoginOtpSchema = Yup.object().shape({
-        username: Yup.string().required(t('validate:phoneNumber:required')).matches(regexPhone, t('validate:phoneNumber:wrong')),
-        otp: Yup.number().required('Otp is required'),
-        captcha: enableRecaptcha && Yup.string().required(t('validate:captcha:required')),
-    });
+    if (appEnv === 'local') {
+        sitekey = dataLoginConfig?.storeConfig.pwa.recaptcha_site_key_local;
+    } else if (appEnv === 'dev') {
+        sitekey = dataLoginConfig?.storeConfig.pwa.recaptcha_site_key_dev;
+    } else if (appEnv === 'stage') {
+        sitekey = dataLoginConfig?.storeConfig.pwa.recaptcha_site_key_stage;
+    } else if (appEnv === 'prod') {
+        sitekey = dataLoginConfig?.storeConfig.pwa.recaptcha_site_key_prod;
+    }
+
+    const handleSend = (phoneNumber) => {
+        const configSendOtp = {
+            maxLength: otpConfig?.data?.otpConfig?.otp_length?.[0]?.length_otp_login || 4,
+            maxTry: otpConfig?.data?.otpConfig?.otp_max_try?.[0]?.max_try_otp_login || 3,
+            expired: otpConfig?.data?.otpConfig?.otp_expired_time?.[0]?.expired_time_otp_login || 60,
+        };
+
+        window.backdropLoader(true);
+        actRequestOtpLogin({
+            variables: {
+                phoneNumber,
+            },
+        })
+            .then(() => {
+                setShowOtp(true);
+                window.backdropLoader(false);
+                setManySendOtp(manySendOtp + 1);
+                // eslint-disable-next-line no-nested-ternary
+                setTime(configSendOtp && configSendOtp.expired ? configSendOtp.expired : 60);
+                window.toastMessage({
+                    open: true,
+                    text: t('otp:sendSuccess'),
+                    variant: 'success',
+                });
+            })
+            .catch((e) => {
+                window.backdropLoader(false);
+                if (e.message === 'phone number is already Registered') {
+                    window.toastMessage({
+                        open: true,
+                        text: `${t('otp:registerOtpFailed', { phoneNumber })}`,
+                        variant: 'error',
+                    });
+                } else if (e.message === 'Max retries exceeded') {
+                    window.toastMessage({
+                        open: true,
+                        text: `${t('otp:registerOtpTooManyRetries', { phoneNumber })}`,
+                        variant: 'error',
+                    });
+                } else {
+                    window.toastMessage({
+                        open: true,
+                        text: e.message.split(':')[1] || t('otp:sendFailed'),
+                        variant: 'error',
+                    });
+                }
+            });
+    };
 
     const handleSubmit = (formOtp, variables) => {
         let getTokenCustomer;
-        if (formOtp == 'otp') {
+        if (formOtp === 'otp') {
             getTokenCustomer = getCustomerTokenOtp;
-        } else if (formOtp == 'password') {
+        } else if (formOtp === 'password') {
             getTokenCustomer = getCustomerToken;
-        } else if (formOtp == 'phoneEmail') {
+        } else if (formOtp === 'phoneEmail') {
             getTokenCustomer = getCustomerTokenPhoneEmail;
         }
         setDisabled(true);
@@ -265,15 +238,15 @@ const Login = (props) => {
                 variables: data,
             })
                 .then(async (res) => {
-                    let token = '';
-                    if (formOtp == 'otp') {
-                        token = res.data.internalGenerateCustomerTokenOtp.token;
-                    } else if (formOtp == 'password') {
-                        token = res.data.internalGenerateCustomerToken.token;
-                    } else if (formOtp == 'phoneEmail') {
-                        token = res.data.internalGenerateCustomerTokenCustom.token;
+                    let message = '';
+                    if (formOtp === 'otp') {
+                        message = res.data.internalGenerateCustomerTokenOtp.message;
+                    } else if (formOtp === 'password') {
+                        message = res.data.internalGenerateCustomerToken.message;
+                    } else if (formOtp === 'phoneEmail') {
+                        message = res.data.internalGenerateCustomerTokenCustom.message;
                     }
-                    if (token) {
+                    if (message) {
                         setLogin(1, expired);
                         await setIsLogin(1);
                     }
@@ -328,11 +301,56 @@ const Login = (props) => {
             sendData(variables);
         }
     };
-    const handleChangePhone = (event) => {
-        const value = event;
 
-        formikOtp.setFieldValue('username', value);
-    };
+    // validation schema
+    const LoginSchema = Yup.object().shape({
+        username: Yup.string().email(t('validate:email:wrong')).required(t('validate:email:required')),
+        password: Yup.string().required(t('validate:password:required')),
+        captcha: enableRecaptcha && Yup.string().required(t('validate:captcha:required')),
+    });
+
+    const LoginPhoneEmailSchema = Yup.object().shape({
+        username:
+            otpConfig.data && otpConfig.data.otpConfig.otp_enable && otpConfig.data.otpConfig.otp_enable[0].enable_otp_login
+                ? Yup.string().email(t('validate:email:wrong')).required(t('validate:email:required'))
+                : Yup.string()
+                    .required(t('validate:phoneEmail:required'))
+                    .test('phoneEmail', t('validate:phoneEmail:wrong'), (value) => {
+                        const emailRegex = regexEmail.test(value);
+                        const phoneRegex = regexPhone.test(value);
+                        if (!emailRegex && !phoneRegex) {
+                            return false;
+                        }
+                        return true;
+                    }),
+        password: Yup.string().required(t('validate:password:required')),
+        captcha: enableRecaptcha && Yup.string().required(t('validate:captcha:required')),
+    });
+
+    const LoginOtpSchema = Yup.object().shape({
+        username: Yup.string().required(t('validate:phoneNumber:required')).matches(regexPhone, t('validate:phoneNumber:wrong')),
+        otp: showOtp && Yup.number().required('Otp is required'),
+        captcha: enableRecaptcha && Yup.string().required(t('validate:captcha:required')),
+    });
+
+    // formik
+    const formik = useFormik({
+        initialValues: {
+            username: '',
+            password: '',
+            captcha: '',
+        },
+        validationSchema: LoginSchema,
+        onSubmit: (values) => {
+            const variables = {
+                username: values.username,
+                password: values.password,
+                captcha: values.captcha,
+            };
+            handleSubmit('password', variables);
+        },
+    });
+
     const formikPhoneEmail = useFormik({
         initialValues: {
             username: '',
@@ -363,27 +381,19 @@ const Login = (props) => {
                 otp: values.otp,
                 captcha: values.captcha,
             };
-            handleSubmit('otp', variables);
+            if (showOtp) {
+                handleSubmit('otp', variables);
+            } else {
+                handleSend(values.username);
+            }
         },
     });
 
-    const formik = useFormik({
-        initialValues: {
-            username: '',
-            password: '',
-            otp: '',
-            captcha: '',
-        },
-        validationSchema: LoginSchema,
-        onSubmit: (values) => {
-            const variables = {
-                username: values.username,
-                password: values.password,
-                captcha: values.captcha,
-            };
-            handleSubmit('password', variables);
-        },
-    });
+    const handleChangeCaptcha = (value) => {
+        formik.setFieldValue('captcha', value || '');
+        formikOtp.setFieldValue('captcha', value || '');
+        formikPhoneEmail.setFieldValue('captcha', value || '');
+    };
 
     React.useEffect(() => {
         if (cartData.data && custData.data && cartData.data.customerCart && cartData.data.customerCart && cartData.data.customerCart.id) {
@@ -476,49 +486,88 @@ const Login = (props) => {
         }
     }, [cartData, custData]);
 
-    let socialLoginMethodData = [];
-    if (
-        socialLoginMethod.data &&
-        socialLoginMethod.data.getSigninMethodSocialLogin &&
-        socialLoginMethod.data.getSigninMethodSocialLogin.signin_method_allowed &&
-        socialLoginMethod.data.getSigninMethodSocialLogin.signin_method_allowed !== ''
-    ) {
-        socialLoginMethodData = socialLoginMethod.data.getSigninMethodSocialLogin.signin_method_allowed.split(',');
-    }
+    React.useEffect(() => {
+        if (!time) return;
+        const intervalId = setInterval(() => {
+            setTime(time - 1);
+        }, 1000);
 
-    const handleChangeCaptcha = (value) => {
-        formik.setFieldValue('captcha', value || '');
-        formikOtp.setFieldValue('captcha', value || '');
-        formikPhoneEmail.setFieldValue('captcha', value || '');
-    };
+        // eslint-disable-next-line consistent-return
+        return () => clearInterval(intervalId);
+    }, [time]);
 
-    const recaptchaRef = useRef();
-    let sitekey;
+    // handle revoke token
+    React.useEffect(() => {
+        if (!isRevokeToken && typeof window !== 'undefined') {
+            setRevokeToken(true);
+            deleteTokenGql();
+        }
+    }, [isRevokeToken]);
 
-    if (appEnv === 'local') {
-        sitekey = dataLoginConfig?.storeConfig.pwa.recaptcha_site_key_local;
-    } else if (appEnv === 'dev') {
-        sitekey = dataLoginConfig?.storeConfig.pwa.recaptcha_site_key_dev;
-    } else if (appEnv === 'stage') {
-        sitekey = dataLoginConfig?.storeConfig.pwa.recaptcha_site_key_stage;
-    } else if (appEnv === 'prod') {
-        sitekey = dataLoginConfig?.storeConfig.pwa.recaptcha_site_key_prod;
-    }
+    // Listen to the Firebase Auth state and set the local state.
+    React.useEffect(() => {
+        if (firebase.app()) {
+            try {
+                const unregisterAuthObserver = firebase.auth().onAuthStateChanged((user) => {
+                    if (firebase.auth().currentUser) {
+                        const fullname = user.displayName.split(' ');
+                        const firstName = fullname[0];
+                        let lastName = '';
+                        const { email } = user;
+                        fullname.forEach((entry) => {
+                            // eslint-disable-next-line eqeqeq
+                            if (entry != firstName) {
+                                lastName += `${entry} `;
+                            }
+                        });
+                        firebase
+                            .auth()
+                            .currentUser.getIdToken(true)
+                            .then((u) => {
+                                setDisabled(true);
+                                setLoading(true);
+                                window.backdropLoader(true);
+                                actSocialLogin({
+                                    variables: {
+                                        email,
+                                        socialtoken: u,
+                                        firstname: firstName,
+                                        lastname: lastName,
+                                    },
+                                })
+                                    .then(async () => {
+                                        setLogin(1, expired);
+                                        await setIsLogin(1);
+                                    })
+                                    .catch((e) => {
+                                        setDisabled(false);
+                                        setLoading(false);
+                                        window.backdropLoader(false);
+                                        window.toastMessage({
+                                            open: true,
+                                            variant: 'error',
+                                            text: e.message.split(':')[0] || t('login:failed'),
+                                        });
+                                    });
+                            });
+                    }
+                });
+                return () => unregisterAuthObserver();
+            } catch {
+                return () => {};
+            }
+        }
+    }, []);
 
     return (
         <Layout {...props} pageConfig={pageConfig || config} isLoginPage>
             <Content
                 formik={formik}
-                handleChangePhone={handleChangePhone}
+                formikOtp={formikOtp}
                 formikPhoneEmail={formikPhoneEmail}
                 otpConfig={otpConfig}
-                isOtp={isOtp}
-                setIsOtp={setIsOtp}
                 t={t}
-                setDisabled={setDisabled}
-                disabled={disabled}
                 loading={loading}
-                formikOtp={formikOtp}
                 toastMessage={toastMessage}
                 socialLoginMethodLoading={socialLoginMethod.loading}
                 socialLoginMethodData={socialLoginMethodData}
@@ -528,6 +577,11 @@ const Login = (props) => {
                 recaptchaRef={recaptchaRef}
                 query={query}
                 phonePassword={storeConfig.login_phone_password}
+                showOtp={showOtp}
+                setShowOtp={setShowOtp}
+                handleSend={handleSend}
+                disabled={disabled}
+                setDisabled={setDisabled}
             />
         </Layout>
     );

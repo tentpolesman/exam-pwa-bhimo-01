@@ -1,28 +1,15 @@
-/* eslint-disable no-console */
-/* eslint-disable no-use-before-define */
-import IconButton from '@material-ui/core/IconButton';
+import React from 'react';
+import cx from 'classnames';
 import Typography from '@common_typography';
 import Button from '@common_button';
-import classNames from 'classnames';
-import TextField from '@common_textfield';
-import Divider from '@material-ui/core/Divider';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import CloseIcon from '@material-ui/icons/Close';
-import Slide from '@material-ui/core/Slide';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import React from 'react';
-import useStyles from '@core_modules/customer/pages/wishlist/components/sharewishlist/style';
+import TextField from '@common_forms/TextField';
+import Dialog from '@common/Dialog';
+import XMarkIcon from '@heroicons/react/24/solid/XMarkIcon';
 
-const Transition = React.forwardRef((props, ref) => (
-    <Slide direction="up" ref={ref} {...props} />
-));
 const ShareWishlistView = (props) => {
-    const styles = useStyles();
     const {
         open, setOpen, handleShareWishlist, t, shareLoading,
     } = props;
-    const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
     const [emailCollection, setEmailCollection] = React.useState('');
     const [message, setMessage] = React.useState('');
     const handleSetEmail = (event) => {
@@ -38,73 +25,84 @@ const ShareWishlistView = (props) => {
         }
     };
 
+    const handleClose = () => {
+        setOpen(!open);
+        document.body.style = '';
+    };
+
     return (
         <Dialog
             open={open}
-            TransitionComponent={Transition}
-            onClose={setOpen}
-            maxWidth="sm"
-            fullWidth={!!isDesktop}
-            fullScreen={!isDesktop}
-        >
-            <div>
-                <DialogContent dividers>
-                    <div className={classNames('col-md-12', styles.container)}>
-                        <IconButton
-                            style={{
-                                position: 'absolute',
-                                right: 5,
-                                top: 0,
-                            }}
-                            edge="start"
-                            onClick={setOpen}
-                            aria-label="close"
+            variant="container"
+            classWrapperTitle="!hidden"
+            content={(
+                <div
+                    className={cx(
+                        'w-full flex flex-col desktop:flex-row-reverse gap-2 !bg-[transparent]',
+                    )}
+                >
+                    <div className="w-full desktop:w-auto flex justify-end">
+                        <div
+                            role="presentation"
+                            onClick={handleClose}
+                            className={cx(
+                                'w-7 h-7 p-1 rounded-md justify-center items-center gap-1.5 inline-flex group',
+                                'bg-neutral-white bg-opacity-40 hover:bg-primary',
+                                'cursor-pointer',
+                            )}
                         >
-                            <CloseIcon />
-                        </IconButton>
-                        <Typography variant="h5" type="bold" letter="uppercase" style={{ marginLeft: 0, marginBottom: 35 }}>
-                            {t('customer:wishlist:wishlistSharing')}
-                        </Typography>
-                        <Typography variant="h7" type="bold" letter="uppercase" style={{ margin: 0 }}>
-                            {t('customer:wishlist:sharingInformation')}
-                        </Typography>
-                        <Divider style={{ marginBottom: 20 }} />
-                        <div className={styles.wrapperText}>
-                            <TextField
-                                label={t('customer:wishlist:labelEmail')}
-                                value={emailCollection}
-                                onChange={handleSetEmail}
-                                multiline
-                                rows={5}
-                                error={false}
-                            />
-                        </div>
-                        <div className={styles.wrapperText}>
-                            <TextField
-                                label={t('customer:wishlist:message')}
-                                value={message}
-                                onChange={handleSetMessage}
-                                multiline
-                                rows={5}
-                                error={false}
-                            />
-                        </div>
-                        <div>
-                            <Button
-                                onClick={() => setShareWishlist()}
-                                className={styles.btnWishlist}
-                                loading={shareLoading}
-                                align="left"
-                            >
-                                <Typography variant="span" type="bold" letter="uppercase" color="white">
-                                    {t('customer:wishlist:shareWishlist')}
-                                </Typography>
-                            </Button>
+                            <XMarkIcon className="w-5 h-5 relative group-hover:text-neutral-white" />
                         </div>
                     </div>
-                </DialogContent>
-            </div>
-        </Dialog>
+                    <div className={cx(
+                        'w-full h-max max-h-[calc(100vh-60px)] p-4 tablet:p-8 bg-neutral-white rounded-lg',
+                        'shadow-xl overflow-y-scroll',
+                    )}
+                    >
+                        <div>
+                            <Typography variant="h3" className={cx('mb-[18px]')}>
+                                {t('customer:wishlist:wishlistSharing')}
+                            </Typography>
+                            <Typography variant="h4" className={cx('mb-[6px]')}>
+                                {t('customer:wishlist:sharingInformation')}
+                            </Typography>
+                            <div>
+                                <TextField
+                                    label={t('customer:wishlist:labelEmail')}
+                                    value={emailCollection}
+                                    onChange={handleSetEmail}
+                                    multiline
+                                    error={false}
+                                    className="w-full"
+                                />
+                            </div>
+                            <div className="mt-[18px]">
+                                <TextField
+                                    label={t('customer:wishlist:message')}
+                                    value={message}
+                                    onChange={handleSetMessage}
+                                    multiline
+                                    error={false}
+                                    className="w-full"
+                                />
+                            </div>
+                            <div className="mt-[18px]">
+                                <Button
+                                    onClick={() => setShareWishlist()}
+                                    loading={shareLoading}
+                                >
+                                    <Typography className={cx('!text-neutral-white uppercase')}>
+                                        {t('customer:wishlist:shareWishlist')}
+                                    </Typography>
+                                </Button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+            classContainer="!shadow-none max-w-[360px] tablet:!max-w-[700px] desktop:!max-w-[945px]"
+            classContent="!p-0 !bg-[transparent]"
+        />
     );
 };
 

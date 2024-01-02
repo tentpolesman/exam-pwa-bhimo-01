@@ -1,26 +1,16 @@
-import Skeleton from '@material-ui/lab/Skeleton';
-import classNames from 'classnames';
-import useStyles from '@core_modules/customer/pages/wishlist/components/style';
+import React from 'react';
+import cx from 'classnames';
+import Skeleton from '@common_skeleton';
 
-const SkeletonLoader = () => {
-    const styles = useStyles();
+function SkeletonContent() {
     return (
-        <>
-            <div className="row hidden-mobile">
-                {/* <div className="col-lg-2">
-                    <Skeleton animation="wave" variant="rect" height={300} width="100%" />
-                </div> */}
-                <div className="col-lg-10">
-                    <Skeleton animation="wave" variant="rect" height={240} width="100%" style={{ marginBottom: 50 }} />
-                </div>
-            </div>
-            <div className={classNames(styles.containerSkeleton, 'hidden-desktop')}>
-                <Skeleton animation="wave" variant="rect" height={50} width="calc(100% - 100px)" style={{ marginLeft: 50, marginRight: 50 }} />
-                <Skeleton animation="wave" variant="text" height={50} width="calc(100% - 100px)" style={{ marginLeft: 50, marginRight: 50 }} />
-                <Skeleton animation="wave" variant="text" height={35} width="calc(100% - 100px)" style={{ marginLeft: 50, marginRight: 50 }} />
-            </div>
-        </>
+        <div className={cx('pt-5')}>
+            <Skeleton
+                width="100%"
+                height={200}
+            />
+        </div>
     );
-};
+}
 
-export default SkeletonLoader;
+export default SkeletonContent;

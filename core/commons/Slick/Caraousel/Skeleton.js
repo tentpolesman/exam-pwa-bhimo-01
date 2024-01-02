@@ -1,5 +1,4 @@
 import Skeleton from '@common_skeleton';
-import Grid from '@material-ui/core/Grid';
 
 const CarouselSkeleton = () => {
     const SliderSkeleton = () => (
@@ -14,28 +13,24 @@ const CarouselSkeleton = () => {
             />
             <Skeleton xsStyle={{ marginBottom: '8px' }} variant="rect" width="40%" animation="wave" />
             <Skeleton xsStyle={{ marginBottom: '8px' }} variant="rect" width="75%" animation="wave" />
-            <Skeleton xsStyle={{ marginBottom: '8px' }} variant="rect" width="20%" animation="wave" />
         </>
     );
     return (
-        <div style={{ padding: '24px 0 12px 0', width: '100%' }}>
-            <Grid container>
-                <Grid item md={1} display={{ xs: 'none', md: 'block' }}>
+        <div className="px-4 py-6 tablet:px-0">
+            <div className="grid grid-cols-2 tablet:grid-cols-3 desktop:grid-cols-4 gap-2">
+                <div className="hidden desktop:block">
                     <SliderSkeleton />
-                </Grid>
-                <Grid item xs={3} md={3} sm={4} style={{ padding: '0 6px 0 12px' }}>
+                </div>
+                <div className="hidden tablet:block">
                     <SliderSkeleton />
-                </Grid>
-                <Grid item xs={6} md={4} sm={4} style={{ padding: '0 6px' }}>
+                </div>
+                <div>
                     <SliderSkeleton />
-                </Grid>
-                <Grid item xs={3} md={3} sm={4} style={{ padding: '0 12px 0 6px' }}>
+                </div>
+                <div>
                     <SliderSkeleton />
-                </Grid>
-                <Grid item md={1} display={{ xs: 'none', md: 'block' }}>
-                    <SliderSkeleton />
-                </Grid>
-            </Grid>
+                </div>
+            </div>
         </div>
     );
 };

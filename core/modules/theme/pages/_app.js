@@ -10,55 +10,57 @@
 import { custDataNameCookie, features, modules, sentry } from '@config';
 import { getLastPathWithoutLogin, getLoginInfo } from '@helper_auth';
 import { getLocalStorage, setLocalStorage, setResolver, testLocalStorage } from '@helper_localstorage';
-import { appWithTranslation } from 'next-i18next';
 import { getAppEnv } from '@root/core/helpers/env';
-// import { RewriteFrames } from '@sentry/integrations';
-// import { Integrations } from '@sentry/tracing';
+import { RewriteFrames } from '@sentry/integrations';
+import { Integrations } from '@sentry/tracing';
 import { getCategories, getVesMenu, storeConfig as ConfigSchema } from '@services/graphql/schema/config';
 import { currencyVar, storeConfigVar, cmsPageVar } from '@root/core/services/graphql/cache';
+import { appWithTranslation } from 'next-i18next';
+// import { RewriteFrames } from '@sentry/integrations';
+// import { Integrations } from '@sentry/tracing';
 import Cookie from 'js-cookie';
 // import { unregister } from 'next-offline/runtime';
 import App from 'next/app';
 import React from 'react';
 
 import { gql } from '@apollo/client';
-// import PageProgressLoader from '@common_loaders/PageProgress';
+import PageProgressLoader from '@common_pageprogress';
 import graphRequest from '@graphql_request';
-// import Notification from '@lib_firebase/notification';
-// import firebase from '@lib_firebase/index';
+import Notification from '@lib_firebase/notification';
+import firebase from '@lib_firebase/index';
 import routeMiddleware from '@middleware_route';
-// import getConfig from 'next/config';
-// import TagManager from 'react-gtm-module';
+import getConfig from 'next/config';
+import TagManager from 'react-gtm-module';
 
 import ModalCookies from '@core_modules/theme/components/modalCookies';
-// import * as Sentry from '@sentry/node';
+import * as Sentry from '@sentry/node';
 import { getDeviceByUA, getUAString } from '@root/core/helpers/deviceDection';
 
-// const { publicRuntimeConfig } = getConfig();
+const { publicRuntimeConfig } = getConfig();
 
 /*
  * ---------------------------------------------
  * SENTRY INITIALIZATION
  */
-// if (sentry.enabled && typeof publicRuntimeConfig !== 'undefined' && sentry.dsn[publicRuntimeConfig.appEnv]) {
-//     const distDir = `${publicRuntimeConfig.rootDir}/.next`;
-//     Sentry.init({
-//         enabled: process.env.NODE_ENV === sentry.enableMode,
-//         integrations: [
-//             new RewriteFrames({
-//                 iteratee: (frame) => {
-//                     // eslint-disable-next-line no-param-reassign
-//                     frame.filename = frame.filename.replace(distDir, 'app:///_next');
-//                     return frame;
-//                 },
-//             }),
-//             new Integrations.BrowserTracing(),
-//         ],
-//         environment: publicRuntimeConfig.appEnv,
-//         dsn: sentry.dsn[publicRuntimeConfig.appEnv],
-//         tracesSampleRate: 0.5,
-//     });
-// }
+if (sentry.enabled && typeof publicRuntimeConfig !== 'undefined' && sentry.dsn[publicRuntimeConfig.appEnv]) {
+    const distDir = `${publicRuntimeConfig.rootDir}/.next`;
+    Sentry.init({
+        enabled: process.env.NODE_ENV === sentry.enableMode,
+        integrations: [
+            new RewriteFrames({
+                iteratee: (frame) => {
+                    // eslint-disable-next-line no-param-reassign
+                    frame.filename = frame.filename.replace(distDir, 'app:///_next');
+                    return frame;
+                },
+            }),
+            new Integrations.BrowserTracing(),
+        ],
+        environment: publicRuntimeConfig.appEnv,
+        dsn: sentry.dsn[publicRuntimeConfig.appEnv],
+        tracesSampleRate: 0.5,
+    });
+}
 
 class MyApp extends App {
     constructor(props) {
@@ -77,7 +79,6 @@ class MyApp extends App {
             pageProps = await Component.getInitialProps(ctx);
         }
         const { res, pathname, query, req } = ctx;
-
         /*
          * ---------------------------------------------
          * MAINTAIN LOGIN FLAG
@@ -95,8 +96,8 @@ class MyApp extends App {
         } else {
             isLogin = allcookie.isLogin || 0;
             customerData = allcookie[custDataNameCookie];
-            lastPathNoAuth = req.session && typeof req.session !== 'undefined' && req.session.lastPathNoAuth && typeof req.session.lastPathNoAuth !== 'undefined'
-                ? req.session.lastPathNoAuth
+            lastPathNoAuth = req.cookies && typeof req.cookies !== 'undefined' && req.cookies.lastPathNoAuth && typeof req.cookies.lastPathNoAuth !== 'undefined'
+                ? req.cookies.lastPathNoAuth
                 : '/customer/account';
         }
         isLogin = parseInt(isLogin);
@@ -138,18 +139,22 @@ class MyApp extends App {
             // Handle redirecting to tomaintenance page automatically when GQL is in maintenance mode.
             // We do this here since query storeConfig is the first query and be done in server side
             if (ctx && storeConfig.response && storeConfig.response.status && storeConfig.response.status > 500) {
-                ctx.res.redirect('/maintenance');
+                ctx.res.writeHead(302, {
+                    Location: '/maintenance',
+                });
+                ctx.res.end();
             }
             storeConfig = storeConfig.storeConfig;
             if (!modules.checkout.checkoutOnly) {
                 dataVesMenu = storeConfig.pwa.ves_menu_enable
-                    ? await graphRequest(getVesMenu, { alias: storeConfig.pwa.ves_menu_alias }, {}, { method: 'GET' }) : await graphRequest(getCategories, {}, {}, { method: 'GET' });
+                    ? await graphRequest(getVesMenu, { alias: storeConfig.pwa.ves_menu_alias }, {}, { method: 'GET' })
+                    : await graphRequest(getCategories, {}, {}, { method: 'GET' });
             }
             frontendOptions = frontendOptions.storeConfig;
             removeDecimalConfig = storeConfig?.pwa?.remove_decimal_price_enable !== null ? storeConfig?.pwa?.remove_decimal_price_enable : false;
         } else if (typeof window !== 'undefined' && !storeConfig) {
             storeConfig = storeConfigVar();
-            if (!storeConfig || storeConfig === '' || storeConfig === {}) {
+            if (!storeConfig || storeConfig === '' || (typeof storeConfig === 'object' && Object.keys(storeConfig).length === 0)) {
                 storeConfig = await pageProps.apolloClient
                     .query({
                         query: gql`
@@ -161,7 +166,7 @@ class MyApp extends App {
                 // Handle redirecting to tomaintenance page automatically when GQL is in maintenance mode.
                 // We do this here since query storeConfig is the first query and be done in server side
                 if (ctx && storeConfig.response && storeConfig.response.status && storeConfig.response.status > 500) {
-                    ctx.res.redirect('/maintenance');
+                    ctx.res.writeHead(302, { Location: '/maintenance' });
                 }
 
                 storeConfig = storeConfig.storeConfig;
@@ -196,10 +201,7 @@ class MyApp extends App {
          * ---------------------------------------------
          * RETURNS
          */
-        let token;
-        if (req && req.session && req.session.token) {
-            token = req.session.token;
-        }
+
         return {
             pageProps: {
                 ...pageProps,
@@ -208,7 +210,6 @@ class MyApp extends App {
                 isLogin,
                 lastPathNoAuth,
                 customerData,
-                token,
                 removeDecimalConfig,
                 dataVesMenu,
                 frontendOptions,
@@ -239,50 +240,50 @@ class MyApp extends App {
          */
         if (getAppEnv() === 'prod') {
             // eslint-disable-next-line no-console
-            console.log = () => { };
+            console.log = () => {};
         }
 
         /*
          * ---------------------------------------------
          * FIREBASE INITIALIZATION
          */
-        // if (features.firebase.config.apiKey !== '' && features.firebase.pushNotification.enabled) {
-        //     // initial firebase messaging
-        //     Notification.init();
-        //     // handle if have message on focus
-        //     try {
-        //         const messaging = firebase.messaging();
-        //         // Handle incoming messages. Called when:
-        //         // - a message is received while the app has focus
-        //         // - the user clicks on an app notification created by a service worker
-        //         //   `messaging.setBackgroundMessageHandler` handler.
-        //         messaging.onMessage((payload) => {
-        //             navigator.serviceWorker.ready.then((registration) => {
-        //                 // This prevents to show one notification for each tab
-        //                 setTimeout(() => {
-        //                     // eslint-disable-next-line no-console
-        //                     console.log('[firebase-messaging-sw.js] Received foreground message ', payload);
-        //                     const lastNotification = localStorage.getItem('lastNotification');
-        //                     const isDifferentContent = payload.data.updated_date !== lastNotification;
-        //                     if (isDifferentContent) {
-        //                         localStorage.setItem('lastNotification', payload.data.updated_date + payload.data.title);
-        //                         registration.showNotification(payload.data.title, {
-        //                             body: payload.data.body,
-        //                             vibrate: [200, 100, 200, 100, 200, 100, 200],
-        //                             icon: payload.data.icons || '',
-        //                             image: payload.data.image || '',
-        //                             requireInteraction: true,
-        //                             data: payload.data,
-        //                         });
-        //                     }
-        //                 }, Math.random() * 1000);
-        //             });
-        //         });
-        //     } catch (err) {
-        //         // eslint-disable-next-line no-console
-        //         console.log(err);
-        //     }
-        // }
+        if (features.firebase.config.apiKey !== '' && features.firebase.pushNotification.enabled) {
+            // initial firebase messaging
+            Notification.init();
+            // handle if have message on focus
+            try {
+                const messaging = firebase.messaging();
+                // Handle incoming messages. Called when:
+                // - a message is received while the app has focus
+                // - the user clicks on an app notification created by a service worker
+                //   `messaging.setBackgroundMessageHandler` handler.
+                messaging.onMessage((payload) => {
+                    navigator.serviceWorker.ready.then((registration) => {
+                        // This prevents to show one notification for each tab
+                        setTimeout(() => {
+                            // eslint-disable-next-line no-console
+                            console.log('[firebase-messaging-sw.js] Received foreground message ', payload);
+                            const lastNotification = localStorage.getItem('lastNotification');
+                            const isDifferentContent = payload.data.updated_date !== lastNotification;
+                            if (isDifferentContent) {
+                                localStorage.setItem('lastNotification', payload.data.updated_date + payload.data.title);
+                                registration.showNotification(payload.data.title, {
+                                    body: payload.data.body,
+                                    vibrate: [200, 100, 200, 100, 200, 100, 200],
+                                    icon: payload.data.icons || '',
+                                    image: payload.data.image || '',
+                                    requireInteraction: true,
+                                    data: payload.data,
+                                });
+                            }
+                        }, Math.random() * 1000);
+                    });
+                });
+            } catch (err) {
+                // eslint-disable-next-line no-console
+                console.log(err);
+            }
+        }
 
         /*
          * LAZY LOADING FONTS
@@ -306,34 +307,34 @@ class MyApp extends App {
          */
 
         /* Google Tag Manager
-        * this gtm configuration is enabled via backoffice.
-        * before enable this configuration, firstly you need to import the gtm tags json.
-        * gtm tags json need to be exported from Magento admin in Welpixel GTM configuration.
-        * adjust the tag name if you want before import into GTM dashboard setting.
-        * as reference you can find sample gtm tags in folder "sample/gtm" folder
-        * NOTE: this GTM functionality includes connecting to GA via GTM tag.
-        */
+         * this gtm configuration is enabled via backoffice.
+         * before enable this configuration, firstly you need to import the gtm tags json.
+         * gtm tags json need to be exported from Magento admin in Welpixel GTM configuration.
+         * adjust the tag name if you want before import into GTM dashboard setting.
+         * as reference you can find sample gtm tags in folder "sample/gtm" folder
+         * NOTE: this GTM functionality includes connecting to GA via GTM tag.
+         */
 
         const storeConfig = storeConfigVar();
-        // let GTM = {};
+        let GTM = {};
 
         if (storeConfig && storeConfig.pwa) {
-            // GTM = {
-            //     enable: storeConfig && storeConfig.pwa.gtm_enable,
-            //     // enable: true,
-            //     gtmId: {
-            //         local: 'GTM-5G5TGZ6',
-            //         dev: storeConfig && storeConfig.pwa.gtm_id_dev ? storeConfig.pwa.gtm_id_dev : '',
-            //         stage: storeConfig && storeConfig.pwa.gtm_id_stage ? storeConfig.pwa.gtm_id_stage : '',
-            //         prod: storeConfig && storeConfig.pwa.gtm_id_prod ? storeConfig.pwa.gtm_id_prod : '',
-            //     },
-            // };
+            GTM = {
+                enable: storeConfig && storeConfig.pwa.gtm_enable,
+                // enable: true,
+                gtmId: {
+                    local: 'GTM-5G5TGZ6',
+                    dev: storeConfig && storeConfig.pwa.gtm_id_dev ? storeConfig.pwa.gtm_id_dev : '',
+                    stage: storeConfig && storeConfig.pwa.gtm_id_stage ? storeConfig.pwa.gtm_id_stage : '',
+                    prod: storeConfig && storeConfig.pwa.gtm_id_prod ? storeConfig.pwa.gtm_id_prod : '',
+                },
+            };
         }
 
-        // const tagManagerArgs = {
-        //     gtmId: 'GTM-5G5TGZ6',
-        // };
-        // if (GTM.enable) TagManager.initialize(tagManagerArgs);
+        const tagManagerArgs = {
+            gtmId: 'GTM-5G5TGZ6',
+        };
+        if (GTM.enable) TagManager.initialize(tagManagerArgs);
 
         /*
          * ---------------------------------------------
@@ -365,9 +366,7 @@ class MyApp extends App {
         pageProps.storeConfig = pageProps.storeConfig ? pageProps.storeConfig : {};
         if (typeof window !== 'undefined' && testLocalStorage() === false) {
             // not available
-            return (
-                <ModalCookies {...pageProps} />
-            );
+            return <ModalCookies {...pageProps} />;
         }
 
         if (typeof window !== 'undefined') {
@@ -392,6 +391,7 @@ class MyApp extends App {
 
         return (
             <>
+                <PageProgressLoader />
                 <Component {...pageProps} />
             </>
         );

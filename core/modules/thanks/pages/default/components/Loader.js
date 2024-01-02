@@ -1,22 +1,23 @@
-import Skeleton from '@material-ui/lab/Skeleton';
-import useStyles from '@core_modules/thanks/pages/default/components/style';
+import Skeleton from '@common_skeleton';
+import classNames from 'classnames';
 
-const SkeletonLoader = () => {
-    const styles = useStyles();
-    return (
-        <div className={styles.container}>
-            <Skeleton variant="text" animation="wave" width="60%" height={35} />
-            <Skeleton variant="text" animation="wave" width="70%" height={35} />
-            <Skeleton variant="text" animation="wave" width="90%" height={20} />
-            <Skeleton variant="text" animation="wave" width="70%" height={20} />
-
-            <div className={styles.footer}>
-                <span className={styles.btnContinue}>
-                    <Skeleton variant="rect" animation="wave" width="100%" height={35} />
-                </span>
-            </div>
+const SkeletonLoader = () => (
+    <div className={
+        classNames(
+            'w-full flex flex-col items-center justify-center',
+            'px-20 py-8 gap-2',
+            'bg-no-repeat bg-cover bg-center',
+        )
+    }
+    >
+        <Skeleton width="40%" height={25} />
+        <Skeleton width="40%" height={25} />
+        <div className="w-9/12 my-4 grid grid-cols-1 tablet:grid-cols-3 gap-4">
+            {[1, 2, 3].map((key) => <Skeleton key={key} width="100%" height={125} />)}
         </div>
-    );
-};
+
+        <Skeleton width="25%" height={35} />
+    </div>
+);
 
 export default SkeletonLoader;

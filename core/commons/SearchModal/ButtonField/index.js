@@ -1,26 +1,22 @@
 import Button from '@common_button';
 import Typography from '@common_typography';
-import useStyles from '@common_searchmodal/ButtonField/style';
 
-const ButtonField = ({ placeholder = '', onClick }) => {
-    const styles = useStyles();
-    return (
-        <div className={styles.container}>
-            <Button
-                variant="text"
-                onClick={onClick}
-                className={styles.searchButton}
+const ButtonField = ({ placeholder = '', onClick }) => (
+    <div className="w-full h-full flex flex-row items-center border-b border-b-pwa-primary mx-[15px]">
+        <Button
+            variant="text"
+            onClick={onClick}
+            className="w-full justify-start p-0"
+        >
+            <Typography
+                variant="bd-1c"
+                type="semiBold"
+                className="text-neutral-700"
             >
-                <Typography
-                    variant="span"
-                    type="semiBold"
-                    className={styles.placeholder}
-                >
-                    {placeholder}
-                </Typography>
-            </Button>
-        </div>
-    );
-};
+                {placeholder}
+            </Typography>
+        </Button>
+    </div>
+);
 
 export default ButtonField;

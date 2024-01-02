@@ -44,14 +44,12 @@ module.exports = {
         ],
         'no-restricted-imports': [
             'error',
-            {
-                paths: ['@material-ui/core', '@material-ui/icons', '@material-ui/lab'],
-            },
         ],
         'import/no-extraneous-dependencies': 'off',
         'import/no-unresolved': 'off',
         'react/forbid-prop-types': 'off',
         'react/no-unknown-property': 'off',
+        'jsx-a11y/label-has-associated-control': 'off',
     },
     settings: {
         'import/ignore': 'node_modules',

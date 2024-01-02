@@ -2,15 +2,13 @@ import React from 'react';
 import Typography from '@common_typography';
 import DropFile from '@common_dropfile';
 import classNames from 'classnames';
-import useStyles from '@plugin_customizableitem/components/style';
 
 const ViewCustomizableFileOption = ({
     data = {}, onChange = () => {}, error = '', required = false, t, disabled,
 }) => {
     let maxSize = 2000000;
     let acceptedFile = 'image/*';
-    const styles = useStyles();
-    const customClass = classNames('column', styles.container, styles.customizableFileOption);
+    const customClass = classNames('flex flex-col', 'w-[100%]');
     if (data && data.image_size_x && data.image_size_y) {
         maxSize = (data.image_size_x * data.image_size_y) * 3;
     }
@@ -26,10 +24,10 @@ const ViewCustomizableFileOption = ({
             {
                 data && data.uid && (
                     <>
-                        <Typography variant="label" type="bold" letter="uppercase">
+                        <Typography variant="bd-2a">
                             {data.label}
                             {' '}
-                            {required && <Typography color="red" type="bold" variant="label">*</Typography>}
+                            {required && <Typography variant="bd-2a" color="text-red">*</Typography>}
                         </Typography>
                         { !disabled && (
                             <DropFile
@@ -45,7 +43,7 @@ const ViewCustomizableFileOption = ({
                         ) }
                         {
                             data.file_extension !== '' && (
-                                <Typography variant="p">
+                                <Typography>
                                     {t('product:customizableOptions:file:extentionAccept')}
                                     <strong>{data.file_extension}</strong>
                                 </Typography>
@@ -53,7 +51,7 @@ const ViewCustomizableFileOption = ({
                         }
                         {
                             data.image_size_x !== '' && (
-                                <Typography variant="p">
+                                <Typography>
                                     {t('product:customizableOptions:file:maxImageWidth')}
                                     <strong>
                                         {data.image_size_x}
@@ -65,7 +63,7 @@ const ViewCustomizableFileOption = ({
                         }
                         {
                             data.image_size_y !== '' && (
-                                <Typography variant="p">
+                                <Typography>
                                     {t('product:customizableOptions:file:maxImageHeight')}
                                     <strong>
                                         {data.image_size_y}

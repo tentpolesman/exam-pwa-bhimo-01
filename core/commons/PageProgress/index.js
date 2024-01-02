@@ -1,26 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import cx from 'classnames';
 import Router from 'next/router';
-import LinearProgress from '@material-ui/core/LinearProgress';
-import makeStyles from '@material-ui/core/styles/makeStyles';
-
-const useStyles = makeStyles(() => ({
-    linearProgressWrapper: {
-        position: 'fixed',
-        width: '100%',
-        left: '0',
-        top: '0',
-        zIndex: '999',
-    },
-}));
+import React, { useEffect, useState } from 'react';
 
 const PageProgressLoader = () => {
-    const styles = useStyles();
     const [progress, setProgress] = useState();
     const [show, setShow] = useState(false);
     let timer = null;
 
+    const wrapperClasses = cx('fixed', 'w-full', 'left-0', 'top-0', 'z-[1100]');
+
     const handleRouteChangeStart = () => {
-        // console.log('Router change start');
         setProgress(0);
         setShow(true);
         timer = setInterval(() => {
@@ -42,16 +31,15 @@ const PageProgressLoader = () => {
     };
 
     const handleRouteChangeComplete = () => {
-        // console.log('Router change complete');
         clearInterval(timer);
         setProgress(100);
         setTimeout(() => {
             setShow(false);
-        }, 1000);
+            sessionStorage.setItem('currentUrl', Router.asPath);
+        }, 2000);
     };
 
     const handleRouteChangeError = () => {
-        // console.log('Router change Error');
         clearInterval(timer);
         setProgress(100);
         setTimeout(() => {
@@ -63,7 +51,6 @@ const PageProgressLoader = () => {
         Router.events.on('routeChangeStart', handleRouteChangeStart);
         Router.events.on('routeChangeComplete', handleRouteChangeComplete);
         Router.events.on('RouteChangeError', handleRouteChangeError);
-        // console.log(progress);
 
         return () => {
             clearInterval(timer);
@@ -71,9 +58,15 @@ const PageProgressLoader = () => {
     }, []);
 
     return (
-        <div className={styles.linearProgressWrapper}>
-            {show ? <LinearProgress variant="determinate" value={progress} color="primary" /> : null}
-        </div>
+        <>
+            {show ? (
+                <div className={cx(wrapperClasses)}>
+                    <div className={cx('w-full', 'bg-neutral-50', 'h-1')}>
+                        <div className={cx('bg-primary-700', 'h-1')} style={{ width: `${progress}%`, transition: '1s ease-in-out' }} />
+                    </div>
+                </div>
+            ) : null}
+        </>
     );
 };
 

@@ -1,15 +1,18 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable semi-style */
+import { useReactiveVar } from '@apollo/client';
 import {
     getOrderDetail, getPaymentInformation, getTrackingOrder, reOrder as mutationReorder,
 } from '@core_modules/order/services/graphql';
-import { getHost } from '@helpers/config';
 import { setCartId } from '@helper_cartid';
+import { getHost } from '@helpers/config';
 import Layout from '@layout';
 import CustomerLayout from '@layout_customer';
-import Alert from '@material-ui/lab/Alert';
+import { currencyVar } from '@root/core/services/graphql/cache';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
-import { useReactiveVar } from '@apollo/client';
-import { currencyVar } from '@root/core/services/graphql/cache';
+
+import Alert from '@common/Alert';
 
 const OrderDetail = (props) => {
     const {
@@ -36,6 +39,8 @@ const OrderDetail = (props) => {
     const { loading: loadingPaymentInfo, data: paymentInfo, error: errorPaymentInfo } = getPaymentInformation(params);
     const [actionReorder] = mutationReorder();
     const { loading: loadingTrackingOrder, data: dataTrackingOrder, error: errorTrackingOrder } = getTrackingOrder({ order_id: params.order_id });
+    // return null;
+
     if (error || errorPaymentInfo || errorTrackingOrder) {
         return (
             <Layout pageConfig={pageConfig} {...props}>
@@ -56,7 +61,7 @@ const OrderDetail = (props) => {
             </Layout>
         );
     }
-    if (!loading && data && data.customer.orders) {
+    if (!loading && data && data.customer && data.customer.orders) {
         // eslint-disable-next-line prefer-destructuring
         detail = data.customer.orders.items;
     }
@@ -111,6 +116,14 @@ const OrderDetail = (props) => {
     const printOrder = (order_number) => {
         window.open(`${getHost()}/sales/order/print/order_id/${order_number}`);
     };
+
+    // return (
+    //     <Layout pageConfig={pageConfig} {...props}>
+    //         <CustomerLayout {...props}>
+    //             <Skeleton />
+    //         </CustomerLayout>
+    //     </Layout>
+    // );
 
     return (
         <Layout pageConfig={pageConfig} {...props}>

@@ -1,44 +1,38 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import Badge from '@material-ui/core/Badge';
-import makeStyles from '@material-ui/core/styles/makeStyles';
-import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
+import BadgeCounter from '@common_badgecounter';
+import ArrowsRightLeftIcon from '@heroicons/react/24/solid/ArrowsRightLeftIcon';
+import cx from 'classnames';
 import Link from 'next/link';
 
-const useStyles = makeStyles({
-    root: {
-        margin: 5,
-        cursor: 'pointer',
-    },
-});
-
 const WithLink = ({ compareList, handleLink }) => {
-    const styles = useStyles();
     if (compareList && compareList.compareList && compareList.compareList.item_count) {
         return (
-            (<Link href={handleLink} prefetch={false} className={styles.root}>
-
+            <Link href={handleLink} prefetch={false} className={cx('group')}>
                 {compareList ? (
-                    <Badge color="secondary" badgeContent={compareList.compareList.item_count > 0 ? compareList.compareList.item_count : 0}>
-                        <CompareArrowsIcon color="secondary" />
-                    </Badge>
+                    <BadgeCounter value={compareList.compareList.item_count > 0 ? compareList.compareList.item_count : 0}>
+                        <ArrowsRightLeftIcon
+                            className={cx('w-[24px]', 'text-neutral-600', 'hover:text-primary-700', 'group-hover:text-primary-700', 'mt-3')}
+                        />
+                    </BadgeCounter>
                 ) : (
-                    <Badge color="secondary" badgeContent={0}>
-                        <CompareArrowsIcon color="secondary" />
-                    </Badge>
+                    <BadgeCounter value={0}>
+                        <ArrowsRightLeftIcon
+                            className={cx('w-[24px]', 'text-neutral-600', 'hover:text-primary-700', 'group-hover:text-primary-700', 'mt-3')}
+                        />
+                    </BadgeCounter>
                 )}
-
-            </Link>)
+            </Link>
         );
     }
     return (
-        (<Link href={handleLink} prefetch={false} className={styles.root}>
-
-            <Badge color="secondary" badgeContent={0}>
-                <CompareArrowsIcon color="secondary" />
-            </Badge>
-
-        </Link>)
+        <Link href={handleLink} prefetch={false} className={cx('group')}>
+            <BadgeCounter value={0}>
+                <ArrowsRightLeftIcon
+                    className={cx('w-[24px]', 'text-neutral-600', 'hover:text-primary-700', 'group-hover:text-primary-700', 'mt-3')}
+                />
+            </BadgeCounter>
+        </Link>
     );
 };
 

@@ -1,13 +1,10 @@
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable max-len */
+// import Thumbor from '@common_image';
 import CmsPage from '@core_modules/cms/pages/default';
 import cx from 'classnames';
-import dynamic from 'next/dynamic';
-import Thumbor from '@common_image';
 
-const BannerSlider = dynamic(() => import('@core_modules/home/pages/default/components/Banner'));
-const FeaturedProducts = dynamic(() => import('@core_modules/home/pages/default/components/FeaturedProducts'));
-const CategoryList = dynamic(() => import('@core_modules/home/pages/default/components/CategoryList'));
+import Layout from '@layout';
 
 const Content = (props) => {
     let useCmsPage = {};
@@ -33,32 +30,33 @@ const Content = (props) => {
         };
     }
 
-    const logoUrl = `${props.storeConfig.secure_base_media_url}logo/${props.storeConfig.header_logo_src}`;
+    // const logoUrl = `${props.storeConfig.secure_base_media_url}logo/${props.storeConfig.header_logo_src}`;
 
     let content = '';
 
     if (homePageConfig && useCmsPage && useCmsPage.enable) {
         content = (
-            <>
-                <CmsPage
-                    onlyCms
-                    slug={[useCmsPage.identifier]}
-                    withLayoutHeader
-                    withLayoutFooter
-                    withCmsTitle={false}
-                    {...other}
-                    storeConfig={storeConfig}
-                    pageConfig={cmsHome}
-                />
-            </>
+            <CmsPage
+                slug={[useCmsPage.identifier]}
+                withLayoutHeader
+                withLayoutFooter
+                withCmsTitle={false}
+                {...other}
+                storeConfig={storeConfig}
+                pageConfig={cmsHome}
+            />
         );
     } else {
+        const Config = {
+            title: storeConfig && storeConfig.store_name ? storeConfig.store_name : 'PWA Homepage',
+            headerTitle: storeConfig && storeConfig.store_name ? storeConfig.store_name : 'PWA Homepage',
+            bottomNav: false,
+            header: 'relative', // available values: "absolute", "relative", false (default)
+        };
         content = (
-            <>
-                <BannerSlider {...other} storeConfig={storeConfig} />
-                <FeaturedProducts {...other} storeConfig={storeConfig} />
-                <CategoryList {...other} storeConfig={storeConfig} />
-            </>
+            <Layout {...props} pageConfig={Config} isCms={false} isHomepage>
+                <>You need to develop your own non-CMS component for Homepage.</>
+            </Layout>
         );
     }
 
@@ -69,21 +67,6 @@ const Content = (props) => {
                 'flex flex-col justify-center items-center pb-[30px]': !useCms,
             })}
         >
-            {props.storeConfig && props.storeConfig.pwa && props.storeConfig.pwa.mobile_navigation !== 'burger_menu' && (
-                <div className="sm:max-md:w-screen w-full flex justify-center bg-neutral-50">
-                    <div className="absolute z-[99] left-[50%] -translate-x-[50%] hidden-desktop">
-                        <Thumbor
-                            className="mt-[25%] w-full h-full relative"
-                            classContainer="!pt-[unset]"
-                            src={logoUrl}
-                            alt="logo"
-                            width={100}
-                            height={32}
-                            storeConfig={storeConfig}
-                        />
-                    </div>
-                </div>
-            )}
             {content}
         </div>
     );

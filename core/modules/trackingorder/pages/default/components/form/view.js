@@ -2,17 +2,15 @@ import Button from '@common_button';
 import TextField from '@common_textfield';
 import Typography from '@common_typography';
 import classNames from 'classnames';
-import useStyles from '@core_modules/trackingorder/pages/default/components/style';
 
 const FormTemplate = (props) => {
     const { formik, t } = props;
-    const styles = useStyles();
     return (
         <>
-            <Typography variant="h1" type="bold" letter="uppercase" className={classNames(styles.title, 'hidden-mobile')}>
+            <Typography variant="h1" type="bold" letter="uppercase" className={classNames('', 'hidden-mobile')}>
                 {t('trackingorder:trackingOrder')}
             </Typography>
-            <form className={styles.container} onSubmit={formik.handleSubmit}>
+            <form className="" onSubmit={formik.handleSubmit}>
                 <TextField
                     label={t('trackingtrackingorder:email')}
                     name="email"
@@ -29,8 +27,8 @@ const FormTemplate = (props) => {
                     error={!!(formik.touched.order_id && formik.errors.order_id)}
                     errorMessage={(formik.touched.order_id && formik.errors.order_id) || null}
                 />
-                <div className={styles.bottomButtons}>
-                    <Button fullWidth type="submit" rootClassName={styles.btnSeacrh}>
+                <div className="">
+                    <Button fullWidth type="submit" rootClassName="">
                         <Typography variant="span" type="bold" letter="uppercase" color="white">
                             {t('common:search:title')}
                         </Typography>

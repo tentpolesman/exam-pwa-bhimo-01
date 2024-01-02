@@ -31,7 +31,7 @@ export const getBannerSlider = gql`
     }
 `;
 
-export const getFeaturedProducts = (config = {}) => gql`
+export const getFeaturedProducts = () => gql`
     query($url_key: String!) {
         categoryList(filters: { url_key: { eq: $url_key } }) {
             children {
@@ -53,40 +53,6 @@ export const getFeaturedProducts = (config = {}) => gql`
                         small_image {
                             url,
                         }
-                        ${
-                            config?.pwa?.label_weltpixel_enable
-                                ? `
-                            weltpixel_labels {
-                            categoryLabel {
-                                css
-                                customer_group
-                                image
-                                page_position
-                                position
-                                priority
-                                text
-                                text_padding
-                                text_bg_color
-                                text_font_size
-                                text_font_color          
-                            }
-                            productLabel {
-                                css
-                                customer_group
-                                image
-                                page_position
-                                position
-                                priority
-                                text
-                                text_padding
-                                text_bg_color
-                                text_font_size
-                                text_font_color  
-                            }
-                        }        
-                        `
-                                : ''
-}
                         price_tiers {
                             discount {
                                 amount_off
