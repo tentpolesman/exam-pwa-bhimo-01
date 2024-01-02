@@ -26,9 +26,15 @@ const uriInternal = `${host}/api/graphql`;
 // handle if token expired
 const logoutLink = onError((err) => {
     const { graphQLErrors, networkError } = err;
-    if (networkError && typeof window !== 'undefined' && graphQLErrors && graphQLErrors.length > 0 && graphQLErrors[0].status > 500) {
+    const isErrorGQL = graphQLErrors && graphQLErrors.length > 0;
+    const message = isErrorGQL ? graphQLErrors[0].message : undefined;
+    if (networkError && typeof window !== 'undefined' && isErrorGQL && graphQLErrors[0].status > 500) {
         window.location.href = '/maintenance';
-    } else if (graphQLErrors && graphQLErrors[0] && graphQLErrors[0].status === 401 && typeof window !== 'undefined') {
+    } else if (
+        (isErrorGQL && graphQLErrors[0].status === 401 && typeof window !== 'undefined')
+        || message.includes('The request is allowed for logged in customer')
+        || message.includes("The current customer isn't authorized.")
+    ) {
         removeCartId();
         removeIsLoginFlagging();
         removeCookies('uid_product_compare');
