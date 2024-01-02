@@ -238,7 +238,7 @@ const DesktopHeader = (props) => {
             </div>
             <div className={cx('bottom-header', 'tablet:max-w-[768px]', 'desktop:max-w-[1280px]', 'm-[0_auto]', 'px-6', 'mobile:max-desktop:hidden')}>
                 <div className="flex flex-row menu-category">
-                    <div className="xs:basis-full menu-middle">
+                    <div className="xs:basis-full menu-middle z-10">
                         {loadingVesMenu ? null : <Menu vesMenuConfig={vesMenuConfig} data={dataVesMenu} storeConfig={storeConfig} />}
                     </div>
                 </div>
