@@ -24,7 +24,7 @@ const NotificationList = (props) => {
     if (error) {
         return (
             <Layout {...props}>
-                <div className={cx('pt-5 mobile:max-desktop:px-4')}>
+                <div className={cx('pt-5')}>
                     <Alert severity="error">
                         <Typography
                             variant="p-2a"
@@ -40,7 +40,7 @@ const NotificationList = (props) => {
     if (!data) {
         return (
             <Layout {...props}>
-                <div className={cx('pt-5 mobile:max-desktop:px-4')}>
+                <div className={cx('pt-5')}>
                     <Alert severity="warning">
                         <Typography
                             variant="p-2a"
@@ -57,7 +57,7 @@ const NotificationList = (props) => {
     if (data.customerNotificationList.items.length === 0) {
         return (
             <Layout {...props}>
-                <div className={cx('pt-5 mobile:max-desktop:px-4')}>
+                <div className={cx('pt-5')}>
                     <Alert severity="warning">
                         <Typography
                             variant="p-2a"
@@ -85,7 +85,7 @@ const NotificationList = (props) => {
 
     return (
         <Layout {...props}>
-            <div className={cx('pt-5 mobile:max-desktop:px-4')}>
+            <div className={cx('pt-5')}>
                 {notifList[page - 1].map((item, i) => (
                     <div
                         key={i}

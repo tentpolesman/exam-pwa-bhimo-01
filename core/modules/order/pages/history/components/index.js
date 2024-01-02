@@ -83,7 +83,7 @@ const DefaultView = (props) => {
 
     return (
         <Layout t={t}>
-            <div className={cx('pt-5', 'mobile:max-desktop:px-4')}>
+            <div className={cx('pt-5')}>
                 <div className={cx('relative', 'overflow-x-auto', 'rounded-lg')}>
                     <table className={cx('w-full', 'text-md', 'border-[1px]', 'border-neutral-100')}>
                         <thead>

@@ -85,14 +85,6 @@ const HeaderMobile = (props) => {
         },
     ];
 
-    const [isMounted, setIsMounted] = React.useState(false);
-
-    React.useEffect(() => {
-        setIsMounted(true);
-    }, []);
-
-    if (!isMounted) return null;
-
     return (
         <div
             className={cx('mobile-header', 'mobile:max-tablet:block', 'tablet:hidden', 'transition-all', 'delay-100', 'duration-500', 'ease-in-out')}
@@ -152,24 +144,6 @@ const HeaderMobile = (props) => {
                         variant="tertiary"
                         classNameText={cx('!text-neutral-700')}
                     />
-                </div>
-            </div>
-            <div id="top-header-mobile" className={cx('top-header__mobile')}>
-                <div
-                    id="top-header__content"
-                    className={cx('top-header-mobile__content', 'mobile:max-tablet:max-w-[100%] tablet:hidden', 'm-[0_auto]')}
-                >
-                    {showGlobalPromo ? (
-                        <div className={cx('top-header-mobile__content--global-promo')}>
-                            <GlobalPromoMessage
-                                t={t}
-                                storeConfig={storeConfig}
-                                showGlobalPromo={showGlobalPromo}
-                                handleClose={handleClosePromo}
-                                isMobile
-                            />
-                        </div>
-                    ) : null}
                 </div>
             </div>
             <div className={cx('bottom-header-mobile', 'shadow-lg')}>

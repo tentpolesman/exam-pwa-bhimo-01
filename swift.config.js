@@ -106,6 +106,9 @@ const keyLocalStorage = {
 };
 
 const features = {
+    thumbor: {
+        domainThumborConfig: 'thumbor.sirclocdn.com',
+    },
     useCustomStyle: false,
     ssrCache: false,
     magezon: {
