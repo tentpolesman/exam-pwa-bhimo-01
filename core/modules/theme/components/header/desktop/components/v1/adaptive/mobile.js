@@ -27,8 +27,8 @@ import XMarkIcon from '@heroicons/react/24/solid/XMarkIcon';
 import { getCategories } from '@core_modules/theme/services/graphql';
 
 const Autocomplete = dynamic(() => import('@core_modules/theme/components/header/desktop/components/autocomplete'), { ssr: false });
-const BurgerMenuCategories = dynamic(() => import('@core_modules/theme/components/header/desktop/components/burgermenu/categories'), { ssr: true });
-const BurgerMenuAccount = dynamic(() => import('@core_modules/theme/components/header/desktop/components/burgermenu/account/index'), { ssr: true });
+const BurgerMenuCategories = dynamic(() => import('@core_modules/theme/components/header/desktop/components/burgermenu/categories'), { ssr: false });
+const BurgerMenuAccount = dynamic(() => import('@core_modules/theme/components/header/desktop/components/burgermenu/account/index'), { ssr: false });
 const ShoppingBagIcon = dynamic(() => import('@plugin_shoppingbag'), { ssr: true });
 const GlobalPromoMessage = dynamic(() => import('@core_modules/theme/components/globalPromo'), { ssr: true });
 
