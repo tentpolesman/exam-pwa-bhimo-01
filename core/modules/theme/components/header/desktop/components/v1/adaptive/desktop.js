@@ -23,7 +23,7 @@ import DevicePhoneMobileIcon from '@heroicons/react/24/solid/DevicePhoneMobileIc
 import { BREAKPOINTS } from '@root/core/theme/vars';
 
 const Autocomplete = dynamic(() => import('@core_modules/theme/components/header/desktop/components/autocomplete'), { ssr: false });
-const Menu = dynamic(() => import('@core_modules/theme/components/header/desktop/components/v1/mcategory'), { ssr: false });
+const Menu = dynamic(() => import('@core_modules/theme/components/header/desktop/components/v1/mcategory'), { ssr: true });
 const ProductCompareIcon = dynamic(() => import('@core_modules/catalog/plugins/ProductCompare'), { ssr: true });
 const ShoppingBagIcon = dynamic(() => import('@plugin_shoppingbag'), { ssr: true });
 const NotificationBell = dynamic(() => import('@plugin_notificationbell'), { ssr: true });

@@ -176,11 +176,6 @@ export const storeConfig = `
       forgot_password_phone
       gender
       general_country_default
-      global_promo {
-          enable
-          text_color
-          background_color
-      }
       header_logo_src
       head_shortcut_icon
       icube_pinlocation_geocoding_key

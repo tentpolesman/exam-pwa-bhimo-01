@@ -39,19 +39,11 @@ const HeaderMobile = (props) => {
         isLogin,
         setValue,
         handleSearch,
-        dataVesMenu,
-        loadingVesMenu,
-        vesMenuConfig,
         handleLogout,
-        showGlobalPromo,
-        handleClosePromo,
         appName,
         installMessage,
         deviceWidth,
     } = props;
-
-    const { modules } = config;
-    const adminId = Cookies.get('admin_id');
 
     const { data } = getCategories();
 

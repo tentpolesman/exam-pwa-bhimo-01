@@ -1,7 +1,7 @@
 import { getCmsBlocks, categories, vesMenu } from '@core_modules/theme/services/graphql/schema';
 import { getStoreName, getCurrencySchema } from '@core_modules/setting/services/graphql/schema';
-import graphRequestClear from '@graphql_ssr';
 import { gql } from '@apollo/client';
+import graphRequestClear from '@graphql_ssr';
 
 const layoutStoreConfigSchema = (storeConfigExtra) => gql`
         {
@@ -19,7 +19,6 @@ const getSSRProps = async ({ apolloClient, storeConfigExtra = '' }) => {
     // get cms page
     let storeConfig = await graphRequestClear(layoutStoreConfigSchema(storeConfigExtra));
     storeConfig = storeConfig?.storeConfig ?? null;
-
     if (storeConfig) {
         // header
         if (storeConfig.pwa.ves_menu_enable) {
@@ -53,6 +52,13 @@ const getSSRProps = async ({ apolloClient, storeConfigExtra = '' }) => {
         await apolloClient.query({
             query: getCmsBlocks,
             variables: { identifiers: [storeConfig?.pwa?.footer_version] },
+        });
+
+        await apolloClient.query({
+            query: getCmsBlocks,
+            variables: {
+                identifiers: 'global_promo_message',
+            },
         });
 
         return {

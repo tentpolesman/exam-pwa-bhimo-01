@@ -106,11 +106,6 @@ const Layout = (props) => {
     const { ogContent = {}, schemaOrg = null, headerDesktop = true, footer = true } = pageConfig;
     const router = useRouter();
     const appEnv = getAppEnv();
-    if (getCookies(features.globalPromo.key_cookies) === '' && storeConfig.global_promo?.enable) {
-        setCookies(features.globalPromo.key_cookies, true);
-    }
-    const enablePromo =
-        getCookies(features.globalPromo.key_cookies) !== '' ? !!getCookies(features.globalPromo.key_cookies) : storeConfig.global_promo?.enable;
 
     const [dialog, setDialog] = useState({
         open: false,
@@ -135,10 +130,10 @@ const Layout = (props) => {
         backdropLoader: false,
     });
 
-    const [restrictionCookies, setRestrictionCookies] = useState(false);
-    const [showGlobalPromo, setShowGlobalPromo] = React.useState(enablePromo);
+    const [, setRestrictionCookies] = useState(false);
     const [deviceWidth, setDeviceWidth] = React.useState(0);
     const [setCompareList] = createCompareList();
+    const showGlobalPromo = features.globalPromo.enable;
     const frontendCache = useReactiveVar(storeConfigVar);
 
     // get app name config
@@ -193,10 +188,6 @@ const Layout = (props) => {
     const handleRestrictionCookies = () => {
         setRestrictionCookies(true);
         setCookies('user_allowed_save_cookie', true);
-    };
-
-    const handleClosePromo = () => {
-        setShowGlobalPromo(false);
     };
 
     const allowHeaderCheckout = modules.checkout.checkoutOnly ? !modules.checkout.checkoutOnly : withLayoutHeader;
@@ -558,17 +549,14 @@ const Layout = (props) => {
             ) : null} */}
             {allowHeaderCheckout && (
                 <header ref={refHeader} className={cx(font.variable, 'font-sans', '!font-pwa-default')}>
-                    {storeConfig.global_promo && storeConfig.global_promo.enable && (
-                        <GlobalPromoMessage
-                            t={t}
-                            storeConfig={storeConfig}
-                            showGlobalPromo={showGlobalPromo}
-                            handleClose={handleClosePromo}
-                            appName={appName}
-                            installMessage={installMessage}
-                            isMobile={deviceWidth < BREAKPOINTS.md}
-                        />
-                    )}
+                    <GlobalPromoMessage
+                        t={t}
+                        storeConfig={storeConfig}
+                        showGlobalPromo={showGlobalPromo}
+                        appName={appName}
+                        installMessage={installMessage}
+                        isMobile={deviceWidth < BREAKPOINTS.md}
+                    />
                     <Header
                         t={t}
                         pageConfig={pageConfig}
@@ -582,7 +570,6 @@ const Layout = (props) => {
                         dataVesMenu={dataVesMenu}
                         isHomepage={isHomepage}
                         deviceType={deviceType}
-                        handleClosePromo={handleClosePromo}
                         i18n={i18n}
                     />
                 </header>

@@ -4,11 +4,7 @@
 /* eslint-disable */
 import dynamic from 'next/dynamic';
 import React from 'react';
-
 import cx from 'classnames';
-
-import { features } from '@config';
-import { getCookies } from '@helper_cookies';
 
 const DesktopHeader = dynamic(() => import('@core_modules/theme/components/header/desktop/components/v1/adaptive/desktop'), { ssr: true });
 const TabletHeader = dynamic(() => import('@core_modules/theme/components/header/desktop/components/v1/adaptive/tablet'), { ssr: true });
@@ -32,19 +28,8 @@ const ViewTopNavigation = (props) => {
         ...other
     } = props;
 
-    const [showGlobalPromo, setShowGlobalPromo] = React.useState(false);
 
-    const [deviceType, setDeviceType] = React.useState({});
-
-    React.useEffect(() => {
-        if (storeConfig && storeConfig.global_promo) {
-            const showGlobalPromoCookies = getCookies(features.globalPromo.key_cookies);
-            const { enable } = storeConfig.global_promo;
-            if (enable && showGlobalPromoCookies === true) {
-                setShowGlobalPromo(true);
-            }
-        }
-    }, [storeConfig]);
+    const [, setDeviceType] = React.useState({});
 
     React.useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -68,7 +53,7 @@ const ViewTopNavigation = (props) => {
             className={cx('z-[999]', 'w-[100%]', 'transition-all', 'delay-100', 'duration-500', 'ease-in-out', 'top-0', 'bg-neutral-white', {
                 '!fixed': storeConfig && storeConfig.pwa && storeConfig.pwa.enabler_sticky_header && deviceWidth >= 768,
                 '!relative': storeConfig && !storeConfig.pwa && !storeConfig.pwa.enabler_sticky_header,
-                'top-[38px]': showGlobalPromo && deviceWidth >= 768,
+                'top-[38px]': deviceWidth >= 768,
             })}
         >
             <div className={cx('header-wrapper-main')}>
@@ -112,7 +97,6 @@ const ViewTopNavigation = (props) => {
                         vesMenuConfig={vesMenuConfig}
                         handleLogout={handleLogout}
                         customer={customer}
-                        showGlobalPromo={showGlobalPromo}
                         deviceWidth={deviceWidth}
                         appName={appName}
                         installMessage={installMessage}
