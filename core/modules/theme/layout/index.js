@@ -61,7 +61,7 @@ const Header = dynamic(() => import('@common_headerdesktop'), { ssr: true });
 const Toast = dynamic(() => import('@common_toast'), { ssr: false });
 const Backdrop = dynamic(() => import('@common_backdrop'), { ssr: false });
 const Dialog = dynamic(() => import('@common_dialog'), { ssr: false });
-const GlobalPromoMessage = dynamic(() => import('@core_modules/theme/components/globalPromo'), { ssr: false });
+const GlobalPromoMessage = dynamic(() => import('@core_modules/theme/components/globalPromo'), { ssr: true });
 // const BottomNavigation = dynamic(() => import('@common_bottomnavigation'), { ssr: false });
 // const HeaderMobile = dynamic(() => import('@common_headermobile'), { ssr: false });
 const ScrollToTop = dynamic(() => import('@common_scrolltotop'), { ssr: false });
@@ -558,7 +558,7 @@ const Layout = (props) => {
             ) : null} */}
             {allowHeaderCheckout && (
                 <header ref={refHeader} className={cx(font.variable, 'font-sans', '!font-pwa-default')}>
-                    {typeof window !== 'undefined' && storeConfig.global_promo && storeConfig.global_promo.enable && (
+                    {storeConfig.global_promo && storeConfig.global_promo.enable && (
                         <GlobalPromoMessage
                             t={t}
                             storeConfig={storeConfig}

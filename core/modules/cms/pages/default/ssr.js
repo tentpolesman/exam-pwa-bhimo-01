@@ -1,9 +1,17 @@
 import { getCmsPage } from '@core_modules/cms/services/graphql/schema';
 import { getSlider } from '@core_modules/home/service/graphql/schema';
 import { findImages } from '@core_modules/cms/pages/default/core';
+import { getCmsBlocks as getCmsBlocksSchema } from '@core_modules/theme/services/graphql/schema';
 
 const getSSRProps = async ({ apolloClient, identifier = '' }) => {
     // get cms page
+    await apolloClient.query({
+        query: getCmsBlocksSchema,
+        variables: {
+            identifiers: 'global_promo_message',
+        },
+    });
+
     const cmsRes = await apolloClient.query({
         query: getCmsPage,
         variables: {
