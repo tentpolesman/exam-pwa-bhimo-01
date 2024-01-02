@@ -99,14 +99,6 @@ const HeaderMobile = (props) => {
         },
     ];
 
-    const [isMounted, setIsMounted] = React.useState(false);
-
-    React.useEffect(() => {
-        setIsMounted(true);
-    }, []);
-
-    if (!isMounted) return null;
-
     return (
         <div
             className={cx('mobile-header', 'mobile:max-tablet:block', 'tablet:hidden', 'transition-all', 'delay-100', 'duration-500', 'ease-in-out')}
