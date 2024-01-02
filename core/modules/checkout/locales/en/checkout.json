@@ -44,8 +44,8 @@
         "problemConnection": "There is a problem with your connection",
         "couponRemoved": "Coupon has been removed",
         "couponApplied": "Coupon has been applied",
-        "giftCardApplied": "Coupon has been applied",
-        "giftCardRemoved": "Coupon has been removed",
+        "giftCardApplied": "Gift card has been applied",
+        "giftCardRemoved": "Gift card has been removed",
         "orderCommentAdded": "Order Comment has been added",
         "orderCommentRemoved": "Order Comment has been removed",
         "rewardPointsApplied": "Reward points has been applied",
@@ -78,6 +78,11 @@
         "used": "Used Credit",
         "button": "Use my credit",
         "removeButton": "Remove my credit"
+    },
+    "giftCard": {
+        "placeholderField": "Gift Card Code",
+        "yourGiftCard": "Your gift card",
+        "appliedGiftCard": "Applied Gift Card"
     },
     "promoCodePlaceholder": "Promo code",
     "giftCartPlaceholder": "Gift cart number",

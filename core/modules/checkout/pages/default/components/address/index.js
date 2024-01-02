@@ -2,8 +2,8 @@
 import React from 'react';
 import gqlService from '@core_modules/checkout/services/graphql';
 import Skeleton from '@common_skeleton';
-import TagManager from 'react-gtm-module';
 import _ from 'lodash';
+import TagManager from 'react-gtm-module';
 
 const Loader = () => (
     <>

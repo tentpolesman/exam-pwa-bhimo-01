@@ -1,5 +1,7 @@
 /* eslint-disable operator-linebreak */
 import Typography from '@common_typography';
+import magezonDesignOptionsCss from '@core_modules/cms/helpers/magezonDesignOptionsCss';
+import cx from 'classnames';
 import dynamic from 'next/dynamic';
 import { useEffect, useRef, useState } from 'react';
 
@@ -12,6 +14,7 @@ const MagezonProduct = (props) => {
         description, show_line,
         line_color, line_position, line_width,
         title, title_align, title_tag, title_color,
+        ...other
     } = props;
     const showLineClass = show_line ? 'mgz-product-heading-line' : '';
     const linePosClass = show_line && line_position === 'bottom' ? 'mgz-product-heading-line--bottom' : '';
@@ -34,7 +37,7 @@ const MagezonProduct = (props) => {
 
     return (
         <>
-            <div className="mgz-product" ref={magezonProductRef}>
+            <div className={cx('mgz-product box-border')} ref={magezonProductRef}>
                 {(title || description) && (
                     <div className={`mgz-product-heading ${showLineClass} ${linePosClass}`}>
                         {title && (
@@ -106,36 +109,6 @@ const MagezonProduct = (props) => {
                     }
                     .mgz-product-error {
                         padding: 20px 0;
-                    }
-                    @media (max-width: 575px) {
-                        .mgz-product :global(.col-xs-5) {
-                            flex: 1 20%;
-                            max-width: 20%;
-                        }
-                    }
-                    @media (min-width: 576px) and (max-width: 767px) {
-                        .mgz-product :global(.col-sm-5) {
-                            flex: 1 20%;
-                            max-width: 20%;
-                        }
-                    }
-                    @media (min-width: 768px) and (max-width: 991px) {
-                        .mgz-product :global(.col-md-5) {
-                            flex: 1 20%;
-                            max-width: 20%;
-                        }
-                    }
-                    @media (min-width: 992px) and (max-width: 1200px) {
-                        .mgz-product :global(.col-lg-5) {
-                            flex: 1 20%;
-                            max-width: 20%;
-                        }
-                    }
-                    @media (min-width: 1200px) {
-                        .mgz-product :global(.col-lg-5) {
-                            flex: 1 20%;
-                            max-width: 20%;
-                        }
                     }
                 `}
             </style>

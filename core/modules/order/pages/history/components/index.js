@@ -23,9 +23,14 @@ import { formatPrice } from '@helper_currency';
 import formatDate from '@helper_date';
 
 import Badge from '@common_badge';
+import Button from '@common_button';
 import Select from '@common_forms/Select';
 import Pagination from '@common_pagination';
 import Typography from '@common_typography';
+
+import MobileTabletActionMenu from '@core_modules/order/pages/history/components/plugins/MobileTabletActionMenu';
+
+import ExclamationTriangleIcon from '@heroicons/react/24/outline/ExclamationTriangleIcon';
 
 const DefaultView = (props) => {
     const {
@@ -42,11 +47,7 @@ const DefaultView = (props) => {
                     softColor
                     warning
                     className={cx('rounded-md', 'w-fit')}
-                    label={
-                        <Typography variant="body-sm" className={cx('text-yellow-800', 'leading-md')}>
-                            {status_label}
-                        </Typography>
-                    }
+                    label={<Typography className={cx('text-yellow-800', 'leading-md')}>{status_label}</Typography>}
                 />
             );
         }
@@ -56,11 +57,7 @@ const DefaultView = (props) => {
                     softColor
                     error
                     className={cx('rounded-md', 'w-fit')}
-                    label={
-                        <Typography variant="body-sm" className={cx('text-red-800', 'leading-md')}>
-                            {status_label}
-                        </Typography>
-                    }
+                    label={<Typography className={cx('text-red-800', 'leading-md')}>{status_label}</Typography>}
                 />
             );
         }
@@ -70,11 +67,7 @@ const DefaultView = (props) => {
                     softColor
                     success
                     className={cx('rounded-md', 'w-fit')}
-                    label={
-                        <Typography variant="body-sm" className={cx('text-green-800', 'leading-md')}>
-                            {status_label}
-                        </Typography>
-                    }
+                    label={<Typography className={cx('text-green-800', 'leading-md')}>{status_label}</Typography>}
                 />
             );
         }
@@ -83,18 +76,14 @@ const DefaultView = (props) => {
                 softColor
                 secondary
                 className={cx('rounded-md', 'w-fit')}
-                label={
-                    <Typography variant="body-sm" className={cx('text-primary-800', 'leading-md')}>
-                        {status_label}
-                    </Typography>
-                }
+                label={<Typography className={cx('text-primary-800', 'leading-md')}>{status_label}</Typography>}
             />
         );
     };
 
     return (
-        <Layout t={t} wishlist={[]}>
-            <div className={cx('pt-5')}>
+        <Layout t={t}>
+            <div className={cx('pt-5', 'mobile:max-desktop:px-4')}>
                 <div className={cx('relative', 'overflow-x-auto', 'rounded-lg')}>
                     <table className={cx('w-full', 'text-md', 'border-[1px]', 'border-neutral-100')}>
                         <thead>
@@ -127,71 +116,117 @@ const DefaultView = (props) => {
                                             </td>
                                             <td>{generateBadge(val.status, val.status_label)}</td>
                                             <td>
-                                                <Link
-                                                    href={`/sales/order/view/order_id/${val.order_number}`}
-                                                    className={cx(
-                                                        'text-md',
-                                                        'px-4',
-                                                        'border-r-[1px]',
-                                                        'border-neutral-200',
-                                                        'hover:text-primary-700',
-                                                    )}
-                                                >
-                                                    View
-                                                </Link>
-                                                <button type="button" onClick={() => reOrder(val.order_number)}>
-                                                    <a className={cx('text-md', 'px-4', 'hover:text-primary-700')}>Reorder</a>
-                                                </button>
+                                                <div className={cx('mobile:max-desktop:hidden')}>
+                                                    <Link
+                                                        href={`/sales/order/view/order_id/${val.order_number}`}
+                                                        className={cx(
+                                                            'text-md',
+                                                            'px-4',
+                                                            'desktop:border-r-[1px]',
+                                                            'desktop:border-neutral-200',
+                                                            'hover:text-primary-700',
+                                                        )}
+                                                    >
+                                                        View
+                                                    </Link>
+                                                    <button type="button" onClick={() => reOrder(val.order_number)}>
+                                                        <a className={cx('text-md', 'px-4', 'hover:text-primary-700')}>Reorder</a>
+                                                    </button>
+                                                </div>
+                                                <div className={cx('desktop:hidden')}>
+                                                    <div
+                                                        className={cx(
+                                                            'mobile:max-desktop:flex',
+                                                            'mobile:max-desktop:flex-row',
+                                                            'mobile:max-desktop:content-center',
+                                                            'mobile:max-desktop:justify-center',
+                                                            'mobile:max-desktop:items-center',
+                                                            'tablet:max-desktop:py-6',
+                                                        )}
+                                                    >
+                                                        <MobileTabletActionMenu t={t} orderNumber={val.order_number} reOrder={reOrder} />
+                                                    </div>
+                                                </div>
                                             </td>
                                         </tr>
                                     ))}
                                 </>
-                            ) : null}
+                            ) : (
+                                <tr>
+                                    <td colSpan={6}>
+                                        <Button
+                                            icon={<ExclamationTriangleIcon />}
+                                            iconProps={{
+                                                className: cx('!text-yellow-500'),
+                                            }}
+                                            iconPosition="left"
+                                            className={cx(
+                                                'w-full',
+                                                'bg-yellow-50',
+                                                'hover:bg-yellow-50',
+                                                'focus:bg-yellow-50',
+                                                'active:bg-yellow-50',
+                                                'hover:shadow-none',
+                                                'focus:shadow-none',
+                                                'active:shadow-none',
+                                                'cursor-auto',
+                                                'hover:cursor-auto',
+                                                'focus:cursor-auto',
+                                                'active:cursor-auto',
+                                            )}
+                                        >
+                                            <Typography className={cx('!text-yellow-600')}>{t('customer:order:emptyMessage')}</Typography>
+                                        </Button>
+                                    </td>
+                                </tr>
+                            )}
                         </tbody>
                     </table>
                 </div>
-                <div className={cx('table-data', 'pt-6', 'flex', 'flex-row', 'justify-between')}>
-                    <div className={cx('pt-2')}>
-                        <Typography className={cx('font-normal', 'leading-2lg')}>
-                            {data && data.total_count && `${data.total_count} Item(s)`}
-                        </Typography>
+                {data && data.items && data.items.length > 0 ? (
+                    <div className={cx('table-data', 'pt-6', 'flex', 'mobile:flex-col', 'tablet:flex-row', 'justify-between')}>
+                        <div className={cx('pt-2')}>
+                            <Typography className={cx('font-normal', 'leading-2lg')}>
+                                {data && data.total_count && `${data.total_count} Item(s)`}
+                            </Typography>
+                        </div>
+                        <div className={cx('flex', 'flex-row', 'mobile:max-tablet:pt-4', 'mobile:max-tablet:justify-center')}>
+                            <Typography className={cx('font-normal', 'leading-2lg', 'p-3')}>Show</Typography>
+                            <Select
+                                name="show"
+                                value={pageSize}
+                                onChange={handleChangePageSize}
+                                options={[
+                                    {
+                                        label: 10,
+                                        value: 10,
+                                    },
+                                    {
+                                        label: 20,
+                                        value: 20,
+                                    },
+                                    {
+                                        label: 50,
+                                        value: 50,
+                                    },
+                                    {
+                                        label: 'All',
+                                        value: data && data.total_count,
+                                    },
+                                ]}
+                                textFiledProps={{ className: cx('w-[80px]') }}
+                                inputProps={{ className: cx('!py-0') }}
+                            />
+                            <Pagination
+                                handleChangePage={handleChangePage}
+                                page={data && data.current_page}
+                                siblingCount={1}
+                                className={cx('!p-0')}
+                                totalPage={data && data.total_pages}
+                            />
+                        </div>
                     </div>
-                    <div className={cx('flex', 'flex-row')}>
-                        <Typography className={cx('font-normal', 'leading-2lg', 'p-3')}>Show</Typography>
-                        <Select
-                            name="show"
-                            value={pageSize}
-                            onChange={handleChangePageSize}
-                            options={[
-                                {
-                                    label: 10,
-                                    value: 10,
-                                },
-                                {
-                                    label: 20,
-                                    value: 20,
-                                },
-                                {
-                                    label: 50,
-                                    value: 50,
-                                },
-                                {
-                                    label: 'All',
-                                    value: data && data.total_count,
-                                },
-                            ]}
-                            textFiledProps={{ className: cx('w-[80px]') }}
-                            inputProps={{ className: cx('!py-0') }}
-                        />
-                        <Pagination
-                            handleChangePage={handleChangePage}
-                            page={data && data.current_page}
-                            siblingCount={1}
-                            className={cx('!p-0')}
-                            totalPage={data && data.total_pages}
-                        />
-                    </div>
-                </div>
+                ) : null}
             </div>
         </Layout>
     );

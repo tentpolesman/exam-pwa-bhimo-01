@@ -21,32 +21,32 @@ const Caraousel = (props) => {
             <ContainerScroll showArrow={showArrow} className={classNameCarousel}>
                 {data?.length > 0 && data.map((item, key) => (
                     <Item
-                        className="carousel-item [&:not(:last-child)]:mr-4 !min-w-[145px] tablet:!min-w-[190px] desktop:!min-w-[273px] !h-[initial]"
+                        className="carousel-item [&:not(:last-child)]:mr-4 !min-w-[160px] tablet:!min-w-[230px] desktop:!min-w-[288px] !h-[initial]"
                         key={key}
                         {...item}
                         storeConfig={storeConfig}
                         imageProps={{
                             className: cx(
                                 'product-image',
-                                '!w-[136px]',
-                                '!h-[136px]',
-                                'tablet:!w-[194px]',
-                                'tablet:!h-[194px]',
-                                'desktop:!w-[242px]',
-                                'desktop:!h-[242px]',
+                                '!w-[144px]',
+                                '!h-[144px]',
+                                'tablet:!w-[205px]',
+                                'tablet:!h-[205px]',
+                                'desktop:!w-[256px]',
+                                'desktop:!h-[256px]',
                             ),
                             classContainer: cx(
                                 'product-image-container',
-                                '!w-[136px]',
-                                '!h-[136px]',
-                                'desktop:!w-[242px]',
-                                'desktop:!h-[242px]',
-                                'tablet:!w-[194px]',
-                                'tablet:!h-[194px]',
+                                '!w-[144px]',
+                                '!h-[144px]',
+                                'tablet:!w-[205px]',
+                                'tablet:!h-[205px]',
+                                'desktop:!w-[256px]',
+                                'desktop:!h-[256px]',
                             ),
                         }}
-                        {...other}
                         enableQuickView
+                        {...other}
                     />
                 ))}
             </ContainerScroll>

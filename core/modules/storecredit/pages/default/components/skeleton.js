@@ -1,38 +1,23 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable semi-style */
-const SkeletonStoreCredit = () =>
-    null
-    // return (
-    //     <>
-    //         <TableRow>
-    //             <TableCell colSpan={5}>
-    //                 <Skeleton variant="text" width="100%" height={30} />
-    //                 <Skeleton variant="text" width="100%" height={30} />
-    //                 <Skeleton variant="text" width="100%" height={30} />
-    //                 <Skeleton variant="text" width="100%" height={30} />
-    //                 <Skeleton variant="text" width="100%" height={30} />
-    //             </TableCell>
-    //         </TableRow>
-    //         <TableRow>
-    //             <TableCell colSpan={5}>
-    //                 <Skeleton variant="text" width="100%" height={30} />
-    //                 <Skeleton variant="text" width="100%" height={30} />
-    //                 <Skeleton variant="text" width="100%" height={30} />
-    //                 <Skeleton variant="text" width="100%" height={30} />
-    //                 <Skeleton variant="text" width="100%" height={30} />
-    //             </TableCell>
-    //         </TableRow>
-    //         <TableRow>
-    //             <TableCell colSpan={5}>
-    //                 <Skeleton variant="text" width="100%" height={30} />
-    //                 <Skeleton variant="text" width="100%" height={30} />
-    //                 <Skeleton variant="text" width="100%" height={30} />
-    //                 <Skeleton variant="text" width="100%" height={30} />
-    //                 <Skeleton variant="text" width="100%" height={30} />
-    //             </TableCell>
-    //         </TableRow>
-    //     </>
-    // );
-;
+import Skeleton from '@common_skeleton';
+import cx from 'classnames';
 
+const SkeletonStoreCredit = () => (
+    <>
+        <tr className={cx('even:bg-white', 'odd:bg-neutral-50')}>
+            <td colSpan={5}>
+                <Skeleton width="100%" height={30} />
+            </td>
+        </tr>
+        <tr className={cx('even:bg-white', 'odd:bg-neutral-50')}>
+            <td colSpan={5}>
+                <Skeleton width="100%" height={30} />
+            </td>
+        </tr>
+        <tr className={cx('even:bg-white', 'odd:bg-neutral-50')}>
+            <td colSpan={5}>
+                <Skeleton width="100%" height={30} />
+            </td>
+        </tr>
+    </>
+);
 export default SkeletonStoreCredit;

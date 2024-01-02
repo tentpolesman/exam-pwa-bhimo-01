@@ -9,7 +9,7 @@ import { currencyVar } from '@root/core/services/graphql/cache';
 
 const RewardPoint = (props) => {
     const {
-        t, Content, ErrorView, Skeleton, pageConfig, rowsPerPage,
+        t, Content, ErrorView, pageConfig, rowsPerPage,
     } = props;
 
     const config = {
@@ -22,19 +22,19 @@ const RewardPoint = (props) => {
     // cache currency
     const currencyCache = useReactiveVar(currencyVar);
 
-    const [page, setPage] = React.useState(0);
+    const [page, setPage] = React.useState(1);
     const [count, setRowsPerPage] = React.useState(rowsPerPage || 10);
-    const handleChangePage = (event, newPage) => {
+    const handleChangePage = (newPage) => {
         setPage(newPage);
     };
 
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(0);
+    const handleChangeRowsPerPage = (value) => {
+        setRowsPerPage(value);
+        setPage(1);
     };
     const { data, loading, error } = getRewardPoint({
         pageSize: count,
-        currentPage: page + 1,
+        currentPage: page,
     });
 
     let customerRewardPoints = {
@@ -57,18 +57,8 @@ const RewardPoint = (props) => {
     if (error) {
         return (
             <Layout {...props} pageConfig={pageConfig || config}>
-                <ErrorView
-                    {...props}
-                    message={debuging.originalError ? error.message.split(':')[1] : t('common:error:fetchError')}
-                />
-            </Layout>
-        );
-    }
-    if (loading || !data) {
-        return (
-            <Layout {...props} pageConfig={pageConfig || config}>
                 <CustomerLayout {...props}>
-                    <Skeleton />
+                    <ErrorView {...props} message={debuging.originalError ? error.message.split(':')[1] : t('common:error:fetchError')} />
                 </CustomerLayout>
             </Layout>
         );

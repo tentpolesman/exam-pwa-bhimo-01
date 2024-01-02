@@ -1,5 +1,4 @@
 import Content from '@core_modules/thanks/pages/default/components';
-import ErrorInfo from '@core_modules/thanks/pages/default/components/ErrorInfo';
 import Skeleton from '@core_modules/thanks/pages/default/components/Loader';
 import CoreMultiseller from '@core_modules/thanks/pages/default/components/multiseller';
 import Core from '@core_modules/thanks/pages/default/core';
@@ -19,7 +18,6 @@ const Page = (props) => {
         <Core
             Skeleton={Skeleton}
             Content={Content}
-            ErrorInfo={ErrorInfo}
             {...props}
         />
     );

@@ -3,7 +3,7 @@ import Typography from '@common_typography';
 import { CheckCircleIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import cx from 'classnames';
 import propTypes from 'prop-types';
-import { useState } from 'react';
+import { isValidElement, useState } from 'react';
 
 const TextField = React.forwardRef((props, ref) => {
     const {
@@ -55,11 +55,15 @@ const TextField = React.forwardRef((props, ref) => {
             rightIconClasses,
         );
 
-        if (hintType === 'error') {
-            return <ExclamationTriangleIcon className={rightIconClassName} {...otherRightIconProps} />;
-        }
-        if (hintType === 'success') {
-            return <CheckCircleIcon className={rightIconClassName} {...otherRightIconProps} />;
+        if (!isValidElement) {
+            if (hintType === 'error') {
+                return <ExclamationTriangleIcon className={rightIconClassName} {...otherRightIconProps} />;
+            }
+            if (hintType === 'success') {
+                return <CheckCircleIcon className={rightIconClassName} {...otherRightIconProps} />;
+            }
+
+            return null;
         }
 
         return React.cloneElement(rightIcon, {
@@ -203,6 +207,7 @@ const TextField = React.forwardRef((props, ref) => {
                     variant="bd-2b"
                     className={cx(
                         absolute && 'absolute -bottom-[50%] -z-10',
+                        'my-1',
                         {
                             '!text-red': hintType === 'error',
                             '!text-green': hintType === 'success',

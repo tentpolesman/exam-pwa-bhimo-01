@@ -27,7 +27,6 @@ const ModalXenditView = (props) => {
         >
             <Button
                 color="primary"
-                size="medium"
                 className="xendit-btn-close"
                 onClick={() => {
                     setOpen();
@@ -48,7 +47,7 @@ const ModalXenditView = (props) => {
                                 onClick={() => handleSimulateQr()}
                                 loading={loadSimulate}
                             >
-                                <Typography variant="span" letter="uppercase" type="bold" color="white">
+                                <Typography variant="bd-2" letter="uppercase" type="bold" color="white">
                                     {t('common:button:simulateQrCode')}
                                 </Typography>
 

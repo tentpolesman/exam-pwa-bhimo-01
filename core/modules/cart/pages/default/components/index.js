@@ -95,11 +95,11 @@ const Content = (props) => {
     ];
 
     return (
-        <div className="flex flex-col">
+        <div className="flex flex-col cart-pages">
             <div className="xs:basis-full">
                 <GimmickBanner data={dataCart.promoBanner || []} t={t} {...other} />
             </div>
-            <div className="flex flex-col gap-6 p-4  tablet:p-6 desktop:p-0">
+            <div className="flex flex-col gap-6">
                 <Breadcrumb iconHomeOnly data={breadcrumbsData} />
                 <Typography variant="h1" className="text-lg tablet:text-[24px] destkop:text-[30px]">
                     {t('cart:pageTitle')}

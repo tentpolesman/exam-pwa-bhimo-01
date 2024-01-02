@@ -1,27 +1,49 @@
-// import Link from 'next/link';
-// import Button from '@common_button';
+import Router from 'next/router';
+import cx from 'classnames';
+import Button from '@common_button';
+import Typography from '@common_typography';
 
 const ErrorContent = (props) => {
-    // eslint-disable-next-line no-unused-vars
     const { statusCode, title } = props;
 
     return (
-        <div>
-            {/* <div className={styles.wrapper}>
+        <div
+            className={cx(
+                'px-4 flex flex-col items-center justify-center',
+                'min-h-screen',
+            )}
+        >
+            <div
+                className={cx(
+                    'flex items-center justify-center',
+                )}
+            >
                 {statusCode ? (
-                    <h1 className={styles.h1}>{statusCode}</h1>
+                    <Typography
+                        variant="h1"
+                        className={cx(
+                            'pr-4 border-r-[1px] border-neutral-200',
+                        )}
+                    >
+                        {statusCode}
+                    </Typography>
                 ) : null}
-                <div className={styles.desc}>
-                    <h2 className={styles.h2}>{title}</h2>
+                <Typography
+                    variant="p"
+                    className={cx(
+                        statusCode && 'pl-4',
+                    )}
+                >
+                    {title}
+                </Typography>
+            </div>
+            {statusCode === 404 ? (
+                <div className="mt-[40px] flex justify-center">
+                    <Button onClick={() => { Router.push('/'); }}>
+                        <Typography className={cx('!text-neutral-white')}>Back</Typography>
+                    </Button>
                 </div>
-            </div> */}
-            {/* {statusCode === 404 ? (
-                <div className={styles.actions}>
-                    <Link href="/" legacyBehavior>
-                        <Button className={styles.toolbarButton}>Back</Button>
-                    </Link>
-                </div>
-            ) : null} */}
+            ) : null}
         </div>
     );
 };

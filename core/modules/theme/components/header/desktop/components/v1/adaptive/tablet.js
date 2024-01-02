@@ -22,6 +22,7 @@ import Bars3Icon from '@heroicons/react/24/solid/Bars3Icon';
 import DevicePhoneMobileIcon from '@heroicons/react/24/solid/DevicePhoneMobileIcon';
 
 import { getCategories } from '@core_modules/theme/services/graphql';
+import { BREAKPOINTS } from '@root/core/theme/vars';
 
 const Autocomplete = dynamic(() => import('@core_modules/theme/components/header/desktop/components/autocomplete'), { ssr: false });
 const BurgerMenuCategories = dynamic(() => import('@core_modules/theme/components/header/desktop/components/burgermenu/categories'), { ssr: false });
@@ -79,7 +80,7 @@ const TabletHeader = (props) => {
                 'ease-in-out',
                 'shadow-md',
                 {
-                    'hidden-this-tablet': deviceWidth < 768 || deviceWidth > 1200,
+                    'hidden-this-tablet': deviceWidth < BREAKPOINTS.md || deviceWidth > BREAKPOINTS.xl,
                 },
             )}
         >
@@ -115,7 +116,7 @@ const TabletHeader = (props) => {
                             iconPosition="left"
                             variant="tertiary"
                             classNameText={cx('!text-neutral-700')}
-                            id="btn-install"
+                            id="btn-install__tablet"
                         >
                             <Typography>Download Apps</Typography>
                         </Button>
@@ -191,7 +192,7 @@ const TabletHeader = (props) => {
                             </Drawer>
                         )}
                     </div>
-                    <div className={cx('middle-header-tablet__logo', 'flex', 'items-center')}>
+                    <div className={cx('middle-header-tablet__logo', 'flex', 'items-center', 'cursor-pointer')}>
                         <Link href="/" legacyBehavior>
                             <a>
                                 <Image

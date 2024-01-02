@@ -11,6 +11,7 @@ import TrashIcon from '@heroicons/react/24/solid/TrashIcon';
 import cx from 'classnames';
 import { formatPrice } from '@helper_currency';
 import { useTranslation } from 'next-i18next';
+import Badge from '@common/Badge';
 
 const Item = (props) => {
     const {
@@ -39,7 +40,12 @@ const Item = (props) => {
 
     return (
         <li className={cx('px-6', 'py-4')}>
-            <div id="plugin-minicart-itemsProduct" className={cx('minicart__item--wrapper', 'tablet:max-desktop:py-4', 'flex', 'flex-row', 'gap-4')}>
+            <div
+                className={cx(
+                    'minicart__item--wrapper tablet:max-desktop:py-4 flex',
+                    'flex-row gap-4 plugin-minicart-itemsProduct',
+                )}
+            >
                 <div className={cx('minicart__item--photo-wrapper', 'rounded-[4px]')}>
                     <Link
                         href="/[...slug]"
@@ -51,7 +57,7 @@ const Item = (props) => {
                             'tablet:w-[120px]',
                             'mobile:max-tablet:h-[100px]',
                             'mobile:max-tablet:w-[100px]',
-                            'block',
+                            'block relative',
                         )}
                     >
                         <Thumbor
@@ -62,7 +68,8 @@ const Item = (props) => {
                             height={120}
                             storeConfig={storeConfig}
                         />
-                        {custom_price?.row_total_incl_tax?.value === 0 ? <span>{t('common:title:free')}</span> : null}
+                        {custom_price?.row_total_incl_tax?.value === 0
+                            ? <Badge className="absolute left-1 top-1" success label={t('common:title:free')} /> : null}
                     </Link>
                 </div>
                 <div className={cx('minicart__item--details', 'basis-full')}>

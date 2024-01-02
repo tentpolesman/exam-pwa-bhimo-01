@@ -9,22 +9,38 @@ const ShippingView = (props) => {
         checkout, handleSelect, t,
     } = props;
     const checkStyles = (delivery) => ((checkout.selected.delivery === delivery)
-        ? cx('p-[17px] flex flex-row justify-center items-center border border-primary rounded-[10px] cursor-pointer', `${delivery}Delivery`)
-        : cx('p-[17px] flex flex-row justify-center items-center border border-neutral-400 rounded-[10px] cursor-pointer', `${delivery}Delivery`));
+        ? cx(
+            'p-4 border border-neutral-200 rounded-xl flex flex-row items-center cursor-pointer',
+            'border-primary',
+            `${delivery}Delivery`,
+        )
+        : cx(
+            'p-4 border border-neutral-200 rounded-xl flex flex-row items-center cursor-pointer',
+            `${delivery}Delivery`,
+        ));
+    const checkActiveColor = (delivery) => (((checkout.selected.delivery === delivery))
+        ? 'text-primary'
+        : 'text-pwa-font');
 
     return (
-        <div id="checkoutDeliveryMethod" className={cx('border-b border-b-neutral-400 p-[30px] mobile:mt-[20px]')}>
-            <Typography variant="h2" className="font-bold uppercase">
+        <div
+            id="checkoutDeliveryMethod"
+            className={cx(
+                'flex flex-col border-b border-b-neutral-200',
+                'w-full pb-6 gap-4',
+            )}
+        >
+            <Typography variant="h2" type="bold" className="uppercase">
                 {t('checkout:deliveryMethod:label')}
             </Typography>
-            <div className="flex flex-row">
+            <div className="flex flex-row gap-4">
                 <div className="xs:basis-6/12">
                     <div className={checkStyles('home')} onClick={() => handleSelect('home')}>
-                        <div className="flex flex-col">
-                            <Typography variant="span" type="bold">
+                        <div className="flex flex-col gap-1">
+                            <Typography color={checkActiveColor('home')} variant="bd-2" type="bold">
                                 {t('checkout:deliveryMethod:homeDelivery')}
                             </Typography>
-                            <Typography className="hidden-mobile">
+                            <Typography variant="bd-2b" className="hidden tablet:block">
                                 {t('checkout:deliveryMethod:homeDeliveryDesc')}
                             </Typography>
                         </div>
@@ -34,10 +50,10 @@ const ShippingView = (props) => {
                     <div className="xs:basis-6/12">
                         <div className={checkStyles('pickup')} onClick={() => handleSelect('pickup')}>
                             <div className="flex flex-col">
-                                <Typography variant="span" type="bold">
+                                <Typography color={checkActiveColor('pickup')} variant="bd-2" type="bold">
                                     {t('checkout:deliveryMethod:pickupDelivery')}
                                 </Typography>
-                                <Typography className="hidden-mobile">
+                                <Typography variant="bd-2b" className="hidden tablet:block">
                                     {t('checkout:deliveryMethod:pickupDeliveryDesc')}
                                 </Typography>
                             </div>
@@ -48,10 +64,10 @@ const ShippingView = (props) => {
                     <div className="xs:basis-6/12">
                         <div className={checkStyles('instore')} onClick={() => handleSelect('instore')}>
                             <div className="flex flex-col">
-                                <Typography variant="span" type="bold">
+                                <Typography color={checkActiveColor('instore')} variant="bd-2" type="bold">
                                     {t('checkout:deliveryMethod:instorePickup')}
                                 </Typography>
-                                <Typography className="hidden-mobile">
+                                <Typography variant="bd-2b" className="hidden tablet:block">
                                     {t('checkout:deliveryMethod:instorePickupDesc')}
                                 </Typography>
                             </div>

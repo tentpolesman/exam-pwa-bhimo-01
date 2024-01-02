@@ -2,34 +2,35 @@
 import { gql } from '@apollo/client';
 
 export const getReview = gql`
-   query getReview($pageSizeReview: Int , $currentPageReview: Int) {
+    query getReview($pageSizeReview: Int, $currentPageReview: Int) {
         customer {
-            reviews(pageSize:$pageSizeReview,currentPage:$currentPageReview){
-                items{
-                  average_rating
-                  created_at
-                  nickname
-                  product{
-                    id
-                    url_key
-                    image{
-                        url
+            reviews(pageSize: $pageSizeReview, currentPage: $currentPageReview) {
+                items {
+                    average_rating
+                    created_at
+                    nickname
+                    product {
+                        id
+                        url_key
+                        image {
+                            url
+                        }
+                        name
+                        rating_summary
                     }
-                    name
-                  }
-                  ratings_breakdown{
-                    name
-                    value
-                  }
-                  summary
-                  text
+                    ratings_breakdown {
+                        name
+                        value
+                    }
+                    summary
+                    text
                 }
-                page_info{
-                  current_page
-                  page_size
-                  total_pages
+                page_info {
+                    current_page
+                    page_size
+                    total_pages
                 }
-              }
+            }
         }
     }
 `;

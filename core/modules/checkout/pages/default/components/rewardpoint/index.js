@@ -6,6 +6,7 @@ const RewardPoint = ({
     t, checkout, setCheckout, handleOpenMessage, formik, RewardPointView, storeConfig, currencyCache,
 }) => {
     const [loading, setLoading] = React.useState(false);
+
     const [removeRewardPointsFromCart, applRewardPoint] = gqlService.removeRewardPointsFromCart({
         onError: (e) => {
             const message = e.message.split(':');
@@ -15,6 +16,7 @@ const RewardPoint = ({
             });
         },
     });
+
     const [applyRewardPointsToCart, removeRewardPoint] = gqlService.applyRewardPointsToCart({
         onError: (e) => {
             const message = e.message.split(':');

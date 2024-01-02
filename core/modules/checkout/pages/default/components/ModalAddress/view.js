@@ -1,13 +1,19 @@
 import Button from '@common_button';
-import Header from '@common_headermobile';
 import Dialog from '@common_dialog';
-import useMediaQuery from '@hook/useMediaQuery';
 import Skeleton from '@common_skeleton';
 import Radio from '@common_forms/Radio';
-import PlusIcon from '@heroicons/react/20/solid/PlusIcon';
+import Add from '@heroicons/react/24/outline/PlusIcon';
 import AddressFormDialog from '@plugin_addressform';
 import Typography from '@common_typography';
 import ItemAddress from '@core_modules/checkout/pages/default/components/ItemModalAddress';
+
+const Loader = () => (
+    <div className="flex flex-col gap-4 w-full">
+        {[1, 2, 3, 4].map((key) => (
+            <Skeleton variant="rect" width="100%" height={118} key={key} />
+        ))}
+    </div>
+);
 
 const AddressView = (props) => {
     const {
@@ -16,53 +22,36 @@ const AddressView = (props) => {
         handleChange, handleCloseDiff, handleOpenNew, openNew, typeAddress, dataEdit,
         updateAddress, manageCustomer,
     } = props;
-    const headerConfig = {
-        headerTitle: t('customer:address:pageTitle'),
-        header: 'relative',
-        headerBackIcon: 'close',
-    };
-    const { isDesktop } = useMediaQuery();
 
     const getItemAddress = () => {
         let content;
         if (loading) {
-            content = <Skeleton variant="rect" width="100%" height={118} />;
+            content = <Loader />;
         } else if (!address) {
-            content = <Skeleton variant="rect" width="100%" height={118} />;
+            content = <Loader />;
         } else if (address.length === 0) {
             content = null;
         } else {
-            content = address.map((item) => (
-                <ItemAddress
-                    {...item}
-                    selectedAddressId={selectedAddressId}
-                    checked={item.id === selectedAddressId}
-                    key={item.id}
-                    addressId={item.id}
-                    firstname={item.firstname}
-                    lastname={item.lastname}
-                    telephone={item.telephone}
-                    postcode={item.postcode}
-                    region={item.region.region}
-                    city={item.city}
-                    country={{
-                        id: item.country.code,
-                        full_name_locale: item.country.label,
+            content = (
+                <Radio
+                    data={address}
+                    CustomItem={ItemAddress}
+                    onChange={(e) => handleChange(e)}
+                    customItemProps={{
+                        t,
+                        manageCustomer,
+                        loadingAddress,
+                        success,
+                        handleOpenNew,
+                        updateAddress,
+                        handleCloseDiff,
+                        selectedAddressId,
                     }}
-                    street={item.street.join(' ')}
-                    value={item.id}
-                    defaultBilling={item.default_billing}
-                    defaultShipping={item.default_shipping}
-                    loadingAddress={loadingAddress}
-                    success={success}
-                    t={t}
-                    handleOpenNew={handleOpenNew}
-                    manageCustomer={manageCustomer}
-                    updateAddress={updateAddress}
-                    handleChange={handleChange}
-                    handleCloseDiff={handleCloseDiff}
+                    classNames={{
+                        radioGroupClasses: 'gap-5',
+                    }}
                 />
-            ));
+            );
         }
 
         return content;
@@ -80,39 +69,32 @@ const AddressView = (props) => {
                 pageTitle={typeAddress === 'new' ? t('customer:address:addTitle') : t('customer:address:editTitle')}
                 {...dataEdit}
             />
-            <Dialog open={open} className="left-0 w-full" maxWidth="sm" fullWidth={!!isDesktop} fullScreen={!isDesktop}>
-                <div className="w-full self-center mobile:max-w-[960px]" id="checkoutListAddress">
-                    <Header
-                        pageConfig={headerConfig}
-                        LeftComponent={{
-                            onClick: () => {
-                                setOpen(false);
-                            },
-                        }}
-                        className="mb-0"
-                    />
-                    <div className="p-[15px] overflow-y-auto mobile:h-[80vh]">
-                        <div>
-                            <Radio variant="single" row aria-label="position" onChange={handleChange} name="position" value={selectedAddressId}>
-                                {getItemAddress()}
-                            </Radio>
-                            <div className="p-[15px]">
-                                <Button
-                                    className="checkout-modalAddress-addAddressBtn"
-                                    variant="outlined"
-                                    size="small"
-                                    onClick={() => handleOpenNew('new')}
-                                >
-                                    <Typography variant="span" letter="uppercase" type="bold">
-                                        {t('customer:address:addTitle')}
-                                    </Typography>
-                                    <PlusIcon />
-                                </Button>
-                            </div>
+            <Dialog
+                open={open}
+                title={t('customer:address:pageTitle')}
+                onClickCloseTitle={() => setOpen(false)}
+                useCloseTitleButton
+                onClose={() => setOpen(false)}
+                content={(
+                    <div className="flex flex-col" id="checkoutListAddress">
+                        <div className="overflow-y-auto tablet:h-[80vh]">
+                            {getItemAddress()}
+                        </div>
+                        <div className="w-full flex flex-row items-center justify-center">
+                            <Button
+                                variant="outlined"
+                                size="sm"
+                                onClick={() => handleOpenNew('new')}
+                            >
+                                <Typography variant="bd-2" letter="uppercase" type="bold">
+                                    {t('customer:address:addTitle')}
+                                </Typography>
+                                <Add className="w-4 h-4" />
+                            </Button>
                         </div>
                     </div>
-                </div>
-            </Dialog>
+                )}
+            />
         </>
     );
 };

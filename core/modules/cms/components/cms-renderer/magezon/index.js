@@ -1,11 +1,13 @@
 /* eslint-disable max-len */
 /* eslint-disable react/no-unknown-property */
 import generateCustomCssAnimation from '@core_modules/cms/helpers/magezonCustomCssAnimationGenerator';
+import magezonDesignOptionsCss from '@core_modules/cms/helpers/magezonDesignOptionsCss';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'animate.css';
 import dynamic from 'next/dynamic';
 import 'open-iconic/font/css/open-iconic-bootstrap.css';
 import React from 'react';
+import cx from 'classnames';
 
 const MagezonSlider = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonSlider'));
 const MagezonCaraousel = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonCaraousel'), { ssr: false });
@@ -55,7 +57,6 @@ const MagezonElement = (props) => {
         mouse_parallax_size,
         mouse_parallax_speed,
         background_image,
-        background_color,
         full_height,
         xs_hide,
         sm_hide,
@@ -68,24 +69,8 @@ const MagezonElement = (props) => {
         el_id,
         el_inner_class,
         storeConfig,
-        margin_top,
-        margin_right,
-        margin_bottom,
-        margin_left,
-        padding_top,
-        padding_right,
-        padding_bottom,
-        padding_left,
-        border_top_left_radius,
-        border_top_right_radius,
-        border_bottom_left_radius,
-        border_bottom_right_radius,
-        border_style,
-        border_top_width,
-        border_right_width,
-        border_left_width,
-        border_bottom_width,
-        background_position,
+        id,
+        ...other
     } = props;
     const { base_media_url } = storeConfig;
     let childrenContent;
@@ -93,6 +78,10 @@ const MagezonElement = (props) => {
     let customId = '';
     let innerClasses = 'mgz-element-inner ';
     const { className, styles } = generateCustomCssAnimation(animation_duration, animation_delay, animation_infinite);
+    const { className: designOptionClassName, styles: designOptionStyles } = magezonDesignOptionsCss(id, { ...other, type });
+
+    // console.log('props', props);
+
     const enumCustomAnimation = {
         topToBottom: 'mgz_top-to-bottom',
         bottomToTop: 'mgz_bottom-to-top',
@@ -268,7 +257,7 @@ const MagezonElement = (props) => {
     return (
         <>
             <div className={classes} id={customId || null}>
-                <div className={innerClasses}>
+                <div className={cx(innerClasses, id, designOptionClassName)}>
                     {background_image && (
                         <>
                             <div className="parallax-wrapper mouse-parallax">
@@ -285,28 +274,14 @@ const MagezonElement = (props) => {
                     {childrenContent}
                 </div>
             </div>
+            {/* prettier-ignore */}
             <style jsx>
                 {`
                     .mgz-element {
                         ${align ? `text-align: ${align};` : ''}
                         position: relative;
                         width: 100%;
-                    }
-                    .mgz-element-inner {
-                        overflow: hidden;
-                        margin: ${margin_top || 0}px ${margin_right || 0}px ${margin_bottom || 0}px ${margin_left || 0}px;
-                        padding: ${padding_top || 0}px ${padding_right || 0}px ${padding_bottom || 0}px ${padding_left || 0}px;
-                        ${border_top_left_radius ? `border-top-left-radius: ${border_top_left_radius || 0}px;` : ''}
-                        ${border_top_right_radius ? `border-top-right-radius: ${border_top_right_radius || 0}px;` : ''}
-                        ${border_bottom_left_radius ? `border-bottom-left-radius: ${border_bottom_left_radius || 0}px;` : ''}
-                        ${border_bottom_right_radius ? `border-bottom-right-radius: ${border_bottom_left_radius || 0}px;` : ''}
-                        ${border_style ? `border-style: ${border_style};` : ''}
-                        ${background_position ? `background-position: ${background_position?.split('-').join(' ')};` : ''}
-                        ${border_top_width ? `border-top-width: ${border_top_width || 0}px;` : ''}
-                        ${border_right_width ? `border-right-width: ${border_right_width || 0}px;` : ''}
-                        ${border_bottom_width ? `border-bottom-width: ${border_bottom_width || 0}px;` : ''}
-                        ${border_left_width ? `border-left-width: ${border_left_width || 0}px;` : ''}
-                        ${background_color ? `background-color: ${background_color};` : ''}
+                        box-sizing: border-box;
                     }
                     @media screen and (max-width: 360px) {
                         .full_height {
@@ -344,16 +319,7 @@ const MagezonElement = (props) => {
                 `}
             </style>
             <style jsx global>
-                {`  
-                    .mgz-column > * {
-                        padding: 0px;
-                    }
-
-                    .mgz-element:not(.full_height) > .mgz-element-inner >.mgz-row > .mgz-column > * {
-                        width: initial;
-                        padding: 10px;
-                    }
-
+                {`
                     @media screen and (max-width: 768px) {
                         .mgz-element.full_height > .mgz-element-inner >  .mgz-row > .mgz-column > .mgz-element {
                             margin-top: -15px;
@@ -411,6 +377,7 @@ const MagezonElement = (props) => {
                 `}
             </style>
             {styles}
+            {designOptionStyles}
         </>
     );
 };

@@ -31,6 +31,10 @@ import { currencyVar } from '@root/core/services/graphql/cache';
 import * as Schema from '@core_modules/checkout/services/graphql/schema';
 import * as Yup from 'yup';
 
+// View
+
+import Content from '@core_modules/checkout/pages/default/components';
+
 function equalTo(ref, msg) {
     return this.test({
         name: 'equalTo',
@@ -47,7 +51,7 @@ function equalTo(ref, msg) {
 
 const Checkout = (props) => {
     const {
-        t, storeConfig, pageConfig, Content, cartId: propsCardId,
+        t, storeConfig, pageConfig, cartId: propsCardId,
     } = props;
     const config = {
         successRedirect: {
@@ -142,6 +146,7 @@ const Checkout = (props) => {
     const [checkout, setCheckout] = React.useState({
         order_id: '',
         newupdate: false,
+        refetchItemOnly: false,
         data: {
             errorItems: false,
             cart: null,
@@ -408,7 +413,7 @@ const Checkout = (props) => {
         let { cart } = dataCart;
         const { errorItems, items } = itemCart.cart;
         const state = { ...checkout };
-        cart = { ...cart, items };
+        cart = { ...checkout.data.cart, ...cart, items };
         // check error items
         if (errorItems && errorItems.length > 0) {
             state.data.errorItems = true;
@@ -476,7 +481,9 @@ const Checkout = (props) => {
         let customer;
         let address;
 
-        if (!state.data.isGuest && manageCustomer && manageCustomer.data && manageCustomer.data.customer && manageCustomer.data.customer.addresses) {
+        if (!state.data.isGuest && manageCustomer && manageCustomer.data
+            && manageCustomer.data.customer && manageCustomer.data.customer.addresses
+            && !state.refetchItemOnly) {
             customer = manageCustomer.data.customer;
             [address] = customer ? customer.addresses.filter((item) => item.default_shipping) : [null];
         }
@@ -484,7 +491,10 @@ const Checkout = (props) => {
         state.data.defaultAddress = customer ? address : null;
 
         // init cart & customer
-        state.data.cart = cart;
+        state.data.cart = {
+            ...state.data.cart,
+            ...cart,
+        };
 
         // init coupon
         state.data.isCouponAppliedToCart = cart && cart.applied_coupons ? cart.applied_coupons : false;
@@ -493,7 +503,7 @@ const Checkout = (props) => {
         let shipping;
         shipping = cart && cart.shipping_addresses && cart.shipping_addresses.length > 0 ? cart.shipping_addresses : null;
 
-        if (shipping) {
+        if (shipping && !checkout.refetchItemOnly) {
             if (storeConfig.enable_oms_multiseller === '1') {
                 state.selected.address = {
                     firstname: shipping[0].firstname,
@@ -531,7 +541,7 @@ const Checkout = (props) => {
 
                 state.pickup_location_code = shipping.pickup_location_code;
             }
-        } else if (!state.data.isGuest && address) {
+        } else if (!state.data.isGuest && address && !state.refetchItemOnly) {
             state.selected.address = {
                 firstname: address.firstname,
                 lastname: address.lastname,
@@ -590,7 +600,7 @@ const Checkout = (props) => {
 
         // init shipping method
         // if multiseller active
-        if (storeConfig.enable_oms_multiseller === '1') {
+        if (storeConfig.enable_oms_multiseller === '1' && !state.refetchItemOnly) {
             if (shipping && shipping[0].available_shipping_methods) {
                 const availableMultiShipping = shipping.map((shippingPerSeller) => ({
                     seller_id: shippingPerSeller.seller_id ? shippingPerSeller.seller_id : 0,
@@ -684,7 +694,7 @@ const Checkout = (props) => {
                     };
                 });
             }
-        } else {
+        } else if (!state.refetchItemOnly) {
             if (shipping && shipping[0].available_shipping_methods) {
                 const availableShipping = shipping[0].available_shipping_methods.filter(
                     (x) => x.carrier_code !== 'pickup' && x.carrier_code !== 'instore'
@@ -736,51 +746,54 @@ const Checkout = (props) => {
         }
 
         // init payment method
-        if (cart.available_payment_methods) {
-            state.data.paymentMethod = cart.available_payment_methods.map((method) => ({
-                ...method,
-                label: method.title,
-                value: method.code,
-                image: null,
-            }));
-        } else if (checkout.selected.delivery === 'pickup') {
-            state.data.paymentMethod = cart.available_payment_methods.map((method) => ({
-                ...method,
-                label: method.title,
-                value: method.code,
-                image: null,
-            }));
-        }
-
-        if (cart.selected_payment_method) {
-            state.selected.payment = cart.selected_payment_method.code;
-            if (storeConfig?.pwa?.paypal_enable && cart.selected_payment_method.code === 'paypal_express') {
-                getPaypalToken({
-                    variables: {
-                        cartId: cart.id,
-                        code: 'paypal_express',
-                        returnUrl: storeConfig?.paypal_key.return_url,
-                        cancelUrl: storeConfig?.paypal_key.cancel_url,
-                    },
-                }).then((res) => {
-                    if (res.data && res.data.createPaypalExpressToken && res.data.createPaypalExpressToken.token) {
-                        const { token } = res.data.createPaypalExpressToken;
-                        setTokenData(res.data.createPaypalExpressToken);
-                        setInitialOptionPaypal({
-                            ...initialOptionPaypal,
-                            'data-order-id': token,
-                        });
-                    }
-                });
+        if (!state.refetchItemOnly) {
+            if (cart.available_payment_methods) {
+                state.data.paymentMethod = cart.available_payment_methods.map((method) => ({
+                    ...method,
+                    label: method.title,
+                    value: method.code,
+                    image: null,
+                }));
+            } else if (checkout.selected.delivery === 'pickup') {
+                state.data.paymentMethod = cart.available_payment_methods.map((method) => ({
+                    ...method,
+                    label: method.title,
+                    value: method.code,
+                    image: null,
+                }));
             }
-        }
 
-        if (rewardPoint && rewardPoint.data && rewardPoint.data.customerRewardPoints) {
-            state.data.rewardPoints = rewardPoint.data.customerRewardPoints;
+            if (cart.selected_payment_method) {
+                state.selected.payment = cart.selected_payment_method.code;
+                if (storeConfig?.pwa?.paypal_enable && cart.selected_payment_method.code === 'paypal_express') {
+                    getPaypalToken({
+                        variables: {
+                            cartId: cart.id,
+                            code: 'paypal_express',
+                            returnUrl: storeConfig?.paypal_key.return_url,
+                            cancelUrl: storeConfig?.paypal_key.cancel_url,
+                        },
+                    }).then((res) => {
+                        if (res.data && res.data.createPaypalExpressToken && res.data.createPaypalExpressToken.token) {
+                            const { token } = res.data.createPaypalExpressToken;
+                            setTokenData(res.data.createPaypalExpressToken);
+                            setInitialOptionPaypal({
+                                ...initialOptionPaypal,
+                                'data-order-id': token,
+                            });
+                        }
+                    });
+                }
+            }
+
+            if (rewardPoint && rewardPoint.data && rewardPoint.data.customerRewardPoints) {
+                state.data.rewardPoints = rewardPoint.data.customerRewardPoints;
+            }
         }
 
         state.loading.all = false;
         state.loading.paypal = false;
+        state.refetchItemOnly = false;
 
         setCheckout(state);
         updateFormik(cart);
@@ -897,7 +910,7 @@ const Checkout = (props) => {
                 cartItemBySeller = groupData;
             }
 
-            if (shipping && storeConfig.enable_oms_multiseller === '1') {
+            if (shipping && storeConfig.enable_oms_multiseller === '1' && !checkout.refetchItemOnly) {
                 const sellerList = (arr) => JSON.stringify(
                     arr
                     .filter(({ seller_id: x }) => x)
@@ -1010,6 +1023,7 @@ const Checkout = (props) => {
             state.loading.totalPrice = false;
             state.data.cart.prices = itemPrice.cart.prices;
             state.data.cart.promoBanner = itemPrice.cart.promoBanner;
+            state.data.cart.available_free_items = itemPrice.cart.available_free_items;
             setCheckout(state);
         }
     }, [itemPrice]);
@@ -1371,7 +1385,7 @@ const Checkout = (props) => {
     };
 
     return (
-        <Layout pageConfig={configPage || pageConfig} {...props} showRecentlyBar={false} isCheckout>
+        <Layout pageConfig={configPage || pageConfig} {...props} showRecentlyBar={false} withLayoutHeader={false} isCheckout>
             <Head>
                 <script type="text/javascript" src={url} data-client-key="SB-Mid-client-1F64CqNZz3Nzvai2" />
                 <meta name="viewport" content="initial-scale=1.0, width=device-width" />

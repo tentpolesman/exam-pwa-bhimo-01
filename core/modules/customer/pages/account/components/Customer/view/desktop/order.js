@@ -34,11 +34,7 @@ const OrderView = (props) => {
                     softColor
                     warning
                     className={cx('rounded-md', 'w-fit')}
-                    label={
-                        <Typography variant="body-sm" className={cx('text-yellow-800', 'leading-md')}>
-                            {status_label}
-                        </Typography>
-                    }
+                    label={<Typography className={cx('text-yellow-800', 'leading-md')}>{status_label}</Typography>}
                 />
             );
         }
@@ -48,11 +44,7 @@ const OrderView = (props) => {
                     softColor
                     error
                     className={cx('rounded-md', 'w-fit')}
-                    label={
-                        <Typography variant="body-sm" className={cx('text-red-800', 'leading-md')}>
-                            {status_label}
-                        </Typography>
-                    }
+                    label={<Typography className={cx('text-red-800', 'leading-md')}>{status_label}</Typography>}
                 />
             );
         }
@@ -62,11 +54,7 @@ const OrderView = (props) => {
                     softColor
                     success
                     className={cx('rounded-md', 'w-fit')}
-                    label={
-                        <Typography variant="body-sm" className={cx('text-green-800', 'leading-md')}>
-                            {status_label}
-                        </Typography>
-                    }
+                    label={<Typography className={cx('text-green-800', 'leading-md')}>{status_label}</Typography>}
                 />
             );
         }
@@ -75,11 +63,7 @@ const OrderView = (props) => {
                 softColor
                 secondary
                 className={cx('rounded-md', 'w-fit')}
-                label={
-                    <Typography variant="body-sm" className={cx('text-primary-800', 'leading-md')}>
-                        {status_label}
-                    </Typography>
-                }
+                label={<Typography className={cx('text-primary-800', 'leading-md')}>{status_label}</Typography>}
             />
         );
     };
@@ -167,13 +151,16 @@ const OrderView = (props) => {
                                     <td colSpan={6}>
                                         <Button
                                             icon={<ExclamationTriangleIcon />}
+                                            iconProps={{
+                                                className: cx('!text-yellow-500'),
+                                            }}
                                             iconPosition="left"
                                             className={cx(
                                                 'w-full',
-                                                'bg-yellow-500',
-                                                'hover:bg-yellow-500',
-                                                'focus:bg-yellow-500',
-                                                'active:bg-yellow-500',
+                                                'bg-yellow-50',
+                                                'hover:bg-yellow-50',
+                                                'focus:bg-yellow-50',
+                                                'active:bg-yellow-50',
                                                 'hover:shadow-none',
                                                 'focus:shadow-none',
                                                 'active:shadow-none',
@@ -183,7 +170,7 @@ const OrderView = (props) => {
                                                 'active:cursor-auto',
                                             )}
                                         >
-                                            <Typography className={cx('!text-neutral-white')}>{t('customer:order:emptyMessage')}</Typography>
+                                            <Typography className={cx('!text-yellow-600')}>{t('customer:order:emptyMessage')}</Typography>
                                         </Button>
                                     </td>
                                 </tr>

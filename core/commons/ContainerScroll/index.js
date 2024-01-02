@@ -65,17 +65,19 @@ const ContainerScroll = ({
                 >
                     <Button
                         variant="tertiary"
-                        className={cx('container-scroll-arrow-left', '!px-[10px]', 'pointer-events-auto', 'shadow-md', leftNavClassName)}
+                        className={cx('container-scroll-arrow-left', '!px-[10px]', 'pointer-events-auto', 'shadow-md', 'group/left-nav', leftNavClassName)}
+                        classNameText="!text-neutral group-hover/left-nav:!text-primary"
                         onClick={onClickArrowLeft}
                     >
-                        <ChevronLeftIcon className="w-6 h-6 text-primary" style={{ width: arrowSize, height: arrowSize }} />
+                        <ChevronLeftIcon className="w-6 h-6" style={{ width: arrowSize, height: arrowSize }} />
                     </Button>
                     <Button
                         variant="tertiary"
-                        className={cx('container-scroll-arrow-right', '!px-[10px]', 'pointer-events-auto', 'shadow-md', rightNavClassName)}
+                        className={cx('container-scroll-arrow-right', '!px-[10px]', 'pointer-events-auto', 'shadow-md', 'group/right-nav', rightNavClassName)}
+                        classNameText="!text-neutral group-hover/right-nav:!text-primary"
                         onClick={onClickArrowRight}
                     >
-                        <ChevronRightIcon className="w-6 h-6 text-primary" style={{ width: arrowSize, height: arrowSize }} />
+                        <ChevronRightIcon className="w-6 h-6" style={{ width: arrowSize, height: arrowSize }} />
                     </Button>
                 </div>
             </Show>

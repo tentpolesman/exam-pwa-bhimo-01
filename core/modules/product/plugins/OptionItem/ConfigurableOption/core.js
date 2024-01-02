@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-nested-ternary */
 import { modules } from '@config';
@@ -238,7 +239,7 @@ const ConfigurableOptionCore = (props) => {
         const errorData = {};
         if (!noValidate) {
             // eslint-disable-next-line array-callback-return
-            configProduct.data.products.items[0].configurable_options.map((option) => {
+            configProduct?.data?.products?.items[0]?.configurable_options?.forEach((option) => {
                 if (selectConfigurable[option.attribute_code] === '' || !selectConfigurable[option.attribute_code]) {
                     errorData[option.attribute_code] = `${option.attribute_code} ${t('validate:required')}`;
                 }
@@ -251,7 +252,7 @@ const ConfigurableOptionCore = (props) => {
          * Find attributes that have the same 'selectConfigurable' values
          * eg: color with the value of 52, size with the value of 24, etc.
          */
-        const selectedVariantAttrs = configProduct.data.products.items[0].variants
+        const selectedVariantAttrs = configProduct?.data?.products?.items[0]?.variants
             .find((variant) => variant.attributes
                 .every((attr) => Object.keys(selectConfigurable)
                     .some((sc) => sc === attr.code && selectConfigurable[sc] === attr.value_index)));
@@ -301,7 +302,11 @@ const ConfigurableOptionCore = (props) => {
                             {
                                 quantity: parseFloat(qty),
                                 sku,
-                                selected_options: [...selectedVariantAttrs.attributes.map((selectedOpt) => selectedOpt.uid), ...uids],
+                                selected_options: [
+                                    ...((selectedVariantAttrs?.attributes?.length > 0
+                                        && selectedVariantAttrs.attributes.map((selectedOpt) => selectedOpt.uid)) || []),
+                                    ...uids,
+                                ],
                                 entered_options,
                             },
                         ],

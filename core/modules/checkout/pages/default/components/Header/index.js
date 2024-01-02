@@ -17,34 +17,18 @@ const HeaderCheckout = ({
     };
     return (
         <div id="header">
-            <div className="link-backtostore" onClick={BackToStore}>
+            <div
+                role="button"
+                tabIndex={0}
+                className="flex flex-col justify-center items-center h-44 cursor-pointer"
+                onClick={BackToStore}
+            >
                 <img
-                    className="logo"
+                    className="w-auto max-h-32"
                     src={`${storeConfig.secure_base_media_url}logo/${storeConfig.header_logo_src}`}
                     alt="logo"
                 />
             </div>
-            <style jsx>
-                {`
-                 #header {
-                    height: 170px;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                    align-items: center;
-                }
-
-                #header img {
-                    cursor: pointer;
-                    max-height: 125px;
-                    width: auto;
-                }
-
-                .link-backtostore {
-                    cursor: pointer;
-                }
-            `}
-            </style>
         </div>
     );
 };

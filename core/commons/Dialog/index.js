@@ -141,6 +141,7 @@ const Dialog = ({
                                     'desktop:px-[32px] tablet:px-[32px] mobile:px-[16px]',
                                     'pb-[32px]',
                                     'text-[14px]',
+                                    (!positiveAction && !negativeAction) ? 'rounded-b-[12px]' : '',
                                     classContent,
                                 )}
                                 >

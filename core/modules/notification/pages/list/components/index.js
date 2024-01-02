@@ -24,28 +24,32 @@ const NotificationList = (props) => {
     if (error) {
         return (
             <Layout {...props}>
-                <Alert severity="error" className={cx('mt-5')}>
-                    <Typography
-                        variant="p-2a"
-                        className={cx()}
-                    >
-                        {`Error: ${error.message}`}
-                    </Typography>
-                </Alert>
+                <div className={cx('pt-5 mobile:max-desktop:px-4')}>
+                    <Alert severity="error">
+                        <Typography
+                            variant="p-2a"
+                            className={cx()}
+                        >
+                            {`Error: ${error.message}`}
+                        </Typography>
+                    </Alert>
+                </div>
             </Layout>
         );
     }
     if (!data) {
         return (
             <Layout {...props}>
-                <Alert severity="warning" className={cx('mt-5')}>
-                    <Typography
-                        variant="p-2a"
-                        className={cx()}
-                    >
-                        {t('notification:not_found')}
-                    </Typography>
-                </Alert>
+                <div className={cx('pt-5 mobile:max-desktop:px-4')}>
+                    <Alert severity="warning">
+                        <Typography
+                            variant="p-2a"
+                            className={cx()}
+                        >
+                            {t('notification:not_found')}
+                        </Typography>
+                    </Alert>
+                </div>
             </Layout>
         );
     }
@@ -53,14 +57,16 @@ const NotificationList = (props) => {
     if (data.customerNotificationList.items.length === 0) {
         return (
             <Layout {...props}>
-                <Alert severity="warning" className={cx('mt-5')}>
-                    <Typography
-                        variant="p-2a"
-                        className={cx()}
-                    >
-                        {t('notification:empty')}
-                    </Typography>
-                </Alert>
+                <div className={cx('pt-5 mobile:max-desktop:px-4')}>
+                    <Alert severity="warning">
+                        <Typography
+                            variant="p-2a"
+                            className={cx()}
+                        >
+                            {t('notification:empty')}
+                        </Typography>
+                    </Alert>
+                </div>
             </Layout>
         );
     }
@@ -68,7 +74,7 @@ const NotificationList = (props) => {
     const [page, setPage] = useState(1);
     const notifCount = data.customerNotificationList.items.length;
     const notifLimit = 10;
-    const totalPage = notifCount < notifLimit ? 1 : Math.round(notifCount / notifLimit);
+    const totalPage = notifCount < notifLimit ? 1 : Math.ceil(notifCount / notifLimit);
 
     const notifList = Array.from({ length: totalPage }, (_, i) =>
         data.customerNotificationList.items.slice(i * notifLimit, i * notifLimit + notifLimit));
@@ -79,7 +85,7 @@ const NotificationList = (props) => {
 
     return (
         <Layout {...props}>
-            <div className={cx('pt-5')}>
+            <div className={cx('pt-5 mobile:max-desktop:px-4')}>
                 {notifList[page - 1].map((item, i) => (
                     <div
                         key={i}
@@ -111,18 +117,18 @@ const NotificationList = (props) => {
                         </Show>
                     </div>
                 ))}
-            </div>
-            <div className={cx('pt-8 flex items-center justify-between')}>
-                <Typography variant="p-2" className={cx('')}>
-                    {`${notifCount} Item(s)`}
-                </Typography>
-                <Pagination
-                    handleChangePage={handleChangePage}
-                    page={page}
-                    siblingCount={0}
-                    className={cx('!p-0')}
-                    totalPage={totalPage}
-                />
+                <div className={cx('pt-8 flex items-center justify-between')}>
+                    <Typography variant="p-2" className={cx('')}>
+                        {`${notifCount} Item(s)`}
+                    </Typography>
+                    <Pagination
+                        handleChangePage={handleChangePage}
+                        page={page}
+                        siblingCount={0}
+                        className={cx('!p-0')}
+                        totalPage={totalPage}
+                    />
+                </div>
             </div>
         </Layout>
     );

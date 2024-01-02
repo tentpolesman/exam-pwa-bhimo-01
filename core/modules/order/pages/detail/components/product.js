@@ -1,27 +1,26 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable semi-style */
-/* eslint-disable radix */
+import Image from '@common_image';
 import Typography from '@common_typography';
+import useStyles from '@core_modules/order/pages/detail/style';
 import { formatPrice } from '@helper_currency';
 import React from 'react';
-import Image from '@common_image';
 
 const ItemProduct = ({
-    name, price_incl_tax, row_total_incl_tax, qty_ordered, currency, t,
-    image_url, storeConfig,
+    name, price_incl_tax, row_total_incl_tax, qty_ordered, currency, t, image_url, storeConfig,
 }) => {
+    const styles = useStyles();
+
     let defaultWidth = storeConfig?.pwa?.image_product_width;
     let defaultHeight = storeConfig?.pwa?.image_product_height;
 
-    if (typeof defaultWidth === 'string') defaultWidth = parseInt(defaultWidth, 0);
-    if (typeof defaultHeight === 'string') defaultHeight = parseInt(defaultHeight, 0);
+    if (typeof defaultWidth === 'string') defaultWidth = parseInt(defaultWidth, 10);
+    if (typeof defaultHeight === 'string') defaultHeight = parseInt(defaultHeight, 10);
 
     return (
-        <div className="">
-            <div className="">
+        <div className={styles.itemContainer}>
+            <div className={styles.productImgContainer}>
                 <Image
                     src={image_url}
-                    className=""
+                    className={styles.productImg}
                     alt={name}
                     width={defaultWidth}
                     height={defaultHeight}
@@ -29,21 +28,23 @@ const ItemProduct = ({
                     storeConfig={storeConfig}
                 />
             </div>
-            <div className="">
-                <Typography variant="label" className="clear-margin-padding">{name || ''}</Typography>
-                <Typography variant="span" className="">
+            <div className={styles.detailItem}>
+                <Typography variant="label" className="clear-margin-padding">
+                    {name || ''}
+                </Typography>
+                <Typography variant="span" className={styles.textDetail}>
                     {t('common:title:price')}
                     {' '}
                     :
                     {formatPrice(price_incl_tax, currency)}
                 </Typography>
-                <Typography variant="span" className="">
+                <Typography variant="span" className={styles.textDetail}>
                     {t('common:title:qty')}
                     {' '}
                     :
                     {qty_ordered || 0}
                 </Typography>
-                <Typography variant="span" className="">
+                <Typography variant="span" className={styles.textDetail}>
                     {t('common:subtotal')}
                     {' '}
                     :

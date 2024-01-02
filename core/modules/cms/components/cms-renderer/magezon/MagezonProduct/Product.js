@@ -51,11 +51,11 @@ const Product = (props) => {
         enablePrice: product_price,
         enableRating: product_review,
         enableProductName: product_name,
-        className: cx('carousel-item', '!min-w-[145px]', 'tablet:!min-w-[190px]', 'desktop:!min-w-[273px]', {
+        className: cx('carousel-item', '!min-w-[160px]', 'tablet:!min-w-[230px]', 'desktop:!min-w-[288px]', {
             'flex-shrink-0': !isSingleProduct,
-            '!basis-[145px] !tablet:basis-[190px] !desktop:basis-[273px]': !isProductGrid && !isSingleProduct,
+            '!basis-[160px] !tablet:basis-[230px] !desktop:basis-[288px]': !isProductGrid && !isSingleProduct,
             '[&:not(:last-child)]:mb-4': isProductList,
-            'desktop:!max-w-[273px]': isSingleProduct && product_display === 'grid',
+            'desktop:!max-w-[288px]': isSingleProduct && product_display === 'grid',
             [generateGridItemClass(item_xl, 'xl')]: isProductGrid && item_xl,
             [generateGridItemClass(item_lg, 'lg')]: isProductGrid && item_lg,
             [generateGridItemClass(item_md, 'md')]: isProductGrid && item_md,
@@ -66,21 +66,21 @@ const Product = (props) => {
         imageProps: {
             className: cx(
                 'product-image',
-                '!w-[136px]',
-                '!h-[136px]',
-                'tablet:!w-[194px]',
-                'tablet:!h-[194px]',
-                'desktop:!w-[242px]',
-                'desktop:!h-[242px]',
+                '!w-[144px]',
+                '!h-[144px]',
+                'tablet:!w-[205px]',
+                'tablet:!h-[205px]',
+                'desktop:!w-[256px]',
+                'desktop:!h-[256px]',
             ),
             classContainer: cx(
                 'product-image-container',
-                '!w-[136px]',
-                '!h-[136px]',
-                'desktop:!w-[242px]',
-                'desktop:!h-[242px]',
-                'tablet:!w-[194px]',
-                'tablet:!h-[194px]',
+                '!w-[144px]',
+                '!h-[144px]',
+                'tablet:!w-[205px]',
+                'tablet:!h-[205px]',
+                'desktop:!w-[256px]',
+                'desktop:!h-[256px]',
             ),
         },
     };
@@ -133,23 +133,27 @@ const Product = (props) => {
     }
 
     if (type === 'product_list' && data?.products?.items) {
-        content = data?.products?.items.map((product, index) => (
-            <ProductItem
-                //
-                key={index}
-                isGrid={false}
-                {...product}
-                {...productProps}
-                preload={index === 0}
-            />
-        ));
+        content = (
+            <div className="grid desktop:!gap-4 tablet:!gap-3 mobile:!gap-2">
+                {data?.products?.items.map((product, index) => (
+                    <ProductItem
+                        //
+                        key={index}
+                        isGrid={false}
+                        {...product}
+                        {...productProps}
+                        preload={index === 0}
+                    />
+                ))}
+            </div>
+        );
     }
 
     if (type === 'product_grid' && data?.products?.items) {
         content = (
-            <div className="product-grid flex flex-wrap items-stretch -mx-2">
+            <div className="product-grid flex flex-wrap items-stretch desktop:!gap-4 tablet:!gap-3 mobile:!gap-2">
                 {data?.products?.items.map((product, index) => (
-                    <div className={cx('product-grid-item p-2', productProps.className)}>
+                    <div className={cx('product-grid-item', productProps.className)}>
                         <ProductItem
                             //
                             key={index}
@@ -214,7 +218,7 @@ const Product = (props) => {
 
     if (type === 'product_slider' && data?.products?.items) {
         content = (
-            <ContainerScroll showArrow className="!gap-4">
+            <ContainerScroll showArrow className="desktop:!gap-4 tablet:!gap-3 mobile:!gap-2">
                 {data?.products?.items.map((product, index) => (
                     <ProductItem
                         //
@@ -233,7 +237,7 @@ const Product = (props) => {
             <div className="mgz-product-content">{!loading && !error ? content : null}</div>
             <style jsx>
                 {`
-                    .mgz-product-content :global(.carousel-item) {
+                    :global(.carousel-item) {
                         background-color: ${COLORS.neutral.white};
                     }
                 `}

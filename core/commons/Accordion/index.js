@@ -1,8 +1,10 @@
-import React from 'react';
-import Arrow from '@heroicons/react/24/outline/ChevronDownIcon';
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import Typography from '@common_typography';
-import propTypes from 'prop-types';
+import Arrow from '@heroicons/react/24/outline/ChevronDownIcon';
 import cx from 'classnames';
+import propTypes from 'prop-types';
+import React from 'react';
 
 const Accordion = (props) => {
     const {
@@ -17,6 +19,7 @@ const Accordion = (props) => {
         classContent = '',
         children,
         CustomIcon,
+        classIcon = '',
     } = props;
 
     const handleShow = (e) => {
@@ -34,10 +37,7 @@ const Accordion = (props) => {
         <details className={cx('group flex flex-col common-accordion', className)} open={open}>
             <summary
                 onClick={handleShow}
-                className={cx(
-                    'flex justify-between items-center font-medium cursor-pointer list-none w-full',
-                    classSummary,
-                )}
+                className={cx('flex justify-between items-center font-medium cursor-pointer list-none w-full', classSummary)}
             >
                 {React.isValidElement(CustomAccordionSummary) ? (
                     React.cloneElement(CustomAccordionSummary, {
@@ -52,7 +52,7 @@ const Accordion = (props) => {
                             React.cloneElement(CustomIcon)
                         ) : (
                             <span className="transition group-open:rotate-180">
-                                <Arrow className="w-5 h-5" />
+                                <Arrow className={cx('w-5 h-5', classIcon)} />
                             </span>
                         )}
                     </>

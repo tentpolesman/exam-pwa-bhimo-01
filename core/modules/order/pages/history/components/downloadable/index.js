@@ -1,234 +1,126 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable semi-style */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint max-len: ["error", { "code": 180 }] */
-/* eslint-disable jsx-a11y/anchor-is-valid */
-/* eslint-disable no-undef */
-/* eslint-disable no-nested-ternary */
-/* eslint-disable eqeqeq */
-import Typography from '@common_typography';
-import Layout from '@layout_customer';
-import classNames from 'classnames';
+import { useState } from 'react';
+import cx from 'classnames';
 import Link from 'next/link';
-import { SkeletonContent } from '@core_modules/order/pages/history/components/skeleton';
+import Layout from '@layout_customer';
+import Typography from '@common_typography';
+import Pagination from '@common_pagination';
+import Alert from '@common/Alert';
+import Show from '@common_show';
+import formatDate from '@helper_date';
 
 const DefaultView = (props) => {
     const {
         data, t,
-        loadMore,
     } = props;
-    return null;
-    // return (
-    //     <Layout t={t} wishlist={[]}>
-    //         <div>
-    //             <TableContainer component={Paper} className={styles.tableContainer}>
-    //                 <Table className={styles.table} size="small" aria-label="a dense table">
-    //                     <TableHead>
-    //                         <TableRow className={styles.tableRowHead}>
-    //                             <TableCell align="left">
-    //                                 <Typography variant="span" type="bold">
-    //                                     {t('order:order')}
-    //                                     {' '}
-    //                                     #
-    //                                 </Typography>
-    //                             </TableCell>
-    //                             <TableCell align="left"><Typography variant="span" type="bold">{t('order:date')}</Typography></TableCell>
-    //                             <TableCell align="left"><Typography variant="span" type="bold">{t('order:titleDownload')}</Typography></TableCell>
-    //                             <TableCell align="left"><Typography variant="span" type="bold">{t('order:status')}</Typography></TableCell>
-    //                             <TableCell align="left"><Typography variant="span" type="bold">{t('order:remaining')}</Typography></TableCell>
-    //                         </TableRow>
-    //                     </TableHead>
-    //                     <TableBody>
-    //                         {
-    //                             loadMore ? (
-    //                                 <TableRow>
-    //                                     <TableCell colSpan={6} rowSpan={10}>
-    //                                         <SkeletonContent />
-    //                                     </TableCell>
-    //                                 </TableRow>
-    //                             )
-    //                                 : data.length > 0
-    //                                     ? (
-    //                                         <>
-    //                                             {
-    //                                                 data.map((val, index) => (
-    //                                                     <TableRow className={styles.tableRowResponsive} key={index}>
-    //                                                         <TableCell
-    //                                                             className={styles.tableCellResponsive}
-    //                                                             align="left"
-    //                                                             data-th={(
-    //                                                                 <Typography align="center" type="bold" letter="capitalize">
-    //                                                                     {`${t('order:order')} #`}
-    //                                                                 </Typography>
-    //                                                             )}
-    //                                                         >
-    //                                                             <div className={styles.displayFlexRow}>
-    //                                                                 <div className={styles.mobLabel}>
-    //                                                                     <Typography align="center" type="bold" letter="capitalize">
-    //                                                                         {`${t('order:order')} #`}
-    //                                                                     </Typography>
-    //                                                                 </div>
-    //                                                                 <div className={styles.value}>
-    //                                                                     <Typography variant="span" letter="capitalize">
-    //                                                                         <Link
-    //                                                                             href="/sales/order/view/order_id/[id]"
-    //                                                                             as={`/sales/order/view/order_id/${val.order_increment_id}`}
-    //                                                                         >
 
-    //                                                                             <Typography variant="span" type="regular" decoration="underline">
-    //                                                                                 {val.order_increment_id}
-    //                                                                             </Typography>
+    const [page, setPage] = useState(1);
+    const itemCount = data?.length;
+    const itemLimit = 10;
+    const totalPage = itemCount < itemLimit ? 1 : Math.ceil(itemCount / itemLimit);
 
-    //                                                                         </Link>
-    //                                                                     </Typography>
-    //                                                                 </div>
-    //                                                             </div>
-    //                                                         </TableCell>
-    //                                                         <TableCell
-    //                                                             className={styles.tableCellResponsive}
-    //                                                             align="left"
-    //                                                             data-th={(
-    //                                                                 <Typography align="center" type="bold" letter="capitalize">
-    //                                                                     {t('order:date')}
-    //                                                                 </Typography>
-    //                                                             )}
-    //                                                         >
-    //                                                             <div className={styles.displayFlexRow}>
-    //                                                                 <div className={styles.mobLabel}>
-    //                                                                     <Typography align="center" type="bold" letter="capitalize">
-    //                                                                         {`${t('order:date')}`}
-    //                                                                     </Typography>
-    //                                                                 </div>
-    //                                                                 <div className={styles.value}>
-    //                                                                     <Typography variant="span" letter="capitalize">
-    //                                                                         {formatDate(val.date, 'M/DD/YY')}
-    //                                                                     </Typography>
-    //                                                                 </div>
-    //                                                             </div>
-    //                                                         </TableCell>
-    //                                                         <TableCell
-    //                                                             className={styles.tableCellResponsive}
-    //                                                             align="left"
-    //                                                             data-th={(
-    //                                                                 <Typography align="center" type="bold" letter="capitalize">
-    //                                                                     {t('order:title')}
-    //                                                                 </Typography>
-    //                                                             )}
-    //                                                         >
-    //                                                             <div className={styles.displayFlexRow}>
-    //                                                                 <div className={styles.mobLabel}>
-    //                                                                     <Typography align="center" type="bold" letter="capitalize">
-    //                                                                         {`${t('order:title')}`}
-    //                                                                     </Typography>
-    //                                                                 </div>
-    //                                                                 <div className={classNames(styles.valueDownload)}>
-    //                                                                     <Typography variant="span" letter="capitalize">
-    //                                                                         {val.title}
-    //                                                                     </Typography>
-    //                                                                     { val.status == 'available'
-    //                                                                     && (
-    //                                                                         <a
-    //                                                                             download
-    //                                                                             className={styles.linkDownload}
-    //                                                                             target="_blank"
-    //                                                                             rel="noreferrer"
-    //                                                                             href={val.download_url}
-    //                                                                         >
-    //                                                                             <Button
-    //                                                                                 variant="text"
-    //                                                                                 startIcon={<GetAppIcon color="action" />}
-    //                                                                                 size="small"
-    //                                                                                 disableRipple
-    //                                                                             >
-    //                                                                                 <Typography variant="span" letter="capitalize">
-    //                                                                                     {val.link_title}
-    //                                                                                 </Typography>
-    //                                                                             </Button>
-    //                                                                         </a>
-    //                                                                     )}
-    //                                                                 </div>
-    //                                                             </div>
-    //                                                         </TableCell>
-    //                                                         <TableCell
-    //                                                             className={styles.tableCellResponsive}
-    //                                                             align="left"
-    //                                                             data-th={(
-    //                                                                 <Typography align="center" type="bold" letter="capitalize">
-    //                                                                     {t('order:status')}
-    //                                                                 </Typography>
-    //                                                             )}
-    //                                                         >
-    //                                                             <div className={styles.displayFlexRow}>
-    //                                                                 <div className={styles.mobLabel}>
-    //                                                                     <Typography align="center" type="bold" letter="capitalize">
-    //                                                                         {t('order:status')}
-    //                                                                     </Typography>
-    //                                                                 </div>
-    //                                                                 <div className={styles.value}>
-    //                                                                     <Typography variant="span" letter="capitalize">
-    //                                                                         {val.status}
-    //                                                                     </Typography>
-    //                                                                 </div>
-    //                                                             </div>
-    //                                                         </TableCell>
-    //                                                         <TableCell
-    //                                                             className={styles.tableCellResponsive}
-    //                                                             align="left"
-    //                                                             data-th={(
-    //                                                                 <Typography align="center" type="bold" letter="capitalize">
-    //                                                                     Remaining Downloads
-    //                                                                 </Typography>
-    //                                                             )}
-    //                                                         >
-    //                                                             <div className={styles.displayFlexRow}>
-    //                                                                 <div className={styles.mobLabel}>
-    //                                                                     <Typography align="center" type="bold" letter="capitalize">
-    //                                                                         Remaining Downloads
-    //                                                                     </Typography>
-    //                                                                 </div>
-    //                                                                 <div className={styles.value}>
-    //                                                                     <Typography variant="span" letter="capitalize">
-    //                                                                         {val.remaining_downloads}
-    //                                                                     </Typography>
-    //                                                                 </div>
-    //                                                             </div>
-    //                                                         </TableCell>
-    //                                                     </TableRow>
-    //                                                 ))
-    //                                             }
-    //                                             {/* <TableRow>
-    //                                             <TablePagination
-    //                                                 rowsPerPageOptions={[10, 20, 50, { label: 'All', value: -1 }]}
-    //                                                 colSpan={6}
-    //                                                 count={data.length || 0}
-    //                                                 rowsPerPage={10}
-    //                                                 page={0}
-    //                                                 labelRowsPerPage="Limit"
-    //                                                 SelectProps={{
-    //                                                     inputProps: { 'aria-label': 'rows per page' },
-    //                                                     native: true,
-    //                                                 }}
-    //                                                 onChangePage={handleChangePage}
-    //                                                 onChangeRowsPerPage={handleChangePageSize}
-    //                                             />
-    //                                         </TableRow> */}
-    //                                         </>
-    //                                     )
-    //                                     : (
-    //                                         <TableRow>
-    //                                             <TableCell colSpan={6}>
-    //                                                 <Alert severity="warning">{t('order:notFound')}</Alert>
-    //                                             </TableCell>
-    //                                         </TableRow>
-    //                                     )
-    //                         }
-    //                     </TableBody>
-    //                 </Table>
-    //             </TableContainer>
-    //         </div>
-    //     </Layout>
-    // );
+    const itemList = Array.from({ length: totalPage }, (_, i) =>
+        data.slice(i * itemLimit, i * itemLimit + itemLimit));
+
+    const handleChangePage = (value) => {
+        setPage(value);
+    };
+
+    return (
+        <Layout t={t} wishlist={[]}>
+            <div className={cx('pt-5 mobile:max-desktop:px-4')}>
+                <div className={cx('relative', 'overflow-x-auto', 'rounded-lg')}>
+                    <table className={cx('w-full', 'text-md', 'border-[1px]', 'border-neutral-100')}>
+                        <thead>
+                            <tr className={cx('text-neutral-500', 'font-semibold', 'leading-2lg', 'text-left')}>
+                                <th className={cx('px-4', 'py-3')}>
+                                    {t('order:order')}
+                                    {' '}
+                                    #
+                                </th>
+                                <th className={cx('px-4', 'py-3')}>{t('order:date')}</th>
+                                <th className={cx('px-4', 'py-3')}>{t('order:titleDownload')}</th>
+                                <th className={cx('px-4', 'py-3')}>{t('order:status')}</th>
+                                <th className={cx('px-4', 'py-3')}>{t('order:remaining')}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <Show when={data?.length > 0}>
+                                {itemList?.[page - 1]?.map((val, index) => (
+                                    <tr className={cx('even:bg-white', 'odd:bg-neutral-50')} key={index}>
+                                        <td className={cx('text-neutral-700', 'text-md', 'font-normal', 'leading-2lg', 'p-4')}>
+                                            <Link
+                                                href={`/sales/order/view/order_id/${val.order_increment_id}`}
+                                                className={cx(
+                                                    'hover:text-primary-700',
+                                                )}
+                                            >
+                                                {val.order_increment_id}
+                                            </Link>
+                                        </td>
+                                        <td className={cx('text-neutral-700', 'text-md', 'font-normal', 'leading-2lg', 'p-4')}>
+                                            {formatDate(val.date, 'M/DD/YY')}
+                                        </td>
+                                        <td className={cx('text-neutral-700', 'text-md', 'font-normal', 'leading-2lg', 'p-4')}>
+                                            <span className={cx('pr-4')}>
+                                                {val.title}
+                                            </span>
+                                            <Show when={val.status === 'available'}>
+                                                <Link
+                                                    href={val.download_url}
+                                                    target="_blank"
+                                                    rel="noreferrer"
+                                                    className={cx(
+                                                        'pl-4',
+                                                        'border-l-[1px]',
+                                                        'border-neutral-200',
+                                                        'hover:text-primary-700',
+                                                    )}
+                                                >
+                                                    {val.link_title}
+                                                </Link>
+                                            </Show>
+                                        </td>
+                                        <td className={cx('text-neutral-700', 'text-md', 'font-normal', 'leading-2lg', 'p-4')}>
+                                            {val.status}
+                                        </td>
+                                        <td className={cx('text-neutral-700', 'text-md', 'font-normal', 'leading-2lg', 'p-4')}>
+                                            {val.remaining_downloads}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </Show>
+                            <Show when={data?.length === 0}>
+                                <tr className={cx('even:bg-white', 'odd:bg-neutral-50')}>
+                                    <td colSpan={5} className="p-4">
+                                        <Alert severity="warning">
+                                            <Typography
+                                                variant="p-2a"
+                                                className={cx()}
+                                            >
+                                                {t('order:notFound')}
+                                            </Typography>
+                                        </Alert>
+                                    </td>
+                                </tr>
+                            </Show>
+                        </tbody>
+                    </table>
+                </div>
+                <div className={cx('pt-8 flex items-center justify-between')}>
+                    <Typography variant="p-2" className={cx('')}>
+                        {`${itemCount} Item(s)`}
+                    </Typography>
+                    <Pagination
+                        handleChangePage={handleChangePage}
+                        page={page}
+                        siblingCount={0}
+                        className={cx('!p-0')}
+                        totalPage={totalPage}
+                    />
+                </div>
+            </div>
+        </Layout>
+    );
 };
 
 export default DefaultView;

@@ -44,7 +44,9 @@
         "addToCart": "Add To Cart",
         "allowCookies": "Allow Cookies",
         "simulateQrCode": "Simulate Qrcode Payment",
-        "submitReview": "Submit Review"
+        "submitReview": "Submit Review",
+        "apply": "Apply",
+        "remove": "Remove"
     },
     "cart": {
         "myCart": "My Cart",
@@ -222,6 +224,10 @@
         "shareToYourFriend": "Share to your friend and family!",
         "showMore": "Show More",
         "showLess": "Show Less",
+        "show":"Show",
+        "items": "Item(s)",
+        "data": "Data",
+        "action": "Action",
         "selectProduct": "Select Product",
         "preview": "Preview",
         "giftCard": "Gift Card",

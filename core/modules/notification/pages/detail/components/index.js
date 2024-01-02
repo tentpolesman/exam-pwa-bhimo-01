@@ -26,14 +26,16 @@ const NotificationData = (props) => {
                 {...props}
                 title={t('customer:menu:notification')}
             >
-                <Alert severity="error" className={cx('mt-5')}>
-                    <Typography
-                        variant="p-2a"
-                        className={cx()}
-                    >
-                        {`Error: ${error.message}`}
-                    </Typography>
-                </Alert>
+                <div className={cx('pt-5 mobile:max-desktop:px-4')}>
+                    <Alert severity="error">
+                        <Typography
+                            variant="p-2a"
+                            className={cx()}
+                        >
+                            {`Error: ${error.message}`}
+                        </Typography>
+                    </Alert>
+                </div>
             </Layout>
         );
     }
@@ -43,14 +45,16 @@ const NotificationData = (props) => {
                 {...props}
                 title={t('customer:menu:notification')}
             >
-                <Alert severity="warning" className={cx('mt-5')}>
-                    <Typography
-                        variant="p-2a"
-                        className={cx()}
-                    >
-                        {t('notification:not_found')}
-                    </Typography>
-                </Alert>
+                <div className={cx('pt-5 mobile:max-desktop:px-4')}>
+                    <Alert severity="warning" className={cx('pt-5 mobile:max-desktop:px-4')}>
+                        <Typography
+                            variant="p-2a"
+                            className={cx()}
+                        >
+                            {t('notification:not_found')}
+                        </Typography>
+                    </Alert>
+                </div>
             </Layout>
         );
     }
@@ -63,7 +67,7 @@ const NotificationData = (props) => {
             activeMenu="/inboxnotification/notification"
             title={t('customer:menu:notification')}
         >
-            <div className={cx('pt-5')}>
+            <div className={cx('pt-5 mobile:max-desktop:px-4')}>
                 <Typography
                     variant="p-3"
                     className={cx('mb-5')}

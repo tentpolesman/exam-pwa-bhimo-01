@@ -1,14 +1,15 @@
+/* eslint-disable indent */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable no-unused-expressions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React from 'react';
 import Typography from '@common_typography';
-import cx from 'classnames';
 import CheckIcon from '@heroicons/react/24/solid/CheckIcon';
-import propTypes from 'prop-types';
+import cx from 'classnames';
 import parser from 'html-react-parser';
+import propTypes from 'prop-types';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 const Radio = (props) => {
@@ -81,12 +82,12 @@ const Radio = (props) => {
 
     if (isVariantSingle) {
         return (
-            <div className="common-radio-container">
+            <div className={cx('common-radio-container cursor-pointer', className)}>
                 <input
                     type="radio"
                     id={id}
                     name={name}
-                    ariaLabel={ariaLabel}
+                    aria-label={ariaLabel}
                     value={value}
                     checked={checked}
                     onChange={onChange}
@@ -106,7 +107,7 @@ const Radio = (props) => {
                         'focus:shadow-primary-50',
                         'focus:ring-offset-0',
                         'checked:bg-[length:150%]',
-                        'visible',
+                        'visible cursor-pointer',
                         {
                             'border-neutral-300 text-neutral-300': !disabled,
                             'w-5 h-5': size === 'md',
@@ -134,6 +135,12 @@ const Radio = (props) => {
             ) : null}
             <div className={cx('flex', 'flex-col', 'mt-2', radioGroupClasses)}>
                 {mappedData.map((item, index) => {
+                    // generate unique id
+                    const uniqueIdName = item?.value
+                        ? `${String(item.value)
+                              .toLowerCase()
+                              .replace(/[^a-z^0-9]+/g, '')}-radio-${index}`
+                        : `radio-${index}`;
                     if (CustomItem) {
                         return (
                             <>
@@ -184,43 +191,43 @@ const Radio = (props) => {
                                 value={item.value}
                                 checked={item.value === value}
                                 onChange={handleChange}
-                                id={item.id || `radio-${index}`}
+                                id={uniqueIdName}
                             />
-                            <label htmlFor={item.id || `radio-${index}`} className="cursor-pointer flex items-center group">
+                            <label htmlFor={uniqueIdName} className="cursor-pointer flex items-center group">
                                 {type === 'check' ? (
                                     item.value === value ? (
-                                        <div className={cx(
-                                            'w-4 h-4 mr-1',
-                                            'flex items-center justify-center',
-                                            'border-[1px] border-solid rounded-full border-primary',
-                                            'bg-primary',
-                                            {
-                                                'w-5 h-5': size === 'md',
-                                                'w-6 h-6': size === 'lg',
-                                            },
-                                        )}
-                                        >
-                                            <CheckIcon className={cx(
-                                                'w-3 h-3 font-bold text-neutral-100',
+                                        <div
+                                            className={cx(
+                                                'w-4 h-4 mr-1',
+                                                'flex items-center justify-center',
+                                                'border-[1px] border-solid rounded-full border-primary',
+                                                'bg-primary',
                                                 {
                                                     'w-5 h-5': size === 'md',
                                                     'w-6 h-6': size === 'lg',
                                                 },
                                             )}
+                                        >
+                                            <CheckIcon
+                                                className={cx('w-3 h-3 font-bold text-neutral-100', {
+                                                    'w-5 h-5': size === 'md',
+                                                    'w-6 h-6': size === 'lg',
+                                                })}
                                             />
                                         </div>
                                     ) : (
-                                        <div className={cx(
-                                            'w-4 h-4 border-[1px] border-solid rounded-full mr-1',
-                                            'group-hover:bg-primary-200 group-hover:border-primary',
-                                            'group-focus:bg-primary-200 group-focus:border-primary',
-                                            {
-                                                'border-[#D1D5DB] bg-neutral-white': disabled || item.disabled,
-                                                'group-hover:bg-neutral-white group-hover:border-neutral-200': disabled || item.disabled,
-                                                'w-5 h-5': size === 'md',
-                                                'w-6 h-6': size === 'lg',
-                                            },
-                                        )}
+                                        <div
+                                            className={cx(
+                                                'w-4 h-4 border-[1px] border-solid rounded-full mr-1',
+                                                'group-hover:bg-primary-200 group-hover:border-primary',
+                                                'group-focus:bg-primary-200 group-focus:border-primary',
+                                                {
+                                                    'border-[#D1D5DB] bg-neutral-white': disabled || item.disabled,
+                                                    'group-hover:bg-neutral-white group-hover:border-neutral-200': disabled || item.disabled,
+                                                    'w-5 h-5': size === 'md',
+                                                    'w-6 h-6': size === 'lg',
+                                                },
+                                            )}
                                         />
                                     )
                                 ) : null}
@@ -249,7 +256,7 @@ const Radio = (props) => {
 Radio.propTypes = {
     data: propTypes.array,
     onChange: propTypes.func,
-    value: propTypes.string,
+    value: propTypes.any,
     name: propTypes.string,
     ariaLabel: propTypes.string,
     label: propTypes.oneOfType([propTypes.string, propTypes.bool]),

@@ -42,7 +42,9 @@
         "allowCookies": "Ijinkan Cookie",
         "simulateQrCode": "Sumulasi Pembayaran Qrcode",
         "submitReview": "Kirim Ulasan",
-        "viewItem": "Lihat Item"
+        "viewItem": "Lihat Item",
+        "apply": "Terapkan",
+        "remove": "Hapus"
     },
     "cart": {
         "myCart": "Cart Saya",
@@ -218,6 +220,10 @@
         "shareToYourFriend": "Bagian kepada teman dan keluarga Anda!",
         "showMore": "Lihat Selengkapnya",
         "showLess": "Lihat Sedikitnya",
+        "show":"Lihat",
+        "items": "Barang",
+        "data": "Data",
+        "action": "Aksi",
         "selectProduct": "Pilih Produk",
         "preview": "Pratinjau",
         "giftCard": "Kartu Hadiah",

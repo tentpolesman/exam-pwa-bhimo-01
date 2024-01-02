@@ -51,8 +51,8 @@
         "couponApplied": "Coupon has been applied",
         "orderCommentAdded": "Order Comment has been added",
         "orderCommentRemoved": "Order Comment has been removed",
-        "giftCardApplied": "Coupon has been applied",
-        "giftCardRemoved": "Coupon has been removed",
+        "giftCardApplied": "Gift card has been applied",
+        "giftCardRemoved": "Gift card has been removed",
         "rewardPointsApplied": "Reward points has been applied",
         "rewardPointsRemoved": "Reward points has been removed",
         "storeCreditApplied": "Store credit has been applied",
@@ -131,5 +131,11 @@
     },
     "confirmation": "Confirmation",
     "open": "Open",
-    "close": "Close"
+    "close": "Close",
+
+    "giftCard": {
+        "placeholderField": "Gift Card Code",
+        "yourGiftCard": "Your gift card",
+        "appliedGiftCard": "Applied Gift Card"
+    }
 }

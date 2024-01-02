@@ -46,7 +46,7 @@ const MagezonRenderer = (props) => {
                         <MagezonElement key={key} {...item} storeConfig={storeConfig} />
                     )))}
             {!removeIdentifier && (
-                <div className="desktop:max-w-[1200px] tablet:max-w-[720]px my-0 mx-auto">
+                <div className="desktop:max-w-[1280px] tablet:max-w-[768px] my-0 mx-auto">
                     <Alert severity="error" className="capitalize">{t('common:cms:unableToRender')}</Alert>
                 </div>
             )}

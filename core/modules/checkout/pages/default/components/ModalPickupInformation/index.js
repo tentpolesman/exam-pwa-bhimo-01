@@ -1,14 +1,12 @@
 import React from 'react';
 import Button from '@common_button';
 import TextField from '@common_forms/TextField';
-import Typography from '@common_typography';
-import Dialog from '@common_dialog';
-import XMarkIcon from '@heroicons/react/24/solid/XMarkIcon';
-import gqlService from '@core_modules/checkout/services/graphql';
 import { regexPhone } from '@helper_regex';
 import { useTranslation } from 'next-i18next';
+import Dialog from '@common_dialog';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import gqlService from '@core_modules/checkout/services/graphql';
 
 const ModalPickupInformation = ({
     open,
@@ -102,62 +100,68 @@ const ModalPickupInformation = ({
     return (
         <Dialog
             open={open}
-            onClose={setOpen}
-        >
-            <div className="app-bar relative bg-neutral-white p-[10px] shadow-none h-[51px] flex flex-row justify-center items-center">
-                <Button
-                    className="absolute left-[10px]"
-                    edge="start"
-                    onClick={setOpen}
-                    aria-label="close"
-                >
-                    <XMarkIcon className="text-[30px] text-primary" />
-                </Button>
-                <Typography
-                    className="font-bold text-center uppercase self-center my-[16px]"
-                >
-                    {t('checkout:pickupInformation:label')}
-                </Typography>
-            </div>
-            <form onSubmit={formik.handleSubmit}>
-                <div className="dialog-content">
-                    <div className="flex flex-row w-full justify-around items-center bottom-0 bg-neutral-white p-[10px]">
-                        <TextField
-                            label={t('checkout:pickupInformation:pickupPerson')}
-                            name="person"
-                            value={formik.values.person}
-                            onChange={formik.handleChange}
-                            error={!!(formik.touched.person && formik.errors.person)}
-                            errorMessage={(formik.touched.person && formik.errors.person) || null}
-                        />
-                        <TextField
-                            label={t('common:form:phoneNumber')}
-                            name="phoneNumber"
-                            value={formik.values.phoneNumber}
-                            onChange={formik.handleChange}
-                            error={!!(formik.touched.phoneNumber && formik.errors.phoneNumber)}
-                            errorMessage={(formik.touched.phoneNumber && formik.errors.phoneNumber) || null}
-                        />
-                        <TextField
-                            label="email"
-                            name="email"
-                            value={formik.values.email}
-                            onChange={formik.handleChange}
-                            error={!!(formik.touched.email && formik.errors.email)}
-                            errorMessage={(formik.touched.email && formik.errors.email) || null}
-                        />
-                    </div>
-                </div>
+            closeOnBackdrop
+            onClose={() => setOpen()}
+            onClickCloseTitle={() => setOpen()}
+            title={t('checkout:pickupInformation:label')}
+            useCloseTitleButton
+            content={(
+                <>
+                    <form onSubmit={formik.handleSubmit} className="flex flex-col gap-4">
+                        <div className="flex flex-col gap-4 py-4 border-t border-neutral-200">
+                            <TextField
+                                label={t('checkout:pickupInformation:pickupPerson')}
+                                name="person"
+                                className="w-full"
+                                value={formik.values.person}
+                                onChange={formik.handleChange}
+                                hintProps={{
+                                    displayHintText: !!((formik.touched.person && formik.errors.person)),
+                                    hintText: formik.errors.person,
+                                    hintType: 'error',
+                                }}
+                                absolute={false}
+                            />
+                            <TextField
+                                label={t('common:form:phoneNumber')}
+                                name="phoneNumber"
+                                className="w-full"
+                                value={formik.values.phoneNumber}
+                                onChange={formik.handleChange}
+                                hintProps={{
+                                    displayHintText: !!((formik.touched.phoneNumber && formik.errors.phoneNumber)),
+                                    hintText: formik.errors.phoneNumber,
+                                    hintType: 'error',
+                                }}
+                                absolute={false}
+                            />
+                            <TextField
+                                label="email"
+                                name="email"
+                                className="w-full"
+                                value={formik.values.email}
+                                onChange={formik.handleChange}
+                                hintProps={{
+                                    displayHintText: !!((formik.touched.email && formik.errors.email)),
+                                    hintText: formik.errors.email,
+                                    hintType: 'error',
+                                }}
+                                absolute={false}
+                            />
+                        </div>
 
-                <div className="dialog-footer">
-                    <div className="flex flex-row w-full justify-around items-center bottom-0 bg-neutral-white p-[10px]">
-                        <Button loading={loading} className="block m-auto w-[calc(100% - 12px)] h-[41px]" type="submit">
+                        <Button
+                            loading={loading}
+                            className=""
+                            type="submit"
+                            classNameText="justify-center"
+                        >
                             {t('common:button:save')}
                         </Button>
-                    </div>
-                </div>
-            </form>
-        </Dialog>
+                    </form>
+                </>
+            )}
+        />
     );
 };
 

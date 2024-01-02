@@ -6,6 +6,7 @@ import { compose, withProps } from 'recompose';
 import {
     withScriptjs, withGoogleMap, GoogleMap, Marker, Circle,
 } from 'react-google-maps';
+import Button from '@common_button';
 import SearchBox from '@core_modules/storelocator/pages/default/components/Maps/SearchBox';
 import SliderRadius from '@core_modules/storelocator/pages/default/components/Maps/SliderRadius';
 import InfoWindow from '@core_modules/storelocator/pages/default/components/Maps/InfoWindow';
@@ -101,60 +102,60 @@ const StoreLocatorMaps = compose(
         setQuerySearch('');
     };
 
-    return null;
-    // return (
-    //     <>
-    //         <div className="flex flex-row">
-    //             <div className="xs:basis-full sm:basis-5/12" style={{ marginTop: 16 }}>
-    //                 <SearchBox ref={searchBoxRef} handleSearch={handleSearch} value={querySearch} setValue={setQuerySearch} />
-    //             </div>
-    //             <div className="xs:basis-8/12 sm:basis-4/12 md:basis-5/12" style={{ marginTop: 16 }}>
-    //                 <SliderRadius radius={radius} setRadius={handleRadius} />
-    //             </div>
-    //             <div className="xs:basis-4/12 sm:basis-3/12 md:basis-2/12" style={{ marginTop: 16 }}>
-    //                 <Button style={{ width: '100%' }} variant="contained" startIcon={<AutorenewIcon />} onClick={handleReset}>
-    //                     Reset
-    //                 </Button>
-    //             </div>
-    //         </div>
-    //         <GoogleMap
-    //             defaultZoom={zoom}
-    //             zoom={zoom}
-    //             defaultCenter={centerPosition}
-    //             center={centerPosition}
-    //         >
-    //             <Circle
-    //                 center={centerPosition}
-    //                 radius={radius}
-    //                 options={{
-    //                     fillColor: 'grey',
-    //                     strokeColor: 'grey',
-    //                     fillOpacity: isShowAllStore ? 0 : 0.3,
-    //                     strokeOpacity: isShowAllStore ? 0 : 0.8,
-    //                 }}
-    //             />
-    //             <Circle
-    //                 center={centerPosition}
-    //                 radius={radius / 30}
-    //                 options={{
-    //                     fillColor: 'red',
-    //                     fillOpacity: 0.5,
-    //                     strokeOpacity: 0,
-    //                 }}
-    //             />
-    //             {props.isMarkerShown && mapPositions.map((position, i) => (
-    //                 (getDistance(position, centerPosition) <= radius) || isShowAllStore
-    //                     ? (
-    //                         <Marker position={position} key={i} onClick={() => setSelectedStore(position)}>
-    //                             {selectedStore && selectedStore.store_name === position.store_name && (
-    //                                 <InfoWindow t={props.t} store={position} onCloseClick={() => setSelectedStore(null)} />
-    //                             )}
-    //                         </Marker>
-    //                     ) : null
-    //             ))}
-    //         </GoogleMap>
-    //     </>
-    // );
+    return (
+        <div className="mt-4 tablet:mt-3">
+            <div className="flex flex-row flex-wrap">
+                <div className="xs:basis-full sm:basis-5/12 my-4">
+                    <SearchBox ref={searchBoxRef} handleSearch={handleSearch} value={querySearch} setValue={setQuerySearch} />
+                </div>
+
+                <div className="flex-1 flex justify-between my-4">
+                    <div className="flex-1 mt-1 mr-2 tablet:mx-4">
+                        <SliderRadius radius={radius} setRadius={handleRadius} />
+                    </div>
+                    <Button onClick={handleReset}>
+                        Reset
+                    </Button>
+                </div>
+            </div>
+            <GoogleMap
+                defaultZoom={zoom}
+                zoom={zoom}
+                defaultCenter={centerPosition}
+                center={centerPosition}
+            >
+                <Circle
+                    center={centerPosition}
+                    radius={radius}
+                    options={{
+                        fillColor: 'grey',
+                        strokeColor: 'grey',
+                        fillOpacity: isShowAllStore ? 0 : 0.3,
+                        strokeOpacity: isShowAllStore ? 0 : 0.8,
+                    }}
+                />
+                <Circle
+                    center={centerPosition}
+                    radius={radius / 30}
+                    options={{
+                        fillColor: 'red',
+                        fillOpacity: 0.5,
+                        strokeOpacity: 0,
+                    }}
+                />
+                {props.isMarkerShown && mapPositions.map((position, i) => (
+                    (getDistance(position, centerPosition) <= radius) || isShowAllStore
+                        ? (
+                            <Marker position={position} key={i} onClick={() => setSelectedStore(position)}>
+                                {selectedStore && selectedStore.store_name === position.store_name && (
+                                    <InfoWindow t={props.t} store={position} onCloseClick={() => setSelectedStore(null)} />
+                                )}
+                            </Marker>
+                        ) : null
+                ))}
+            </GoogleMap>
+        </div>
+    );
 });
 
 export default StoreLocatorMaps;

@@ -1,9 +1,11 @@
 import Layout from '@layout';
+import CustomerLayout from '@layout_customer';
+import { debuging } from '@config';
 import { getReview } from '@core_modules/productreview/services/graphql';
 
 const PageReview = (props) => {
     const {
-        t, Content, pageConfig, rowsPerPage = 10, storeConfig,
+        t, Content, pageConfig, rowsPerPage = 10, storeConfig, ErrorView,
     } = props;
     const config = {
         title: t('productreview:title'),
@@ -12,7 +14,7 @@ const PageReview = (props) => {
         bottomNav: false,
     };
 
-    const [page, setPage] = React.useState(0);
+    const [page, setPage] = React.useState(1);
     const [perPage, setRowsPerPage] = React.useState(rowsPerPage);
 
     const handleChangePage = (value) => {
@@ -21,15 +23,24 @@ const PageReview = (props) => {
 
     const handleChangeRowsPerPage = (value) => {
         setRowsPerPage(value);
-        setPage(0);
+        setPage(1);
     };
     let reviewCustomer = null;
-    const { data, loading } = getReview(
-        {
-            pageSizeReview: perPage,
-            currentPageReview: page + 1,
-        },
-    );
+    const { data, loading, error } = getReview({
+        pageSizeReview: perPage,
+        currentPageReview: page,
+    });
+
+    if (error) {
+        return (
+            <Layout {...props} pageConfig={pageConfig || config}>
+                <CustomerLayout {...props}>
+                    <ErrorView {...props} message={debuging.originalError ? error.message.split(':')[1] : t('common:error:fetchError')} />
+                </CustomerLayout>
+            </Layout>
+        );
+    }
+
     if (data) {
         reviewCustomer = data.customer.reviews;
     }

@@ -1,11 +1,10 @@
 import React from 'react';
 import Button from '@common_button';
-import Typography from '@common_typography';
 import Dialog from '@common_dialog';
 import gqlService from '@core_modules/checkout/services/graphql';
 import CmsRenderer from '@core_modules/cms/components/cms-renderer';
-import XMarkIcon from '@heroicons/react/20/solid/XMarkIcon';
 import { useTranslation } from 'next-i18next';
+import cx from 'classnames';
 
 const ModalHowtoPay = ({
     open,
@@ -30,40 +29,28 @@ const ModalHowtoPay = ({
         return (
             <Dialog
                 open={open}
-                onClose={setOpen}
-                maxWidth="sm"
-            >
-                <div className="app-bar relative bg-neutral-white p-[10px] shadow-none h-[70px] flex flex-row">
-                    <Typography
-                        className="self-start text-[1.7vw] text-neutral-600 mt-[30px] mb-[16px] ml-[30px] font-bold text-left uppercase"
-                    >
-                        {data.cmsPage.title}
-                    </Typography>
-                    <Button
-                        className="absolute right-[10px]"
-                        edge="start"
-                        onClick={setOpen}
-                        aria-label="close"
-                    >
-                        <XMarkIcon className="text-[30px] text-primary" />
-                    </Button>
-                </div>
-                <div>
-                    <div className="dialog-content">
-                        <div className="flex flex-col relative h-full p-[20px]">
+                onClose={() => setOpen()}
+                title={data.cmsPage.title}
+                onClickCloseTitle={() => setOpen()}
+                closeOnBackdrop
+                useCloseTitleButton
+                content={(
+                    <div className="flex !max-h-[calc(100vh-36px)] flex-col gap-4 desktop:border-t desktop:border-neutral-200">
+                        <div className={cx(
+                            'flex flex-col relative max-h-[calc(100vh-300px)] !overflow-y-scroll overflow-x-hidden',
+                            'max-w-full',
+                        )}
+                        >
                             <CmsRenderer content={data.cmsPage.content} />
                         </div>
-                    </div>
-
-                    <div className="dialog-footer">
-                        <div className="flex flex-row justify-end bottom-0 bg-neutral-white p-[10px]">
-                            <Button loading={loadingTutor} onClick={setOpen} className="m-auto w-[8vw] h-[41px]" type="submit">
+                        <div className="flex flex-row justify-end bg-neutral-white">
+                            <Button loading={loadingTutor} classNameText="justify-center" className="w-[100px]" onClick={setOpen} type="submit">
                                 {t('checkout:buttonOk')}
                             </Button>
                         </div>
                     </div>
-                </div>
-            </Dialog>
+                )}
+            />
         );
     }
     return null;

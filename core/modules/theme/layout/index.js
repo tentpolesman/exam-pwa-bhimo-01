@@ -19,16 +19,14 @@ import TagManager from 'react-gtm-module';
 // eslint-disable-next-line object-curly-newline
 import { basePath, custDataNameCookie, debuging, features, modules } from '@config';
 import { createCompareList } from '@core_modules/product/services/graphql';
-import { getHost } from '@helper_config';
-import { getCookies, setCookies } from '@helper_cookies';
-import { getAppEnv } from '@helpers/env';
-// import { breakPointsDown, breakPointsUp } from '@helper_theme';
-// import crypto from 'crypto';
-// import PopupInstallAppMobile from '@core_modules/theme/components/custom-install-popup/mobile';
 import Copyright from '@core_modules/theme/components/footer/desktop/components/copyright';
 import { getCountCart } from '@core_modules/theme/services/graphql';
 import { getCartId } from '@helper_cartid';
+import { getHost } from '@helper_config';
+import { getCookies, setCookies } from '@helper_cookies';
+import { getAppEnv } from '@helpers/env';
 import { frontendConfig } from '@helpers/frontendOptions';
+import { BREAKPOINTS } from '@root/core/theme/vars';
 import { localTotalCart } from '@services/graphql/schema/local';
 import localFont from 'next/font/local';
 import Script from 'next/script';
@@ -113,7 +111,6 @@ const Layout = (props) => {
     }
     const enablePromo =
         getCookies(features.globalPromo.key_cookies) !== '' ? !!getCookies(features.globalPromo.key_cookies) : storeConfig.global_promo?.enable;
-
 
     const [dialog, setDialog] = useState({
         open: false,
@@ -327,7 +324,7 @@ const Layout = (props) => {
     };
 
     const generateClasses = () => {
-        let classes = `${!isCms ? 'tablet:max-w-[768px] desktop:max-w-[1200px]' : ''} ${font.variable} font-sans !font-pwa-default`;
+        let classes = `${!isCms ? 'desktop:max-w-[1280px] desktop:px-10 tablet:max-w-[768px] tablet:px-6 mobile:px-4 my-0 mx-auto' : ''} ${font.variable} font-sans !font-pwa-default`;
         if (showGlobalPromo) {
             classes += ' mobile:max-tablet:mt-2 tablet:max-desktop:mt-[145px] desktop:mt-[196px]';
         } else {
@@ -346,7 +343,7 @@ const Layout = (props) => {
         }
 
         if (isCheckout) {
-            classes += ' relative';
+            classes += ' !mt-0 !px-0 tablet:!mt-0 desktop:!mt-0 relative';
         }
 
         return classes;
@@ -513,6 +510,7 @@ const Layout = (props) => {
             <Head>
                 <meta name="keywords" content={metaKeywordValue} />
                 <meta name="robots" content={appEnv === 'prod' && storeConfig.pwa ? storeConfig.pwa.default_robot : 'NOINDEX,NOFOLLOW'} />
+                <link rel="manifest" href={`${basePath}/manifest.json`} />
                 <link rel="apple-touch-icon" href={iconAppleTouch} />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <meta name="format-detection" content="telephone=no" />
@@ -560,7 +558,7 @@ const Layout = (props) => {
             ) : null} */}
             {allowHeaderCheckout && (
                 <header ref={refHeader} className={cx(font.variable, 'font-sans', '!font-pwa-default')}>
-                    {typeof window !== 'undefined' && storeConfig.global_promo && storeConfig.global_promo.enable && deviceWidth > 768 && (
+                    {typeof window !== 'undefined' && storeConfig.global_promo && storeConfig.global_promo.enable && deviceWidth > BREAKPOINTS.md && (
                         <GlobalPromoMessage
                             t={t}
                             storeConfig={storeConfig}
@@ -568,25 +566,9 @@ const Layout = (props) => {
                             handleClose={handleClosePromo}
                             appName={appName}
                             installMessage={installMessage}
-                            isMobile={deviceWidth < 768}
+                            isMobile={deviceWidth < BREAKPOINTS.md}
                         />
                     )}
-                    {/* <div className="hidden-mobile">
-                        {!deviceType?.isMobile && headerDesktop ? (
-                            <HeaderDesktop
-                                storeConfig={storeConfig}
-                                isLogin={isLogin}
-                                t={t}
-                                app_cookies={app_cookies}
-                                showGlobalPromo={showGlobalPromo}
-                                enablePopupInstallation={showPopup}
-                                appName={appName}
-                                installMessage={installMessage}
-                                dataVesMenu={dataVesMenu}
-                                isHomepage={isHomepage}
-                            />
-                        ) : null}
-                    </div> */}
                     <Header
                         t={t}
                         pageConfig={pageConfig}
@@ -603,13 +585,6 @@ const Layout = (props) => {
                         handleClosePromo={handleClosePromo}
                         i18n={i18n}
                     />
-                    {/* <div className="hidden-desktop">
-                        {React.isValidElement(CustomHeader) ? (
-                            <>{React.cloneElement(CustomHeader, { pageConfig, ...headerProps })}</>
-                        ) : (
-                            <HeaderMobile pageConfig={pageConfig} storeConfig={storeConfig} {...headerProps} isCheckout />
-                        )}
-                    </div> */}
                 </header>
             )}
             <main className={generateClasses()}>
@@ -663,20 +638,6 @@ const Layout = (props) => {
                 <footer className={cx('!block', 'sm:mt-[50px]', font.variable, 'font-sans', '!font-pwa-default')} ref={refFooter}>
                     {footer ? <Footer storeConfig={storeConfig} t={t} /> : null}
                     <Copyright storeConfig={storeConfig} t={t} />
-                    {/* {!deviceType?.isMobile ? (
-                        <div className="hidden-mobile">
-                            {footer ? <Footer storeConfig={storeConfig} t={t} /> : null}
-                            <Copyright storeConfig={storeConfig} />
-                        </div>
-                    ) : null} */}
-                    {/* {footer && storeConfig?.pwa?.enabler_footer_mobile === true ? (
-                        <div className="hidden-desktop" style={{ ...footerMobile }}>
-                            <Footer storeConfig={storeConfig} t={t} />
-                        </div>
-                    ) : null}
-                    {!deviceType?.isMobile ? null : storeConfig && storeConfig.pwa && storeConfig.pwa.mobile_navigation === 'bottom_navigation' ? (
-                        <BottomNavigation active={pageConfig.bottomNav} storeConfig={storeConfig} />
-                    ) : null} */}
                 </footer>
             )}
             {/* {storeConfig.cookie_restriction && !restrictionCookies && (
@@ -693,7 +654,6 @@ const Layout = (props) => {
                 />
             )} */}
             <Script src="/install.js" defer />
-            {/* <Script src="https://kit.fontawesome.com/47555a0cec.js" defer /> */}
         </>
     );
 };

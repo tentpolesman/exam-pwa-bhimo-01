@@ -99,12 +99,12 @@ const Button = (props) => {
                 cx(
                     'flex',
                     'items-center',
-                    classNameText,
                     !disabled && styleClass[variant].typography,
                     disabled && styleClass.disabled.typography,
                     {
                         'flex-row-reverse': icon && isPositionRight,
                     },
+                    classNameText,
                 )
             }
             {...textProps}

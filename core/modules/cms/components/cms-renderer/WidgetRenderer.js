@@ -2,6 +2,9 @@
 import React, { memo, useMemo } from 'react';
 import parse, { domToReact } from 'html-react-parser';
 import dynamic from 'next/dynamic';
+import Alert from '@common/Alert';
+import { useTranslation } from 'next-i18next';
+import cx from 'classnames';
 
 const WidgetSlider = dynamic(() => import('@core_modules/cms/components/cms-renderer/widget-slider'));
 const ImageRenderer = dynamic(() => import('@core_modules/cms/components/cms-renderer/image-renderer'));
@@ -20,9 +23,11 @@ const TYPE_PWA_NEWSLETTER = 'pwa-newsletter-subscribe';
 const DOM_NAME = 'pwa';
 
 const WidgetRenderer = (props) => {
-    const { content, storeConfig } = props;
+    const { content, storeConfig, underlinedLink } = props;
+    const { t } = useTranslation(['common']);
+
     const widgetContent = useMemo(() => {
-        if (content.includes('widget')) {
+        if (content?.includes('widget')) {
             const newWidgetContent = content.replace('<p>', '').replace('{{widget', '<pwa');
             let lastOccurenceIndex;
             if (newWidgetContent.endsWith('}}')) {
@@ -81,7 +86,7 @@ const WidgetRenderer = (props) => {
                     return <ImageRenderer storeConfig={storeConfig} domNode={domNode} />;
                 }
                 if (domNode.name === 'a' && domNode.attribs?.href) {
-                    return <LinkRenderer domNode={domNode} />
+                    return <LinkRenderer domNode={domNode} />;
                 }
 
                 if (domNode.name === DOM_NAME && domNode.attribs) {
@@ -119,7 +124,23 @@ const WidgetRenderer = (props) => {
     };
     /* eslint-enable */
 
-    return <WidgetComponent {...props} />;
+    return (
+        <div
+            className={cx('prose', {
+                'prose-a:no-underline': underlinedLink,
+            })}
+        >
+            {content ? (
+                <WidgetComponent {...props} />
+            ) : (
+                <div className="desktop:min-w-[1200px] tablet:min-w-[720px]">
+                    <Alert severity="error" className="capitalize">
+                        {t('common:cms:unableToRender')}
+                    </Alert>
+                </div>
+            )}
+        </div>
+    );
 };
 
 const notRenderIf = (prevProps, nextProps) => prevProps.content === nextProps.content;
