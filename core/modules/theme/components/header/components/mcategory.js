@@ -14,58 +14,29 @@ import React from 'react';
 const MenuChildren = dynamic(() => import('@common_header/components/mcategoryChildren'), { ssr: false });
 
 const Menu = (props) => {
-    const { data, storeConfig } = props;
-    const cmsPages = storeConfig && storeConfig.cms_page ? storeConfig.cms_page.split(',') : [];
-    let menu = storeConfig.pwa.ves_menu_enable ? data?.vesMenu?.items : data?.categoryList[0].children;
+    const { data } = props;
+    let menu = data?.categoryList[0].children;
     if (!menu) {
         menu = [];
     }
     const generateLink = (cat) => {
         const link = cat.link ? getPath(cat.link) : `/${cat.url_path}`;
-        if (storeConfig.pwa.ves_menu_enable) {
-            if (cat.link_type === 'category_link') {
-                return ['/[...slug]', link];
-            }
-            const cms = cmsPages.find((cmsPage) => cmsPage === link.replace('/', ''));
-            if (cms) {
-                return ['/[...slug]', link];
-            }
-            return [link, link];
-        }
         return ['/[...slug]', link];
     };
     const handleClick = async (cat) => {
         const link = cat.link ? getPath(cat.link) : `/${cat.url_path}`;
         const urlResolver = getResolver();
-        if (storeConfig.pwa.ves_menu_enable) {
-            if (cat.link_type === 'category_link') {
-                urlResolver[link] = {
-                    type: 'CATEGORY',
-                    id: cat.category_id,
-                };
-                await setResolver(urlResolver);
-            } else {
-                const cms = cmsPages.find((cmsPage) => cmsPage === link.replace('/', ''));
-                if (cms) {
-                    urlResolver[link] = {
-                        type: 'CMS_PAGE',
-                    };
-                    await setResolver(urlResolver);
-                }
-            }
-        } else {
-            urlResolver[link] = {
-                type: 'CATEGORY',
-                id: cat.id,
-            };
-            await setResolver(urlResolver);
-        }
+        urlResolver[link] = {
+            type: 'CATEGORY',
+            id: cat.id,
+        };
+        await setResolver(urlResolver);
     };
     return (
         <div className="menu-wrapper" role="navigation">
             <ul className="nav" role="menubar" id="header-nav-menubar">
                 {menu.map((val, idx) => {
-                    if ((val.include_in_menu || storeConfig.pwa.ves_menu_enable) && val.name) {
+                    if (val.include_in_menu && val.name) {
                         return (
                             <li key={idx} role="menuitem" id={`header-menuitem-${idx}`}>
                                 {val.link ? (
