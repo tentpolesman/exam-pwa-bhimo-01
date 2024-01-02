@@ -19,7 +19,6 @@ import classNames from 'classnames';
 import dynamic from 'next/dynamic';
 import Router from 'next/router';
 
-import HeaderView from '@core_modules/checkout/pages/default/components/Header';
 import PromoModalItemView from '@core_modules/checkout/pages/default/components/PromoModalItem/view';
 import OrderCommentView from '@core_modules/checkout/pages/default/components/OrderComment/view';
 import ConfirmationView from '@core_modules/checkout/pages/default/components/Confirmation/view';
@@ -111,9 +110,6 @@ const Content = (props) => {
                     className="absolute left-4 !p-0"
                 />
                 <Typography variant="h1" className="!text-md tablet:!text-lg uppercase">Checkout</Typography>
-            </div>
-            <div className="xs:basis-full center hidden desktop:inline">
-                <HeaderView storeConfig={storeConfig} />
             </div>
             <Typography variant="h1" className="hidden">
                 {t('common:button:checkout')}

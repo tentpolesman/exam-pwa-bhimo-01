@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable semi-style */
-import Header from '@common_headermobile';
 import Typography from '@common_typography';
 import { debuging } from '@config';
 import { formatPrice } from '@helper_currency';
@@ -56,18 +55,6 @@ const DetailView = (props) => {
     // }
     // return (
     //     <Dialog open={open} onClose={close} fullWidth maxWidth="md">
-    //         <DialogTitle>
-    //             <Header
-    //                 LeftComponent={{
-    //                     onClick: close,
-    //                 }}
-    //                 pageConfig={{
-    //                     headerTitle: `Detail gift card code: ${code}`,
-    //                     headerBackIcon: 'close',
-    //                     header: 'relative',
-    //                 }}
-    //             />
-    //         </DialogTitle>
     //         <DialogContent>
     //             {detail()}
     //         </DialogContent>

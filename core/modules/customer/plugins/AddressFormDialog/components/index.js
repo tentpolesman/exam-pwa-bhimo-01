@@ -7,7 +7,6 @@ import Button from '@common_button';
 import Dialog from '@common_dialog';
 import Checkbox from '@common_forms/CheckBox';
 import TextField from '@common_forms/TextField';
-import Header from '@common_headermobile';
 import Typography from '@common_typography';
 
 import { BREAKPOINTS } from '@root/core/theme/vars';

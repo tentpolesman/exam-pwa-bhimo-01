@@ -4,7 +4,6 @@ import React from 'react';
 import Typography from '@common_typography';
 import Skeleton from '@common_skeleton';
 import Button from '@common_button';
-import Header from '@common_headermobile';
 import Router from 'next/router';
 import { modules } from '@config';
 
@@ -88,15 +87,6 @@ const ModalContent = ({
 }) => (
     <Dialog open={open}>
         <div className="modal-content-container">
-            <Header
-                LeftComponent={{
-                    onClick: setOpen,
-                }}
-                pageConfig={{
-                    headerTitle: t('common:title:category'),
-                    header: 'relative',
-                }}
-            />
             {
                 open && (<ListCategory setOpen={setOpen} t={t} {...other} />)
             }
