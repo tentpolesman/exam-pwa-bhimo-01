@@ -28,7 +28,7 @@ const ProfileForm = (props) => {
 
     return (
         <div
-            className={cx('desktop:w-[50%] w-full pt-5 mobile:max-desktop:px-4')}
+            className={cx('desktop:w-[50%] w-full pt-5')}
         >
             <form
                 onSubmit={formik.handleSubmit}

@@ -4,7 +4,7 @@ import Skeleton from '@common_skeleton';
 
 function SkeletonContent() {
     return (
-        <div className={cx('pt-5 mobile:max-desktop:px-4')}>
+        <div className={cx('pt-5')}>
             {Array(10).fill(0).map((item, i) => (
                 <div
                     key={i}

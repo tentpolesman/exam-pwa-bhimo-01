@@ -26,7 +26,7 @@ const NotificationData = (props) => {
                 {...props}
                 title={t('customer:menu:notification')}
             >
-                <div className={cx('pt-5 mobile:max-desktop:px-4')}>
+                <div className={cx('pt-5')}>
                     <Alert severity="error">
                         <Typography
                             variant="p-2a"
@@ -45,8 +45,8 @@ const NotificationData = (props) => {
                 {...props}
                 title={t('customer:menu:notification')}
             >
-                <div className={cx('pt-5 mobile:max-desktop:px-4')}>
-                    <Alert severity="warning" className={cx('pt-5 mobile:max-desktop:px-4')}>
+                <div className={cx('pt-5')}>
+                    <Alert severity="warning" className={cx('pt-5')}>
                         <Typography
                             variant="p-2a"
                             className={cx()}
@@ -67,7 +67,7 @@ const NotificationData = (props) => {
             activeMenu="/inboxnotification/notification"
             title={t('customer:menu:notification')}
         >
-            <div className={cx('pt-5 mobile:max-desktop:px-4')}>
+            <div className={cx('pt-5')}>
                 <Typography
                     variant="p-3"
                     className={cx('mb-5')}
