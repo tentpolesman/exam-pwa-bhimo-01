@@ -382,7 +382,7 @@ const MagezonSlider = (props) => {
     const { isMobile } = useMediaQuery();
 
     let slideHeight = !isMobile ? storeConfig.pwa?.magezon_slider_desktop_height : 310;
-    let slideWidth = storeConfig.pwa?.magezon_slider_desktop_width;
+    let slideWidth = !isMobile ? storeConfig.pwa?.magezon_slider_desktop_width : 678;
     slideHeight = typeof slideHeight === 'string' ? parseInt(slideHeight, 10) : slideHeight;
     slideWidth = typeof slideWidth === 'string' ? parseInt(slideWidth, 10) : slideWidth;
 
@@ -672,16 +672,20 @@ const MagezonSlider = (props) => {
                         transition: transform 0.5s;
                     }
                     .magezon-slider--dot-nav-item {
-                        ${owl_active_background_color ? `
+                        ${owl_active_background_color
+            ? `
                             background-color: ${owl_background_color} !important;
                             border: unset !important;
-                        ` : ''};
+                        `
+            : ''};
                     }
                     .magezon-slider--dot-nav-item-active {
-                        ${owl_active_background_color ? `
+                        ${owl_active_background_color
+            ? `
                             background-color: ${owl_active_background_color} !important;
                             border: unset !important;
-                        ` : ''};
+                        `
+            : ''};
                     }
                 `}
             </style>
