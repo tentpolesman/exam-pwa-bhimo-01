@@ -7,10 +7,9 @@ import Typography from '@common_typography';
 import Show from '@common_show';
 import Select from '@common_forms/Select';
 import Pagination from '@common_pagination';
-import Button from '@common_button';
 import Skeleton from '@common_skeleton';
 import SkeletonRewardPoint from '@core_modules/rewardpoint/pages/default/components/skeleton';
-import ExclamationTriangleIcon from '@heroicons/react/24/outline/ExclamationTriangleIcon';
+import Alert from '@common_alert';
 
 const RewardPointView = (props) => {
     const {
@@ -148,30 +147,9 @@ const RewardPointView = (props) => {
                                     </Show>
                                     <Show when={!hasTransaction}>
                                         <td colSpan={6}>
-                                            <Button
-                                                icon={<ExclamationTriangleIcon />}
-                                                iconProps={{
-                                                    className: cx('!text-yellow-500'),
-                                                }}
-                                                iconPosition="left"
-                                                className={cx(
-                                                    'mt-4',
-                                                    'w-full',
-                                                    'bg-yellow-50',
-                                                    'hover:bg-yellow-50',
-                                                    'focus:bg-yellow-50',
-                                                    'active:bg-yellow-50',
-                                                    'hover:shadow-none',
-                                                    'focus:shadow-none',
-                                                    'active:shadow-none',
-                                                    'cursor-auto',
-                                                    'hover:cursor-auto',
-                                                    'focus:cursor-auto',
-                                                    'active:cursor-auto',
-                                                )}
-                                            >
-                                                <Typography className={cx('!text-yellow-600')}>{t('rewardpoint:emptyMessage')}</Typography>
-                                            </Button>
+                                            <Alert severity="warning" withIcon>
+                                                {t('rewardpoint:emptyMessage')}
+                                            </Alert>
                                         </td>
                                     </Show>
                                 </Show>
