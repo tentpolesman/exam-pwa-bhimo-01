@@ -357,7 +357,6 @@ const ImageSlider = ({
                     }}
                     className={
                         cx(
-                            'z-50',
                             'image-slider-preview',
                             'relative desktop:px-[16px] tablet:px-[0px] mobile:px-[16px] rounded-[12px]',
                             detectAutoScreen && 'tablet:mr-auto tablet:ml-[0px] mobile:mx-auto',

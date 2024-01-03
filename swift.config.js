@@ -167,6 +167,7 @@ const features = {
         },
     },
     globalPromo: {
+        enable: true,
         key_cookies: 'global_promo_enable',
     },
 };

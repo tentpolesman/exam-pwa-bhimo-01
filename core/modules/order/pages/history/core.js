@@ -1,7 +1,7 @@
 import { debuging } from '@config';
 import { getOrder, reOrder as mutationReorder } from '@core_modules/order/services/graphql';
-import { getHost } from '@helpers/config';
 import { setCartId } from '@helper_cartid';
+import { getHost } from '@helpers/config';
 import Layout from '@layout';
 import CustomerLayout from '@layout_customer';
 import { useRouter } from 'next/router';
@@ -24,11 +24,11 @@ const HistoryOrder = (props) => {
 
     const [actionReorder] = mutationReorder();
 
-    const handleChangePage = (event, newPage) => {
+    const handleChangePage = (newPage) => {
         if (newPage > page) {
             setLoadMore(true);
         }
-        setPage(newPage);
+        setPage(newPage - 1);
     };
 
     const handleChangePageSize = (event) => {
@@ -43,7 +43,7 @@ const HistoryOrder = (props) => {
     });
 
     React.useEffect(() => {
-        if (!loading && data && data.customer.orders && data.customer.orders.items.length) {
+        if (!loading && data && data.customer && data.customer.orders && data.customer.orders.items.length) {
             setLoadMore(false);
         }
     }, [loading, data]);
@@ -91,7 +91,7 @@ const HistoryOrder = (props) => {
 
     let detail = [];
     let customerEmail;
-    if (!loading && data && data.customer.orders) {
+    if (!loading && data && data.customer && data.customer.orders) {
         // eslint-disable-next-line prefer-destructuring
         detail = data.customer.orders.items;
     }
@@ -126,10 +126,11 @@ const HistoryOrder = (props) => {
             <Content
                 {...props}
                 loadMore={loadMore}
-                data={data.customer.orders}
+                data={data && data.customer && data.customer.orders}
                 page={page}
                 pageSize={pageSize}
                 loading={loading}
+                error={error}
                 handleChangePage={handleChangePage}
                 handleChangePageSize={handleChangePageSize}
                 reOrder={reOrder}

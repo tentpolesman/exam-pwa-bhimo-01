@@ -6,4 +6,8 @@
     .prose {
         @apply text-md
     }
+
+    .prose > p > a {
+        @apply font-normal
+    }
 }

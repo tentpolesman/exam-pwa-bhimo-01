@@ -1,4 +1,3 @@
-// import Header from '@common_headermobile';
 import Dialog from '@common/Dialog';
 import Typography from '@common_typography';
 import { formatPrice } from '@helper_currency';

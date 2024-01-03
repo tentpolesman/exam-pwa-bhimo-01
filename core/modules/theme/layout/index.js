@@ -57,11 +57,11 @@ const font = localFont({
     variable: '--font-inter', // set the font css variable name, which we refer in tailwind.config.js
 });
 
-const Header = dynamic(() => import('@common_headerdesktop'), { ssr: true });
+const Header = dynamic(() => import('@common_header'), { ssr: true });
 const Toast = dynamic(() => import('@common_toast'), { ssr: false });
 const Backdrop = dynamic(() => import('@common_backdrop'), { ssr: false });
 const Dialog = dynamic(() => import('@common_dialog'), { ssr: false });
-const GlobalPromoMessage = dynamic(() => import('@core_modules/theme/components/globalPromo'), { ssr: false });
+const GlobalPromoMessage = dynamic(() => import('@core_modules/theme/components/globalPromo'), { ssr: true });
 // const BottomNavigation = dynamic(() => import('@common_bottomnavigation'), { ssr: false });
 // const HeaderMobile = dynamic(() => import('@common_headermobile'), { ssr: false });
 const ScrollToTop = dynamic(() => import('@common_scrolltotop'), { ssr: false });
@@ -76,7 +76,7 @@ const Footer = dynamic(() => import('@common_footer'), { ssr: true });
 
 const Layout = (props) => {
     const {
-        dataVesMenu,
+        dataMenu,
         pageConfig = {},
         children,
         app_cookies,
@@ -106,11 +106,6 @@ const Layout = (props) => {
     const { ogContent = {}, schemaOrg = null, headerDesktop = true, footer = true } = pageConfig;
     const router = useRouter();
     const appEnv = getAppEnv();
-    if (getCookies(features.globalPromo.key_cookies) === '' && storeConfig.global_promo?.enable) {
-        setCookies(features.globalPromo.key_cookies, true);
-    }
-    const enablePromo =
-        getCookies(features.globalPromo.key_cookies) !== '' ? !!getCookies(features.globalPromo.key_cookies) : storeConfig.global_promo?.enable;
 
     const [dialog, setDialog] = useState({
         open: false,
@@ -135,10 +130,10 @@ const Layout = (props) => {
         backdropLoader: false,
     });
 
-    const [restrictionCookies, setRestrictionCookies] = useState(false);
-    const [showGlobalPromo, setShowGlobalPromo] = React.useState(enablePromo);
+    const [, setRestrictionCookies] = useState(false);
     const [deviceWidth, setDeviceWidth] = React.useState(0);
     const [setCompareList] = createCompareList();
+    const showGlobalPromo = features.globalPromo.enable;
     const frontendCache = useReactiveVar(storeConfigVar);
 
     // get app name config
@@ -193,10 +188,6 @@ const Layout = (props) => {
     const handleRestrictionCookies = () => {
         setRestrictionCookies(true);
         setCookies('user_allowed_save_cookie', true);
-    };
-
-    const handleClosePromo = () => {
-        setShowGlobalPromo(false);
     };
 
     const allowHeaderCheckout = modules.checkout.checkoutOnly ? !modules.checkout.checkoutOnly : withLayoutHeader;
@@ -325,11 +316,7 @@ const Layout = (props) => {
 
     const generateClasses = () => {
         let classes = `${!isCms ? 'desktop:max-w-[1280px] desktop:px-10 tablet:max-w-[768px] tablet:px-6 mobile:px-4 my-0 mx-auto' : ''} ${font.variable} font-sans !font-pwa-default`;
-        if (showGlobalPromo) {
-            classes += ' mobile:max-tablet:mt-2 tablet:max-desktop:mt-[145px] desktop:mt-[196px]';
-        } else {
-            classes += ' mobile:max-tablet:mt-2 tablet:max-desktop:mt-[107px] desktop:mt-[158px]';
-        }
+
         if (pageConfig.bottomNav && storeConfig?.pwa?.mobile_navigation === 'bottom_navigation' && storeConfig?.pwa?.enabler_footer_mobile) {
             classes += ' mb-[60px]';
         } else {
@@ -339,7 +326,7 @@ const Layout = (props) => {
         if (storeConfig?.pwa?.mobile_navigation === 'burger_menu' && !isHomepage && !isPdp) {
             classes += ' mt-[55px]';
         } else {
-            classes += ' mt-0';
+            classes += ' xs:mt-6 xl:mt-10';
         }
 
         if (isCheckout) {
@@ -558,17 +545,14 @@ const Layout = (props) => {
             ) : null} */}
             {allowHeaderCheckout && (
                 <header ref={refHeader} className={cx(font.variable, 'font-sans', '!font-pwa-default')}>
-                    {typeof window !== 'undefined' && storeConfig.global_promo && storeConfig.global_promo.enable && (
-                        <GlobalPromoMessage
-                            t={t}
-                            storeConfig={storeConfig}
-                            showGlobalPromo={showGlobalPromo}
-                            handleClose={handleClosePromo}
-                            appName={appName}
-                            installMessage={installMessage}
-                            isMobile={deviceWidth < BREAKPOINTS.md}
-                        />
-                    )}
+                    <GlobalPromoMessage
+                        t={t}
+                        storeConfig={storeConfig}
+                        showGlobalPromo={showGlobalPromo}
+                        appName={appName}
+                        installMessage={installMessage}
+                        isMobile={deviceWidth < BREAKPOINTS.md}
+                    />
                     <Header
                         t={t}
                         pageConfig={pageConfig}
@@ -579,10 +563,9 @@ const Layout = (props) => {
                         enablePopupInstallation={showPopup}
                         appName={appName}
                         installMessage={installMessage}
-                        dataVesMenu={dataVesMenu}
+                        dataMenu={dataMenu}
                         isHomepage={isHomepage}
                         deviceType={deviceType}
-                        handleClosePromo={handleClosePromo}
                         i18n={i18n}
                     />
                 </header>

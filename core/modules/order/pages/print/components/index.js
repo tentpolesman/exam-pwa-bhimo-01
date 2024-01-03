@@ -69,7 +69,7 @@ const PrintOrder = (props) => {
                             </div>
                         </div>
                         <div className="mobile:basis-full flex flex-row mt-4 justify-end text-end">
-                            <div className="md:basis-4/12 sm:basis-4/12 flex flex-col gap-y-2">
+                            <div className="basis-4/12 flex flex-col gap-y-2">
                                 {(detail[0].detail[0].subtotal || detail[0].detail[0].subtotal_incl_tax) && (
                                     <div className="flex flex-row justify-between">
                                         <Typography className={cx('capitalize')}>Sub total</Typography>
@@ -145,10 +145,10 @@ const PrintOrder = (props) => {
                         <Typography className={cx('clear-margin-padding', 'text-xl')}>{t('order:orderInfo')}</Typography>
                         <hr className={cx('mt-2')} />
                     </div>
-                    <div className="flex flex-row">
+                    <div className="flex flex-row flex-wrap">
                         {Object.keys(detail[0].detail[0].shipping_address).length > 0 && (
                             // shipped to block
-                            <div className="mobile:basis-full col-xs-print-4 tablet:basis-4/12 flex flex-col">
+                            <div className="mobile:basis-6/12 tablet:basis-4/12 desktop:basis-3/12 col-xs-print-4 flex flex-col">
                                 <Typography className={cx('pt-6', 'uppercase', 'font-semibold')}>
                                     {detail[0].detail[0].pickup_store && detail[0].detail[0].pickup_store.is_using_pickup_store
                                         ? t('order:pickupAt')
@@ -173,7 +173,7 @@ const PrintOrder = (props) => {
                         )}
                         {detail[0].detail[0].pickup_store && detail[0].detail[0].pickup_store.is_using_pickup_store && (
                             // pickup store
-                            <div className="mobile:basis-full col-xs-print-3 sm:basis-3/12 md:basis-3/12 flex flex-col">
+                            <div className="mobile:basis-6/12 tablet:basis-4/12 desktop:basis-3/12 col-xs-print-3 flex flex-col">
                                 <Typography className={cx('pt-6', 'uppercase', 'font-semibold')}>{t('order:pickupBy')}</Typography>
                                 <Typography className="clear-margin-padding">
                                     {detail[0].detail[0].pickup_store.pickup_person.name}
@@ -191,7 +191,7 @@ const PrintOrder = (props) => {
                         )}
                         {/* shipping method */}
                         {Object.keys(detail[0].detail[0].shipping_address).length > 0 && (
-                            <div className="mobile:basis-3/12 col-xs-print-3 flex flex-col">
+                            <div className="mobile:basis-6/12 tablet:basis-4/12 desktop:basis-3/12 col-xs-print-3 flex flex-col">
                                 <Typography className={cx('pt-6', 'uppercase', 'font-semibold')}>{t('order:shippingMethod')}</Typography>
                                 <Typography className="clear-margin-padding">
                                     {detail[0].detail[0].shipping_methods.shipping_description || ''}
@@ -199,7 +199,7 @@ const PrintOrder = (props) => {
                             </div>
                         )}
                         {/* billing address */}
-                        <div className="mobile:basis-full col-xs-print-3 sm:basis-3/12 md:basis-3/12 flex flex-col">
+                        <div className="mobile:basis-6/12 tablet:basis-4/12 desktop:basis-3/12 col-xs-print-3 flex flex-col">
                             <Typography className={cx('pt-6', 'uppercase', 'font-semibold')}>{t('order:billingAddress')}</Typography>
                             <Typography className="clear-margin-padding">
                                 {detail[0].detail[0].billing_address.firstname || ''} {detail[0].detail[0].billing_address.lastname || ''}
@@ -217,7 +217,7 @@ const PrintOrder = (props) => {
                                 {detail[0].detail[0].billing_address.postcode || ''}
                             </Typography>
                         </div>
-                        <div className="mobile:basis-full col-xs-print-2 sm:basis-2/12 md:basis-2/12 flex flex-col">
+                        <div className="mobile:basis-6/12 tablet:basis-4/12 desktop:basis-3/12 col-xs-print-2 flex flex-col">
                             <Typography className={cx('pt-6', 'uppercase', 'font-semibold', 'pb-2')}>{t('order:paymentMethod')}</Typography>
                             {Object.keys(detail[0].detail[0].payment.payment_additional_info).map((item) => {
                                 if (
