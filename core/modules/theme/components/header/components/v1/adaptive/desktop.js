@@ -19,8 +19,8 @@ const Menu = dynamic(() => import('@core_modules/theme/components/header/compone
 const ProductCompareIcon = dynamic(() => import('@core_modules/catalog/plugins/ProductCompare'), { ssr: true });
 const ShoppingBagIcon = dynamic(() => import('@plugin_shoppingbag'), { ssr: true });
 const NotificationBell = dynamic(() => import('@plugin_notificationbell'), { ssr: true });
-const SwitcherCurrency = dynamic(() => import('@common_currency'), { ssr: true });
-const SwitcherLanguage = dynamic(() => import('@common_language'), { ssr: true });
+const SwitcherCurrency = dynamic(() => import('@common_currency'), { ssr: false });
+const SwitcherLanguage = dynamic(() => import('@common_language'), { ssr: false });
 const UserInfo = dynamic(() => import('@core_modules/theme/components/header/components/v1/adaptive/plugin/userinfo'), { ssr: false });
 const InstallDesktop = dynamic(() => import('@core_modules/theme/components/customPWAInstall/desktop'), { ssr: true });
 
