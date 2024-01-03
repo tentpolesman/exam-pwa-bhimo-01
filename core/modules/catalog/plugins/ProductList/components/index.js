@@ -259,7 +259,7 @@ const ViewProductList = (props) => {
                                     catalogList
                                     price={price}
                                     loadPrice={loadPrice}
-                                    preloadImage={page === 1}
+                                    preloadImage={false}
                                     {...other}
                                     {...item}
                                 />
