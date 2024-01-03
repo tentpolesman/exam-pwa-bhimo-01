@@ -1,3 +1,4 @@
+/* eslint-disable operator-linebreak */
 /* eslint-disable indent */
 /* eslint-disable object-curly-newline */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
@@ -94,37 +95,64 @@ const MagezonInstagramFeedView = (props) => {
                         {title}
                     </Typography>
                 </div>
-                <div className="flex flex-wrap">
+                <div className="flex flex-wrap gap-2">
                     {onclick && onclick === 'magnific' ? (
                         <SimpleReactLightbox>
                             <SRLWrapper options={lightboxSetting}>
-                                <div className="flex flex-wrap">
-                                    {data?.length > 0 && data.slice(0, max_items).map((item, key) => (
-                                        <div
-                                            key={key}
-                                            className={cx('flex-shrink-0', {
-                                                [getFlexBasisTailwind(item_xs !== 5 ? 12 / item_xs : item_xs, 'xs')]: item_xs,
-                                                [getFlexBasisTailwind(item_sm !== 5 ? 12 / item_sm : item_sm, 'sm')]: item_sm,
-                                                [getFlexBasisTailwind(item_md !== 5 ? 12 / item_md : item_md, 'md')]: item_md,
-                                                [getFlexBasisTailwind(item_xl !== 5 ? 12 / item_xl : item_xl, 'lg')]: item_lg || item_xl,
-                                            })}
-                                        >
-                                            <img src={item.media_url} alt={item.caption || ''} />
-                                        </div>
-                                    ))}
+                                <div className="flex flex-wrap gap-2">
+                                    {data?.length > 0 &&
+                                        data.slice(0, max_items).map((item, key) => (
+                                            <div
+                                                key={key}
+                                                className={cx(
+                                                    'flex-shrink-0',
+                                                    'min-w-[120px]',
+                                                    'max-w-[120px]',
+                                                    'min-h-[120px]',
+                                                    'max-h-[120px]',
+                                                    'overflow-hidden',
+                                                    'relative',
+                                                    'm-0',
+                                                    {
+                                                        [getFlexBasisTailwind(item_xs !== 5 ? 12 / item_xs : item_xs, 'xs')]: item_xs,
+                                                        [getFlexBasisTailwind(item_sm !== 5 ? 12 / item_sm : item_sm, 'sm')]: item_sm,
+                                                        [getFlexBasisTailwind(item_md !== 5 ? 12 / item_md : item_md, 'md')]: item_md,
+                                                        [getFlexBasisTailwind(item_xl !== 5 ? 12 / item_xl : item_xl, 'lg')]: item_lg || item_xl,
+                                                    },
+                                                )}
+                                            >
+                                                <img
+                                                    src={item.media_url}
+                                                    alt={item.caption || ''}
+                                                    className={cx('min-h-full', 'min-w-full', 'object-cover')}
+                                                />
+                                            </div>
+                                        ))}
                                 </div>
                             </SRLWrapper>
                         </SimpleReactLightbox>
                     ) : (
-                        data?.length > 0 && data.slice(0, max_items).map((item, key) => (
+                        data?.length > 0 &&
+                        data.slice(0, max_items).map((item, key) => (
                             <div
                                 key={key}
-                                className={cx('magezon-instagram-item', 'flex-shrink-0', {
-                                    [getFlexBasisTailwind(item_xs !== 5 ? 12 / item_xs : item_xs, 'xs')]: item_xs,
-                                    [getFlexBasisTailwind(item_sm !== 5 ? 12 / item_sm : item_sm, 'sm')]: item_sm,
-                                    [getFlexBasisTailwind(item_md !== 5 ? 12 / item_md : item_md, 'md')]: item_md,
-                                    [getFlexBasisTailwind(item_xl !== 5 ? 12 / item_xl : item_xl, 'lg')]: item_lg || item_xl,
-                                })}
+                                className={cx(
+                                    'magezon-instagram-item',
+                                    'flex-shrink-0',
+                                    'min-w-[120px]',
+                                    'max-w-[120px]',
+                                    'min-h-[120px]',
+                                    'max-h-[120px]',
+                                    'overflow-hidden',
+                                    'relative',
+                                    'm-0',
+                                    {
+                                        [getFlexBasisTailwind(item_xs !== 5 ? 12 / item_xs : item_xs, 'xs')]: item_xs,
+                                        [getFlexBasisTailwind(item_sm !== 5 ? 12 / item_sm : item_sm, 'sm')]: item_sm,
+                                        [getFlexBasisTailwind(item_md !== 5 ? 12 / item_md : item_md, 'md')]: item_md,
+                                        [getFlexBasisTailwind(item_xl !== 5 ? 12 / item_xl : item_xl, 'lg')]: item_lg || item_xl,
+                                    },
+                                )}
                             >
                                 {onclick && onclick === 'photo' ? (
                                     <Link href={item.media_url} legacyBehavior>
@@ -133,7 +161,12 @@ const MagezonInstagramFeedView = (props) => {
                                         </a>
                                     </Link>
                                 ) : (
-                                    <img src={item.media_url} alt={item.caption || ''} onClick={() => handleClick(key)} />
+                                    <img
+                                        src={item.media_url}
+                                        alt={item.caption || ''}
+                                        onClick={() => handleClick(key)}
+                                        className={cx('min-h-full', 'min-w-full', 'object-cover')}
+                                    />
                                 )}
                             </div>
                         ))

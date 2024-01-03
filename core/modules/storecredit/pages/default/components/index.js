@@ -6,10 +6,9 @@ import Typography from '@common_typography';
 import Show from '@common_show';
 import Select from '@common_forms/Select';
 import Pagination from '@common_pagination';
-import Button from '@common_button';
 import Skeleton from '@common_skeleton';
 import SkeletonStoreCredit from '@core_modules/storecredit/pages/default/components/skeleton';
-import ExclamationTriangleIcon from '@heroicons/react/24/outline/ExclamationTriangleIcon';
+import Alert from '@common_alert';
 
 const StoreCreditPage = (props) => {
     const {
@@ -106,26 +105,9 @@ const StoreCreditPage = (props) => {
                                     </Show>
                                     <Show when={!hasTransaction}>
                                         <td colSpan={5}>
-                                            <Button
-                                                icon={<ExclamationTriangleIcon />}
-                                                iconPosition="left"
-                                                className={cx(
-                                                    'w-full',
-                                                    'bg-yellow-500',
-                                                    'hover:bg-yellow-500',
-                                                    'focus:bg-yellow-500',
-                                                    'active:bg-yellow-500',
-                                                    'hover:shadow-none',
-                                                    'focus:shadow-none',
-                                                    'active:shadow-none',
-                                                    'cursor-auto',
-                                                    'hover:cursor-auto',
-                                                    'focus:cursor-auto',
-                                                    'active:cursor-auto',
-                                                )}
-                                            >
-                                                <Typography className={cx('!text-neutral-white')}>{t('storecredit:emptyMessage')}</Typography>
-                                            </Button>
+                                            <Alert severity="warning" withIcon>
+                                                {t('storecredit:emptyMessage')}
+                                            </Alert>
                                         </td>
                                     </Show>
                                 </Show>
@@ -138,11 +120,7 @@ const StoreCreditPage = (props) => {
                                 <Skeleton width={50} height={25} />
                             </Show>
                             <Show when={!loading}>
-                                <Typography className={cx('font-normal', 'leading-2lg')}>
-                                    {`${totalCount ?? 0} ${t(
-                                        'common:label:items',
-                                    )}`}
-                                </Typography>
+                                <Typography className={cx('font-normal', 'leading-2lg')}>{`${totalCount ?? 0} ${t('common:label:data')}`}</Typography>
                             </Show>
                         </div>
                         <div className={cx('flex', 'flex-row')}>

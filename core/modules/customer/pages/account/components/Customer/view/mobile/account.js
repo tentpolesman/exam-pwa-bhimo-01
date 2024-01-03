@@ -6,7 +6,7 @@ import Button from '@common_button';
 import Typography from '@common_typography';
 
 const AddressView = ({ customer, t }) => (
-    <div className={cx('mobile:max-tablet:px-4')}>
+    <div className={cx('')}>
         <Typography variant="h3" className={cx('desktop:hidden', 'pl-0', 'pb-[18px]', 'border-b-[1.5px]', 'border-neutral-200')}>
             {t('customer:menu:accountInformation')}
         </Typography>

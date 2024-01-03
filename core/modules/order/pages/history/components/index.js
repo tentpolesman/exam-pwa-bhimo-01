@@ -8,33 +8,25 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable eqeqeq */
 /* eslint-disable max-len */
-
 import Link from 'next/link';
-
 import { useReactiveVar } from '@apollo/client';
-
 import { currencyVar } from '@root/core/services/graphql/cache';
-
 import cx from 'classnames';
-
 import Layout from '@layout_customer';
-
 import { formatPrice } from '@helper_currency';
 import formatDate from '@helper_date';
-
 import Badge from '@common_badge';
 import Button from '@common_button';
 import Select from '@common_forms/Select';
 import Pagination from '@common_pagination';
 import Typography from '@common_typography';
-
 import MobileTabletActionMenu from '@core_modules/order/pages/history/components/plugins/MobileTabletActionMenu';
-
 import ExclamationTriangleIcon from '@heroicons/react/24/outline/ExclamationTriangleIcon';
+import Alert from '@common_alert';
 
 const DefaultView = (props) => {
     const {
-        data, t, page, storeConfig, reOrder, pageSize, handleChangePage, handleChangePageSize, loadMore,
+        data, t, storeConfig, reOrder, pageSize, handleChangePage, handleChangePageSize, error,
     } = props;
 
     // cache currency
@@ -83,7 +75,7 @@ const DefaultView = (props) => {
 
     return (
         <Layout t={t}>
-            <div className={cx('pt-5', 'mobile:max-desktop:px-4')}>
+            <div className={cx('pt-5')}>
                 <div className={cx('relative', 'overflow-x-auto', 'rounded-lg')}>
                     <table className={cx('w-full', 'text-md', 'border-[1px]', 'border-neutral-100')}>
                         <thead>
@@ -97,88 +89,76 @@ const DefaultView = (props) => {
                             </tr>
                         </thead>
                         <tbody>
-                            {data && data.items && data.items.length > 0 ? (
+                            {error ? (
+                                <Alert severity="warning" withIcon>
+                                    {t('customer:order:emptyMessage')}
+                                </Alert>
+                            ) : (
                                 <>
-                                    {data.items.map((val, index) => (
-                                        <tr className={cx('even:bg-white', 'odd:bg-neutral-50')} key={index}>
-                                            <td className={cx('text-neutral-700', 'text-md', 'font-normal', 'leading-2lg', 'p-4')}>
-                                                {val.order_number}
-                                            </td>
-                                            <td className={cx('text-neutral-700', 'text-md', 'font-normal', 'leading-2lg', 'p-4')}>
-                                                {formatDate(val.created_at, 'DD/MM/YYYY')}
-                                            </td>
-                                            <td className={cx('text-neutral-700', 'text-md', 'font-normal', 'leading-2lg', 'p-4')}>
-                                                {val.detail[0].shipping_address.firstname || val.detail[0].billing_address.firstname}{' '}
-                                                {val.detail[0].shipping_address.lastname || val.detail[0].billing_address.lastname}
-                                            </td>
-                                            <td className={cx('text-neutral-700', 'text-md', 'font-normal', 'leading-2lg', 'p-4')}>
-                                                {formatPrice(val.grand_total, storeConfig.base_currency_code || 'IDR', currencyCache)}
-                                            </td>
-                                            <td>{generateBadge(val.status, val.status_label)}</td>
-                                            <td>
-                                                <div className={cx('mobile:max-desktop:hidden')}>
-                                                    <Link
-                                                        href={`/sales/order/view/order_id/${val.order_number}`}
-                                                        className={cx(
-                                                            'text-md',
-                                                            'px-4',
-                                                            'desktop:border-r-[1px]',
-                                                            'desktop:border-neutral-200',
-                                                            'hover:text-primary-700',
-                                                        )}
-                                                    >
-                                                        View
-                                                    </Link>
-                                                    <button type="button" onClick={() => reOrder(val.order_number)}>
-                                                        <a className={cx('text-md', 'px-4', 'hover:text-primary-700')}>Reorder</a>
-                                                    </button>
-                                                </div>
-                                                <div className={cx('desktop:hidden')}>
-                                                    <div
-                                                        className={cx(
-                                                            'mobile:max-desktop:flex',
-                                                            'mobile:max-desktop:flex-row',
-                                                            'mobile:max-desktop:content-center',
-                                                            'mobile:max-desktop:justify-center',
-                                                            'mobile:max-desktop:items-center',
-                                                            'tablet:max-desktop:py-6',
-                                                        )}
-                                                    >
-                                                        <MobileTabletActionMenu t={t} orderNumber={val.order_number} reOrder={reOrder} />
-                                                    </div>
-                                                </div>
+                                    {data && data.items && data.items.length > 0 ? (
+                                        <>
+                                            {data.items.map((val, index) => (
+                                                <tr className={cx('even:bg-white', 'odd:bg-neutral-50')} key={index}>
+                                                    <td className={cx('text-neutral-700', 'text-md', 'font-normal', 'leading-2lg', 'p-4')}>
+                                                        {val.order_number}
+                                                    </td>
+                                                    <td className={cx('text-neutral-700', 'text-md', 'font-normal', 'leading-2lg', 'p-4')}>
+                                                        {formatDate(val.created_at, 'DD/MM/YYYY')}
+                                                    </td>
+                                                    <td className={cx('text-neutral-700', 'text-md', 'font-normal', 'leading-2lg', 'p-4')}>
+                                                        {val.detail[0].shipping_address.firstname || val.detail[0].billing_address.firstname}{' '}
+                                                        {val.detail[0].shipping_address.lastname || val.detail[0].billing_address.lastname}
+                                                    </td>
+                                                    <td className={cx('text-neutral-700', 'text-md', 'font-normal', 'leading-2lg', 'p-4')}>
+                                                        {formatPrice(val.grand_total, storeConfig.base_currency_code || 'IDR', currencyCache)}
+                                                    </td>
+                                                    <td>{generateBadge(val.status, val.status_label)}</td>
+                                                    <td>
+                                                        <div className={cx('mobile:max-desktop:hidden')}>
+                                                            <Link
+                                                                href={`/sales/order/view/order_id/${val.order_number}`}
+                                                                className={cx(
+                                                                    'text-md',
+                                                                    'px-4',
+                                                                    'desktop:border-r-[1px]',
+                                                                    'desktop:border-neutral-200',
+                                                                    'hover:text-primary-700',
+                                                                )}
+                                                            >
+                                                                View
+                                                            </Link>
+                                                            <button type="button" onClick={() => reOrder(val.order_number)}>
+                                                                <a className={cx('text-md', 'px-4', 'hover:text-primary-700')}>Reorder</a>
+                                                            </button>
+                                                        </div>
+                                                        <div className={cx('desktop:hidden')}>
+                                                            <div
+                                                                className={cx(
+                                                                    'mobile:max-desktop:flex',
+                                                                    'mobile:max-desktop:flex-row',
+                                                                    'mobile:max-desktop:content-center',
+                                                                    'mobile:max-desktop:justify-center',
+                                                                    'mobile:max-desktop:items-center',
+                                                                    'tablet:max-desktop:py-6',
+                                                                )}
+                                                            >
+                                                                <MobileTabletActionMenu t={t} orderNumber={val.order_number} reOrder={reOrder} />
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </>
+                                    ) : (
+                                        <tr>
+                                            <td colSpan={6}>
+                                                <Alert severity="warning" withIcon>
+                                                    {t('customer:order:emptyMessage')}
+                                                </Alert>
                                             </td>
                                         </tr>
-                                    ))}
+                                    )}
                                 </>
-                            ) : (
-                                <tr>
-                                    <td colSpan={6}>
-                                        <Button
-                                            icon={<ExclamationTriangleIcon />}
-                                            iconProps={{
-                                                className: cx('!text-yellow-500'),
-                                            }}
-                                            iconPosition="left"
-                                            className={cx(
-                                                'w-full',
-                                                'bg-yellow-50',
-                                                'hover:bg-yellow-50',
-                                                'focus:bg-yellow-50',
-                                                'active:bg-yellow-50',
-                                                'hover:shadow-none',
-                                                'focus:shadow-none',
-                                                'active:shadow-none',
-                                                'cursor-auto',
-                                                'hover:cursor-auto',
-                                                'focus:cursor-auto',
-                                                'active:cursor-auto',
-                                            )}
-                                        >
-                                            <Typography className={cx('!text-yellow-600')}>{t('customer:order:emptyMessage')}</Typography>
-                                        </Button>
-                                    </td>
-                                </tr>
                             )}
                         </tbody>
                     </table>

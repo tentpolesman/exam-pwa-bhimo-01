@@ -4,10 +4,11 @@ import WidgetRenderer from '@core_modules/cms/components/cms-renderer/WidgetRend
 
 const MagezonText = (props) => {
     const { content, ...other } = props;
+    const underlinedLink = props?.el_class === 'prose-a:no-underline';
 
     return (
         <div className="mgz-text">
-            <WidgetRenderer content={content} {...other} />
+            <WidgetRenderer content={content} underlinedLink={underlinedLink} {...other} />
             <style jsx>
                 {`
                     .mgz-text {

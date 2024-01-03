@@ -9,6 +9,7 @@ import ArrowPathIcon from '@heroicons/react/24/outline/ArrowPathIcon';
 import CheckCircleIcon from '@heroicons/react/24/outline/CheckCircleIcon';
 import QueueListIcon from '@heroicons/react/24/outline/QueueListIcon';
 import TruckIcon from '@heroicons/react/24/outline/TruckIcon';
+import XMarkIcon from '@heroicons/react/24/outline/XMarkIcon';
 
 const OrderStatusIcon = (props) => {
     const { t } = props;
@@ -34,6 +35,8 @@ const OrderStatusIcon = (props) => {
                 return <TruckIcon className={className} />;
             case 'complete':
                 return <CheckCircleIcon className={className} />;
+            case 'canceled':
+                return <XMarkIcon className={className} />;
             default:
                 return <QueueListIcon className={className} />;
         }
@@ -42,7 +45,7 @@ const OrderStatusIcon = (props) => {
     return (
         <>
             <div className={cx('w-full', 'min-w-[70px]')}>
-                <div class="flex flex-row items-start p-6 w-full">
+                <div class="flex flex-row items-start mobile:max-tablet:px-0 mobile:max-tablet:py-4 p-6 w-full">
                     {steps.map((step, index) => {
                         if (index === 0) {
                             return (
@@ -87,7 +90,9 @@ const OrderStatusIcon = (props) => {
                                             </div>
                                         </div>
                                         <div className={cx('text-center')}>
-                                            <Typography className={cx('!mt-1', 'mobile:max-tablet:text-sm')}>{generateLabel(step)}</Typography>
+                                            <Typography className={cx('!mt-1', 'mobile:max-tablet:text-xs', 'mobile:max-tablet:leading-sm')}>
+                                                {generateLabel(step)}
+                                            </Typography>
                                         </div>
                                     </div>
                                 </div>
@@ -99,6 +104,8 @@ const OrderStatusIcon = (props) => {
                                     className={cx(
                                         'mobile:max-tablet:top-5',
                                         'tablet:top-8',
+                                        'mobile:max-tablet:left-[calc(-50%)]',
+                                        'mobile:max-tablet:right-[calc(50%)]',
                                         'left-[calc(-50%+20px)]',
                                         'right-[calc(50%+20px)]',
                                         'absolute',
@@ -145,7 +152,9 @@ const OrderStatusIcon = (props) => {
                                         </div>
                                     </div>
                                     <div className={cx('text-center')}>
-                                        <Typography className={cx('!mt-1', 'mobile:max-tablet:text-sm')}>{generateLabel(step)}</Typography>
+                                        <Typography className={cx('!mt-1', 'mobile:max-tablet:text-xs', 'mobile:max-tablet:leading-sm')}>
+                                            {generateLabel(step)}
+                                        </Typography>
                                     </div>
                                 </div>
                             </div>

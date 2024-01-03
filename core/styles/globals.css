@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    .prose {
+        @apply text-md
+    }
+
+    .prose > p > a {
+        @apply font-normal
+    }
+}

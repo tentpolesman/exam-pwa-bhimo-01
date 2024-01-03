@@ -14,6 +14,9 @@ import { features } from '@config';
 import OtpView from '@plugin_otpfield';
 import Show from '@common_show';
 import cx from 'classnames';
+import dynamic from 'next/dynamic';
+
+const Breadcrumb = dynamic(() => import('@common_breadcrumb'), { ssr: false });
 
 const Login = (props) => {
     const {
@@ -38,6 +41,7 @@ const Login = (props) => {
 
     const [activeTabs, setActiveTabs] = useState(0);
     const tabsData = [{ title: 'Email' }, { title: t('login:Phone') }];
+    const breadcrumbsData = [{ label: t('login:login'), link: '#', active: true }];
     const signInOptions = [];
     if (features.firebase.config.apiKey !== '' && firebase && firebase.auth && socialLoginMethodData && socialLoginMethodData.length > 0) {
         for (let idx = 0; idx < socialLoginMethodData.length; idx += 1) {
@@ -81,8 +85,18 @@ const Login = (props) => {
             setFirebaseLoaded(true);
         }
     }, [firebaseLoaded]);
+
+    const checkIsFieldError = (form, name = '') => !!(form.touched[name] && form.errors[name]);
+    const fieldErrorMessage = (form, name = '') => (form.touched[name] && form.errors[name]) || null;
+
     return (
-        <div>
+        <div className={cx('login-container')}>
+            <Breadcrumb
+                withHome
+                iconHomeOnly
+                className={cx('mb-[40px]', 'desktop:mt-[10px]', 'tablet:mt-[0px]', 'mobile:mt-[16px] mobile:ml-[16px]')}
+                data={breadcrumbsData}
+            />
             <Typography className="flex justify-center mb-10 mt-14 tablet:mt-0" variant="h1">
                 {t('login:login')}
             </Typography>
@@ -128,9 +142,9 @@ const Login = (props) => {
                                         value={formikPhoneEmail.values.username}
                                         onChange={formikPhoneEmail.handleChange}
                                         hintProps={{
-                                            displayHintText: !!formikPhoneEmail.errors.username,
-                                            hintType: 'error',
-                                            hintText: formikPhoneEmail.errors.username || null,
+                                            displayHintText: checkIsFieldError(formikPhoneEmail, 'username'),
+                                            hintType: checkIsFieldError(formikPhoneEmail, 'username') ? 'error' : '',
+                                            hintText: fieldErrorMessage(formikPhoneEmail, 'username'),
                                             className: 'mt-2',
                                         }}
                                         absolute={false}
@@ -144,8 +158,8 @@ const Login = (props) => {
                                             classLabel="capitalize font-medium"
                                             value={formikPhoneEmail.values.password}
                                             onChange={(e) => formikPhoneEmail.setFieldValue('password', e.target.value)}
-                                            error={!!formikPhoneEmail.errors.password}
-                                            errorMessage={formikPhoneEmail.errors.password || null}
+                                            error={checkIsFieldError(formikPhoneEmail, 'password')}
+                                            errorMessage={fieldErrorMessage(formikPhoneEmail, 'password')}
                                             showVisible
                                         />
                                         <Link href="/customer/account/forgotpassword">
@@ -160,11 +174,11 @@ const Login = (props) => {
                                     <Show when={enableRecaptcha}>
                                         <div className="w-full">
                                             <ReCAPTCHA sitekey={sitekey} onChange={handleChangeCaptcha} ref={recaptchaRef} />
-                                            <Show when={formikPhoneEmail.errors.captcha}>
+                                            <Show when={checkIsFieldError(formikPhoneEmail, 'captcha')}>
                                                 <Typography
                                                     className={cx('text-md font-normal leading-lg tracking-normal text-pwa-font my-2 !text-red')}
                                                 >
-                                                    {formikPhoneEmail.errors.captcha}
+                                                    {fieldErrorMessage(formikPhoneEmail, 'captcha')}
                                                 </Typography>
                                             </Show>
                                         </div>
@@ -185,9 +199,9 @@ const Login = (props) => {
                                         value={formik.values.username}
                                         onChange={formik.handleChange}
                                         hintProps={{
-                                            displayHintText: !!formik.errors.username,
-                                            hintType: 'error',
-                                            hintText: formik.errors.username || null,
+                                            displayHintText: checkIsFieldError(formik, 'username'),
+                                            hintType: checkIsFieldError(formik, 'username') ? 'error' : '',
+                                            hintText: fieldErrorMessage(formik, 'username'),
                                             className: 'mt-2',
                                         }}
                                         absolute={false}
@@ -201,8 +215,8 @@ const Login = (props) => {
                                             classLabel="capitalize font-medium"
                                             value={formik.values.password}
                                             onChange={(e) => formik.setFieldValue('password', e.target.value)}
-                                            error={!!formik.errors.password}
-                                            errorMessage={formik.errors.password || null}
+                                            error={checkIsFieldError(formik, 'password')}
+                                            errorMessage={fieldErrorMessage(formik, 'password')}
                                             showVisible
                                         />
                                         <Link href="/customer/account/forgotpassword">
@@ -217,11 +231,11 @@ const Login = (props) => {
                                     <Show when={enableRecaptcha}>
                                         <div className="w-full">
                                             <ReCAPTCHA sitekey={sitekey} onChange={handleChangeCaptcha} ref={recaptchaRef} />
-                                            <Show when={formik.errors.captcha}>
+                                            <Show when={checkIsFieldError(formik, 'captcha')}>
                                                 <Typography
                                                     className={cx('text-md font-normal leading-lg tracking-normal text-pwa-font my-2 !text-red')}
                                                 >
-                                                    {formik.errors.captcha}
+                                                    {fieldErrorMessage(formik, 'captcha')}
                                                 </Typography>
                                             </Show>
                                         </div>
@@ -242,17 +256,17 @@ const Login = (props) => {
                                     label={t('login:phoneNumber')}
                                     value={formikOtp.values.username}
                                     onChange={(e) => formikOtp.setFieldValue('username', e)}
-                                    error={!!formikOtp.errors.username}
-                                    errorMessage={formikOtp.errors.username || null}
+                                    error={checkIsFieldError(formikOtp, 'username')}
+                                    errorMessage={fieldErrorMessage(formikOtp, 'username')}
                                     showVisible
                                 />
 
                                 <Show when={enableRecaptcha}>
                                     <div className="w-full">
                                         <ReCAPTCHA sitekey={sitekey} onChange={handleChangeCaptcha} ref={recaptchaRef} />
-                                        <Show when={formikOtp.errors.captcha}>
+                                        <Show when={checkIsFieldError(formikOtp, 'captcha')}>
                                             <Typography className={cx('text-md font-normal leading-lg tracking-normal text-pwa-font my-2 !text-red')}>
-                                                {formikOtp.errors.captcha}
+                                                {fieldErrorMessage(formikOtp, 'captcha')}
                                             </Typography>
                                         </Show>
                                     </div>

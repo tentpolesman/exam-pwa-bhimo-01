@@ -1,23 +1,18 @@
 /* eslint-disable no-unused-vars */
-import Skeleton from '@common_skeleton';
-import cx from 'classnames';
 import React from 'react';
-
-import { features } from '@config';
+import Skeleton from '@common_skeleton';
 import GlobalPromoCarousel from '@core_modules/cms/components/cms-renderer/global-promo-carousel';
+import cx from 'classnames';
+import { features } from '@config';
 import { getCmsBlocks } from '@core_modules/theme/services/graphql';
 
 const GlobalPromoMessage = (props) => {
     const {
         // prettier-ignore
         storeConfig,
-        showGlobalPromo,
-        isMobile = false,
         ...other
     } = props;
     const { key_cookies } = features.globalPromo;
-
-    const [isShown, setIsShown] = React.useState(showGlobalPromo);
 
     const { data, loading } = getCmsBlocks({
         identifiers: 'global_promo_message',
@@ -31,7 +26,7 @@ const GlobalPromoMessage = (props) => {
         );
     }
 
-    if (!loading && data && data.cmsBlocks && data.cmsBlocks.items.length > 0 && data.cmsBlocks.items[0].content && isShown) {
+    if (!loading && data && data.cmsBlocks && data.cmsBlocks.items.length > 0 && data.cmsBlocks.items[0].content) {
         return (
             <>
                 <div
@@ -52,10 +47,7 @@ const GlobalPromoMessage = (props) => {
                         className={cx('relative', 'flex', 'justify-center', 'tablet:max-w-screen-tablet', 'desktop:max-w-screen-desktop', 'mx-auto')}
                         content={data.cmsBlocks.items[0].content}
                         key_cookies={key_cookies}
-                        backgroundColor={storeConfig.global_promo.background_color}
-                        textColor={storeConfig.global_promo.text_color}
                         storeConfig={storeConfig}
-                        setIsShown={setIsShown}
                         {...other}
                     />
                 </div>

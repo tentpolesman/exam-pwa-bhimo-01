@@ -12,7 +12,7 @@ import { getAppEnv } from '@root/core/helpers/env';
 import { availableRoute } from './routeServer';
 
 export const routeNoAuth = (path) => {
-    const route = ['/customer/account/login', '/customer/account/register', '/customer/account/forgotpassword'];
+    const route = ['/customer/account/login', '/customer/account/create', '/customer/account/forgotpassword'];
 
     const found = route.find((val) => val === path);
 
@@ -30,6 +30,13 @@ export const routeWithAuth = (path) => {
         '/inboxnotification/notification',
         '/customer/newsletter',
         '/rma/customer',
+        '/sales/order/view/order_id/[id]',
+        '/sales/order/print/order_id/[id]',
+        '/wishlist',
+        '/sales/downloadable/history',
+        '/review/customer',
+        '/customer/newsletter',
+        '/customer/account',
     ];
 
     const found = route.find((val) => val === path);
