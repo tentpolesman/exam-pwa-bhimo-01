@@ -12,7 +12,7 @@ import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import React, { useRef } from 'react';
 
-const MenuChildren = dynamic(() => import('@common_header/components/v1/mcategoryChildren'), { ssr: false });
+const MenuChildren = dynamic(() => import('@common_header/components/v1/mcategoryChildren'), { ssr: true });
 
 const Menu = (props) => {
     const { data, storeConfig } = props;
@@ -308,7 +308,7 @@ const Menu = (props) => {
                         transition: all 0s ease 0s;
                         visibility: hidden;
                         margin-left: 0%;
-                        margin-top: 14px
+                        margin-top: 14px;
                     }
                     li:hover > .mega-menu {
                         opacity: 1;

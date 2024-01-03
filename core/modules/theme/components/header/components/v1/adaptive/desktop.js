@@ -14,13 +14,13 @@ import config from '@config';
 
 import { BREAKPOINTS } from '@root/core/theme/vars';
 
-const Autocomplete = dynamic(() => import('@core_modules/theme/components/header/components/autocomplete'), { ssr: false });
+const Autocomplete = dynamic(() => import('@core_modules/theme/components/header/components/autocomplete'), { ssr: true });
 const Menu = dynamic(() => import('@core_modules/theme/components/header/components/v1/mcategory'), { ssr: true });
 const ProductCompareIcon = dynamic(() => import('@core_modules/catalog/plugins/ProductCompare'), { ssr: true });
 const ShoppingBagIcon = dynamic(() => import('@plugin_shoppingbag'), { ssr: true });
 const NotificationBell = dynamic(() => import('@plugin_notificationbell'), { ssr: true });
-const SwitcherCurrency = dynamic(() => import('@common_currency'), { ssr: false });
-const SwitcherLanguage = dynamic(() => import('@common_language'), { ssr: false });
+const SwitcherCurrency = dynamic(() => import('@common_currency'), { ssr: true });
+const SwitcherLanguage = dynamic(() => import('@common_language'), { ssr: true });
 const UserInfo = dynamic(() => import('@core_modules/theme/components/header/components/v1/adaptive/plugin/userinfo'), { ssr: false });
 const InstallDesktop = dynamic(() => import('@core_modules/theme/components/customPWAInstall/desktop'), { ssr: true });
 
@@ -90,7 +90,14 @@ const DesktopHeader = (props) => {
         >
             <div
                 id="top-header"
-                className={cx('top-header', 'mobile:max-desktop:hidden', 'tablet:border-b-[1.5px]', 'tablet:border-b-neutral-300', 'py-[1px]', 'min-h-[40px]')}
+                className={cx(
+                    'top-header',
+                    'mobile:max-desktop:hidden',
+                    'tablet:border-b-[1.5px]',
+                    'tablet:border-b-neutral-300',
+                    'py-[1px]',
+                    'min-h-[40px]',
+                )}
             >
                 <div
                     id="top-header__content"
@@ -194,7 +201,7 @@ const DesktopHeader = (props) => {
             </div>
             <div className={cx('bottom-header', 'tablet:max-w-[768px]', 'desktop:max-w-[1280px]', 'm-[0_auto]', 'px-6', 'mobile:max-desktop:hidden')}>
                 <div className="flex flex-row menu-category">
-                    <div className="xs:basis-full menu-middle">{loadingMenu ? <>qwepoiqpwoe</> : <Menu data={dataMenu} storeConfig={storeConfig} />}</div>
+                    <div className="xs:basis-full menu-middle">{loadingMenu ? <></> : <Menu data={dataMenu} storeConfig={storeConfig} />}</div>
                 </div>
             </div>
         </div>
