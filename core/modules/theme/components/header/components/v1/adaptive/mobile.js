@@ -13,16 +13,9 @@ import Button from '@common_button';
 import Drawer from '@common_drawer';
 import Image from '@common_image';
 import Tabs from '@common_tabs';
-import Typography from '@common_typography';
-
-import config from '@config';
-
-import Cookies from 'js-cookie';
-import TagManager from 'react-gtm-module';
 
 import MagnifyingGlassIcon from '@heroicons/react/24/outline/MagnifyingGlassIcon';
 import Bars3Icon from '@heroicons/react/24/solid/Bars3Icon';
-import XMarkIcon from '@heroicons/react/24/solid/XMarkIcon';
 
 import { getCategories } from '@core_modules/theme/services/graphql';
 
@@ -30,7 +23,7 @@ const Autocomplete = dynamic(() => import('@core_modules/theme/components/header
 const BurgerMenuCategories = dynamic(() => import('@core_modules/theme/components/header/components/burgermenu/categories'), { ssr: false });
 const BurgerMenuAccount = dynamic(() => import('@core_modules/theme/components/header/components/burgermenu/account/index'), { ssr: false });
 const ShoppingBagIcon = dynamic(() => import('@plugin_shoppingbag'), { ssr: true });
-const GlobalPromoMessage = dynamic(() => import('@core_modules/theme/components/globalPromo'), { ssr: true });
+const MobileInstall = dynamic(() => import('@core_modules/theme/components/header/components/mInstall'), { ssr: false });
 
 const HeaderMobile = (props) => {
     const {
@@ -40,41 +33,11 @@ const HeaderMobile = (props) => {
         setValue,
         handleSearch,
         handleLogout,
-        appName,
-        installMessage,
-        deviceWidth,
     } = props;
 
     const { data } = getCategories();
 
     const [isSearchShown, setIsSearchShown] = React.useState(false);
-
-    const handleClickInstallApp = () => {
-        const timestamp = Date.now();
-        const identifier = `${Math.floor(Math.random() * 100) * Math.floor(Math.random() * 100)}_${timestamp}`;
-        const dataLayer = {
-            event: 'countPopupInstallation',
-            eventCategory: 'Count Popup Installation',
-            eventAction: 'Installed',
-            eventLabel: 'installPWA',
-            eventValue: identifier,
-        };
-        TagManager.dataLayer({ dataLayer });
-    };
-
-    const closePopup = () => {
-        const el = document.getElementById('popup-mobile__install');
-        // hidden popup
-        if (el) {
-            el.style.display = 'none';
-        }
-
-        const date = new Date();
-        // add a day
-        date.setDate(date.getDate() + 1);
-        localStorage.setItem('hideInstallPopup', true);
-        localStorage.setItem('expiredHideInstallPopup', date.getDate());
-    };
 
     const [openBurgerMenu, setOpenBurgerMenu] = React.useState(false);
 
@@ -95,63 +58,7 @@ const HeaderMobile = (props) => {
         <div
             className={cx('mobile-header', 'mobile:max-tablet:block', 'tablet:hidden', 'transition-all', 'delay-100', 'duration-500', 'ease-in-out')}
         >
-            <div
-                className={cx(
-                    'float-header-mobile__content--popup-installation',
-                    'py-3',
-                    'px-4',
-                    'flex',
-                    'flex-row',
-                    'gap-x-[10px]',
-                    'fixed',
-                    'bottom-0',
-                    'z-10',
-                    'w-[100vw]',
-                    'bg-neutral-white',
-                )}
-                id="popup-mobile__install"
-            >
-                <div className={cx('install_image', 'basis-10', 'shrink-0', 'flex', 'items-center', 'justify-center')}>
-                    <img src="/assets/img/mobile_install_logo.png" width={30} height={32} />
-                </div>
-                <div className={cx('install_info', 'basis-full')}>
-                    <Typography variant="bd-3a" className={cx('text-neutral-700', 'block')}>
-                        {appName}
-                    </Typography>
-                    <Typography variant="bd-3a" className={cx('text-[12px]', 'text-neutral-500', 'text-xs', 'font-normal', 'leading-sm')}>
-                        {installMessage}
-                    </Typography>
-                </div>
-                <div className={cx('install_button', 'flex', 'items-center')}>
-                    <Button
-                        className={cx(
-                            'm-0',
-                            'hover:shadow-none',
-                            'focus:shadow-none',
-                            'active:shadow-none',
-                            'active:shadow-none',
-                            'px-4',
-                            'py-[5px]',
-                        )}
-                        onClick={handleClickInstallApp}
-                        variant="primary"
-                        id="btn-install__mobile"
-                    >
-                        <Typography className={cx('!text-neutral-white')}>Install</Typography>
-                    </Button>
-                    <Button
-                        className={cx('m-0', '!px-0', '!pl-1', 'hover:shadow-none', 'focus:shadow-none', 'active:shadow-none', 'active:shadow-none')}
-                        onClick={() => {
-                            closePopup();
-                        }}
-                        icon={<XMarkIcon />}
-                        iconProps={{ className: cx('text-neutral-700', 'w-[20px]', 'h-[20px]') }}
-                        iconOnly
-                        variant="tertiary"
-                        classNameText={cx('!text-neutral-700')}
-                    />
-                </div>
-            </div>
+            <MobileInstall {...props} />
             <div className={cx('bottom-header-mobile', 'shadow-lg')}>
                 <Drawer
                     open={openBurgerMenu}
@@ -262,7 +169,7 @@ const HeaderMobile = (props) => {
                 </div>
                 {isSearchShown ? (
                     <div className={cx('bottom-header-mobile__search')}>
-                        <Autocomplete setValue={setValue} handleSearch={handleSearch} t={t} storeConfig={storeConfig} deviceWidth={deviceWidth} />
+                        <Autocomplete setValue={setValue} handleSearch={handleSearch} t={t} storeConfig={storeConfig} />
                     </div>
                 ) : null}
             </div>
