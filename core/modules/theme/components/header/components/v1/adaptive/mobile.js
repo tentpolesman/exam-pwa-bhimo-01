@@ -33,11 +33,17 @@ const ShoppingBagIcon = dynamic(() => import('@plugin_shoppingbag'), { ssr: true
 const GlobalPromoMessage = dynamic(() => import('@core_modules/theme/components/globalPromo'), { ssr: true });
 
 const HeaderMobile = (props) => {
-    const { t, storeConfig, isLogin, setValue, handleSearch, handleLogout, showGlobalPromo, handleClosePromo, appName, installMessage, deviceWidth } =
-        props;
-
-    const { modules } = config;
-    const adminId = Cookies.get('admin_id');
+    const {
+        t,
+        storeConfig,
+        isLogin,
+        setValue,
+        handleSearch,
+        handleLogout,
+        appName,
+        installMessage,
+        deviceWidth,
+    } = props;
 
     const { data } = getCategories();
 
