@@ -8,35 +8,25 @@
 import React from 'react';
 
 import { Head } from 'next/document';
-
+import { readFileSync } from 'fs';
+import { join } from 'path';
 class HeadCustom extends Head {
-    // https://github.com/zeit/next.js/blob/d467e040d51ce1f8d2bf050d729677b6dd99cb96/packages/next/pages/_document.tsx#L187
-    getCssLinks(files) {
+    getCssLinks = ({ allFiles }) => {
         const { assetPrefix } = this.context;
-        const cssFiles = files && files.allFiles && files.allFiles.length ? files.allFiles.filter((f) => /\.css$/.test(f)) : [];
-        const cssLinkElements = [];
-        cssFiles.forEach((file) => {
-            cssLinkElements.push(
-                <link
+        if (!allFiles || allFiles.length === 0) return null;
+        return allFiles
+            .filter((file) => /\.css$/.test(file))
+            .map((file) => (
+                <style
                     key={file}
                     nonce={this.props.nonce}
-                    rel="stylesheet"
-                    href={`${assetPrefix}/_next/${encodeURI(file)}`}
-                    crossOrigin={this.props.crossOrigin || process ? process.crossOrigin : false}
-                />,
-            );
-        });
-
-        return cssLinkElements.length === 0 ? null : cssLinkElements;
-    }
-
-    getPreloadMainLinks() {
-        return [];
-    }
-
-    getPreloadDynamicChunks() {
-        return [];
-    }
+                    data-href={`${assetPrefix}/_next/${file}`}
+                    dangerouslySetInnerHTML={{
+                        __html: readFileSync(join(process.cwd(), '.next', file), 'utf-8'),
+                    }}
+                />
+            ));
+    };
 }
 
 export default HeadCustom;
