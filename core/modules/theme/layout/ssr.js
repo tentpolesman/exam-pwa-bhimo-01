@@ -1,4 +1,4 @@
-import { getCmsBlocks, categories, vesMenu } from '@core_modules/theme/services/graphql/schema';
+import { getCmsBlocks, categories } from '@core_modules/theme/services/graphql/schema';
 import { getStoreName, getCurrencySchema } from '@core_modules/setting/services/graphql/schema';
 import { gql } from '@apollo/client';
 import graphRequestClear from '@graphql_ssr';
@@ -7,7 +7,6 @@ const layoutStoreConfigSchema = (storeConfigExtra) => gql`
         {
             storeConfig {
                 pwa {
-                    ves_menu_alias
                     footer_version
                     ${storeConfigExtra}
                 }
@@ -21,18 +20,9 @@ const getSSRProps = async ({ apolloClient, storeConfigExtra = '' }) => {
     storeConfig = storeConfig?.storeConfig ?? null;
     if (storeConfig) {
         // header
-        if (storeConfig.pwa.ves_menu_enable) {
-            await apolloClient.query({
-                query: vesMenu,
-                variables: {
-                    alias: storeConfig.pwa.ves_menu_alias,
-                },
-            });
-        } else {
-            await apolloClient.query({
-                query: categories,
-            });
-        }
+        await apolloClient.query({
+            query: categories,
+        });
         // header setting currency
         await apolloClient.query({
             query: getCurrencySchema,

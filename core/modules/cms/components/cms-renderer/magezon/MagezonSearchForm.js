@@ -5,12 +5,11 @@ import { useTranslation } from 'next-i18next';
 import dynamic from 'next/dynamic';
 import useMediaQuery from '@hook/useMediaQuery';
 
-const Autocomplete = dynamic(() => import('@core_modules/theme/components/header/desktop/components/autocomplete'), { ssr: false });
+const Autocomplete = dynamic(() => import('@core_modules/theme/components/header/components/autocomplete'), { ssr: false });
 
 const MagezonSearchForm = (props) => {
     const {
-        placeholder, form_width, input_background_color, input_text_color,
-        storeConfig,
+        placeholder, form_width, input_background_color, input_text_color, storeConfig,
     } = props;
     const { isMobile, isTablet } = useMediaQuery();
     const maxFormWidth = Math.min(form_width, isMobile ? 328 : isTablet ? 720 : form_width);

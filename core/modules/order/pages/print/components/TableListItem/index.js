@@ -37,18 +37,7 @@ const TableListProduct = (props) => {
                     {data && data.length > 0 ? (
                         <>
                             {data.map((val, index) => (
-                                <tr
-                                    className={cx(
-                                        'mobile:max-tablet:grid',
-                                        'mobile:max-tablet:border-b-[1px]',
-                                        'mobile:max-tablet:border-b-neutral-200',
-                                        'mobile:max-tablet:p-2',
-                                        'border-t-[1px]',
-                                        'border-b-[1px]',
-                                        'border-neutral-400',
-                                    )}
-                                    key={index}
-                                >
+                                <tr className={cx('mobile:max-tablet:p-2', 'border-t-[1px]', 'border-b-[1px]', 'border-neutral-400')} key={index}>
                                     <td className={cx('px-4', 'py-3', 'text-left')}>
                                         <Typography>{val.name}</Typography>
                                     </td>
@@ -56,7 +45,7 @@ const TableListProduct = (props) => {
                                         <Typography>{val.sku}</Typography>
                                     </td>
                                     <td className={cx('px-4', 'py-3', 'text-left')}>
-                                        <Typography>{val.note}</Typography>
+                                        <Typography>{val.note || '-'}</Typography>
                                     </td>
                                     <td className={cx('px-4', 'py-3', 'text-left')}>
                                         <Typography>{formatPrice(val.price_incl_tax, currency, currencyCache)}</Typography>

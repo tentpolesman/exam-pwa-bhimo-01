@@ -7,7 +7,6 @@ export const getCategoryByName = (name) => useLazyQuery(schema.getCategoryByName
 export const getProduct = (key) => useLazyQuery(schema.getProduct(key));
 export const getSellerByName = (name) => useLazyQuery(schema.getSellerByName(name));
 export const getRecentlyProduct = () => useLazyQuery(schema.getRecentlyProduct());
-export const getVesMenu = (options) => useQuery(schema.vesMenu, options);
 export const getCurrency = () => useQuery(schema.getCurrencySchema);
 
 export const getCustomer = () =>
@@ -62,7 +61,6 @@ export default {
     getCustomer,
     getIsSubscribedCustomer,
     removeToken,
-    getVesMenu,
     getProduct,
     getCategoryByName,
     getSellerByName,
