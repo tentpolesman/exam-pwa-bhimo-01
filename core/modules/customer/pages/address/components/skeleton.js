@@ -10,7 +10,7 @@ export const SkeletonTable = () => {
         <>
             {data.map((item, index) => (
                 <tr
-                    className={cx({
+                    className={cx('mobile:max-desktop:hidden', {
                         'bg-white': index % 2 === 1,
                         'bg-neutral-50': index % 2 !== 1,
                     })}
