@@ -1,7 +1,7 @@
 /* eslint-disable eqeqeq */
 import { debuging, modules } from '@config';
 import { getLoginInfo } from '@helper_auth';
-import { setCookies, getCookies } from '@helper_cookies';
+import { s, getCookies } from '@helper_cookies';
 import { useTranslation } from 'next-i18next';
 import route, { useRouter } from 'next/router';
 import { useQuery, useReactiveVar } from '@apollo/client';
@@ -341,7 +341,7 @@ const ProductItem = (props) => {
                 type: 'PRODUCT',
             };
             await setResolver(urlResolver);
-            setCookies('lastCategory', categorySelect);
+            s('lastCategory', categorySelect);
             const lastCatalogsOffset = getSessionStorage('lastCatalogsOffset') || [];
             const lastCatalogsVisited = getSessionStorage('lastCatalogsVisited') || [];
             const lastProductsVisited = getSessionStorage('lastProductsVisited') || [];

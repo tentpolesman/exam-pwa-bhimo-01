@@ -22,7 +22,7 @@ const MobileInstall = (props) => {
     };
 
     const closePopup = () => {
-        const el = document.getElementById('popup-mobile__install');
+        const el = document.getElementById('wrapper-mobile__install');
         // hidden popup
         if (el) {
             el.style.display = 'none';
@@ -49,8 +49,9 @@ const MobileInstall = (props) => {
                 'z-10',
                 'w-[100vw]',
                 'bg-neutral-white',
+                'hidden',
             )}
-            id="popup-mobile__install"
+            id="wrapper-mobile__install"
         >
             <div className={cx('install_image', 'basis-10', 'shrink-0', 'flex', 'items-center', 'justify-center')}>
                 <Image
@@ -89,9 +90,7 @@ const MobileInstall = (props) => {
                 </Button>
                 <Button
                     className={cx('m-0', '!px-0', '!pl-1', 'hover:shadow-none', 'focus:shadow-none', 'active:shadow-none', 'active:shadow-none')}
-                    onClick={() => {
-                        closePopup();
-                    }}
+                    onClick={closePopup}
                     icon={<XMarkIcon />}
                     iconProps={{ className: cx('text-neutral-700', 'w-[20px]', 'h-[20px]') }}
                     iconOnly

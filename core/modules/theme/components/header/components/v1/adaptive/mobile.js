@@ -23,7 +23,7 @@ const Autocomplete = dynamic(() => import('@core_modules/theme/components/header
 const BurgerMenuCategories = dynamic(() => import('@core_modules/theme/components/header/components/burgermenu/categories'), { ssr: false });
 const BurgerMenuAccount = dynamic(() => import('@core_modules/theme/components/header/components/burgermenu/account/index'), { ssr: false });
 const ShoppingBagIcon = dynamic(() => import('@plugin_shoppingbag'), { ssr: true });
-const MobileInstall = dynamic(() => import('@core_modules/theme/components/header/components/mInstall'), { ssr: false });
+const InstallMobile = dynamic(() => import('@core_modules/theme/components/customPWAInstall/mobile'), { ssr: true });
 
 const HeaderMobile = (props) => {
     const {
@@ -58,7 +58,7 @@ const HeaderMobile = (props) => {
         <div
             className={cx('mobile-header', 'mobile:max-tablet:block', 'tablet:hidden', 'transition-all', 'delay-100', 'duration-500', 'ease-in-out')}
         >
-            <MobileInstall {...props} />
+            <InstallMobile {...props} />
             <div className={cx('bottom-header-mobile', 'shadow-lg')}>
                 <Drawer
                     open={openBurgerMenu}
