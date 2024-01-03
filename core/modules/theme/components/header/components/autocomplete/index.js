@@ -201,7 +201,7 @@ export default function AutocompleteSearch(props) {
                                 role="presentation"
                             >
                                 <div className="image-container">
-                                    <Image alt={name} src={small_image.url} width={64} height={64} />
+                                    <Image alt={name} src={small_image.url} width={64} height={64} storeConfig={storeConfig} />
                                 </div>
                                 <div className={cx('title-search-item', 'text-md', 'normal-case', 'leading-5', 'font-[500]')}>
                                     {name.length > 47 ? `${name.substr(0, 47)}...` : `${name}`}
@@ -251,7 +251,7 @@ export default function AutocompleteSearch(props) {
                                 role="presentation"
                             >
                                 <div className="image-container">
-                                    <Image alt={name} src={logo} width={48} height={48} />
+                                    <Image alt={name} src={logo} width={48} height={48} storeConfig={storeConfig} />
                                 </div>
                                 <div className="seller-info">{`${name} - ${citySplit ? citySplit[0] : ''}`}</div>
                             </div>
