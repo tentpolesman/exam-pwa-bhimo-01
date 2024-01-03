@@ -75,6 +75,7 @@ const AddressView = (props) => {
                 onClickCloseTitle={() => setOpen(false)}
                 useCloseTitleButton
                 onClose={() => setOpen(false)}
+                classContent="!px-0 border-t border-t-[2px] border-t-neutral-200"
                 content={(
                     <div className="flex flex-col" id="checkoutListAddress">
                         <div className="overflow-y-auto tablet:h-[80vh]">
