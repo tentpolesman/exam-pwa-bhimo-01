@@ -11,7 +11,7 @@ import Link from 'next/link';
 import cx from 'classnames';
 import SkeletonProductReview from '@core_modules/productreview/pages/default/components/skeleton';
 import DetailProductReview from '@core_modules/productreview/pages/default/components/detail';
-import AlertWithIcon from '@common_alertwithicon';
+import Alert from '@common_alert';
 
 const ProductReviewPage = (props) => {
     const {
@@ -88,7 +88,9 @@ const ProductReviewPage = (props) => {
                                     </Show>
                                     <Show when={!hasReview}>
                                         <td colSpan={5}>
-                                            <AlertWithIcon severity="warning">{t('productreview:emptyMessage')}</AlertWithIcon>
+                                            <Alert severity="warning" withIcon>
+                                                {t('productreview:emptyMessage')}
+                                            </Alert>
                                         </td>
                                     </Show>
                                 </Show>

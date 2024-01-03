@@ -11,18 +11,13 @@
 import Button from '@common_button';
 import Skeleton from '@common_skeleton';
 import Typography from '@common_typography';
-
 import { SkeletonMobile, SkeletonTable } from '@core_modules/customer/pages/address/components/skeleton';
-
 import Layout from '@layout_customer';
 import AddressFormDialog from '@plugin_addressform';
-
 import dynamic from 'next/dynamic';
-
-import ExclamationTriangleIcon from '@heroicons/react/24/outline/ExclamationTriangleIcon';
 import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
-
 import cx from 'classnames';
+import Alert from '@common_alert';
 
 const ItemMobile = dynamic(() => import('@core_modules/customer/pages/address/components/ItemMobile'), { ssr: false });
 const TableAddress = dynamic(() => import('@core_modules/customer/pages/address/components/table'), { ssr: false });
@@ -86,26 +81,9 @@ const Content = (props) => {
                                     ))}
                                 </>
                             ) : (
-                                <Button
-                                    icon={<ExclamationTriangleIcon />}
-                                    iconPosition="left"
-                                    className={cx(
-                                        'w-full',
-                                        'bg-yellow-500',
-                                        'hover:bg-yellow-500',
-                                        'focus:bg-yellow-500',
-                                        'active:bg-yellow-500',
-                                        'hover:shadow-none',
-                                        'focus:shadow-none',
-                                        'active:shadow-none',
-                                        'cursor-auto',
-                                        'hover:cursor-auto',
-                                        'focus:cursor-auto',
-                                        'active:cursor-auto',
-                                    )}
-                                >
-                                    <Typography className={cx('!text-neutral-white')}>{t('customer:address:emptyMessage')}</Typography>
-                                </Button>
+                                <Alert severity="warning" withIcon>
+                                    {t('customer:address:emptyMessage')}
+                                </Alert>
                             )}
                         </>
                     )}
@@ -166,26 +144,9 @@ const Content = (props) => {
                                 ) : (
                                     <tr>
                                         <td colSpan={6}>
-                                            <Button
-                                                icon={<ExclamationTriangleIcon />}
-                                                iconPosition="left"
-                                                className={cx(
-                                                    'w-full',
-                                                    'bg-yellow-500',
-                                                    'hover:bg-yellow-500',
-                                                    'focus:bg-yellow-500',
-                                                    'active:bg-yellow-500',
-                                                    'hover:shadow-none',
-                                                    'focus:shadow-none',
-                                                    'active:shadow-none',
-                                                    'cursor-auto',
-                                                    'hover:cursor-auto',
-                                                    'focus:cursor-auto',
-                                                    'active:cursor-auto',
-                                                )}
-                                            >
-                                                <Typography className={cx('!text-neutral-white')}>{t('customer:address:emptyMessage')}</Typography>
-                                            </Button>
+                                            <Alert severity="warning" withIcon>
+                                                {t('customer:address:emptyMessage')}
+                                            </Alert>
                                         </td>
                                     </tr>
                                 )}

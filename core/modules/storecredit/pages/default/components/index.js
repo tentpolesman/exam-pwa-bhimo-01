@@ -8,7 +8,7 @@ import Select from '@common_forms/Select';
 import Pagination from '@common_pagination';
 import Skeleton from '@common_skeleton';
 import SkeletonStoreCredit from '@core_modules/storecredit/pages/default/components/skeleton';
-import AlertWithIcon from '@common_alertwithicon';
+import Alert from '@common_alert';
 
 const StoreCreditPage = (props) => {
     const {
@@ -105,7 +105,9 @@ const StoreCreditPage = (props) => {
                                     </Show>
                                     <Show when={!hasTransaction}>
                                         <td colSpan={5}>
-                                            <AlertWithIcon severity="warning">{t('storecredit:emptyMessage')}</AlertWithIcon>
+                                            <Alert severity="warning" withIcon>
+                                                {t('storecredit:emptyMessage')}
+                                            </Alert>
                                         </td>
                                     </Show>
                                 </Show>

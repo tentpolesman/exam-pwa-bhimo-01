@@ -9,7 +9,7 @@ import Select from '@common_forms/Select';
 import Pagination from '@common_pagination';
 import Skeleton from '@common_skeleton';
 import SkeletonRewardPoint from '@core_modules/rewardpoint/pages/default/components/skeleton';
-import AlertWithIcon from '@common_alertwithicon';
+import Alert from '@common_alert';
 
 const RewardPointView = (props) => {
     const {
@@ -147,7 +147,9 @@ const RewardPointView = (props) => {
                                     </Show>
                                     <Show when={!hasTransaction}>
                                         <td colSpan={6}>
-                                            <AlertWithIcon severity="warning">{t('rewardpoint:emptyMessage')}</AlertWithIcon>
+                                            <Alert severity="warning" withIcon>
+                                                {t('rewardpoint:emptyMessage')}
+                                            </Alert>
                                         </td>
                                     </Show>
                                 </Show>

@@ -1,9 +1,9 @@
-import AlertWithIcon from '@common_alertwithicon';
+import Alert from '@common_alert';
 
 const ErrorView = ({ message, t }) => (
-    <AlertWithIcon className="mt-[10px]" severity="error">
+    <Alert className="mt-[10px]" severity="error" withIcon>
         {message || t('common:error:fetchError')}
-    </AlertWithIcon>
+    </Alert>
 );
 
 export default ErrorView;

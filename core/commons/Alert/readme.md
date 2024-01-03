@@ -26,5 +26,7 @@ export default Component;
 | :---        | :---     |:---- | :---        |:---  |
 | `severity`    | `false` | saverity variant color alert with value `success`, `error`, or `warning` | `success` | `string` |
 | `children` | `required` | childre alert can be value `string` or `element` | | `string` or `React Element`|
+| `withIcon` | `false` | Showing icon on alert |  | `boolean`|
 | `className` | `false` | Custom classname alet wrapper |  | `string`|
 | `classChildren` | `false` | Custom classname classChildren wrapper |  | `string`|
+| `iconClassName` | `false` | Custom classname icon wrapper |  | `string`|

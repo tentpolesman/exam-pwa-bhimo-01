@@ -10,7 +10,7 @@ import ModalDetail from '@core_modules/customer/pages/giftcard/components/detail
 import DetailView from '@core_modules/customer/pages/giftcard/components/detail/view';
 import Loader from '@core_modules/customer/pages/giftcard/components/skeleton';
 import cx from 'classnames';
-import AlertWithIcon from '@common_alertwithicon';
+import Alert from '@common_alert';
 
 const GiftCard = (props) => {
     const {
@@ -43,9 +43,9 @@ const GiftCard = (props) => {
         return (
             <Layout {...props}>
                 <div className={cx('giftcard-container', 'mt-[15px]')}>
-                    <AlertWithIcon className="mb-[10px]" severity="error">
+                    <Alert className="mb-[10px]" severity="error" withIcon>
                         {debuging.originalError ? error.message.split(':')[1] : t('common:error:fetchError')}
-                    </AlertWithIcon>
+                    </Alert>
                 </div>
             </Layout>
         );
@@ -66,9 +66,9 @@ const GiftCard = (props) => {
                     currencyCache={currencyCache}
                 />
                 <Show when={noGiftCardData}>
-                    <AlertWithIcon className="mb-[10px]" severity="warning">
+                    <Alert className="mb-[10px]" severity="warning" withIcon>
                         {t('customer:giftCard:notFound')}
-                    </AlertWithIcon>
+                    </Alert>
                 </Show>
                 <Show when={!noGiftCardData}>
                     <div className="flex flex-row w-max">

@@ -6,7 +6,7 @@ import cx from 'classnames';
 import XMarkIcon from '@heroicons/react/24/solid/XMarkIcon';
 import formatDate from '@helper_date';
 import Show from '@common_show';
-import AlertWithIcon from '@common_alertwithicon';
+import Alert from '@common_alert';
 
 const DetailView = (props) => {
     const {
@@ -40,11 +40,11 @@ const DetailView = (props) => {
                             <Loader />
                         </Show>
                         <Show when={error}>
-                            <AlertWithIcon className="m-15" severity="error">
+                            <Alert className="m-15" severity="error" withIcon>
                                 {error?.message?.includes('No such entity with giftcardCode')
                                     ? t('customer:giftCard:searchNotFound')
                                     : error?.message}
-                            </AlertWithIcon>
+                            </Alert>
                         </Show>
                         <Show when={data}>
                             <div className={cx('mt-[20px]', 'px-[10px]')}>

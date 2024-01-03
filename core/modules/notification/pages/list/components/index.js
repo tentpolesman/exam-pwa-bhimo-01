@@ -7,7 +7,7 @@ import Typography from '@common_typography';
 import Pagination from '@common_pagination';
 import Show from '@common_show';
 import Skeleton from '@core_modules/notification/pages/list/components/skeleton';
-import Alert from '@common/Alert';
+import Alert from '@common_alert';
 
 const NotificationList = (props) => {
     const {
@@ -25,14 +25,7 @@ const NotificationList = (props) => {
         return (
             <Layout {...props}>
                 <div className={cx('pt-5')}>
-                    <Alert severity="error">
-                        <Typography
-                            variant="p-2a"
-                            className={cx()}
-                        >
-                            {`Error: ${error.message}`}
-                        </Typography>
-                    </Alert>
+                    <Alert severity="error" withIcon>{`Error: ${error.message}`}</Alert>
                 </div>
             </Layout>
         );
@@ -41,13 +34,8 @@ const NotificationList = (props) => {
         return (
             <Layout {...props}>
                 <div className={cx('pt-5')}>
-                    <Alert severity="warning">
-                        <Typography
-                            variant="p-2a"
-                            className={cx()}
-                        >
-                            {t('notification:not_found')}
-                        </Typography>
+                    <Alert severity="warning" withIcon>
+                        {t('notification:not_found')}
                     </Alert>
                 </div>
             </Layout>
@@ -58,13 +46,8 @@ const NotificationList = (props) => {
         return (
             <Layout {...props}>
                 <div className={cx('pt-5')}>
-                    <Alert severity="warning">
-                        <Typography
-                            variant="p-2a"
-                            className={cx()}
-                        >
-                            {t('notification:empty')}
-                        </Typography>
+                    <Alert severity="warning" withIcon>
+                        {t('notification:empty')}
                     </Alert>
                 </div>
             </Layout>
@@ -90,30 +73,16 @@ const NotificationList = (props) => {
                     <div
                         key={i}
                         onClick={() => handleItemClick(item)}
-                        className={cx(
-                            'relative border-t-[1px] border-b-[1px] border-neutral-100',
-                            'px-8 py-6 cursor-pointer hover:bg-neutral-100',
-                        )}
+                        className={cx('relative border-t-[1px] border-b-[1px] border-neutral-100', 'px-8 py-6 cursor-pointer hover:bg-neutral-100')}
                     >
-                        <Typography
-                            variant={item.unread ? 'p-2a' : 'p-2'}
-                            className={cx()}
-                        >
+                        <Typography variant={item.unread ? 'p-2a' : 'p-2'} className={cx()}>
                             {item.subject}
                         </Typography>
-                        <Typography
-                            variant={item.unread ? 'p-3a' : 'p-3'}
-                            className={cx('mt-1')}
-                        >
+                        <Typography variant={item.unread ? 'p-3a' : 'p-3'} className={cx('mt-1')}>
                             {localDateString(item.createdAt)}
                         </Typography>
                         <Show when={item.unread}>
-                            <div
-                                className={cx(
-                                    'absolute left-[14px] top-[50%] bg-primary-700 rounded-full',
-                                    'translate-y-[-50%] w-[6px] h-[6px]',
-                                )}
-                            />
+                            <div className={cx('absolute left-[14px] top-[50%] bg-primary-700 rounded-full', 'translate-y-[-50%] w-[6px] h-[6px]')} />
                         </Show>
                     </div>
                 ))}
@@ -121,13 +90,7 @@ const NotificationList = (props) => {
                     <Typography variant="p-2" className={cx('')}>
                         {`${notifCount} Item(s)`}
                     </Typography>
-                    <Pagination
-                        handleChangePage={handleChangePage}
-                        page={page}
-                        siblingCount={0}
-                        className={cx('!p-0')}
-                        totalPage={totalPage}
-                    />
+                    <Pagination handleChangePage={handleChangePage} page={page} siblingCount={0} className={cx('!p-0')} totalPage={totalPage} />
                 </div>
             </div>
         </Layout>
