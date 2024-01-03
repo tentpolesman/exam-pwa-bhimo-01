@@ -42,7 +42,7 @@ module.exports = withPWA({
             },
             {
                 protocol: 'https',
-                hostname: baseHostUrl.replace('http://', '').replace('https://', '').replace('/graphql'),
+                hostname: baseHostUrl.replace('http://', '').replace('https://', '').replace('/graphql', ''),
                 port: '',
                 pathname: '/**',
             },
