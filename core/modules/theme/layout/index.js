@@ -131,7 +131,6 @@ const Layout = (props) => {
     });
 
     const [, setRestrictionCookies] = useState(false);
-    const [deviceWidth, setDeviceWidth] = React.useState(0);
     const [setCompareList] = createCompareList();
     const showGlobalPromo = features.globalPromo.enable;
     const frontendCache = useReactiveVar(storeConfigVar);
@@ -381,12 +380,6 @@ const Layout = (props) => {
         }
     }, [storeConfig]);
 
-    React.useEffect(() => {
-        if (typeof window !== 'undefined') {
-            setDeviceWidth(window.innerWidth);
-        }
-    }, []);
-
     // let classMain;
 
     // if (storeConfig && storeConfig.pwa && storeConfig.pwa.enabler_sticky_header) {
@@ -551,7 +544,6 @@ const Layout = (props) => {
                         showGlobalPromo={showGlobalPromo}
                         appName={appName}
                         installMessage={installMessage}
-                        isMobile={deviceWidth < BREAKPOINTS.md}
                     />
                     <Header
                         t={t}

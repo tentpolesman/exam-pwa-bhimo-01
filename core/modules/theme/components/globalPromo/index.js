@@ -10,7 +10,6 @@ const GlobalPromoMessage = (props) => {
     const {
         // prettier-ignore
         storeConfig,
-        isMobile = false,
         ...other
     } = props;
     const { key_cookies } = features.globalPromo;
