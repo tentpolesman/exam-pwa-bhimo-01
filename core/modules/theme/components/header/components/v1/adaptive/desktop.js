@@ -7,19 +7,11 @@ import cx from 'classnames';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-
 import React from 'react';
-
-import Button from '@common_button';
 import Image from '@common_image';
-import Popover from '@common_popover';
 import Typography from '@common_typography';
 import config from '@config';
 
-// import Cookies from 'js-cookie';
-import TagManager from 'react-gtm-module';
-
-import DevicePhoneMobileIcon from '@heroicons/react/24/solid/DevicePhoneMobileIcon';
 import { BREAKPOINTS } from '@root/core/theme/vars';
 
 const Autocomplete = dynamic(() => import('@core_modules/theme/components/header/components/autocomplete'), { ssr: false });
@@ -30,25 +22,13 @@ const NotificationBell = dynamic(() => import('@plugin_notificationbell'), { ssr
 const SwitcherCurrency = dynamic(() => import('@common_currency'), { ssr: false });
 const SwitcherLanguage = dynamic(() => import('@common_language'), { ssr: false });
 const UserInfo = dynamic(() => import('@core_modules/theme/components/header/components/v1/adaptive/plugin/userinfo'), { ssr: false });
+const InstallDesktop = dynamic(() => import('@core_modules/theme/components/customPWAInstall/desktop'), { ssr: true });
 
 const DesktopHeader = (props) => {
     const { t, storeConfig, isLogin, customer, setValue, handleSearch, dataMenu, loadingMenu, handleLogout, deviceWidth } = props;
     const { modules } = config;
     // const adminId = Cookies.get('admin_id');
     const router = useRouter();
-
-    const handleClickInstallApp = () => {
-        const timestamp = Date.now();
-        const identifier = `${Math.floor(Math.random() * 100) * Math.floor(Math.random() * 100)}_${timestamp}`;
-        const dataLayer = {
-            event: 'countPopupInstallation',
-            eventCategory: 'Count Popup Installation',
-            eventAction: 'Installed',
-            eventLabel: 'installPWA',
-            eventValue: identifier,
-        };
-        TagManager.dataLayer({ dataLayer });
-    };
 
     const [open, setOpen] = React.useState(false);
 
@@ -110,7 +90,7 @@ const DesktopHeader = (props) => {
         >
             <div
                 id="top-header"
-                className={cx('top-header', 'mobile:max-desktop:hidden', 'tablet:border-b-[1.5px]', 'tablet:border-b-neutral-300', 'py-[1px]')}
+                className={cx('top-header', 'mobile:max-desktop:hidden', 'tablet:border-b-[1.5px]', 'tablet:border-b-neutral-300', 'py-[1px]', 'min-h-[40px]')}
             >
                 <div
                     id="top-header__content"
@@ -122,29 +102,7 @@ const DesktopHeader = (props) => {
                         'desktop:px-10 tablet:px-6 mobile:px-4',
                     )}
                 >
-                    <div className={cx('top-header__content__popup-installation')} id="popup-desktop__install">
-                        <Button
-                            className={cx(
-                                'm-2',
-                                '!px-0',
-                                '!py-0',
-                                '!ml-0',
-                                'hover:shadow-none',
-                                'focus:shadow-none',
-                                'active:shadow-none',
-                                'active:shadow-none',
-                            )}
-                            onClick={handleClickInstallApp}
-                            icon={<DevicePhoneMobileIcon />}
-                            iconProps={{ className: cx('w-[20px]', 'text-neutral-600', 'inline-block') }}
-                            iconPosition="left"
-                            variant="tertiary"
-                            classNameText={cx('!text-neutral-700')}
-                            id="btn-install"
-                        >
-                            <Typography>Download Apps</Typography>
-                        </Button>
-                    </div>
+                    <InstallDesktop />
                     <div
                         className={cx(
                             'top-header__content--currency-language-changer-menu',

@@ -146,7 +146,6 @@ const HeaderV1 = (props) => {
                             handleLogout={handleLogout}
                             customer={customer}
                             showGlobalPromo={showGlobalPromo}
-                            deviceWidth={deviceWidth}
                             appName={appName}
                             installMessage={installMessage}
                             {...other}

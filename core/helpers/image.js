@@ -12,6 +12,13 @@ export const generateThumborUrl = (
     blur,
     format = 'webp',
 ) => {
+    // checking for HD size needed based on actual size
+    let w = width;
+    let h = height;
+    if (width <= 350 && height <= 350) {
+        w = width * 2;
+        h = height * 2;
+    }
     if (enable) {
         if (thumborUrl) {
             let source = src;
@@ -19,7 +26,7 @@ export const generateThumborUrl = (
             if (source.indexOf(domain) === -1) {
                 const thumborEndpoint = endpoint ? `/${endpoint}` : '';
                 const thumborBlur = blur ? `:blur(${blur})` : '';
-                const params = `/unsafe${thumborEndpoint}/${width * 2}x${height * 2}/filters:format(${format}):quality(${quality})${thumborBlur}/`;
+                const params = `/unsafe${thumborEndpoint}/${w}x${h}/filters:format(${format}):quality(${quality})${thumborBlur}/`;
 
                 if (!useHttpsOrHttp) {
                     if (source.includes('http')) {
