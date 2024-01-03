@@ -8,7 +8,7 @@ function showInstallPromotion() {
         const date = new Date();
         const hide = localStorage.getItem('hideInstallPopup');
         const expired = localStorage.getItem('expiredHideInstallPopup');
-        const el = document.getElementById('popup-mobile__install');
+        const el = document.querySelector('#wrapper-mobile__install');
         // hidden popup
         if (el && (hide !== 'true' || (hide === 'true' && date.getDate() >= parseInt(expired)))) {
             localStorage.removeItem('hideInstallPopup');
@@ -16,12 +16,12 @@ function showInstallPromotion() {
             el.style.display = 'flex';
         }
     } else if (window.innerWidth >= 768 && window.innerWidth < 1200) {
-        const elTablet = document.getElementById('popup-tablet__install');
+        const elTablet = document.querySelector('#wrapper-tablet__install > button');
         if (elTablet) {
             elTablet.style.display = 'block';
         }
     } else {
-        const elDesktop = document.getElementById('popup-desktop__install');
+        const elDesktop = document.querySelector('#wrapper-desktop__install > button');
         if (elDesktop) {
             elDesktop.style.display = 'block';
         }
@@ -38,14 +38,13 @@ function showInstallPromotion() {
     }
     if (buttonInstall) {
         buttonInstall.addEventListener('click', (e) => {
-            console.log('click install');
             deferredPrompt.prompt();
         });
     }
 }
 
 function hideInstallPromotion() {
-    if (window.innerWidth <= 768) {
+    if (window.innerWidth < 768) {
         const el = document.getElementById('popup-mobile__install');
         // hidden popup
         if (el) {
