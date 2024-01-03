@@ -19,8 +19,8 @@ const Menu = dynamic(() => import('@core_modules/theme/components/header/compone
 const ProductCompareIcon = dynamic(() => import('@core_modules/catalog/plugins/ProductCompare'), { ssr: true });
 const ShoppingBagIcon = dynamic(() => import('@plugin_shoppingbag'), { ssr: true });
 const NotificationBell = dynamic(() => import('@plugin_notificationbell'), { ssr: true });
-const SwitcherCurrency = dynamic(() => import('@common_currency'), { ssr: false });
-const SwitcherLanguage = dynamic(() => import('@common_language'), { ssr: false });
+const SwitcherCurrency = dynamic(() => import('@common_currency'), { ssr: true });
+const SwitcherLanguage = dynamic(() => import('@common_language'), { ssr: true });
 const UserInfo = dynamic(() => import('@core_modules/theme/components/header/components/v1/adaptive/plugin/userinfo'), { ssr: false });
 const InstallDesktop = dynamic(() => import('@core_modules/theme/components/customPWAInstall/desktop'), { ssr: true });
 
@@ -201,9 +201,7 @@ const DesktopHeader = (props) => {
             </div>
             <div className={cx('bottom-header', 'tablet:max-w-[768px]', 'desktop:max-w-[1280px]', 'm-[0_auto]', 'px-6', 'mobile:max-desktop:hidden')}>
                 <div className="flex flex-row menu-category">
-                    <div className="xs:basis-full menu-middle">
-                        {loadingMenu ? <>qwepoiqpwoe</> : <Menu data={dataMenu} storeConfig={storeConfig} />}
-                    </div>
+                    <div className="xs:basis-full menu-middle">{loadingMenu ? <></> : <Menu data={dataMenu} storeConfig={storeConfig} />}</div>
                 </div>
             </div>
         </div>
