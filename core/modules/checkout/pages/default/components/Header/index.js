@@ -4,6 +4,7 @@ import { getStoreHost } from '@helpers/config';
 import { modules } from '@config';
 import Router from 'next/router';
 import { getAppEnv } from '@root/core/helpers/env';
+import Image from '@common_image';
 
 const HeaderCheckout = ({
     storeConfig,
@@ -15,20 +16,25 @@ const HeaderCheckout = ({
             Router.push('/');
         }
     };
+
     return (
-        <div id="header">
-            <div
-                role="button"
-                tabIndex={0}
-                className="flex flex-col justify-center items-center h-44 cursor-pointer"
+        <div id="header" className="flex flex-col justify-center items-center w-full h-44">
+            <button
+                className="border-none w-max"
                 onClick={BackToStore}
+                type="button"
             >
-                <img
-                    className="w-auto max-h-32"
+                <Image
+                    width={230}
+                    height={68}
                     src={`${storeConfig.secure_base_media_url}logo/${storeConfig.header_logo_src}`}
                     alt="logo"
+                    className="!w-[230px] !h-[68px]"
+                    classContainer="!w-[230px] !h-[68px]"
+                    quality={100}
+                    storeConfig={storeConfig}
                 />
-            </div>
+            </button>
         </div>
     );
 };

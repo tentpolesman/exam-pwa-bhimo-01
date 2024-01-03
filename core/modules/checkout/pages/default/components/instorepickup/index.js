@@ -6,12 +6,20 @@ import Alert from '@common_alert';
 import cx from 'classnames';
 import { useEffect, useState } from 'react';
 import Dialog from '@common_dialog';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+    selectCheckoutState, setPickupLocationCode, setSelectedData,
+} from '@core_modules/checkout/redux/checkoutSlice';
 
 const ModalPickupLocations = (props) => {
     const {
-        t, open, setOpen, locations = [], checkout, setCheckout,
+        t, open, setOpen, locations = [],
         handleOpenMessage,
     } = props;
+
+    const dispatch = useDispatch();
+    const checkout = useSelector(selectCheckoutState);
+
     const [loading, setLoading] = useState(false);
     const [listLocations, setListLocations] = useState(locations);
     const [selected, setSelected] = useState(checkout);
@@ -22,7 +30,6 @@ const ModalPickupLocations = (props) => {
     const handleSave = async () => {
         setLoading(true);
         const { cart } = checkout.data;
-        const newCheckout = { ...checkout };
         try {
             const updatedShippingAddress = await setInstoreAddress({
                 variables: {
@@ -49,14 +56,15 @@ const ModalPickupLocations = (props) => {
                 },
             });
 
-            newCheckout.selected.billing = updatedShippingAddress.data.setBillingAddressOnCart.cart;
-            /* eslint-disable */
-            newCheckout.selected.address = updatedShippingAddress.data.setShippingAddressesOnCart.cart.shipping_addresses[0];
+            dispatch(setSelectedData({
+                billing: updatedShippingAddress.data.setBillingAddressOnCart.cart,
+                address: updatedShippingAddress.data.setShippingAddressesOnCart.cart.shipping_addresses[0],
 
-            await setCheckout({
-                ...newCheckout,
-                pickup_location_code: updatedShippingAddress.data.setShippingAddressesOnCart.cart.shipping_addresses[0].pickup_location_code,
-            });
+            }));
+
+            dispatch(setPickupLocationCode(
+                updatedShippingAddress.data.setShippingAddressesOnCart.cart.shipping_addresses[0].pickup_location_code,
+            ));
 
             setLoading(false);
             setOpen(!open);
@@ -148,7 +156,8 @@ const ModalPickupLocations = (props) => {
 };
 
 const InStorePickup = (props) => {
-    const { t, checkout, setCheckout, handleOpenMessage } = props;
+    const checkout = useSelector(selectCheckoutState);
+    const { t, handleOpenMessage } = props;
     const [getPickupLocations, results] = pickupLocations();
     const [open, setOpen] = useState(false);
     const locations = results.data?.pickupLocations.items;
@@ -172,8 +181,6 @@ const InStorePickup = (props) => {
                 open={open}
                 setOpen={setOpen}
                 locations={locations}
-                checkout={checkout}
-                setCheckout={setCheckout}
                 handleOpenMessage={handleOpenMessage}
             />
             <Typography variant="h2" className="uppercase">

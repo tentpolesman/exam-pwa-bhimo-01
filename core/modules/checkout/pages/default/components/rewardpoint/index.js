@@ -2,9 +2,17 @@
 import { modules } from '@config';
 import gqlService from '@core_modules/checkout/services/graphql';
 
+import { useDispatch, useSelector } from 'react-redux';
+import {
+    selectCheckoutState, setCheckoutData, setIsNewUpdate,
+} from '@core_modules/checkout/redux/checkoutSlice';
+
 const RewardPoint = ({
-    t, checkout, setCheckout, handleOpenMessage, formik, RewardPointView, storeConfig, currencyCache,
+    t, handleOpenMessage, formik, RewardPointView, storeConfig, currencyCache,
 }) => {
+    const dispatch = useDispatch();
+    const checkout = useSelector(selectCheckoutState);
+
     const [loading, setLoading] = React.useState(false);
 
     const [removeRewardPointsFromCart, applRewardPoint] = gqlService.removeRewardPointsFromCart({
@@ -36,13 +44,12 @@ const RewardPoint = ({
 
     const handleUsePoint = async () => {
         let cart;
-        const state = { ...checkout };
         const { id } = checkout.data.cart;
         setLoading(true);
         if (reward_point.is_use_reward_points) {
             const result = await removeRewardPointsFromCart({ variables: { cartId: checkout.data.cart.id, coupon: formik.values.coupon } });
             cart = result && {
-                ...state.data.cart,
+                ...checkout.data.cart,
                 ...result.data.removeRewardPointsFromCart.cart,
             };
             if (result) {
@@ -54,7 +61,7 @@ const RewardPoint = ({
         } else {
             const result = await applyRewardPointsToCart({ variables: { cartId: id } });
             cart = result && {
-                ...state.data.cart,
+                ...checkout.data.cart,
                 ...result.data.applyRewardPointsToCart.cart,
             };
             if (result) {
@@ -65,10 +72,11 @@ const RewardPoint = ({
             }
         }
         if (cart) {
-            state.data.cart = cart;
+            dispatch(setCheckoutData({
+                cart,
+            }));
         }
-        state.newupdate = true;
-        setCheckout(state);
+        dispatch(setIsNewUpdate(true));
         setLoading(false);
     };
     if (modules.rewardpoint.enabled && checkout.data.cart && checkout.data.customer) {

@@ -54,8 +54,8 @@ const ItemAddress = (props) => {
                     }}
                     className="flex flex-row items-center gap-3"
                 >
-                    <div className="w-full border-b pb-2 flex flex-col">
-                        <label for={id} className="flex flex-col">
+                    <div className="w-full border-b border-b-neutral-200 pb-2 flex flex-col">
+                        <label for={id} className="flex flex-col cursor-pointer">
                             <Typography className="" variant="p">
                                 {`${firstname} ${lastname}`}
                             </Typography>

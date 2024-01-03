@@ -3,11 +3,17 @@
 import Typography from '@common_typography';
 import cx from 'classnames';
 import { modules } from '@config';
+import { useSelector } from 'react-redux';
+import {
+    selectCheckoutState,
+} from '@core_modules/checkout/redux/checkoutSlice';
 
 const ShippingView = (props) => {
     const {
-        checkout, handleSelect, t,
+        handleSelect, t,
     } = props;
+    const checkout = useSelector(selectCheckoutState);
+
     const checkStyles = (delivery) => ((checkout.selected.delivery === delivery)
         ? cx(
             'p-4 border border-neutral-200 rounded-xl flex flex-row items-center cursor-pointer',
