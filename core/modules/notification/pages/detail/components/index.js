@@ -6,32 +6,21 @@ import Skeleton from '@core_modules/notification/pages/detail/components/skeleto
 import Alert from '@common/Alert';
 
 const NotificationData = (props) => {
-    const {
-        t, loading, error, data, localDateString,
-    } = props;
+    const { t, loading, error, data, localDateString } = props;
 
     if (loading) {
         return (
-            <Layout
-                {...props}
-                title={t('customer:menu:notification')}
-            >
+            <Layout {...props} title={t('customer:menu:notification')}>
                 <Skeleton />
             </Layout>
         );
     }
     if (error) {
         return (
-            <Layout
-                {...props}
-                title={t('customer:menu:notification')}
-            >
+            <Layout {...props} title={t('customer:menu:notification')}>
                 <div className={cx('pt-5')}>
                     <Alert severity="error">
-                        <Typography
-                            variant="p-2a"
-                            className={cx()}
-                        >
+                        <Typography variant="p-2a" className={cx()}>
                             {`Error: ${error.message}`}
                         </Typography>
                     </Alert>
@@ -41,16 +30,10 @@ const NotificationData = (props) => {
     }
     if (!data) {
         return (
-            <Layout
-                {...props}
-                title={t('customer:menu:notification')}
-            >
+            <Layout {...props} title={t('customer:menu:notification')}>
                 <div className={cx('pt-5')}>
                     <Alert severity="warning" className={cx('pt-5')}>
-                        <Typography
-                            variant="p-2a"
-                            className={cx()}
-                        >
+                        <Typography variant="p-2a" className={cx()}>
                             {t('notification:not_found')}
                         </Typography>
                     </Alert>
@@ -62,28 +45,16 @@ const NotificationData = (props) => {
     const item = data.readNotification.items[0];
 
     return (
-        <Layout
-            {...props}
-            activeMenu="/inboxnotification/notification"
-            title={t('customer:menu:notification')}
-        >
+        <Layout {...props} activeMenu="/inboxnotification/notification" title={t('customer:menu:notification')}>
             <div className={cx('pt-5')}>
-                <Typography
-                    variant="p-3"
-                    className={cx('mb-5')}
-                >
+                <Typography variant="p-3" className={cx('mb-5')}>
                     {localDateString(item.createdAt)}
                 </Typography>
-                <Typography
-                    variant="p-2"
-                    className={cx('mb-1')}
-                >
+                <Typography variant="p-2" className={cx('mb-1')}>
                     {item.subject}
                 </Typography>
                 <div
-                    className={cx(
-                        'text-pwa-font text-md font-normal leading-2lg tracking-normal',
-                    )}
+                    className={cx('text-pwa-font text-base font-normal leading-2lg tracking-normal')}
                     dangerouslySetInnerHTML={{ __html: item.content }}
                 />
             </div>

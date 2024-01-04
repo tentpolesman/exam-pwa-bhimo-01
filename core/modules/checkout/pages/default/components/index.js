@@ -102,20 +102,17 @@ const Content = (props) => {
      */
     return (
         <div id="checkout" className="flex flex-col pb-8 desktop:py-0 relative">
-            <div className={classNames(
-                'flex flex-row items-center justify-center relative',
-                'desktop:hidden w-full absolute top-0',
-                'shadow-lg bg-neutral-white z-scroll-to-top h-[45px] tablet:h-[50px]',
-            )}
+            <div
+                className={classNames(
+                    'flex flex-row items-center justify-center relative',
+                    'desktop:hidden w-full absolute top-0',
+                    'shadow-lg bg-neutral-white z-scroll-to-top h-[45px] tablet:h-[50px]',
+                )}
             >
-                <Button
-                    variant="plain"
-                    onClick={backToStore}
-                    iconOnly
-                    icon={<ArrowLeftIcon />}
-                    className="absolute left-4 !p-0"
-                />
-                <Typography variant="h1" className="!text-md tablet:!text-lg uppercase">Checkout</Typography>
+                <Button variant="plain" onClick={backToStore} iconOnly icon={<ArrowLeftIcon />} className="absolute left-4 !p-0" />
+                <Typography variant="h1" className="!text-base tablet:!text-lg uppercase">
+                    Checkout
+                </Typography>
             </div>
             <Typography variant="h1" className="hidden">
                 {t('common:button:checkout')}
@@ -159,7 +156,6 @@ const Content = (props) => {
                     />
                 </div>
                 <div className="content-cart w-full h-full flex flex-col px-4 desktop:px-0">
-
                     <PromoModalItem
                         t={t}
                         storeConfig={storeConfig}
@@ -258,12 +254,7 @@ const Content = (props) => {
                             currencyCache={currencyCache}
                         />
 
-                        <div
-                            className={classNames(
-                                'flex flex-col border-b border-b-neutral-200',
-                                'w-full py-6 gap-4',
-                            )}
-                        >
+                        <div className={classNames('flex flex-col border-b border-b-neutral-200', 'w-full py-6 gap-4')}>
                             <Typography variant="h2" className="uppercase">
                                 {t('checkout:feePromoLabel')}
                             </Typography>
@@ -373,12 +364,7 @@ const Content = (props) => {
                         />
 
                         {enableMultiSeller ? (
-                            <div
-                                className={classNames(
-                                    'flex flex-col border-b border-b-neutral-200',
-                                    'w-full py-6 gap-4',
-                                )}
-                            >
+                            <div className={classNames('flex flex-col border-b border-b-neutral-200', 'w-full py-6 gap-4')}>
                                 <div className="xs:basis-full sm:basis-full md:basis-full xl:basis-full">
                                     <OrderComment
                                         t={t}

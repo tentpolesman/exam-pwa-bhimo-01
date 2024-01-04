@@ -82,7 +82,7 @@ const ViewSwitcherCurrency = (props) => {
                                                             <div
                                                                 className={cx('hover:cursor-pointer')}
                                                                 dangerouslySetInnerHTML={{
-                                                                    __html: `<span>${chevronLeft}</span><span class="font-medium text-md leading-[20px]">Currency</span>`,
+                                                                    __html: `<span>${chevronLeft}</span><span class="font-medium text-base leading-[20px]">Currency</span>`,
                                                                 }}
                                                             />
                                                         </div>

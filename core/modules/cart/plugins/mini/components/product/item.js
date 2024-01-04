@@ -40,12 +40,7 @@ const Item = (props) => {
 
     return (
         <li className={cx('px-6', 'py-4')}>
-            <div
-                className={cx(
-                    'minicart__item--wrapper tablet:max-desktop:py-4 flex',
-                    'flex-row gap-4 plugin-minicart-itemsProduct',
-                )}
-            >
+            <div className={cx('minicart__item--wrapper tablet:max-desktop:py-4 flex', 'flex-row gap-4 plugin-minicart-itemsProduct')}>
                 <div className={cx('minicart__item--photo-wrapper', 'rounded-[4px]')}>
                     <Link
                         href="/[...slug]"
@@ -68,8 +63,9 @@ const Item = (props) => {
                             height={120}
                             storeConfig={storeConfig}
                         />
-                        {custom_price?.row_total_incl_tax?.value === 0
-                            ? <Badge className="absolute left-1 top-1" success label={t('common:title:free')} /> : null}
+                        {custom_price?.row_total_incl_tax?.value === 0 ? (
+                            <Badge className="absolute left-1 top-1" success label={t('common:title:free')} />
+                        ) : null}
                     </Link>
                 </div>
                 <div className={cx('minicart__item--details', 'basis-full')}>
@@ -78,7 +74,7 @@ const Item = (props) => {
                             <div className={cx('minicart__item--name-wrapper', 'tablet:max-desktop:basis-[176px]', 'desktop:basis-[320px]')}>
                                 <strong className="minicart__item--name">
                                     <Link href="/[...slug]" as={`/${product.url_key}`}>
-                                        <Typography variant="p-1" className={cx('normal-case', 'mobile:max-tablet:text-md')}>
+                                        <Typography variant="p-1" className={cx('normal-case', 'mobile:max-tablet:text-base')}>
                                             {product.name}
                                         </Typography>
                                     </Link>
@@ -87,11 +83,8 @@ const Item = (props) => {
                                     {configurable_options && configurable_options.length ? (
                                         <div className="product-options">
                                             {configurable_options.map((val, idx) => (
-                                                <div className={cx('option-wrapper', 'normal-case', 'mobile:max-tablet:text-md')} key={idx}>
-                                                    <strong>{val.option_label}</strong>
-                                                    {' '}
-                                                    :
-                                                    {val.value_label}
+                                                <div className={cx('option-wrapper', 'normal-case', 'mobile:max-tablet:text-base')} key={idx}>
+                                                    <strong>{val.option_label}</strong> :{val.value_label}
                                                 </div>
                                             ))}
                                         </div>
@@ -100,17 +93,11 @@ const Item = (props) => {
                                         <div className="product-options">
                                             {bundle_options.map((val, idx) => (
                                                 <div className="option-wrapper" key={idx}>
-                                                    <strong>{val.label}</strong>
-                                                    {' '}
-                                                    :
+                                                    <strong>{val.label}</strong> :
                                                     <div className="option-wrapper__item">
                                                         {val.values.map((item, idt) => (
                                                             <div key={idt}>
-                                                                {item.quantity}
-                                                                {' '}
-                                                                x
-                                                                {item.label}
-                                                                {' '}
+                                                                {item.quantity} x{item.label}{' '}
                                                             </div>
                                                         ))}
                                                     </div>
@@ -123,11 +110,7 @@ const Item = (props) => {
                                             {cartCustomOptions.map((val, idx) => (
                                                 <div className="option-wrapper" key={idx}>
                                                     <div className="flex flex-row option-wrapper__item">
-                                                        <strong>
-                                                            {val.label}
-                                                            {' '}
-                                                            :
-                                                        </strong>
+                                                        <strong>{val.label} :</strong>
                                                         {val.values.map((item, idt) => (
                                                             <p key={idt} className="option-item">
                                                                 {item.label && item.label !== '' ? item.label : item.value}
@@ -143,11 +126,7 @@ const Item = (props) => {
                                             {aw_giftcard_option.map((val, idx) => (
                                                 <div className="option-wrapper" key={idx}>
                                                     <div className="flex flex-row option-wrapper__item">
-                                                        <strong>
-                                                            {val.label}
-                                                            {' '}
-                                                            :
-                                                        </strong>
+                                                        <strong>{val.label} :</strong>
                                                         {val.value}
                                                     </div>
                                                 </div>
@@ -197,7 +176,7 @@ const Item = (props) => {
                                     'item-price',
                                     'desktop:basis-[74px]',
                                     'font-semibold',
-                                    'mobile:max-tablet:text-md',
+                                    'mobile:max-tablet:text-base',
                                     'mobile:max-desktop:pt-1',
                                 )}
                             >

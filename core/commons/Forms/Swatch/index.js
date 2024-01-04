@@ -41,12 +41,13 @@ const Swatch = ({
 
     if (isColor || isImage) {
         return (
-            <div className={cx(
-                'p-[1px]',
-                'rounded-full border-[1px] border-neutral-white',
-                checked ? 'border-[1px] border-primary-700' : '',
-                disabled ? 'border-yellow-400 opacity-40' : 'hover:border-[1px] hover:border-primary-700',
-            )}
+            <div
+                className={cx(
+                    'p-[1px]',
+                    'rounded-full border-[1px] border-neutral-white',
+                    checked ? 'border-[1px] border-primary-700' : '',
+                    disabled ? 'border-yellow-400 opacity-40' : 'hover:border-[1px] hover:border-primary-700',
+                )}
             >
                 <div
                     key="swatches-color-selector"
@@ -68,11 +69,7 @@ const Swatch = ({
                     )}
                     {...others}
                 >
-                    {
-                        disabled && (
-                            <CloseIcon className="text-neutral-white" />
-                        )
-                    }
+                    {disabled && <CloseIcon className="text-neutral-white" />}
                 </div>
             </div>
         );
@@ -86,7 +83,7 @@ const Swatch = ({
                 !disabled ? (checked ? 'border-primary-700 text-primary-700 bg-primary-50' : 'border-neutral-200 text-neutral-700') : '',
                 !disabled ? 'hover:border-primary-700 hover:text-primary-700 hover:bg-primary-50' : '',
                 disabled && 'bg-neutral-50 border-neutral-200 text-neutral-200',
-                'text-md',
+                'text-base',
                 'swatches-text',
                 'border-[1px]',
                 'rounded-[6px]',

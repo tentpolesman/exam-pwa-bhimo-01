@@ -15,12 +15,12 @@ const MobileTabletActionMenu = (props) => {
 
     const PopoverContent = () => (
         <ul className={cx('py-2')}>
-            <li className={cx('text-md', 'px-4', 'py-2', 'hover:bg-neutral-100', 'cursor-pointer')}>
+            <li className={cx('text-base', 'px-4', 'py-2', 'hover:bg-neutral-100', 'cursor-pointer')}>
                 <Link href={`/sales/order/view/order_id/${orderNumber}`} className={cx('hover:text-primary-700')}>
                     View
                 </Link>
             </li>
-            <li className={cx('text-md', 'px-4', 'py-2', 'hover:bg-neutral-100', 'cursor-pointer')}>
+            <li className={cx('text-base', 'px-4', 'py-2', 'hover:bg-neutral-100', 'cursor-pointer')}>
                 <Typography className={cx('hover:text-primary-700', 'cursor-pointer')} onClick={() => reOrder(orderNumber)}>
                     {t('order:reorder')}
                 </Typography>

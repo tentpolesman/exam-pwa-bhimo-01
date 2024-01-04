@@ -46,7 +46,7 @@ const BurgerMenuCategories = (props) => {
                             {categories.children.length > 0 ? (
                                 <div className={cx('flex', 'justify-between', 'items-center')}>
                                     <Link href={categories.url_path} prefetch={false}>
-                                        <div className={cx('font-medium', 'text-md', 'leading-[18px]', 'hover:cursor-pointer')}>
+                                        <div className={cx('font-medium', 'text-base', 'leading-[18px]', 'hover:cursor-pointer')}>
                                             {categories.name}
                                         </div>
                                     </Link>
@@ -61,7 +61,7 @@ const BurgerMenuCategories = (props) => {
                                 </div>
                             ) : (
                                 <Link href={categories.url_path} prefetch={false}>
-                                    <Typography className={cx('font-medium', 'text-md', 'leading-[18px]', 'hover:cursor-pointer')}>
+                                    <Typography className={cx('font-medium', 'text-base', 'leading-[18px]', 'hover:cursor-pointer')}>
                                         {categories.name}
                                     </Typography>
                                 </Link>
@@ -83,7 +83,7 @@ const BurgerMenuCategories = (props) => {
                                                 setActiveSubMenuIndex(0);
                                             }}
                                             dangerouslySetInnerHTML={{
-                                                __html: `<span>${chevronLeft}</span><span class="font-medium text-md leading-[18px]">${data[activeSubMenuIndex].name}</span>`,
+                                                __html: `<span>${chevronLeft}</span><span class="font-medium text-base leading-[18px]">${data[activeSubMenuIndex].name}</span>`,
                                             }}
                                         />
                                     </div>
@@ -91,7 +91,7 @@ const BurgerMenuCategories = (props) => {
                                         {categories.children.length > 0 ? (
                                             <div className={cx('flex', 'justify-between', 'items-center')}>
                                                 <Link href={categories.url_path} prefetch={false}>
-                                                    <div className={cx('font-medium', 'text-md', 'leading-[18px]', 'hover:cursor-pointer')}>
+                                                    <div className={cx('font-medium', 'text-base', 'leading-[18px]', 'hover:cursor-pointer')}>
                                                         {categories.name}
                                                     </div>
                                                 </Link>
@@ -106,7 +106,7 @@ const BurgerMenuCategories = (props) => {
                                             </div>
                                         ) : (
                                             <Link href={categories.url_path} prefetch={false}>
-                                                <Typography className={cx('font-medium', 'text-md', 'leading-5')}>{categories.name}</Typography>
+                                                <Typography className={cx('font-medium', 'text-base', 'leading-5')}>{categories.name}</Typography>
                                             </Link>
                                         )}
                                     </div>
@@ -118,7 +118,7 @@ const BurgerMenuCategories = (props) => {
                                 {categories.children.length > 0 ? (
                                     <div className={cx('flex', 'justify-between', 'items-center')}>
                                         <Link href={categories.url_path} prefetch={false}>
-                                            <div className={cx('font-medium', 'text-md', 'leading-[18px]', 'hover:cursor-pointer')}>
+                                            <div className={cx('font-medium', 'text-base', 'leading-[18px]', 'hover:cursor-pointer')}>
                                                 {categories.name}
                                             </div>
                                         </Link>
@@ -133,7 +133,7 @@ const BurgerMenuCategories = (props) => {
                                     </div>
                                 ) : (
                                     <Link href={categories.url_path} prefetch={false}>
-                                        <Typography className={cx('font-medium', 'text-md', 'leading-5')}>{categories.name}</Typography>
+                                        <Typography className={cx('font-medium', 'text-base', 'leading-5')}>{categories.name}</Typography>
                                     </Link>
                                 )}
                             </div>
@@ -153,7 +153,7 @@ const BurgerMenuCategories = (props) => {
                                                 setActiveSubMenuLv1Index(0);
                                             }}
                                             dangerouslySetInnerHTML={{
-                                                __html: `<span>${chevronLeft}</span><span class="font-medium text-md leading-[18px]">${data[activeSubMenuIndex].name} / ${data[activeSubMenuIndex].children[activeSubMenuLv1Index].name}</span>`,
+                                                __html: `<span>${chevronLeft}</span><span class="font-medium text-base leading-[18px]">${data[activeSubMenuIndex].name} / ${data[activeSubMenuIndex].children[activeSubMenuLv1Index].name}</span>`,
                                             }}
                                         />
                                     </div>
@@ -161,7 +161,7 @@ const BurgerMenuCategories = (props) => {
                                         {categories.children.length > 0 ? (
                                             <div className={cx('flex', 'justify-between', 'items-center')}>
                                                 <Link href={categories.url_path} prefetch={false}>
-                                                    <div className={cx('font-medium', 'text-md', 'leading-[18px]', 'hover:cursor-pointer')}>
+                                                    <div className={cx('font-medium', 'text-base', 'leading-[18px]', 'hover:cursor-pointer')}>
                                                         {categories.name}
                                                     </div>
                                                 </Link>
@@ -176,7 +176,7 @@ const BurgerMenuCategories = (props) => {
                                             </div>
                                         ) : (
                                             <Link href={categories.url_path} prefetch={false}>
-                                                <Typography className={cx('font-medium', 'text-md', 'leading-5')}>{categories.name}</Typography>
+                                                <Typography className={cx('font-medium', 'text-base', 'leading-5')}>{categories.name}</Typography>
                                             </Link>
                                         )}
                                     </div>
@@ -188,7 +188,7 @@ const BurgerMenuCategories = (props) => {
                                 {categories.children.length > 0 ? (
                                     <div className={cx('flex', 'justify-between', 'items-center')}>
                                         <Link href={categories.url_path} prefetch={false}>
-                                            <div className={cx('font-medium', 'text-md', 'leading-[18px]', 'hover:cursor-pointer')}>
+                                            <div className={cx('font-medium', 'text-base', 'leading-[18px]', 'hover:cursor-pointer')}>
                                                 {categories.name}
                                             </div>
                                         </Link>
@@ -203,7 +203,7 @@ const BurgerMenuCategories = (props) => {
                                     </div>
                                 ) : (
                                     <Link href={categories.url_path} prefetch={false}>
-                                        <Typography className={cx('font-medium', 'text-md', 'leading-5')}>{categories.name}</Typography>
+                                        <Typography className={cx('font-medium', 'text-base', 'leading-5')}>{categories.name}</Typography>
                                     </Link>
                                 )}
                             </div>
@@ -222,13 +222,13 @@ const BurgerMenuCategories = (props) => {
                                                 setActiveSubMenuLv2Index(0);
                                             }}
                                             dangerouslySetInnerHTML={{
-                                                __html: `<span>${chevronLeft}</span><span class="font-medium text-md leading-[18px]">${data[activeSubMenuIndex].name} / ${data[activeSubMenuIndex].children[activeSubMenuLv1Index].name} / ${data[activeSubMenuIndex].children[activeSubMenuLv1Index].children[activeSubMenuLv2Index].name}</span>`,
+                                                __html: `<span>${chevronLeft}</span><span class="font-medium text-base leading-[18px]">${data[activeSubMenuIndex].name} / ${data[activeSubMenuIndex].children[activeSubMenuLv1Index].name} / ${data[activeSubMenuIndex].children[activeSubMenuLv1Index].children[activeSubMenuLv2Index].name}</span>`,
                                             }}
                                         />
                                     </div>
                                     <div className={cx('border-b-[1px]', 'border-neutral-100', 'py-3', 'px-4')} key={index}>
                                         <Link href={categories.url_path} prefetch={false}>
-                                            <Typography className={cx('font-medium', 'text-md', 'leading-5')}>{categories.name}</Typography>
+                                            <Typography className={cx('font-medium', 'text-base', 'leading-5')}>{categories.name}</Typography>
                                         </Link>
                                     </div>
                                 </>
@@ -237,7 +237,7 @@ const BurgerMenuCategories = (props) => {
                         return (
                             <div className={cx('border-b-[1px]', 'border-neutral-100', 'py-3', 'px-4')} key={index}>
                                 <Link href={categories.url_path} prefetch={false}>
-                                    <Typography className={cx('font-medium', 'text-md', 'leading-5')}>{categories.name}</Typography>
+                                    <Typography className={cx('font-medium', 'text-base', 'leading-5')}>{categories.name}</Typography>
                                 </Link>
                             </div>
                         );

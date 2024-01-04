@@ -15,7 +15,7 @@ const Copyright = (props) => {
 
     return (
         <div className={cx('copyright', 'text-center', 'p-[10px]', 'bg-neutral-100')}>
-            <span className={cx('text-md', 'font-normal', 'leading-5', 'text-neutral-500')}>{storeConfig.copyright}</span>
+            <span className={cx('text-base', 'font-normal', 'leading-5', 'text-neutral-500')}>{storeConfig.copyright}</span>
         </div>
     );
 };

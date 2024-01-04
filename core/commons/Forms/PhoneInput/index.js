@@ -48,7 +48,7 @@ const PhoneInput = (props) => {
                     'border-[1px]',
                     'border-neutral-100',
                     'rounded-lg',
-                    'text-md',
+                    'text-base',
                     'hover:border-primary-100',
                     'focus:border-0',
                     {

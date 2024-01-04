@@ -50,7 +50,7 @@ const Tabs = (props) => {
             <div
                 className={cx(
                     'tabs-wrapper',
-                    'text-md',
+                    'text-base',
                     'font-medium',
                     'text-center',
                     'text-neutral-700',
@@ -65,21 +65,15 @@ const Tabs = (props) => {
                     {!tabHasContent && allItems ? (
                         <li>
                             <a
-                                className={cx(
-                                    'default-active',
-                                    'tab-item',
-                                    'min-w-[100px]',
-                                    tabClasses,
-                                    tabActive,
-                                )}
+                                className={cx('default-active', 'tab-item', 'min-w-[100px]', tabClasses, tabActive)}
                                 onClick={(e) => e.preventDefault()}
                             >
                                 {t('common:label:allItems')}
                             </a>
                         </li>
                     ) : null}
-                    {data
-                        && data.map((item, index) => {
+                    {data &&
+                        data.map((item, index) => {
                             if (index === 0) {
                                 return (
                                     <li
@@ -90,17 +84,14 @@ const Tabs = (props) => {
                                         key={index}
                                     >
                                         <a
-                                            className={
-                                                cx(
-                                                    'tab-item',
-                                                    !tabHasContent && allItems
-                                                        ? cx(tabClasses, 'default-allitems')
-                                                        : usedActive === index
-                                                            ? cx(tabClasses, tabActive, 'default-active')
-                                                            : cx(tabClasses),
-                                                )
-
-                                            }
+                                            className={cx(
+                                                'tab-item',
+                                                !tabHasContent && allItems
+                                                    ? cx(tabClasses, 'default-allitems')
+                                                    : usedActive === index
+                                                      ? cx(tabClasses, tabActive, 'default-active')
+                                                      : cx(tabClasses),
+                                            )}
                                             onClick={(e) => {
                                                 if (tabHasContent) {
                                                     handleTabSwitch(index);
@@ -118,16 +109,14 @@ const Tabs = (props) => {
                             return (
                                 <li className={cx(usedActive === index ? tabTitleListActiveClassName : tabTitleListClassName)} key={index}>
                                     <a
-                                        className={
-                                            cx(
-                                                'tab-item',
-                                                !tabHasContent && allItems
-                                                    ? cx(tabClasses, 'default-allitems')
-                                                    : usedActive === index
-                                                        ? cx(tabClasses, tabActive, 'default-active')
-                                                        : cx(tabClasses),
-                                            )
-                                        }
+                                        className={cx(
+                                            'tab-item',
+                                            !tabHasContent && allItems
+                                                ? cx(tabClasses, 'default-allitems')
+                                                : usedActive === index
+                                                  ? cx(tabClasses, tabActive, 'default-active')
+                                                  : cx(tabClasses),
+                                        )}
                                         onClick={(e) => {
                                             if (tabHasContent) {
                                                 handleTabSwitch(index);

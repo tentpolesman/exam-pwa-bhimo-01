@@ -82,7 +82,7 @@ const OrderView = (props) => {
             </div>
             <div className={cx('pt-[18px]')}>
                 <div className={cx('relative', 'overflow-x-auto', 'rounded-lg', 'mobile:max-tablet:hidden')}>
-                    <table className={cx('w-full', 'text-md', 'border-[1px]', 'border-neutral-100')}>
+                    <table className={cx('w-full', 'text-base', 'border-[1px]', 'border-neutral-100')}>
                         <thead>
                             <tr className={cx('text-neutral-500', 'font-semibold', 'leading-2lg', 'text-left')}>
                                 <th className={cx('px-4', 'py-3')}>
@@ -102,13 +102,13 @@ const OrderView = (props) => {
                                 <>
                                     {customerOrders.items.map((val, index) => (
                                         <tr className={cx('even:bg-white', 'odd:bg-neutral-50')} key={index}>
-                                            <td className={cx('text-neutral-700', 'text-md', 'font-normal', 'leading-2lg', 'p-4')}>
+                                            <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-4')}>
                                                 {val.order_number}
                                             </td>
-                                            <td className={cx('text-neutral-700', 'text-md', 'font-normal', 'leading-2lg', 'p-4')}>
+                                            <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-4')}>
                                                 {formatDate(val.created_at, 'DD/MM/YYYY')}
                                             </td>
-                                            <td className={cx('text-neutral-700', 'text-md', 'font-normal', 'leading-2lg', 'p-4')}>
+                                            <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-4')}>
                                                 {val.detail[0].shipping_address !== null
                                                     ? val.detail[0].shipping_address.firstname
                                                     : customerData.firstname}{' '}
@@ -116,7 +116,7 @@ const OrderView = (props) => {
                                                     ? val.detail[0].shipping_address.lastname
                                                     : customerData.lastname}
                                             </td>
-                                            <td className={cx('text-neutral-700', 'text-md', 'font-normal', 'leading-2lg', 'p-4')}>
+                                            <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-4')}>
                                                 {formatPrice(
                                                     val.grand_total,
                                                     val.detail[0].global_currency_code

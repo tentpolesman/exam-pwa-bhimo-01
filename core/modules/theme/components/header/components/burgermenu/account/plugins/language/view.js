@@ -65,7 +65,7 @@ const ViewSwitcherLanguage = (props) => {
                                                         <div
                                                             className={cx('hover:cursor-pointer')}
                                                             dangerouslySetInnerHTML={{
-                                                                __html: `<span>${chevronLeft}</span><span class="font-medium text-md leading-[18px]">Language</span>`,
+                                                                __html: `<span>${chevronLeft}</span><span class="font-medium text-base leading-[18px]">Language</span>`,
                                                             }}
                                                         />
                                                     </div>

@@ -93,8 +93,8 @@ const DesktopHeader = (props) => {
                 className={cx(
                     'top-header',
                     'mobile:max-desktop:hidden',
-                    'tablet:border-b-[1.5px]',
-                    'tablet:border-b-neutral-300',
+                    'tablet:border-b',
+                    'tablet:border-b-neutral-200',
                     'py-[1px]',
                     'min-h-[40px]',
                 )}
@@ -130,7 +130,7 @@ const DesktopHeader = (props) => {
                     'middle-header',
                     'mobile:max-desktop:hidden',
                     'tablet:border-b-[1.5px]',
-                    'tablet:border-b-neutral-300',
+                    'tablet:border-b-neutral-200',
                     'tablet:py-[15px]',
                 )}
             >
@@ -181,7 +181,20 @@ const DesktopHeader = (props) => {
                                 <ShoppingBagIcon withLink storeConfig={storeConfig} />
                             </div>
                         </div>
-                        <div className={cx('middle-header__statusicon__right-section', 'border-l-[1.5px]', 'border-l-neutral-300')}>
+                        <div className={cx('middle-header__statusicon__right-section relative')}>
+                            <span
+                                className={cx(
+                                    'border-l-[1.5px]',
+                                    'border-l-neutral-200',
+                                    'absolute',
+                                    'left-0',
+                                    'top-[50%]',
+                                    'translate-y-[-50%]',
+                                    'h-7',
+                                )}
+                            >
+                                &nbsp;
+                            </span>
                             <div
                                 className={cx(
                                     'middle-header__statusicon__right-section__account',

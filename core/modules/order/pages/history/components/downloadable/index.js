@@ -26,14 +26,10 @@ const DefaultView = (props) => {
         <Layout t={t} wishlist={[]}>
             <div className={cx('pt-5')}>
                 <div className={cx('relative', 'overflow-x-auto', 'rounded-lg')}>
-                    <table className={cx('w-full', 'text-md', 'border-[1px]', 'border-neutral-100')}>
+                    <table className={cx('w-full', 'text-base', 'border-[1px]', 'border-neutral-100')}>
                         <thead>
                             <tr className={cx('text-neutral-500', 'font-semibold', 'leading-2lg', 'text-left')}>
-                                <th className={cx('px-4', 'py-3')}>
-                                    {t('order:order')}
-                                    {' '}
-                                    #
-                                </th>
+                                <th className={cx('px-4', 'py-3')}>{t('order:order')} #</th>
                                 <th className={cx('px-4', 'py-3')}>{t('order:date')}</th>
                                 <th className={cx('px-4', 'py-3')}>{t('order:titleDownload')}</th>
                                 <th className={cx('px-4', 'py-3')}>{t('order:status')}</th>
@@ -44,7 +40,7 @@ const DefaultView = (props) => {
                             <Show when={data?.length > 0}>
                                 {itemList?.[page - 1]?.map((val, index) => (
                                     <tr className={cx('even:bg-white', 'odd:bg-neutral-50')} key={index}>
-                                        <td className={cx('text-neutral-700', 'text-md', 'font-normal', 'leading-2lg', 'p-4')}>
+                                        <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-4')}>
                                             <Link
                                                 href={`/sales/order/view/order_id/${val.order_increment_id}`}
                                                 className={cx('hover:text-primary-700')}
@@ -52,10 +48,10 @@ const DefaultView = (props) => {
                                                 {val.order_increment_id}
                                             </Link>
                                         </td>
-                                        <td className={cx('text-neutral-700', 'text-md', 'font-normal', 'leading-2lg', 'p-4')}>
+                                        <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-4')}>
                                             {formatDate(val.date, 'M/DD/YY')}
                                         </td>
-                                        <td className={cx('text-neutral-700', 'text-md', 'font-normal', 'leading-2lg', 'p-4')}>
+                                        <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-4')}>
                                             <span className={cx('pr-4')}>{val.title}</span>
                                             <Show when={val.status === 'available'}>
                                                 <Link
@@ -68,8 +64,8 @@ const DefaultView = (props) => {
                                                 </Link>
                                             </Show>
                                         </td>
-                                        <td className={cx('text-neutral-700', 'text-md', 'font-normal', 'leading-2lg', 'p-4')}>{val.status}</td>
-                                        <td className={cx('text-neutral-700', 'text-md', 'font-normal', 'leading-2lg', 'p-4')}>
+                                        <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-4')}>{val.status}</td>
+                                        <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-4')}>
                                             {val.remaining_downloads}
                                         </td>
                                     </tr>

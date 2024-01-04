@@ -42,7 +42,7 @@ const Content = (props) => {
 
     return (
         <Layout {...props}>
-            <div className={cx('flex', 'flex-col', 'w-full', 'h-full', 'text-md', 'pt-5', 'px-4')}>
+            <div className={cx('flex', 'flex-col', 'w-full', 'h-full', 'text-base', 'pt-5', 'px-4')}>
                 <div className={cx('desktop:hidden')}>
                     {loading ? (
                         <SkeletonMobile />
@@ -89,7 +89,7 @@ const Content = (props) => {
                     )}
                 </div>
                 <div className={cx('relative', 'overflow-x-auto', 'rounded-lg', 'mobile:max-desktop:hidden')}>
-                    <table className={cx('w-full', 'text-md', 'border-[1px]', 'border-neutral-100')}>
+                    <table className={cx('w-full', 'text-base', 'border-[1px]', 'border-neutral-100')}>
                         <thead>
                             <tr className={cx('text-neutral-500', 'font-semibold', 'leading-2lg', 'text-left')}>
                                 <th className={cx('px-4', 'py-3')}>Default</th>

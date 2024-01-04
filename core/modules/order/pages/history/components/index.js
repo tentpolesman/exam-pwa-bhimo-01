@@ -25,9 +25,7 @@ import ExclamationTriangleIcon from '@heroicons/react/24/outline/ExclamationTria
 import Alert from '@common_alert';
 
 const DefaultView = (props) => {
-    const {
-        data, t, storeConfig, reOrder, pageSize, handleChangePage, handleChangePageSize, error,
-    } = props;
+    const { data, t, storeConfig, reOrder, pageSize, handleChangePage, handleChangePageSize, error } = props;
 
     // cache currency
     const currencyCache = useReactiveVar(currencyVar);
@@ -77,7 +75,7 @@ const DefaultView = (props) => {
         <Layout t={t}>
             <div className={cx('pt-5')}>
                 <div className={cx('relative', 'overflow-x-auto', 'rounded-lg')}>
-                    <table className={cx('w-full', 'text-md', 'border-[1px]', 'border-neutral-100')}>
+                    <table className={cx('w-full', 'text-base', 'border-[1px]', 'border-neutral-100')}>
                         <thead>
                             <tr className={cx('text-neutral-500', 'font-semibold', 'leading-2lg', 'text-left')}>
                                 <th className={cx('px-4', 'py-3')}>{t('customer:order:order')} #</th>
@@ -99,17 +97,17 @@ const DefaultView = (props) => {
                                         <>
                                             {data.items.map((val, index) => (
                                                 <tr className={cx('even:bg-white', 'odd:bg-neutral-50')} key={index}>
-                                                    <td className={cx('text-neutral-700', 'text-md', 'font-normal', 'leading-2lg', 'p-4')}>
+                                                    <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-4')}>
                                                         {val.order_number}
                                                     </td>
-                                                    <td className={cx('text-neutral-700', 'text-md', 'font-normal', 'leading-2lg', 'p-4')}>
+                                                    <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-4')}>
                                                         {formatDate(val.created_at, 'DD/MM/YYYY')}
                                                     </td>
-                                                    <td className={cx('text-neutral-700', 'text-md', 'font-normal', 'leading-2lg', 'p-4')}>
+                                                    <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-4')}>
                                                         {val.detail[0].shipping_address.firstname || val.detail[0].billing_address.firstname}{' '}
                                                         {val.detail[0].shipping_address.lastname || val.detail[0].billing_address.lastname}
                                                     </td>
-                                                    <td className={cx('text-neutral-700', 'text-md', 'font-normal', 'leading-2lg', 'p-4')}>
+                                                    <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-4')}>
                                                         {formatPrice(val.grand_total, storeConfig.base_currency_code || 'IDR', currencyCache)}
                                                     </td>
                                                     <td>{generateBadge(val.status, val.status_label)}</td>
@@ -118,7 +116,7 @@ const DefaultView = (props) => {
                                                             <Link
                                                                 href={`/sales/order/view/order_id/${val.order_number}`}
                                                                 className={cx(
-                                                                    'text-md',
+                                                                    'text-base',
                                                                     'px-4',
                                                                     'desktop:border-r-[1px]',
                                                                     'desktop:border-neutral-200',
@@ -128,7 +126,7 @@ const DefaultView = (props) => {
                                                                 View
                                                             </Link>
                                                             <button type="button" onClick={() => reOrder(val.order_number)}>
-                                                                <a className={cx('text-md', 'px-4', 'hover:text-primary-700')}>Reorder</a>
+                                                                <a className={cx('text-base', 'px-4', 'hover:text-primary-700')}>Reorder</a>
                                                             </button>
                                                         </div>
                                                         <div className={cx('desktop:hidden')}>

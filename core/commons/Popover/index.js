@@ -3,9 +3,7 @@ import cx from 'classnames';
 import React from 'react';
 
 const Popover = (props) => {
-    const {
-        children, content, open, setOpen = () => {}, className = '', contentClassName, wrapperClassName = '', wrapperId = '',
-    } = props;
+    const { children, content, open, setOpen = () => {}, className = '', contentClassName, wrapperClassName = '', wrapperId = '' } = props;
     const wrapperRef = React.useRef(null);
 
     React.useEffect(() => {
