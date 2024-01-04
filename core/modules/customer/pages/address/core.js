@@ -12,10 +12,13 @@ import {
 } from '@core_modules/customer/services/graphql';
 import Layout from '@layout';
 import _ from 'lodash';
+import dynamic from 'next/dynamic';
 import React, { useEffect, useState } from 'react';
 
+const Content = dynamic(() => import('@core_modules/customer/pages/address/components'), { ssr: false });
+
 const AddressCustomer = (props) => {
-    const { t, pageConfig, Content } = props;
+    const { t, pageConfig } = props;
     const config = {
         title: t('customer:address:pageTitle'),
         headerTitle: t('customer:address:pageTitle'),
