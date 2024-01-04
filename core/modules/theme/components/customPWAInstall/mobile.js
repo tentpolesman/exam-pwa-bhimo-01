@@ -54,14 +54,7 @@ const MobileInstall = (props) => {
             id="wrapper-mobile__install"
         >
             <div className={cx('install_image', 'basis-10', 'shrink-0', 'flex', 'items-center', 'justify-center')}>
-                <Image
-                    src="/assets/img/mobile_install_logo.png"
-                    alt={appName}
-                    width={30}
-                    height={32}
-                    storeConfig={storeConfig}
-                    unoptimized
-                />
+                <Image src="/assets/img/mobile_install_logo.png" alt={appName} width={30} height={32} storeConfig={storeConfig} />
             </div>
             <div className={cx('install_info', 'basis-full')}>
                 <Typography variant="bd-3a" className={cx('text-neutral-700', 'block')}>
@@ -73,15 +66,7 @@ const MobileInstall = (props) => {
             </div>
             <div className={cx('install_button', 'flex', 'items-center')}>
                 <Button
-                    className={cx(
-                        'm-0',
-                        'hover:shadow-none',
-                        'focus:shadow-none',
-                        'active:shadow-none',
-                        'active:shadow-none',
-                        'px-4',
-                        'py-[5px]',
-                    )}
+                    className={cx('m-0', 'hover:shadow-none', 'focus:shadow-none', 'active:shadow-none', 'active:shadow-none', 'px-4', 'py-[5px]')}
                     onClick={handleClickInstallApp}
                     variant="primary"
                     id="btn-install__mobile"

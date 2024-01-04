@@ -9,9 +9,7 @@ import Typography from '@common_typography';
 import ChevronDownIcon from '@heroicons/react/24/outline/ChevronDownIcon';
 
 const ViewSwitcherLanguage = (props) => {
-    const {
-        open, setOpen, dataLang, lang, onClickLanguage, loadDataLang,
-    } = props;
+    const { open, setOpen, dataLang, lang, onClickLanguage, loadDataLang } = props;
 
     const listDataLanguage = [];
 
@@ -24,21 +22,13 @@ const ViewSwitcherLanguage = (props) => {
 
     const PopoverContent = () => (
         <ul className={cx('currency-list__wrapper')}>
-            {listDataLanguage !== null
-                && listDataLanguage.length > 0
-                && listDataLanguage.map((language_item, index) => (
+            {listDataLanguage !== null &&
+                listDataLanguage.length > 0 &&
+                listDataLanguage.map((language_item, index) => (
                     // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions
                     <li
                         key={`language-${index}`}
-                        className={cx(
-                            'language-list__item',
-                            'py-2',
-                            'px-2',
-                            'text-center',
-                            'hover:cursor-pointer',
-                            'hover:bg-neutral-100',
-                            'group',
-                        )}
+                        className={cx('language-list__item', 'py-2', 'px-2', 'text-center', 'hover:cursor-pointer', 'hover:bg-neutral-100', 'group')}
                         onClick={() => onClickLanguage({ item: language_item })}
                     >
                         <Typography className={cx('currency-list__text', 'group-hover:text-primary-700')}>{language_item.label}</Typography>
@@ -53,7 +43,7 @@ const ViewSwitcherLanguage = (props) => {
                 content={<PopoverContent />}
                 open={open}
                 setOpen={setOpen}
-                className={cx('top-[120%]', 'p-0')}
+                className={cx('top-[100%]', 'p-0')}
                 wrapperClassName={cx('self-end')}
                 wrapperId="top-header__content--currency-language-changer-menu__language-switcher"
             >

@@ -7,9 +7,7 @@ import Show from '@common/Show';
 import Skeleton from './skeleton';
 
 const SellerItem = (props) => {
-    const {
-        name, id, logo, city,
-    } = props;
+    const { name, id, logo, city } = props;
     const citySplit = city?.split(',');
 
     return (
@@ -18,11 +16,7 @@ const SellerItem = (props) => {
                 <div className="flex flex-row mt-3">
                     <div className="float-left mr-5">
                         <div className="rounded-full flex items-center justify-center h-max w-max">
-                            <Image
-                                src={logo}
-                                classContainer="w-[60px] h-[60px]"
-                                className="w-[60px] h-[60px]"
-                            />
+                            <Image src={logo} classContainer="w-[60px] h-[60px]" className="w-[60px] h-[60px]" />
                         </div>
                     </div>
                     <div>
@@ -44,12 +38,12 @@ const SellerView = (props) => {
 
     return (
         <div className="flex flex-col gap-4">
-            <Typography className="font-semibold text-md">Seller</Typography>
+            <Typography className="font-semibold text-base">Seller</Typography>
             <div className="grid grid-cols-1 tablet:grid-cols-3 desktop:grid-cols-4">
                 <Show when={loading}>
-                    {
-                        [1, 2, 3, 4].map((key) => <Skeleton key={key} />)
-                    }
+                    {[1, 2, 3, 4].map((key) => (
+                        <Skeleton key={key} />
+                    ))}
                 </Show>
                 <Show when={!loading}>
                     {data.map((item, idx) => (

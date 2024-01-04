@@ -64,7 +64,7 @@ const MiniComponent = (props) => {
                                     className={cx(
                                         'mobile:max-tablet:leading-[18px]',
                                         'mobile:max-tablet:font-semibold',
-                                        'mobile:max-tablet:text-md',
+                                        'mobile:max-tablet:text-base',
                                         'mobile:max-tablet:p-4',
                                     )}
                                 >

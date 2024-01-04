@@ -9,17 +9,14 @@ import Show from '@common_show';
 import formatDate from '@helper_date';
 
 const DefaultView = (props) => {
-    const {
-        data, t,
-    } = props;
+    const { data, t } = props;
 
     const [page, setPage] = useState(1);
     const itemCount = data?.length;
     const itemLimit = 10;
     const totalPage = itemCount < itemLimit ? 1 : Math.ceil(itemCount / itemLimit);
 
-    const itemList = Array.from({ length: totalPage }, (_, i) =>
-        data.slice(i * itemLimit, i * itemLimit + itemLimit));
+    const itemList = Array.from({ length: totalPage }, (_, i) => data.slice(i * itemLimit, i * itemLimit + itemLimit));
 
     const handleChangePage = (value) => {
         setPage(value);
@@ -29,14 +26,10 @@ const DefaultView = (props) => {
         <Layout t={t} wishlist={[]}>
             <div className={cx('pt-5')}>
                 <div className={cx('relative', 'overflow-x-auto', 'rounded-lg')}>
-                    <table className={cx('w-full', 'text-md', 'border-[1px]', 'border-neutral-100')}>
+                    <table className={cx('w-full', 'text-base', 'border-[1px]', 'border-neutral-100')}>
                         <thead>
                             <tr className={cx('text-neutral-500', 'font-semibold', 'leading-2lg', 'text-left')}>
-                                <th className={cx('px-4', 'py-3')}>
-                                    {t('order:order')}
-                                    {' '}
-                                    #
-                                </th>
+                                <th className={cx('px-4', 'py-3')}>{t('order:order')} #</th>
                                 <th className={cx('px-4', 'py-3')}>{t('order:date')}</th>
                                 <th className={cx('px-4', 'py-3')}>{t('order:titleDownload')}</th>
                                 <th className={cx('px-4', 'py-3')}>{t('order:status')}</th>
@@ -47,43 +40,32 @@ const DefaultView = (props) => {
                             <Show when={data?.length > 0}>
                                 {itemList?.[page - 1]?.map((val, index) => (
                                     <tr className={cx('even:bg-white', 'odd:bg-neutral-50')} key={index}>
-                                        <td className={cx('text-neutral-700', 'text-md', 'font-normal', 'leading-2lg', 'p-4')}>
+                                        <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-4')}>
                                             <Link
                                                 href={`/sales/order/view/order_id/${val.order_increment_id}`}
-                                                className={cx(
-                                                    'hover:text-primary-700',
-                                                )}
+                                                className={cx('hover:text-primary-700')}
                                             >
                                                 {val.order_increment_id}
                                             </Link>
                                         </td>
-                                        <td className={cx('text-neutral-700', 'text-md', 'font-normal', 'leading-2lg', 'p-4')}>
+                                        <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-4')}>
                                             {formatDate(val.date, 'M/DD/YY')}
                                         </td>
-                                        <td className={cx('text-neutral-700', 'text-md', 'font-normal', 'leading-2lg', 'p-4')}>
-                                            <span className={cx('pr-4')}>
-                                                {val.title}
-                                            </span>
+                                        <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-4')}>
+                                            <span className={cx('pr-4')}>{val.title}</span>
                                             <Show when={val.status === 'available'}>
                                                 <Link
                                                     href={val.download_url}
                                                     target="_blank"
                                                     rel="noreferrer"
-                                                    className={cx(
-                                                        'pl-4',
-                                                        'border-l-[1px]',
-                                                        'border-neutral-200',
-                                                        'hover:text-primary-700',
-                                                    )}
+                                                    className={cx('pl-4', 'border-l-[1px]', 'border-neutral-200', 'hover:text-primary-700')}
                                                 >
                                                     {val.link_title}
                                                 </Link>
                                             </Show>
                                         </td>
-                                        <td className={cx('text-neutral-700', 'text-md', 'font-normal', 'leading-2lg', 'p-4')}>
-                                            {val.status}
-                                        </td>
-                                        <td className={cx('text-neutral-700', 'text-md', 'font-normal', 'leading-2lg', 'p-4')}>
+                                        <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-4')}>{val.status}</td>
+                                        <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-4')}>
                                             {val.remaining_downloads}
                                         </td>
                                     </tr>
@@ -93,10 +75,7 @@ const DefaultView = (props) => {
                                 <tr className={cx('even:bg-white', 'odd:bg-neutral-50')}>
                                     <td colSpan={5} className="p-4">
                                         <Alert severity="warning">
-                                            <Typography
-                                                variant="p-2a"
-                                                className={cx()}
-                                            >
+                                            <Typography variant="p-2a" className={cx()}>
                                                 {t('order:notFound')}
                                             </Typography>
                                         </Alert>
@@ -110,13 +89,7 @@ const DefaultView = (props) => {
                     <Typography variant="p-2" className={cx('')}>
                         {`${itemCount} Item(s)`}
                     </Typography>
-                    <Pagination
-                        handleChangePage={handleChangePage}
-                        page={page}
-                        siblingCount={0}
-                        className={cx('!p-0')}
-                        totalPage={totalPage}
-                    />
+                    <Pagination handleChangePage={handleChangePage} page={page} siblingCount={0} className={cx('!p-0')} totalPage={totalPage} />
                 </div>
             </div>
         </Layout>

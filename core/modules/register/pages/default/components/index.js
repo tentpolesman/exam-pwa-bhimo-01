@@ -295,7 +295,7 @@ const RegisterView = ({
                                 <>
                                     <ReCAPTCHA sitekey={sitekey} onChange={handleChangeCaptcha} ref={recaptchaRef} />
                                     <Show when={formik.errors.captcha}>
-                                        <Typography className={cx('text-md font-normal leading-lg tracking-normal text-pwa-font my-2 !text-red')}>
+                                        <Typography className={cx('text-base font-normal leading-lg tracking-normal text-pwa-font my-2 !text-red')}>
                                             {formik.errors.captcha}
                                         </Typography>
                                     </Show>

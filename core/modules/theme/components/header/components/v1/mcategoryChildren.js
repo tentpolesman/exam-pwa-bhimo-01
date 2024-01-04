@@ -27,7 +27,7 @@ const MenuChildren = ({ data, handleClick, generateLink, mainData }) => {
                 </div>
             )}
             <div
-                className={cx('nav-column nav-column-left', 'w-[150px]', {
+                className={cx('nav-column nav-column-left', 'min-w-[150px]', {
                     '!bg-neutral-white': mainData && mainData.dropdown_bgcolor === '',
                 })}
             >
@@ -45,7 +45,7 @@ const MenuChildren = ({ data, handleClick, generateLink, mainData }) => {
                                 className={cx(
                                     active === idx ? 'active' : '',
                                     '!text-neutral-700',
-                                    '!text-md',
+                                    '!text-base',
                                     '!font-medium',
                                     '!leading-lg',
                                     '!px-2',
@@ -68,7 +68,7 @@ const MenuChildren = ({ data, handleClick, generateLink, mainData }) => {
                             <Link href={generateLink(lvl3)[0]} as={generateLink(lvl3)[1]} prefetch={false} legacyBehavior>
                                 <a
                                     onClick={() => handleClick(lvl3)}
-                                    className={cx('!text-neutral-700', 'text-md', '!font-medium', '!leading-lg', '!px-4', '!py-[11px]')}
+                                    className={cx('!text-neutral-700', 'text-base', '!font-medium', '!leading-lg', '!px-4', '!py-[11px]')}
                                 >
                                     {lvl3.name}
                                 </a>
@@ -79,7 +79,7 @@ const MenuChildren = ({ data, handleClick, generateLink, mainData }) => {
                                         <Link href={generateLink(lvl4)[0]} as={generateLink(lvl4)[1]} prefetch={false} legacyBehavior>
                                             <a
                                                 onClick={() => handleClick(lvl4)}
-                                                className={cx('!text-neutral-700', 'text-md', '!font-normal', '!leading-lg', '!px-4', '!py-[11px]')}
+                                                className={cx('!text-neutral-700', 'text-base', '!font-normal', '!leading-lg', '!px-4', '!py-[11px]')}
                                             >
                                                 {lvl4.name}
                                             </a>

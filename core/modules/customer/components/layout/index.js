@@ -8,9 +8,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 const Layout = (props) => {
-    const {
-        children, t, title, activeMenu, storeConfig,
-    } = props;
+    const { children, t, title, activeMenu, storeConfig } = props;
     const pushIf = (condition, ...elements) => (condition ? elements : []);
     const router = useRouter();
     let titlePage = '';
@@ -78,7 +76,7 @@ const Layout = (props) => {
                                             return (
                                                 <li
                                                     key={idx}
-                                                    className={cx('px-3', 'mt-3', 'pt-2', 'pb-2', 'text-md', 'rounded-md', {
+                                                    className={cx('px-3', 'mt-3', 'pt-2', 'pb-2', 'text-base', 'rounded-md', {
                                                         'bg-neutral-50 border-[1px] border-neutral-100 font-medium':
                                                             router.asPath === '/customer/account' || activeMenu === '/customer/account',
                                                     })}
@@ -93,7 +91,7 @@ const Layout = (props) => {
                                                     <div className={cx('mx-2', 'my-2', 'h-[1px]', 'bg-neutral-200')} />
                                                     <li
                                                         key={idx}
-                                                        className={cx('px-3', 'py-2', 'text-md', 'rounded-md', {
+                                                        className={cx('px-3', 'py-2', 'text-base', 'rounded-md', {
                                                             'bg-neutral-50 border-[1px] border-neutral-100 font-medium':
                                                                 router.asPath === val.href || activeMenu === val.href,
                                                         })}
@@ -109,7 +107,7 @@ const Layout = (props) => {
                                                     <div className={cx('mx-2', 'my-2', 'h-[1px]', 'bg-neutral-200')} />
                                                     <li
                                                         key={idx}
-                                                        className={cx('px-3', 'py-2', 'text-md', 'rounded-md', {
+                                                        className={cx('px-3', 'py-2', 'text-base', 'rounded-md', {
                                                             'bg-neutral-50 border-[1px] border-neutral-100 font-medium':
                                                                 router.asPath === val.href || activeMenu === val.href,
                                                         })}
@@ -122,7 +120,7 @@ const Layout = (props) => {
                                         return (
                                             <li
                                                 key={idx}
-                                                className={cx('px-3', 'py-2', 'text-md', 'rounded-md', {
+                                                className={cx('px-3', 'py-2', 'text-base', 'rounded-md', {
                                                     'bg-neutral-50 border-[1px] border-neutral-100 font-medium':
                                                         router.asPath === val.href || activeMenu === val.href,
                                                 })}
@@ -177,7 +175,7 @@ const Layout = (props) => {
                                         return (
                                             <li
                                                 key={idx}
-                                                className={cx('px-3', 'mt-3', 'pt-2', 'pb-2', 'text-md', 'rounded-md', {
+                                                className={cx('px-3', 'mt-3', 'pt-2', 'pb-2', 'text-base', 'rounded-md', {
                                                     'bg-neutral-50 border-[1px] border-neutral-100 font-medium':
                                                         router.asPath === '/customer/account' || activeMenu === '/customer/account',
                                                 })}
@@ -192,7 +190,7 @@ const Layout = (props) => {
                                                 <div className={cx('mx-2', 'my-2', 'h-[1px]', 'bg-neutral-200')} />
                                                 <li
                                                     key={idx}
-                                                    className={cx('px-3', 'py-2', 'text-md', 'rounded-md', {
+                                                    className={cx('px-3', 'py-2', 'text-base', 'rounded-md', {
                                                         'bg-neutral-50 border-[1px] border-neutral-100 font-medium':
                                                             router.asPath === val.href || activeMenu === val.href,
                                                     })}
@@ -208,7 +206,7 @@ const Layout = (props) => {
                                                 <div className={cx('mx-2', 'my-2', 'h-[1px]', 'bg-neutral-200')} />
                                                 <li
                                                     key={idx}
-                                                    className={cx('px-3', 'py-2', 'text-md', 'rounded-md', {
+                                                    className={cx('px-3', 'py-2', 'text-base', 'rounded-md', {
                                                         'bg-neutral-50 border-[1px] border-neutral-100 font-medium':
                                                             router.asPath === val.href || activeMenu === val.href,
                                                     })}
@@ -221,7 +219,7 @@ const Layout = (props) => {
                                     return (
                                         <li
                                             key={idx}
-                                            className={cx('px-3', 'py-2', 'text-md', 'rounded-md', {
+                                            className={cx('px-3', 'py-2', 'text-base', 'rounded-md', {
                                                 'bg-neutral-50 border-[1px] border-neutral-100 font-medium':
                                                     router.asPath === val.href || activeMenu === val.href,
                                             })}

@@ -9,9 +9,7 @@ import Typography from '@common_typography';
 import ChevronDownIcon from '@heroicons/react/24/outline/ChevronDownIcon';
 
 const ViewSwitcherCurrency = (props) => {
-    const {
-        currencyState, setDefaultCurrency, loading, app_cookies, open, setOpen,
-    } = props;
+    const { currencyState, setDefaultCurrency, loading, app_cookies, open, setOpen } = props;
     const cookies_currency = app_cookies?.cookies_currency;
 
     const isEmptyCookiesCurrency = currencyState === undefined || currencyState === null;
@@ -34,8 +32,8 @@ const ViewSwitcherCurrency = (props) => {
         if (!isEmptyCookiesCurrency) {
             return (
                 <ul className={cx('currency-list__wrapper')}>
-                    {currencyState !== null
-                        && currencyState.exchange_rates.map((currency_item, index) => {
+                    {currencyState !== null &&
+                        currencyState.exchange_rates.map((currency_item, index) => {
                             const { currency_to } = currency_item;
                             const currency_default = currencyState === null ? '' : currencyState.default_display_currency_code;
                             const isCurrent = currency_to === currency_default;
@@ -58,7 +56,8 @@ const ViewSwitcherCurrency = (props) => {
                                         setDefaultCurrency({
                                             default_display_currency_code,
                                             default_currency_rate,
-                                        })}
+                                        })
+                                    }
                                 >
                                     <Typography className={cx('currency-list__text', 'group-hover:text-primary-700')}>{`${currency_to}`}</Typography>
                                 </li>
@@ -76,7 +75,7 @@ const ViewSwitcherCurrency = (props) => {
                 content={<PopoverContent />}
                 open={open}
                 setOpen={setOpen}
-                className={cx('top-[120%]', 'p-0')}
+                className={cx('top-[100%]', 'p-0')}
                 wrapperClassName={cx('self-end')}
                 wrapperId="top-header__content--currency-language-changer-menu__currency-switcher"
             >
