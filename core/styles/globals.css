@@ -2,12 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+
+@layer base {
+    body {
+        @apply text-base leading-base text-neutral
+    }
+}
+
 @layer components {
     .prose {
-        @apply text-md
+        @apply text-base leading-base text-neutral
     }
 
     .prose > p > a {
-        @apply font-normal
+        @apply font-normal text-base leading-base text-neutral
     }
 }
