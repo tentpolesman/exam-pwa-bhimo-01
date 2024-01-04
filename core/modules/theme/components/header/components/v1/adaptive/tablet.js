@@ -42,7 +42,7 @@ const TabletHeader = (props) => {
 
     const [openBurgerMenu, setOpenBurgerMenu] = React.useState(false);
 
-    let filteredData = data.categories.items[0].children.filter((item) => item.include_in_menu !== 0);
+    let filteredData = data?.categories?.items[0]?.children.filter((item) => item.include_in_menu !== 0);
     const burgerMenuData = [
         {
             title: 'Menu',

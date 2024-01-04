@@ -69,7 +69,7 @@ const CmsSlug = (props) => {
         }
     }
     const Config = {
-        title: data && data.cmsPage ? data.cmsPage.meta_title || data.cmsPage.title : '',
+        title: data && data.cmsPage ? data.cmsPage.meta_title || data.cmsPage.title : 'lele',
         headerTitle: data && data.cmsPage ? data.cmsPage.title : '',
         bottomNav: false,
         header: 'relative', // available values: "absolute", "relative", false (default)
