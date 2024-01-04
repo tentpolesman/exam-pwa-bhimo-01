@@ -4,10 +4,16 @@ import Typography from '@common_typography';
 import { formatPrice } from '@helper_currency';
 import cx from 'classnames';
 
+import { useSelector } from 'react-redux';
+import {
+    selectCheckoutState,
+} from '@core_modules/checkout/redux/checkoutSlice';
+
 const StoreCreditView = (props) => {
     const {
-        store_credit, credit, storeConfig, checkout, handleUseCredit, total, t, currencyCache,
+        store_credit, credit, storeConfig, handleUseCredit, total, t, currencyCache,
     } = props;
+    const checkout = useSelector(selectCheckoutState);
     return (
         <div
             className={cx(

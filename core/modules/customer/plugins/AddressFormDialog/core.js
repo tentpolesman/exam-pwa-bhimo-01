@@ -9,7 +9,7 @@ import { regexPhone } from '@helper_regex';
 import { groupingCity, groupingSubCity } from '@helpers/city';
 import { storeConfigVar } from '@root/core/services/graphql/cache';
 import { useFormik } from 'formik';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import * as Yup from 'yup';
 
 const AddressFormDialog = (props) => {
@@ -76,10 +76,12 @@ const AddressFormDialog = (props) => {
 
     const splitCityValue = (cityValue) => cityValue.split(', ');
 
-    const [mapPosition, setMapPosition] = useState({
+    const defaultValueMap = {
         lat: parseFloat(latitude) || parseFloat(pin_location_latitude),
         lng: parseFloat(longitude) || parseFloat(pin_location_longitude),
-    });
+    };
+
+    const [mapPosition, setMapPosition] = useState(defaultValueMap);
 
     const displayLocationInfo = (position) => {
         const lng = position.coords.longitude;
@@ -99,9 +101,9 @@ const AddressFormDialog = (props) => {
         });
     };
 
-    const handleDragPosition = (value) => {
+    const handleDragPosition = useCallback((value) => {
         setMapPosition(value);
-    };
+    }, []);
 
     const ValidationAddress = {
         firstname: Yup.string().required(t('validate:firstName:required')),

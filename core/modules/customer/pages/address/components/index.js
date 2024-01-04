@@ -103,9 +103,9 @@ const Content = (props) => {
                             </tr>
                         </thead>
                         {loading ? (
-                            <div className={cx('mobile:max-desktop:hidden')}>
+                            <>
                                 <SkeletonTable />
-                            </div>
+                            </>
                         ) : (
                             <tbody>
                                 {address && address.length > 0 ? (

@@ -108,11 +108,11 @@ const MenuChildren = ({ data, handleClick, generateLink, mainData }) => {
                     }
                     .nav-column-left {
                         background: ${mainData && mainData.dropdown_bgcolor ? mainData.dropdown_bgcolor : '#FFFFFF'};
-                        padding: 16px 0 16px 16px;
+                        padding: 16px;
                         border-radius: 8px !important;
                     }
                     .nav-column-right {
-                        padding: 16px;
+                        padding: 16px 16px 16px 0;
                     }
                     .list-item__menu a {
                         font-weight: normal;
