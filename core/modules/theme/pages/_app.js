@@ -171,18 +171,6 @@ class MyApp extends App {
                 storeConfig = storeConfig.storeConfig;
             }
 
-            if (!modules.checkout.checkoutOnly) {
-                dataMenu = getLocalStorage('pwa_vesmenu');
-                if (!dataMenu) {
-                    dataMenu = await pageProps.apolloClient
-                        .query({
-                            query: gql`
-                                ${getCategories}
-                            `,
-                        })
-                        .then(({ data }) => data);
-                }
-            }
             frontendOptions = storeConfig;
             removeDecimalConfig = storeConfig?.pwa?.remove_decimal_price_enable !== null ? storeConfig?.pwa?.remove_decimal_price_enable : false;
         }
@@ -362,9 +350,6 @@ class MyApp extends App {
         if (typeof window !== 'undefined') {
             cmsPageVar(pageProps.storeConfig && pageProps.storeConfig.cms_page ? pageProps.storeConfig.cms_page : '');
             storeConfigVar(pageProps.storeConfig);
-            if (!modules.checkout.checkoutOnly) {
-                setLocalStorage('pwa_vesmenu', pageProps.dataVesMenu);
-            }
             setLocalStorage('remove_decimal_config', pageProps.removeDecimalConfig);
             setLocalStorage('pricing_config', {
                 locales: pageProps.storeConfig && pageProps.storeConfig.locale,

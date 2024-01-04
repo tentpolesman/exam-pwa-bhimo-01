@@ -2,8 +2,6 @@
 import { useQuery, useLazyQuery } from '@apollo/client';
 import * as Schema from '@services/graphql/schema/pwa_config';
 
-export const vesMenuConfig = () => useQuery(Schema.vesMenuConfig);
-
 export const popupInstallConfig = () => useQuery(Schema.popupInstallConfig);
 
 export const shareIconConfig = () => useQuery(Schema.shareIconConfig);
@@ -41,7 +39,6 @@ export const facebookMetaConfig = () => useQuery(Schema.facebookMetaConfig);
 export const productListConfig = () => useLazyQuery(Schema.productListConfig);
 
 export default {
-    vesMenuConfig,
     popupInstallConfig,
     shareIconConfig,
     contactConfig,
