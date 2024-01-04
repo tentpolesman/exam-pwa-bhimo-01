@@ -218,7 +218,6 @@ const GoogleMaps = (props) => {
         if (!place.geometry || !place.geometry.location) {
             // User entered the name of a Place that was not suggested and
             // pressed the Enter key, or the Place Details request failed.
-            console.log('Place not found!');
         }
         if (place.geometry.viewport || place.geometry.location) {
             // do something
