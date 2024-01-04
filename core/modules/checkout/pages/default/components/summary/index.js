@@ -19,10 +19,13 @@ import SummaryPlugin from '@plugin_summary';
 import ModalXendit from '@core_modules/checkout/pages/default/components/ModalXendit/index';
 import { getAppEnv } from '@root/core/helpers/env';
 
+import { useDispatch, useSelector } from 'react-redux';
+import {
+    selectCheckoutState, setLoading, setCheckoutData as setCheckoutDataState
+} from '@core_modules/checkout/redux/checkoutSlice';
+
 const Summary = ({
     t,
-    checkout,
-    setCheckout,
     handleOpenMessage,
     formik,
     updateFormik,
@@ -32,6 +35,9 @@ const Summary = ({
     checkoutTokenState,
     setCheckoutTokenState,
 }) => {
+    const dispatch = useDispatch();
+    const checkout = useSelector(selectCheckoutState);
+
     const { order: loading, all: disabled, totalPrice } = checkout.loading;
     const errorItems = checkout?.data?.errorItems;
     const isSelectedPurchaseOrder = checkout.selected.payment === 'purchaseorder';
@@ -66,11 +72,9 @@ const Summary = ({
     const [actUpdateItem] = gqlService.updateItemCart();
     const [getUpdatedCart, updatedCart] = gqlService.getUpdatedCart();
 
-    const validateResponse = (response, parentState) => {
-        const state = parentState;
+    const validateResponse = (response) => {
         if (response.message) {
-            state.loading.order = false;
-            setCheckout(state);
+            dispatch(setLoading({ order: false }));
 
             if (response.message.includes('Token is wrong.')) {
                 setCheckoutTokenState(!checkoutTokenState);
@@ -113,9 +117,7 @@ const Summary = ({
     const [xenditState, setXenditState] = useState({});
 
     const handleXendit = (order_id) => {
-        const state = { ...checkout };
-        state.loading.order = true;
-        setCheckout(state);
+        dispatch(setLoading({ order: true }));
         getXenditUrl({
             variables: { order_id },
         })
@@ -140,12 +142,9 @@ const Summary = ({
                     } else {
                         setOpenXendit(true);
                     }
-
-                    state.loading.order = false;
-                    setCheckout(state);
+                    dispatch(setLoading({ order: false }));
                 } else {
-                    state.loading.order = false;
-                    setCheckout(state);
+                    dispatch(setLoading({ order: false }));
 
                     const msg = t('checkout:message:serverError');
 
@@ -160,8 +159,7 @@ const Summary = ({
                 }
             })
             .catch((e) => {
-                state.loading.order = false;
-                setCheckout(state);
+                dispatch(setLoading({ order: false }));
 
                 const msg = e.graphQLErrors.length > 0 ? e.graphQLErrors[0].message : t('checkout:message:serverError');
 
@@ -178,15 +176,11 @@ const Summary = ({
 
     const handlePlaceOrder = async () => {
         const { cart, isGuest } = checkout.data;
-        let state = { ...checkout };
         let formValidation = {};
         let result;
-
-        state.loading.order = true;
-        setCheckout(state);
+        dispatch(setLoading({ order: true }));
 
         if (cart.prices.grand_total.value === 0 && cart.selected_payment_method && cart.selected_payment_method.code !== 'free') {
-            state = { ...checkout };
             await setPaymentMethod({
                 variables: {
                     cartId: cart.id,
@@ -202,15 +196,16 @@ const Summary = ({
                     result = err;
                 });
 
-            if (!validateResponse(result, state)) return;
+            if (!validateResponse(result)) return;
 
-            state.data.cart = {
-                ...state.data.cart,
-                ...result.data.setPaymentMethodOnCart.cart,
-            };
-            setCheckout(state);
+            dispatch(setCheckoutDataState({
+                cart: {
+                    ...checkout.data.cart,
+                    ...result.data.setPaymentMethodOnCart.cart,
+                }
+            }));
             updateFormik({
-                ...state.data.cart,
+                ...checkout.data.cart,
                 ...result.data.setPaymentMethodOnCart.cart,
             });
         }
@@ -220,8 +215,7 @@ const Summary = ({
 
         if (Object.keys(formValidation).length === 0 && formValidation.constructor === Object) {
             if (checkout.selected.delivery === 'pickup' && (checkout.error.pickupInformation || checkout.error.selectStore)) {
-                state.loading.order = false;
-                setCheckout(state);
+                dispatch(setLoading({ order: false }));
 
                 const msg = t('checkout:completePikcupInfo');
                 handleOpenMessage({
@@ -252,11 +246,9 @@ const Summary = ({
                         });
                 }
 
-                state = { ...checkout };
-                state.loading.order = false;
-                setCheckout(state);
+                dispatch(setLoading({ order: false }));
 
-                if (!validateResponse(result, state)) return;
+                if (!validateResponse(result)) return;
 
                 let orderNumber = '';
                 let infoMsg = '';
@@ -329,8 +321,7 @@ const Summary = ({
                         removeCartId();
                     }, 1000);
                 } else {
-                    state.loading.order = false;
-                    setCheckout(state);
+                    dispatch(setLoading({ order: false }));
 
                     const msg = t('checkout:message:serverError');
 
@@ -341,8 +332,7 @@ const Summary = ({
                 }
             }
         } else {
-            state.loading.order = false;
-            setCheckout(state);
+            dispatch(setLoading({ order: false }));
 
             const msg = checkout.data.isGuest ? t('checkout:message:guestFormValidation') : t('checkout:message:customerFormValidation');
 
@@ -445,20 +435,20 @@ const Summary = ({
     // End - Process Snap Pop Up Close (Waitinge Response From Reorder)
 
     const setCart = (cart = {}) => {
-        const state = { ...checkout };
-        state.data.cart = { ...state.data.cart, ...cart };
-        setCheckout(state);
+        dispatch(setCheckoutDataState({
+            cart: { ...checkout.data.cart, ...cart }
+        }));
     };
 
-    const setLoadSummary = (load) => {
-        const state = { ...checkout };
+    const setLoadSummary = (load = false) => {
         window.backdropLoader(load);
-        state.loading.addresses = load;
-        state.loading.order = load;
-        state.loading.shipping = load;
-        state.loading.payment = load;
-        state.loading.extraFee = load;
-        setCheckout(state);
+        dispatch(setLoading({
+            addresses: load,
+            order: load,
+            shipping: load,
+            payment: load,
+            extraFee: load,
+        }));
     };
 
     useEffect(() => {

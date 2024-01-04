@@ -1,11 +1,19 @@
 import { modules } from '@config';
 
 import gqlService from '@core_modules/checkout/services/graphql';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+    selectCheckoutState, setIsNewUpdate, setLoading,
+} from '@core_modules/checkout/redux/checkoutSlice';
+import { setCheckoutData } from '@root/core/helpers/cookies';
 
 const DiscountSection = (props) => {
     const {
-        t, checkout, setCheckout, handleOpenMessage, storeConfig, StoreCreditView, currencyCache,
+        t, handleOpenMessage, storeConfig, StoreCreditView, currencyCache,
     } = props;
+
+    const dispatch = useDispatch();
+    const checkout = useSelector(selectCheckoutState);
 
     const [applyStoreCreditToCart] = gqlService.applyStoreCreditToCart({
         onError: (e) => {
@@ -49,16 +57,15 @@ const DiscountSection = (props) => {
 
     const handleUseCredit = async () => {
         let cart;
-        const state = { ...checkout };
-        const cartId = state.data.cart.id;
-        state.loading.storeCredit = true;
-        state.newupdate = true;
+        const cartId = checkout.data.cart.id;
+        dispatch(setLoading({ storeCredit: true }));
+        dispatch(setIsNewUpdate(true));
 
         if (store_credit.is_use_store_credit) {
             const result = await removeStoreCreditFromCart({ variables: { cartId } });
             if (result && result.data && result.data.removeStoreCreditFromCart && result.data.removeStoreCreditFromCart.cart) {
                 cart = {
-                    ...state.data.cart,
+                    ...checkout.data.cart,
                     ...result.data.removeStoreCreditFromCart.cart,
                 };
                 handleOpenMessage({
@@ -70,7 +77,7 @@ const DiscountSection = (props) => {
             const result = await applyStoreCreditToCart({ variables: { cartId } });
             if (result && result.data && result.data.applyStoreCreditToCart && result.data.applyStoreCreditToCart.cart) {
                 cart = {
-                    ...state.data.cart,
+                    ...checkout.data.cart,
                     ...result.data.applyStoreCreditToCart.cart,
                 };
                 handleOpenMessage({
@@ -81,11 +88,10 @@ const DiscountSection = (props) => {
         }
 
         if (cart) {
-            state.data.cart = cart;
+            dispatch(setCheckoutData({ cart }));
         }
 
-        state.loading.storeCredit = false;
-        setCheckout(state);
+        dispatch(setLoading({ storeCredit: false }));
     };
 
     if (store_credit && (store_credit.enabled || modules.storecredit.enabled)) {

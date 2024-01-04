@@ -2,10 +2,15 @@
 import React, { useState, useEffect } from 'react';
 import { checkoutAgreements } from '@core_modules/checkout/services/graphql';
 
+import { useDispatch } from 'react-redux';
+import { setConfirmation } from '@core_modules/checkout/redux/checkoutSlice';
+
 const Confirmation = (props) => {
     const {
-        t, checkout, setCheckout, ConfirmationView,
+        t, ConfirmationView,
     } = props;
+
+    const dispatch = useDispatch();
 
     const { loading, data: agreements } = checkoutAgreements();
     const [modalList, setModalList] = useState([]);
@@ -62,8 +67,7 @@ const Confirmation = (props) => {
             // If there's no terms & condition list in GraphQL responses, checkout confirmation should be true
             setIsAgree(true);
         }
-        checkout.confirmation = isAgree;
-        setCheckout(checkout);
+        dispatch(setConfirmation(isAgree));
     }, [agreements, isAgree]);
 
     return (

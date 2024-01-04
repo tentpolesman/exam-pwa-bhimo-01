@@ -243,7 +243,7 @@ const View = (props) => {
             </div>
             {registerGuestEnabled && !isLogin ? (
                 <div className="flex flex-col items-center justify-center mt-5">
-                    <AccountCircleIcon className="w-4 h-4" />
+                    <AccountCircleIcon className="w-10 h-10" />
                     <Typography variant="p" color="black" align="center">
                         {t('thanks:registerInfo')}
                     </Typography>
@@ -255,10 +255,13 @@ const View = (props) => {
                                 ? ordersFilter.data[0].detail[0].customer_email : checkoutData.email
                         }
                     </Typography>
-                    <Button variant="tertiary" className="mt-5" onClick={() => goToRegisterPage()}>
-                        <Typography type="bold" letter="uppercase">
-                            {t('login:registerTitle')}
-                        </Typography>
+                    <Button
+                        variant="plain"
+                        className="mt-5 !p-0"
+                        onClick={() => goToRegisterPage()}
+                        classNameText="!text-primary uppercase"
+                    >
+                        {t('thanks:registerTitle')}
                     </Button>
                 </div>
             ) : null}

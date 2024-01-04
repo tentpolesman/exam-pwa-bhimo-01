@@ -16,6 +16,11 @@ import Skeleton from '@common_skeleton';
 import classNames from 'classnames';
 import Accordion from '@common_acccordion';
 
+import { useSelector } from 'react-redux';
+import {
+    selectCheckoutState,
+} from '@core_modules/checkout/redux/checkoutSlice';
+
 const Loader = () => (
     <>
         <Skeleton className="rounded-[50%] mb-[10px]" width="100%" height={20} />
@@ -59,7 +64,6 @@ const ShippingGroupIcon = (props) => {
 const ShippingView = (props) => {
     const {
         isOnlyVirtualProductOnCart,
-        checkout,
         storeConfig,
         loading,
         selected,
@@ -73,6 +77,9 @@ const ShippingView = (props) => {
     } = props;
     let content;
     const unique = [];
+
+    const checkout = useSelector(selectCheckoutState);
+
     const [expanded, setExpanded] = React.useState(null);
     const [expandedMulti, setExpandedMulti] = React.useState([]);
     const [expandedActiveMulti, setExpandedActiveMulti] = React.useState([]);
