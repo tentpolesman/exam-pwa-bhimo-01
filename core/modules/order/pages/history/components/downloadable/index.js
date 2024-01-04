@@ -74,10 +74,8 @@ const DefaultView = (props) => {
                             <Show when={data?.length === 0}>
                                 <tr className={cx('even:bg-white', 'odd:bg-neutral-50')}>
                                     <td colSpan={5} className="p-4">
-                                        <Alert severity="warning">
-                                            <Typography variant="p-2a" className={cx()}>
-                                                {t('order:notFound')}
-                                            </Typography>
+                                        <Alert severity="warning" withIcon>
+                                            {t('order:notFound')}
                                         </Alert>
                                     </td>
                                 </tr>

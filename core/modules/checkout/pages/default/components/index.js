@@ -41,13 +41,17 @@ import ArrowLeftIcon from '@heroicons/react/24/solid/ArrowLeftIcon';
 import { getStoreHost } from '@helpers/config';
 import { getAppEnv } from '@root/core/helpers/env';
 
+import { useSelector } from 'react-redux';
+import {
+    selectCheckoutState,
+} from '@core_modules/checkout/redux/checkoutSlice';
+
 const GimmickBanner = dynamic(() => import('@plugin_gimmickbanner'), { ssr: false });
 
 const PromoModalItem = dynamic(() => import('@core_modules/checkout/pages/default/components/PromoModalItem'), { ssr: false });
 
 const Content = (props) => {
     const {
-        checkout,
         storeConfig,
         chasbackMessage,
         formik,
@@ -73,6 +77,8 @@ const Content = (props) => {
         loadingSellerInfo,
         currencyCache,
     } = props;
+
+    const checkout = useSelector(selectCheckoutState);
 
     const SummaryRef = React.createRef();
     const { order: loading, all: disabled } = checkout.loading;

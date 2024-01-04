@@ -7,13 +7,18 @@ import Dialog from '@common_dialog';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import gqlService from '@core_modules/checkout/services/graphql';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+    selectCheckoutState, setCheckoutData, setErrorState, setPickupInformation,
+} from '@core_modules/checkout/redux/checkoutSlice';
 
 const ModalPickupInformation = ({
     open,
     setOpen,
-    checkout,
-    setCheckout,
 }) => {
+    const dispatch = useDispatch();
+    const checkout = useSelector(selectCheckoutState);
+
     const { t } = useTranslation(['common', 'checkout', 'validate']);
     const [setPickupStore] = gqlService.setPickupStore();
 
@@ -61,36 +66,25 @@ const ModalPickupInformation = ({
                         value: method.code,
                         image: null,
                     }));
-                    await setCheckout({
-                        ...checkout,
-                        data: {
-                            ...checkout.data,
-                            cart: {
-                                ...checkout.data.cart,
-                                ...res.data.setPickupStore,
-                            },
-                            paymentMethod,
+
+                    dispatch(setCheckoutData({
+                        cart: {
+                            ...checkout.data.cart,
+                            ...res.data.setPickupStore,
                         },
-                        pickupInformation,
-                        error: {
-                            selectStore: false,
-                            pickupInformation: false,
-                        },
-                    });
+                        paymentMethod,
+                    }));
+
+                    dispatch(setPickupInformation(pickupInformation));
+                    dispatch(setErrorState({ selectStore: false, pickupInformation: false }));
                     await setLoading(false);
                     setOpen();
                 }).catch(() => {
                     setLoading(false);
                 });
             } else {
-                await setCheckout({
-                    ...checkout,
-                    pickupInformation,
-                    error: {
-                        ...checkout.error,
-                        selectStore: true,
-                    },
-                });
+                dispatch(setPickupInformation(pickupInformation));
+                dispatch(setErrorState({ selectStore: true }));
                 await setLoading(false);
                 setOpen();
             }

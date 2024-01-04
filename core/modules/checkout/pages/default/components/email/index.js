@@ -1,22 +1,27 @@
 import React, { useState } from 'react';
 import gqlService from '@core_modules/checkout/services/graphql';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+    selectCheckoutState, setCheckoutData,
+} from '@core_modules/checkout/redux/checkoutSlice';
 
 const Email = (props) => {
     const {
-        checkout,
         EmailView,
         formik,
-        setCheckout,
         handleOpenMessage,
         t,
         cartId,
     } = props;
+
+    const dispatch = useDispatch();
+    const checkout = useSelector(selectCheckoutState);
+
     const [anchorEl, setAnchorEl] = useState(null);
     const [setGuestEmailAddressOnCart] = gqlService.setGuestEmailAddressOnCart(({ onError: () => {} }));
     const [load, setLoad] = useState(false);
     const open = Boolean(anchorEl);
     const id = open ? 'email-helper' : undefined;
-    const state = { ...checkout };
 
     const handleBlur = async () => {
         formik.setFieldTouched('email', true);
@@ -38,12 +43,13 @@ const Email = (props) => {
             } else {
                 await formik.setFieldValue('oldEmail', formik.values.email);
                 if (result.data && result.data.setGuestEmailAddressOnCart && result.data.setGuestEmailAddressOnCart) {
-                    state.data.cart = {
-                        ...state.data.cart,
-                        ...result.data.setGuestEmailOnCart.cart,
-                    };
+                    dispatch(setCheckoutData({
+                        cart: {
+                            ...checkout.data.cart,
+                            ...result.data.setGuestEmailOnCart.cart,
+                        },
+                    }));
                 }
-                setCheckout(state);
                 setLoad(false);
             }
         }

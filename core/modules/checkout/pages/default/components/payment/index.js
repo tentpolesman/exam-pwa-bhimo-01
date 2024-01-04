@@ -4,10 +4,12 @@ import { modules } from '@config';
 import gqlService from '@core_modules/checkout/services/graphql';
 import React from 'react';
 import TagManager from 'react-gtm-module';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+    selectCheckoutState, setCheckoutData, setConfirmation, setIsNewUpdate, setLoading, setSelectedData, setStatusState,
+} from '@core_modules/checkout/redux/checkoutSlice';
 
 export default function CustomizedExpansionPanels({
-    checkout,
-    setCheckout,
     updateFormik,
     formik,
     handleOpenMessage,
@@ -28,6 +30,9 @@ export default function CustomizedExpansionPanels({
     setCheckoutTokenState,
     refSummary,
 }) {
+    const dispatch = useDispatch();
+    const checkout = useSelector(selectCheckoutState);
+
     const { loading, data, selected } = checkout;
     const [setPaymentMethod] = gqlService.setPaymentMethod();
     const [getStripePaymentIntent] = gqlService.getStripePaymentIntent();
@@ -36,38 +41,33 @@ export default function CustomizedExpansionPanels({
 
     /**
      * [METHOD] handle when get result from set payment method
-     * @param {state, result, val, cart} params
+     * @param {result, val, cart} params
      */
     const onHandleResult = ({
-        state, result, val, cart, purchaseOrder = false,
+        result, val, cart, purchaseOrder = false,
     }) => {
-        state = {
-            ...checkout,
-            selected: {
-                ...checkout.selected,
-                paymentOrderNumber: null,
-            },
-            loading: {
-                ...checkout.loading,
-                all: false,
-                shipping: false,
-                payment: false,
-                extraFee: false,
-                order: false,
-                purchaseOrderNumber: false,
-            },
-        };
+        dispatch(setSelectedData({ paymentOrderNumber: null }));
+        dispatch(setLoading({
+            all: false,
+            shipping: false,
+            payment: false,
+            extraFee: false,
+            order: false,
+            purchaseOrderNumber: false,
+        }));
 
         if (result && result.data && result.data.setPaymentMethodOnCart && result.data.setPaymentMethodOnCart.cart) {
             const mergeCart = {
-                ...state.data.cart,
+                ...checkout.data.cart,
                 ...result.data.setPaymentMethodOnCart.cart,
             };
-            state.data.cart = mergeCart;
-            state.status.purchaseOrderApply = true;
+            dispatch(setCheckoutData({
+                cart: mergeCart,
+            }));
+            dispatch(setStatusState({ purchaseOrderApply: true }));
             updateFormik(mergeCart);
         } else {
-            state.selected.payment = null;
+            dispatch(setSelectedData({ payment: null }));
             if (result.message.includes('Token is wrong.')) {
                 setCheckoutTokenState(!checkoutTokenState);
             } else if (purchaseOrder) {
@@ -82,8 +82,6 @@ export default function CustomizedExpansionPanels({
                 });
             }
         }
-
-        setCheckout(state);
 
         const selectedPayment = data.paymentMethod.filter((item) => item.code === val);
         // GTM UA dataLayer
@@ -177,37 +175,23 @@ export default function CustomizedExpansionPanels({
     const handlePayment = async (val) => {
         if (val) {
             const { cart } = checkout.data;
-            let state = {
-                ...checkout,
-                loading: {
-                    ...checkout.loading,
-                    all: false,
-                    shipping: false,
-                    payment: false,
-                    extraFee: true,
-                    order: true,
-                },
-            };
-            state.selected.payment = val;
-            state.status.purchaseOrderApply = false;
-            state.newupdate = true;
-            setCheckout(state);
+            dispatch(setLoading({
+                all: false,
+                shipping: false,
+                payment: false,
+                extraFee: true,
+                order: true,
+            }));
+            dispatch(setSelectedData({ payment: val }));
+            dispatch(setStatusState({ purchaseOrderApply: false }));
+            dispatch(setIsNewUpdate(true));
 
             if (val === 'purchaseorder' && checkout.selected) {
-                state = {
-                    ...checkout,
-                    selected: {
-                        ...checkout.selected,
-                        payment: val,
-                        purchaseOrderNumber: null,
-                    },
-                    loading: {
-                        ...checkout.loading,
-                        all: false,
-                        order: false,
-                    },
-                };
-                setCheckout(state);
+                dispatch(setSelectedData({ payment: val, purchaseOrderNumber: null }));
+                dispatch(setLoading({
+                    all: false,
+                    order: false,
+                }));
             } else {
                 const payment_method = { code: val };
                 if (payment_method.code === 'stripe_payments') {
@@ -217,18 +201,13 @@ export default function CustomizedExpansionPanels({
                         },
                     }).then((resJson) => {
                         setClientSecret(resJson.data.setPaymentIntent.clientSecret);
-                        state = {
-                            ...checkout,
-                            loading: {
-                                ...checkout.loading,
-                                all: false,
-                                shipping: false,
-                                payment: false,
-                                extraFee: false,
-                                order: false,
-                            },
-                        };
-                        setCheckout(state);
+                        dispatch(setLoading({
+                            all: false,
+                            order: false,
+                            shipping: false,
+                            payment: false,
+                            extraFee: false,
+                        }));
                     });
                 } else {
                     await setPaymentMethod({
@@ -239,20 +218,11 @@ export default function CustomizedExpansionPanels({
                     })
                         .then((result) => {
                             if (val === 'paypal_express') {
-                                state = {
-                                    ...checkout,
-                                    selected: {
-                                        ...checkout.selected,
-                                        payment: val,
-                                        purchaseOrderNumber: null,
-                                    },
-                                    loading: {
-                                        ...checkout.loading,
-                                        all: false,
-                                        order: false,
-                                    },
-                                };
-                                setCheckout(state);
+                                dispatch(setSelectedData({ payment: val, purchaseOrderNumber: null }));
+                                dispatch(setLoading({
+                                    all: false,
+                                    order: false,
+                                }));
                                 if (
                                     storeConfig?.pwa?.paypal_enable
                                     && initialOptionPaypal['data-order-id'] === ''
@@ -278,7 +248,6 @@ export default function CustomizedExpansionPanels({
                                 }
                             } else {
                                 onHandleResult({
-                                    state,
                                     result,
                                     val,
                                     cart,
@@ -288,7 +257,6 @@ export default function CustomizedExpansionPanels({
                         .catch((err) => {
                             const result = err;
                             onHandleResult({
-                                state,
                                 result,
                                 val,
                                 cart,
@@ -304,14 +272,9 @@ export default function CustomizedExpansionPanels({
      * @param {object} event
      */
     const handlePurchaseOrder = (e) => {
-        const state = {
-            ...checkout,
-            selected: {
-                ...checkout.selected,
-                purchaseOrderNumber: e.target.value,
-            },
-        };
-        setCheckout(state);
+        dispatch(setSelectedData({
+            purchaseOrderNumber: e.target.value,
+        }));
     };
 
     /**
@@ -319,22 +282,16 @@ export default function CustomizedExpansionPanels({
      */
     const handlePurchaseOrderSubmit = async () => {
         const { cart } = checkout.data;
-        const state = {
-            ...checkout,
-            loading: {
-                ...checkout.loading,
-                all: false,
-                shipping: false,
-                payment: false,
-                extraFee: false,
-                order: false,
-                purchaseOrderNumber: true,
-            },
-        };
-        setCheckout(state);
-
-        const selected_payment = state.selected.payment;
-        const purchase_order_number = state.selected.purchaseOrderNumber;
+        dispatch(setLoading({
+            all: false,
+            shipping: false,
+            payment: false,
+            extraFee: false,
+            order: false,
+            purchaseOrderNumber: true,
+        }));
+        const selected_payment = checkout.selected.payment;
+        const purchase_order_number = checkout.selected.purchaseOrderNumber;
         const payment_method = { code: selected_payment, purchase_order_number };
         await setPaymentMethod({
             variables: {
@@ -344,7 +301,6 @@ export default function CustomizedExpansionPanels({
         })
             .then((result) => {
                 onHandleResult({
-                    state,
                     result,
                     val: selected_payment,
                     cart,
@@ -357,7 +313,6 @@ export default function CustomizedExpansionPanels({
             .catch((err) => {
                 const result = err;
                 onHandleResult({
-                    state,
                     result,
                     val: selected_payment,
                     cart,
@@ -380,7 +335,6 @@ export default function CustomizedExpansionPanels({
             formik={formik}
             updateFormik={updateFormik}
             clientSecret={clientSecret}
-            setCheckout={setCheckout}
             storeConfig={storeConfig}
             paymentMethodList={paymentMethodList}
             handlePayment={handlePayment}

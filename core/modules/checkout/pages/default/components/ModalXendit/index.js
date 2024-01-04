@@ -52,7 +52,7 @@ const ModalXendit = (props) => {
         requestSimulateQr({
             variables: {
                 external_id: xendit_qrcode_external_id,
-                amount: parseInt(amount, 0),
+                amount: parseInt(amount, 10),
             },
         }).then((res) => {
             setLoadSimulate(false);

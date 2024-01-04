@@ -8,29 +8,21 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable eqeqeq */
 /* eslint-disable max-len */
-
 import Link from 'next/link';
-
 import { useReactiveVar } from '@apollo/client';
-
 import { currencyVar } from '@root/core/services/graphql/cache';
-
 import cx from 'classnames';
-
 import Layout from '@layout_customer';
-
 import { formatPrice } from '@helper_currency';
 import formatDate from '@helper_date';
-
 import Badge from '@common_badge';
 import Button from '@common_button';
 import Select from '@common_forms/Select';
 import Pagination from '@common_pagination';
 import Typography from '@common_typography';
-
 import MobileTabletActionMenu from '@core_modules/order/pages/history/components/plugins/MobileTabletActionMenu';
-
 import ExclamationTriangleIcon from '@heroicons/react/24/outline/ExclamationTriangleIcon';
+import Alert from '@common_alert';
 
 const DefaultView = (props) => {
     const { data, t, storeConfig, reOrder, pageSize, handleChangePage, handleChangePageSize, error } = props;
@@ -96,29 +88,9 @@ const DefaultView = (props) => {
                         </thead>
                         <tbody>
                             {error ? (
-                                <Button
-                                    icon={<ExclamationTriangleIcon />}
-                                    iconProps={{
-                                        className: cx('!text-yellow-500'),
-                                    }}
-                                    iconPosition="left"
-                                    className={cx(
-                                        'w-full',
-                                        'bg-yellow-50',
-                                        'hover:bg-yellow-50',
-                                        'focus:bg-yellow-50',
-                                        'active:bg-yellow-50',
-                                        'hover:shadow-none',
-                                        'focus:shadow-none',
-                                        'active:shadow-none',
-                                        'cursor-auto',
-                                        'hover:cursor-auto',
-                                        'focus:cursor-auto',
-                                        'active:cursor-auto',
-                                    )}
-                                >
-                                    <Typography className={cx('!text-yellow-600')}>{t('customer:order:emptyMessage')}</Typography>
-                                </Button>
+                                <Alert severity="warning" withIcon>
+                                    {t('customer:order:emptyMessage')}
+                                </Alert>
                             ) : (
                                 <>
                                     {data && data.items && data.items.length > 0 ? (
@@ -178,29 +150,9 @@ const DefaultView = (props) => {
                                     ) : (
                                         <tr>
                                             <td colSpan={6}>
-                                                <Button
-                                                    icon={<ExclamationTriangleIcon />}
-                                                    iconProps={{
-                                                        className: cx('!text-yellow-500'),
-                                                    }}
-                                                    iconPosition="left"
-                                                    className={cx(
-                                                        'w-full',
-                                                        'bg-yellow-50',
-                                                        'hover:bg-yellow-50',
-                                                        'focus:bg-yellow-50',
-                                                        'active:bg-yellow-50',
-                                                        'hover:shadow-none',
-                                                        'focus:shadow-none',
-                                                        'active:shadow-none',
-                                                        'cursor-auto',
-                                                        'hover:cursor-auto',
-                                                        'focus:cursor-auto',
-                                                        'active:cursor-auto',
-                                                    )}
-                                                >
-                                                    <Typography className={cx('!text-yellow-600')}>{t('customer:order:emptyMessage')}</Typography>
-                                                </Button>
+                                                <Alert severity="warning" withIcon>
+                                                    {t('customer:order:emptyMessage')}
+                                                </Alert>
                                             </td>
                                         </tr>
                                     )}
