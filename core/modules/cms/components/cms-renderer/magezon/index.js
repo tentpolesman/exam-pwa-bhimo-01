@@ -153,101 +153,101 @@ const MagezonElement = (props) => {
 
     if (type) {
         switch (type) {
-            case 'row':
-                childrenContent = <MagezonRow {...props} />;
-                break;
-            case 'column':
-                childrenContent = <MagezonColumn {...props} />;
-                break;
-            case 'heading':
-                childrenContent = <MagezonHeading {...props} />;
-                break;
-            case 'single_image':
-                childrenContent = <MagezonSingleImage {...props} />;
-                break;
-            case 'text':
-                childrenContent = <MagezonText {...props} />;
-                break;
-            case 'button':
-                childrenContent = <MagezonButton {...props} />;
-                break;
-            case 'raw_html':
-                childrenContent = <MagezonRawHtml {...props} />;
-                break;
-            case 'magento_widget':
-                childrenContent = <MagezonWidget {...props} />;
-                break;
-            case 'instagram':
-                childrenContent = <MagezonInstagram {...props} />;
-                break;
-            case 'icon':
-                childrenContent = <MagezonIcon {...props} />;
-                break;
-            case 'separator':
-                childrenContent = <MagezonSeparator {...props} />;
-                break;
-            case 'empty_space':
-                childrenContent = <MagezonEmpty {...props} />;
-                break;
-            case 'toggle':
-                childrenContent = <MagezonToggle {...props} />;
-                break;
-            case 'newsletter_form':
-                childrenContent = <MagezonNewsletter {...props} />;
-                break;
-            case 'contact_form':
-                childrenContent = <MagezonContactForm {...props} />;
-                break;
-            case 'static_block':
-                childrenContent = <MagezonStaticBlock {...props} />;
-                break;
-            case 'slider':
-                childrenContent = <MagezonSlider {...props} />;
-                break;
-            case 'image_carousel':
-                childrenContent = <MagezonCaraousel {...props} />;
-                break;
-            case 'search_form':
-                childrenContent = <MagezonSearchForm {...props} />;
-                break;
-            case 'pagebuilder_template':
-                childrenContent = <MagezonPagebuilderTemplate {...props} />;
-                break;
-            case 'video':
-                childrenContent = <MagezonVideoPlayer {...props} />;
-                break;
-            case 'image_gallery':
-                childrenContent = <MagezonImageGallery {...props} />;
-                break;
-            case 'recent_reviews':
-                childrenContent = <MagezonRecentReviews {...props} />;
-                break;
-            case 'single_product':
-                childrenContent = <MagezonProduct {...props} />;
-                break;
-            case 'product_list':
-                childrenContent = <MagezonProduct {...props} />;
-                break;
-            case 'product_grid':
-                childrenContent = <MagezonProduct {...props} />;
-                break;
-            case 'product_slider':
-                childrenContent = <MagezonProduct {...props} />;
-                break;
-            case 'gmaps':
-                childrenContent = <MagezonGoogleMaps {...props} />;
-                break;
-            case 'section':
-                childrenContent = <MagezonSection {...props} />;
-                break;
-            case 'accordion':
-                childrenContent = <MagezonAccordion {...props} />;
-                break;
-            case 'tabs':
-                childrenContent = <MagezonTabs {...props} />;
-                break;
-            default:
-                childrenContent = null;
+        case 'row':
+            childrenContent = <MagezonRow {...props} />;
+            break;
+        case 'column':
+            childrenContent = <MagezonColumn {...props} />;
+            break;
+        case 'heading':
+            childrenContent = <MagezonHeading {...props} />;
+            break;
+        case 'single_image':
+            childrenContent = <MagezonSingleImage {...props} />;
+            break;
+        case 'text':
+            childrenContent = <MagezonText {...props} />;
+            break;
+        case 'button':
+            childrenContent = <MagezonButton {...props} />;
+            break;
+        case 'raw_html':
+            childrenContent = <MagezonRawHtml {...props} />;
+            break;
+        case 'magento_widget':
+            childrenContent = <MagezonWidget {...props} />;
+            break;
+        case 'instagram':
+            childrenContent = <MagezonInstagram {...props} />;
+            break;
+        case 'icon':
+            childrenContent = <MagezonIcon {...props} />;
+            break;
+        case 'separator':
+            childrenContent = <MagezonSeparator {...props} />;
+            break;
+        case 'empty_space':
+            childrenContent = <MagezonEmpty {...props} />;
+            break;
+        case 'toggle':
+            childrenContent = <MagezonToggle {...props} />;
+            break;
+        case 'newsletter_form':
+            childrenContent = <MagezonNewsletter {...props} />;
+            break;
+        case 'contact_form':
+            childrenContent = <MagezonContactForm {...props} />;
+            break;
+        case 'static_block':
+            childrenContent = <MagezonStaticBlock {...props} />;
+            break;
+        case 'slider':
+            childrenContent = <MagezonSlider {...props} />;
+            break;
+        case 'image_carousel':
+            childrenContent = <MagezonCaraousel {...props} />;
+            break;
+        case 'search_form':
+            childrenContent = <MagezonSearchForm {...props} />;
+            break;
+        case 'pagebuilder_template':
+            childrenContent = <MagezonPagebuilderTemplate {...props} />;
+            break;
+        case 'video':
+            childrenContent = <MagezonVideoPlayer {...props} />;
+            break;
+        case 'image_gallery':
+            childrenContent = <MagezonImageGallery {...props} />;
+            break;
+        case 'recent_reviews':
+            childrenContent = <MagezonRecentReviews {...props} />;
+            break;
+        case 'single_product':
+            childrenContent = <MagezonProduct {...props} />;
+            break;
+        case 'product_list':
+            childrenContent = <MagezonProduct {...props} />;
+            break;
+        case 'product_grid':
+            childrenContent = <MagezonProduct {...props} />;
+            break;
+        case 'product_slider':
+            childrenContent = <MagezonProduct {...props} />;
+            break;
+        case 'gmaps':
+            childrenContent = <MagezonGoogleMaps {...props} />;
+            break;
+        case 'section':
+            childrenContent = <MagezonSection {...props} />;
+            break;
+        case 'accordion':
+            childrenContent = <MagezonAccordion {...props} />;
+            break;
+        case 'tabs':
+            childrenContent = <MagezonTabs {...props} />;
+            break;
+        default:
+            childrenContent = null;
         }
     }
 

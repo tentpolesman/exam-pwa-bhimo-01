@@ -7,11 +7,13 @@
 
 import React from 'react';
 
+// eslint-disable-next-line @next/next/no-document-import-in-page
 import { Head } from 'next/document';
 import { readFileSync } from 'fs';
 import { join } from 'path';
+
 class HeadCustom extends Head {
-    getCssLinks = ({ allFiles }) => {
+    getCssLinks({ allFiles }) {
         const { assetPrefix } = this.context;
         if (!allFiles || allFiles.length === 0) return null;
         return allFiles
@@ -26,7 +28,7 @@ class HeadCustom extends Head {
                     }}
                 />
             ));
-    };
+    }
 }
 
 export default HeadCustom;

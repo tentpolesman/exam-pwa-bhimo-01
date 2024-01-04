@@ -3,6 +3,7 @@ import React from 'react';
 import AddressFormDialog from '@plugin_addressform';
 import Radio from '@common/Forms/Radio';
 import Button from '@common/Button';
+import cx from 'classnames';
 
 const ItemAddress = (props) => {
     const {
@@ -37,7 +38,11 @@ const ItemAddress = (props) => {
                 setOpen={() => setOpen(false)}
                 pageTitle={t('customer:address:editTitle')}
             />
-            <div className="flex flex-col checkoutListItemAddress">
+            <div className={cx(
+                'flex flex-col checkoutListItemAddress border-b border-neutral-200',
+                'desktop:px-[32px] tablet:px-[32px] mobile:px-[16px]',
+            )}
+            >
                 <Radio
                     variant="single"
                     id={id}
@@ -54,7 +59,7 @@ const ItemAddress = (props) => {
                     }}
                     className="flex flex-row items-center gap-3"
                 >
-                    <div className="w-full border-b border-b-neutral-200 pb-2 flex flex-col">
+                    <div className="w-full pb-2 flex flex-col">
                         <label for={id} className="flex flex-col cursor-pointer">
                             <Typography className="" variant="p">
                                 {`${firstname} ${lastname}`}
@@ -76,7 +81,7 @@ const ItemAddress = (props) => {
 
                         <Button variant="plain" onClick={() => setOpen(true)} className="!p-0">
                             <Typography className="mt-3 cursor-pointer" variant="bd-2">
-                                {t('customer:address:editTitle')}
+                                {t('common:button:edit')}
                             </Typography>
                         </Button>
                     </div>

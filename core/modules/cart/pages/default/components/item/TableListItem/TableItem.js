@@ -69,13 +69,13 @@ const TableItem = (props) => {
                                 </Typography>
                             </Show>
                         </div>
-                        <div className="flex flex-row">
+                        <div className="flex flex-row mt-1">
                             {links && links.length > 0 && (
                                 <div className="xs:basis-full flex flex-row gap-1">
                                     <Typography variant="bd-2b" letter="capitalize" type="bold">
                                         Downloads :
                                     </Typography>
-                                    <div className="flex flex-col">
+                                    <div className="flex flex-col gap-1">
                                         {links.map((item, idx) => (
                                             <Typography variant="bd-2b" letter="capitalize" key={idx}>
                                                 {item.title}
@@ -86,10 +86,10 @@ const TableItem = (props) => {
                             )}
                         </div>
                         {bundle_options && bundle_options.length ? (
-                            <div className="flex flex-col gap-2">
+                            <div className="flex flex-col mt-1 gap-2">
                                 {bundle_options.map((value, idx) => (
                                     <div className="flex flex-col" key={idx}>
-                                        <Typography variant="bd-2">{value.label}</Typography>
+                                        <Typography variant="bd-2b">{value.label}</Typography>
                                         <div className="flex flex-col">
                                             {value.values.map((item, idt) => (
                                                 <Typography variant="bd-2b" key={idt}>
@@ -98,11 +98,9 @@ const TableItem = (props) => {
                                                     x
                                                     {item.label}
                                                     {' '}
-                                                    <strong>
-                                                        +
-                                                        {' '}
-                                                        {formatPrice(item.price, 'IDR', currencyCache)}
-                                                    </strong>
+                                                    +
+                                                    {' '}
+                                                    {formatPrice(item.price, 'IDR', currencyCache)}
                                                 </Typography>
                                             ))}
                                         </div>
@@ -111,21 +109,17 @@ const TableItem = (props) => {
                             </div>
                         ) : null}
                         {cartCustomOptions && cartCustomOptions.length ? (
-                            <div className="product-options">
+                            <div className="flex flex-col gap-1 mt-1">
                                 {cartCustomOptions.map((op, idx) => (
                                     <div className="option-wrapper" key={idx}>
-                                        <div className="flex flex-row option-wrapper__item">
-                                            <strong>
-                                                {op.label}
-                                                {' '}
-                                                :
-                                            </strong>
+                                        <Typography className="flex flex-row option-wrapper__item">
+                                            {`${op.label}: `}
                                             {op.values.map((item, idt) => (
-                                                <p key={idt} className="option-item">
+                                                <p key={idt} className="option-item ml-1">
                                                     {item.label && item.label !== '' ? item.label : item.value}
                                                 </p>
                                             ))}
-                                        </div>
+                                        </Typography>
                                     </div>
                                 ))}
                             </div>
