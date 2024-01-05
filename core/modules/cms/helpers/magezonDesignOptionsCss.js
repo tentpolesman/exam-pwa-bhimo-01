@@ -92,7 +92,7 @@ const generateDesignOptions = (classSelector, designOptions) => {
                 ` : ''}
                 ${(padding_top || padding_right || padding_bottom || padding_left) ? `
                     padding: ${Number(padding_top) || 0}px ${Number(padding_right) || 0}px ${Number(padding_bottom) || 0}px ${Number(padding_left) || 0}px;
-                ` : 'padding: 10px; margin: 0px -10px;'}
+                ` : 'padding: 10px;'}
                 ${border_top_left_radius ? `border-top-left-radius: ${Number(border_top_left_radius) || 0}px;` : ''}
                 ${border_top_right_radius ? `border-top-right-radius: ${Number(border_top_right_radius) || 0}px;` : ''}
                 ${border_bottom_left_radius ? `border-bottom-left-radius: ${Number(border_bottom_left_radius) || 0}px;` : ''}
@@ -133,7 +133,7 @@ const generateDesignOptions = (classSelector, designOptions) => {
             .mgz-row {
                 ${(margin_top || margin_right || margin_bottom || margin_left) ? `
                     margin: ${Number(margin_top) || 0}px ${Number(margin_right) || 0}px ${Number(margin_bottom) || 0}px ${Number(margin_left) || 0}px;
-                ` : ''}
+                ` : 'margin: 0 -10px;'}
                 ${(padding_top || padding_right || padding_bottom || padding_left) ? `
                     padding: ${Number(padding_top) || 0}px ${Number(padding_right) || 0}px ${Number(padding_bottom) || 0}px ${Number(padding_left) || 0}px;
                 ` : ''}
