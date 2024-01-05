@@ -147,7 +147,7 @@ const DesktopHeader = (props) => {
                     )}
                 >
                     <div className={cx('middle-header__logo', 'basis-[272px]', 'h-[44px]', 'flex', 'items-center', 'cursor-pointer')}>
-                        <Link href="/" legacyBehavior>
+                        <Link href="/">
                             <Image
                                 styleContainer={{
                                     width: `${storeConfig?.logo_width || 120}px`,

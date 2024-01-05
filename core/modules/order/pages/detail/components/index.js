@@ -319,12 +319,12 @@ const DetailOrder = (props) => {
                                     </Typography>
                                     {shippingMethods.length > 0 && shipping.track_number && shipping.trackorder_type && (
                                         <Button
-                                            variant="text"
+                                            variant="outlined"
                                             onClick={() => handleOpenModal(shipping.trackorder_type, dt)}
                                             align="left"
                                             className={cx('p-0', '-ml-1')}
                                         >
-                                            <Typography type="bold" decoration="underline" align="left">
+                                            <Typography>
                                                 {t('order:trackingOrder')}
                                                 {': '}
                                                 {shipping.track_number} {`(${shipping.trackorder_type})`}
