@@ -72,33 +72,34 @@ const Item = (props) => {
                     <div className={cx('minicart__item--details-child-wrapper', 'grid', 'grid-cols-1', 'gap-y-[10px]')}>
                         <div className={cx('minicart__item--details-child-top-wrapper', 'flex', 'flex-row', 'gap-3', 'justify-between')}>
                             <div className={cx('minicart__item--name-wrapper', 'tablet:max-desktop:basis-[176px]', 'desktop:basis-[320px]')}>
-                                <strong className="minicart__item--name">
-                                    <Link href="/[...slug]" as={`/${product.url_key}`}>
-                                        <Typography variant="p-1" className={cx('normal-case', 'mobile:max-tablet:text-base')}>
-                                            {product.name}
-                                        </Typography>
-                                    </Link>
-                                </strong>
-                                <div className={cx('minicart__item--option-wrapper')}>
+                                <Link href="/[...slug]" as={`/${product.url_key}`}>
+                                    <Typography variant="bd-1b" className={cx('normal-case', 'mobile:max-tablet:text-base')}>
+                                        {product.name}
+                                    </Typography>
+                                </Link>
+                                <div className={cx('minicart__item--option-wrapper mt-2')}>
                                     {configurable_options && configurable_options.length ? (
-                                        <div className="product-options">
-                                            {configurable_options.map((val, idx) => (
-                                                <div className={cx('option-wrapper', 'normal-case', 'mobile:max-tablet:text-base')} key={idx}>
-                                                    <strong>{val.option_label}</strong> :{val.value_label}
-                                                </div>
-                                            ))}
-                                        </div>
+                                        <Typography variant="bd-2b" letter="capitalize" className="font-normal mt-1">
+                                            {configurable_options.map((item, idx) => `${item.value_label}${idx < configurable_options.length - 1 ? ', ' : ''}`)}
+                                        </Typography>
                                     ) : null}
                                     {bundle_options && bundle_options.length ? (
-                                        <div className="product-options">
-                                            {bundle_options.map((val, idx) => (
-                                                <div className="option-wrapper" key={idx}>
-                                                    <strong>{val.label}</strong> :
-                                                    <div className="option-wrapper__item">
-                                                        {val.values.map((item, idt) => (
-                                                            <div key={idt}>
-                                                                {item.quantity} x{item.label}{' '}
-                                                            </div>
+                                        <div className="flex flex-col gap-2 mt-1">
+                                            {bundle_options.map((value, idx) => (
+                                                <div className="flex flex-col gap-1" key={idx}>
+                                                    <Typography variant="bd-2b">{value.label}</Typography>
+                                                    <div className="flex flex-col gap-1">
+                                                        {value.values.map((item, idt) => (
+                                                            <Typography variant="bd-2b" key={idt}>
+                                                                {item.quantity}
+                                                                {' '}
+                                                                x
+                                                                {item.label}
+                                                                {' '}
+                                                                +
+                                                                {' '}
+                                                                {formatPrice(item.price, 'IDR', currencyCache)}
+                                                            </Typography>
                                                         ))}
                                                     </div>
                                                 </div>
@@ -106,17 +107,18 @@ const Item = (props) => {
                                         </div>
                                     ) : null}
                                     {cartCustomOptions && cartCustomOptions.length ? (
-                                        <div className="product-options">
-                                            {cartCustomOptions.map((val, idx) => (
-                                                <div className="option-wrapper" key={idx}>
-                                                    <div className="flex flex-row option-wrapper__item">
-                                                        <strong>{val.label} :</strong>
-                                                        {val.values.map((item, idt) => (
-                                                            <p key={idt} className="option-item">
-                                                                {item.label && item.label !== '' ? item.label : item.value}
-                                                            </p>
-                                                        ))}
-                                                    </div>
+                                        <div className="flex flex-col gap-1 mt-1">
+                                            {cartCustomOptions.map((op, idx) => (
+                                                <div className="flex flex-col tablet:flex-row" key={idx}>
+                                                    <Typography variant="bd-2b">
+                                                        {`${op.label}: `}
+                                                    </Typography>
+
+                                                    {op.values.map((item, idt) => (
+                                                        <Typography variant="bd-2b" key={idt} className="option-item tablet:ml-1">
+                                                            {item.label && item.label !== '' ? item.label : item.value}
+                                                        </Typography>
+                                                    ))}
                                                 </div>
                                             ))}
                                         </div>
@@ -124,11 +126,14 @@ const Item = (props) => {
                                     {aw_giftcard_option && aw_giftcard_option.length ? (
                                         <div className="product-options">
                                             {aw_giftcard_option.map((val, idx) => (
-                                                <div className="option-wrapper" key={idx}>
-                                                    <div className="flex flex-row option-wrapper__item">
-                                                        <strong>{val.label} :</strong>
+                                                <div className="flex flex-col tablet:flex-row" key={idx}>
+                                                    <Typography variant="bd-2b">
+                                                        {`${val.label}: `}
+                                                    </Typography>
+
+                                                    <Typography variant="bd-2b" className="option-item tablet:ml-1">
                                                         {val.value}
-                                                    </div>
+                                                    </Typography>
                                                 </div>
                                             ))}
                                         </div>
