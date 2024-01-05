@@ -95,7 +95,12 @@ const MiniComponent = (props) => {
                             </div>
                         </div>
                     </div>
-                    <div className={cx('minicart__items--wrapper', 'border-b-[1px]', 'border-b-neutral-200')}>
+                    <div className={cx(
+                        'minicart__items--wrapper',
+                        'border-b-neutral-200',
+                        (!data.items || data.items.length === 0) ? '!border-none' : 'border-b-[1px]',
+                    )}
+                    >
                         {loading || !data.items ? (
                             <Skeleton />
                         ) : (

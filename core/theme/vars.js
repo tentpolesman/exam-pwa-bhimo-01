@@ -161,6 +161,8 @@ export const ZINDEX = {
     toast: 1202,
     'backdrop-dialog': 1200,
     dialog: 1201,
+    'backdrop-drawer': 1150,
+    drawer: 1151,
 };
 
 export default {};
