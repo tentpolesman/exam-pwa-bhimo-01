@@ -60,13 +60,6 @@ export const storeConfig = `
     storeConfig {
       allow_guest_checkout
       allow_guests_to_write_product_reviews
-      aw_blog_general_comments_enabled
-      aw_blog_general_disqus_forum_code
-      aw_blog_general_enabled
-      aw_blog_related_products_block_layout
-      aw_blog_related_products_block_position
-      aw_blog_related_products_display_add_to_cart
-      aw_blog_related_products_products_limit
       base_currency_code
       base_media_url
       base_static_url
