@@ -197,90 +197,93 @@ const GoogleMaps = (props) => {
     // Reference on this article
     // https://dev.to/abdeldjalilhachimi/how-to-use-google-maps-places-autocomplete-with-react-js-161j
     const inputRef = React.useRef();
-    const autoComplete = new window.google.maps.places.Autocomplete(inputRef.current, {
-        bounds: new window.google.maps.LatLngBounds(
-            // eslint-disable-next-line no-undef
-            new google.maps.LatLng(
-                parseFloat(stateBounds.southwest.lat !== undefined ? stateBounds.southwest.lat : mapPosition.lat),
-                parseFloat(stateBounds.southwest.lng !== undefined ? stateBounds.southwest.lng : mapPosition.lng),
+    if (isLoaded) {
+        const { google } = window;
+        const autoComplete = new google.maps.places.Autocomplete(inputRef.current, {
+            bounds: new window.google.maps.LatLngBounds(
+                // eslint-disable-next-line no-undef
+                new google.maps.LatLng(
+                    parseFloat(stateBounds.southwest.lat !== undefined ? stateBounds.southwest.lat : mapPosition.lat),
+                    parseFloat(stateBounds.southwest.lng !== undefined ? stateBounds.southwest.lng : mapPosition.lng),
+                ),
+                // eslint-disable-next-line no-undef
+                new google.maps.LatLng(
+                    parseFloat(stateBounds.northeast.lat !== undefined ? stateBounds.northeast.lat : mapPosition.lat),
+                    parseFloat(stateBounds.northeast.lng !== undefined ? stateBounds.northeast.lng : mapPosition.lng),
+                ),
             ),
-            // eslint-disable-next-line no-undef
-            new google.maps.LatLng(
-                parseFloat(stateBounds.northeast.lat !== undefined ? stateBounds.northeast.lat : mapPosition.lat),
-                parseFloat(stateBounds.northeast.lng !== undefined ? stateBounds.northeast.lng : mapPosition.lng),
-            ),
-        ),
-        strictBounds: !!geocodingKey,
-    });
+            strictBounds: !!geocodingKey,
+        });
 
-    autoComplete.addListener('place_changed', () => {
-        const place = autoComplete.getPlace();
-        if (!place.geometry || !place.geometry.location) {
-            // User entered the name of a Place that was not suggested and
-            // pressed the Enter key, or the Place Details request failed.
-        }
-        if (place.geometry.viewport || place.geometry.location) {
-            // do something
-            const { name, address_components, geometry } = place;
+        autoComplete.addListener('place_changed', () => {
+            const place = autoComplete.getPlace();
+            if (!place.geometry || !place.geometry.location) {
+                // User entered the name of a Place that was not suggested and
+                // pressed the Enter key, or the Place Details request failed.
+            }
+            if (place.geometry.viewport || place.geometry.location) {
+                // do something
+                const { name, address_components, geometry } = place;
 
-            const tempInputValue = formik.values.addressDetail;
-            const street_name = address_components.filter((item) => item.types.includes('route'));
+                const tempInputValue = formik.values.addressDetail;
+                const street_name = address_components.filter((item) => item.types.includes('route'));
 
-            const newPosition = {
-                lat: geometry.location.lat(),
-                lng: geometry.location.lng(),
-            };
-            dragMarkerDone(newPosition);
+                const newPosition = {
+                    lat: geometry.location.lat(),
+                    lng: geometry.location.lng(),
+                };
+                dragMarkerDone(newPosition);
 
-            if (tempInputValue !== name) {
-                if (street_name[0] !== undefined) {
-                    if (street_name[0].long_name === name) {
-                        if (tempInputValue === street_name[0].long_name || tempInputValue === street_name[0].short_name) {
-                            formik.setFieldValue('addressDetail', `${street_name[0].long_name}`);
-                        } else if (tempInputValue.length < street_name[0].long_name.length || tempInputValue.length === street_name[0].long_name.length) {
-                            formik.setFieldValue('addressDetail', `${street_name[0].long_name}`);
+                if (tempInputValue !== name) {
+                    if (street_name[0] !== undefined) {
+                        if (street_name[0].long_name === name) {
+                            if (tempInputValue === street_name[0].long_name || tempInputValue === street_name[0].short_name) {
+                                formik.setFieldValue('addressDetail', `${street_name[0].long_name}`);
+                            } else if (tempInputValue.length < street_name[0].long_name.length || tempInputValue.length === street_name[0].long_name.length) {
+                                formik.setFieldValue('addressDetail', `${street_name[0].long_name}`);
+                            } else {
+                                formik.setFieldValue('addressDetail', capitalizeEachWord(tempInputValue));
+                            }
+                        } else if (tempInputValue.length > name.length) {
+                            if (
+                                tempInputValue.toLowerCase().includes(street_name[0].long_name.toLowerCase()) ||
+                                tempInputValue.toLowerCase().includes(street_name[0].short_name.toLowerCase()) ||
+                                tempInputValue.toLowerCase().includes(name.toLowerCase())
+                            ) {
+                                // eslint-disable-next-line max-len
+                                if (
+                                    tempInputValue.toLowerCase().includes(`${street_name[0].long_name.toLowerCase()} ${name.toLowerCase()}`) ||
+                                    tempInputValue.toLowerCase().includes(`${street_name[0].short_name.toLowerCase()} ${name.toLowerCase()}`)
+                                ) {
+                                    formik.setFieldValue('addressDetail', capitalizeEachWord(tempInputValue));
+                                } else {
+                                    formik.setFieldValue('addressDetail', `${street_name[0].short_name} ${name}`);
+                                }
+                            } else {
+                                formik.setFieldValue('addressDetail', capitalizeEachWord(tempInputValue));
+                            }
+                        } else if (
+                            name.length > street_name[0].short_name.length &&
+                            (name.toLowerCase().includes(street_name[0].short_name.toLowerCase()) ||
+                                name.toLowerCase().includes(street_name[0].long_name.toLowerCase()))
+                        ) {
+                            formik.setFieldValue('addressDetail', name);
+                        } else if (name.toLowerCase().includes('street')) {
+                            formik.setFieldValue('addressDetail', `${street_name[0].short_name}`);
                         } else {
-                            formik.setFieldValue('addressDetail', capitalizeEachWord(tempInputValue));
+                            formik.setFieldValue('addressDetail', `${street_name[0].short_name} ${name}`);
                         }
                     } else if (tempInputValue.length > name.length) {
-                        if (
-                            tempInputValue.toLowerCase().includes(street_name[0].long_name.toLowerCase()) ||
-                            tempInputValue.toLowerCase().includes(street_name[0].short_name.toLowerCase()) ||
-                            tempInputValue.toLowerCase().includes(name.toLowerCase())
-                        ) {
-                            // eslint-disable-next-line max-len
-                            if (
-                                tempInputValue.toLowerCase().includes(`${street_name[0].long_name.toLowerCase()} ${name.toLowerCase()}`) ||
-                                tempInputValue.toLowerCase().includes(`${street_name[0].short_name.toLowerCase()} ${name.toLowerCase()}`)
-                            ) {
-                                formik.setFieldValue('addressDetail', capitalizeEachWord(tempInputValue));
-                            } else {
-                                formik.setFieldValue('addressDetail', `${street_name[0].short_name} ${name}`);
-                            }
-                        } else {
-                            formik.setFieldValue('addressDetail', capitalizeEachWord(tempInputValue));
-                        }
-                    } else if (
-                        name.length > street_name[0].short_name.length &&
-                        (name.toLowerCase().includes(street_name[0].short_name.toLowerCase()) ||
-                            name.toLowerCase().includes(street_name[0].long_name.toLowerCase()))
-                    ) {
-                        formik.setFieldValue('addressDetail', name);
-                    } else if (name.toLowerCase().includes('street')) {
-                        formik.setFieldValue('addressDetail', `${street_name[0].short_name}`);
+                        formik.setFieldValue('addressDetail', capitalizeEachWord(tempInputValue));
                     } else {
-                        formik.setFieldValue('addressDetail', `${street_name[0].short_name} ${name}`);
+                        formik.setFieldValue('addressDetail', name);
                     }
-                } else if (tempInputValue.length > name.length) {
-                    formik.setFieldValue('addressDetail', capitalizeEachWord(tempInputValue));
                 } else {
                     formik.setFieldValue('addressDetail', name);
                 }
-            } else {
-                formik.setFieldValue('addressDetail', name);
             }
-        }
-    });
+        });
+    }
 
     // Function to render the maps
     // eslint-disable-next-line arrow-body-style

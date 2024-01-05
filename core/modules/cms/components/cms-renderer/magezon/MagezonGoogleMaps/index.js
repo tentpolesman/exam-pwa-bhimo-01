@@ -1,5 +1,7 @@
+import dynamic from 'next/dynamic';
+
 /* eslint-disable no-nested-ternary */
-import GoogleMaps from '@common_googlemaps';
+const GoogleMaps = dynamic(() => import('@common_googlemaps'), { ssr: false });
 
 const MagezonGoogleMaps = (props) => {
     // prettier-ignore
@@ -30,19 +32,25 @@ const MagezonGoogleMaps = (props) => {
         <>
             <div className="mgz-google-maps">
                 {gmapKey && (
-                    <GoogleMaps
-                        gmapKey={gmapKey}
-                        geocodingKey={geocodingKey}
-                        markers={updatedItems}
-                        defaultZoom={map_zoom}
-                        mapPosition={mapPosition}
-                        dragMarkerDone={handleDragPosition}
-                        markerIcon={storeConfig.secure_base_media_url}
-                        useCustomMarkerIcon={storeConfig.secure_base_media_url !== ''}
-                        markerDraggable={map_draggable}
-                        containerStyle={elementDimension}
-                        mode="map-only"
-                    />
+                    <>
+                        {
+                            typeof window !== 'undefined' && (
+                                <GoogleMaps
+                                    gmapKey={gmapKey}
+                                    geocodingKey={geocodingKey}
+                                    markers={updatedItems}
+                                    defaultZoom={map_zoom}
+                                    mapPosition={mapPosition}
+                                    dragMarkerDone={handleDragPosition}
+                                    markerIcon={storeConfig.secure_base_media_url}
+                                    useCustomMarkerIcon={storeConfig.secure_base_media_url !== ''}
+                                    markerDraggable={map_draggable}
+                                    containerStyle={elementDimension}
+                                    mode="map-only"
+                                />
+                            )
+                        }
+                    </>
                 )}
             </div>
             <style jsx>

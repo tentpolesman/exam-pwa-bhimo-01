@@ -254,19 +254,21 @@ const Address = (props) => {
                         .then((dataAddress) => {
                             if (dataAddress && dataAddress.data && dataAddress.data.updateCustomerAddress) {
                                 const shipping = dataAddress.data.updateCustomerAddress;
-                                checkout.selected.address = {
-                                    firstname: shipping.firstname,
-                                    lastname: shipping.lastname,
-                                    city: shipping.city,
-                                    region: {
-                                        ...shipping.region,
-                                        label: shipping.region.region,
+                                dispatch(setSelectedData({
+                                    address: {
+                                        firstname: shipping.firstname,
+                                        lastname: shipping.lastname,
+                                        city: shipping.city,
+                                        region: {
+                                            ...shipping.region,
+                                            label: shipping.region.region,
+                                        },
+                                        country: shipping.country,
+                                        postcode: shipping.postcode,
+                                        telephone: shipping.telephone,
+                                        street: shipping.street,
                                     },
-                                    country: shipping.country,
-                                    postcode: shipping.postcode,
-                                    telephone: shipping.telephone,
-                                    street: shipping.street,
-                                };
+                                }));
                                 dispatch(setLoading({ order: false, addresses: false }));
                             }
                             setShippingBilling();

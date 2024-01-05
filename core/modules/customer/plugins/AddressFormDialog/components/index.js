@@ -417,16 +417,18 @@ const AddressView = (props) => {
                             />
                             {gmapKey ? (
                                 <div className={cx('mb-8')}>
-                                    <GoogleMaps
-                                        gmapKey={gmapKey}
-                                        geocodingKey={geocodingKey}
-                                        formik={formik}
-                                        mapPosition={mapPosition}
-                                        dragMarkerDone={handleDragPosition}
-                                        mode="location-search"
-                                        inputClassName={cx('w-full')}
-                                        useLabel
-                                    />
+                                    { typeof window !== 'undefined' && (
+                                        <GoogleMaps
+                                            gmapKey={gmapKey}
+                                            geocodingKey={geocodingKey}
+                                            formik={formik}
+                                            mapPosition={mapPosition}
+                                            dragMarkerDone={handleDragPosition}
+                                            mode="location-search"
+                                            inputClassName={cx('w-full')}
+                                            useLabel
+                                        />
+                                    ) }
                                 </div>
                             ) : (
                                 <TextField
