@@ -72,7 +72,7 @@ const ItemView = (props) => {
                             <Typography variant="bd-1b" className="line-clamp-2 capitalize">{product.name}</Typography>
                         </Link>
                         <Show when={configurable_options && configurable_options.length > 0}>
-                            <Typography variant="bd-2b" letter="capitalize" className="font-normal">
+                            <Typography variant="bd-2b" letter="capitalize" className="font-normal mt-1">
                                 {
                                     configurable_options.map((item, idx) => (
                                         `${item.value_label}${idx < configurable_options.length - 1 ? ', ' : ''}`
@@ -82,11 +82,11 @@ const ItemView = (props) => {
                         </Show>
                         <div className="flex flex-row">
                             {links && links.length > 0 && (
-                                <div className="xs:basis-full flex flex-col tablet:flex-row gap-1">
+                                <div className="xs:basis-full flex flex-col tablet:flex-row gap-1 mt-1">
                                     <Typography variant="bd-2b" letter="capitalize" type="bold">
                                         Downloads :
                                     </Typography>
-                                    <div className="flex flex-col">
+                                    <div className="flex flex-col gap-1">
                                         {links.map((item, idx) => (
                                             <Typography variant="bd-2b" letter="capitalize" key={idx}>
                                                 {item.title}
@@ -97,23 +97,21 @@ const ItemView = (props) => {
                             )}
                         </div>
                         {bundle_options && bundle_options.length ? (
-                            <div className="flex flex-col gap-2">
+                            <div className="flex flex-col gap-2 mt-1">
                                 {bundle_options.map((value, idx) => (
-                                    <div className="flex flex-col" key={idx}>
-                                        <Typography variant="bd-2">{value.label}</Typography>
-                                        <div className="flex flex-col">
+                                    <div className="flex flex-col gap-1" key={idx}>
+                                        <Typography>{value.label}</Typography>
+                                        <div className="flex flex-col gap-1">
                                             {value.values.map((item, idt) => (
-                                                <Typography variant="bd-2b" key={idt}>
+                                                <Typography key={idt}>
                                                     {item.quantity}
                                                     {' '}
                                                     x
                                                     {item.label}
                                                     {' '}
-                                                    <strong>
-                                                        +
-                                                        {' '}
-                                                        {formatPrice(item.price, 'IDR', currencyCache)}
-                                                    </strong>
+                                                    +
+                                                    {' '}
+                                                    {formatPrice(item.price, 'IDR', currencyCache)}
                                                 </Typography>
                                             ))}
                                         </div>
@@ -122,28 +120,24 @@ const ItemView = (props) => {
                             </div>
                         ) : null}
                         {cartCustomOptions && cartCustomOptions.length ? (
-                            <div className="product-options">
+                            <div className="flex flex-col gap-1 mt-1">
                                 {cartCustomOptions.map((op, idx) => (
                                     <div className="option-wrapper" key={idx}>
-                                        <div className="flex flex-row option-wrapper__item">
-                                            <strong>
-                                                {op.label}
-                                                {' '}
-                                                :
-                                            </strong>
+                                        <Typography className="flex flex-row option-wrapper__item">
+                                            {`${op.label}: `}
                                             {op.values.map((item, idt) => (
-                                                <p key={idt} className="option-item">
+                                                <p key={idt} className="option-item ml-1">
                                                     {item.label && item.label !== '' ? item.label : item.value}
                                                 </p>
                                             ))}
-                                        </div>
+                                        </Typography>
                                     </div>
                                 ))}
                             </div>
                         ) : null}
 
                         <Show when={isMultiSeller}>
-                            <div className="">
+                            <div className="mt-2">
                                 <OrderNote note={note} cartItemId={cartItemId} quantity={quantity} />
                             </div>
                         </Show>
