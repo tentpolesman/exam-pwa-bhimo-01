@@ -96,8 +96,8 @@ const CustomImage = ({
                 style={styleImage}
                 className={cx('img', className)}
                 alt={alt}
-                width={width !== 0 ? width : 100}
-                height={height !== 0 ? height : 100}
+                width={width || 100}
+                height={height || 100}
                 unoptimized
                 priority={preload}
                 quality={quality}

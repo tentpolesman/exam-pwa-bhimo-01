@@ -162,39 +162,41 @@ const DefaultView = (props) => {
                     </table>
                 </div>
                 {data && data.items && data.items.length > 0 ? (
-                    <div className={cx('table-data', 'pt-6', 'flex', 'mobile:flex-col', 'tablet:flex-row', 'justify-between')}>
-                        <div className={cx('pt-2')}>
+                    <div className={cx('table-data', 'pt-6', 'flex', 'tablet:items-center', 'mobile:flex-col', 'tablet:flex-row', 'justify-between')}>
+                        <div className="flex justify-between items-center flex-1">
                             <Typography className={cx('font-normal', 'leading-2lg')}>
                                 {data && data.total_count && `${data.total_count} Item(s)`}
                             </Typography>
+                            <div className="flex items-center">
+                                <Typography className={cx('font-normal', 'leading-2lg', 'p-3')}>Show</Typography>
+                                <Select
+                                    name="show"
+                                    value={pageSize}
+                                    onChange={handleChangePageSize}
+                                    options={[
+                                        {
+                                            label: 10,
+                                            value: 10,
+                                        },
+                                        {
+                                            label: 20,
+                                            value: 20,
+                                        },
+                                        {
+                                            label: 50,
+                                            value: 50,
+                                        },
+                                        {
+                                            label: 'All',
+                                            value: data && data.total_count,
+                                        },
+                                    ]}
+                                    textFiledProps={{ className: cx('w-[80px]') }}
+                                    inputProps={{ className: cx('!py-0') }}
+                                />
+                            </div>
                         </div>
-                        <div className={cx('flex', 'flex-row', 'mobile:max-tablet:pt-4', 'mobile:max-tablet:justify-center')}>
-                            <Typography className={cx('font-normal', 'leading-2lg', 'p-3')}>Show</Typography>
-                            <Select
-                                name="show"
-                                value={pageSize}
-                                onChange={handleChangePageSize}
-                                options={[
-                                    {
-                                        label: 10,
-                                        value: 10,
-                                    },
-                                    {
-                                        label: 20,
-                                        value: 20,
-                                    },
-                                    {
-                                        label: 50,
-                                        value: 50,
-                                    },
-                                    {
-                                        label: 'All',
-                                        value: data && data.total_count,
-                                    },
-                                ]}
-                                textFiledProps={{ className: cx('w-[80px]') }}
-                                inputProps={{ className: cx('!py-0') }}
-                            />
+                        <div className={cx('flex', 'flex-row', 'items-center', 'mobile:max-tablet:pt-4', 'mobile:max-tablet:justify-center')}>
                             <Pagination
                                 handleChangePage={handleChangePage}
                                 page={data && data.current_page}
