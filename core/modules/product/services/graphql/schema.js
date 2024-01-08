@@ -227,14 +227,14 @@ const priceTiersPartial = `
 const productDetailFragment = (config = {}) => gql`
   fragment CORE_PRODUCT_DETAILS on ProductInterface {
     id
-    name @skip(if: $includeName)
+    name
     sku
     ${config?.pwa?.label_sale_enable ? 'sale' : ''}
     stock_status
     url_key
     __typename
     attribute_set_id
-    small_image @skip(if: $includeImg) {
+    small_image {
       url,
       label
     }
@@ -268,10 +268,10 @@ const productDetailFragment = (config = {}) => gql`
     special_to_date
     new_from_date
     new_to_date
-    price_range @skip(if: $includePrice) {
+    price_range {
       ${priceRangePartial}
     }
-    price_tiers @skip(if: $includePrice) {
+    price_tiers {
       ${priceTiersPartial}
     }
   }
@@ -281,9 +281,6 @@ export const getProduct = (config = {}) => {
     const query = gql`
     ${productDetailFragment(config)}
     query getProducts(
-      $includeName: Boolean = false,
-      $includePrice: Boolean = false,
-      $includeImg: Boolean = false,
       $url: String!
     ) {
         products(
