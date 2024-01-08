@@ -178,20 +178,11 @@ const PageDetail = (props) => {
     const routeKey = routePaths.split('?');
     const routeKeyFilter = routeKey.length > 0 ? routeKey[0].replaceAll('#', '') : null;
     const productProps = router.query.productProps ? JSON.parse(router.query.productProps) : {};
-    const productVariables = Object.keys(productProps).length > 0
-        ? {
-            variables: {
-                includeName: productProps.name && productProps.name !== '',
-                includePrice: productProps.price && true,
-                includeImg: productProps.small_image?.url && true,
-                url: slug[0],
-            },
-        }
-        : {
-            variables: {
-                url: slug[0],
-            },
-        };
+    const productVariables = {
+        variables: {
+            url: slug[0],
+        },
+    };
 
     const { loading, data, error } = getProduct(storeConfig, { ...productVariables });
 
@@ -220,13 +211,6 @@ const PageDetail = (props) => {
                     items: [
                         {
                             ...productResult.items[productByUrlMemo],
-                            name: productProps.name || '',
-                            small_image: productProps.small_image || {},
-                            price: productProps.price || {},
-                            price_range: { ...productProps.price.priceRange },
-                            price_tiers: { ...productProps.price.priceTiers },
-                            special_from_date: { ...productProps.price.specialFromDate },
-                            special_to_date: { ...productProps.price.specialToDate },
                         },
                     ],
                 };
