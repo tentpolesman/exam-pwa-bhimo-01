@@ -39,7 +39,6 @@ const OrderDetail = (props) => {
     const { loading: loadingPaymentInfo, data: paymentInfo, error: errorPaymentInfo } = getPaymentInformation(params);
     const [actionReorder] = mutationReorder();
     const { loading: loadingTrackingOrder, data: dataTrackingOrder, error: errorTrackingOrder } = getTrackingOrder({ order_id: params.order_id });
-    // return null;
 
     if (error || errorPaymentInfo || errorTrackingOrder) {
         return (

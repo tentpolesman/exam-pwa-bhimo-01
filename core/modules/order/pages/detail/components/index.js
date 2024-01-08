@@ -246,12 +246,12 @@ const DetailOrder = (props) => {
                                         <br />
                                         {detail[0].detail[0].shipping_address.street || ''}
                                         <br />
-                                        {`${detail[0].detail[0].shipping_address.city.split(', ')[0] || ''}, ${
-                                            detail[0].detail[0].shipping_address.region || ''
-                                        } ${detail[0].detail[0].shipping_address.postcode || ''}`}
+                                        {`${detail[0]?.detail[0]?.shipping_address?.city?.split(', ')[0] || ''}, ${
+                                            detail[0]?.detail[0]?.shipping_address?.region || ''
+                                        } ${detail[0]?.detail[0]?.shipping_address?.postcode || ''}`}
                                         <br />
-                                        {detail[0].detail[0].shipping_address.country || ''}
-                                        {detail[0].detail[0].shipping_address.telephone || ''}
+                                        {detail[0]?.detail[0]?.shipping_address?.country || ''}
+                                        {detail[0]?.detail[0]?.shipping_address?.telephone || ''}
                                     </Typography>
                                 </div>
                             )}

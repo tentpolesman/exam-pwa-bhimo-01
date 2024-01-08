@@ -10,6 +10,8 @@ import Link from 'next/link';
 import { modules } from '@config';
 import { checkJson } from '@core_modules/trackingorder/pages/default/helpers/checkJson';
 import { startCase } from 'lodash';
+import cx from 'classnames';
+import XMarkIcon from '@heroicons/react/24/solid/XMarkIcon';
 
 const ModalResult = (props) => {
     // prettier-ignore
@@ -18,7 +20,7 @@ const ModalResult = (props) => {
     } = props;
     const { trackingorder } = modules;
 
-    const content = () => {
+    const Content = () => {
         const data = orders.data[0];
         if (orders.data.length > 0) {
             let { detail } = data;
@@ -93,38 +95,45 @@ const ModalResult = (props) => {
             });
 
             return (
-                <div className="flex flex-row">
-                    <div className="xs:basis-full">
-                        {
-                            modalData || modalData.length > 0
-                                ? (
-                                    <div className="list-container">
-                                        {trackOrder}
-                                        {items.map((item, i) => (
-                                            <>
-                                                <div key={i} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 20 }}>
-                                                    <Typography letter="capitalize" className="clear-margin-padding" style={{ width: '40%' }}>
-                                                        {item.primary}
-                                                    </Typography>
-                                                    <Typography
-                                                        variant="span"
-                                                        type="regular"
-                                                        className="clear-margin-padding"
-                                                        style={{ width: '60%' }}
-                                                    >
-                                                        {item.secondary}
-                                                    </Typography>
-                                                </div>
-                                            </>
-                                        ))}
-                                    </div>
-                                )
-
-                                :
-                                (
-                                    <div className="p-2 bg-yellow-500 text-neutral-white mb-[32px]">{t('trackingorder:noDataAvailable')}</div>
-                                )
-                        }
+                <div className="'w-full flex flex-col desktop:flex-row-reverse gap-2 !bg-[transparent]',">
+                    <div className="w-full desktop:w-auto flex justify-end">
+                        <div
+                            role="presentation"
+                            onClick={() => setOpen(false)}
+                            className={cx(
+                                'w-7 h-7 p-1 rounded-md justify-center items-center gap-1.5 inline-flex group',
+                                'bg-neutral-white bg-opacity-40 hover:bg-primary',
+                                'cursor-pointer',
+                            )}
+                        >
+                            <XMarkIcon className="w-5 h-5 relative group-hover:text-neutral-white" />
+                        </div>
+                    </div>
+                    <div
+                        className={cx(
+                            'w-full h-max max-h-[calc(100vh-60px)] p-4 tablet:p-8 bg-neutral-white rounded-lg',
+                            'shadow-xl overflow-y-scroll',
+                        )}
+                    >
+                        {modalData?.data ? (
+                            <div className="list-container">
+                                {trackOrder}
+                                {items.map((item, i) => (
+                                    <>
+                                        <div key={i} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 20 }}>
+                                            <Typography letter="capitalize" className="clear-margin-padding" style={{ width: '40%' }}>
+                                                {item.primary}
+                                            </Typography>
+                                            <Typography variant="span" type="regular" className="clear-margin-padding" style={{ width: '60%' }}>
+                                                {item.secondary}
+                                            </Typography>
+                                        </div>
+                                    </>
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="p-2 bg-yellow-500 text-neutral-white my-[32px]">{t('trackingorder:noDataAvailable')}</div>
+                        )}
                     </div>
                     <style jsx>
                         {`
@@ -162,9 +171,11 @@ const ModalResult = (props) => {
             <Dialog
                 open={open}
                 onClose={() => setOpen(false)}
-            >
-                <div className="dialog-content">{content()}</div>
-            </Dialog>
+                content={<Content />}
+                classContainer="!shadow-none max-w-[360px] tablet:!max-w-[700px] desktop:!max-w-[945px]"
+                classContent="!p-0 !bg-[transparent]"
+                classWrapperTitle="!hidden"
+            />
         </>
     );
 };
