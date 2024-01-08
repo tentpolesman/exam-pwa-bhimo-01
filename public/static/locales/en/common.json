@@ -19,6 +19,7 @@
         "edit": "Edit",
         "save": "Save",
         "saved": "Saved",
+        "startShopping": "Start Shopping",
         "continueShopping": "Continue Shopping",
         "confirm": "Confirm",
         "cancel": "Cancel",
@@ -55,7 +56,7 @@
         "deleteFailed": "Delete cart item failed",
         "updateSuccess": "Update cart item success",
         "updateFailed": "Update cart item failed",
-        "emptyCart": "YOU HAVE NO ITEMS IN YOUR SHOPPING CART.",
+        "emptyCart": "Your cart is currently empty.",
         "oos": "Out of stock",
         "inStock": "In stock",
         "cartError": "Something error with your cart, please clear and try again"
