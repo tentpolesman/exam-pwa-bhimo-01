@@ -322,7 +322,7 @@ const DetailOrder = (props) => {
                                             variant="outlined"
                                             onClick={() => handleOpenModal(shipping.trackorder_type, dt)}
                                             align="left"
-                                            className={cx('p-0', '-ml-1')}
+                                            className={cx('p-0', '-ml-1', 'mt-4')}
                                         >
                                             <Typography>
                                                 {t('order:trackingOrder')}
