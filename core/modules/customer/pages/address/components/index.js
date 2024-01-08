@@ -77,6 +77,7 @@ const Content = (props) => {
                                             handleChange={handleChange}
                                             selectedAddressId={selectedAddressId}
                                             t={t}
+                                            removeAddress={removeAddress}
                                         />
                                     ))}
                                 </>

@@ -11,7 +11,6 @@ import {
     updateCustomerAddress,
 } from '@core_modules/customer/services/graphql';
 import Layout from '@layout';
-import _ from 'lodash';
 import dynamic from 'next/dynamic';
 import React, { useEffect, useState } from 'react';
 
@@ -135,18 +134,15 @@ const AddressCustomer = (props) => {
                     },
                 });
             }
+            await actGetCustomerAddress();
         }
-
         setSuccess(true);
         setLoadingAddress(false);
 
-        _.delay(async () => {
-            if (openNew) {
-                setOpenDialogNew(false);
-            }
-            setSuccess(false);
-            handleDialogSubmit();
-        }, 1000);
+        if (openNew) {
+            setOpenDialogNew(false);
+        }
+        setSuccess(false);
     };
 
     const setRemoveAddress = async (addressId) => {
@@ -159,15 +155,14 @@ const AddressCustomer = (props) => {
                         id: addressId,
                     },
                 });
+                await actGetCustomerAddress();
             }
         }
 
-        _.delay(async () => {
-            await actGetCustomerAddress();
-            setSuccess(true);
-            setLoadingAddress(false);
-            setLoading(false);
-        }, 1000);
+        setSuccess(true);
+        setLoadingAddress(false);
+        setLoading(false);
+        setSuccess(false);
     };
     return (
         <Layout pageConfig={pageConfig || config} {...props}>
