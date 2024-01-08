@@ -140,13 +140,26 @@ export default function AutocompleteSearch(props) {
         const PopoverItem = (propsPopoverItem, key) => {
             const { name, type, position, small_image, breadcrumbs, logo, city, seller_name } = propsPopoverItem;
 
+            const sharedProp = {
+                name: propsPopoverItem?.name || '',
+                small_image: propsPopoverItem?.small_image || {},
+                price: propsPopoverItem?.price_range
+                    ? {
+                          priceRange: propsPopoverItem.price_range,
+                          priceTiers: propsPopoverItem.price_tiers || [],
+                      }
+                    : {},
+            };
+
             const handleOnClickItem = (onClickProps) => {
                 const { result: resultType, id: seller_id, url_key } = onClickProps;
                 if (resultType === 'seller') {
                     Router.push(
                         {
                             pathname: '/[...slug]',
-                            query: {},
+                            query: {
+                                productProps: JSON.stringify(sharedProp),
+                            },
                         },
                         `/seller/${seller_id}`,
                     );
@@ -154,7 +167,9 @@ export default function AutocompleteSearch(props) {
                     Router.push(
                         {
                             pathname: '/[...slug]',
-                            query: {},
+                            query: {
+                                productProps: JSON.stringify(sharedProp),
+                            },
                         },
                         `/${url_key}`,
                     );
@@ -189,13 +204,11 @@ export default function AutocompleteSearch(props) {
                                 <div className={cx('title-search-item', 'text-base', 'normal-case', 'leading-5', 'font-[500]')}>
                                     {name.length > 47 ? `${name.substr(0, 47)}...` : `${name}`}
                                     <br />
-                                    {(propsPopoverItem.price_range || propsPopoverItem.price_tier) && (
-                                        <PriceFormat
-                                            priceRange={propsPopoverItem.price_range}
-                                            priceTiers={propsPopoverItem.price_tier}
-                                            textClassName={cx('!text-sm', '!leading-4', '!font-normal', '!text-neutral-500')}
-                                        />
-                                    )}
+                                    <PriceFormat
+                                        priceRange={sharedProp.price.priceRange}
+                                        priceTiers={sharedProp.price.priceTiers}
+                                        textClassName={cx('!text-sm', '!leading-4', '!font-normal', '!text-neutral-500')}
+                                    />
                                 </div>
                                 {seller_name && enableMultiseller && (
                                     <div className="info-seller">

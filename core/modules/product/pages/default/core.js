@@ -1,16 +1,19 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable radix */
-import Backdrop from '@common_backdrop';
+import React from 'react';
+import TagManager from 'react-gtm-module';
 import generateSchemaOrg from '@core_modules/product/helpers/schema.org';
-import { getProduct, getSeller } from '@core_modules/product/services/graphql';
+import Backdrop from '@common_backdrop';
+import Layout from '@layout';
+import Error from 'next/error';
 import { getCookies } from '@helper_cookies';
 import { getLocalStorage, setLocalStorage } from '@helper_localstorage';
 import { StripHtmlTags } from '@helper_text';
-import Layout from '@layout';
-import Error from 'next/error';
 import { useRouter } from 'next/router';
-import React from 'react';
-import TagManager from 'react-gtm-module';
+import {
+    getProduct,
+    getSeller,
+} from '@core_modules/product/services/graphql';
 
 const ContentDetail = ({
     t, slug, product, keyProduct, Content, isLogin, storeConfig, ssrProduct,
@@ -157,7 +160,14 @@ const ContentDetail = ({
 
 const PageDetail = (props) => {
     const {
-        t, slug, Content, isLogin, pageConfig, CustomHeader, storeConfig, ssrProduct,
+        t,
+        slug,
+        Content,
+        isLogin,
+        pageConfig,
+        CustomHeader,
+        storeConfig,
+        ssrProduct,
     } = props;
 
     /**
@@ -171,6 +181,9 @@ const PageDetail = (props) => {
     const productVariables = Object.keys(productProps).length > 0
         ? {
             variables: {
+                includeName: productProps.name && productProps.name !== '',
+                includePrice: productProps.price && true,
+                includeImg: productProps.small_image?.url && true,
                 url: slug[0],
             },
         }
@@ -207,6 +220,13 @@ const PageDetail = (props) => {
                     items: [
                         {
                             ...productResult.items[productByUrlMemo],
+                            name: productProps.name || '',
+                            small_image: productProps.small_image || {},
+                            price: productProps.price || {},
+                            price_range: { ...productProps.price.priceRange },
+                            price_tiers: { ...productProps.price.priceTiers },
+                            special_from_date: { ...productProps.price.specialFromDate },
+                            special_to_date: { ...productProps.price.specialToDate },
                         },
                     ],
                 };
@@ -264,7 +284,9 @@ const PageDetail = (props) => {
     if (isError) {
         return (
             <Layout pageConfig={{}} CustomHeader={CustomHeader ? <CustomHeader /> : <></>} {...props}>
-                <div className="product-detail-error">{errorMessage}</div>
+                <div className="product-detail-error">
+                    {errorMessage}
+                </div>
             </Layout>
         );
     }

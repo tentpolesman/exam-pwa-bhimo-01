@@ -1,40 +1,40 @@
 /* eslint-disable eqeqeq */
-import { useQuery, useReactiveVar } from '@apollo/client';
 import { debuging, modules } from '@config';
+import { getLoginInfo } from '@helper_auth';
+import { setCookies, getCookies } from '@helper_cookies';
+import { useTranslation } from 'next-i18next';
+import route, { useRouter } from 'next/router';
+import { useQuery, useReactiveVar } from '@apollo/client';
+import React from 'react';
+import { setResolver, getResolver } from '@helper_localstorage';
+import { getSessionStorage, setSessionStorage } from '@helpers/sessionstorage';
+import classNames from 'classnames';
+import ConfigurableOpt from '@plugin_optionitem';
 import { addWishlist, getDetailProduct, getDetailProductPrice } from '@core_modules/catalog/services/graphql';
 import { addProductsToCompareList } from '@core_modules/product/services/graphql';
 import { getCustomerUid } from '@core_modules/productcompare/service/graphql';
-import { getLoginInfo } from '@helper_auth';
-import { getCookies, setCookies } from '@helper_cookies';
-import { getResolver, setResolver } from '@helper_localstorage';
-import { getStoreHost } from '@helpers/config';
-import { getSessionStorage, setSessionStorage } from '@helpers/sessionstorage';
-import ConfigurableOpt from '@plugin_optionitem';
-import ModalQuickView from '@plugin_productitem/components/QuickView';
-import { getAppEnv } from '@root/core/helpers/env';
-import { priceVar } from '@root/core/services/graphql/cache';
 import { localCompare } from '@services/graphql/schema/local';
-import classNames from 'classnames';
-import { useTranslation } from 'next-i18next';
-import route, { useRouter } from 'next/router';
-import React from 'react';
+import { getStoreHost } from '@helpers/config';
+import { getAppEnv } from '@root/core/helpers/env';
+import ModalQuickView from '@plugin_productitem/components/QuickView';
 import TagManager from 'react-gtm-module';
+import { priceVar } from '@root/core/services/graphql/cache';
 
-import Button from '@common/Button';
-import Typography from '@common/Typography';
+import ImageProductView from '@plugin_productitem/components/Image';
+import DetailProductView from '@plugin_productitem/components/Detail';
+import LabelView from '@plugin_productitem/components/LabelView';
 import PriceFormat from '@common_priceformat';
 import { getPriceFromList } from '@core_modules/product/helpers/getPrice';
-import DetailProductView from '@plugin_productitem/components/Detail';
-import ImageProductView from '@plugin_productitem/components/Image';
-import LabelView from '@plugin_productitem/components/LabelView';
+import Button from '@common/Button';
+import Typography from '@common/Typography';
 
-import Badge from '@common/Badge';
-import Show from '@common/Show';
-import EyeSolidIcon from '@heroicons/react/20/solid/EyeIcon';
+import CartIcon from '@heroicons/react/24/outline/ShoppingCartIcon';
+import HeartIcon from '@heroicons/react/24/outline/HeartIcon';
 import CompareIcon from '@heroicons/react/24/outline/ArrowsRightLeftIcon';
 import EyeIcon from '@heroicons/react/24/outline/EyeIcon';
-import HeartIcon from '@heroicons/react/24/outline/HeartIcon';
-import CartIcon from '@heroicons/react/24/outline/ShoppingCartIcon';
+import EyeSolidIcon from '@heroicons/react/20/solid/EyeIcon';
+import Show from '@common/Show';
+import Badge from '@common/Badge';
 
 const ProductItem = (props) => {
     const {
@@ -91,6 +91,15 @@ const ProductItem = (props) => {
             setErrorCustomizableOptions(errorCustomizable);
         }
     }, [customizableOptions]);
+
+    const [price] = React.useState({
+        priceRange: other.price_range,
+        priceTiers: other.price_tiers,
+        // eslint-disable-next-line no-underscore-dangle
+        productType: other.__typename,
+        specialFromDate: other.special_from_date,
+        specialToDate: other.special_to_date,
+    });
 
     const checkCustomizableOptionsValue = async () => {
         if (other.options && other.options.length > 0) {
@@ -320,7 +329,13 @@ const ProductItem = (props) => {
         } else if (modules.checkout.checkoutOnly) {
             window.open(`${getStoreHost(getAppEnv()) + url_key}.html`);
         } else {
+            const { name, small_image } = props;
             const currentPageOffset = window.scrollY;
+            const sharedProp = {
+                name,
+                small_image,
+                price,
+            };
             const urlResolver = getResolver();
             urlResolver[`/${url_key}`] = {
                 type: 'PRODUCT',
@@ -338,6 +353,7 @@ const ProductItem = (props) => {
                     pathname: '/[...slug]',
                     query: {
                         slug: url_key,
+                        productProps: JSON.stringify(sharedProp),
                     },
                 },
                 `/${url_key}`,
