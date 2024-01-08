@@ -48,8 +48,8 @@ const HeaderV1 = (props) => {
                 if(!isMobile) {
                     const header = document.querySelector('header');
                     const innerHeader = document.querySelector('#header-inner');
-                    const headerContent = document.querySelector('#header-inner .header-wrapper-main') || document.querySelector('#sticky-header .header-wrapper-main');
-                    const main = document.querySelector('main');
+                    const headerContent =
+                        document.querySelector('#header-inner .header-wrapper-main') || document.querySelector('#sticky-header .header-wrapper-main');
                     const sticky = document.querySelector('#sticky-header');
                     let headerHeight = 0;
                     let globalPromoheight = 0;

@@ -26,14 +26,7 @@ const ShoppingBagIcon = dynamic(() => import('@plugin_shoppingbag'), { ssr: true
 const InstallMobile = dynamic(() => import('@core_modules/theme/components/customPWAInstall/mobile'), { ssr: true });
 
 const HeaderMobile = (props) => {
-    const {
-        t,
-        storeConfig,
-        isLogin,
-        setValue,
-        handleSearch,
-        handleLogout,
-    } = props;
+    const { t, storeConfig, isLogin, setValue, handleSearch, handleLogout } = props;
 
     const { data } = getCategories();
 
@@ -41,10 +34,11 @@ const HeaderMobile = (props) => {
 
     const [openBurgerMenu, setOpenBurgerMenu] = React.useState(false);
 
+    let filteredData = data?.categories?.items[0]?.children.filter((item) => item.include_in_menu !== 0);
     const burgerMenuData = [
         {
             title: 'Menu',
-            content: data && <BurgerMenuCategories data={data.categories.items[0].children} />,
+            content: data && <BurgerMenuCategories data={filteredData} />,
             type: 'react-component',
         },
         {

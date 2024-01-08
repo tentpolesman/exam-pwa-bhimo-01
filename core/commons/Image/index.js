@@ -39,7 +39,9 @@ const CustomImage = ({
     const enable = storeConfig && storeConfig.pwa && storeConfig.pwa.thumbor_enable;
     const useHttpsOrHttp = storeConfig && storeConfig.pwa && storeConfig.pwa.thumbor_https_http;
     const thumborUrl = storeConfig && storeConfig.pwa && storeConfig.pwa.thumbor_url;
-    const optimizedUrl = generateThumborUrl(src, width, height, enable, useHttpsOrHttp, thumborUrl, quality);
+    const optimizedUrl = src.toLowerCase().indexOf('http://') === 0 || src.toLowerCase().indexOf('https://') === 0
+        ? generateThumborUrl(src, width, height, enable, useHttpsOrHttp, thumborUrl, quality)
+        : src;
 
     const [imageUrl, setImageUrl] = useState(optimizedUrl);
 
