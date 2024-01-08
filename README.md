@@ -126,7 +126,7 @@ Explanations:
 10. NEXT_PUBLIC_ALGORITHM = Encryption algorithm (required) -> This is for client side usage, consider make this different from the server side one (`ALGORITHM`)
 
 # Highlight Releases
-## Version 2.7.0
+## Version 3.0.0
 1. Upgrade to NextJs14
 2. Replace Material UI(MUI) with Tailwind
 3. Revamp template
