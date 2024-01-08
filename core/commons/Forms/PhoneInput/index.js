@@ -1,11 +1,11 @@
 import { useReactiveVar } from '@apollo/client';
 import CountrySelect from '@common_forms/PhoneInput/CountrySelect';
+import Show from '@common_show';
 import Typography from '@common_typography';
 import { storeConfigVar } from '@root/core/services/graphql/cache';
 import cx from 'classnames';
 import ReactPhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
-import Show from '@common_show';
 
 const PhoneInput = (props) => {
     const {
@@ -41,6 +41,7 @@ const PhoneInput = (props) => {
                 defaultCountry={defaultCountry}
                 value={value}
                 onChange={(e) => onChange(e)}
+                initialValueFormat="national"
                 className={cx(
                     'items-center',
                     'w-[320px]',
