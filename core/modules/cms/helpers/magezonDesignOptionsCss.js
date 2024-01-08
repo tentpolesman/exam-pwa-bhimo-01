@@ -30,6 +30,18 @@ const generateDesignOptions = (classSelector, designOptions) => {
     } = designOptions;
     const prefixes = ['lg', 'md', 'sm', 'xs'];
 
+    /**
+     * @param {*} value
+     * @param {*} defaultValue
+     * @returns returns defaultValue if given values if of empty string or NaN
+     */
+    const returnDefaultIfNan = (value, defaultValue = 0) => {
+        if (Number.isNaN(Number(value)) || value === '') {
+            return defaultValue;
+        }
+        return value;
+    };
+
     const generateOtherDesignOptions = (opts) => {
         const mappedValues = {};
         prefixes.forEach((prefix) => {
@@ -49,29 +61,29 @@ const generateDesignOptions = (classSelector, designOptions) => {
 
                 opts[screenOpt].forEach((_opt) => {
                     if (_opt.indexOf('padding_left') !== -1) {
-                        tempMappedValues += `padding-left: ${Number(otherDeviceSizeDesignOpts[_opt]) || 0}px;`;
+                        tempMappedValues += `padding-left: ${returnDefaultIfNan(otherDeviceSizeDesignOpts[_opt], 10)}px;`;
                     }
                     if (_opt.indexOf('padding_right') !== -1) {
-                        tempMappedValues += `padding-right: ${Number(otherDeviceSizeDesignOpts[_opt]) || 0}px;`;
+                        tempMappedValues += `padding-right: ${returnDefaultIfNan(otherDeviceSizeDesignOpts[_opt], 10)}px;`;
                     }
                     if (_opt.indexOf('padding_top') !== -1) {
-                        tempMappedValues += `padding-top: ${Number(otherDeviceSizeDesignOpts[_opt]) || 0}px;`;
+                        tempMappedValues += `padding-top: ${returnDefaultIfNan(otherDeviceSizeDesignOpts[_opt], 10)}px;`;
                     }
                     if (_opt.indexOf('padding_bottom') !== -1) {
-                        tempMappedValues += `padding-bottom: ${Number(otherDeviceSizeDesignOpts[_opt]) || 0}px;`;
+                        tempMappedValues += `padding-bottom: ${returnDefaultIfNan(otherDeviceSizeDesignOpts[_opt], 10)}px;`;
                     }
 
                     if (_opt.indexOf('margin_left') !== -1) {
-                        tempMappedValues += `margin-left: ${Number(otherDeviceSizeDesignOpts[_opt]) || 0}px;`;
+                        tempMappedValues += `margin-left: ${returnDefaultIfNan(otherDeviceSizeDesignOpts[_opt], -10)}px;`;
                     }
                     if (_opt.indexOf('margin_right') !== -1) {
-                        tempMappedValues += `margin-right: ${Number(otherDeviceSizeDesignOpts[_opt]) || 0}px;`;
+                        tempMappedValues += `margin-right: ${returnDefaultIfNan(otherDeviceSizeDesignOpts[_opt], -10)}px;`;
                     }
                     if (_opt.indexOf('margin_top') !== -1) {
-                        tempMappedValues += `margin-top: ${Number(otherDeviceSizeDesignOpts[_opt]) || 0}px;`;
+                        tempMappedValues += `margin-top: ${returnDefaultIfNan(otherDeviceSizeDesignOpts[_opt])}px;`;
                     }
                     if (_opt.indexOf('margin_bottom') !== -1) {
-                        tempMappedValues += `margin-bottom: ${Number(otherDeviceSizeDesignOpts[_opt]) || 0}px;`;
+                        tempMappedValues += `margin-bottom: ${returnDefaultIfNan(otherDeviceSizeDesignOpts[_opt])}px;`;
                     }
                 });
 
@@ -88,21 +100,21 @@ const generateDesignOptions = (classSelector, designOptions) => {
         return css.resolve`
             .mgz-column :global(.mgz-element-inner) {
                 ${(margin_top || margin_right || margin_bottom || margin_left) ? `
-                    margin: ${Number(margin_top) || 0}px ${Number(margin_right) || 0}px ${Number(margin_bottom) || 0}px ${Number(margin_left) || 0}px;
+                    margin: ${returnDefaultIfNan(margin_top)}px ${returnDefaultIfNan(margin_right)}px ${returnDefaultIfNan(margin_bottom)}px ${returnDefaultIfNan(margin_left)}px;
                 ` : ''}
                 ${(padding_top || padding_right || padding_bottom || padding_left) ? `
-                    padding: ${Number(padding_top) || 0}px ${Number(padding_right) || 0}px ${Number(padding_bottom) || 0}px ${Number(padding_left) || 0}px;
+                    padding: ${returnDefaultIfNan(padding_top, 10)}px ${returnDefaultIfNan(padding_right, 10)}px ${returnDefaultIfNan(padding_bottom, 10)}px ${returnDefaultIfNan(padding_left, 10)}px;
                 ` : 'padding: 10px;'}
-                ${border_top_left_radius ? `border-top-left-radius: ${Number(border_top_left_radius) || 0}px;` : ''}
-                ${border_top_right_radius ? `border-top-right-radius: ${Number(border_top_right_radius) || 0}px;` : ''}
-                ${border_bottom_left_radius ? `border-bottom-left-radius: ${Number(border_bottom_left_radius) || 0}px;` : ''}
-                ${border_bottom_right_radius ? `border-bottom-right-radius: ${Number(border_bottom_left_radius) || 0}px;` : ''}
+                ${border_top_left_radius ? `border-top-left-radius: ${returnDefaultIfNan(border_top_left_radius)}px;` : ''}
+                ${border_top_right_radius ? `border-top-right-radius: ${returnDefaultIfNan(border_top_right_radius)}px;` : ''}
+                ${border_bottom_left_radius ? `border-bottom-left-radius: ${returnDefaultIfNan(border_bottom_left_radius)}px;` : ''}
+                ${border_bottom_right_radius ? `border-bottom-right-radius: ${returnDefaultIfNan(border_bottom_left_radius)}px;` : ''}
                 ${border_style ? `border-style: ${border_style};` : ''}
                 ${background_position ? `background-position: ${background_position?.split('-').join(' ')};` : ''}
-                ${border_top_width ? `border-top-width: ${Number(border_top_width) || 0}px;` : ''}
-                ${border_right_width ? `border-right-width: ${Number(border_right_width) || 0}px;` : ''}
-                ${border_bottom_width ? `border-bottom-width: ${Number(border_bottom_width) || 0}px;` : ''}
-                ${border_left_width ? `border-left-width: ${Number(border_left_width) || 0}px;` : ''}
+                ${border_top_width ? `border-top-width: ${returnDefaultIfNan(border_top_width)}px;` : ''}
+                ${border_right_width ? `border-right-width: ${returnDefaultIfNan(border_right_width)}px;` : ''}
+                ${border_bottom_width ? `border-bottom-width: ${returnDefaultIfNan(border_bottom_width)}px;` : ''}
+                ${border_left_width ? `border-left-width: ${returnDefaultIfNan(border_left_width)}px;` : ''}
                 ${background_color ? `background-color: ${background_color};` : ''}
             }
 
@@ -132,21 +144,21 @@ const generateDesignOptions = (classSelector, designOptions) => {
         return css.resolve`
             .mgz-row {
                 ${(margin_top || margin_right || margin_bottom || margin_left) ? `
-                    margin: ${Number(margin_top) || 0}px ${Number(margin_right) || 0}px ${Number(margin_bottom) || 0}px ${Number(margin_left) || 0}px;
+                    margin: ${returnDefaultIfNan(margin_top)}px ${returnDefaultIfNan(margin_right, -10)}px ${returnDefaultIfNan(margin_bottom)}px ${returnDefaultIfNan(margin_left, -10)}px;
                 ` : 'margin: 0 -10px;'}
                 ${(padding_top || padding_right || padding_bottom || padding_left) ? `
-                    padding: ${Number(padding_top) || 0}px ${Number(padding_right) || 0}px ${Number(padding_bottom) || 0}px ${Number(padding_left) || 0}px;
+                    padding: ${returnDefaultIfNan(padding_top)}px ${returnDefaultIfNan(padding_right)}px ${returnDefaultIfNan(padding_bottom)}px ${returnDefaultIfNan(padding_left)}px;
                 ` : ''}
-                ${border_top_left_radius ? `border-top-left-radius: ${Number(border_top_left_radius) || 0}px;` : ''}
-                ${border_top_right_radius ? `border-top-right-radius: ${Number(border_top_right_radius) || 0}px;` : ''}
-                ${border_bottom_left_radius ? `border-bottom-left-radius: ${Number(border_bottom_left_radius) || 0}px;` : ''}
-                ${border_bottom_right_radius ? `border-bottom-right-radius: ${Number(border_bottom_left_radius) || 0}px;` : ''}
+                ${border_top_left_radius ? `border-top-left-radius: ${returnDefaultIfNan(border_top_left_radius)}px;` : ''}
+                ${border_top_right_radius ? `border-top-right-radius: ${returnDefaultIfNan(border_top_right_radius)}px;` : ''}
+                ${border_bottom_left_radius ? `border-bottom-left-radius: ${returnDefaultIfNan(border_bottom_left_radius)}px;` : ''}
+                ${border_bottom_right_radius ? `border-bottom-right-radius: ${returnDefaultIfNan(border_bottom_left_radius)}px;` : ''}
                 ${border_style ? `border-style: ${border_style};` : ''}
                 ${background_position ? `background-position: ${background_position?.split('-').join(' ')};` : ''}
-                ${border_top_width ? `border-top-width: ${Number(border_top_width) || 0}px;` : ''}
-                ${border_right_width ? `border-right-width: ${Number(border_right_width) || 0}px;` : ''}
-                ${border_bottom_width ? `border-bottom-width: ${Number(border_bottom_width) || 0}px;` : ''}
-                ${border_left_width ? `border-left-width: ${Number(border_left_width) || 0}px;` : ''}
+                ${border_top_width ? `border-top-width: ${returnDefaultIfNan(border_top_width)}px;` : ''}
+                ${border_right_width ? `border-right-width: ${returnDefaultIfNan(border_right_width)}px;` : ''}
+                ${border_bottom_width ? `border-bottom-width: ${returnDefaultIfNan(border_bottom_width)}px;` : ''}
+                ${border_left_width ? `border-left-width: ${returnDefaultIfNan(border_left_width)}px;` : ''}
                 ${background_color ? `background-color: ${background_color};` : ''}
             }
 
@@ -175,21 +187,21 @@ const generateDesignOptions = (classSelector, designOptions) => {
     return css.resolve`
         .${classSelector} :global(> *) {
             ${(margin_top || margin_right || margin_bottom || margin_left) ? `
-                margin: ${Number(margin_top) || 0}px ${Number(margin_right) || 0}px ${Number(margin_bottom) || 0}px ${Number(margin_left) || 0}px;
+                margin: ${returnDefaultIfNan(margin_top)}px ${returnDefaultIfNan(margin_right)}px ${returnDefaultIfNan(margin_bottom)}px ${returnDefaultIfNan(margin_left)}px;
             ` : ''}
             ${(padding_top || padding_right || padding_bottom || padding_left) ? `
-                padding: ${Number(padding_top) || 0}px ${Number(padding_right) || 0}px ${Number(padding_bottom) || 0}px ${Number(padding_left) || 0}px;
+                padding: ${returnDefaultIfNan(padding_top)}px ${returnDefaultIfNan(padding_right)}px ${returnDefaultIfNan(padding_bottom)}px ${returnDefaultIfNan(padding_left)}px;
             ` : ''}
-            ${border_top_left_radius ? `border-top-left-radius: ${Number(border_top_left_radius) || 0}px;` : ''}
-            ${border_top_right_radius ? `border-top-right-radius: ${Number(border_top_right_radius) || 0}px;` : ''}
-            ${border_bottom_left_radius ? `border-bottom-left-radius: ${Number(border_bottom_left_radius) || 0}px;` : ''}
-            ${border_bottom_right_radius ? `border-bottom-right-radius: ${Number(border_bottom_left_radius) || 0}px;` : ''}
+            ${border_top_left_radius ? `border-top-left-radius: ${returnDefaultIfNan(border_top_left_radius)}px;` : ''}
+            ${border_top_right_radius ? `border-top-right-radius: ${returnDefaultIfNan(border_top_right_radius)}px;` : ''}
+            ${border_bottom_left_radius ? `border-bottom-left-radius: ${returnDefaultIfNan(border_bottom_left_radius)}px;` : ''}
+            ${border_bottom_right_radius ? `border-bottom-right-radius: ${returnDefaultIfNan(border_bottom_left_radius)}px;` : ''}
             ${border_style ? `border-style: ${border_style};` : ''}
             ${background_position ? `background-position: ${background_position?.split('-').join(' ')};` : ''}
-            ${border_top_width ? `border-top-width: ${Number(border_top_width) || 0}px;` : ''}
-            ${border_right_width ? `border-right-width: ${Number(border_right_width) || 0}px;` : ''}
-            ${border_bottom_width ? `border-bottom-width: ${Number(border_bottom_width) || 0}px;` : ''}
-            ${border_left_width ? `border-left-width: ${Number(border_left_width) || 0}px;` : ''}
+            ${border_top_width ? `border-top-width: ${returnDefaultIfNan(border_top_width)}px;` : ''}
+            ${border_right_width ? `border-right-width: ${returnDefaultIfNan(border_right_width)}px;` : ''}
+            ${border_bottom_width ? `border-bottom-width: ${returnDefaultIfNan(border_bottom_width)}px;` : ''}
+            ${border_left_width ? `border-left-width: ${returnDefaultIfNan(border_left_width)}px;` : ''}
             ${background_color ? `background-color: ${background_color};` : ''}
         }
 
