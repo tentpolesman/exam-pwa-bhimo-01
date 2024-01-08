@@ -105,7 +105,7 @@ const Content = (props) => {
                     {t('cart:pageTitle')}
                 </Typography>
                 <Show when={dataCart && dataCart.items && dataCart.items.length < 1}>
-                    <div className="pt-4 pb-12 px-[75px] tablet:pt-9">
+                    <div className="pt-4 pb-12 max-px-[75px] tablet:pt-9">
                         <EmptyView t={t} />
                     </div>
                 </Show>

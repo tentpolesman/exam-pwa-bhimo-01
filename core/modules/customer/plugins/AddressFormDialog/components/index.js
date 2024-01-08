@@ -61,7 +61,7 @@ const AddressView = (props) => {
             inputClassName={cx('w-full')}
             popoverWrapperClassName={cx('w-full', 'flex', 'flex-col')}
             popoverContentClassName={cx('px-4', 'text-base', 'text-neutral-800', 'hover:text-neutral-500', 'max-h-[30vh]', '!px-2')}
-            value={typeof formik.values.country === 'object' ? formik.values.country.full_name_locale : formik.values.country}
+            value={typeof formik.values.country === 'object' ? formik.values.country?.full_name_locale : formik.values.country}
             onChange={async (e) => {
                 formik.setFieldValue('country', e);
                 formik.setFieldValue('region', '');
@@ -112,7 +112,7 @@ const AddressView = (props) => {
                     labelKey="name"
                     primaryKey="region_id"
                     placeholder=" "
-                    value={typeof formik.values.region === 'object' ? formik.values.region.name : formik.values.region}
+                    value={typeof formik.values.region === 'object' ? formik.values.region?.name : formik.values.region}
                     onChange={async (e) => {
                         formik.setFieldValue('region', e);
                         formik.setFieldValue('city', '');
@@ -185,7 +185,7 @@ const AddressView = (props) => {
                     labelKey="label"
                     primaryKey="name"
                     placeholder=" "
-                    value={typeof formik.values.city === 'object' ? formik.values.city.label : formik.values.city}
+                    value={typeof formik.values.city === 'object' ? formik.values.city?.label : formik.values.city}
                     onChange={async (e) => {
                         formik.setFieldValue('city', e);
                         formik.setFieldValue('district', '');
@@ -248,7 +248,7 @@ const AddressView = (props) => {
                     labelKey="label"
                     primaryKey="name"
                     placeholder=" "
-                    value={typeof formik.values.district === 'object' ? formik.values.district.label : formik.values.district}
+                    value={typeof formik.values.district === 'object' ? formik.values.district?.label : formik.values.district}
                     onChange={async (e) => {
                         formik.setFieldValue('district', e);
                         formik.setFieldValue('village', '');
@@ -308,7 +308,7 @@ const AddressView = (props) => {
                     labelKey="label"
                     primaryKey="name"
                     placeholder=" "
-                    value={typeof formik.values.village === 'object' ? formik.values.village.label : formik.values.village}
+                    value={typeof formik.values.village === 'object' ? formik.values.village?.label : formik.values.village}
                     onChange={async (e) => {
                         formik.setFieldValue('village', e);
                         formik.setFieldValue('postcode', '');
@@ -417,16 +417,18 @@ const AddressView = (props) => {
                             />
                             {gmapKey ? (
                                 <div className={cx('mb-8')}>
-                                    <GoogleMaps
-                                        gmapKey={gmapKey}
-                                        geocodingKey={geocodingKey}
-                                        formik={formik}
-                                        mapPosition={mapPosition}
-                                        dragMarkerDone={handleDragPosition}
-                                        mode="location-search"
-                                        inputClassName={cx('w-full')}
-                                        useLabel
-                                    />
+                                    { typeof window !== 'undefined' && (
+                                        <GoogleMaps
+                                            gmapKey={gmapKey}
+                                            geocodingKey={geocodingKey}
+                                            formik={formik}
+                                            mapPosition={mapPosition}
+                                            dragMarkerDone={handleDragPosition}
+                                            mode="location-search"
+                                            inputClassName={cx('w-full')}
+                                            useLabel
+                                        />
+                                    ) }
                                 </div>
                             ) : (
                                 <TextField

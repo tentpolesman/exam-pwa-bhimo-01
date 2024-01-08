@@ -6,7 +6,7 @@ import ShoppingCartIcon from '@heroicons/react/24/solid/ShoppingCartIcon';
 const EmptyView = (props) => {
     const { t } = props;
     return (
-        <div className="flex flex-col items-center w-full gap-4">
+        <div className="flex flex-col align-middle justify-center items-center w-full gap-4">
             <ShoppingCartIcon className={classNames(
                 'w-10 h-10 tablet:w-14 tablet:h-14 text-neutral-300',
             )}

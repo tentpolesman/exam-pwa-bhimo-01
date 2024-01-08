@@ -24,7 +24,7 @@ const HistoryOrder = (props) => {
 
     const [actionReorder] = mutationReorder();
 
-    const handleChangePage = (newPage) => {
+    const handleChangePage = (newPage = 0) => {
         if (newPage > page) {
             setLoadMore(true);
         }
