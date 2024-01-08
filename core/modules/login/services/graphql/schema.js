@@ -6,9 +6,8 @@ mutation getToken(
     $password: String!,
 ) {
   internalGenerateCustomerToken(username: $username, password: $password){
-      originalToken
+      is_login
       token
-      message
     }
   }
 `;

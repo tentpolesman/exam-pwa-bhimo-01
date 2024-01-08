@@ -238,17 +238,26 @@ const Login = (props) => {
                 variables: data,
             })
                 .then(async (res) => {
-                    let message = '';
+                    let is_login = false;
                     if (formOtp === 'otp') {
-                        message = res.data.internalGenerateCustomerTokenOtp.message;
+                        is_login = res.data.internalGenerateCustomerTokenOtp.is_login;
                     } else if (formOtp === 'password') {
-                        message = res.data.internalGenerateCustomerToken.message;
+                        is_login = res.data.internalGenerateCustomerToken.is_login;
                     } else if (formOtp === 'phoneEmail') {
-                        message = res.data.internalGenerateCustomerTokenCustom.message;
+                        is_login = res.data.internalGenerateCustomerTokenCustom.is_login;
                     }
-                    if (message) {
+                    if (is_login) {
                         setLogin(1, expired);
                         await setIsLogin(1);
+                    } else {
+                        setDisabled(false);
+                        setLoading(false);
+                        window.backdropLoader(false);
+                        window.toastMessage({
+                            open: true,
+                            variant: 'error',
+                            text: t('login:failed'),
+                        });
                     }
                 })
                 .catch((e) => {

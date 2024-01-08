@@ -31,12 +31,18 @@ const internalGenerateCustomerTokenCustom = async (parent, { username, password 
             context.res.setHeader('Set-Cookie', serialized);
         }
         return {
+            is_login: true,
             originalToken: '',
             token: '',
             message: 'success',
         };
     }
-    return res;
+    return {
+        is_login: false,
+        originalToken: '',
+        token: '',
+        message: 'failed',
+    };
 };
 
 module.exports = internalGenerateCustomerTokenCustom;

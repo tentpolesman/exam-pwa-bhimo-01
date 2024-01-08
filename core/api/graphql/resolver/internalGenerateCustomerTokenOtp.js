@@ -28,12 +28,18 @@ const internalGenerateCustomerTokenOtp = async (parent, { username, otp }, conte
             context.res.setHeader('Set-Cookie', serialized);
         }
         return {
+            is_login: true,
             originalToken: '',
             token: '',
             message: 'success',
         };
     }
-    return res;
+    return {
+        is_login: false,
+        originalToken: '',
+        token: '',
+        message: 'failed',
+    };
 };
 
 module.exports = internalGenerateCustomerTokenOtp;
