@@ -19,37 +19,40 @@ const getSSRProps = async ({ apolloClient, storeConfigExtra = '' }) => {
     let storeConfig = await graphRequestClear(layoutStoreConfigSchema(storeConfigExtra));
     storeConfig = storeConfig?.storeConfig ?? null;
     if (storeConfig) {
-        // header
-        await apolloClient.query({
-            query: categories,
-        });
-        // header setting currency
-        await apolloClient.query({
-            query: getCurrencySchema,
-        });
-        // header setting store
-        await apolloClient.query({
-            query: getStoreName,
-        });
+        try {
+            // header
+            await apolloClient.query({
+                query: categories,
+            });
+            // header setting currency
+            await apolloClient.query({
+                query: getCurrencySchema,
+            });
+            // header setting store
+            await apolloClient.query({
+                query: getStoreName,
+            });
 
-        // news letter
-        await apolloClient.query({
-            query: getCmsBlocks,
-            variables: { identifiers: 'weltpixel_newsletter_v5' },
-        });
+            // news letter
+            await apolloClient.query({
+                query: getCmsBlocks,
+                variables: { identifiers: 'weltpixel_newsletter_v5' },
+            });
 
-        // footer
-        await apolloClient.query({
-            query: getCmsBlocks,
-            variables: { identifiers: [storeConfig?.pwa?.footer_version] },
-        });
+            // footer
+            await apolloClient.query({
+                query: getCmsBlocks,
+                variables: { identifiers: [storeConfig?.pwa?.footer_version] },
+            });
 
-        await apolloClient.query({
-            query: getCmsBlocks,
-            variables: {
-                identifiers: 'global_promo_message',
-            },
-        });
+            await apolloClient.query({
+                query: getCmsBlocks,
+                variables: {
+                    identifiers: 'global_promo_message',
+                },
+            });
+        // eslint-disable-next-line no-empty
+        } catch (error) {}
 
         return {
             storeConfig,

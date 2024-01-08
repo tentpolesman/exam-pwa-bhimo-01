@@ -22,5 +22,6 @@
     "duedate": "Due Date",
     "onboarding": "Please pay to complete the transaction",
     "seller": "Seller",
-    "orderInfo": "Check your order status"
+    "orderInfo": "Check your order status",
+    "regisetTitle": "Register"
 }

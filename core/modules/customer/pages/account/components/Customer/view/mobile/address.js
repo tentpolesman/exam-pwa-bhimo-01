@@ -2,11 +2,9 @@
 /* eslint-disable no-plusplus */
 /* eslint-disable react/no-unescaped-entities */
 import cx from 'classnames';
-
+import Alert from '@common_alert';
 import Button from '@common_button';
 import Typography from '@common_typography';
-
-import ExclamationTriangleIcon from '@heroicons/react/24/outline/ExclamationTriangleIcon';
 
 const generateData = (data, { t }) => (
     <p className={cx('pt-5')}>
@@ -84,30 +82,9 @@ const AddressView = (props) => {
                     </div>
                 </div>
             ) : (
-                <Button
-                    icon={<ExclamationTriangleIcon />}
-                    iconProps={{
-                        className: cx('!text-yellow-500'),
-                    }}
-                    iconPosition="left"
-                    className={cx(
-                        'mt-4',
-                        'w-full',
-                        'bg-yellow-50',
-                        'hover:bg-yellow-50',
-                        'focus:bg-yellow-50',
-                        'active:bg-yellow-50',
-                        'hover:shadow-none',
-                        'focus:shadow-none',
-                        'active:shadow-none',
-                        'cursor-auto',
-                        'hover:cursor-auto',
-                        'focus:cursor-auto',
-                        'active:cursor-auto',
-                    )}
-                >
-                    <Typography className={cx('!text-yellow-600')}>{t('customer:address:emptyMessage')}</Typography>
-                </Button>
+                <Alert severity="warning" withIcon>
+                    {t('customer:address:emptyMessage')}
+                </Alert>
             )}
         </div>
     );

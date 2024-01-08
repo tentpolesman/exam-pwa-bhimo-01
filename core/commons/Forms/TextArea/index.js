@@ -4,9 +4,7 @@ import { useState } from 'react';
 import propTypes from 'prop-types';
 
 const TextArea = (props) => {
-    const {
-        placeholder = '', label = '', disabled, value, onChange = () => {}, hintProps = {}, inputProps = {}, className = '',
-    } = props;
+    const { placeholder = '', label = '', disabled, value, onChange = () => {}, hintProps = {}, inputProps = {}, className = '' } = props;
     const [isFocus, setIsFocus] = useState(false);
 
     const { displayHintText = false, hintType = '', hintText = '' } = hintProps;
@@ -31,7 +29,7 @@ const TextArea = (props) => {
                     'border-[1px]',
                     'border-neutral-100',
                     'rounded-lg',
-                    'text-md',
+                    'text-base',
                     'hover:border-primary-100',
                     'py-[10px]',
                     'px-4',

@@ -9,9 +9,9 @@ import Button from '@common_button';
 import XMarkIcon from '@heroicons/react/24/solid/XMarkIcon';
 
 const Drawer = ({ open, handleClose, backdrop, position, backdropClass, className = '', children, customButtonClose = false }) => {
-    let classPosition = 'fixed top-0 left-0 z-20 w-11/12 h-full -translate-x-full md:w-96';
+    let classPosition = 'fixed top-0 left-0 z-drawer w-11/12 h-full -translate-x-full md:w-96';
     if (position === 'right') {
-        classPosition = 'fixed top-0 right-0 z-20 w-11/12 h-full translate-x-full md:w-96';
+        classPosition = 'fixed top-0 right-0 z-drawer w-11/12 h-full translate-x-full md:w-96';
     }
     if (position === 'bottom') {
         classPosition = 'fixed bottom-0 left-0 z-20 h-96 translate-y-full w-full';
@@ -28,7 +28,7 @@ const Drawer = ({ open, handleClose, backdrop, position, backdropClass, classNam
             {open && backdrop && (
                 <div
                     role="presentation"
-                    className={cx('fixed top-0 left-0 w-full h-full bg-neutral-black bg-opacity-50 z-10', backdropClass)}
+                    className={cx('fixed top-0 left-0 w-full h-full bg-neutral-black bg-opacity-50 z-backdrop-drawer', backdropClass)}
                     onClick={handleClose}
                 />
             )}
@@ -36,7 +36,7 @@ const Drawer = ({ open, handleClose, backdrop, position, backdropClass, classNam
                 className={cx(
                     classPosition,
                     'transition-all duration-500 transform shadow-lg',
-                    'z-50 bg-neutral-white',
+                    'bg-neutral-white',
                     {
                         'translate-x-0': open && position === 'left',
                         '-translate-x-0.5': open && position === 'right',

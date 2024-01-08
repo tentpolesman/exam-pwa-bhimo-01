@@ -92,15 +92,6 @@ const ProductItem = (props) => {
         }
     }, [customizableOptions]);
 
-    const [price] = React.useState({
-        priceRange: other.price_range,
-        priceTiers: other.price_tiers,
-        // eslint-disable-next-line no-underscore-dangle
-        productType: other.__typename,
-        specialFromDate: other.special_from_date,
-        specialToDate: other.special_to_date,
-    });
-
     const checkCustomizableOptionsValue = async () => {
         if (other.options && other.options.length > 0) {
             const requiredOptions = other.options.filter((op) => op.required);
@@ -329,13 +320,7 @@ const ProductItem = (props) => {
         } else if (modules.checkout.checkoutOnly) {
             window.open(`${getStoreHost(getAppEnv()) + url_key}.html`);
         } else {
-            const { name, small_image } = props;
             const currentPageOffset = window.scrollY;
-            const sharedProp = {
-                name,
-                small_image,
-                price,
-            };
             const urlResolver = getResolver();
             urlResolver[`/${url_key}`] = {
                 type: 'PRODUCT',
@@ -353,7 +338,6 @@ const ProductItem = (props) => {
                     pathname: '/[...slug]',
                     query: {
                         slug: url_key,
-                        productProps: JSON.stringify(sharedProp),
                     },
                 },
                 `/${url_key}`,
@@ -436,11 +420,7 @@ const ProductItem = (props) => {
         return (
             <div className="product-item-price">
                 <Show when={priceProduct}>
-                    <PriceFormat
-                        {...priceProduct}
-                        specialFromDate={special_from_date}
-                        specialToDate={special_to_date}
-                    />
+                    <PriceFormat {...priceProduct} specialFromDate={special_from_date} specialToDate={special_to_date} />
                 </Show>
             </div>
         );
@@ -479,11 +459,9 @@ const ProductItem = (props) => {
                                 'hover:shadow-[0_0_0_4px] hover:shadow-primary-300',
                             )}
                             link="/[...slug]"
-                            linkProps={
-                                {
-                                    as: `/${url_key}`,
-                                }
-                            }
+                            linkProps={{
+                                as: `/${url_key}`,
+                            }}
                         >
                             <Typography color="white" className="font-normal text-sm">
                                 {t('common:button:viewItem')}
@@ -526,8 +504,10 @@ const ProductItem = (props) => {
     };
 
     const isOos = stock_status === 'OUT_OF_STOCK';
-    const viewItemOnly = __typename === 'BundleProduct' || __typename === 'DownloadableProduct'
-    || __typename === 'GroupedProduct' || __typename === 'AwGiftCardProduct';
+    const viewItemOnly = __typename === 'BundleProduct'
+        || __typename === 'DownloadableProduct'
+        || __typename === 'GroupedProduct'
+        || __typename === 'AwGiftCardProduct';
 
     const priceData = getPriceFromList(getPrice(), id);
 
@@ -566,15 +546,8 @@ const ProductItem = (props) => {
                             <LabelView t={t} {...other} isGrid={isGrid} spesificProduct={spesificProduct} />
                         ) : null}
                         {isOos && (
-                            <div className={classNames(
-                                'absolute top-2 tablet:top-3 left-2 tablet:left-3 z-10',
-                            )}
-                            >
-                                <Badge
-                                    bold
-                                    label={stock_status.replace(/_/g, ' ')}
-                                    className="!bg-neutral text-white !text-xs tablet:!text-sm"
-                                />
+                            <div className={classNames('absolute top-2 tablet:top-3 left-2 tablet:left-3 z-10')}>
+                                <Badge bold label={stock_status.replace(/_/g, ' ')} className="!bg-neutral text-white !text-xs tablet:!text-sm" />
                             </div>
                         )}
                         {showQuickView && (
@@ -593,9 +566,7 @@ const ProductItem = (props) => {
                                     )}
                                     size="sm"
                                 >
-                                    <span className="text-sm !text-neutral-900 justify-center">
-                                        {t('catalog:title:quickView')}
-                                    </span>
+                                    <span className="text-sm !text-neutral-900 justify-center">{t('catalog:title:quickView')}</span>
                                 </Button>
                                 <Button
                                     onClick={handleQuickView}
@@ -638,7 +609,7 @@ const ProductItem = (props) => {
                             {...DetailProps}
                             {...other}
                             showShortDescription={showShortDescription}
-                            Pricing={(enablePrice && !showOption) && generatePrice(priceData)}
+                            Pricing={enablePrice && !showOption && generatePrice(priceData)}
                             isGrid={isGrid}
                         />
                         <Show when={showOption}>
@@ -672,9 +643,7 @@ const ProductItem = (props) => {
                                     isPlp
                                 />
                             </div>
-                            <div className="flex flex-col tablet:hidden h-full justify-end">
-                                {generatePrice(priceData)}
-                            </div>
+                            <div className="flex flex-col tablet:hidden h-full justify-end">{generatePrice(priceData)}</div>
                         </Show>
                     </div>
                 </div>
@@ -724,11 +693,7 @@ const ProductItem = (props) => {
                         ) : null}
                         {isOos && (
                             <div className="absolute top-2 tablet:top-3 left-2 tablet:left-3 z-10">
-                                <Badge
-                                    bold
-                                    label={stock_status.replace(/_/g, ' ')}
-                                    className="!bg-neutral text-white !text-xs tablet:!text-sm"
-                                />
+                                <Badge bold label={stock_status.replace(/_/g, ' ')} className="!bg-neutral text-white !text-xs tablet:!text-sm" />
                             </div>
                         )}
                         {showQuickView && (
@@ -747,9 +712,7 @@ const ProductItem = (props) => {
                                     )}
                                     size="sm"
                                 >
-                                    <span className="text-sm !text-neutral-900 justify-center">
-                                        {t('catalog:title:quickView')}
-                                    </span>
+                                    <span className="text-sm !text-neutral-900 justify-center">{t('catalog:title:quickView')}</span>
                                 </Button>
                                 <Button
                                     iconOnly
@@ -793,7 +756,7 @@ const ProductItem = (props) => {
                             enableWishlist={false}
                             urlKey={url_key}
                             showShortDescription
-                            Pricing={(enablePrice && !showOption) && generatePrice(priceData)}
+                            Pricing={enablePrice && !showOption && generatePrice(priceData)}
                             isGrid={isGrid}
                         />
                         {showOption ? (
@@ -825,9 +788,7 @@ const ProductItem = (props) => {
                                 />
                             </div>
                         ) : null}
-                        <div className="flex tablet:hidden">
-                            {generatePrice(priceData)}
-                        </div>
+                        <div className="flex tablet:hidden">{generatePrice(priceData)}</div>
                     </div>
                 </div>
             </div>

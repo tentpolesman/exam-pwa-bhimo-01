@@ -7,22 +7,14 @@ import cx from 'classnames';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-
 import React from 'react';
-
-import Button from '@common_button';
 import Image from '@common_image';
-import Popover from '@common_popover';
 import Typography from '@common_typography';
 import config from '@config';
 
-// import Cookies from 'js-cookie';
-import TagManager from 'react-gtm-module';
-
-import DevicePhoneMobileIcon from '@heroicons/react/24/solid/DevicePhoneMobileIcon';
 import { BREAKPOINTS } from '@root/core/theme/vars';
 
-const Autocomplete = dynamic(() => import('@core_modules/theme/components/header/components/autocomplete'), { ssr: false });
+const Autocomplete = dynamic(() => import('@core_modules/theme/components/header/components/autocomplete'), { ssr: true });
 const Menu = dynamic(() => import('@core_modules/theme/components/header/components/v1/mcategory'), { ssr: true });
 const ProductCompareIcon = dynamic(() => import('@core_modules/catalog/plugins/ProductCompare'), { ssr: true });
 const ShoppingBagIcon = dynamic(() => import('@plugin_shoppingbag'), { ssr: true });
@@ -30,25 +22,13 @@ const NotificationBell = dynamic(() => import('@plugin_notificationbell'), { ssr
 const SwitcherCurrency = dynamic(() => import('@common_currency'), { ssr: false });
 const SwitcherLanguage = dynamic(() => import('@common_language'), { ssr: false });
 const UserInfo = dynamic(() => import('@core_modules/theme/components/header/components/v1/adaptive/plugin/userinfo'), { ssr: false });
+const InstallDesktop = dynamic(() => import('@core_modules/theme/components/customPWAInstall/desktop'), { ssr: true });
 
 const DesktopHeader = (props) => {
     const { t, storeConfig, isLogin, customer, setValue, handleSearch, dataMenu, loadingMenu, handleLogout, deviceWidth } = props;
     const { modules } = config;
     // const adminId = Cookies.get('admin_id');
     const router = useRouter();
-
-    const handleClickInstallApp = () => {
-        const timestamp = Date.now();
-        const identifier = `${Math.floor(Math.random() * 100) * Math.floor(Math.random() * 100)}_${timestamp}`;
-        const dataLayer = {
-            event: 'countPopupInstallation',
-            eventCategory: 'Count Popup Installation',
-            eventAction: 'Installed',
-            eventLabel: 'installPWA',
-            eventValue: identifier,
-        };
-        TagManager.dataLayer({ dataLayer });
-    };
 
     const [open, setOpen] = React.useState(false);
 
@@ -110,7 +90,14 @@ const DesktopHeader = (props) => {
         >
             <div
                 id="top-header"
-                className={cx('top-header', 'mobile:max-desktop:hidden', 'tablet:border-b-[1.5px]', 'tablet:border-b-neutral-300', 'py-[1px]')}
+                className={cx(
+                    'top-header',
+                    'mobile:max-desktop:hidden',
+                    'tablet:border-b',
+                    'tablet:border-b-neutral-200',
+                    'py-[1px]',
+                    'min-h-[40px]',
+                )}
             >
                 <div
                     id="top-header__content"
@@ -122,29 +109,7 @@ const DesktopHeader = (props) => {
                         'desktop:px-10 tablet:px-6 mobile:px-4',
                     )}
                 >
-                    <div className={cx('top-header__content__popup-installation')} id="popup-desktop__install">
-                        <Button
-                            className={cx(
-                                'm-2',
-                                '!px-0',
-                                '!py-0',
-                                '!ml-0',
-                                'hover:shadow-none',
-                                'focus:shadow-none',
-                                'active:shadow-none',
-                                'active:shadow-none',
-                            )}
-                            onClick={handleClickInstallApp}
-                            icon={<DevicePhoneMobileIcon />}
-                            iconProps={{ className: cx('w-[20px]', 'text-neutral-600', 'inline-block') }}
-                            iconPosition="left"
-                            variant="tertiary"
-                            classNameText={cx('!text-neutral-700')}
-                            id="btn-install"
-                        >
-                            <Typography>Download Apps</Typography>
-                        </Button>
-                    </div>
+                    <InstallDesktop />
                     <div
                         className={cx(
                             'top-header__content--currency-language-changer-menu',
@@ -165,7 +130,7 @@ const DesktopHeader = (props) => {
                     'middle-header',
                     'mobile:max-desktop:hidden',
                     'tablet:border-b-[1.5px]',
-                    'tablet:border-b-neutral-300',
+                    'tablet:border-b-neutral-200',
                     'tablet:py-[15px]',
                 )}
             >
@@ -182,7 +147,7 @@ const DesktopHeader = (props) => {
                     )}
                 >
                     <div className={cx('middle-header__logo', 'basis-[272px]', 'h-[44px]', 'flex', 'items-center', 'cursor-pointer')}>
-                        <Link href="/" legacyBehavior>
+                        <Link href="/">
                             <Image
                                 styleContainer={{
                                     width: `${storeConfig?.logo_width || 120}px`,
@@ -216,7 +181,20 @@ const DesktopHeader = (props) => {
                                 <ShoppingBagIcon withLink storeConfig={storeConfig} />
                             </div>
                         </div>
-                        <div className={cx('middle-header__statusicon__right-section', 'border-l-[1.5px]', 'border-l-neutral-300')}>
+                        <div className={cx('middle-header__statusicon__right-section relative')}>
+                            <span
+                                className={cx(
+                                    'border-l-[1.5px]',
+                                    'border-l-neutral-200',
+                                    'absolute',
+                                    'left-0',
+                                    'top-[50%]',
+                                    'translate-y-[-50%]',
+                                    'h-7',
+                                )}
+                            >
+                                &nbsp;
+                            </span>
                             <div
                                 className={cx(
                                     'middle-header__statusicon__right-section__account',
@@ -236,7 +214,7 @@ const DesktopHeader = (props) => {
             </div>
             <div className={cx('bottom-header', 'tablet:max-w-[768px]', 'desktop:max-w-[1280px]', 'm-[0_auto]', 'px-6', 'mobile:max-desktop:hidden')}>
                 <div className="flex flex-row menu-category">
-                    <div className="xs:basis-full menu-middle">{loadingMenu ? <>qwepoiqpwoe</> : <Menu data={dataMenu} storeConfig={storeConfig} />}</div>
+                    <div className="xs:basis-full menu-middle">{loadingMenu ? <></> : <Menu data={dataMenu} storeConfig={storeConfig} />}</div>
                 </div>
             </div>
         </div>

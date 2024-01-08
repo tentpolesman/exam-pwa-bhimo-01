@@ -1,16 +1,16 @@
+import { custDataNameCookie } from '@config';
+import {
+    getCustomer,
+    changeCustomerPassword as gqlChangeCustomerPassword,
+    updateCustomerProfile as gqlUpdateCustomer,
+} from '@core_modules/customer/services/graphql';
+import { regexPhone } from '@helper_regex';
 import Layout from '@layout';
 import CustomerLayout from '@layout_customer';
-import React from 'react';
 import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import { regexPhone } from '@helper_regex';
-import {
-    updateCustomerProfile as gqlUpdateCustomer,
-    changeCustomerPassword as gqlChangeCustomerPassword,
-    getCustomer,
-} from '@core_modules/customer/services/graphql';
 import Cookies from 'js-cookie';
-import { custDataNameCookie } from '@config';
+import React from 'react';
+import * as Yup from 'yup';
 
 const ProfilePage = (props) => {
     const {

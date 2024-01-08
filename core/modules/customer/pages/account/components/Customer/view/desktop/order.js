@@ -8,15 +8,12 @@ import formatDate from '@helper_date';
 import { currencyVar } from '@root/core/services/graphql/cache';
 import Cookies from 'js-cookie';
 import Link from 'next/link';
-
 import cx from 'classnames';
-
 import Badge from '@common_badge';
 import Button from '@common_button';
 import Typography from '@common_typography';
-
+import Alert from '@common_alert';
 import ArrowDownIcon from '@heroicons/react/20/solid/ArrowDownIcon';
-import ExclamationTriangleIcon from '@heroicons/react/24/outline/ExclamationTriangleIcon';
 
 const OrderView = (props) => {
     const { customerOrders, t, reOrder } = props;
@@ -82,7 +79,7 @@ const OrderView = (props) => {
             </div>
             <div className={cx('pt-[18px]')}>
                 <div className={cx('relative', 'overflow-x-auto', 'rounded-lg')}>
-                    <table className={cx('w-full', 'text-md', 'border-[1px]', 'border-neutral-100')}>
+                    <table className={cx('w-full', 'text-base', 'border-[1px]', 'border-neutral-100')}>
                         <thead>
                             <tr className={cx('text-neutral-500', 'font-semibold', 'leading-2lg', 'text-left')}>
                                 <th className={cx('px-4', 'py-3')}>
@@ -102,13 +99,13 @@ const OrderView = (props) => {
                                 <>
                                     {customerOrders.items.map((val, index) => (
                                         <tr className={cx('even:bg-white', 'odd:bg-neutral-50')} key={index}>
-                                            <td className={cx('text-neutral-700', 'text-md', 'font-normal', 'leading-2lg', 'p-4')}>
+                                            <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-4')}>
                                                 {val.order_number}
                                             </td>
-                                            <td className={cx('text-neutral-700', 'text-md', 'font-normal', 'leading-2lg', 'p-4')}>
+                                            <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-4')}>
                                                 {formatDate(val.created_at, 'DD/MM/YYYY')}
                                             </td>
-                                            <td className={cx('text-neutral-700', 'text-md', 'font-normal', 'leading-2lg', 'p-4')}>
+                                            <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-4')}>
                                                 {val.detail[0].shipping_address !== null
                                                     ? val.detail[0].shipping_address.firstname
                                                     : customerData.firstname}{' '}
@@ -116,7 +113,7 @@ const OrderView = (props) => {
                                                     ? val.detail[0].shipping_address.lastname
                                                     : customerData.lastname}
                                             </td>
-                                            <td className={cx('text-neutral-700', 'text-md', 'font-normal', 'leading-2lg', 'p-4')}>
+                                            <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-4')}>
                                                 {formatPrice(
                                                     val.grand_total,
                                                     val.detail[0].global_currency_code
@@ -130,7 +127,7 @@ const OrderView = (props) => {
                                                 <Link
                                                     href={`/sales/order/view/order_id/${val.order_number}`}
                                                     className={cx(
-                                                        'text-md',
+                                                        'text-base',
                                                         'px-4',
                                                         'border-r-[1px]',
                                                         'border-neutral-200',
@@ -140,7 +137,7 @@ const OrderView = (props) => {
                                                     View
                                                 </Link>
                                                 <button type="button" onClick={() => reOrder(val.order_number)}>
-                                                    <a className={cx('text-md', 'px-4', 'hover:text-primary-700')}>Reorder</a>
+                                                    <a className={cx('text-base', 'px-4', 'hover:text-primary-700')}>Reorder</a>
                                                 </button>
                                             </td>
                                         </tr>
@@ -149,29 +146,9 @@ const OrderView = (props) => {
                             ) : (
                                 <tr>
                                     <td colSpan={6}>
-                                        <Button
-                                            icon={<ExclamationTriangleIcon />}
-                                            iconProps={{
-                                                className: cx('!text-yellow-500'),
-                                            }}
-                                            iconPosition="left"
-                                            className={cx(
-                                                'w-full',
-                                                'bg-yellow-50',
-                                                'hover:bg-yellow-50',
-                                                'focus:bg-yellow-50',
-                                                'active:bg-yellow-50',
-                                                'hover:shadow-none',
-                                                'focus:shadow-none',
-                                                'active:shadow-none',
-                                                'cursor-auto',
-                                                'hover:cursor-auto',
-                                                'focus:cursor-auto',
-                                                'active:cursor-auto',
-                                            )}
-                                        >
-                                            <Typography className={cx('!text-yellow-600')}>{t('customer:order:emptyMessage')}</Typography>
-                                        </Button>
+                                        <Alert severity="warning" withIcon>
+                                            {t('customer:order:emptyMessage')}
+                                        </Alert>
                                     </td>
                                 </tr>
                             )}

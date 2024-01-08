@@ -138,20 +138,7 @@ export default function AutocompleteSearch(props) {
 
     const PopoverContent = () => {
         const PopoverItem = (propsPopoverItem, key) => {
-            const {
-                name, type, position, small_image, breadcrumbs, logo, city, seller_name,
-            } = propsPopoverItem;
-
-            const sharedProp = {
-                name: propsPopoverItem?.name || '',
-                small_image: propsPopoverItem?.small_image || {},
-                price: propsPopoverItem?.price_range
-                    ? {
-                        priceRange: propsPopoverItem.price_range,
-                        priceTiers: propsPopoverItem.price_tiers || [],
-                    }
-                    : {},
-            };
+            const { name, type, position, small_image, breadcrumbs, logo, city, seller_name } = propsPopoverItem;
 
             const handleOnClickItem = (onClickProps) => {
                 const { result: resultType, id: seller_id, url_key } = onClickProps;
@@ -159,9 +146,7 @@ export default function AutocompleteSearch(props) {
                     Router.push(
                         {
                             pathname: '/[...slug]',
-                            query: {
-                                productProps: JSON.stringify(sharedProp),
-                            },
+                            query: {},
                         },
                         `/seller/${seller_id}`,
                     );
@@ -169,9 +154,7 @@ export default function AutocompleteSearch(props) {
                     Router.push(
                         {
                             pathname: '/[...slug]',
-                            query: {
-                                productProps: JSON.stringify(sharedProp),
-                            },
+                            query: {},
                         },
                         `/${url_key}`,
                     );
@@ -192,7 +175,7 @@ export default function AutocompleteSearch(props) {
                     {type === 'product' ? (
                         <>
                             {position === 0 ? (
-                                <div className={cx('top-title', 'py-2', 'normal-case', 'font-semibold', 'leading-5', 'text-md')}>Products</div>
+                                <div className={cx('top-title', 'py-2', 'normal-case', 'font-semibold', 'leading-5', 'text-base')}>Products</div>
                             ) : null}
                             <div
                                 className={cx('grid', 'xs:grid-cols-[48px_1fr]', 'gap-x-2', 'py-2', 'hover:bg-neutral-50', 'hover:cursor-pointer')}
@@ -201,14 +184,14 @@ export default function AutocompleteSearch(props) {
                                 role="presentation"
                             >
                                 <div className="image-container">
-                                    <Image alt={name} src={small_image.url} width={64} height={64} />
+                                    <Image alt={name} src={small_image.url} width={64} height={64} storeConfig={storeConfig} />
                                 </div>
-                                <div className={cx('title-search-item', 'text-md', 'normal-case', 'leading-5', 'font-[500]')}>
+                                <div className={cx('title-search-item', 'text-base', 'normal-case', 'leading-5', 'font-[500]')}>
                                     {name.length > 47 ? `${name.substr(0, 47)}...` : `${name}`}
                                     <br />
                                     <PriceFormat
-                                        priceRange={sharedProp.price.priceRange}
-                                        priceTiers={sharedProp.price.priceTiers}
+                                        priceRange={propsPopoverItem.price_range}
+                                        priceTiers={propsPopoverItem.price_tier}
                                         textClassName={cx('!text-sm', '!leading-4', '!font-normal', '!text-neutral-500')}
                                     />
                                 </div>
@@ -224,7 +207,7 @@ export default function AutocompleteSearch(props) {
                     {type === 'category' ? (
                         <>
                             {position === 0 ? (
-                                <div className={cx('top-title', 'py-2', 'normal-case', 'font-semibold', 'leading-5', 'text-md')}>Categories</div>
+                                <div className={cx('top-title', 'py-2', 'normal-case', 'font-semibold', 'leading-5', 'text-base')}>Categories</div>
                             ) : null}
                             <div
                                 className={cx('grid', 'py-2', 'hover:bg-neutral-50', 'hover:cursor-pointer')}
@@ -232,9 +215,9 @@ export default function AutocompleteSearch(props) {
                                 onClick={() => handleOnClickItem(propsPopoverItem)}
                                 role="presentation"
                             >
-                                <div className={cx('breadcrumbs', 'block', 'text-md', 'text-neutral-400')}>
+                                <div className={cx('breadcrumbs', 'block', 'text-base', 'text-neutral-400')}>
                                     {breadcrumbsText}
-                                    <div className="title-category inline-block text-md !text-neutral-600">{name}</div>
+                                    <div className="title-category inline-block text-base !text-neutral-600">{name}</div>
                                 </div>
                             </div>
                         </>
@@ -242,7 +225,7 @@ export default function AutocompleteSearch(props) {
                     {type === 'seller' ? (
                         <>
                             {position === 0 ? (
-                                <div className={cx('top-title', 'py-2', 'normal-case', 'font-semibold', 'leading-5', 'text-md')}>Merchants</div>
+                                <div className={cx('top-title', 'py-2', 'normal-case', 'font-semibold', 'leading-5', 'text-base')}>Merchants</div>
                             ) : null}
                             <div
                                 className={cx('grid', 'xs:grid-cols-[48px_1fr]', 'gap-x-2', 'py-2', 'hover:bg-neutral-50', 'hover:cursor-pointer')}
@@ -251,7 +234,7 @@ export default function AutocompleteSearch(props) {
                                 role="presentation"
                             >
                                 <div className="image-container">
-                                    <Image alt={name} src={logo} width={48} height={48} />
+                                    <Image alt={name} src={logo} width={48} height={48} storeConfig={storeConfig} />
                                 </div>
                                 <div className="seller-info">{`${name} - ${citySplit ? citySplit[0] : ''}`}</div>
                             </div>

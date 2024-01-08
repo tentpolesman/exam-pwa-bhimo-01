@@ -5,9 +5,7 @@ import cx from 'classnames';
 import { formatPrice } from '@helper_currency';
 import { checkJson } from '@core_modules/trackingorder/pages/default/helpers/checkJson';
 
-const resultItem = ({
-    t, orders, storeConfig, openModal,
-}) => {
+const resultItem = ({ t, orders, storeConfig, openModal }) => {
     const data = orders.data[0];
     if (orders.data.length > 0) {
         let { detail } = data;
@@ -48,15 +46,9 @@ const resultItem = ({
                         items.push({
                             primary: t('trackingorder:trackingOrder'),
                             secondary: (
-                                <Button
-                                    variant="text"
-                                    onClick={() => openModal(shipping.trackorder_type, dt)}
-                                    align="left"
-                                >
+                                <Button variant="text" onClick={() => openModal(shipping.trackorder_type, dt)} align="left">
                                     <Typography type="bold" decoration="underline" align="left">
-                                        {shipping.track_number}
-                                        {' '}
-                                        {`(${shipping.trackorder_type})`}
+                                        {shipping.track_number} {`(${shipping.trackorder_type})`}
                                     </Typography>
                                 </Button>
                             ),
@@ -78,9 +70,7 @@ const resultItem = ({
         return (
             <div className={cx('row')}>
                 <div className="xs:basis-full">
-                    <Typography className="label-result text-md">
-                        {t('trackingorder:trackingInformation')}
-                    </Typography>
+                    <Typography className="label-result text-base">{t('trackingorder:trackingInformation')}</Typography>
                 </div>
                 <div className="xs:basis-full hidden-mobile">
                     <div className="table-container">
@@ -89,14 +79,10 @@ const resultItem = ({
                                 {items.map((item, index) => (
                                     <tr key={index}>
                                         <td>
-                                            <Typography className="clear-margin-padding first-letter:uppercase text-left">
-                                                {item.primary}
-                                            </Typography>
+                                            <Typography className="clear-margin-padding first-letter:uppercase text-left">{item.primary}</Typography>
                                         </td>
                                         <td>
-                                            <Typography className="clear-margin-padding">
-                                                {item.secondary}
-                                            </Typography>
+                                            <Typography className="clear-margin-padding">{item.secondary}</Typography>
                                         </td>
                                     </tr>
                                 ))}
@@ -109,16 +95,12 @@ const resultItem = ({
                         {items.map((item, i) => (
                             <div key={i} className="list-item-container">
                                 <div
-                                    primary={(
-                                        <Typography className="clear-margin-padding first-letter:uppercase text-left">
-                                            {item.primary}
-                                        </Typography>
-                                    )}
+                                    primary={
+                                        <Typography className="clear-margin-padding first-letter:uppercase text-left">{item.primary}</Typography>
+                                    }
                                 />
                                 <div className="list-item-secondary-container">
-                                    <Typography className="clear-margin-padding">
-                                        {item.secondary}
-                                    </Typography>
+                                    <Typography className="clear-margin-padding">{item.secondary}</Typography>
                                 </div>
                             </div>
                         ))}

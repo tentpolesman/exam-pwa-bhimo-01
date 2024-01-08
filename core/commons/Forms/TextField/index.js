@@ -34,9 +34,7 @@ const TextField = React.forwardRef((props, ref) => {
 
     const [isFocus, setIsFocus] = useState(false);
 
-    const {
-        className: hintClassName, displayHintText = false, hintType = '', hintText = '',
-    } = hintProps;
+    const { className: hintClassName, displayHintText = false, hintType = '', hintText = '' } = hintProps;
     const { className: leftIconClasses, ...otherLeftIconProps } = leftIconProps;
     const { className: rightIconClasses, ...otherRightIconProps } = rightIconProps;
 
@@ -95,7 +93,7 @@ const TextField = React.forwardRef((props, ref) => {
                     'border-[1px]',
                     'border-neutral-300',
                     'rounded-lg',
-                    'text-md',
+                    'text-base',
                     'hover:border-neutral-400',
                     'focus:border-primary focus:shadow-[0_0_0_4px] focus:shadow-primary-200',
                     {

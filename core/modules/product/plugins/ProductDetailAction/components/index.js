@@ -78,27 +78,17 @@ const ProductDetailAction = ({
     setOpenOption,
 }) => (
     <div className="plugin-product-detail-action">
-        <div className={cx(
-            'product-detail-container',
-            'desktop:grid tablet:grid desktop:grid-cols-2 tablet:grid-cols-2',
-            'mt-[32px]',
-            classContainer,
-        )}
+        <div
+            className={cx('product-detail-container', 'desktop:grid tablet:grid desktop:grid-cols-2 tablet:grid-cols-2', 'mt-[32px]', classContainer)}
         >
-            <div
-                className={cx(
-                    'product-detail-slider',
-                    'relative',
-                    classImageSliderWrapper,
-                )}
-            >
+            <div className={cx('product-detail-slider', 'relative', classImageSliderWrapper)}>
                 <ImageSlider
                     useZoom={false}
                     data={banner}
                     storeConfig={storeConfig}
                     onClickZoomImage={useProductImagePreview && enablePopupImage ? handleOpenImageDetail : null}
                     {...imageSliderProps}
-                    FooterComponentImagePreview={(
+                    FooterComponentImagePreview={
                         <ProductLabel
                             className="absolute top-[15px] left-[17px]"
                             stockStatus={data?.stock_status}
@@ -117,30 +107,25 @@ const ProductDetailAction = ({
                                 },
                             }}
                         />
-                    )}
+                    }
                 />
             </div>
-            <div className={cx(
-                'product-detail-info',
-                'desktop:pl-[35px]',
-                'desktop:ml-[48px] tablet:ml-[12px]',
-                'desktop:px-[0px] tablet:px-[0px] mobile:px-[16px]',
-                'desktop:flex tablet:flex desktop:flex-col tablet:flex-col',
-                'items-start',
-                classContentWrapper,
-            )}
+            <div
+                className={cx(
+                    'product-detail-info',
+                    'desktop:pl-[35px]',
+                    'desktop:ml-[48px] tablet:ml-[12px]',
+                    'desktop:px-[0px] tablet:px-[0px] mobile:px-[16px]',
+                    'desktop:flex tablet:flex desktop:flex-col tablet:flex-col',
+                    'items-start',
+                    classContentWrapper,
+                )}
             >
                 <Typography variant="h1" className="first-letter:uppercase mb-[12px] desktop:mt-[0px] tablet:mt-[0px] mobile:mt-[24px]">
                     {data?.name || '-'}
                 </Typography>
                 <Show when={!isAwGiftCard && !loadPrice}>
-                    <div className={
-                        cx(
-                            'product-detail-info-price-container',
-                            isMobile && 'flex justify-between',
-                        )
-                    }
-                    >
+                    <div className={cx('product-detail-info-price-container', isMobile && 'flex justify-between')}>
                         <div className="product-detail-info-price-left">
                             <GeneratePrice
                                 additionalPrice={additionalPrice}
@@ -154,19 +139,9 @@ const ProductDetailAction = ({
 
                         {/* SHARE, WISHLIST, COMPARE MOBILE */}
                         <Show when={isMobile}>
-                            <div className={cx(
-                                'product-detail-info-price-right',
-                                'flex items-center gap-1.5',
-                            )}
-                            >
+                            <div className={cx('product-detail-info-price-right', 'flex items-center gap-1.5')}>
                                 <Show when={enableWishlist}>
-                                    <Button
-                                        variant="plain"
-                                        icon={false}
-                                        iconOnly={false}
-                                        onClick={handleWishlist}
-                                        className="!p-0 whitespace-nowrap"
-                                    >
+                                    <Button variant="plain" icon={false} iconOnly={false} onClick={handleWishlist} className="!p-0 whitespace-nowrap">
                                         <Typography color="text-neutral-500 hover:text-neutral-400 flex items-center" variant="bd-2a">
                                             <HeartIcon className="h-[20px] w-[20px]" />
                                         </Typography>
@@ -194,7 +169,7 @@ const ProductDetailAction = ({
                     variant="plain"
                     className="!p-0 flex items-center"
                     onClick={() => {
-                            reviewRef?.current?.scrollIntoView({ behavior: 'smooth' });
+                        reviewRef?.current?.scrollIntoView({ behavior: 'smooth' });
                     }}
                 >
                     <div className="flex mt-[12px]">
@@ -205,9 +180,7 @@ const ProductDetailAction = ({
                     </div>
                 </Button>
                 <Divider className="my-[24px]" />
-                <CustomizableOption
-                    showCustomizableOption={false}
-                />
+                <CustomizableOption showCustomizableOption={false} />
                 <div className="flex flex-col gap-4 w-[100%]">
                     <OptionItem
                         price={price}
@@ -248,14 +221,15 @@ const ProductDetailAction = ({
                     <div className="product-detail-description-container">
                         <div className="product-detail-description relative">
                             <div
-                                className={
-                                    cx(
-                                        'mt-[24px]',
-                                        showShortDesc && 'h-auto',
-                                        !showShortDesc && 'desktop:h-[120px] tablet:h-[80px] mobile:h-[80px] overflow-hidden',
-                                        'text-md', 'font-normal', 'leading-2lg', 'tracking-normal',
-                                    )
-                                }
+                                className={cx(
+                                    'mt-[24px]',
+                                    showShortDesc && 'h-auto',
+                                    !showShortDesc && 'desktop:h-[120px] tablet:h-[80px] mobile:h-[80px] overflow-hidden',
+                                    'text-base',
+                                    'font-normal',
+                                    'leading-2lg',
+                                    'tracking-normal',
+                                )}
                             >
                                 {data?.short_description?.html ? <CmsRenderer content={data?.short_description?.html} /> : null}
                             </div>
@@ -263,17 +237,14 @@ const ProductDetailAction = ({
                                 <div
                                     className="w-[100%] h-[25px] absolute bottom-[0px]"
                                     style={{
-                                        background: 'linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.7497373949579832) 43%, rgba(255,255,255,0) 100%)',
+                                        background:
+                                            'linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.7497373949579832) 43%, rgba(255,255,255,0) 100%)',
                                     }}
                                 />
                             </Show>
                         </div>
                         <Show when={data?.short_description?.html?.length > 0}>
-                            <Button
-                                variant="plain"
-                                onClick={() => setShowShortDesc(!showShortDesc)}
-                                className="!p-0 mt-[6px]"
-                            >
+                            <Button variant="plain" onClick={() => setShowShortDesc(!showShortDesc)} className="!p-0 mt-[6px]">
                                 <Typography variant="bd-2a">
                                     {showShortDesc ? `- ${t('common:label:showLess')}` : `+ ${t('common:label:showMore')}`}
                                 </Typography>
@@ -282,14 +253,13 @@ const ProductDetailAction = ({
                     </div>
                 </Show>
                 <Divider className="my-[24px]" />
-                <div className={
-                    cx(
+                <div
+                    className={cx(
                         'product-detail-info-footer-container',
                         'desktop:flex desktop:justify-between',
                         'desktop:block tablet:block mobile:hidden',
                         'w-[100%]',
-                    )
-                }
+                    )}
                 >
                     <Show when={useShareProduct}>
                         <div className={cx('porudct-detail-info-footer-share')}>
@@ -297,22 +267,15 @@ const ProductDetailAction = ({
                         </div>
                     </Show>
                     {/* WISHLIST & COMPARE DESKTOP, TABLET */}
-                    <div className={
-                        cx(
+                    <div
+                        className={cx(
                             'product-detail-info-footer-action',
                             'flex desktop:justify-end tablet:justify-start',
                             'desktop:mt-[0px] tablet:mt-[16px]',
-                        )
-                    }
+                        )}
                     >
                         <Show when={enableWishlist}>
-                            <Button
-                                variant="plain"
-                                icon={false}
-                                iconOnly={false}
-                                onClick={handleWishlist}
-                                className="!p-0 whitespace-nowrap"
-                            >
+                            <Button variant="plain" icon={false} iconOnly={false} onClick={handleWishlist} className="!p-0 whitespace-nowrap">
                                 <Typography color="text-neutral-500 hover:text-neutral-400 flex items-center" variant="bd-2a">
                                     {t('common:label:addToWishlist')}
                                     <HeartIcon className="h-[14px] w-[14px] ml-[6px]" />
@@ -339,13 +302,7 @@ const ProductDetailAction = ({
         </div>
 
         <Show when={!isMobile && useProductTabs}>
-            <div
-                className={cx(
-                    'product-detail-tabs',
-                    'desktop:mt-[64px] tablet:mt-[64px]',
-                    'desktop:px-[0px] tablet:px-[16px] mobile:px-[16px]',
-                )}
-            >
+            <div className={cx('product-detail-tabs', 'desktop:mt-[64px] tablet:mt-[64px]', 'desktop:px-[0px] tablet:px-[16px] mobile:px-[16px]')}>
                 <ProductTabs
                     data={expandData}
                     tabTitleWrapperClassName="[&>li:first-child>a]:!pl-[0px]"
@@ -380,20 +337,8 @@ const ProductDetailAction = ({
         </Show>
 
         <Show when={useReviewList}>
-            <div
-                ref={reviewRef}
-                className={cx(
-                    'product-list-review-container',
-                    'mt-[48px]',
-                    'desktop:px-[0px] tablet:px-[16px] mobile:px-[16px]',
-                )}
-            >
-                <ReviewList
-                    t={t}
-                    data={data}
-                    storeConfig={storeConfig}
-                    isLogin={isLogin}
-                />
+            <div ref={reviewRef} className={cx('product-list-review-container', 'mt-[48px]', 'desktop:px-[0px] tablet:px-[16px] mobile:px-[16px]')}>
+                <ReviewList t={t} data={data} storeConfig={storeConfig} isLogin={isLogin} />
             </div>
         </Show>
 
@@ -405,30 +350,14 @@ const ProductDetailAction = ({
                 classWrapper="!bg-opacity-100 bg-neutral-white"
                 onClickClose={handleOpenImageDetail}
             >
-                <ImageSlider
-                    horizontalThumbnail
-                    openImageDetail
-                    detectAutoScreen={false}
-                    data={banner}
-                    storeConfig={storeConfig}
-                />
+                <ImageSlider horizontalThumbnail openImageDetail detectAutoScreen={false} data={banner} storeConfig={storeConfig} />
             </Dialog>
         </Show>
         <Show when={useProductRelated}>
-            <ProductRelated
-                t={t}
-                dataProduct={data}
-                isLogin={isLogin}
-                storeConfig={storeConfig}
-            />
+            <ProductRelated t={t} dataProduct={data} isLogin={isLogin} storeConfig={storeConfig} />
         </Show>
         <Show when={useProductUpsell}>
-            <ProductUpsell
-                t={t}
-                dataProduct={data}
-                isLogin={isLogin}
-                storeConfig={storeConfig}
-            />
+            <ProductUpsell t={t} dataProduct={data} isLogin={isLogin} storeConfig={storeConfig} />
         </Show>
     </div>
 );

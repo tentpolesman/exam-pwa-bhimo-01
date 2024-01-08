@@ -19,9 +19,7 @@ import Slider from 'react-slick';
 import useMediaQuery from '@hook/useMediaQuery';
 
 const VideoContent = (props) => {
-    const {
-        background_type, youtube_id, vimeo_id, local_link, autoplay, loop, control, mute,
-    } = props;
+    const { background_type, youtube_id, vimeo_id, local_link, autoplay, loop, control, mute } = props;
     let videoUrl;
 
     const additionalVideoProps = `${autoplay ? '&autoplay=1' : ''}${loop ? '&loop=1' : ''}${control ? '&controls=1' : ''}${mute ? '&mute=1' : ''}`;
@@ -259,6 +257,14 @@ const MagezonSliderContent = (props) => {
                             lazy={lazy}
                             preload={!lazy}
                             className="flex w-full h-full"
+                            style={{
+                                width: '100%',
+                                height: '100%',
+                                position: 'absolute',
+                                top: '0',
+                                left: '0',
+                                objectFit: 'cover',
+                            }}
                         />
                     </div>
                 </div>
@@ -382,7 +388,7 @@ const MagezonSlider = (props) => {
     const { isMobile } = useMediaQuery();
 
     let slideHeight = !isMobile ? storeConfig.pwa?.magezon_slider_desktop_height : 310;
-    let slideWidth = storeConfig.pwa?.magezon_slider_desktop_width;
+    let slideWidth = !isMobile ? storeConfig.pwa?.magezon_slider_desktop_width : 678;
     slideHeight = typeof slideHeight === 'string' ? parseInt(slideHeight, 10) : slideHeight;
     slideWidth = typeof slideWidth === 'string' ? parseInt(slideWidth, 10) : slideWidth;
 
@@ -672,16 +678,20 @@ const MagezonSlider = (props) => {
                         transition: transform 0.5s;
                     }
                     .magezon-slider--dot-nav-item {
-                        ${owl_active_background_color ? `
+                        ${owl_active_background_color
+                            ? `
                             background-color: ${owl_background_color} !important;
                             border: unset !important;
-                        ` : ''};
+                        `
+                            : ''};
                     }
                     .magezon-slider--dot-nav-item-active {
-                        ${owl_active_background_color ? `
+                        ${owl_active_background_color
+                            ? `
                             background-color: ${owl_active_background_color} !important;
                             border: unset !important;
-                        ` : ''};
+                        `
+                            : ''};
                     }
                 `}
             </style>

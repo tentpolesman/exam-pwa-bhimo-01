@@ -3,12 +3,14 @@ import { getCartId } from '@helper_cartid';
 import { getLocalStorage, setLocalStorage } from '@helper_localstorage';
 import React from 'react';
 import TagManager from 'react-gtm-module';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+    selectCheckoutState, setCheckoutData, setIsNewUpdate, setLoading, setSelectedData,
+} from '@core_modules/checkout/redux/checkoutSlice';
 
 const Shipping = (props) => {
     const {
         t,
-        checkout,
-        setCheckout,
         updateFormik,
         handleOpenMessage,
         storeConfig,
@@ -21,6 +23,9 @@ const Shipping = (props) => {
         currencyCache,
     } = props;
 
+    const dispatch = useDispatch();
+    const checkout = useSelector(selectCheckoutState);
+
     const { loading, data, selected } = checkout;
     const [setShippingMethod] = gqlService.setShippingMethod();
     const [setShippingMethodMultiseller] = gqlService.setShippingMethodMultiseller();
@@ -31,22 +36,20 @@ const Shipping = (props) => {
             const { cart } = checkout.data;
             if (storeConfig.enable_oms_multiseller === '1') {
                 const [carrier_code, method_code, seller_id] = val.split('_');
-                let state = { ...checkout };
-                const setBySellerId = state.selected.shipping.find((item) => item.seller_id === seller_id);
+                const setBySellerId = checkout.selected.shipping.find((item) => item.seller_id === seller_id);
                 if (setBySellerId) {
-                    state.selected.shipping.find((item) => item.seller_id === seller_id).name.carrier_code = carrier_code;
-                    state.selected.shipping.find((item) => item.seller_id === seller_id).name.method_code = method_code;
+                    checkout.selected.shipping.find((item) => item.seller_id === seller_id).name.carrier_code = carrier_code;
+                    checkout.selected.shipping.find((item) => item.seller_id === seller_id).name.method_code = method_code;
                 }
-                setCheckout(state);
                 const inputShippingMethod = [];
                 const GTMShippingMethod = [];
 
-                const checkEmpty = state.selected.shipping.find((item) => item.name.carrier_code === null);
+                const checkEmpty = checkout.selected.shipping.find((item) => item.name.carrier_code === null);
                 const cartIdCookie = getCartId();
                 const checkoutShippingMethodLocalStorage = getLocalStorage('checkout_shipping_method');
 
                 if (!checkEmpty) {
-                    state.selected.shipping.forEach((selectedShipping) => {
+                    checkout.selected.shipping.forEach((selectedShipping) => {
                         inputShippingMethod.push({
                             carrier_code: selectedShipping.name.carrier_code,
                             method_code: selectedShipping.name.method_code,
@@ -72,7 +75,7 @@ const Shipping = (props) => {
                             const tempArray = checkoutShippingMethodLocalStorage.map(({ cartId, data: dataShipping }) => {
                                 const tempShippingData = dataShipping.map((item, index) => ({
                                     ...item,
-                                    ...state.selected.shipping[index],
+                                    ...checkout.selected.shipping[index],
                                 }));
                                 if (cartId === cartIdCookie) {
                                     return {
@@ -90,7 +93,7 @@ const Shipping = (props) => {
                             const tempArray = [];
                             tempArray.push({
                                 cartId: cartIdCookie,
-                                data: state.selected.shipping,
+                                data: checkout.selected.shipping,
                             });
                             setLocalStorage('checkout_shipping_method', tempArray);
                         }
@@ -98,24 +101,18 @@ const Shipping = (props) => {
                         const tempArray = [];
                         tempArray.push({
                             cartId: cartIdCookie,
-                            data: state.selected.shipping,
+                            data: checkout.selected.shipping,
                         });
                         setLocalStorage('checkout_shipping_method', tempArray);
                     }
                 }
 
                 if (!checkEmpty) {
-                    state = {
-                        ...checkout,
-                        loading: {
-                            ...checkout.loading,
-                            all: false,
-                            shipping: false,
-                            extraFee: true,
-                            order: true,
-                        },
-                    };
-                    setCheckout(state);
+                    dispatch(setLoading({
+                        extraFee: false,
+                        order: true,
+                        shipping: true,
+                    }));
                     await setShippingMethodMultiseller({
                         variables: {
                             cartId: cart.id,
@@ -127,18 +124,12 @@ const Shipping = (props) => {
                         updatedCart = err;
                     });
 
-                    state = {
-                        ...checkout,
-                        loading: {
-                            ...checkout.loading,
-                            all: false,
-                            shipping: false,
-                            payment: false,
-                            extraFee: false,
-                            order: false,
-                        },
-                    };
-                    setCheckout(state);
+                    dispatch(setLoading({
+                        shipping: false,
+                        all: false,
+                        extraFee: false,
+                        order: false,
+                    }));
 
                     // eslint-disable-next-line max-len
                     if (updatedCart && updatedCart.data && updatedCart.data.setShippingMethodsOnCart && updatedCart.data.setShippingMethodsOnCart.cart) {
@@ -155,10 +146,11 @@ const Shipping = (props) => {
                             image: null,
                         }));
 
-                        state = { ...checkout };
-                        state.data.paymentMethod = paymentMethod;
-                        state.data.cart = updatedCart;
-                        setCheckout(state);
+                        dispatch(setCheckoutData({
+                            paymentMethod,
+                            cart: updatedCart,
+                        }));
+
                         let selectedShipping = '';
                         // eslint-disable-next-line array-callback-return
                         GTMShippingMethod.map((item, index) => {
@@ -228,7 +220,7 @@ const Shipping = (props) => {
                             dataLayer: dataLayerOpt,
                         });
                     } else {
-                        state.selected.shipping = null;
+                        dispatch(setSelectedData({ shipping: null }));
                         if (updatedCart.message.includes('Token is wrong.')) {
                             setCheckoutTokenState(!checkoutTokenState);
                         } else {
@@ -241,18 +233,8 @@ const Shipping = (props) => {
                 }
             } else {
                 const [carrier_code, method_code] = val.split('_');
-                let state = {
-                    ...checkout,
-                    loading: {
-                        ...checkout.loading,
-                        all: false,
-                        shipping: false,
-                        extraFee: true,
-                        order: true,
-                    },
-                };
-                state.selected.shipping = val;
-                setCheckout(state);
+                dispatch(setLoading({ extraFee: true, order: true }));
+                dispatch(setSelectedData({ shipping: val }));
 
                 let updatedCart = {};
                 await setShippingMethod({
@@ -266,19 +248,7 @@ const Shipping = (props) => {
                 }).catch((err) => {
                     updatedCart = err;
                 });
-
-                state = {
-                    ...checkout,
-                    loading: {
-                        ...checkout.loading,
-                        all: false,
-                        shipping: false,
-                        payment: false,
-                        extraFee: false,
-                        order: false,
-                    },
-                };
-                setCheckout(state);
+                dispatch(setLoading({ extraFee: false, order: false }));
 
                 if (updatedCart && updatedCart.data && updatedCart.data.setShippingMethodsOnCart && updatedCart.data.setShippingMethodsOnCart.cart) {
                     updatedCart = {
@@ -294,11 +264,11 @@ const Shipping = (props) => {
                         image: null,
                     }));
 
-                    state = { ...checkout };
-                    state.data.paymentMethod = paymentMethod;
-                    state.data.cart = updatedCart;
-                    state.newupdate = true;
-                    setCheckout(state);
+                    dispatch(setIsNewUpdate(true));
+                    dispatch(setCheckoutData({
+                        paymentMethod,
+                        cart: updatedCart,
+                    }));
                     const selectedShipping = data.shippingMethods.filter((item) => item.method_code === method_code);
 
                     // GTM UA dataLayer
@@ -364,7 +334,7 @@ const Shipping = (props) => {
                         dataLayer: dataLayerOpt,
                     });
                 } else {
-                    state.selected.shipping = null;
+                    dispatch(setSelectedData({ shipping: null }));
                     if (updatedCart.message.includes('Token is wrong.')) {
                         setCheckoutTokenState(!checkoutTokenState);
                     } else {
@@ -380,8 +350,6 @@ const Shipping = (props) => {
 
     return (
         <ShippingView
-            checkout={checkout}
-            setCheckout={setCheckout}
             storeConfig={storeConfig}
             t={t}
             shippingMethodList={shippingMethodList}

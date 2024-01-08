@@ -16,10 +16,7 @@ import React from 'react';
 import Show from '@common/Show';
 import TableItem from '@core_modules/cart/pages/default/components/item/TableListItem/TableItem';
 
-const TableListProduct = ({
-    dataCart, t, deleteItem, handleFeed, toggleEditDrawer, storeConfig = {}, currencyCache,
-    ...other
-}) => {
+const TableListProduct = ({ dataCart, t, deleteItem, handleFeed, toggleEditDrawer, storeConfig = {}, currencyCache, ...other }) => {
     const [confirmDel, setConfirmDel] = React.useState(false);
     const [selectDelete, setSelectDelet] = React.useState(null);
     const confirmDelete = (item) => {
@@ -87,15 +84,13 @@ const TableListProduct = ({
                 <thead>
                     <tr className="border-b-[1px] border-b-neutral-200">
                         <th align="left" className="pb-4">
-                            <Typography className="font-medium text-md">
-                                {`${t('cart:itemDetail')} (${dataCart.total_quantity || 0})`}
-                            </Typography>
+                            <Typography className="font-medium text-base">{`${t('cart:itemDetail')} (${dataCart.total_quantity || 0})`}</Typography>
                         </th>
                         <th align="center" className="pb-4">
-                            <Typography className="font-medium text-md">{t('common:title:qty')}</Typography>
+                            <Typography className="font-medium text-base">{t('common:title:qty')}</Typography>
                         </th>
                         <th align="right" className="pb-4">
-                            <Typography className="font-medium text-md">{t('common:subtotal')}</Typography>
+                            <Typography className="font-medium text-base">{t('common:subtotal')}</Typography>
                         </th>
                     </tr>
                 </thead>
@@ -104,52 +99,48 @@ const TableListProduct = ({
                         {data &&
                             data.length > 0 &&
                             data.map((val, key) => (
-                                    <React.Fragment key={key}>
-                                        <TableItem
-                                            {...val}
-                                            storeConfig={storeConfig}
-                                            currencyCache={currencyCache}
-                                            confirmDelete={confirmDelete}
-                                            t={t}
-                                            {...other}
-                                        />
-                                    </React.Fragment>
-                                ))}
+                                <React.Fragment key={key}>
+                                    <TableItem
+                                        {...val}
+                                        storeConfig={storeConfig}
+                                        currencyCache={currencyCache}
+                                        confirmDelete={confirmDelete}
+                                        t={t}
+                                        {...other}
+                                    />
+                                </React.Fragment>
+                            ))}
                     </Show>
                 </tbody>
             </table>
             <Show when={storeConfig && storeConfig.enable_oms_multiseller === '1' && cartItemBySeller && cartItemBySeller.length > 0}>
                 <table className="table-auto">
-                    {
-                        cartItemBySeller.map((seller, key) => (
-                            <React.Fragment key={key}>
-                                <thead>
-                                    <tr>
-                                        <th colSpan={4}>
-                                            <Typography variant="bd-2b" type="bold">
-                                                {seller.seller_name ? seller.seller_name : 'Default Store'}
-                                            </Typography>
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <Show when={seller && seller.children && seller.children.length > 0}>
-                                    {
-                                        seller?.children.map((val, keyItem) => (
-                                            <TableItem
-                                                key={keyItem}
-                                                {...val}
-                                                storeConfig={storeConfig}
-                                                currencyCache={currencyCache}
-                                                confirmDelete={confirmDelete}
-                                                t={t}
-                                                {...other}
-                                            />
-                                        ))
-                                    }
-                                </Show>
-                            </React.Fragment>
-                        ))
-                    }
+                    {cartItemBySeller.map((seller, key) => (
+                        <React.Fragment key={key}>
+                            <thead>
+                                <tr>
+                                    <th colSpan={4}>
+                                        <Typography variant="bd-2b" type="bold">
+                                            {seller.seller_name ? seller.seller_name : 'Default Store'}
+                                        </Typography>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <Show when={seller && seller.children && seller.children.length > 0}>
+                                {seller?.children.map((val, keyItem) => (
+                                    <TableItem
+                                        key={keyItem}
+                                        {...val}
+                                        storeConfig={storeConfig}
+                                        currencyCache={currencyCache}
+                                        confirmDelete={confirmDelete}
+                                        t={t}
+                                        {...other}
+                                    />
+                                ))}
+                            </Show>
+                        </React.Fragment>
+                    ))}
                 </table>
             </Show>
         </>

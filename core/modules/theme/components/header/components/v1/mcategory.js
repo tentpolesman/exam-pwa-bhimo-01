@@ -11,8 +11,9 @@ import cx from 'classnames';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import React, { useRef } from 'react';
+import { COLORS } from '@root/core/theme/vars';
 
-const MenuChildren = dynamic(() => import('@common_header/components/v1/mcategoryChildren'), { ssr: false });
+const MenuChildren = dynamic(() => import('@common_header/components/v1/mcategoryChildren'), { ssr: true });
 
 const Menu = (props) => {
     const { data, storeConfig } = props;
@@ -105,15 +106,7 @@ const Menu = (props) => {
                                         megaMenuRef.current.classList.remove(`animate__${val.dropdown_animation_in}`);
                                     }
                                 }}
-                                className={cx(
-                                    'text-md',
-                                    'font-medium',
-                                    '!leading-lg',
-                                    'tracking-normal',
-                                    'px-4',
-                                    'py-[13px]',
-                                    'hover:text-primary-700',
-                                )}
+                                className={cx('text-md', 'font-medium', 'tracking-normal', 'px-4', 'py-[13px]', 'hover:text-primary-700')}
                             >
                                 {val.link && val.link !== '#' ? (
                                     <>
@@ -199,33 +192,8 @@ const Menu = (props) => {
             </ul>
             <style jsx global>
                 {`
-                    .grid {
-                        display: grid;
-                    }
-                    /* ves menu config */
-                    .header-html,
-                    .footer-html {
-                        color: black;
-                    }
-                    .header-html ul,
-                    .footer-html ul {
-                        display: flex;
-                        align-items: center;
-                        height: 100%;
-                    }
-                    .header-html ul li,
-                    .footer-html ul li {
-                        text-align: center;
-                        flex-grow: 1;
-                    }
                     .main-content {
                         display: flex;
-                    }
-                    .nav a {
-                        text-decoration: none;
-                    }
-                    .nav li {
-                        list-style: none;
                     }
 
                     /* menu list */
@@ -233,92 +201,24 @@ const Menu = (props) => {
                         float: left;
                     }
 
-                    /* menu links */
-                    .nav > li > a {
-                        display: block;
-                        transition: all 0.3s ease;
-                        z-index: 20;
-                        position: relative;
-                    }
-                    .nav > li:hover > a + .pointer {
-                        visibility: visible;
-                    }
-                    .pointer {
-                        visibility: hidden;
-                        margin: auto;
-                        width: 0;
-                        height: 0;
-                        border-style: solid;
-                        border-width: 0 7.5px 13px 7.5px;
-                        border-color: transparent transparent #212426 transparent;
-                    }
-                    .nav > li:first-child > a {
-                        border-left: none;
-                        border-radius: 3px 0 0 3px;
-                    }
-
-                    /* search form */
-                    .nav-search > form {
-                        border-left: 1px solid #4b4441;
-                        height: 3.5em;
-                        position: relative;
-                        width: inherit;
-                        z-index: 20;
-                    }
-                    .nav-search input[type='text'] {
-                        background: #372f2b;
-                        color: #999;
-                        display: block;
-                        float: left;
-                        font-weight: bold;
-                        line-height: 1.5;
-                        padding: 1em 0;
-                        text-shadow: 0 0 1px rgba(0, 0, 0, 0.35);
-                        transition: all 0.3s ease 1s;
-                        width: 0;
-                    }
-                    .nav-search input[type='text']:focus {
-                        color: #fcfcfc;
-                    }
-                    .nav-search input[type='text']:focus,
-                    .nav-search:hover input[type='text'] {
-                        padding: 1em 1.25em;
-                        transition: all 0.3s ease 0.1s;
-                        width: 6.875em;
-                    }
-                    .nav-search input[type='submit'] {
-                        background: #372f2b url(../img/search-icon.png) no-repeat center center; /* IE8 fallback */
-                        background: #372f2b url(../img/search-icon.svg) no-repeat center center;
-                        border-radius: 0 3px 3px 0;
-                        cursor: pointer;
-                        display: block;
-                        float: left;
-                        height: 3.5em;
-                        padding: 0 1.25em;
-                        transition: all 0.3s ease;
-                    }
-                    .nav-search input:focus,
-                    .nav-search input[type='submit']:hover {
-                        background-color: #4b4441;
-                    }
                     /* menu dropdown */
                     .mega-menu {
                         opacity: 0;
                         position: absolute;
-                        transition: all 0s ease 0s;
+                        transition: all 0.1s ease 0.1s;
                         visibility: hidden;
                         margin-left: 0%;
-                        margin-top: 14px
+                        margin-top: 0px;
                     }
                     li:hover > .mega-menu {
                         opacity: 1;
                         overflow: visible;
                         visibility: visible;
+                        margin-top: 14px;
                     }
 
                     /* menu content */
                     .nav-column a {
-                        color: #000000 !important;
                         display: block;
                         font-weight: bold;
                         line-height: 1.75;
@@ -326,30 +226,7 @@ const Menu = (props) => {
                         padding: 7px;
                     }
                     .nav-column a:hover {
-                        color: #be1f93 !important;
-                    }
-
-                    .nav-column .active {
-                        color: #be1f93 !important;
-                        background: #ffffff;
-                    }
-                    .nav-column h3 {
-                        color: #372f2b;
-                        font-size: 0.95em;
-                        font-weight: bold;
-                        line-height: 1.15;
-                        margin: 1.25em 0 0.75em;
-                        text-transform: uppercase;
-                    }
-                    .cat-label-v2 {
-                        background: #fef2f2;
-                        color: #dc2626;
-                        font-size: 10px;
-                        font-style: normal;
-                        font-weight: 700;
-                        line-height: 12px;
-                        letter-spacing: 0.1px;
-                        text-transform: uppercase;
+                        color: ${COLORS.primary.DEFAULT} !important;
                     }
                 `}
             </style>

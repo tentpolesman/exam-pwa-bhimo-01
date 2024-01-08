@@ -1,6 +1,6 @@
 /* eslint-disable global-require */
 import {
-    BREAKPOINTS, COLORS, FONT_FAMILY, FONT_SIZE, LETTER_SPACING, LINE_HEIGHT, SPACING, ZINDEX,
+    BREAKPOINTS, COLORS, FONT_FAMILY, FONT_SIZE, LINE_HEIGHT, SPACING, ZINDEX,
 } from './core/theme/vars';
 
 const plugin = require('tailwindcss/plugin');
@@ -45,7 +45,6 @@ module.exports = {
                 secondary: COLORS.secondary,
                 neutral: COLORS.neutral,
             },
-            letterSpacing: LETTER_SPACING,
             lineHeight: LINE_HEIGHT,
             fontSize: FONT_SIZE,
             fontFamily: FONT_FAMILY,

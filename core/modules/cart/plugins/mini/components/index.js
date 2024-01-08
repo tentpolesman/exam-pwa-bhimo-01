@@ -64,7 +64,7 @@ const MiniComponent = (props) => {
                                     className={cx(
                                         'mobile:max-tablet:leading-[18px]',
                                         'mobile:max-tablet:font-semibold',
-                                        'mobile:max-tablet:text-md',
+                                        'mobile:max-tablet:text-base',
                                         'mobile:max-tablet:p-4',
                                     )}
                                 >
@@ -95,7 +95,14 @@ const MiniComponent = (props) => {
                             </div>
                         </div>
                     </div>
-                    <div className={cx('minicart__items--wrapper', 'border-b-[1px]', 'border-b-neutral-200')}>
+                    <div
+                        className={cx(
+                            'minicart__items--wrapper',
+                            'border-b-neutral-200',
+                            !data.items || data.items.length === 0 ? '!border-none' : 'border-b-[1px]',
+                        )}
+                    >
+                        {/* <Skeleton /> */}
                         {loading || !data.items ? (
                             <Skeleton />
                         ) : (

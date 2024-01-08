@@ -250,7 +250,9 @@ const RegisterView = ({
                                 onChange={handleWa}
                                 classNames={{ checkboxContainerClasses: cx('flex', 'items-center') }}
                             >
-                                <Typography variant="bd-2b">{t('register:isWhatsapp')}</Typography>
+                                <label for="register-waregitered-checkbox">
+                                    <Typography variant="bd-2b">{t('register:isWhatsapp')}</Typography>
+                                </label>
                             </Checkbox>
                         </div>
 
@@ -287,16 +289,18 @@ const RegisterView = ({
                                     onChange={formik.handleChange}
                                     classNames={{ checkboxContainerClasses: cx('flex', 'items-center') }}
                                 >
-                                    <Typography variant="bd-2b">{t('register:subscribe')}</Typography>
+                                    <label for="register-newsletter-checkbox">
+                                        <Typography variant="bd-2b">{t('register:subscribe')}</Typography>
+                                    </label>
                                 </Checkbox>
                             </div>
 
                             <Show when={enableRecaptcha}>
                                 <>
                                     <ReCAPTCHA sitekey={sitekey} onChange={handleChangeCaptcha} ref={recaptchaRef} />
-                                    <Show when={formik.errors.captcha}>
-                                        <Typography className={cx('text-md font-normal leading-lg tracking-normal text-pwa-font my-2 !text-red')}>
-                                            {formik.errors.captcha}
+                                    <Show when={checkIsFieldError('captcha')}>
+                                        <Typography className={cx('text-base font-normal leading-lg tracking-normal text-pwa-font my-2 !text-red')}>
+                                            {fieldErrorMessage('captcha')}
                                         </Typography>
                                     </Show>
                                 </>

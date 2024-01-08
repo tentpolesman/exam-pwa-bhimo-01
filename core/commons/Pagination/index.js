@@ -3,6 +3,7 @@ import ChevronRightIcon from '@heroicons/react/24/outline/ChevronRightIcon';
 import cx from 'classnames';
 import propTypes from 'prop-types';
 import React, { useMemo } from 'react';
+import useMediaQuery from '@root/core/hooks/useMediaQuery';
 
 function generateRange(start, end) {
     const length = end - start + 1;
@@ -14,6 +15,7 @@ const Pagination = (props) => {
         handleChangePage, mobile, showArrowButton, page, totalPage, className, siblingCount,
     } = props;
     const longPage = totalPage && totalPage > siblingCount;
+    const { isMobile } = useMediaQuery();
 
     let pageArray = [];
 
@@ -44,8 +46,10 @@ const Pagination = (props) => {
             const firstPageIndex = 1;
             const lastPageIndex = totalPage;
 
+            const numberMultiplier = isMobile ? 0.25 : 2;
+
             if (!shouldShowLeftDots && shouldShowRightDots) {
-                const leftItemCount = 3 + 2 * siblingCount;
+                const leftItemCount = 3 + Math.floor(numberMultiplier * siblingCount);
                 const leftRange = generateRange(1, leftItemCount);
 
                 return [...leftRange, 'dot', totalPage];

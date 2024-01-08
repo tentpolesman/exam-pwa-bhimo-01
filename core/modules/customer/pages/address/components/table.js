@@ -63,7 +63,7 @@ const TableAddress = (props) => {
                     'bg-neutral-50': idx % 2 !== 1,
                 })}
             >
-                <td className={cx('text-neutral-700', 'text-md', 'font-normal', 'leading-2lg', 'p-2')}>
+                <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-2')}>
                     <Radio
                         color="default"
                         size="sm"
@@ -78,9 +78,9 @@ const TableAddress = (props) => {
                         }}
                     />
                 </td>
-                <td className={cx('text-neutral-700', 'text-md', 'font-normal', 'leading-2lg', 'p-2')}>{firstname}</td>
-                <td className={cx('text-neutral-700', 'text-md', 'font-normal', 'leading-2lg', 'p-2')}>{lastname}</td>
-                <td className={cx('text-neutral-700', 'text-md', 'font-normal', 'leading-2lg', 'p-2')}>
+                <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-2')}>{firstname}</td>
+                <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-2')}>{lastname}</td>
+                <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-2')}>
                     {country.id === 'ID' ? (
                         <>
                             <p>{`${street},`}</p>
@@ -100,12 +100,12 @@ const TableAddress = (props) => {
                         </>
                     )}
                 </td>
-                <td className={cx('text-neutral-700', 'text-md', 'font-normal', 'leading-2lg', 'p-2')}>{telephone}</td>
+                <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-2')}>{telephone}</td>
                 {selectedAddressId !== addressId ? (
                     <>
                         <td>
                             <button type="button" onClick={() => setOpen(!open)}>
-                                <a className={cx('text-md', 'px-4', 'hover:text-primary-700', 'underline', 'underline-offset-2')}>
+                                <a className={cx('text-base', 'px-4', 'hover:text-primary-700', 'underline', 'underline-offset-2')}>
                                     {t('customer:address:editAddress')}
                                 </a>
                             </button>
@@ -113,7 +113,7 @@ const TableAddress = (props) => {
                         <td>
                             {selectedAddressId !== addressId && (
                                 <button type="button" onClick={() => setOpenDelete(true)}>
-                                    <a className={cx('text-md', 'px-4', 'hover:text-primary-700', 'underline', 'underline-offset-2')}>
+                                    <a className={cx('text-base', 'px-4', 'hover:text-primary-700', 'underline', 'underline-offset-2')}>
                                         {t('customer:address:removeTitle')}
                                     </a>
                                 </button>
@@ -124,7 +124,7 @@ const TableAddress = (props) => {
                     <>
                         <td>
                             <button type="button" onClick={() => setOpen(!open)}>
-                                <a className={cx('text-md', 'px-4', 'hover:text-primary-700', 'underline', 'underline-offset-2')}>
+                                <a className={cx('text-base', 'px-4', 'hover:text-primary-700', 'underline', 'underline-offset-2')}>
                                     {t('customer:address:editAddress')}
                                 </a>
                             </button>

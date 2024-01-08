@@ -11,14 +11,11 @@ import Link from 'next/link';
 const ShipperView = (props) => {
     // prettier-ignore
     const {
-        data, orders, type, styles, t,
+        data, orders, type, t,
     } = props;
 
     const isLGX = type.toLowerCase().includes('logistix');
-    const isJNE = type.toLowerCase().includes('jne');
-    const isSAP = type.toLowerCase().includes('sap');
     const isShipperid = type.toLowerCase().includes('shipperid');
-    const isAnteraja = type.toLowerCase().includes('anteraja');
     const isPopaket = type.toLowerCase().includes('popaket');
     const shipperData = {
         detail: {
@@ -50,47 +47,20 @@ const ShipperView = (props) => {
             live_tracking: data.data.shipmentTracking.trackingData[0].trackingUrl || '',
         };
     } else {
-        const detail = isJNE ? data : isSAP || isShipperid ? data[data.length - 1] : isAnteraja ? data.content.order : isPopaket ? data[0] : {};
-        histories = isJNE ? data.history : isSAP || isShipperid ? data : isAnteraja ? data.content.history : isPopaket ? data : [];
-
-        if (isJNE) {
-            shipperData.detail = {
-                ...shipperData.detail,
-                receiver_name: detail.detail[0].cnote_receiver_name || '',
-                shipper_name: detail.detail[0].cnote_shipper_name || '',
-                description: detail.cnote.keterangan || '',
-                update_date: detail.detail[0].cnote_date || '',
-                last_status: detail.cnote.last_status || '',
-            };
-        }
-
-        if (isSAP) {
-            shipperData.detail = {
-                ...shipperData.detail,
-                receiver_name: detail.receiver_name || '',
-                description: detail.description || '',
-                update_date: detail.create_date || '',
-                last_status: detail.rowstate_name || '',
-            };
-        }
+        const detail = isShipperid ? data?.data : isPopaket ? data[0] : {};
+        histories = isShipperid ? data?.data?.trackings : isPopaket ? data : [];
 
         if (isShipperid) {
             shipperData.detail = {
                 ...shipperData.detail,
-                description: <span dangerouslySetInnerHTML={{ __html: detail.logisticStatus[0].description }} /> || '',
-                update_date: formatDate(detail.createdDate, 'DD-MM-YYYY HH:mm') || '',
-                last_status: detail.trackStatus.description || '',
-                live_tracking: detail.trackURL && detail.trackURL !== '' ? detail.trackURL : '',
-            };
-        }
-
-        if (isAnteraja) {
-            shipperData.detail = {
-                ...shipperData.detail,
-                receiver_name: detail?.receiver.name || '',
-                shipper_name: detail?.shipper.name || '',
-                update_date: histories ? formatDate(histories[histories.length - 1].timestamp, 'DD-MM-YYYY HH:mm') : '',
-                last_status: histories ? histories[histories.length - 1].message.id : '',
+                receiver_name: detail?.consignee?.name || '',
+                shipper_name: detail?.consigner?.name || '',
+                driver_name: detail?.driver?.name || '',
+                driver_phone: detail?.driver?.phone || '',
+                driver_license_number: detail?.driver?.vehicle_number || '',
+                update_date: detail?.last_updated_date ? formatDate(detail.last_updated_date, 'DD-MM-YYYY HH:mm') : '',
+                last_status: detail?.trackings?.length > 0 ? detail?.trackings[detail.trackings.length - 1]?.shipper_status?.description : '',
+                live_tracking: detail?.trackURL && detail?.trackURL !== '' ? detail.trackURL : '123',
             };
         }
 
@@ -105,71 +75,69 @@ const ShipperView = (props) => {
     }
 
     return (
-        <div className={styles.containerList}>
+        <div>
             <div className="trackingorder-detail">
-                <Typography type="bold" variant="h3">
+                <Typography variant="h2" className="mb-1">
                     Detail
                 </Typography>
                 <div style={{ marginBottom: 30 }}>
                     {shipperData.detail.receiver_name !== '' && (
-                        <div className="list-item">
-                            <Typography className="list-item__title">{t('trackingorder:receiverName')}</Typography>
-                            <Typography className="list-item__desc">{shipperData.detail.receiver_name}</Typography>
+                        <div className="tracking--list-item">
+                            <Typography className="tracking--list-item__title">{t('trackingorder:receiverName')}</Typography>
+                            <Typography className="tracking--list-item__desc">{shipperData.detail.receiver_name}</Typography>
                         </div>
                     )}
                     {shipperData.detail.driver_name !== '' && (
-                        <div className="list-item">
-                            <Typography className="list-item__title">{t('trackingorder:driverName')}</Typography>
-                            <Typography className="list-item__desc">{shipperData.detail.driver_name}</Typography>
+                        <div className="tracking--list-item">
+                            <Typography className="tracking--list-item__title">{t('trackingorder:driverName')}</Typography>
+                            <Typography className="tracking--list-item__desc">{shipperData.detail.driver_name}</Typography>
                         </div>
                     )}
                     {shipperData.detail.driver_phone !== '' && (
-                        <div className="list-item">
-                            <Typography className="list-item__title">{t('trackingorder:driverPhone')}</Typography>
-                            <Typography className="list-item__desc">{shipperData.detail.driver_phone}</Typography>
+                        <div className="tracking--list-item">
+                            <Typography className="tracking--list-item__title">{t('trackingorder:driverPhone')}</Typography>
+                            <Typography className="tracking--list-item__desc">{shipperData.detail.driver_phone}</Typography>
                         </div>
                     )}
                     {shipperData.detail.driver_license_number !== '' && (
-                        <div className="list-item">
-                            <Typography className="list-item__title">{t('trackingorder:driverLicenseNumber')}</Typography>
-                            <Typography className="list-item__desc">{shipperData.detail.driver_license_number}</Typography>
+                        <div className="tracking--list-item">
+                            <Typography className="tracking--list-item__title">{t('trackingorder:driverLicenseNumber')}</Typography>
+                            <Typography className="tracking--list-item__desc">{shipperData.detail.driver_license_number}</Typography>
                         </div>
                     )}
                     {shipperData.detail.shipper_name !== '' && (
-                        <div className="list-item">
-                            <Typography className="list-item__title">{t('trackingorder:shipperName')}</Typography>
-                            <Typography className="list-item__desc">{shipperData.detail.shipper_name}</Typography>
+                        <div className="tracking--list-item">
+                            <Typography className="tracking--list-item__title">{t('trackingorder:shipperName')}</Typography>
+                            <Typography className="tracking--list-item__desc">{shipperData.detail.shipper_name}</Typography>
                         </div>
                     )}
                     {shipperData.detail.description !== '' && (
-                        <div className="list-item">
-                            <Typography className="list-item__title">{t('trackingorder:description')}</Typography>
-                            <Typography className="list-item__desc">{shipperData.detail.description}</Typography>
+                        <div className="tracking--list-item">
+                            <Typography className="tracking--list-item__title">{t('trackingorder:description')}</Typography>
+                            <Typography className="tracking--list-item__desc">{shipperData.detail.description}</Typography>
                         </div>
                     )}
                     {shipperData.detail.update_date !== '' && (
-                        <div className="list-item">
-                            <Typography className="list-item__title">{t('trackingorder:updateDate')}</Typography>
-                            <Typography className="list-item__desc">{shipperData.detail.update_date}</Typography>
+                        <div className="tracking--list-item">
+                            <Typography className="tracking--list-item__title">{t('trackingorder:updateDate')}</Typography>
+                            <Typography className="tracking--list-item__desc">{shipperData.detail.update_date}</Typography>
                         </div>
                     )}
                     {shipperData.detail.last_status !== '' && (
-                        <div className="list-item">
-                            <Typography className="list-item__title">{t('trackingorder:lastStatus')}</Typography>
-                            <Typography className="list-item__desc">{shipperData.detail.last_status}</Typography>
+                        <div className="tracking--list-item">
+                            <Typography className="tracking--list-item__title">{t('trackingorder:lastStatus')}</Typography>
+                            <Typography className="tracking--list-item__desc">{shipperData.detail.last_status}</Typography>
                         </div>
                     )}
                     {shipperData.detail.live_tracking !== '' && (
-                        <div className="list-item">
-                            <Typography className="list-item__title">Live Tracking</Typography>
-                            <div className="list-item__desc track-link">
-                                <Link href={shipperData.detail.live_tracking || '#'} legacyBehavior>
-                                    <a>
-                                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                                            <span>{t('trackingorder:track')}</span>
-                                            <ArrowTopRightOnSquareIcon className="text-sm" />
-                                        </div>
-                                    </a>
+                        <div className="tracking--list-item">
+                            <Typography className="tracking--list-item__title">Live Tracking</Typography>
+                            <div className="track-link flex ml-4">
+                                <Link href={shipperData.detail.live_tracking || '#'}>
+                                    <div className="flex">
+                                        <Typography className="mr-1 !min-w-[50px]">{t('trackingorder:track')}</Typography>
+                                        <ArrowTopRightOnSquareIcon width={16} />
+                                    </div>
                                 </Link>
                             </div>
                         </div>
@@ -177,7 +145,7 @@ const ShipperView = (props) => {
                 </div>
             </div>
             <div className="trackingorder-history">
-                <Typography type="bold" variant="h3">
+                <Typography variant="h2" className="capitalize mb-1">
                     {t('trackingorder:history')}
                 </Typography>
 
@@ -187,31 +155,22 @@ const ShipperView = (props) => {
                         let description;
 
                         if (isLGX) {
-                            dateTime = formatDate(new Date(history.timestamp * 1000), 'DD-MM-YYYY HH:mm').split(' ');
+                            dateTime = history.timestamp ? formatDate(new Date(history.timestamp * 1000), 'DD-MM-YYYY HH:mm') : '';
                             description = history.note;
                         } else {
-                            if (isJNE) {
-                                dateTime = history.date.split(' ');
-                                description = history.desc;
-                            } else if (isSAP) {
-                                dateTime = history.create_date.split(' ');
-                                description = history.description;
-                            } else if (isShipperid) {
-                                dateTime = formatDate(history.createdDate, 'DD-MM-YYYY HH:mm').split(' ');
-                                description = <span dangerouslySetInnerHTML={{ __html: history.logisticStatus[0].description }} />;
-                            } else if (isAnteraja) {
-                                dateTime = formatDate(history.timestamp, 'DD-MM-YYYY HH:mm').split(' ');
-                                description = history.message.id;
+                            if (isShipperid) {
+                                dateTime = formatDate(history.created_date, 'DD-MM-YYYY HH:mm');
+                                description = history?.shipper_status?.description || '-';
                             } else if (isPopaket) {
-                                dateTime = formatDate(history.date, 'DD-MM-YYYY HH:mm').split(' ');
-                                description = history.description;
+                                dateTime = formatDate(history.date, 'DD-MM-YYYY HH:mm');
+                                description = history.description || '-';
                             }
                         }
 
                         return (
-                            <div key={index} style={{ marginBottom: 10 }}>
-                                <Typography type="bold">{`${dateTime[0]}, ${dateTime[1]}`}</Typography>
-                                <Typography>{description}</Typography>
+                            <div key={index} className="flex">
+                                <Typography className="min-w-[155px]">{dateTime}</Typography>
+                                <Typography className="ml-4 font-normal">{description}</Typography>
                             </div>
                         );
                     })}
@@ -222,15 +181,22 @@ const ShipperView = (props) => {
                     .trackingorder-history :global(a:hover) {
                         text-decoration: underline;
                     }
-                    .list-item :global(.track-link) {
+                    .tracking--list-item {
                         display: flex;
-                        align-items: center;
+                        min-width: 155px;
                     }
-                    .list-item :global(.track-link > *) {
+                    .tracking--list-item :global(span:first-child) {
+                        min-width: 155px;
+                    }
+                    .tracking--list-item :global(.track-link > *) {
                         background-color: #eee;
                         padding: 5px;
                         text-decoration: none !important;
                         border-radius: 5px;
+                    }
+                    .tracking--list-item :global(.tracking--list-item__desc) {
+                        margin-left: 16px;
+                        font-weight: 400;
                     }
                 `}
             </style>

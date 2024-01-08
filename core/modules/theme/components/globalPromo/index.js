@@ -10,7 +10,6 @@ const GlobalPromoMessage = (props) => {
     const {
         // prettier-ignore
         storeConfig,
-        isMobile = false,
         ...other
     } = props;
     const { key_cookies } = features.globalPromo;
@@ -37,7 +36,7 @@ const GlobalPromoMessage = (props) => {
                         'h-[38px]',
                         'text-center',
                         'font-normal',
-                        'tablet:text-md',
+                        'tablet:text-base',
                         'mobile:max-tablet:text-sm',
                         'bg-primary-700',
                         'text-neutral-white',

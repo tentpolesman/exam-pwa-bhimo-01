@@ -246,12 +246,12 @@ const DetailOrder = (props) => {
                                         <br />
                                         {detail[0].detail[0].shipping_address.street || ''}
                                         <br />
-                                        {`${detail[0].detail[0].shipping_address.city.split(', ')[0] || ''}, ${
-                                            detail[0].detail[0].shipping_address.region || ''
-                                        } ${detail[0].detail[0].shipping_address.postcode || ''}`}
+                                        {`${detail[0]?.detail[0]?.shipping_address?.city?.split(', ')[0] || ''}, ${
+                                            detail[0]?.detail[0]?.shipping_address?.region || ''
+                                        } ${detail[0]?.detail[0]?.shipping_address?.postcode || ''}`}
                                         <br />
-                                        {detail[0].detail[0].shipping_address.country || ''}
-                                        {detail[0].detail[0].shipping_address.telephone || ''}
+                                        {detail[0]?.detail[0]?.shipping_address?.country || ''}
+                                        {detail[0]?.detail[0]?.shipping_address?.telephone || ''}
                                     </Typography>
                                 </div>
                             )}
@@ -319,12 +319,12 @@ const DetailOrder = (props) => {
                                     </Typography>
                                     {shippingMethods.length > 0 && shipping.track_number && shipping.trackorder_type && (
                                         <Button
-                                            variant="text"
+                                            variant="outlined"
                                             onClick={() => handleOpenModal(shipping.trackorder_type, dt)}
                                             align="left"
-                                            className={cx('p-0', '-ml-1')}
+                                            className={cx('p-0', '-ml-1', 'mt-4')}
                                         >
-                                            <Typography type="bold" decoration="underline" align="left">
+                                            <Typography>
                                                 {t('order:trackingOrder')}
                                                 {': '}
                                                 {shipping.track_number} {`(${shipping.trackorder_type})`}

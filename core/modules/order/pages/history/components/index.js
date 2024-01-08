@@ -8,34 +8,24 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable eqeqeq */
 /* eslint-disable max-len */
-
 import Link from 'next/link';
-
 import { useReactiveVar } from '@apollo/client';
-
 import { currencyVar } from '@root/core/services/graphql/cache';
-
 import cx from 'classnames';
-
 import Layout from '@layout_customer';
-
 import { formatPrice } from '@helper_currency';
 import formatDate from '@helper_date';
-
 import Badge from '@common_badge';
 import Button from '@common_button';
 import Select from '@common_forms/Select';
 import Pagination from '@common_pagination';
 import Typography from '@common_typography';
-
 import MobileTabletActionMenu from '@core_modules/order/pages/history/components/plugins/MobileTabletActionMenu';
-
 import ExclamationTriangleIcon from '@heroicons/react/24/outline/ExclamationTriangleIcon';
+import Alert from '@common_alert';
 
 const DefaultView = (props) => {
-    const {
-        data, t, storeConfig, reOrder, pageSize, handleChangePage, handleChangePageSize, error,
-    } = props;
+    const { data, t, storeConfig, reOrder, pageSize, handleChangePage, handleChangePageSize, error } = props;
 
     // cache currency
     const currencyCache = useReactiveVar(currencyVar);
@@ -85,7 +75,7 @@ const DefaultView = (props) => {
         <Layout t={t}>
             <div className={cx('pt-5')}>
                 <div className={cx('relative', 'overflow-x-auto', 'rounded-lg')}>
-                    <table className={cx('w-full', 'text-md', 'border-[1px]', 'border-neutral-100')}>
+                    <table className={cx('w-full', 'text-base', 'border-[1px]', 'border-neutral-100')}>
                         <thead>
                             <tr className={cx('text-neutral-500', 'font-semibold', 'leading-2lg', 'text-left')}>
                                 <th className={cx('px-4', 'py-3')}>{t('customer:order:order')} #</th>
@@ -98,46 +88,26 @@ const DefaultView = (props) => {
                         </thead>
                         <tbody>
                             {error ? (
-                                <Button
-                                    icon={<ExclamationTriangleIcon />}
-                                    iconProps={{
-                                        className: cx('!text-yellow-500'),
-                                    }}
-                                    iconPosition="left"
-                                    className={cx(
-                                        'w-full',
-                                        'bg-yellow-50',
-                                        'hover:bg-yellow-50',
-                                        'focus:bg-yellow-50',
-                                        'active:bg-yellow-50',
-                                        'hover:shadow-none',
-                                        'focus:shadow-none',
-                                        'active:shadow-none',
-                                        'cursor-auto',
-                                        'hover:cursor-auto',
-                                        'focus:cursor-auto',
-                                        'active:cursor-auto',
-                                    )}
-                                >
-                                    <Typography className={cx('!text-yellow-600')}>{t('customer:order:emptyMessage')}</Typography>
-                                </Button>
+                                <Alert severity="warning" withIcon>
+                                    {t('customer:order:emptyMessage')}
+                                </Alert>
                             ) : (
                                 <>
                                     {data && data.items && data.items.length > 0 ? (
                                         <>
                                             {data.items.map((val, index) => (
                                                 <tr className={cx('even:bg-white', 'odd:bg-neutral-50')} key={index}>
-                                                    <td className={cx('text-neutral-700', 'text-md', 'font-normal', 'leading-2lg', 'p-4')}>
+                                                    <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-4')}>
                                                         {val.order_number}
                                                     </td>
-                                                    <td className={cx('text-neutral-700', 'text-md', 'font-normal', 'leading-2lg', 'p-4')}>
+                                                    <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-4')}>
                                                         {formatDate(val.created_at, 'DD/MM/YYYY')}
                                                     </td>
-                                                    <td className={cx('text-neutral-700', 'text-md', 'font-normal', 'leading-2lg', 'p-4')}>
+                                                    <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-4')}>
                                                         {val.detail[0].shipping_address.firstname || val.detail[0].billing_address.firstname}{' '}
                                                         {val.detail[0].shipping_address.lastname || val.detail[0].billing_address.lastname}
                                                     </td>
-                                                    <td className={cx('text-neutral-700', 'text-md', 'font-normal', 'leading-2lg', 'p-4')}>
+                                                    <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-4')}>
                                                         {formatPrice(val.grand_total, storeConfig.base_currency_code || 'IDR', currencyCache)}
                                                     </td>
                                                     <td>{generateBadge(val.status, val.status_label)}</td>
@@ -146,7 +116,7 @@ const DefaultView = (props) => {
                                                             <Link
                                                                 href={`/sales/order/view/order_id/${val.order_number}`}
                                                                 className={cx(
-                                                                    'text-md',
+                                                                    'text-base',
                                                                     'px-4',
                                                                     'desktop:border-r-[1px]',
                                                                     'desktop:border-neutral-200',
@@ -156,7 +126,7 @@ const DefaultView = (props) => {
                                                                 View
                                                             </Link>
                                                             <button type="button" onClick={() => reOrder(val.order_number)}>
-                                                                <a className={cx('text-md', 'px-4', 'hover:text-primary-700')}>Reorder</a>
+                                                                <a className={cx('text-base', 'px-4', 'hover:text-primary-700')}>Reorder</a>
                                                             </button>
                                                         </div>
                                                         <div className={cx('desktop:hidden')}>
@@ -180,29 +150,9 @@ const DefaultView = (props) => {
                                     ) : (
                                         <tr>
                                             <td colSpan={6}>
-                                                <Button
-                                                    icon={<ExclamationTriangleIcon />}
-                                                    iconProps={{
-                                                        className: cx('!text-yellow-500'),
-                                                    }}
-                                                    iconPosition="left"
-                                                    className={cx(
-                                                        'w-full',
-                                                        'bg-yellow-50',
-                                                        'hover:bg-yellow-50',
-                                                        'focus:bg-yellow-50',
-                                                        'active:bg-yellow-50',
-                                                        'hover:shadow-none',
-                                                        'focus:shadow-none',
-                                                        'active:shadow-none',
-                                                        'cursor-auto',
-                                                        'hover:cursor-auto',
-                                                        'focus:cursor-auto',
-                                                        'active:cursor-auto',
-                                                    )}
-                                                >
-                                                    <Typography className={cx('!text-yellow-600')}>{t('customer:order:emptyMessage')}</Typography>
-                                                </Button>
+                                                <Alert severity="warning" withIcon>
+                                                    {t('customer:order:emptyMessage')}
+                                                </Alert>
                                             </td>
                                         </tr>
                                     )}
@@ -212,39 +162,41 @@ const DefaultView = (props) => {
                     </table>
                 </div>
                 {data && data.items && data.items.length > 0 ? (
-                    <div className={cx('table-data', 'pt-6', 'flex', 'mobile:flex-col', 'tablet:flex-row', 'justify-between')}>
-                        <div className={cx('pt-2')}>
+                    <div className={cx('table-data', 'pt-6', 'flex', 'tablet:items-center', 'mobile:flex-col', 'tablet:flex-row', 'justify-between')}>
+                        <div className="flex justify-between items-center flex-1">
                             <Typography className={cx('font-normal', 'leading-2lg')}>
                                 {data && data.total_count && `${data.total_count} Item(s)`}
                             </Typography>
+                            <div className="flex items-center">
+                                <Typography className={cx('font-normal', 'leading-2lg', 'p-3')}>Show</Typography>
+                                <Select
+                                    name="show"
+                                    value={pageSize}
+                                    onChange={handleChangePageSize}
+                                    options={[
+                                        {
+                                            label: 10,
+                                            value: 10,
+                                        },
+                                        {
+                                            label: 20,
+                                            value: 20,
+                                        },
+                                        {
+                                            label: 50,
+                                            value: 50,
+                                        },
+                                        {
+                                            label: 'All',
+                                            value: data && data.total_count,
+                                        },
+                                    ]}
+                                    textFiledProps={{ className: cx('w-[80px]') }}
+                                    inputProps={{ className: cx('!py-0') }}
+                                />
+                            </div>
                         </div>
-                        <div className={cx('flex', 'flex-row', 'mobile:max-tablet:pt-4', 'mobile:max-tablet:justify-center')}>
-                            <Typography className={cx('font-normal', 'leading-2lg', 'p-3')}>Show</Typography>
-                            <Select
-                                name="show"
-                                value={pageSize}
-                                onChange={handleChangePageSize}
-                                options={[
-                                    {
-                                        label: 10,
-                                        value: 10,
-                                    },
-                                    {
-                                        label: 20,
-                                        value: 20,
-                                    },
-                                    {
-                                        label: 50,
-                                        value: 50,
-                                    },
-                                    {
-                                        label: 'All',
-                                        value: data && data.total_count,
-                                    },
-                                ]}
-                                textFiledProps={{ className: cx('w-[80px]') }}
-                                inputProps={{ className: cx('!py-0') }}
-                            />
+                        <div className={cx('flex', 'flex-row', 'items-center', 'mobile:max-tablet:pt-4', 'mobile:max-tablet:justify-center')}>
                             <Pagination
                                 handleChangePage={handleChangePage}
                                 page={data && data.current_page}

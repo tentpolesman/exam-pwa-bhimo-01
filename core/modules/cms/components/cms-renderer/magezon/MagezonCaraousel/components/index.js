@@ -28,7 +28,7 @@ const Caraousel = (props) => {
         speed = 500,
         adaptiveHeight = false,
         arrows = true,
-        lazyLoad = false,
+        lazyLoad = true,
         initialSlide = 0,
         centerPadding = '50px',
     } = props;

@@ -31,6 +31,7 @@ const ShoppingBagIcon = dynamic(() => import('@plugin_shoppingbag'), { ssr: true
 const NotificationBell = dynamic(() => import('@plugin_notificationbell'), { ssr: true });
 const SwitcherCurrency = dynamic(() => import('@common_currency'), { ssr: false });
 const SwitcherLanguage = dynamic(() => import('@common_language'), { ssr: false });
+const InstallDesktop = dynamic(() => import('@core_modules/theme/components/customPWAInstall/desktop'), { ssr: true });
 
 const TabletHeader = (props) => {
     const { t, storeConfig, isLogin, setValue, handleSearch, handleLogout, deviceWidth, ...other } = props;
@@ -38,19 +39,6 @@ const TabletHeader = (props) => {
     const adminId = Cookies.get('admin_id');
 
     const { data } = getCategories();
-
-    const handleClickInstallApp = () => {
-        const timestamp = Date.now();
-        const identifier = `${Math.floor(Math.random() * 100) * Math.floor(Math.random() * 100)}_${timestamp}`;
-        const dataLayer = {
-            event: 'countPopupInstallation',
-            eventCategory: 'Count Popup Installation',
-            eventAction: 'Installed',
-            eventLabel: 'installPWA',
-            eventValue: identifier,
-        };
-        TagManager.dataLayer({ dataLayer });
-    };
 
     const [openBurgerMenu, setOpenBurgerMenu] = React.useState(false);
 
@@ -84,7 +72,7 @@ const TabletHeader = (props) => {
                 },
             )}
         >
-            <div id="top-header-tablet" className={cx('top-header__tablet', 'tablet:border-b-[1.5px]', 'tablet:border-b-neutral-300', 'py-[1px]')}>
+            <div id="top-header-tablet" className={cx('top-header__tablet', 'tablet:border-b-[1.5px]', 'tablet:border-b-neutral-300', 'py-[1px]', 'min-h-[40px]')}>
                 <div
                     id="top-header__content"
                     className={cx(
@@ -98,29 +86,7 @@ const TabletHeader = (props) => {
                         'm-[0_auto]',
                     )}
                 >
-                    <div className={cx('top-header-tablet__content__popup-installation')} id="popup-tablet__install">
-                        <Button
-                            className={cx(
-                                'm-2',
-                                '!px-0',
-                                '!py-0',
-                                '!ml-0',
-                                'hover:shadow-none',
-                                'focus:shadow-none',
-                                'active:shadow-none',
-                                'active:shadow-none',
-                            )}
-                            onClick={handleClickInstallApp}
-                            icon={<DevicePhoneMobileIcon />}
-                            iconProps={{ className: cx('w-[20px]', 'text-neutral-600', 'inline-block') }}
-                            iconPosition="left"
-                            variant="tertiary"
-                            classNameText={cx('!text-neutral-700')}
-                            id="btn-install__tablet"
-                        >
-                            <Typography>Download Apps</Typography>
-                        </Button>
-                    </div>
+                    <InstallDesktop id="wrapper-tablet__install"/>
                     <div
                         className={cx(
                             'top-header-tablet__content--currency-language-changer-menu',

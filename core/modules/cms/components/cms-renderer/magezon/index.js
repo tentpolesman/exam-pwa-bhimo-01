@@ -2,10 +2,7 @@
 /* eslint-disable react/no-unknown-property */
 import generateCustomCssAnimation from '@core_modules/cms/helpers/magezonCustomCssAnimationGenerator';
 import magezonDesignOptionsCss from '@core_modules/cms/helpers/magezonDesignOptionsCss';
-import '@fortawesome/fontawesome-free/css/all.min.css';
-import 'animate.css';
 import dynamic from 'next/dynamic';
-import 'open-iconic/font/css/open-iconic-bootstrap.css';
 import React from 'react';
 import cx from 'classnames';
 
@@ -23,7 +20,7 @@ const MagezonIcon = dynamic(() => import('@core_modules/cms/components/cms-rende
 const MagezonSeparator = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonSeparator'), { ssr: false });
 const MagezonEmpty = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonEmpty'), { ssr: false });
 const MagezonToggle = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonToggle'), { ssr: false });
-const MagezonNewsletter = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonNewsletter'), { ssr: false });
+const MagezonNewsletter = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonNewsletter'), { ssr: true });
 const MagezonContactForm = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonContactForm'), { ssr: false });
 const MagezonSearchForm = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonSearchForm'), { ssr: false });
 const MagezonStaticBlock = dynamic(() => import('@core_modules/cms/components/cms-renderer/magezon/MagezonStaticBlock'));

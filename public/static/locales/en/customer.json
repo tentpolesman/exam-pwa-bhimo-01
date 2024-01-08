@@ -90,9 +90,16 @@
   },
   "giftCard": {
     "notFound": "You don't have gift card item",
+    "searchNotFound": "Gift card code not found",
     "inputSearch": "Enter gift card code",
     "buttonSearch": "Check status & balance",
-    "required": "Code is required"
+    "required": "Code is required",
+    "labelResponse": {
+      "balance": "Remaining Balance",
+      "initial_balance":"Initial Balance",
+      "code": "Code",
+      "expiration_date": "Expiration Date"
+    }
   },
   "haveAccount": "If you have an account",
   "notHaveAccount": "Don't have an account?",
