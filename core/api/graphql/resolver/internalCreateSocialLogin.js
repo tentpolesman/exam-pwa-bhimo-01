@@ -30,7 +30,7 @@ const internalCreateSocialLogin = async (parent, args, context) => {
         lastname: args.input.lastname,
     };
     const res = await requestGraph(query, variables, context);
-    if (res.generateCustomerTokenSocialLogin) {
+    if (res?.generateCustomerTokenSocialLogin) {
         if (context?.res) {
             const serialized = serialize(customerTokenKey, res.generateCustomerTokenSocialLogin.token, {
                 httpOnly: true,
@@ -42,12 +42,18 @@ const internalCreateSocialLogin = async (parent, args, context) => {
             context.res.setHeader('Set-Cookie', serialized);
         }
         return {
+            is_login: true,
             originalToken: '',
             token: '',
             message: 'success',
         };
     }
-    return res;
+    return {
+        is_login: false,
+        originalToken: '',
+        token: '',
+        message: 'failed',
+    };
 };
 
 module.exports = internalCreateSocialLogin;

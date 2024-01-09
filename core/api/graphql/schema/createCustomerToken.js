@@ -1,5 +1,6 @@
 const typeDefs = `
 type Token {
+    is_login: Boolean
     originalToken: String
     token: String
     message: String

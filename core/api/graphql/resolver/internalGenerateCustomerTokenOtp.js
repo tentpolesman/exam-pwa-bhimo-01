@@ -16,7 +16,7 @@ const query = `
 
 const internalGenerateCustomerTokenOtp = async (parent, { username, otp }, context) => {
     const res = await requestGraph(query, { username, otp }, context);
-    if (res.generateCustomerTokenCustom) {
+    if (res?.generateCustomerTokenCustom) {
         if (context?.res) {
             const serialized = serialize(customerTokenKey, res.generateCustomerTokenCustom.token, {
                 httpOnly: true,
