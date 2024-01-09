@@ -10,7 +10,7 @@ import cx from 'classnames';
 import parser from 'html-react-parser';
 import propTypes from 'prop-types';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'next-i18next';
 
 const Radio = (props) => {
     const {
