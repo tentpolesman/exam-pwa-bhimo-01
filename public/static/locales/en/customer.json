@@ -58,7 +58,13 @@
     "useDefault" : "Use as default",
     "warningDelete": "Are you sure to remove this address?",
     "confirmPinPoint": "I confirm that pin point matches with the address. Any shipping error due to invalid pin point is not merchant responsibility.",
-    "confirmPinPointTitle": "Address Pinpoint Agreement"
+    "confirmPinPointTitle": "Address Pinpoint Agreement",
+    "successAdd":"Successfully added address",
+    "successUpdate": "Successfully updated address",
+    "successRemove": "Successfully removed address",
+    "failAdd": "Failed to add address",
+    "failUpdate": "Failed to update address",
+    "failRemove": "Failed to remove address"
   },
   "menu": {
     "contactInformation": "Contact information",
