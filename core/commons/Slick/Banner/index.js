@@ -86,7 +86,7 @@ const Banner = (props) => {
                         noLink={noLink}
                         contentWidth={contentWidth}
                         key={key}
-                        lazy={key !== 0}
+                        preload={key === 0}
                         {...item}
                     />
                 ))}

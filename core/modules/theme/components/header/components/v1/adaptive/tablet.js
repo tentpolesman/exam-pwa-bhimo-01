@@ -73,7 +73,10 @@ const TabletHeader = (props) => {
                 },
             )}
         >
-            <div id="top-header-tablet" className={cx('top-header__tablet', 'tablet:border-b-[1.5px]', 'tablet:border-b-neutral-300', 'py-[1px]', 'min-h-[40px]')}>
+            <div
+                id="top-header-tablet"
+                className={cx('top-header__tablet', 'tablet:border-b-[1.5px]', 'tablet:border-b-neutral-300', 'py-[1px]', 'min-h-[40px]')}
+            >
                 <div
                     id="top-header__content"
                     className={cx(
@@ -87,7 +90,7 @@ const TabletHeader = (props) => {
                         'm-[0_auto]',
                     )}
                 >
-                    <InstallDesktop id="wrapper-tablet__install"/>
+                    <InstallDesktop id="wrapper-tablet__install" />
                     <div
                         className={cx(
                             'top-header-tablet__content--currency-language-changer-menu',
@@ -174,7 +177,6 @@ const TabletHeader = (props) => {
                                     width={storeConfig?.logo_width || 74}
                                     height={storeConfig?.logo_height || 34}
                                     storeConfig={storeConfig}
-                                    lazy={false}
                                 />
                             </a>
                         </Link>

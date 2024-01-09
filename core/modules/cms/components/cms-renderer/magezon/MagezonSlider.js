@@ -117,7 +117,7 @@ const MagezonSliderContent = (props) => {
         button2_hover_color,
         link_type,
         storeConfig,
-        lazy,
+        preload,
         width,
         height,
         width_mobile,
@@ -262,8 +262,7 @@ const MagezonSliderContent = (props) => {
                             heightMobile={height_mobile}
                             useContainer={false}
                             storeConfig={storeConfig}
-                            lazy={lazy}
-                            preload={!lazy}
+                            preload={preload}
                             className="flex w-full h-full"
                             style={{
                                 width: '100%',
@@ -414,7 +413,7 @@ const MagezonSlider = (props) => {
         slidesToScroll: 1,
         autoplay: owl_autoplay,
         autoplaySpeed: owl_autoplay_timeout || 2000,
-        adaptiveHeight: true,
+        adaptiveHeight: false,
         pauseOnHover: true,
         lazyLoad: owl_lazyLoad,
         rtl: owl_rtl,
@@ -545,7 +544,7 @@ const MagezonSlider = (props) => {
                                         width_mobile={slideWidthMobile}
                                         storeConfig={storeConfig}
                                         {...item}
-                                        lazy={i !== 0}
+                                        preload={i === 0}
                                     />
                                 ) : (
                                     <MagezonLink link={item?.slide_link}>
@@ -560,7 +559,7 @@ const MagezonSlider = (props) => {
                                             width_mobile={slideWidthMobile}
                                             storeConfig={storeConfig}
                                             {...item}
-                                            lazy={i !== 0}
+                                            preload={i === 0}
                                         />
                                     </MagezonLink>
                                 )}
@@ -696,19 +695,19 @@ const MagezonSlider = (props) => {
                     }
                     .magezon-slider--dot-nav-item {
                         ${owl_active_background_color
-            ? `
+                            ? `
                             background-color: ${owl_background_color} !important;
                             border: unset !important;
                         `
-            : ''};
+                            : ''};
                     }
                     .magezon-slider--dot-nav-item-active {
                         ${owl_active_background_color
-            ? `
+                            ? `
                             background-color: ${owl_active_background_color} !important;
                             border: unset !important;
                         `
-            : ''};
+                            : ''};
                     }
                 `}
             </style>

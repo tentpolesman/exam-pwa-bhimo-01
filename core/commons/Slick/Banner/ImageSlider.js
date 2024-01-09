@@ -26,7 +26,7 @@ const ImageSlide = ({
     alt = '',
     urlEmbed,
     noLink = false,
-    lazy,
+    preload,
 }) => {
     const href = (link && link.includes('http://')) || link.includes('https://') ? link : link[0] === '/' ? link : `/${link}`;
 
@@ -58,7 +58,7 @@ const ImageSlide = ({
                         alt={alt}
                         className="flex w-full h-full sm:h-auto"
                         storeConfig={storeConfig}
-                        lazy={lazy}
+                        preload={preload}
                         slickBanner
                     />
                 </a>
@@ -74,7 +74,7 @@ const ImageSlide = ({
                         alt={alt}
                         className="flex w-full h-full sm:h-auto"
                         storeConfig={storeConfig}
-                        lazy={lazy}
+                        preload={preload}
                         slickBanner
                     />
                 </Link>
