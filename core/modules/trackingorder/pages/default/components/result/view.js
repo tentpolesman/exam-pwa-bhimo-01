@@ -46,7 +46,7 @@ const resultItem = ({ t, orders, storeConfig, openModal }) => {
                         items.push({
                             primary: t('trackingorder:trackingOrder'),
                             secondary: (
-                                <Button variant="text" onClick={() => openModal(shipping.trackorder_type, dt)} align="left">
+                                <Button variant="outlined" onClick={() => openModal(shipping.trackorder_type, dt)} align="left">
                                     <Typography type="bold" decoration="underline" align="left">
                                         {shipping.track_number} {`(${shipping.trackorder_type})`}
                                     </Typography>
