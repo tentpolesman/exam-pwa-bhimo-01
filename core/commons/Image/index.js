@@ -30,7 +30,6 @@ const CustomImage = ({
     className = '',
     alt = 'Image',
     quality = 80,
-    lazy = true,
     storeConfig = {},
     slickBanner = false,
     preload = false,
@@ -94,7 +93,6 @@ const CustomImage = ({
         <Container enable={useContainer} className={classContainer} style={styleContainer}>
             <NextImage
                 src={imageUrl}
-                loading={lazy && !preload ? 'lazy' : 'eager'}
                 style={styleImage}
                 className={cx('img', className)}
                 alt={alt}

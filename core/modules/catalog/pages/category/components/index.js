@@ -118,14 +118,7 @@ const CategoryPage = ({ data, storeConfig, t, ...other }) => {
                 <div className="flex flex-col w-full mb-4 desktop:mb-8 gap-4">
                     <div className="relative w-full h-full">
                         {dataCategory.banner.length > 0 && dataCategory.url !== '' ? (
-                            <BannerView
-                                src={dataCategory.url}
-                                lazy={false}
-                                width={BREAKPOINTS.xl}
-                                storeConfig={storeConfig}
-                                preload={true}
-                                useContainer={false}
-                            />
+                            <BannerView src={dataCategory.url} width={BREAKPOINTS.xl} storeConfig={storeConfig} preload={true} useContainer={false} />
                         ) : null}
                     </div>
                     {dataCategory.banner.length > 0 && dataCategory.banner[0] && dataCategory.banner[0]?.description && (

@@ -129,7 +129,7 @@ const HeaderMobile = (props) => {
                                     width={storeConfig?.logo_width || 74}
                                     height={storeConfig?.logo_height || 34}
                                     storeConfig={storeConfig}
-                                    lazy={false}
+                                    preload={true}
                                 />
                             </a>
                         </Link>
