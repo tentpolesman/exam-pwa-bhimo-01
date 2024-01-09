@@ -6,6 +6,7 @@ mutation getToken(
     $password: String!,
 ) {
   internalGenerateCustomerToken(username: $username, password: $password){
+      is_login
       token
     }
   }
@@ -21,8 +22,9 @@ export const socialLogin = gql`
         internalCreateSocialLogin(input: {
             email: $email, socialtoken: $socialtoken, firstname: $firstname, lastname: $lastname
         })
-     {
-    token
+    {
+        is_login
+        token
     }
    }
 `;
@@ -33,6 +35,7 @@ mutation getToken(
     $otp: String!,
 ) {
   internalGenerateCustomerTokenOtp(username: $username, otp: $otp){
+      is_login
       originalToken
       token
       message
@@ -43,6 +46,7 @@ mutation getToken(
 export const getCustomerTokenPhoneEmail = gql`
     mutation getToken($username: String!, $password: String!) {
         internalGenerateCustomerTokenCustom(username: $username, password: $password) {
+            is_login
             originalToken
             token
             message
