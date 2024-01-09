@@ -142,7 +142,7 @@ const Product = (props) => {
                         isGrid={false}
                         {...product}
                         {...productProps}
-                        preload={index === 0}
+                        preload={false} // change to {index === 0} to preload first product image of the list
                     />
                 ))}
             </div>
@@ -159,7 +159,7 @@ const Product = (props) => {
                             key={index}
                             {...product}
                             {...productProps}
-                            preload={index === 0}
+                            preload={false} // change to {index === 0} to preload first product image of the grid
                         />
                     </div>
                 ))}
@@ -225,7 +225,7 @@ const Product = (props) => {
                         key={index}
                         {...product}
                         {...productProps}
-                        preload={index === 0}
+                        preload={false} // change to {index === 0} to preload first product image of the list
                     />
                 ))}
             </ContainerScroll>
