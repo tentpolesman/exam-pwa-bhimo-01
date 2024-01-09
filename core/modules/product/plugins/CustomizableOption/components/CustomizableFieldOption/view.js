@@ -8,7 +8,7 @@ const ViewCustomizableFieldOption = ({
     onChange = () => {}, error = '', required = false,
 }) => {
     const customClass = classNames('flex flex-col', 'w-[100%]');
-    console.log(data);
+
     return (
         <div className={customClass}>
             {
