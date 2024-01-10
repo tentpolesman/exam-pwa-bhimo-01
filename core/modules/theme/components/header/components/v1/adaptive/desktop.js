@@ -160,7 +160,7 @@ const DesktopHeader = (props) => {
                                 width={storeConfig?.logo_width || 120}
                                 height={storeConfig?.logo_height || 52}
                                 storeConfig={storeConfig}
-                                lazy={false}
+                                preload
                             />
                         </Link>
                     </div>
