@@ -41,8 +41,6 @@ const Content = (props) => {
         removeAddress,
     } = props;
 
-    console.log('masuk address', loading, address);
-
     return (
         <Layout {...props}>
             <div className={cx('flex', 'flex-col', 'w-full', 'h-full', 'text-base', 'pt-5', 'px-4')}>
