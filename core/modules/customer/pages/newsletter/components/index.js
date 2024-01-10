@@ -28,7 +28,7 @@ const SettingPage = (props) => {
                         onChange={handleChange}
                         variant="single"
                     >
-                        <label for="customer-subscribe-checkbox">
+                        <label htmlFor="customer-subscribe-checkbox">
                             <Typography variant="bd-2b">{t('customer:setting:newsletter_subscription')}</Typography>
                         </label>
                     </Checkbox>

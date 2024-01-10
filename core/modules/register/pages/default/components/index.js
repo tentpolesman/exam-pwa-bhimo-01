@@ -250,7 +250,7 @@ const RegisterView = ({
                                 onChange={handleWa}
                                 classNames={{ checkboxContainerClasses: cx('flex', 'items-center') }}
                             >
-                                <label for="register-waregitered-checkbox">
+                                <label htmlFor="register-waregitered-checkbox">
                                     <Typography variant="bd-2b">{t('register:isWhatsapp')}</Typography>
                                 </label>
                             </Checkbox>
@@ -289,7 +289,7 @@ const RegisterView = ({
                                     onChange={formik.handleChange}
                                     classNames={{ checkboxContainerClasses: cx('flex', 'items-center') }}
                                 >
-                                    <label for="register-newsletter-checkbox">
+                                    <label htmlFor="register-newsletter-checkbox">
                                         <Typography variant="bd-2b">{t('register:subscribe')}</Typography>
                                     </label>
                                 </Checkbox>
