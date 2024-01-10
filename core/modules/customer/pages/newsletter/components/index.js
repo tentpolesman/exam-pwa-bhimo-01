@@ -4,31 +4,38 @@ import Skeleton from '@core_modules/customer/pages/newsletter/components/skeleto
 import Typography from '@common_typography';
 import Layout from '@layout_customer';
 import Checkbox from '@common_forms/CheckBox';
-
-const subData = [{ value: 'subscribed', label: 'Subscription' }];
+import Show from '@common_show';
 
 const SettingPage = (props) => {
     const {
-        t, customer, checkData, handleChange, handleSave, loading,
+        t, isSubscribed, isSubscribedBefore, handleChange, handleSave, loading,
     } = props;
+
+    const isDisabled = loading || isSubscribedBefore === isSubscribed;
 
     return (
         <Layout {...props} title={t('customer:setting:newsletter')}>
             <div className={cx('pt-5')}>
-                {typeof customer.is_subscribed !== 'undefined' ? (
+                <Show when={loading}>
+                    <Skeleton />
+                </Show>
+                <Show when={!loading}>
                     <Checkbox
+                        id="customer-subscribe-checkbox"
                         label={t('customer:setting:newsletter_subscription')}
                         flex="column"
-                        data={subData}
-                        value={checkData}
+                        checked={isSubscribed}
                         onChange={handleChange}
-                    />
-                ) : (
-                    <Skeleton />
-                )}
+                        variant="single"
+                    >
+                        <label for="customer-subscribe-checkbox">
+                            <Typography variant="bd-2b">{t('customer:setting:newsletter_subscription')}</Typography>
+                        </label>
+                    </Checkbox>
+                </Show>
                 <div className={cx('pt-5')}>
-                    <Button onClick={handleSave} disabled={loading}>
-                        <Typography className={cx('!text-neutral-white')}>{t('common:button:save')}</Typography>
+                    <Button onClick={handleSave} disabled={isDisabled}>
+                        <Typography className={cx(isDisabled ? '!text-neutral-black' : '!text-neutral-white')}>{t('common:button:save')}</Typography>
                     </Button>
                 </div>
             </div>

@@ -2,27 +2,21 @@
 import { useRef, useEffect, useState } from 'react';
 import Layout from '@layout';
 import { useMutation } from '@apollo/client';
-import { getCustomerSettings } from '../../services/graphql';
-
-import * as Schema from '../../services/graphql/schema';
+import { getCustomerSettings } from '@core_modules/customer/services/graphql';
+import * as Schema from '@core_modules/customer/services/graphql/schema';
 
 const NewsletterPage = (props) => {
-    const {
-        t, Content, pageConfig, app_cookies,
-    } = props;
-    const [actUpdateCustomer, { data: dataUpdate, loadingUpdate }] = useMutation(Schema.updateCustomer, {
+    const { t, Content, pageConfig } = props;
+    const [actUpdateCustomer, { data: dataUpdate }] = useMutation(Schema.updateCustomer, {
         context: {
             request: 'internal',
         },
     });
-    const { data, loading } = getCustomerSettings();
-
-    const [customer, setCustomer] = useState({});
-    const [settings, setSettings] = useState({
-        is_subscribed: false,
-    });
-
     const mount = useRef();
+    const { data, loading } = getCustomerSettings();
+    const [isSubscribedBefore, setIsSubscribedBefore] = useState(false);
+    const [isSubscribed, setIsSubscribed] = useState(false);
+
     const config = {
         title: t('customer:setting:newsletter'),
         header: 'relative', // available values: "absolute", "relative", false (default)
@@ -30,52 +24,37 @@ const NewsletterPage = (props) => {
         bottomNav: false,
     };
 
-    const [checkData, setCheckData] = React.useState(customer.is_subscribed ? ['subscribed'] : []);
-    const handleChange = (val) => {
-        setCheckData(val);
-        const tmpSettings = {};
-        tmpSettings.is_subscribed = val.length === 1;
-        setSettings({ ...tmpSettings });
+    const handleChange = () => {
+        setIsSubscribed(!isSubscribed);
     };
 
     /**
      * [useEffect] lifecycle react
-     * @check []
+     * init data
      */
+
     useEffect(() => {
         mount.current = true;
         if (mount.current) {
-            if (typeof window !== 'undefined') {
-                if (data && data.customer) {
-                    const customerData = data.customer;
-                    const { is_subscribed } = customerData;
-                    const settingConfig = { is_subscribed };
-                    setCustomer(customerData);
-                    setSettings({
-                        ...settingConfig,
-                    });
-                }
+            const customerData = data?.customer;
+            if (customerData) {
+                setIsSubscribed(!!customerData.is_subscribed);
+                setIsSubscribedBefore(!!customerData.is_subscribed);
             }
         }
         return () => (mount.current = false);
     }, [data]);
 
-    /**
-     * [useEffect] check
-     * @check [loading]
-     */
+    // update data
     useEffect(() => {
-        if (mount.current && !loadingUpdate && dataUpdate !== undefined) {
-            setTimeout(() => {
-                window.backdropLoader(false);
-                window.toastMessage({
-                    open: true,
-                    text: t('customer:setting:newsletter_success'),
-                    variant: 'success',
-                });
-            }, 500);
+        if (mount.current) {
+            const customerData = dataUpdate?.updateCustomer?.customer;
+            if (customerData) {
+                setIsSubscribed(!!customerData.is_subscribed);
+                setIsSubscribedBefore(!!customerData.is_subscribed);
+            }
         }
-    }, [loadingUpdate]);
+    }, [dataUpdate]);
 
     /**
      * [METHOD] handle save button
@@ -85,20 +64,30 @@ const NewsletterPage = (props) => {
         try {
             await actUpdateCustomer({
                 variables: {
-                    isSubscribed: settings.is_subscribed,
+                    isSubscribed,
                 },
                 context: {
                     request: 'internal',
                 },
             });
             window.backdropLoader(false);
-        } catch (e) {
-            await window.toastMessage({
+            window.toastMessage({
                 open: true,
-                text: e.message.split(':')[1] || t('customer:setting:newsletter_error'),
+                text: t('customer:setting:newsletter_success'),
+                variant: 'success',
+            });
+        } catch (e) {
+            window.backdropLoader(false);
+            setIsSubscribed(isSubscribedBefore);
+            let errorMessage = t('customer:setting:newsletter_error');
+            if (e.message) {
+                errorMessage = `${errorMessage} : ${e.message}`;
+            }
+            window.toastMessage({
+                open: true,
+                text: errorMessage,
                 variant: 'error',
             });
-            window.backdropLoader(false);
         }
     };
 
@@ -106,13 +95,11 @@ const NewsletterPage = (props) => {
         <Layout {...props} pageConfig={pageConfig || config}>
             <Content
                 t={t}
-                customer={customer}
-                setSettings={setSettings}
                 handleSave={handleSave}
-                app_cookies={app_cookies}
-                checkData={checkData}
+                isSubscribed={isSubscribed}
+                isSubscribedBefore={isSubscribedBefore}
                 handleChange={handleChange}
-                loading={loading || loadingUpdate}
+                loading={loading}
             />
         </Layout>
     );
