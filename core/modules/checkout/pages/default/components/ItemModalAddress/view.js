@@ -38,10 +38,11 @@ const ItemAddress = (props) => {
                 setOpen={() => setOpen(false)}
                 pageTitle={t('customer:address:editTitle')}
             />
-            <div className={cx(
-                'flex flex-col checkoutListItemAddress border-b border-neutral-200',
-                'desktop:px-[32px] tablet:px-[32px] mobile:px-[16px]',
-            )}
+            <div
+                className={cx(
+                    'flex flex-col checkoutListItemAddress border-b border-neutral-200',
+                    'desktop:px-[32px] tablet:px-[32px] mobile:px-[16px]',
+                )}
             >
                 <Radio
                     variant="single"
@@ -60,7 +61,7 @@ const ItemAddress = (props) => {
                     className="flex flex-row items-center gap-3"
                 >
                     <div className="w-full pb-2 flex flex-col">
-                        <label for={id} className="flex flex-col cursor-pointer">
+                        <label htmlFor={id} className="flex flex-col cursor-pointer">
                             <Typography className="" variant="p">
                                 {`${firstname} ${lastname}`}
                             </Typography>
@@ -86,7 +87,6 @@ const ItemAddress = (props) => {
                         </Button>
                     </div>
                 </Radio>
-
             </div>
         </>
     );

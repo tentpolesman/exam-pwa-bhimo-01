@@ -188,8 +188,8 @@ const AddressFormDialog = (props) => {
             delete data.district;
             delete data.village;
             if (onSubmitAddress) {
-                onSubmitAddress(data, type);
-                if (!addressId) {
+                const submitRes = await onSubmitAddress(data, type);
+                if (type === 'add' && submitRes) {
                     setTimeout(() => {
                         resetForm();
                     }, 1000);
@@ -329,7 +329,7 @@ const AddressFormDialog = (props) => {
                 formik.setFieldValue('city', getCityByLabel(city, state.dropdown.city));
             }
         }
-    }, [responCities]);
+    }, [responCities, open]);
 
     // get kecamatan if city change
     React.useMemo(() => {
@@ -452,6 +452,7 @@ const AddressFormDialog = (props) => {
             formik.setFieldValue('postcode', formik.values.village.postcode);
         }
     }, [formik.values.village]);
+
     return (
         <Content
             t={t}
