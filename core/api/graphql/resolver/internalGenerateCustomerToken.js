@@ -16,7 +16,7 @@ const query = `
 
 const internalGenerateCustomerToken = async (parent, { username, password }, context) => {
     const res = await requestGraph(query, { username, password }, context);
-    if (res.generateCustomerTokenCustom) {
+    if (res?.generateCustomerTokenCustom) {
         if (context?.res) {
             const serialized = serialize(customerTokenKey, res.generateCustomerTokenCustom.token, {
                 httpOnly: true,
@@ -28,12 +28,18 @@ const internalGenerateCustomerToken = async (parent, { username, password }, con
             context.res.setHeader('Set-Cookie', serialized);
         }
         return {
+            is_login: true,
             originalToken: '',
             token: '',
             message: 'success',
         };
     }
-    return res;
+    return {
+        is_login: false,
+        originalToken: '',
+        token: '',
+        message: 'failed',
+    };
 };
 
 module.exports = internalGenerateCustomerToken;

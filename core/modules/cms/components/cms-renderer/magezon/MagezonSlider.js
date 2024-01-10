@@ -19,7 +19,9 @@ import Slider from 'react-slick';
 import useMediaQuery from '@hook/useMediaQuery';
 
 const VideoContent = (props) => {
-    const { background_type, youtube_id, vimeo_id, local_link, autoplay, loop, control, mute } = props;
+    const {
+        background_type, youtube_id, vimeo_id, local_link, autoplay, loop, control, mute,
+    } = props;
     let videoUrl;
 
     const additionalVideoProps = `${autoplay ? '&autoplay=1' : ''}${loop ? '&loop=1' : ''}${control ? '&controls=1' : ''}${mute ? '&mute=1' : ''}`;
@@ -88,6 +90,7 @@ const MagezonSliderContent = (props) => {
         image,
         background_type,
         slider_height,
+        slider_height_mobile,
         button1,
         button1_font_size,
         button2,
@@ -114,9 +117,11 @@ const MagezonSliderContent = (props) => {
         button2_hover_color,
         link_type,
         storeConfig,
-        lazy,
+        preload,
         width,
         height,
+        width_mobile,
+        height_mobile,
         autoplay,
         loop,
         control,
@@ -124,7 +129,7 @@ const MagezonSliderContent = (props) => {
     } = props;
     const mediaUrl = `${getStoreHost()}media`;
     const { isMobile } = useMediaQuery();
-    const sliderHeight = isMobile ? '310px' : `${slider_height}px`;
+    const sliderHeight = isMobile ? `${slider_height_mobile}` : `${slider_height}px`;
 
     const otherButton1Props = {
         button_border_color: button1_border_color,
@@ -249,13 +254,15 @@ const MagezonSliderContent = (props) => {
                     <div className="magezon-slide-image">
                         <Image
                             src={`${mediaUrl}/${image}`}
+                            srcMobile={`${mediaUrl}/${image}`}
                             alt={heading}
                             width={width}
                             height={height}
+                            widthMobile={width_mobile}
+                            heightMobile={height_mobile}
                             useContainer={false}
                             storeConfig={storeConfig}
-                            lazy={lazy}
-                            preload={!lazy}
+                            preload={preload}
                             className="flex w-full h-full"
                             style={{
                                 width: '100%',
@@ -385,12 +392,15 @@ const MagezonSlider = (props) => {
 
     const [slideIdx, setSlideIndex] = useState(0);
     const { unhoverStyle, hoverStyle } = useHoverStyle(image_hover_effect);
-    const { isMobile } = useMediaQuery();
 
-    let slideHeight = !isMobile ? storeConfig.pwa?.magezon_slider_desktop_height : 310;
-    let slideWidth = !isMobile ? storeConfig.pwa?.magezon_slider_desktop_width : 678;
+    let slideHeight = storeConfig.pwa?.magezon_slider_desktop_height;
+    let slideWidth = storeConfig.pwa?.magezon_slider_desktop_width;
+    let slideHeightMobile = storeConfig.pwa?.magezon_slider_mobile_height;
+    let slideWidthMobile = storeConfig.pwa?.magezon_slider_mobile_width;
     slideHeight = typeof slideHeight === 'string' ? parseInt(slideHeight, 10) : slideHeight;
     slideWidth = typeof slideWidth === 'string' ? parseInt(slideWidth, 10) : slideWidth;
+    slideHeightMobile = typeof slideHeightMobile === 'string' ? parseInt(slideHeightMobile, 10) : slideHeightMobile;
+    slideWidthMobile = typeof slideWidthMobile === 'string' ? parseInt(slideWidthMobile, 10) : slideWidthMobile;
 
     const navSize = owl_nav_size === 'mini' ? 10 : owl_nav_size === 'small' ? 15 : owl_nav_size === 'normal' ? 20 : 25;
     let sliderRef = useRef();
@@ -403,7 +413,7 @@ const MagezonSlider = (props) => {
         slidesToScroll: 1,
         autoplay: owl_autoplay,
         autoplaySpeed: owl_autoplay_timeout || 2000,
-        adaptiveHeight: true,
+        adaptiveHeight: false,
         pauseOnHover: true,
         lazyLoad: owl_lazyLoad,
         rtl: owl_rtl,
@@ -525,25 +535,31 @@ const MagezonSlider = (props) => {
                                 {item?.link_type !== 'full' ? (
                                     <MagezonSliderContent
                                         key={i}
-                                        slider_height={slider_height}
+                                        slider_height={slideHeight}
+                                        slider_height_mobile={slideHeightMobile}
                                         content_position={content_position}
                                         height={slideHeight}
                                         width={slideWidth}
+                                        height_mobile={slideHeightMobile}
+                                        width_mobile={slideWidthMobile}
                                         storeConfig={storeConfig}
                                         {...item}
-                                        lazy={i !== 0}
+                                        preload={i === 0}
                                     />
                                 ) : (
                                     <MagezonLink link={item?.slide_link}>
                                         <MagezonSliderContent
                                             key={i}
-                                            slider_height={slider_height}
+                                            slider_height={slideHeight}
+                                            slider_height_mobile={slideHeightMobile}
                                             content_position={content_position}
                                             height={slideHeight}
                                             width={slideWidth}
+                                            height_mobile={slideHeightMobile}
+                                            width_mobile={slideWidthMobile}
                                             storeConfig={storeConfig}
                                             {...item}
-                                            lazy={i !== 0}
+                                            preload={i === 0}
                                         />
                                     </MagezonLink>
                                 )}

@@ -48,8 +48,8 @@ const HeaderV1 = (props) => {
                 if(!isMobile) {
                     const header = document.querySelector('header');
                     const innerHeader = document.querySelector('#header-inner');
-                    const headerContent = document.querySelector('#header-inner .header-wrapper-main') || document.querySelector('#sticky-header .header-wrapper-main');
-                    const main = document.querySelector('main');
+                    const headerContent =
+                        document.querySelector('#header-inner .header-wrapper-main') || document.querySelector('#sticky-header .header-wrapper-main');
                     const sticky = document.querySelector('#sticky-header');
                     let headerHeight = 0;
                     let globalPromoheight = 0;
@@ -98,16 +98,16 @@ const HeaderV1 = (props) => {
 
     return (
         <>
-            <div 
+            <div
                 id="sticky-header"
-                className={cx('top-[-500px]', 'bg-neutral-white', 'transition-all', 'duration-500', 'ease-in-out', 'animate__fadeInDown', 'z-[999]', 'w-[100%]', {
+                className={cx('top-[-500px]', 'bg-neutral-white', 'transition-all', 'duration-500', 'ease-in-out', 'z-[999]', 'w-[100%]', {
                     '!fixed': storeConfig && storeConfig.pwa && storeConfig.pwa.enabler_sticky_header && deviceWidth >= 768,
                     '!relative': storeConfig && !storeConfig.pwa && !storeConfig.pwa.enabler_sticky_header,
                 })}
             ></div>
             <div
                 id="header-inner"
-                className={cx('top-0', 'bg-neutral-white', 'transition-all', 'duration-500', 'ease-in-out', 'animate__fadeInDown', {
+                className={cx('top-0', 'bg-neutral-white', {
                     // 'top-[38px]': showGlobalPromo && deviceWidth >= 768
                 })}
             >

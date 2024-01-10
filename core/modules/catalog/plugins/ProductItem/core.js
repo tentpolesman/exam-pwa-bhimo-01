@@ -92,15 +92,6 @@ const ProductItem = (props) => {
         }
     }, [customizableOptions]);
 
-    const [price] = React.useState({
-        priceRange: other.price_range,
-        priceTiers: other.price_tiers,
-        // eslint-disable-next-line no-underscore-dangle
-        productType: other.__typename,
-        specialFromDate: other.special_from_date,
-        specialToDate: other.special_to_date,
-    });
-
     const checkCustomizableOptionsValue = async () => {
         if (other.options && other.options.length > 0) {
             const requiredOptions = other.options.filter((op) => op.required);
@@ -329,13 +320,7 @@ const ProductItem = (props) => {
         } else if (modules.checkout.checkoutOnly) {
             window.open(`${getStoreHost(getAppEnv()) + url_key}.html`);
         } else {
-            const { name, small_image } = props;
             const currentPageOffset = window.scrollY;
-            const sharedProp = {
-                name,
-                small_image,
-                price,
-            };
             const urlResolver = getResolver();
             urlResolver[`/${url_key}`] = {
                 type: 'PRODUCT',
@@ -353,7 +338,6 @@ const ProductItem = (props) => {
                     pathname: '/[...slug]',
                     query: {
                         slug: url_key,
-                        productProps: JSON.stringify(sharedProp),
                     },
                 },
                 `/${url_key}`,

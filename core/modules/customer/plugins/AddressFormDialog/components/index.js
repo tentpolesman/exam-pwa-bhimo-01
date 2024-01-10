@@ -8,9 +8,7 @@ import Dialog from '@common_dialog';
 import Checkbox from '@common_forms/CheckBox';
 import TextField from '@common_forms/TextField';
 import Typography from '@common_typography';
-
 import { BREAKPOINTS } from '@root/core/theme/vars';
-
 import cx from 'classnames';
 import dynamic from 'next/dynamic';
 
@@ -417,7 +415,7 @@ const AddressView = (props) => {
                             />
                             {gmapKey ? (
                                 <div className={cx('mb-8')}>
-                                    { typeof window !== 'undefined' && (
+                                    {typeof window !== 'undefined' && (
                                         <GoogleMaps
                                             gmapKey={gmapKey}
                                             geocodingKey={geocodingKey}
@@ -428,7 +426,7 @@ const AddressView = (props) => {
                                             inputClassName={cx('w-full')}
                                             useLabel
                                         />
-                                    ) }
+                                    )}
                                 </div>
                             ) : (
                                 <TextField
@@ -462,10 +460,10 @@ const AddressView = (props) => {
                             {disableDefaultAddress != null && (
                                 <div className={cx('-mt-2')}>
                                     <Checkbox
-                                        id="addressForm-confirmPinPoint-checkbox"
+                                        id="addressForm-defaultshippingbilling-checkbox"
                                         variant="single"
                                         label={t('customer:address:confirmPinPoint')}
-                                        value={formik.values.confirmPinPoint}
+                                        checked={formik.values.defaultShippingBilling}
                                         name="confirmPinPoint"
                                         onChange={() => formik.setFieldValue('defaultShippingBilling', !formik.values.defaultShippingBilling)}
                                         classNames={{
@@ -473,7 +471,9 @@ const AddressView = (props) => {
                                             checkboxClasses: cx('cursor-pointer'),
                                         }}
                                     >
-                                        <Typography>{t('customer:address:useDefault')}</Typography>
+                                        <label for="addressForm-defaultshippingbilling-checkbox">
+                                            <Typography>{t('customer:address:useDefault')}</Typography>
+                                        </label>
                                     </Checkbox>
                                 </div>
                             )}
@@ -481,10 +481,10 @@ const AddressView = (props) => {
                             {gmapKey ? (
                                 <div className={cx('-mt-2')}>
                                     <Checkbox
-                                        id="addressForm-confirmPinPoint-checkbox"
+                                        id="addressForm-confirmpinpoint-checkbox"
                                         variant="single"
                                         label={t('customer:address:confirmPinPoint')}
-                                        value={formik.values.confirmPinPoint}
+                                        checked={formik.values.confirmPinPoint}
                                         name="confirmPinPoint"
                                         onChange={() => formik.setFieldValue('confirmPinPoint', !formik.values.confirmPinPoint)}
                                         classNames={{
@@ -492,7 +492,9 @@ const AddressView = (props) => {
                                             checkboxClasses: cx('cursor-pointer'),
                                         }}
                                     >
-                                        <Typography>{`${t('customer:address:confirmPinPoint')}`}</Typography>
+                                        <label for="addressForm-confirmpinpoint-checkbox">
+                                            <Typography>{`${t('customer:address:confirmPinPoint')}`}</Typography>
+                                        </label>
                                     </Checkbox>
                                     {!!(formik.touched.confirmPinPoint && formik.errors.confirmPinPoint) && (
                                         <div style={{ marginTop: '1.5rem', marginLeft: '1.75rem' }}>

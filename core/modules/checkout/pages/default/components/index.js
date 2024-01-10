@@ -15,6 +15,7 @@ import Promo from '@core_modules/checkout/pages/default/components/promo';
 import RewardPoint from '@core_modules/checkout/pages/default/components/rewardpoint';
 import Shipping from '@core_modules/checkout/pages/default/components/shipping';
 import Summary from '@core_modules/checkout/pages/default/components/summary';
+import HeaderView from '@core_modules/checkout/pages/default/components/Header';
 import classNames from 'classnames';
 import dynamic from 'next/dynamic';
 import Router from 'next/router';
@@ -117,6 +118,9 @@ const Content = (props) => {
             <Typography variant="h1" className="hidden">
                 {t('common:button:checkout')}
             </Typography>
+            <div className="xs:basis-full center hidden desktop:inline">
+                <HeaderView storeConfig={storeConfig} />
+            </div>
             <Dialog
                 open={checkoutTokenState}
                 handleYes={() => {

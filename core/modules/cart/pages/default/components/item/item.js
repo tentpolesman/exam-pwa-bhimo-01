@@ -69,15 +69,13 @@ const ItemView = (props) => {
                 <div className="flex flex-row justify-between items-start w-full">
                     <div className="flex flex-col gap-1 w-full">
                         <Link href="/[...slug]" as={`/${product.url_key}`}>
-                            <Typography variant="bd-1b" className="line-clamp-2 capitalize">{product.name}</Typography>
+                            <Typography variant="bd-1b" className="line-clamp-2 capitalize">
+                                {product.name}
+                            </Typography>
                         </Link>
                         <Show when={configurable_options && configurable_options.length > 0}>
                             <Typography variant="bd-2b" letter="capitalize" className="font-normal mt-1">
-                                {
-                                    configurable_options.map((item, idx) => (
-                                        `${item.value_label}${idx < configurable_options.length - 1 ? ', ' : ''}`
-                                    ))
-                                }
+                                {configurable_options.map((item, idx) => `${item.value_label}${idx < configurable_options.length - 1 ? ', ' : ''}`)}
                             </Typography>
                         </Show>
                         <div className="flex flex-row">
@@ -104,14 +102,7 @@ const ItemView = (props) => {
                                         <div className="flex flex-col gap-1">
                                             {value.values.map((item, idt) => (
                                                 <Typography key={idt}>
-                                                    {item.quantity}
-                                                    {' '}
-                                                    x
-                                                    {item.label}
-                                                    {' '}
-                                                    +
-                                                    {' '}
-                                                    {formatPrice(item.price, 'IDR', currencyCache)}
+                                                    {item.quantity} x{item.label} + {formatPrice(item.price, 'IDR', currencyCache)}
                                                 </Typography>
                                             ))}
                                         </div>
@@ -122,15 +113,16 @@ const ItemView = (props) => {
                         {cartCustomOptions && cartCustomOptions.length ? (
                             <div className="flex flex-col gap-1 mt-1">
                                 {cartCustomOptions.map((op, idx) => (
-                                    <div className="option-wrapper" key={idx}>
-                                        <Typography className="flex flex-row option-wrapper__item">
+                                    <div className="flex flex-col tablet:flex-row" key={idx}>
+                                        <Typography>
                                             {`${op.label}: `}
-                                            {op.values.map((item, idt) => (
-                                                <p key={idt} className="option-item ml-1">
-                                                    {item.label && item.label !== '' ? item.label : item.value}
-                                                </p>
-                                            ))}
                                         </Typography>
+
+                                        {op.values.map((item, idt) => (
+                                            <Typography key={idt} className="option-item tablet:ml-1">
+                                                {item.label && item.label !== '' ? item.label : item.value}
+                                            </Typography>
+                                        ))}
                                     </div>
                                 ))}
                             </div>
@@ -163,11 +155,9 @@ const ItemView = (props) => {
                         max={10000}
                     />
                     <Typography variant="p-2a">
-                        {prices.row_total_incl_tax.value > 0 ? formatPrice(
-                            prices.row_total_incl_tax.value,
-                            prices.row_total_incl_tax.currency,
-                            currencyCache,
-                        ) : t('common:title:free')}
+                        {prices.row_total_incl_tax.value > 0
+                            ? formatPrice(prices.row_total_incl_tax.value, prices.row_total_incl_tax.currency, currencyCache)
+                            : t('common:title:free')}
                     </Typography>
                 </div>
             </div>

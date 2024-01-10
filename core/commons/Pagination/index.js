@@ -17,20 +17,17 @@ const Pagination = (props) => {
     const longPage = totalPage && totalPage > siblingCount;
     const { isMobile } = useMediaQuery();
 
-    let pageArray = [];
-
-    if (!longPage) {
-        pageArray = [];
-        if (!mobile) {
+    const pageArray = useMemo(() => {
+        // !longPage && !mobile
+        if (!longPage && !mobile) {
+            const pageArrayTemp = [];
             for (let index = 1; index <= totalPage; index += 1) {
-                pageArray.push(index);
+                pageArrayTemp.push(index);
             }
+            return pageArrayTemp;
         }
-    }
-
-    if (longPage && !mobile) {
-        // eslint-disable-next-line consistent-return
-        pageArray = useMemo(() => {
+        // longPage && !mobile
+        if (longPage && !mobile) {
             const totalPageNumbers = siblingCount + 5;
 
             if (totalPageNumbers >= totalPage) {
@@ -65,12 +62,13 @@ const Pagination = (props) => {
                 const middleRange = generateRange(leftSiblingIndex, rightSiblingIndex);
                 return [firstPageIndex, 'dot', ...middleRange, 'dot', lastPageIndex];
             }
-        }, [page]);
-    }
-
-    if (mobile) {
-        pageArray = [page];
-    }
+        }
+        // mobile
+        if (mobile) {
+            return [page];
+        }
+        return [];
+    }, [page, longPage, mobile]);
 
     const handlePrevious = () => {
         if (page > 1) {

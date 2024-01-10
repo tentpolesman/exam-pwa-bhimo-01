@@ -1,12 +1,12 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
-
 import Button from '@common_button';
 import Radio from '@common_forms/Radio';
 import Typography from '@common_typography';
 import AddressFormDialog from '@plugin_addressform';
-
 import cx from 'classnames';
+import Show from '@common_show';
+import Dialog from '@common_dialog';
 
 const ItemAddress = (props) => {
     const {
@@ -27,17 +27,32 @@ const ItemAddress = (props) => {
         t,
         selectedAddressId,
         handleChange,
+        removeAddress,
     } = props;
 
     const [open, setOpen] = useState(false);
+    const [openDelete, setOpenDelete] = useState(false);
     React.useEffect(() => {
         if (open && success) {
             setOpen(false);
         }
     }, [loadingAddress]);
+    const handleRemoveAddress = () => {
+        removeAddress(addressId);
+        setOpenDelete(true);
+    };
 
     return (
         <div className={cx('py-2')}>
+            <Dialog
+                open={openDelete}
+                title={t('customer:address:warningDelete')}
+                onClose={() => setOpenDelete(!openDelete)}
+                positiveAction={handleRemoveAddress}
+                positiveLabel={t('common:button:yes')}
+                negativeLabel={t('common:button:cancel')}
+                negativeAction={() => setOpenDelete(!openDelete)}
+            />
             <AddressFormDialog
                 {...props}
                 open={open}
@@ -93,6 +108,13 @@ const ItemAddress = (props) => {
                             {t('customer:address:editAddress')}
                         </Typography>
                     </Button>
+                    <Show when={selectedAddressId !== addressId}>
+                        <Button variant="plain" className={cx('pl-0', '!py-0')} onClick={() => setOpenDelete(true)}>
+                            <Typography className={cx('underline', 'underline-offset-2', 'cursor-pointer')}>
+                                {t('customer:address:removeTitle')}
+                            </Typography>
+                        </Button>
+                    </Show>
                 </div>
             </div>
         </div>

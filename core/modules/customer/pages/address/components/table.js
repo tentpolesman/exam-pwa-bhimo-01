@@ -1,10 +1,8 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
 import Dialog from '@common_dialog';
 import Radio from '@common_forms/Radio';
-
 import AddressFormDialog from '@plugin_addressform';
 import React, { useState } from 'react';
-
 import cx from 'classnames';
 
 const TableAddress = (props) => {
@@ -44,9 +42,12 @@ const TableAddress = (props) => {
         <>
             <Dialog
                 open={openDelete}
-                handleCancel={() => setOpenDelete(!openDelete)}
-                handleYes={handleRemoveAddress}
-                message={t('customer:address:warningDelete')}
+                title={t('customer:address:warningDelete')}
+                onClose={() => setOpenDelete(!openDelete)}
+                positiveAction={handleRemoveAddress}
+                positiveLabel={t('common:button:yes')}
+                negativeLabel={t('common:button:cancel')}
+                negativeAction={() => setOpenDelete(!openDelete)}
             />
             <AddressFormDialog
                 {...props}

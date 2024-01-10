@@ -19,6 +19,7 @@
         "edit": "Edit",
         "save": "Simpan",
         "saved": "Tersimpan",
+        "startShopping": "Mulai Berbelanja",
         "continueShopping": "Lanjut Berbelanja",
         "confirm": "Konfirmasi",
         "cancel": "Batal",
@@ -53,7 +54,7 @@
         "deleteFailed": "Hapus item cart gagal",
         "updateSuccess": "Update item cart berhasil",
         "updateFailed": "Update item cart gagal",
-        "emptyCart": "ANDA TIDAK MEMILIKI ITEM DI KERANJANG BELANJA ANDA.",
+        "emptyCart": "Keranjang Anda saat ini kosong.",
         "oos": "Stok habis",
         "inStock": "Stok tersedia",
         "cartError": "Ada kesalahan di keranjang anda, silahkan bersihkan dan ulangi kembali"

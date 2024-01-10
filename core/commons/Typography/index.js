@@ -2,7 +2,9 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 
 const Typography = (props) => {
-    const { variant = 'bd-2a', className = '', children, color, style } = props;
+    const {
+        variant = 'bd-2a', className = '', children, color, style,
+    } = props;
 
     const classes = cx(color || 'text-pwa-font', className);
 
