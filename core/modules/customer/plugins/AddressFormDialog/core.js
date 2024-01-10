@@ -329,7 +329,7 @@ const AddressFormDialog = (props) => {
                 formik.setFieldValue('city', getCityByLabel(city, state.dropdown.city));
             }
         }
-    }, [responCities]);
+    }, [responCities, open]);
 
     // get kecamatan if city change
     React.useMemo(() => {
