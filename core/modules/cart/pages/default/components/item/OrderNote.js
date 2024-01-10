@@ -5,7 +5,7 @@ import Typography from '@common/Typography';
 import { updateCartItemNote } from '@core_modules/cart/services/graphql';
 import { getCartId } from '@helpers/cartId';
 import { useFormik } from 'formik';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'next-i18next';
 
 const OrderNote = ({ cartItemId, note, quantity }) => {
     const { t } = useTranslation();
