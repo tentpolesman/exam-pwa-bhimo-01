@@ -6,7 +6,6 @@ import Alert from '@common_alert';
 import Show from '@common_show';
 
 const WidgetSlider = (props) => {
-    console.log('masuk widget slider');
     const { storeConfig, t, slider_id } = props;
     const logoUrl = `${storeConfig && storeConfig.secure_base_media_url}logo/${storeConfig && storeConfig.header_logo_src}`;
     const { loading, data, error } = gqlService.getSlider({
