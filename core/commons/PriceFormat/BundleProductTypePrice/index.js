@@ -2,7 +2,7 @@ import Typography from '@common_typography';
 import { formatPrice } from '@helper_currency';
 import useMediaQuery from '@hook/useMediaQuery';
 import cx from 'classnames';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'next-i18next';
 
 const AsLowAsText = (textClassName) => {
     const { t } = useTranslation(['common']);

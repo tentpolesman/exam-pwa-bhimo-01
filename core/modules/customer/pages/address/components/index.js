@@ -18,6 +18,7 @@ import dynamic from 'next/dynamic';
 import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
 import cx from 'classnames';
 import Alert from '@common_alert';
+import Show from '@common_show';
 
 const ItemMobile = dynamic(() => import('@core_modules/customer/pages/address/components/ItemMobile'), { ssr: false });
 const TableAddress = dynamic(() => import('@core_modules/customer/pages/address/components/table'), { ssr: false });
@@ -44,11 +45,12 @@ const Content = (props) => {
         <Layout {...props}>
             <div className={cx('flex', 'flex-col', 'w-full', 'h-full', 'text-base', 'pt-5', 'px-4')}>
                 <div className={cx('desktop:hidden')}>
-                    {loading ? (
+                    <Show when={loading}>
                         <SkeletonMobile />
-                    ) : (
+                    </Show>
+                    <Show when={!loading}>
                         <>
-                            {address && address.length > 0 ? (
+                            <Show when={address?.length}>
                                 <>
                                     {address.map((item, index) => (
                                         <ItemMobile
@@ -81,13 +83,14 @@ const Content = (props) => {
                                         />
                                     ))}
                                 </>
-                            ) : (
+                            </Show>
+                            <Show when={!address?.length}>
                                 <Alert severity="warning" withIcon>
                                     {t('customer:address:emptyMessage')}
                                 </Alert>
-                            )}
+                            </Show>
                         </>
-                    )}
+                    </Show>
                 </div>
                 <div className={cx('relative', 'overflow-x-auto', 'rounded-lg', 'mobile:max-desktop:hidden')}>
                     <table className={cx('w-full', 'text-base', 'border-[1px]', 'border-neutral-100')}>
@@ -99,17 +102,18 @@ const Content = (props) => {
                                 <th className={cx('px-4', 'py-3')}>{t('customer:address:street')}</th>
                                 <th className={cx('px-4', 'py-3')}>{t('customer:address:phone')}</th>
                                 <th colSpan="2" className={cx('px-4', 'py-3')}>
-                                    Action
+                                    {t('common:label:action')}
                                 </th>
                             </tr>
                         </thead>
-                        {loading ? (
-                            <>
-                                <SkeletonTable />
-                            </>
-                        ) : (
+                        <Show when={loading}>
                             <tbody>
-                                {address && address.length > 0 ? (
+                                <SkeletonTable />
+                            </tbody>
+                        </Show>
+                        <Show when={!loading}>
+                            <tbody>
+                                <Show when={address?.length}>
                                     <>
                                         {address.map((item, index) => (
                                             <TableAddress
@@ -142,7 +146,8 @@ const Content = (props) => {
                                             />
                                         ))}
                                     </>
-                                ) : (
+                                </Show>
+                                <Show when={!address?.length}>
                                     <tr>
                                         <td colSpan={6}>
                                             <Alert severity="warning" withIcon>
@@ -150,21 +155,22 @@ const Content = (props) => {
                                             </Alert>
                                         </td>
                                     </tr>
-                                )}
+                                </Show>
                             </tbody>
-                        )}
+                        </Show>
                     </table>
                 </div>
                 <div className={cx('pt-4')}>
-                    {loading ? (
+                    <Show when={loading}>
                         <div className={cx('px-4')}>
                             <Skeleton height={24} width={124} />
                         </div>
-                    ) : (
+                    </Show>
+                    <Show when={!loading}>
                         <Button icon={<PlusIcon />} iconPosition="right" onClick={() => setOpenDialogNew(true)}>
                             <Typography className={cx('!text-neutral-white')}>{t('customer:address:addTitle')}</Typography>
                         </Button>
-                    )}
+                    </Show>
                 </div>
                 <AddressFormDialog
                     {...props}

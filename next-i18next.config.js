@@ -4,6 +4,7 @@ const { translation, basePath } = require('./swift.config');
 
 module.exports = ({
     i18n: {
+        localeDetection: false,
         defaultLocale: translation.defaultLanguage,
         locales: [...translation.languages],
     },

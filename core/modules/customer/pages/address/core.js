@@ -119,50 +119,85 @@ const AddressCustomer = (props) => {
 
     // handle add address
     const handleAddress = async (data, type) => {
+        let toastText = '';
         setLoadingAddress(true);
-        if (!success) {
-            if (type === 'update') {
-                await updateAddress({
-                    variables: {
-                        ...data,
-                    },
-                });
-            } else {
-                await addAddress({
-                    variables: {
-                        ...data,
-                    },
-                });
+        try {
+            if (!success) {
+                if (type === 'update') {
+                    await updateAddress({
+                        variables: {
+                            ...data,
+                        },
+                    });
+                    toastText = t('customer:address:successUpdate');
+                } else {
+                    await addAddress({
+                        variables: {
+                            ...data,
+                        },
+                    });
+                    toastText = t('customer:address:successAdd');
+                }
+                await actGetCustomerAddress();
+                window.toastMessage({ open: true, variant: 'success', text: toastText });
             }
-            await actGetCustomerAddress();
-        }
-        setSuccess(true);
-        setLoadingAddress(false);
 
-        if (openNew) {
-            setOpenDialogNew(false);
+            setSuccess(true);
+            setLoadingAddress(false);
+
+            if (openNew) {
+                setOpenDialogNew(false);
+            }
+            setSuccess(false);
+            return true;
+        } catch (e) {
+            setLoadingAddress(false);
+            let errorMessage = type === 'update' ? t('customer:address:failUpdate') : t('customer:address:failAdd');
+            if (e?.message) {
+                errorMessage = `${errorMessage} : ${e?.message}`;
+            }
+            window.toastMessage({
+                open: true,
+                variant: 'error',
+                text: errorMessage,
+            });
+            return false;
         }
-        setSuccess(false);
     };
 
     const setRemoveAddress = async (addressId) => {
         setLoadingAddress(true);
         setLoading(true);
-        if (!success) {
-            if (addressId) {
-                await removeAddress({
-                    variables: {
-                        id: addressId,
-                    },
-                });
-                await actGetCustomerAddress();
+        try {
+            if (!success) {
+                if (addressId) {
+                    await removeAddress({
+                        variables: {
+                            id: addressId,
+                        },
+                    });
+                    await actGetCustomerAddress();
+                    window.toastMessage({ open: true, variant: 'success', text: t('customer:address:successRemove') });
+                }
             }
-        }
 
-        setSuccess(true);
-        setLoadingAddress(false);
-        setLoading(false);
-        setSuccess(false);
+            setSuccess(true);
+            setLoadingAddress(false);
+            setLoading(false);
+            setSuccess(false);
+        } catch (e) {
+            setLoadingAddress(false);
+            setLoading(false);
+            let errorMessage = t('customer:address:failRemove');
+            if (e?.message) {
+                errorMessage = `${errorMessage} : ${e?.message}`;
+            }
+            window.toastMessage({
+                open: true,
+                variant: 'error',
+                text: errorMessage,
+            });
+        }
     };
     return (
         <Layout pageConfig={pageConfig || config} {...props}>
@@ -170,6 +205,7 @@ const AddressCustomer = (props) => {
                 t={t}
                 loading={loading}
                 address={address}
+                // address={dataAddress?.customer?.addresses ?? []}
                 selectedAddressId={selectedAddressId}
                 handleDialogSubmit={handleDialogSubmit}
                 handleChange={handleChange}
