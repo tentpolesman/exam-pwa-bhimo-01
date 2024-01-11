@@ -20,24 +20,25 @@ const ItemProductView = (props) => {
     if (typeof defaultHeight === 'string') defaultHeight = parseInt(defaultHeight, 0);
 
     return (
-        <div class="rma-container">
-            <CheckBox checked={checked} disabled={disabled} onChange={handleChange} inputProps={{ 'aria-label': name }} />
-            <div className="rma-container-image">
-                <Image
-                    src={image_url}
-                    alt={name}
-                    width={defaultWidth}
-                    height={defaultHeight}
-                    quality={80}
-                    storeConfig={storeConfig}
-                />
-            </div>
-            <div className="rm-container-label">
-                <Typography className="font-semibold">
-                    {name || ''}
-                </Typography>
-                <Typography variant="span">{formatPrice(price_incl_tax, currency)}</Typography>
-                <div className="flex-grow" />
+        <div class="flex flex-row items-center basis-full desktop:basis-1/4">
+            <CheckBox variant="single" checked={checked} disabled={disabled} onChange={handleChange} inputProps={{ 'aria-label': name }} />
+            <div className="flex flex-row gap-3">
+                <div className="w-[105px] h-[105px]">
+                    <Image
+                        src={image_url}
+                        alt={name}
+                        width={defaultWidth}
+                        height={defaultHeight}
+                        quality={80}
+                        storeConfig={storeConfig}
+                    />
+                </div>
+                <div className="flex flex-col gap-2 h-full align-top">
+                    <Typography variant="bd-2a">
+                        {name || ''}
+                    </Typography>
+                    <Typography>{formatPrice(price_incl_tax, currency)}</Typography>
+                </div>
             </div>
         </div>
     );

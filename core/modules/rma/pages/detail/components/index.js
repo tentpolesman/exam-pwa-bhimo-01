@@ -5,6 +5,8 @@ import Dialog from '@common_dialog';
 import Layout from '@layout_customer';
 import { updateRma, cancelRma } from '@core_modules/rma/services/graphql';
 import ItemField from '@core_modules/rma/pages/detail/components/ItemField';
+import Divider from '@common/Divider';
+import Typography from '@common/Typography';
 
 const DetailContent = (props) => {
     const {
@@ -205,18 +207,23 @@ const DetailContent = (props) => {
                 handleYes={state.handleYes}
                 message={state.messageDialog}
             />
-            <div className="flex flex-col">
+            <div className={classNames(
+                'shadow-sm border border-neutral-100 rounded-md',
+                'flex flex-col gap-5',
+            )}
+            >
                 {
                     detail_rma.confirm_shipping.status
                         ? (<div className="" dangerouslySetInnerHTML={{ __html: detail_rma.confirm_shipping.step }} />)
                         : null
                 }
-                <div className={classNames('')}>
+                <>
                     <Detail
                         detail_rma={detail_rma}
                         t={t}
                         {...other}
                     />
+                    <Divider />
                     {
                         requestFormField.length > 0 && requestFormField.map((item, index) => {
                             const name = item.name.split(' ').join('_').toLowerCase();
@@ -239,46 +246,59 @@ const DetailContent = (props) => {
                             );
                         })
                     }
-                </div>
-                <div className="">
+                    <Divider />
+                </>
+                <div
+                    className={classNames(
+                        'flex flex-col gap-3 px-4',
+                    )}
+                >
+                    <Typography variant="bd-2">{t('rma:product')}</Typography>
                     {
                         detail_rma.items.map((item, index) => (
                             <ItemProduct key={index} {...item} currency={currency} storeConfig={storeConfig} />
                         ))
                     }
                 </div>
-                {
-                    (detail_rma.status.name !== 'Canceled' || detail_rma.status.name.toLowerCase() !== 'canceled') && (
-                        <>
-                            <FormComment
-                                formData={formData}
-                                setFormData={setFormData}
-                                state={state}
-                                t={t}
-                                setState={setState}
-                                handleGetBase64={handleGetBase64}
-                                fileAccept={fileAccept}
-                                commentValue={formData.message}
-                                handleChangeComment={handleChangeComment}
-                                dropValue={state.dropValue}
-                                handleDrop={(dropValue) => setState({ ...state, dropValue })}
-                                {...other}
-                            />
-                            <Footer
-                                cancelButton={cancelButton}
-                                updateButton={updateButton}
-                                updateStatusButton={updateStatusButton}
-                                detail_rma={detail_rma}
-                                t={t}
-                                confirmCancel={confirmCancel}
-                                handleUpdate={handleUpdate}
-                                actionUpdateStatus={actionUpdateStatus}
-                                {...other}
-                            />
-                        </>
-                    )
-                }
-                <ListMessage data={detail_rma.thread_message} t={t} {...other} />
+                <Divider />
+                <div
+                    className={classNames(
+                        'flex flex-col gap-3 px-4',
+                    )}
+                >
+                    {
+                        (detail_rma.status.name !== 'Canceled' || detail_rma.status.name.toLowerCase() !== 'canceled') && (
+                            <>
+                                <FormComment
+                                    formData={formData}
+                                    setFormData={setFormData}
+                                    state={state}
+                                    t={t}
+                                    setState={setState}
+                                    handleGetBase64={handleGetBase64}
+                                    fileAccept={fileAccept}
+                                    commentValue={formData.message}
+                                    handleChangeComment={handleChangeComment}
+                                    dropValue={state.dropValue}
+                                    handleDrop={(dropValue) => setState({ ...state, dropValue })}
+                                    {...other}
+                                />
+                                <Footer
+                                    cancelButton={cancelButton}
+                                    updateButton={updateButton}
+                                    updateStatusButton={updateStatusButton}
+                                    detail_rma={detail_rma}
+                                    t={t}
+                                    confirmCancel={confirmCancel}
+                                    handleUpdate={handleUpdate}
+                                    actionUpdateStatus={actionUpdateStatus}
+                                    {...other}
+                                />
+                            </>
+                        )
+                    }
+                    <ListMessage data={detail_rma.thread_message} t={t} {...other} />
+                </div>
             </div>
         </Layout>
     );
@@ -289,7 +309,11 @@ const DetailReturn = (props) => {
         data, Loader, loading, loadCustomerData, customerData,
     } = props;
     if (loading || !data || (data && !data.detail_rma) || loadCustomerData.loading
-    || !customerData) return <Layout {...props}><Loader /></Layout>;
+    || !customerData) {
+        return (
+            <Layout {...props}><Loader /></Layout>
+        );
+    }
     return <DetailContent {...props} />;
 };
 

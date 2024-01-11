@@ -9,6 +9,8 @@ const ItemFieldView = ({
     select,
     handleSelect,
     error,
+    disabled,
+    ...other
 }) => (
     <Select
         options={options}
@@ -18,6 +20,11 @@ const ItemFieldView = ({
         onChange={handleSelect}
         error={error}
         errorMessage={errorMessage || t('rma:form:required')}
+        classNameLabel="!text-md font-medium capitalize"
+        textFiledProps={{
+            disabled,
+        }}
+        {...other}
     />
 );
 

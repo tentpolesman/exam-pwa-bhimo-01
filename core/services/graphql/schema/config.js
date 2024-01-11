@@ -110,7 +110,6 @@ export const storeConfig = `
           button_text_color
           button_text_hover_color
           cms_contact_identifiers
-          cms_social_media_link_identifer
           configurable_options_enable
           custom_install_app_enable
           default_font
@@ -156,9 +155,6 @@ export const storeConfig = `
           popup_detail_image_enable
           primary_color
           product_listing_navigation
-          promo_banner_lite_after_width
-          promo_banner_lite_label_width
-          promo_banner_lite_top_width
           quick_view_enable
           rating_enable
           recaptcha_contact_enable
@@ -188,9 +184,6 @@ export const storeConfig = `
           thumbor_url
           use_cms_page_enable
           use_cms_page_identifier
-          ves_menu_alias
-          ves_menu_enable
-          ves_menu_enable
           warning_msg_color
           gtm_enable
           gtm_id_local

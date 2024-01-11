@@ -5,240 +5,176 @@ import Typography from '@common_typography';
 import formatDate from '@helper_date';
 import Router from 'next/router';
 import Layout from '@layout_customer';
+import Alert from '@common/Alert';
+import cx from 'classnames';
+
+import Skeleton from '@core_modules/rma/pages/history/components/Skeleton';
 
 const HistoryContent = (props) => {
     const {
-        loading, data, error, t, pageSize, page, handleChangePage, handleChangePageSize, Loader, WarningInfo,
+        loading, data, error, t, pageSize, page, handleChangePage, handleChangePageSize,
     } = props;
 
     if (error) {
         return (
             <Layout {...props} title={t('customer:menu:return')}>
-                <WarningInfo variant="error" text={t('rma:error:fetch')} />
+                <Alert saverity="error" className="mt-4">
+                    {t('rma:error:fetch')}
+                </Alert>
             </Layout>
         );
     }
 
     if (loading || !data) {
-        return <Layout {...props}><Loader /></Layout>;
+        return <Layout {...props}><Skeleton /></Layout>;
     }
 
     if (!loading && data) {
         if (data.getCustomerRequestAwRma.items.length === 0) {
             return (
                 <Layout {...props} title={t('customer:menu:return')}>
-                    <WarningInfo variant="warning" text={t('rma:error:notFound')} />
+                    <Alert severity="warning" className="mt-4">
+                        {t('rma:error:notFound')}
+                    </Alert>
                 </Layout>
             );
         }
     }
-    return null;
-    // return (
-    //     <Layout {...props}>
-    //         <div className={styles.tableOuterContainer}>
-    //             <TableContainer component={Paper} className={styles.tableContainer}>
-    //                 <Table className={styles.table} aria-label="a dense table">
-    //                     <TableHead>
-    //                         <TableRow className={styles.tableRowHead}>
-    //                             <TableCell align="left">{t('rma:table:returnId')}</TableCell>
-    //                             <TableCell align="left">{t('rma:table:orderId')}</TableCell>
-    //                             <TableCell align="left">{t('rma:table:products')}</TableCell>
-    //                             <TableCell align="left">{t('rma:table:status')}</TableCell>
-    //                             <TableCell align="left">{t('rma:table:createdAt')}</TableCell>
-    //                             <TableCell align="left">{t('rma:table:updatedAt')}</TableCell>
-    //                             <TableCell align="left">{t('rma:table:actions')}</TableCell>
-    //                         </TableRow>
-    //                     </TableHead>
-    //                     <TableBody>
-    //                         {!loading && data.getCustomerRequestAwRma.items.length > 0 ? (
-    //                             <>
-    //                                 {
-    //                                     data.getCustomerRequestAwRma.items.map((val, index) => (
-    //                                         <TableRow className={styles.tableRowResponsive} key={index}>
-    //                                             <TableCell
-    //                                                 className={styles.tableCellResponsive}
-    //                                                 align="left"
-    //                                                 data-th={(
-    //                                                     <Typography align="center" type="bold" letter="capitalize">
-    //                                                         {t('rma:table:returnId')}
-    //                                                     </Typography>
-    //                                                 )}
-    //                                             >
-    //                                                 <div className={styles.displayFlexRow}>
-    //                                                     <div className={styles.mobLabel}>
-    //                                                         <Typography align="center" type="bold" letter="capitalize">
-    //                                                             {t('rma:table:returnId')}
-    //                                                         </Typography>
-    //                                                     </div>
-    //                                                     <div className={styles.value}>{val.increment_id}</div>
-    //                                                 </div>
-    //                                             </TableCell>
-    //                                             <TableCell
-    //                                                 className={styles.tableCellResponsive}
-    //                                                 align="left"
-    //                                                 data-th={(
-    //                                                     <Typography align="center" type="bold" letter="capitalize">
-    //                                                         {t('rma:table:orderId')}
-    //                                                     </Typography>
-    //                                                 )}
-    //                                             >
-    //                                                 <div className={styles.displayFlexRow}>
-    //                                                     <div className={styles.mobLabel}>
-    //                                                         <Typography align="center" type="bold" letter="capitalize">
-    //                                                             {t('rma:table:orderId')}
-    //                                                         </Typography>
-    //                                                     </div>
-    //                                                     <div className={styles.value}>{val.order_number}</div>
-    //                                                 </div>
-    //                                             </TableCell>
-    //                                             <TableCell
-    //                                                 className={styles.tableCellResponsive}
-    //                                                 align="left"
-    //                                                 data-th={(
-    //                                                     <Typography align="center" type="bold" letter="capitalize">
-    //                                                         {t('rma:table:products')}
-    //                                                     </Typography>
-    //                                                 )}
-    //                                             >
-    //                                                 <div className={styles.displayFlexRow}>
-    //                                                     <div className={styles.mobLabel}>
-    //                                                         <Typography align="center" type="bold" letter="capitalize">
-    //                                                             {t('rma:table:products')}
-    //                                                         </Typography>
-    //                                                     </div>
-    //                                                     <div className={styles.value}>
-    //                                                         {
-    //                                                             val.items.map((item) => `${item.name}, `)
-    //                                                         }
-    //                                                     </div>
-    //                                                 </div>
-    //                                             </TableCell>
-    //                                             <TableCell
-    //                                                 className={styles.tableCellResponsive}
-    //                                                 align="left"
-    //                                                 data-th={(
-    //                                                     <Typography align="center" type="bold" letter="capitalize">
-    //                                                         {t('rma:table:status')}
-    //                                                     </Typography>
-    //                                                 )}
-    //                                             >
-    //                                                 <div className={styles.displayFlexRow}>
-    //                                                     <div className={styles.mobLabel}>
-    //                                                         <Typography align="center" type="bold" letter="capitalize">
-    //                                                             {t('rma:table:status')}
-    //                                                         </Typography>
-    //                                                     </div>
-    //                                                     <div className={styles.value}>{val.status.name}</div>
-    //                                                 </div>
-    //                                             </TableCell>
-    //                                             <TableCell
-    //                                                 className={styles.tableCellResponsive}
-    //                                                 align="left"
-    //                                                 data-th={(
-    //                                                     <Typography align="center" type="bold" letter="capitalize">
-    //                                                         {t('rma:table:createdAt')}
-    //                                                     </Typography>
-    //                                                 )}
-    //                                             >
-    //                                                 <div className={styles.displayFlexRow}>
-    //                                                     <div className={styles.mobLabel}>
-    //                                                         <Typography align="center" type="bold" letter="capitalize">
-    //                                                             {t('rma:table:createdAt')}
-    //                                                         </Typography>
-    //                                                     </div>
-    //                                                     <div className={styles.value}>{formatDate() }</div>
-    //                                                 </div>
-    //                                             </TableCell>
-    //                                             <TableCell
-    //                                                 className={styles.tableCellResponsive}
-    //                                                 align="left"
-    //                                                 data-th={(
-    //                                                     <Typography align="center" type="bold" letter="capitalize">
-    //                                                         {t('rma:table:updatedAt')}
-    //                                                     </Typography>
-    //                                                 )}
-    //                                             >
-    //                                                 <div className={styles.displayFlexRow}>
-    //                                                     <div className={styles.mobLabel}>
-    //                                                         <Typography align="center" type="bold" letter="capitalize">
-    //                                                             {t('rma:table:updatedAt')}
-    //                                                         </Typography>
-    //                                                     </div>
-    //                                                     <div className={styles.value}>
-    //                                                         {formatDate() }
-    //                                                     </div>
-    //                                                 </div>
-    //                                             </TableCell>
-    //                                             <TableCell
-    //                                                 className={styles.tableCellResponsive}
-    //                                                 align="left"
-    //                                                 data-th={(
-    //                                                     <Typography align="center" type="bold" letter="capitalize">
-    //                                                         {t('rma:table:actions')}
-    //                                                     </Typography>
-    //                                                 )}
-    //                                             >
-    //                                                 <div className={styles.displayFlexRow}>
-    //                                                     <div className={styles.mobLabel}>
-    //                                                         <Typography align="center" type="bold" letter="capitalize">
-    //                                                             {t('rma:table:actions')}
-    //                                                         </Typography>
-    //                                                     </div>
-    //                                                     <div className={styles.value}>
-    //                                                         <Button
-    //                                                             variant="text"
-    //                                                             className="clear-margin-padding text-center"
-    //                                                             onClick={() => Router.push(
-    //                                                                 '/rma/customer/view/id/[id]',
-    //                                                                 `/rma/customer/view/id/${val.increment_id}`,
-    //                                                             )}
-    //                                                             align="left"
-    //                                                         >
-    //                                                             <Typography
-    //                                                                 className="clear-margin-padding"
-    //                                                                 variant="span"
-    //                                                                 decoration="underline"
-    //                                                             >
-    //                                                                 {t('rma:table:view')}
-    //                                                             </Typography>
-    //                                                         </Button>
-    //                                                     </div>
-    //                                                 </div>
-    //                                             </TableCell>
-    //                                         </TableRow>
 
-    //                                     ))
-    //                                 }
-    //                                 <TableRow>
-    //                                     <TablePagination
-    //                                         rowsPerPageOptions={[10, 20, 50, { label: 'All', value: -1 }]}
-    //                                         colSpan={7}
-    //                                         count={data.getCustomerRequestAwRma.total_count || 0}
-    //                                         rowsPerPage={pageSize}
-    //                                         page={page}
-    //                                         labelRowsPerPage="Limit"
-    //                                         SelectProps={{
-    //                                             inputProps: { 'aria-label': 'rows per page' },
-    //                                             native: true,
-    //                                         }}
-    //                                         onChangePage={handleChangePage}
-    //                                         onChangeRowsPerPage={handleChangePageSize}
-    //                                     />
-    //                                 </TableRow>
-    //                             </>
-    //                         ) : (
-    //                             <TableRow>
-    //                                 <TableCell colSpan={7}>
-    //                                     <Alert severity="warning">{t('rma:empty')}</Alert>
-    //                                 </TableCell>
-    //                             </TableRow>
-    //                         )}
-    //                     </TableBody>
-    //                 </Table>
-    //             </TableContainer>
-    //         </div>
-    //     </Layout>
-    // );
+    return (
+        <Layout {...props}>
+            <div className="flex flex-col gap-4 overflow-x-auto">
+                <table className={cx('w-full', 'text-base', 'border-[1px] rounded-md', 'border-neutral-100')}>
+                    <thead>
+                        <tr className={cx(
+                            'text-neutral-500',
+                            'font-semibold', 'leading-2lg', 'text-left',
+                            'hidden desktop:table-row',
+                        )}
+                        >
+                            <th align="left" className={cx('px-4', 'py-3')}>{t('rma:table:returnId')}</th>
+                            <th align="left" className={cx('px-4', 'py-3')}>{t('rma:table:orderId')}</th>
+                            <th align="left" className={cx('px-4', 'py-3')}>{t('rma:table:products')}</th>
+                            <th align="left" className={cx('px-4', 'py-3')}>{t('rma:table:status')}</th>
+                            <th align="left" className={cx('px-4', 'py-3')}>{t('rma:table:actions')}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {!loading && data.getCustomerRequestAwRma.items.length > 0 ? (
+                            <>
+                                {
+                                    data.getCustomerRequestAwRma.items.map((val, index) => (
+                                        <tr
+                                            className={cx(
+                                                'even:bg-white', 'odd:bg-neutral-50',
+                                                'flex flex-col',
+                                                'desktop:table-row',
+                                                'border-b border-b-neutral-100',
+                                                'desktop:border-none',
+                                            )}
+                                            key={index}
+                                        >
+                                            <td
+                                                className="p-4"
+                                                align="left"
+                                            >
+                                                <div className="flex flex-row justify-between items-center">
+                                                    <div className="basis 1/3 inline-block desktop:hidden">
+                                                        <Typography variant="bd-2">
+                                                            {t('rma:table:returnId')}
+                                                        </Typography>
+                                                    </div>
+                                                    <Typography variant="bd-2b">{val.increment_id}</Typography>
+                                                </div>
+                                            </td>
+                                            <td
+                                                className="p-4"
+                                                align="left"
+                                            >
+                                                <div className="flex flex-row justify-between items-center">
+                                                    <div className="basis 1/3 inline-block desktop:hidden">
+                                                        <Typography variant="bd-2">
+                                                            {t('rma:table:returnId')}
+                                                        </Typography>
+                                                    </div>
+                                                    <Typography variant="bd-2b">{val.order_number}</Typography>
+                                                </div>
+                                            </td>
+                                            <td
+                                                className="p-4"
+                                                align="left"
+                                            >
+                                                <div className="flex flex-row justify-between items-center">
+                                                    <div className="basis 1/3 inline-block desktop:hidden">
+                                                        <Typography variant="bd-2">
+                                                            {t('rma:table:products')}
+                                                        </Typography>
+                                                    </div>
+                                                    <Typography variant="bd-2b">
+                                                        {
+                                                            val.items.map((item) => `${item.name}, `)
+                                                        }
+                                                    </Typography>
+                                                </div>
+                                            </td>
+                                            <td
+                                                className="p-4"
+                                                align="left"
+                                            >
+                                                <div className="flex flex-row justify-between items-center">
+                                                    <div className="basis 1/3 inline-block desktop:hidden">
+                                                        <Typography variant="bd-2">
+                                                            {t('rma:table:status')}
+                                                        </Typography>
+                                                    </div>
+                                                    <Typography variant="bd-2b">{val.status.name}</Typography>
+                                                </div>
+                                            </td>
+                                            <td
+                                                className="p-4"
+                                                align="left"
+                                            >
+                                                <div className="flex flex-row justify-between items-center">
+                                                    <div className="basis 1/3 inline-block desktop:hidden">
+                                                        <Typography variant="bd-2">
+                                                            {t('rma:table:actions')}
+                                                        </Typography>
+                                                    </div>
+                                                    <Button
+                                                        variant="plain"
+                                                        className="!p-0 text-center"
+                                                        onClick={() => Router.push(
+                                                            '/rma/customer/view/id/[id]',
+                                                            `/rma/customer/view/id/${val.increment_id}`,
+                                                        )}
+                                                        align="left"
+                                                    >
+                                                        <Typography
+                                                            variant="bd-2"
+                                                            className="underline"
+                                                        >
+                                                            {t('rma:table:view')}
+                                                        </Typography>
+                                                    </Button>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                    ))
+                                }
+                            </>
+                        ) : (
+                            <tr>
+                                <td colSpan={7}>
+                                    <Alert severity="warning">{t('rma:empty')}</Alert>
+                                </td>
+                            </tr>
+                        )}
+                    </tbody>
+                </table>
+            </div>
+        </Layout>
+    );
 };
 
 export default HistoryContent;

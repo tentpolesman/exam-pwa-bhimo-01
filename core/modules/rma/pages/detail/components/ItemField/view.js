@@ -1,13 +1,39 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable semi-style */
+import Select from '@common/Forms/Select';
 import Typography from '@common_typography';
 
 const ItemFieldView = ({
     item, error, options, name, label,
     select, handleSelect, errorMessage,
     fieldValue, t,
-}) =>
-    null
+}) => (
+    <div className="w-full p-4">
+        <div className="flex flex-col gap-3">
+            <Typography variant="bd-2">
+                {item.frontend_labels[0].value}
+            </Typography>
+            {
+                item.is_editable ? (
+                    <Select
+                        options={options}
+                        name={name}
+                        label={label}
+                        value={select}
+                        onChange={handleSelect}
+                        error={error}
+                        errorMessage={errorMessage || t('return:form:required')}
+                        showLabel={false}
+                    />
+                ) : (
+                    <Typography variant="span">
+                        {fieldValue[0].valueLabel}
+                    </Typography>
+                )
+            }
+        </div>
+    </div>
+);
     // return (
     //     <TableContainer component={Paper} className={styles.tableContainer}>
     //         <Table className={styles.table} size="small" aria-label="a dense table">
@@ -51,6 +77,5 @@ const ItemFieldView = ({
     //     </TableContainer>
 
 // );
-;
 
 export default ItemFieldView;

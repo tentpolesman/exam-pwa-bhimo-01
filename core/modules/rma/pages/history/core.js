@@ -8,7 +8,7 @@ import * as Schema from '@core_modules/rma/services/graphql/schema';
 
 const CoreLanding = (props) => {
     const {
-        t, Loader, WarningInfo, Content, pageConfig = {}, ...other
+        t, Loader, Content, pageConfig = {}, ...other
     } = props;
     const config = {
         title: t('rma:history'),
@@ -76,7 +76,6 @@ const CoreLanding = (props) => {
         handleChangePage,
         handleChangePageSize,
         Loader,
-        WarningInfo,
     };
 
     return (
