@@ -57,6 +57,40 @@ module.exports = {
                 xl: `0px 10px 10px -5px ${COLORS.neutral[900]}0A, 0px 20px 25px -5px ${COLORS.neutral[900]}1A`,
             },
             zIndex: ZINDEX,
+            keyframes: {
+                'cart-drawer-desktop': {
+                    '0%': { right: '0px' },
+                    '100%': { right: '540px' },
+                },
+                'cart-drawer-tablet': {
+                    '0%': { right: '0px' },
+                    '100%': { right: '396px' },
+                },
+                'cart-drawer-mobile': {
+                    '0%': { right: '0px' },
+                    '100%': { right: '320px' },
+                },
+                'cart-drawer-close-desktop': {
+                    '0%': { right: '540px' },
+                    '100%': { right: '0px' },
+                },
+                'cart-drawer-close-tablet': {
+                    '0%': { right: '396px' },
+                    '100%': { right: '0px' },
+                },
+                'cart-drawer-close-mobile': {
+                    '0%': { right: '320px' },
+                    '100%': { right: '0px' },
+                },
+            },
+            animation: {
+                'drawer-in-desktop': 'cart-drawer-desktop 500ms cubic-bezier(0.4, 0, 0.2, 1);',
+                'drawer-in-tablet': 'cart-drawer-tablet 500ms cubic-bezier(0.4, 0, 0.2, 1);',
+                'drawer-in-mobile': 'cart-drawer-mobile 500ms cubic-bezier(0.4, 0, 0.2, 1);',
+                'drawer-out-desktop': 'cart-drawer-close-desktop 500ms cubic-bezier(0.4, 0, 0.2, 1);',
+                'drawer-out-tablet': 'cart-drawer-close-tablet 500ms cubic-bezier(0.4, 0, 0.2, 1);',
+                'drawer-out-mobile': 'cart-drawer-close-mobile 500ms cubic-bezier(0.4, 0, 0.2, 1);',
+            },
         },
         screens: {
             xs: `${BREAKPOINTS.xs}px`,
