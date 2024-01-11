@@ -2,10 +2,11 @@
 /* eslint-disable func-names */
 const fs = require('fs');
 const path = require('path');
-const requestGraph = require('../graphql/request');
-const { getHost } = require('../../helpers/config');
+const requestGraph = require('@graphql_request');
+const { getHost } = require('@helper_config');
+const { sitemap } = require('@config');
 
-const baseDir = path.join('./public/static/');
+const baseDir = path.join('./public/');
 
 const queryProduct = (page, size) => `
 {
@@ -89,18 +90,41 @@ const getXmlData = async (res) => {
         const response = requestGraph(queryCategory);
         resolve(response);
     });
+
+    // init page
+    const initContent = `<xml version="1.0" encoding="UTF-8">
+    <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:content="http://www.google.com/schemas/sitemap-content/1.0"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+        <url>
+            <loc>${getHost()}</loc>
+        </url>
+    `;
+    const endContent = `
+            <url>
+                <loc>${getHost()}/</loc>
+                <priority>0.5</priority>
+            </url>
+        </urlset>
+    </xml>`;
+    const { limitDataPerPage } = sitemap;
+    let counter = 0;
+    let contents = [];
+    let content = initContent;
+
+    const checkPagination = (done = false) => {
+        counter += 1;
+        if (counter === limitDataPerPage || (done && counter > 0)) {
+            content += endContent;
+            contents = [...contents, content];
+            content = initContent;
+            counter = 0;
+        }
+    };
+
     Promise.all([dataProducts, getCategory]).then((values) => {
         const category = values[1].categoryList[0].children;
         const products = values[0];
-
-        let content = `<xml version="1.0" encoding="UTF-8">
-        <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-            xmlns:content="http://www.google.com/schemas/sitemap-content/1.0"
-            xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-            <url>
-                <loc>${getHost()}</loc>
-            </url>
-        `;
 
         // generate category sitemap
         for (let index = 0; index < category.length; index++) {
@@ -115,6 +139,7 @@ const getXmlData = async (res) => {
                     <priority>0.5</priority>
                 </url>
             `;
+                checkPagination();
                 for (let child1 = 0; child1 < category[index].children.length; child1++) {
                     const children1 = category[index].children[child1];
                     let childTime = children1.updated_at;
@@ -127,6 +152,7 @@ const getXmlData = async (res) => {
                         <priority>0.5</priority>
                     </url>
                 `;
+                    checkPagination();
                     for (let child2 = 0; child2 < children1.children.length; child2++) {
                         const children2 = children1.children[child2];
                         let childTime2 = children1.updated_at;
@@ -139,6 +165,7 @@ const getXmlData = async (res) => {
                         <priority>0.5</priority>
                     </url>
                 `;
+                        checkPagination();
                     }
                 }
             }
@@ -148,7 +175,8 @@ const getXmlData = async (res) => {
         for (let index = 0; index < products.length; index++) {
             let productTime = products[index].updated_at;
             productTime = productTime.split(' ');
-            content += `<url>
+            content += `
+            <url>
                 <loc>${getHost()}/${products[index] && products[index].url_key && products[index].url_key.replace('&', '&amp;')}</loc>
                 <lastmod>${`${productTime[0]}T${productTime[1]}+00:00`}</lastmod>
                 <changefreq>daily</changefreq>
@@ -170,44 +198,77 @@ const getXmlData = async (res) => {
             <PageMap xmlns="http://www.google.com/schemas/sitemap-pagemap/1.0">
                 <DataObject type="thumbnail">
                 <Attribute name="name" value="${products[index] && products[index].url_key && products[index].url_key.replace('&', '&amp;')}"/>
-                <Attribute name="src" value="${products[index] && products[index].small_image
+                <Attribute name="src" value="${
+    products[index]
+                    && products[index].small_image
                     && products[index].small_image.url
-                    && products[index].small_image.url.replace('&', '&amp;')}"/>
+                    && products[index].small_image.url.replace('&', '&amp;')
+}"/>
                 </DataObject>
             </PageMap>
             `;
             content += '  </url>';
+            checkPagination();
         }
+        checkPagination(true);
+        const paths = [];
 
-        content += `<url>
-            <loc>${getHost()}/</loc>
-            <priority>0.5</priority>
-        </url>`;
-        content += '</urlset>';
-        // write file to public
-        fs.writeFile(`${baseDir}sitemap.xml`, content, (err) => {
-            if (err) throw err;
+        // create all sitemap files
+        contents.map((contentVal, index) => {
+            const pathName = `${baseDir}sitemap${index + 1}.xml`;
+            fs.writeFileSync(pathName, contentVal);
+            paths.push(pathName);
+            return true;
         });
+
+        const sitemapInfo = JSON.stringify({
+            paths,
+            date: new Date(),
+        });
+
+        // create sitemap-info.js
+        fs.writeFileSync(`${baseDir}sitemap-info.json`, sitemapInfo);
 
         res.statusCode = 200;
         res.setHeader('Content-Type', 'text/xml');
-        res.end(content);
+        res.end(contents[0]);
     });
 };
 
-const generateXml = (req, res) => {
-    if (fs.existsSync(`${baseDir}sitemap.xml`)) {
-        const { birthtime } = fs.statSync(`${baseDir}sitemap.xml`);
+const generateXml = async (req, res) => {
+    const sitemap1Path = `${baseDir}sitemap1.xml`;
+    if (fs.existsSync(sitemap1Path)) {
+        const { birthtime } = fs.statSync(sitemap1Path);
         const created = new Date(birthtime);
         const dateCreated = created.getDate();
         const now = new Date().getDate();
         // if date not same, get latest
         if (now !== dateCreated) {
-            fs.unlink(`${baseDir}sitemap.xml`, () => {
-                getXmlData(res);
+            const sitemapInfoPath = `${baseDir}sitemap-info.json`;
+
+            let paths = [];
+            // read sitemap-info
+            fs.readFile(sitemapInfoPath, { encoding: 'utf-8' }, (err, data) => {
+                if (!err) {
+                    const sitemapInfo = JSON.parse(data);
+                    if (sitemapInfo?.paths) {
+                        paths = sitemapInfo?.paths;
+                    }
+                    // delete all sitemap files
+                    paths.map((pathName) => {
+                        fs.unlinkSync(pathName);
+                        return true;
+                    });
+
+                    // delete sitemap-info.json
+                    fs.unlinkSync(sitemapInfoPath);
+
+                    // regenerate sitemap
+                    getXmlData(res);
+                }
             });
         } else {
-            fs.readFile(`${baseDir}sitemap.xml`, { encoding: 'utf-8' }, (err, data) => {
+            fs.readFile(sitemap1Path, { encoding: 'utf-8' }, (err, data) => {
                 if (!err) {
                     res.statusCode = 200;
                     res.setHeader('Content-Type', 'text/xml');
