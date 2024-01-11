@@ -16,19 +16,20 @@ const onReInit = () => {
     }
 };
 
-const FeaturedProducts = ({
-    t, isLogin, storeConfig,
-}) => {
-    const context = (isLogin && isLogin == 1) ? { request: 'internal' } : {};
-    const { loading, data, error } = gqlService.getFeaturedProducts({
-        skip: !storeConfig,
-        variables: {
-            url_key: storeConfig?.pwa?.features_product_url_key,
-            context,
+const FeaturedProducts = ({ t, isLogin, storeConfig }) => {
+    const context = isLogin && isLogin == 1 ? { request: 'internal' } : {};
+    const { loading, data, error } = gqlService.getFeaturedProducts(
+        {
+            skip: !storeConfig,
+            variables: {
+                url_key: '',
+                context,
+            },
         },
-    }, storeConfig);
+        storeConfig,
+    );
 
-    if ((loading) && !data) return <FeaturedSkeleton />;
+    if (loading && !data) return <FeaturedSkeleton />;
     if (error) {
         return <ErrorInfo variant="error" text={t('home:errorFetchData')} />;
     }

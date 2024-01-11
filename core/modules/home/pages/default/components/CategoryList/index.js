@@ -4,33 +4,24 @@ import CategoryListSkeleton from '@core_modules/home/pages/default/components/Sk
 import gqlService from '@core_modules/home/service/graphql';
 import ErrorInfo from '@core_modules/home/pages/default/components/ErrorInfo';
 
-const CategoryList = ({
-    storeConfig, t,
-}) => {
+const CategoryList = ({ storeConfig, t }) => {
     const { loading, data, error } = gqlService.getCategoryList({
         skip: !storeConfig,
-        variables: { url_key: storeConfig?.pwa?.category_list_url_key },
+        variables: { url_key: '' },
     });
 
     if (loading) return <CategoryListSkeleton />;
     if (error) {
-        return (
-            <ErrorInfo variant="error" text={t('home:errorFetchData')} />
-        );
+        return <ErrorInfo variant="error" text={t('home:errorFetchData')} />;
     }
     if (!data || data.categoryList.length === 0) {
-        return (
-            <ErrorInfo variant="warning" text={t('home:nullData')} />
-        );
+        return <ErrorInfo variant="warning" text={t('home:nullData')} />;
     }
 
     if (!loading && data && data.categoryList.length > 0) {
         return (
             <>
-                <CategoryListView
-                    storeConfig={storeConfig}
-                    data={data.categoryList[0].children}
-                />
+                <CategoryListView storeConfig={storeConfig} data={data.categoryList[0].children} />
             </>
         );
     }

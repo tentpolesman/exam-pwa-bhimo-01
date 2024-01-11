@@ -101,8 +101,6 @@ export const storeConfig = `
           add_to_cart_enable
           app_name
           background_color
-          banner_slider_enable
-          banner_slider_title
           button_background_color
           button_background_hover_color
           button_border_color
@@ -111,12 +109,6 @@ export const storeConfig = `
           button_disabled_text_color
           button_text_color
           button_text_hover_color
-          category_list_enable
-          category_list_url_key            
-          category_list_image_size_desktop_height
-          category_list_image_size_desktop_width
-          category_list_image_size_mobile_height
-          category_list_image_size_mobile_width
           cms_contact_identifiers
           cms_social_media_link_identifer
           configurable_options_enable
@@ -130,8 +122,6 @@ export const storeConfig = `
           facebook_app_id
           facebook_meta_id_app_id
           facebook_meta_id_enable
-          features_product_enable
-          features_product_url_key
           font_color
           footer_version
           header_version

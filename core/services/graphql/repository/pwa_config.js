@@ -32,8 +32,6 @@ export const featuresConfig = () => useQuery(Schema.featuresConfig);
 
 export const categoryListConfig = () => useQuery(Schema.categoryListConfig);
 
-export const bannerSliderConfig = () => useQuery(Schema.bannerSliderConfig);
-
 export const facebookMetaConfig = () => useQuery(Schema.facebookMetaConfig);
 
 export const productListConfig = () => useLazyQuery(Schema.productListConfig);
@@ -54,6 +52,5 @@ export default {
     registerConfig,
     featuresConfig,
     categoryListConfig,
-    bannerSliderConfig,
     facebookMetaConfig,
 };

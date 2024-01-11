@@ -10,10 +10,7 @@ const BannerSlider = (props) => {
     const { loading, data, error } = gqlService.getSlider({
         skip: !storeConfig,
         variables: {
-            input:
-                slider_id === undefined
-                    ? { title: storeConfig?.pwa?.banner_slider_title }
-                    : { id: typeof slider_id === 'string' ? parseInt(slider_id, 10) : slider_id },
+            input: slider_id === undefined ? { title: '' } : { id: typeof slider_id === 'string' ? parseInt(slider_id, 10) : slider_id },
         },
     });
 
