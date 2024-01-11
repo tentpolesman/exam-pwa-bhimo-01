@@ -11,7 +11,7 @@
 
 @layer components {
     .prose {
-        @apply text-base leading-base text-neutral max-w-max
+        @apply text-base leading-base text-neutral
     }
 
     .prose > p > a {

@@ -23,7 +23,9 @@ const TYPE_PWA_NEWSLETTER = 'pwa-newsletter-subscribe';
 const DOM_NAME = 'pwa';
 
 const WidgetRenderer = (props) => {
-    const { content, storeConfig, underlinedLink } = props;
+    const {
+        content, storeConfig, underlinedLink, applyProse,
+    } = props;
     const { t } = useTranslation(['common']);
 
     const widgetContent = useMemo(() => {
@@ -126,9 +128,14 @@ const WidgetRenderer = (props) => {
 
     return (
         <div
-            className={cx('prose', {
-                'prose-a:no-underline': underlinedLink,
-            })}
+            className={cx(
+                applyProse ? 'prose' : '',
+                applyProse
+                    ? {
+                        'prose-a:no-underline': underlinedLink,
+                    }
+                    : '',
+            )}
         >
             {content ? (
                 <WidgetComponent {...props} />

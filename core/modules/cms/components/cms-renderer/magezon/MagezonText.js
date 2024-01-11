@@ -8,7 +8,7 @@ const MagezonText = (props) => {
 
     return (
         <div className="mgz-text">
-            <WidgetRenderer content={content} underlinedLink={underlinedLink} {...other} />
+            <WidgetRenderer applyProse content={content} underlinedLink={underlinedLink} {...other} />
             <style jsx>
                 {`
                     .mgz-text {
