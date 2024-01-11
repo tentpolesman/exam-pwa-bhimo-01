@@ -161,7 +161,6 @@ export const configpwa = gql`
                 add_to_cart_enable
                 app_name
                 cms_contact_identifiers
-                cms_social_media_link_identifer
                 configurable_options_enable
                 custom_install_app_enable
                 default_robot
@@ -192,9 +191,6 @@ export const configpwa = gql`
                 paypal_enable
                 paypal_merchant_id
                 popup_detail_image_enable
-                promo_banner_lite_after_width
-                promo_banner_lite_label_width
-                promo_banner_lite_top_width
                 quick_view_enable
                 rating_enable
                 recaptcha_contact_enable
