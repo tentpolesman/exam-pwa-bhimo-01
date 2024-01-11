@@ -8,16 +8,17 @@ const { getAppEnv, getAccessEnv } = require('../../../helpers/env');
 
 function requestGraph(query, variables = {}, context = {}, config = {}) {
     let token = '';
+    let tokenAuth = '';
     if (config?.token) {
         if (query.includes('snap_client_key')) {
-            token = `Bearer ${getAccessEnv()}`;
+            tokenAuth = `Bearer ${getAccessEnv()}`;
         } else {
             token = `Bearer ${config.token}`;
         }
     } else if (context?.req?.cookies || context?.req?.headers) {
         const cookies = getCookies({ req: context?.req, res: context?.req });
         if (query.includes('snap_client_key')) {
-            token = `Bearer ${getAccessEnv()}`;
+            tokenAuth = `Bearer ${getAccessEnv()}`;
         } else {
             token = cookies[customerTokenKey]
                 ? cookies[customerTokenKey]
@@ -25,11 +26,15 @@ function requestGraph(query, variables = {}, context = {}, config = {}) {
             token = `Bearer ${token}`;
         }
     } else if (query.includes('snap_client_key')) {
-        token = `Bearer ${getAccessEnv()}`;
+        tokenAuth = `Bearer ${getAccessEnv()}`;
     }
     const additionalHeader = storeCode ? { store: storeCode } : {};
     if (token && token !== '') {
         additionalHeader.Authorization = token;
+    }
+
+    if (tokenAuth && tokenAuth !== '') {
+        additionalHeader.Authentication = tokenAuth;
     }
 
     const headers = {
