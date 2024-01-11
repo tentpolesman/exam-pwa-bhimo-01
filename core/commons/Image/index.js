@@ -34,12 +34,20 @@ const CustomImage = ({
     slickBanner = false,
     preload = false,
     style = '',
+    retina = false,
 }) => {
     const enable = storeConfig && storeConfig.pwa && storeConfig.pwa.thumbor_enable;
     const useHttpsOrHttp = storeConfig && storeConfig.pwa && storeConfig.pwa.thumbor_https_http;
     const thumborUrl = storeConfig && storeConfig.pwa && storeConfig.pwa.thumbor_url;
+
+    let w = width;
+    let h = height;
+    if (retina) {
+        w = width * 2;
+        h = height * 2;
+    }
     const optimizedUrl = src.toLowerCase().indexOf('http://') === 0 || src.toLowerCase().indexOf('https://') === 0
-        ? generateThumborUrl(src, width, height, enable, useHttpsOrHttp, thumborUrl, quality)
+        ? generateThumborUrl(src, w, h, enable, useHttpsOrHttp, thumborUrl, quality)
         : src;
 
     const [imageUrl, setImageUrl] = useState(optimizedUrl);

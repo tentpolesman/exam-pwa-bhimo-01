@@ -16,7 +16,7 @@ import { COLORS } from '@root/core/theme/vars';
 const MenuChildren = dynamic(() => import('@common_header/components/v1/mcategoryChildren'), { ssr: true });
 
 const Menu = (props) => {
-    const { data, storeConfig } = props;
+    const { data } = props;
     // WIP : Custom Header Menu
     // const cmsPages = storeConfig && storeConfig.cms_page ? storeConfig.cms_page.split(',') : [];
     let menu = data?.categories?.items[0]?.children;
@@ -75,7 +75,7 @@ const Menu = (props) => {
         <nav className="menu-wrapper" role="navigation">
             <ul className="nav" role="menubar" id="header-nav-menubar">
                 {menu.map((val, idx) => {
-                    if ((val.include_in_menu || storeConfig.pwa.ves_menu_enable) && val.name) {
+                    if (val.include_in_menu && val.name) {
                         const linkEl = useRef(null);
                         const megaMenuRef = useRef(null);
 
