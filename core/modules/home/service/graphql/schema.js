@@ -32,7 +32,7 @@ export const getBannerSlider = gql`
 `;
 
 export const getFeaturedProducts = () => gql`
-    query($url_key: String!) {
+    query ($url_key: String!) {
         categoryList(filters: { url_key: { eq: $url_key } }) {
             children {
                 id
@@ -51,7 +51,7 @@ export const getFeaturedProducts = () => gql`
                         new_to_date
                         canonical_url
                         small_image {
-                            url,
+                            url
                         }
                         price_tiers {
                             discount {
@@ -87,7 +87,7 @@ export const getFeaturedProducts = () => gql`
 `;
 
 export const getCategoryList = gql`
-    query($url_key: String!) {
+    query ($url_key: String!) {
         categoryList(filters: { url_key: { eq: $url_key } }) {
             children {
                 id
@@ -111,23 +111,13 @@ export const getCmsPageConfig = gql`
         }
     }
 `;
-
+// sini
 export const getHomePageConfig = `
 {
     storeConfig {
         pwa {
             use_cms_page_enable
             use_cms_page_identifier
-            banner_slider_enable
-            banner_slider_title
-            category_list_enable
-            category_list_url_key            
-            category_list_image_size_desktop_height
-            category_list_image_size_desktop_width
-            category_list_image_size_mobile_height
-            category_list_image_size_mobile_width
-            features_product_enable
-            features_product_url_key
         }
     }
 }
