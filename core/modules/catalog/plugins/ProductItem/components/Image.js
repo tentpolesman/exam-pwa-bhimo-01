@@ -21,6 +21,12 @@ const ImageDetail = (props) => {
 
     let classImage = '!w-[144px] !h-[144px] tablet:!w-[205px] tablet:!h-[205px] desktop:!w-[250px] desktop:!h-[250px]';
 
+    const imageUrl = spesificProduct.id
+        ? spesificProduct.image.url
+        : small_image?.url || `${basePath}/assets/img/placeholder.png`;
+
+    const imageAlt = small_image?.label || name;
+
     if (!isGrid) {
         classImage = '!w-[120px] !h-[120px] tablet:!w-[320px] tablet:!h-[320px] desktop:!w-[320px] desktop:!h-[320px]';
     }
@@ -37,23 +43,17 @@ const ImageDetail = (props) => {
             className={cx('overflow-hidden flex justify-center')}
         >
             <Thumbor
-                // eslint-disable-next-line no-nested-ternary
-                src={
-                    spesificProduct.id
-                        ? spesificProduct.image.url
-                        : small_image && small_image.url
-                          ? small_image.url
-                          : `${basePath}/assets/img/placeholder.png`
-                }
+                src={imageUrl}
                 className={cx(classImage, 'overflow-hidden', className)}
                 classContainer={cx(classImage, classContainer)}
                 styleContainer={{ padding: 0 }}
                 width={defaultWidth}
                 height={defaultHeight}
                 quality={80}
-                alt={small_image && small_image.url ? small_image.label : name}
+                alt={imageAlt}
                 storeConfig={storeConfig}
                 preload={preload}
+                retina
             />
         </Link>
     );
