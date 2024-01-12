@@ -14,7 +14,7 @@ import { modules } from '@config';
 export const filterProduct = (filter, router) => {
     // remove duplicate filter
     const newFilter = filter.filter((value, index) => {
-    // eslint-disable-next-line no-underscore-dangle
+        // eslint-disable-next-line no-underscore-dangle
         const _value = JSON.stringify(value);
         return index === filter.findIndex((obj) => JSON.stringify(obj) === _value);
     });
@@ -75,9 +75,9 @@ export const filterProduct = (filter, router) => {
     return queryFilter;
 };
 
-export const getProductAgragations = () => gql`
-    {
-        products(search: "") {
+export const getProductAggregations = () => gql`
+    query getProductAggregations($filter: ProductAttributeFilterInput) {
+        products(search: "", filter: $filter) {
             aggregations {
                 attribute_code
             }
@@ -393,7 +393,9 @@ export const getProductPrice = (config = {}, router) => gql`
             }
           }
           __typename
-        }` : ''}
+        }`
+        : ''
+}
       }
     }
   }
@@ -609,7 +611,9 @@ query getDetailproduct($url_key: String!){
                   }
                 }
                 __typename
-              }` : ''}
+              }`
+        : ''
+}
 
         ... on BundleProduct {
           price_view
@@ -619,18 +623,17 @@ query getDetailproduct($url_key: String!){
 }`;
 
 export const getSeller = gql`
-query getSeller($seller_id: [Int!]){
-  getSeller(input: {
-    seller_id: $seller_id
-  }) {
-    id
-    name
-    address
-    city
-    description
-    latitude
-    longitude
-    logo
-    status
-  }
-}`;
+    query getSeller($seller_id: [Int!]) {
+        getSeller(input: { seller_id: $seller_id }) {
+            id
+            name
+            address
+            city
+            description
+            latitude
+            longitude
+            logo
+            status
+        }
+    }
+`;
