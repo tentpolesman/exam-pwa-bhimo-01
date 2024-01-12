@@ -9,7 +9,7 @@
 /* eslint-disable max-len */
 import {
     custDataNameCookie,
-    // features,
+    features,
     modules,
     // sentry
 } from '@config';
