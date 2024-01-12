@@ -39,6 +39,11 @@ const passwordStrength = {
     numberOfRequiredClass: 3, // Lowercase + Uppercse + Dgits + spesial caracter = 4
 };
 
+/* Sitemap */
+const sitemap = {
+    limitDataPerPage: 50000,
+};
+
 /* Translation */
 const translation = {
     defaultLanguage: 'en', // just change to your default language
@@ -333,13 +338,46 @@ const modules = {
         },
         xendit: {
             // Pay via button pay now
-            paymentPrefixCodeOnSuccess: ['alfamart', 'bcava', 'briva', 'qris', 'shopeepay', 'bniva', 'mandiriva',
-                'permatava', 'indomaret', 'bjbva', 'bsiva', 'dana', 'ovo', 'linkaja', 'qr_codes', 'gcash', 'grabpay', 'paymaya',
-                'seven_eleven', 'cebuana', 'dp_palawan', 'dp_mlhuillier', 'dp_ecpay_loan', 'shopeepayph', 'astrapay',
+            paymentPrefixCodeOnSuccess: [
+                'alfamart',
+                'bcava',
+                'briva',
+                'qris',
+                'shopeepay',
+                'bniva',
+                'mandiriva',
+                'permatava',
+                'indomaret',
+                'bjbva',
+                'bsiva',
+                'dana',
+                'ovo',
+                'linkaja',
+                'qr_codes',
+                'gcash',
+                'grabpay',
+                'paymaya',
+                'seven_eleven',
+                'cebuana',
+                'dp_palawan',
+                'dp_mlhuillier',
+                'dp_ecpay_loan',
+                'shopeepayph',
+                'astrapay',
             ],
             // Should pay upon place order
-            paymentPrefixCode: ['cc', 'cc_subscription', 'dd_bri', 'kredivo', 'dd_bpi', 'dd_ubp', 'billease',
-                'uangme', 'cashalo', 'akulaku', 'dd_rcbc',
+            paymentPrefixCode: [
+                'cc',
+                'cc_subscription',
+                'dd_bri',
+                'kredivo',
+                'dd_bpi',
+                'dd_ubp',
+                'billease',
+                'uangme',
+                'cashalo',
+                'akulaku',
+                'dd_rcbc',
             ],
         },
     },
@@ -529,4 +567,5 @@ module.exports = {
     keyLocalStorage,
     requestTimeout,
     customerTokenKey,
+    sitemap,
 };

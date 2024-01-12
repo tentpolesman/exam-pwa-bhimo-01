@@ -42,14 +42,13 @@ module.exports = {
                 aspects: ['invalidHref', 'preferButton'],
             },
         ],
-        'no-restricted-imports': [
-            'error',
-        ],
+        'no-restricted-imports': ['error'],
         'import/no-extraneous-dependencies': 'off',
         'import/no-unresolved': 'off',
         'react/forbid-prop-types': 'off',
         'react/no-unknown-property': 'off',
         'jsx-a11y/label-has-associated-control': 'off',
+        'linebreak-style': 'off',
     },
     settings: {
         'import/ignore': 'node_modules',

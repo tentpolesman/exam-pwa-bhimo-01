@@ -89,7 +89,7 @@ const ProfileForm = (props) => {
                         onChange={handleWa}
                         classNames={{ checkboxContainerClasses: cx('flex', 'items-center') }}
                     >
-                        <label for="profile-whatsapptrue">
+                        <label htmlFor="profile-whatsapptrue">
                             <Typography variant="bd-2b">{t('customer:isWhatsapp')}</Typography>
                         </label>
                     </Checkbox>
@@ -122,7 +122,7 @@ const ProfileForm = (props) => {
                         onChange={() => setEditEmail(!editEmail)}
                         classNames={{ checkboxContainerClasses: cx('flex', 'items-center') }}
                     >
-                        <label for="profile-emailtrue">
+                        <label htmlFor="profile-emailtrue">
                             <Typography variant="bd-2b">{`${t('common:button:change')} Email`}</Typography>
                         </label>
                     </Checkbox>
@@ -155,7 +155,7 @@ const ProfileForm = (props) => {
                         onChange={() => setEditPass(!editPass)}
                         classNames={{ checkboxContainerClasses: cx('flex', 'items-center') }}
                     >
-                        <label for="profile-passwordtrue">
+                        <label htmlFor="profile-passwordtrue">
                             <Typography variant="bd-2b">{`${t('common:button:change')} Password`}</Typography>
                         </label>
                     </Checkbox>

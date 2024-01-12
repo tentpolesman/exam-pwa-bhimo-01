@@ -42,7 +42,7 @@ export const formatPrice = (value, currency = general.defaultCurrencyCode, curre
     // set locale from storeConfig -> locale if exists, otherwise use default locale set in swift.config.js
     if (currencyCache) {
         localeConfig = currencyCache?.locale?.replace('_', '-');
-        enableRemoveDecimal = currencyCache.enableRemoveDecimal;
+        enableRemoveDecimal = currencyCache?.enableRemoveDecimal;
     }
     /**
      * window === undefined to handle localstorage from reload

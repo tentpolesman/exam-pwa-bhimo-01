@@ -101,8 +101,6 @@ export const storeConfig = `
           add_to_cart_enable
           app_name
           background_color
-          banner_slider_enable
-          banner_slider_title
           button_background_color
           button_background_hover_color
           button_border_color
@@ -111,14 +109,7 @@ export const storeConfig = `
           button_disabled_text_color
           button_text_color
           button_text_hover_color
-          category_list_enable
-          category_list_url_key            
-          category_list_image_size_desktop_height
-          category_list_image_size_desktop_width
-          category_list_image_size_mobile_height
-          category_list_image_size_mobile_width
           cms_contact_identifiers
-          cms_social_media_link_identifer
           configurable_options_enable
           custom_install_app_enable
           default_font
@@ -130,8 +121,6 @@ export const storeConfig = `
           facebook_app_id
           facebook_meta_id_app_id
           facebook_meta_id_enable
-          features_product_enable
-          features_product_url_key
           font_color
           footer_version
           header_version
@@ -166,9 +155,6 @@ export const storeConfig = `
           popup_detail_image_enable
           primary_color
           product_listing_navigation
-          promo_banner_lite_after_width
-          promo_banner_lite_label_width
-          promo_banner_lite_top_width
           quick_view_enable
           rating_enable
           recaptcha_contact_enable
@@ -198,9 +184,6 @@ export const storeConfig = `
           thumbor_url
           use_cms_page_enable
           use_cms_page_identifier
-          ves_menu_alias
-          ves_menu_enable
-          ves_menu_enable
           warning_msg_color
           gtm_enable
           gtm_id_local

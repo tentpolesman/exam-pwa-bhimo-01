@@ -164,7 +164,7 @@ const CheckBox = (props) => {
                                 checked={selected.indexOf(item.value) !== -1}
                                 id={item.id || `${item.value.replace(/ /g, '')}_${idx}`}
                             />
-                            <label for={item.id || `${item.value.replace(/ /g, '')}_${idx}`}>
+                            <label htmlFor={item.id || `${item.value.replace(/ /g, '')}_${idx}`}>
                                 <Typography
                                     variant="bd-1b"
                                     className={cx({

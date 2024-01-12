@@ -101,7 +101,6 @@ const Layout = (props) => {
         // isLoginPage = false,
         // isShowChat = true,
         deviceType = {},
-        preloadImages = [],
     } = props;
     const { ogContent = {}, schemaOrg = null, headerDesktop = true, footer = true } = pageConfig;
     const router = useRouter();
@@ -184,10 +183,10 @@ const Layout = (props) => {
         });
     };
 
-    const handleRestrictionCookies = () => {
-        setRestrictionCookies(true);
-        setCookies('user_allowed_save_cookie', true);
-    };
+    // const handleRestrictionCookies = () => {
+    //     setRestrictionCookies(true);
+    //     setCookies('user_allowed_save_cookie', true);
+    // };
 
     const allowHeaderCheckout = modules.checkout.checkoutOnly ? !modules.checkout.checkoutOnly : withLayoutHeader;
 
@@ -288,7 +287,7 @@ const Layout = (props) => {
                 dataLayer: {
                     pageName: pageConfig.title,
                     pageType: pageConfig.pageType || 'other',
-                    customerGroup: isLogin == 1 ? 'GENERAL' : 'NOT LOGGED IN',
+                    customerGroup: isLogin === 1 ? 'GENERAL' : 'NOT LOGGED IN',
                 },
             };
             if (custData && custData.email) {
@@ -333,11 +332,6 @@ const Layout = (props) => {
         }
 
         return classes;
-    };
-
-    const footerMobile = {
-        marginBottom: pageConfig.bottomNav && storeConfig.pwa && storeConfig.pwa.mobile_navigation === 'bottom_navigation' ? '55px' : 0,
-        display: pageConfig.bottomNav && storeConfig.pwa && storeConfig.pwa.mobile_navigation === 'bottom_navigation' ? 'flex' : null,
     };
 
     if (!headerDesktop) {
@@ -459,7 +453,6 @@ const Layout = (props) => {
                     hrefLang={defaultLang}
                     href={canonicalUrl.substring(0, canonicalUrl.indexOf('?') !== -1 ? canonicalUrl.indexOf('?') : canonicalUrl.length)}
                 />
-                {preloadImages && Object.values(preloadImages).map((_image, idx) => <link rel="preload" as="image" href={_image} key={idx} />)}
             </Head>
             {/* {showPopup && storeConfig && storeConfig.pwa && storeConfig.pwa.header_version !== 'v2' ? (
                 <PopupInstallAppMobile appName={appName} installMessage={installMessage} />
