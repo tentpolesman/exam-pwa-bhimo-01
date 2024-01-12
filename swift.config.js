@@ -23,7 +23,7 @@ const HOST = {
 /* Magento GraphQL Endpoint */
 const graphqlEndpoint = {
     local: 'https://swift-dev.testingnow.me/graphql',
-    dev: 'https://swift.testingnow.me/graphql',
+    dev: 'https://swift-dev.testingnow.me/graphql',
     stage: 'https://b2cdemonew.gcp-staging.testingnow.me/graphql',
     prod: 'https://b2cdemo.getswift.asia/graphql',
 };
@@ -59,7 +59,7 @@ const requestTimeout = 30000; // miliseconds
 
 // error management monitoring
 const sentry = {
-    enabled: false,
+    enabled: false, // when enable, please uncomment import Sentry in _app.js
     enableMode: 'production',
     dsn: {
         local: 'https://c60fbed461fd49da9455730ba70da8a6@o484453.ingest.sentry.io/5537614',
@@ -70,7 +70,7 @@ const sentry = {
 };
 
 const rollbar = {
-    enabled: false,
+    enabled: false, // when enable, please uncomment import rollbar scrypt in _document.js
     config: {
         accessToken: '76876f52664341b4a1981c4618723bda',
         captureUncaught: true,
@@ -152,6 +152,7 @@ const features = {
             prod: '', // sample: 'https://chat-swift.testingnow.me/graphql',
         },
     },
+    // IMPORTANT!! If you need to use firebase on your project, please uncomment import firebase in _app.js
     firebase: {
         config: {
             apiKey: '', // sample: AIzaSyBayG_pE-BOs6DU0WAoZOa3EbJMpBlrXBI
