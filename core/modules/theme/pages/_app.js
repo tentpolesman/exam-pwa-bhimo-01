@@ -45,7 +45,6 @@ import { getDeviceByUA, getUAString } from '@root/core/helpers/deviceDection';
 // import { Integrations } from '@sentry/tracing';
 
 // import { useApollo } from '@root/core/lib/apollo/apolloClient';
-import Layout from '@layout';
 
 // const { publicRuntimeConfig } = getConfig();
 
@@ -361,12 +360,8 @@ class MyApp extends App {
 
         return (
             <>
-                <Layout {...pageProps}>
-                    <PageProgressLoader />
-                    <Component {...pageProps} />
-                </Layout>
-                {/* <PageProgressLoader />
-                <Component {...pageProps} /> */}
+                <PageProgressLoader />
+                <Component {...pageProps} />
             </>
         );
     }

@@ -14,5 +14,4 @@ const Page = (props) => {
     return <Checkout {...props} />;
 };
 
-// export default withApollo({ ssr: true })(withTranslation()(Page));
-export default (withTranslation()(Page));
+export default withApollo({ ssr: true })(withTranslation()(Page));
