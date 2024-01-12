@@ -9,7 +9,7 @@
 /* eslint-disable max-len */
 import {
     custDataNameCookie,
-    // features,
+    features,
     modules,
     // sentry
 } from '@config';
@@ -243,46 +243,45 @@ class MyApp extends App {
         /*
          * ---------------------------------------------
          * FIREBASE INITIALIZATION
-         * Commented by default to avoid unused code which directly impact on performance socre
-         * Uncomment this if firebase is used in you progect
          */
-        // if (features.firebase.config.apiKey !== '' && features.firebase.pushNotification.enabled) {
-        //     // initial firebase messaging
-        //     Notification.init();
-        //     // handle if have message on focus
-        //     try {
-        //         const messaging = firebase.messaging();
-        //         // Handle incoming messages. Called when:
-        //         // - a message is received while the app has focus
-        //         // - the user clicks on an app notification created by a service worker
-        //         //   `messaging.setBackgroundMessageHandler` handler.
-        //         messaging.onMessage((payload) => {
-        //             navigator.serviceWorker.ready.then((registration) => {
-        //                 // This prevents to show one notification for each tab
-        //                 setTimeout(() => {
-        //                     // eslint-disable-next-line no-console
-        //                     console.log('[firebase-messaging-sw.js] Received foreground message ', payload);
-        //                     const lastNotification = localStorage.getItem('lastNotification');
-        //                     const isDifferentContent = payload.data.updated_date !== lastNotification;
-        //                     if (isDifferentContent) {
-        //                         localStorage.setItem('lastNotification', payload.data.updated_date + payload.data.title);
-        //                         registration.showNotification(payload.data.title, {
-        //                             body: payload.data.body,
-        //                             vibrate: [200, 100, 200, 100, 200, 100, 200],
-        //                             icon: payload.data.icons || '',
-        //                             image: payload.data.image || '',
-        //                             requireInteraction: true,
-        //                             data: payload.data,
-        //                         });
-        //                     }
-        //                 }, Math.random() * 1000);
-        //             });
-        //         });
-        //     } catch (err) {
-        //         // eslint-disable-next-line no-console
-        //         console.log(err);
-        //     }
-        // }
+        if (features.firebase.config.apiKey !== '' && features.firebase.pushNotification.enabled) {
+            // initial firebase messaging
+            Notification.init();
+            // handle if have message on focus
+            try {
+                // eslint-disable-next-line no-undef
+                const messaging = firebase.messaging();
+                // Handle incoming messages. Called when:
+                // - a message is received while the app has focus
+                // - the user clicks on an app notification created by a service worker
+                //   `messaging.setBackgroundMessageHandler` handler.
+                messaging.onMessage((payload) => {
+                    navigator.serviceWorker.ready.then((registration) => {
+                        // This prevents to show one notification for each tab
+                        setTimeout(() => {
+                            // eslint-disable-next-line no-console
+                            console.log('[firebase-messaging-sw.js] Received foreground message ', payload);
+                            const lastNotification = localStorage.getItem('lastNotification');
+                            const isDifferentContent = payload.data.updated_date !== lastNotification;
+                            if (isDifferentContent) {
+                                localStorage.setItem('lastNotification', payload.data.updated_date + payload.data.title);
+                                registration.showNotification(payload.data.title, {
+                                    body: payload.data.body,
+                                    vibrate: [200, 100, 200, 100, 200, 100, 200],
+                                    icon: payload.data.icons || '',
+                                    image: payload.data.image || '',
+                                    requireInteraction: true,
+                                    data: payload.data,
+                                });
+                            }
+                        }, Math.random() * 1000);
+                    });
+                });
+            } catch (err) {
+                // eslint-disable-next-line no-console
+                console.log(err);
+            }
+        }
 
         /*
          * ---------------------------------------------
