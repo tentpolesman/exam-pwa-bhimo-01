@@ -28,8 +28,6 @@ import { frontendConfig } from '@helpers/frontendOptions';
 import { localTotalCart } from '@services/graphql/schema/local';
 import localFont from 'next/font/local';
 import Script from 'next/script';
-import { withApollo } from '@root/core/lib/apollo';
-import { withTranslation } from 'next-i18next';
 
 /**
  * Set font family using nextjs helper,
@@ -554,5 +552,4 @@ const Layout = (props) => {
     );
 };
 
-// export default Layout;
-export default withApollo({ ssr: true })(withTranslation()(Layout));
+export default Layout;
