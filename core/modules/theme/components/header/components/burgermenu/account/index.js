@@ -27,13 +27,13 @@ const BurgerMenuAccount = (props) => {
     const { isMobile } = useMediaQuery();
 
     return (
-        <>
+        <div>
             {!switcherContentActive && (
                 <>
                     <div className={cx('p-4')}>
                         <div
                             className={cx('grid', 'grid-cols-1', 'pb-4', {
-                                'border-b-[1px]border-neutral-300': isLogin || (isMobile && !isLogin),
+                                'border-b-[1px] border-neutral-300': isLogin || (isMobile && !isLogin),
                             })}
                         >
                             {isLogin ? (
@@ -58,8 +58,8 @@ const BurgerMenuAccount = (props) => {
                             {isLogin ? (
                                 <Button
                                     className={cx(
-                                        '!px-0',
-                                        '!py-0',
+                                        '!px-4',
+                                        '!py-3',
                                         'hover:shadow-none',
                                         'focus:shadow-none',
                                         'active:shadow-none',
@@ -69,7 +69,7 @@ const BurgerMenuAccount = (props) => {
                                     variant="tertiary"
                                     classNameText={cx('!text-red-500')}
                                 >
-                                    <Typography className={cx('py-[0]', 'px-4', 'text-red-500')}>Log Out</Typography>
+                                    <Typography className={cx('text-red-500')}>Log Out</Typography>
                                 </Button>
                             ) : null}
                         </div>
@@ -91,11 +91,12 @@ const BurgerMenuAccount = (props) => {
                                 />
                             </div>
                         ) : null}
+                        <div className={cx('py-6', 'px-4')} />
                     </div>
                 </>
             )}
             {switcherContentActive && SwitcherContent && <div className={cx('px-4')}>{React.cloneElement(SwitcherContent)}</div>}
-        </>
+        </div>
     );
 };
 

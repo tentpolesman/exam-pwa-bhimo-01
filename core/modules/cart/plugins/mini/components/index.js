@@ -45,14 +45,14 @@ const MiniComponent = (props) => {
     return (
         <>
             <CommonsDrawer
-                open={open && localOpen}
+                open={localOpen}
                 handleClose={handleClose}
                 position="right"
                 className={cx('mobile:max-tablet:w-[320px]', 'tablet:max-desktop:w-[396px]', 'desktop:w-[540px]', {
-                    'mobile:max-tablet:right-[320px] tablet:max-desktop:right-[396px] desktop:right-[540px]': open && localOpen,
-                    'mobile:max-tablet:animate-drawer-in-mobile tablet:max-desktop:animate-drawer-in-tablet  desktop:animate-drawer-in-desktop': open && localOpen,
+                    'mobile:max-tablet:right-[320px] tablet:max-desktop:right-[396px] desktop:right-[540px]': localOpen,
+                    'mobile:max-tablet:animate-drawer-in-mobile tablet:max-desktop:animate-drawer-in-tablet  desktop:animate-drawer-in-desktop': localOpen,
                     'mobile:max-tablet:animate-drawer-out-mobile tablet:max-desktop:animate-drawer-out-tablet  desktop:animate-drawer-out-desktop': !localOpen,
-                    'right-0': !open,
+                    'right-0': !localOpen,
                 })}
             >
                 <div>

@@ -242,6 +242,7 @@ const BurgerMenuCategories = (props) => {
                             </div>
                         );
                     })}
+                <div className={cx('py-6', 'px-4')} />
             </div>
         </div>
     );

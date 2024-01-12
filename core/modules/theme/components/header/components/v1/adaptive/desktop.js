@@ -7,7 +7,7 @@
 import cx from 'classnames';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
-import React from 'react';
+import React, { useEffect } from 'react';
 import Image from '@common_image';
 import Typography from '@common_typography';
 import config from '@config';
@@ -31,7 +31,7 @@ const SwitcherLanguage = dynamic(() => import('@common_language'), { ssr: false 
 const UserInfo = dynamic(() => import('@core_modules/theme/components/header/components/v1/adaptive/plugin/userinfo'), { ssr: false });
 const InstallDesktop = dynamic(() => import('@core_modules/theme/components/customPWAInstall/desktop'), { ssr: true });
 const BurgerMenuCategories = dynamic(() => import('@core_modules/theme/components/header/components/burgermenu/categories'), { ssr: false });
-const BurgerMenuAccount = dynamic(() => import('@core_modules/theme/components/header/components/burgermenu/account/index'), { ssr: false });
+const BurgerMenuAccount = dynamic(() => import('@core_modules/theme/components/header/components/burgermenu/account'), { ssr: false });
 
 const DesktopHeader = (props) => {
     const {
@@ -66,7 +66,19 @@ const DesktopHeader = (props) => {
 
     const [open, setOpen] = React.useState(false);
     const [openBurgerMenu, setOpenBurgerMenu] = React.useState(false);
+    const [localOpen, setLocalOpen] = React.useState(false);
     const [isSearchShown, setIsSearchShown] = React.useState(false);
+
+    const handleClose = () => {
+        setLocalOpen(false);
+        setTimeout(() => {
+            setOpenBurgerMenu(false);
+        }, 500);
+    };
+
+    useEffect(() => {
+        setLocalOpen(openBurgerMenu);
+    }, [openBurgerMenu]);
 
     const filteredData = dataMenu?.categories?.items[0]?.children.filter((item) => item.include_in_menu !== 0);
     const burgerMenuData = [
@@ -112,26 +124,10 @@ const DesktopHeader = (props) => {
     };
 
     return (
-        <div
-            className={cx(
-                'desktop-header',
-                'transition-transform',
-                'delay-300',
-                'duration-500',
-                'ease-in-out',
-                'shadow-md',
-            )}
-        >
+        <div className={cx('desktop-header', 'transition-transform', 'delay-300', 'duration-500', 'ease-in-out', 'shadow-md')}>
             <div
                 id="top-header"
-                className={cx(
-                    'top-header',
-                    'tablet:border-b',
-                    'tablet:border-b-neutral-200',
-                    'py-[1px]',
-                    'min-h-[40px]',
-                    'mobile:max-tablet:hidden',
-                )}
+                className={cx('top-header', 'tablet:border-b', 'tablet:border-b-neutral-200', 'py-[1px]', 'min-h-[40px]', 'mobile:max-tablet:hidden')}
             >
                 <div
                     id="top-header__content"
@@ -144,29 +140,24 @@ const DesktopHeader = (props) => {
                     )}
                 >
                     <InstallDesktop />
-                    <div
-                        className={cx(
-                            'top-header__content--currency-language-changer-menu',
-                            'flex',
-                            'flex-wrap',
-                            'flex-column',
-                            'justify-end',
-                            'gap-x-4',
-                        )}
-                    >
-                        <SwitcherCurrency {...props} />
-                        <SwitcherLanguage {...props} />
-                    </div>
+                    {!isMobile ? (
+                        <div
+                            className={cx(
+                                'top-header__content--currency-language-changer-menu',
+                                'flex',
+                                'flex-wrap',
+                                'flex-column',
+                                'justify-end',
+                                'gap-x-4',
+                            )}
+                        >
+                            <SwitcherCurrency {...props} />
+                            <SwitcherLanguage {...props} />
+                        </div>
+                    ) : null}
                 </div>
             </div>
-            <div
-                className={cx(
-                    'middle-header',
-                    'tablet:border-b-[1.5px]',
-                    'tablet:border-b-neutral-200',
-                    'tablet:py-4',
-                )}
-            >
+            <div className={cx('middle-header', 'tablet:border-b-[1.5px]', 'tablet:border-b-neutral-200', 'tablet:py-4')}>
                 <div
                     className={cx(
                         'middle-header__wrapper',
@@ -186,49 +177,54 @@ const DesktopHeader = (props) => {
                         'mobile:max-tablet:max-w-[100%]',
                     )}
                 >
-                    <div className={cx('middle-header-tablet__burger-menu', 'desktop:hidden')}>
-                        <Button
-                            className={cx(
-                                'my-2',
-                                '!p-0',
-                                '!mx-0',
-                                'hover:shadow-none',
-                                'focus:shadow-none',
-                                'active:shadow-none',
-                                'active:shadow-none',
+                    {!isDesktop ? (
+                        <div className={cx('middle-header-tablet__burger-menu', 'desktop:hidden')}>
+                            <Button
+                                className={cx(
+                                    'my-2',
+                                    '!p-0',
+                                    '!mx-0',
+                                    'hover:shadow-none',
+                                    'focus:shadow-none',
+                                    'active:shadow-none',
+                                    'active:shadow-none',
+                                )}
+                                onClick={() => {
+                                    setOpenBurgerMenu(true);
+                                }}
+                                icon={<Bars3Icon />}
+                                iconProps={{ className: cx('text-neutral-700', 'w-[24px]', 'h-[24px]') }}
+                                iconOnly
+                                variant="tertiary"
+                                classNameText={cx('!text-neutral-700')}
+                            />
+                            {dataMenu && openBurgerMenu && (
+                                <Drawer
+                                    open={localOpen}
+                                    handleClose={handleClose}
+                                    position="left"
+                                    className={cx('mobile:max-tablet:w-[280px]', 'tablet:max-desktop:w-[396px]', 'desktop:w-[540px]', {
+                                        'animate-hamburger-drawer-in': localOpen,
+                                        'animate-hamburger-drawer-out': !localOpen,
+                                    })}
+                                    customButtonClose
+                                    backdrop
+                                >
+                                    <Tabs
+                                        data={burgerMenuData}
+                                        tabHasContent
+                                        tabWrapperClassName={cx('border-none')}
+                                        tabTitleWrapperClassName={cx('grid', 'grid-cols-2')}
+                                        tabTitleClassName={cx('border-none', '!text-neutral-700', 'text-2md', 'font-semibold')}
+                                        tabTitleActiveClassName={cx('border-none', '!text-neutral-700', 'text-2md', 'font-semibold')}
+                                        tabTitleListClassName={cx('bg-neutral-100')}
+                                        tabTitleListActiveClassName={cx('bg-neutral-white', 'border-b-[1px]', 'border-b-neutral-400')}
+                                        tabContentClassName={cx('!pt-0', 'h-full', 'overflow-y-auto', 'overflow-x-hidden')}
+                                    />
+                                </Drawer>
                             )}
-                            onClick={() => {
-                                setOpenBurgerMenu(true);
-                            }}
-                            icon={<Bars3Icon />}
-                            iconProps={{ className: cx('text-neutral-700', 'w-[24px]', 'h-[24px]') }}
-                            iconOnly
-                            variant="tertiary"
-                            classNameText={cx('!text-neutral-700')}
-                        />
-                        {dataMenu && (
-                            <Drawer
-                                open={openBurgerMenu}
-                                handleClose={() => setOpenBurgerMenu(false)}
-                                position="left"
-                                className={cx('tablet:max-desktop:w-[396px] overflow-y-auto overflow-x-hidden')}
-                                customButtonClose
-                                backdrop
-                            >
-                                <Tabs
-                                    data={burgerMenuData}
-                                    tabHasContent
-                                    tabWrapperClassName={cx('border-none')}
-                                    tabTitleWrapperClassName={cx('grid', 'grid-cols-2')}
-                                    tabTitleClassName={cx('border-none', '!text-neutral-700', 'text-2md', 'font-semibold')}
-                                    tabTitleActiveClassName={cx('border-none', '!text-neutral-700', 'text-2md', 'font-semibold')}
-                                    tabTitleListClassName={cx('bg-neutral-100')}
-                                    tabTitleListActiveClassName={cx('bg-neutral-white', 'border-b-[1px]', 'border-b-neutral-400')}
-                                    tabContentClassName={cx('!pt-0')}
-                                />
-                            </Drawer>
-                        )}
-                    </div>
+                        </div>
+                    ) : null}
                     <div
                         className={cx(
                             'middle-header__logo',
@@ -329,7 +325,7 @@ const DesktopHeader = (props) => {
                 <div className="flex flex-row menu-category mobile:max-desktop:hidden">
                     <div className="xs:basis-full menu-middle">{loadingMenu ? <></> : <Menu data={dataMenu} storeConfig={storeConfig} />}</div>
                 </div>
-                {isSearchShown ? (
+                {isSearchShown && isMobile ? (
                     <div className={cx('bottom-header-mobile__search')}>
                         <Autocomplete setValue={setValue} handleSearch={handleSearch} t={t} storeConfig={storeConfig} />
                     </div>

@@ -82,6 +82,15 @@ module.exports = {
                     '0%': { right: '320px' },
                     '100%': { right: '0px' },
                 },
+
+                'hamburger-drawer': {
+                    '0%': { left: '-540px' },
+                    '100%': { left: '0px' },
+                },
+                'hamburger-drawer-close': {
+                    '0%': { left: '0px' },
+                    '100%': { left: '-540px' },
+                },
             },
             animation: {
                 'drawer-in-desktop': 'cart-drawer-desktop 500ms cubic-bezier(0.4, 0, 0.2, 1);',
@@ -90,6 +99,9 @@ module.exports = {
                 'drawer-out-desktop': 'cart-drawer-close-desktop 500ms cubic-bezier(0.4, 0, 0.2, 1);',
                 'drawer-out-tablet': 'cart-drawer-close-tablet 500ms cubic-bezier(0.4, 0, 0.2, 1);',
                 'drawer-out-mobile': 'cart-drawer-close-mobile 500ms cubic-bezier(0.4, 0, 0.2, 1);',
+
+                'hamburger-drawer-in': 'hamburger-drawer 500ms cubic-bezier(0.4, 0, 0.2, 1);',
+                'hamburger-drawer-out': 'hamburger-drawer-close 500ms cubic-bezier(0.4, 0, 0.2, 1);',
             },
         },
         screens: {
