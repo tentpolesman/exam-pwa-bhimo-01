@@ -9,31 +9,38 @@
 /* eslint-disable max-len */
 import { custDataNameCookie, features, modules, sentry } from '@config';
 import { getLastPathWithoutLogin, getLoginInfo } from '@helper_auth';
-import { getLocalStorage, setLocalStorage, setResolver, testLocalStorage } from '@helper_localstorage';
+import { setLocalStorage, setResolver, testLocalStorage } from '@helper_localstorage';
 import { getAppEnv } from '@root/core/helpers/env';
 import { cmsPageVar, currencyVar, storeConfigVar } from '@root/core/services/graphql/cache';
-import { RewriteFrames } from '@sentry/integrations';
-import { Integrations } from '@sentry/tracing';
 import { storeConfig as ConfigSchema, getCategories } from '@services/graphql/schema/config';
 import { appWithTranslation } from 'next-i18next';
-// import { RewriteFrames } from '@sentry/integrations';
-// import { Integrations } from '@sentry/tracing';
+
 import Cookie from 'js-cookie';
 // import { unregister } from 'next-offline/runtime';
 import App from 'next/app';
 import React from 'react';
-
 import { gql } from '@apollo/client';
 import PageProgressLoader from '@common_pageprogress';
 import graphRequest from '@graphql_request';
-import firebase from '@lib_firebase/index';
-import Notification from '@lib_firebase/notification';
 import routeMiddleware from '@middleware_route';
 import getConfig from 'next/config';
 import TagManager from 'react-gtm-module';
-
 import ModalCookies from '@core_modules/theme/components/modalCookies';
 import { getDeviceByUA, getUAString } from '@root/core/helpers/deviceDection';
+
+/* Firebase /*
+/* Commented by default to avoid unused code which directly impact on performance socre
+ * Uncomment this if firebase is used in you progect
+ */
+// import firebase from '@lib_firebase/index';
+// import Notification from '@lib_firebase/notification';
+
+/* Sentry /*
+/* Commented by default to avoid unused code which directly impact on performance socre
+ * Uncomment this if sentry is used in you progect
+ */
+// import { RewriteFrames } from '@sentry/integrations';
+// import { Integrations } from '@sentry/tracing';
 // import * as Sentry from '@sentry/node';
 
 const { publicRuntimeConfig } = getConfig();
@@ -230,6 +237,7 @@ class MyApp extends App {
             Notification.init();
             // handle if have message on focus
             try {
+                // eslint-disable-next-line no-undef
                 const messaging = firebase.messaging();
                 // Handle incoming messages. Called when:
                 // - a message is received while the app has focus

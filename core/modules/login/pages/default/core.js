@@ -6,9 +6,8 @@ import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import firebase from 'firebase/app';
 import Cookies from 'js-cookie';
-
+import { features, custDataNameCookie, expiredToken } from '@config';
 import { useQuery, useReactiveVar } from '@apollo/client';
-import { custDataNameCookie, expiredToken } from '@config';
 
 import { getAppEnv } from '@helpers/env';
 import { getLastPathWithoutLogin, setLogin } from '@helper_auth';
@@ -515,7 +514,7 @@ const Login = (props) => {
 
     // Listen to the Firebase Auth state and set the local state.
     React.useEffect(() => {
-        if (firebase.app()) {
+        if (features.firebase.config.apiKey !== '' && firebase.app()) {
             try {
                 const unregisterAuthObserver = firebase.auth().onAuthStateChanged((user) => {
                     if (firebase.auth().currentUser) {

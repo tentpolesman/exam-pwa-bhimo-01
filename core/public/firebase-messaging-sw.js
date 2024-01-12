@@ -14,7 +14,7 @@ importScripts('https://www.gstatic.com/firebasejs/8.2.7/firebase-messaging.js');
 // messagingSenderId.
 const firebaseConfig = features.firebase.config;
 // Initialize Firebase
-if (!firebase.apps.length) {
+if (firebaseConfig.apiKey !== '' && !firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
 }
 
