@@ -209,7 +209,7 @@ const DetailContent = (props) => {
             />
             <div className={classNames(
                 'shadow-sm border border-neutral-100 rounded-md',
-                'flex flex-col gap-5',
+                'flex flex-col gap-4 py-4 mt-4',
             )}
             >
                 {
@@ -224,28 +224,30 @@ const DetailContent = (props) => {
                         {...other}
                     />
                     <Divider />
-                    {
-                        requestFormField.length > 0 && requestFormField.map((item, index) => {
-                            const name = item.name.split(' ').join('_').toLowerCase();
-                            const options = item.options.map((op) => ({
-                                label: op.frontend_labels[0].value,
-                                value: op.id,
-                            }));
-                            const fieldValue = requestFieldValue.filter(({ field }) => field === item.id);
-                            return (
-                                <ItemField
-                                    key={index}
-                                    options={options}
-                                    name={name}
-                                    fieldValue={fieldValue}
-                                    item={item}
-                                    onSelect={changeOptionCustomField}
-                                    t={t}
-                                    {...other}
-                                />
-                            );
-                        })
-                    }
+                    <div className="px-4 flex flex-col gap-4">
+                        {
+                            requestFormField.length > 0 && requestFormField.map((item, index) => {
+                                const name = item.name.split(' ').join('_').toLowerCase();
+                                const options = item.options.map((op) => ({
+                                    label: op.frontend_labels[0].value,
+                                    value: op.id,
+                                }));
+                                const fieldValue = requestFieldValue.filter(({ field }) => field === item.id);
+                                return (
+                                    <ItemField
+                                        key={index}
+                                        options={options}
+                                        name={name}
+                                        fieldValue={fieldValue}
+                                        item={item}
+                                        onSelect={changeOptionCustomField}
+                                        t={t}
+                                        {...other}
+                                    />
+                                );
+                            })
+                        }
+                    </div>
                     <Divider />
                 </>
                 <div

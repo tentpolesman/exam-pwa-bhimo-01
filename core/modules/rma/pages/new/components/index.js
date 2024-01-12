@@ -193,7 +193,7 @@ const NewContent = (props) => {
 
     return (
         <Layout {...props} title={t('customer:menu:return')} activeMenu="/rma/customer">
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-4 mt-4">
                 <div className="flex flex-col gap-3">
                     {
                         custom_fields && custom_fields.length > 0 && custom_fields.map((item, index) => {
@@ -236,7 +236,7 @@ const NewContent = (props) => {
                         <Typography variant="bd-2b">{t('rma:deselectAll')}</Typography>
                     </Button>
                 </div>
-                <div>
+                <div className="flex flex-col gap-3">
                     {products.length > 0
                             && (
                                 <CheckBox
@@ -246,10 +246,13 @@ const NewContent = (props) => {
                                     onChange={handleSelectProduct}
                                     flex="column"
                                     CustomItem={ItemProduct}
+                                    classNames={{
+                                        checkboxGroupClasses: 'gap-4',
+                                    }}
                                 />
                             )}
                 </div>
-                <div>
+                <div className="desktop:max-w-[50%]">
                     <TextField
                         name="message"
                         onChange={(event) => setFormData({ ...formData, message: event.target.value })}
@@ -260,9 +263,12 @@ const NewContent = (props) => {
                         rows={4}
                         disabled={disableAll}
                         className="w-full"
+                        inputProps={{
+                            className: 'w-full',
+                        }}
                     />
                 </div>
-                <div>
+                <div className="desktop:max-w-[50%]">
                     <DropFile
                         label={t('rma:form:placeholder:uploadFile')}
                         getBase64={handleGetBase64}
@@ -274,7 +280,12 @@ const NewContent = (props) => {
                     />
                 </div>
                 <div>
-                    <Button disabled={disableAll} fullWidth onClick={handleSubmit}>
+                    <Button
+                        disabled={disableAll}
+                        onClick={handleSubmit}
+                        className="w-full desktop:max-w-[50%]"
+                        classNameText="justify-center"
+                    >
                         <Typography letter="uppercase" type="bold" variant="span" color="white">{t('rma:form:submit')}</Typography>
                     </Button>
                 </div>

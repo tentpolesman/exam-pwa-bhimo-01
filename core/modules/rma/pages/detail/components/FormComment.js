@@ -1,4 +1,4 @@
-import TextField from '@common_textfield';
+import TextField from '@common_forms/TextField';
 import DropFile from '@common_dropfile';
 
 const FormComment = ({
@@ -6,7 +6,7 @@ const FormComment = ({
     handleChangeComment, dropValue, handleDrop,
 }) => (
     <>
-        <div className="">
+        <div className="desktop:max-w-[50%]">
             <TextField
                 name="message"
                 onChange={handleChangeComment}
@@ -15,9 +15,13 @@ const FormComment = ({
                 label={t('rma:form:label:message')}
                 multiline
                 rows={4}
+                className="w-full"
+                inputProps={{
+                    className: 'w-full',
+                }}
             />
         </div>
-        <div className="">
+        <div className="desktop:max-w-[50%]">
             <DropFile
                 value={dropValue}
                 setValue={handleDrop}

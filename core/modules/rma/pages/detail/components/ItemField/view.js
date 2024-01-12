@@ -8,7 +8,7 @@ const ItemFieldView = ({
     select, handleSelect, errorMessage,
     fieldValue, t,
 }) => (
-    <div className="w-full p-4">
+    <div className="w-full">
         <div className="flex flex-col gap-3">
             <Typography variant="bd-2">
                 {item.frontend_labels[0].value}
@@ -24,6 +24,9 @@ const ItemFieldView = ({
                         error={error}
                         errorMessage={errorMessage || t('return:form:required')}
                         showLabel={false}
+                        textFiledProps={{
+                            className: 'w-full desktop:w-[50%]',
+                        }}
                     />
                 ) : (
                     <Typography variant="span">

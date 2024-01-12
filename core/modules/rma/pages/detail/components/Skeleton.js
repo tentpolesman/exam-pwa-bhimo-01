@@ -7,7 +7,7 @@ import classNames from 'classnames';
 const SkeletonLoader = () => (
     <div className={classNames(
         'shadow-sm border border-neutral-100 rounded-md',
-        'flex flex-col gap-5',
+        'flex flex-col gap-5 mt-4',
     )}
     >
         <>

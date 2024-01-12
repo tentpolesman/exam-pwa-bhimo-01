@@ -23,6 +23,7 @@ const ItemFieldView = ({
         classNameLabel="!text-md font-medium capitalize"
         textFiledProps={{
             disabled,
+            className: 'w-full desktop:w-[50%]',
         }}
         {...other}
     />

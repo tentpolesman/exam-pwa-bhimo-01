@@ -6,7 +6,7 @@ import Skeleton from '@common_skeleton';
 import cx from 'classnames';
 
 export const Loader = () => (
-    <div className="flex flex-col gap-4 overflow-x-auto">
+    <div className="flex flex-col gap-4 overflow-x-auto mt-4">
         <table className={cx('w-full', 'text-base', 'border-[1px] rounded-md', 'border-neutral-100')}>
             <thead>
                 <tr className={cx('text-neutral-500', 'font-semibold', 'leading-2lg', 'text-left', 'hidden desktop:table-row')}>

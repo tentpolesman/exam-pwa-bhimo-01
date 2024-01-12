@@ -43,7 +43,7 @@ const HistoryContent = (props) => {
 
     return (
         <Layout {...props}>
-            <div className="flex flex-col gap-4 overflow-x-auto">
+            <div className="flex flex-col gap-4 overflow-x-auto mt-4">
                 <table className={cx('w-full', 'text-base', 'border-[1px] rounded-md', 'border-neutral-100')}>
                     <thead>
                         <tr className={cx(
@@ -94,7 +94,7 @@ const HistoryContent = (props) => {
                                                 <div className="flex flex-row justify-between items-center">
                                                     <div className="basis 1/3 inline-block desktop:hidden">
                                                         <Typography variant="bd-2">
-                                                            {t('rma:table:returnId')}
+                                                            {t('rma:table:orderId')}
                                                         </Typography>
                                                     </div>
                                                     <Typography variant="bd-2b">{val.order_number}</Typography>

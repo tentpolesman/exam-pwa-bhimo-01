@@ -46,7 +46,7 @@ const Footer = ({
     }
 
     return (
-        <div className="flex flex-col tablet:flex-row items-center gap-3">
+        <div className="flex flex-col tablet:flex-row items-center gap-3 desktop:max-w-[50%] mt-4">
             { UpdateButton() }
             { CancelButton() }
             { UpdateStatusButton() }

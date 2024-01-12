@@ -1,6 +1,7 @@
 import React from 'react';
 import Typography from '@common_typography';
 import ItemField from '@core_modules/rma/pages/new/components/ItemField';
+import Divider from '@common/Divider';
 
 const ItemProduct = (props) => {
     const {
@@ -90,7 +91,7 @@ const ItemProduct = (props) => {
     };
 
     return (
-        <div className="flex flex-col gap-3 mt-4">
+        <div className="flex flex-col gap-3">
             <ItemProductView
                 checked={checked}
                 disabled={disabled}
@@ -157,6 +158,7 @@ const ItemProduct = (props) => {
                         </div>
                     )}
             </div>
+            <Divider />
         </div>
     );
 };

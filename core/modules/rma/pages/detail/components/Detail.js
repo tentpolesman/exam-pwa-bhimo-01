@@ -5,7 +5,7 @@ import formatDate from '@helper_date';
 import Typography from '@common/Typography';
 
 const DetailComponents = ({ detail_rma, t }) => (
-    <div className="p-4 w-full">
+    <div className="px-4 w-full">
         <div className="flex flex-col gap-2 desktop:max-w-[50%]">
             <div className="grid grid-cols-3 gap-5">
                 <Typography>Status</Typography>
