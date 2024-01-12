@@ -10,10 +10,6 @@ const generateConfig = (query, config, elastic, availableFilter = []) => {
     // availableFilter aggregation from getProductAggregations not appropriate
     const availFilter = [];
     availableFilter.map((item) => availFilter.push(item.attribute_code));
-    // for (let index = 0; index < availableFilter.length; index++) {
-    //     const element = availableFilter[index];
-    //     filter[element.attribute_code] = element.attribute_code;
-    // }
 
     const resolveConfig = config;
     // eslint-disable-next-line no-restricted-syntax
