@@ -1,6 +1,8 @@
 import Image from '@common_image';
 import { strToCSSObject } from '@helpers/text';
 import { generateThumborUrl } from '@root/core/helpers/image';
+import { getStoreHost } from '@helpers/config';
+import { getAppEnv } from '@helpers/env';
 
 const ImageRenderer = (props) => {
     const { domNode, storeConfig } = props;
@@ -9,7 +11,13 @@ const ImageRenderer = (props) => {
     } = domNode.attribs;
 
     if (!domNode.attribs.src.includes('thumbor')) {
-        const optImg = generateThumborUrl(src, 0, 0, true, false, storeConfig.pwa.thumbor_url);
+        let finalSrc = src;
+        // check media url variable
+        if (src.includes('media url=')) {
+            const urlClean = finalSrc.replace('{{media url=', '').replace('}}', '').replace(/"/g, '');
+            finalSrc = `${getStoreHost(getAppEnv())}media/${urlClean}`;
+        }
+        const optImg = generateThumborUrl(finalSrc, 0, 0, true, false, storeConfig.pwa.thumbor_url);
 
         return (
             <span>

@@ -6,9 +6,7 @@ import Show from '@common/Show';
 import Link from 'next/link';
 
 const CategoryItem = (props) => {
-    const {
-        name, breadcrumbs, url_key,
-    } = props;
+    const { name, breadcrumbs, url_key } = props;
     let breadcrumbsText = '';
     if (breadcrumbs) {
         for (let i = 0; i < breadcrumbs.length; i++) {
@@ -20,29 +18,27 @@ const CategoryItem = (props) => {
         <Link href={`/${url_key}`}>
             <div className="hidden tablet:flex flex-row gap-1">
                 {breadcrumbsText === '' ? (
-                    <Typography color="text-neutral" className="font-normal text-sm uppercase hover:underline">{name}</Typography>
+                    <Typography color="text-neutral" className="font-normal text-sm uppercase hover:underline">
+                        {name}
+                    </Typography>
                 ) : (
                     <>
-                        <Typography
-                            color="text-neutral-400"
-                            className="italic font-normal text-sm uppercase hover:underline"
-                        >
+                        <Typography color="text-neutral-400" className="italic font-normal text-sm uppercase hover:underline">
                             {breadcrumbsText}
-
                         </Typography>
-                        <Typography
-                            color="text-neutral"
-                            className="font-normal text-sm uppercase hover:underline"
-                        >
+                        <Typography color="text-neutral" className="font-normal text-sm uppercase hover:underline">
                             {name}
-
                         </Typography>
                     </>
                 )}
             </div>
             <div className="flex tablet:hidden flex-row gap-1">
-                <Typography color="text-neutral-400" className="italic font-normal text-sm uppercase">{breadcrumbsText}</Typography>
-                <Typography color="text-neutral" className="font-normal text-sm uppercase">{name}</Typography>
+                <Typography color="text-neutral-400" className="italic font-normal text-sm uppercase">
+                    {breadcrumbsText}
+                </Typography>
+                <Typography color="text-neutral" className="font-normal text-sm uppercase">
+                    {name}
+                </Typography>
             </div>
         </Link>
     );
@@ -74,7 +70,6 @@ const CategoryView = (props) => {
                                 <Skeleton width="20%" key={idx} />
                             ))}
                         </div>
-
                     </>
                 )}
                 <Show when={slice && slice.length > 0}>
@@ -87,13 +82,8 @@ const CategoryView = (props) => {
             </div>
             <div>
                 {data.length > slice.length ? (
-                    <Button
-                        align="left"
-                        color="primary"
-                        onClick={() => loadMore()}
-                        style={{ margin: 10, fontSize: 8 }}
-                    >
-                        {t('common:button:loadmore')}
+                    <Button align="left" color="primary" onClick={() => loadMore()} style={{ margin: 10, fontSize: 8 }}>
+                        {t('common:button:loadMore')}
                     </Button>
                 ) : null}
             </div>
