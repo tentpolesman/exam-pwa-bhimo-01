@@ -20,10 +20,11 @@ const ItemFieldView = ({
         onChange={handleSelect}
         error={error}
         errorMessage={errorMessage || t('rma:form:required')}
-        classNameLabel="!text-md font-medium capitalize"
+        classNameLabel="!text-md font-bold capitalize"
         textFiledProps={{
             disabled,
             className: 'w-full desktop:w-[50%]',
+            classWrapper: 'mt-2',
         }}
         {...other}
     />

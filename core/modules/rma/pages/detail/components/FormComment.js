@@ -19,6 +19,7 @@ const FormComment = ({
                 inputProps={{
                     className: 'w-full',
                 }}
+                propsLabelText={{ variant: 'bd-2' }}
             />
         </div>
         <div className="desktop:max-w-[50%]">

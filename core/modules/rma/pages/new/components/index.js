@@ -194,7 +194,7 @@ const NewContent = (props) => {
     return (
         <Layout {...props} title={t('customer:menu:return')} activeMenu="/rma/customer">
             <div className="flex flex-col gap-4 mt-4">
-                <div className="flex flex-col gap-3">
+                <div className="flex flex-col gap-4">
                     {
                         custom_fields && custom_fields.length > 0 && custom_fields.map((item, index) => {
                             if (item.refers === 'request') {
@@ -225,7 +225,7 @@ const NewContent = (props) => {
                     }
                 </div>
                 <div>
-                    <Typography variant="bd-2a">{t('rma:product')}</Typography>
+                    <Typography variant="bd-2" className="capitalize">{t('rma:product')}</Typography>
                 </div>
                 <div className="flex flex-row gap-1 w-max">
                     <Button classNameText="w-max" className="!p-0" variant="plain" onClick={selectAll}>
@@ -266,6 +266,8 @@ const NewContent = (props) => {
                         inputProps={{
                             className: 'w-full',
                         }}
+                        propsLabelText={{ variant: 'bd-2' }}
+
                     />
                 </div>
                 <div className="desktop:max-w-[50%]">
