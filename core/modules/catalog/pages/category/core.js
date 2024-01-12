@@ -61,9 +61,10 @@ const Page = (props) => {
         return <ErrorView statusCode={404} {...props} />;
     }
     return (
-        <Layout {...props} pageConfig={pageConfig} data={null} isPlp>
-            <Content categoryId={categoryId} data={data} {...other} storeConfig={storeConfig} />
-        </Layout>
+        // <Layout {...props} pageConfig={pageConfig} data={null} isPlp>
+        //     <Content categoryId={categoryId} data={data} {...other} storeConfig={storeConfig} />
+        // </Layout>
+        <Content categoryId={categoryId} data={data} {...other} storeConfig={storeConfig} />
     );
 };
 

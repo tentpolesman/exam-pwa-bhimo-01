@@ -5,7 +5,6 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/no-danger */
 /* eslint-disable max-len */
-/* eslint-disable */
 
 import { useApolloClient, useReactiveVar } from '@apollo/client';
 import { storeConfigVar } from '@root/core/services/graphql/cache';
@@ -26,7 +25,6 @@ import { getHost } from '@helper_config';
 import { getCookies, setCookies } from '@helper_cookies';
 import { getAppEnv } from '@helpers/env';
 import { frontendConfig } from '@helpers/frontendOptions';
-import { BREAKPOINTS } from '@root/core/theme/vars';
 import { localTotalCart } from '@services/graphql/schema/local';
 import localFont from 'next/font/local';
 import Script from 'next/script';
@@ -80,17 +78,17 @@ const Layout = (props) => {
         pageConfig = {},
         children,
         app_cookies,
-        CustomHeader = false,
+        // CustomHeader = false,
         i18n,
         storeConfig = {},
         isLogin,
-        headerProps = {},
+        // headerProps = {},
         data = {},
         t,
-        onlyCms,
+        // onlyCms,
         withLayoutHeader = true,
         withLayoutFooter = true,
-        showRecentlyBar = false,
+        // showRecentlyBar = false,
         isHomepage = false,
         isPdp = false,
         isCms = false,
@@ -98,8 +96,8 @@ const Layout = (props) => {
         isBdp = false,
         isBlp = false,
         isCheckout = false,
-        isLoginPage = false,
-        isShowChat = true,
+        // isLoginPage = false,
+        // isShowChat = true,
         deviceType = {},
     } = props;
     const { ogContent = {}, schemaOrg = null, headerDesktop = true, footer = true } = pageConfig;
@@ -183,10 +181,10 @@ const Layout = (props) => {
         });
     };
 
-    const handleRestrictionCookies = () => {
-        setRestrictionCookies(true);
-        setCookies('user_allowed_save_cookie', true);
-    };
+    // const handleRestrictionCookies = () => {
+    //     setRestrictionCookies(true);
+    //     setCookies('user_allowed_save_cookie', true);
+    // };
 
     const allowHeaderCheckout = modules.checkout.checkoutOnly ? !modules.checkout.checkoutOnly : withLayoutHeader;
 
@@ -287,7 +285,7 @@ const Layout = (props) => {
                 dataLayer: {
                     pageName: pageConfig.title,
                     pageType: pageConfig.pageType || 'other',
-                    customerGroup: isLogin == 1 ? 'GENERAL' : 'NOT LOGGED IN',
+                    customerGroup: isLogin === 1 ? 'GENERAL' : 'NOT LOGGED IN',
                 },
             };
             if (custData && custData.email) {
@@ -313,7 +311,7 @@ const Layout = (props) => {
     };
 
     const generateClasses = () => {
-        let classes = `${!isCms ? 'desktop:max-w-[1280px] desktop:px-10 tablet:max-w-[768px] tablet:px-6 mobile:px-4 my-0 mx-auto' : ''} ${font.variable} font-sans !font-pwa-default`;
+        let classes = `${(!isCms && router.pathname !== '/') ? 'desktop:max-w-[1280px] desktop:px-10 tablet:max-w-[768px] tablet:px-6 mobile:px-4 my-0 mx-auto' : ''} ${font.variable} font-sans !font-pwa-default`;
 
         if (pageConfig.bottomNav && storeConfig?.pwa?.mobile_navigation === 'bottom_navigation' && storeConfig?.pwa?.enabler_footer_mobile) {
             classes += ' mb-[60px]';
@@ -332,11 +330,6 @@ const Layout = (props) => {
         }
 
         return classes;
-    };
-
-    const footerMobile = {
-        marginBottom: pageConfig.bottomNav && storeConfig.pwa && storeConfig.pwa.mobile_navigation === 'bottom_navigation' ? '55px' : 0,
-        display: pageConfig.bottomNav && storeConfig.pwa && storeConfig.pwa.mobile_navigation === 'bottom_navigation' ? 'flex' : null,
     };
 
     if (!headerDesktop) {
@@ -378,78 +371,6 @@ const Layout = (props) => {
             }
         }
     }, [storeConfig]);
-
-    // let classMain;
-
-    // if (storeConfig && storeConfig.pwa && storeConfig.pwa.enabler_sticky_header) {
-    //     if (isCheckout) {
-    //         classMain = 'checkout-mode';
-    //     } else if (storeConfig.pwa.header_version === 'v2') {
-    //         if (isHomepage) {
-    //             if (ipadL) {
-    //                 classMain = 'main-app-v2-ipad-landscape';
-    //             } else {
-    //                 classMain = 'main-app-v2';
-    //             }
-    //             classMain += ' main-app-homepage';
-    //         } else if (isPdp && desktop) {
-    //             classMain = 'main-app-v2-pdp';
-    //         } else if (isLoginPage && desktop) {
-    //             classMain = 'main-app-v2-login';
-    //         } else if (isPdp && ipad && !desktop) {
-    //             classMain = 'main-app-sticky-v2-ipad';
-    //         } else {
-    //             classMain = 'main-app-v2-not-homepage';
-    //         }
-    //     } else if (storeConfig.pwa.header_version === 'v1') {
-    //         if (isHomepage) {
-    //             classMain = 'main-app-v1-sticky-homepage';
-    //         } else {
-    //             classMain = 'main-app-v1-sticky-not-homepage';
-    //         }
-    //     } else if (storeConfig.pwa.header_version === 'v4') {
-    //         if (isHomepage) {
-    //             if (ipad) {
-    //                 if (storeConfig.pwa.mobile_navigation === 'burger_menu') {
-    //                     classMain = 'main-app-sticky-v4-homepage';
-    //                 } else {
-    //                     classMain = 'main-app-sticky-v4-homepage-not-burgermenu';
-    //                 }
-    //             } else {
-    //                 classMain = 'main-app-sticky-v4-homepage';
-    //             }
-    //         } else if (isPdp) {
-    //             if (ipad) {
-    //                 classMain = 'main-app-sticky-v4-pdp-ipad';
-    //             } else {
-    //                 classMain = 'main-app-sticky-v4-pdp';
-    //             }
-    //         } else {
-    //             classMain = 'main-app-sticky-v4';
-    //         }
-    //     } else if (isHomepage) {
-    //         classMain = 'main-app-sticky-homepage';
-    //     } else {
-    //         classMain = 'main-app-sticky';
-    //     }
-    // } else if (storeConfig && storeConfig.pwa && !storeConfig.pwa.enabler_sticky_header) {
-    //     if (isCheckout) {
-    //         classMain = 'checkout-mode';
-    //     } else if (storeConfig.pwa.header_version === 'v2') {
-    //         if (isHomepage) {
-    //             classMain = 'main-app-v2-not-sticky';
-    //             classMain += ' main-app-homepage';
-    //         } else if (isPdp && ipad) {
-    //             classMain = 'main-app-v2-ipad';
-    //         } else {
-    //             classMain = 'main-app-v2-not-sticky-not-homepage';
-    //         }
-    //     } else if (storeConfig.pwa.header_version === 'v4') {
-    //         classMain = 'main-app-not-sticky';
-    //     } else {
-    //         classMain = 'main-app-not-sticky';
-    //     }
-    // }
 
     let metaDescValue = ogData['og:description'];
     let metaTitleValue = ogData['og:title'];

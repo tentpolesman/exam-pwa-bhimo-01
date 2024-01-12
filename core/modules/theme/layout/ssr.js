@@ -51,7 +51,7 @@ const getSSRProps = async ({ apolloClient, storeConfigExtra = '' }) => {
                     identifiers: 'global_promo_message',
                 },
             });
-        // eslint-disable-next-line no-empty
+            // eslint-disable-next-line no-empty
         } catch (error) {}
 
         return {

@@ -10,6 +10,7 @@ import Link from 'next/link';
 
 import Button from '@common_button';
 import Typography from '@common_typography';
+import useMediaQuery from '@root/core/hooks/useMediaQuery';
 
 const SwitcherLanguage = dynamic(() => import('@core_modules/theme/components/header/components/burgermenu/account/plugins/language/index'), {
     ssr: false,
@@ -23,27 +24,42 @@ const BurgerMenuAccount = (props) => {
 
     const [switcherContentActive, setSwitcherContentActive] = React.useState(false);
     const [SwitcherContent, setSwitcherContent] = React.useState(null);
+    const { isMobile } = useMediaQuery();
 
     return (
-        <>
+        <div>
             {!switcherContentActive && (
                 <>
-                    {isLogin ? (
-                        <div className={cx('p-4')}>
-                            <div className={cx('grid', 'grid-cols-1', 'gap-y-4', 'pb-4', 'border-b-[1px]', 'border-neutral-300')}>
-                                <Link href="/customer/account" prefetch={false}>
-                                    <Typography className={cx('py-[13px]', 'px-4')}>My Account</Typography>
-                                </Link>
-                                <Link href="/wishlist" prefetch={false}>
-                                    <Typography className={cx('py-[13px]', 'px-4')}>My Wishlist</Typography>
-                                </Link>
-                                <Link href="/catalog/product_compare" prefetch={false}>
-                                    <Typography className={cx('py-[13px]', 'px-4')}>Compare Products</Typography>
-                                </Link>
+                    <div className={cx('p-4')}>
+                        <div
+                            className={cx('grid', 'grid-cols-1', 'pb-4', {
+                                'border-b-[1px] border-neutral-300': isLogin || (isMobile && !isLogin),
+                            })}
+                        >
+                            {isLogin ? (
+                                <>
+                                    <Link className={cx('py-3', 'px-4')} href="/customer/account" prefetch={false}>
+                                        <Typography>My Account</Typography>
+                                    </Link>
+                                    <Link className={cx('py-3', 'px-4')} href="/wishlist" prefetch={false}>
+                                        <Typography>My Wishlist</Typography>
+                                    </Link>
+                                </>
+                            ) : (
+                                <>
+                                    <Link className={cx('py-3', 'px-4')} href="/customer/account/login" prefetch={false}>
+                                        <Typography>Log in / Register</Typography>
+                                    </Link>
+                                </>
+                            )}
+                            <Link className={cx('py-3', 'px-4')} href="/catalog/product_compare" prefetch={false}>
+                                <Typography>Compare Products</Typography>
+                            </Link>
+                            {isLogin ? (
                                 <Button
                                     className={cx(
-                                        '!px-0',
-                                        '!py-0',
+                                        '!px-4',
+                                        '!py-3',
                                         'hover:shadow-none',
                                         'focus:shadow-none',
                                         'active:shadow-none',
@@ -53,9 +69,11 @@ const BurgerMenuAccount = (props) => {
                                     variant="tertiary"
                                     classNameText={cx('!text-red-500')}
                                 >
-                                    <Typography className={cx('py-[0]', 'px-4', 'text-red-500')}>Log Out</Typography>
+                                    <Typography className={cx('text-red-500')}>Log Out</Typography>
                                 </Button>
-                            </div>
+                            ) : null}
+                        </div>
+                        {isMobile ? (
                             <div className={cx('grid', 'grid-cols-1')}>
                                 <SwitcherCurrency
                                     switcherContentActive={switcherContentActive}
@@ -72,39 +90,13 @@ const BurgerMenuAccount = (props) => {
                                     {...props}
                                 />
                             </div>
-                        </div>
-                    ) : (
-                        <div className={cx('p-4')}>
-                            <div className={cx('grid', 'grid-cols-1', 'gap-y-4', 'pb-4', 'border-b-[1px]', 'border-neutral-300')}>
-                                <Link href="/customer/account/login" prefetch={false}>
-                                    <Typography className={cx('py-[13px]', 'px-4')}>Log in / Register</Typography>
-                                </Link>
-                                <Link href="/catalog/product_compare" prefetch={false}>
-                                    <Typography className={cx('py-[13px]', 'px-4')}>Compare Products</Typography>
-                                </Link>
-                            </div>
-                            <div className={cx('grid', 'grid-cols-1')}>
-                                <SwitcherCurrency
-                                    switcherContentActive={switcherContentActive}
-                                    setSwitcherContentActive={setSwitcherContentActive}
-                                    switcherContent={SwitcherContent}
-                                    setSwitcherContent={setSwitcherContent}
-                                    {...props}
-                                />
-                                <SwitcherLanguage
-                                    switcherContentActive={switcherContentActive}
-                                    setSwitcherContentActive={setSwitcherContentActive}
-                                    switcherContent={SwitcherContent}
-                                    setSwitcherContent={setSwitcherContent}
-                                    {...props}
-                                />
-                            </div>
-                        </div>
-                    )}
+                        ) : null}
+                        <div className={cx('py-6', 'px-4')} />
+                    </div>
                 </>
             )}
             {switcherContentActive && SwitcherContent && <div className={cx('px-4')}>{React.cloneElement(SwitcherContent)}</div>}
-        </>
+        </div>
     );
 };
 

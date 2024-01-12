@@ -33,15 +33,26 @@ const MiniComponent = (props) => {
     const subtotal_including_tax_currency = data?.custom_total_price?.subtotal_including_tax?.currency || 'IDR';
     const cartId = getCartId();
     const [getScv2Url] = getCheckoutScv2Url();
+    const [localOpen, setLocalOpen] = React.useState(open);
+
+    const handleClose = () => {
+        setLocalOpen(false);
+        setTimeout(() => {
+            setOpen(false);
+        }, 500);
+    };
 
     return (
         <>
             <CommonsDrawer
-                open={open}
-                handleClose={() => setOpen(false)}
+                open={localOpen}
+                handleClose={handleClose}
                 position="right"
                 className={cx('mobile:max-tablet:w-[320px]', 'tablet:max-desktop:w-[396px]', 'desktop:w-[540px]', {
-                    'mobile:max-tablet:right-[320px] tablet:max-desktop:right-[396px] desktop:right-[540px]': open,
+                    'mobile:max-tablet:right-[320px] tablet:max-desktop:right-[396px] desktop:right-[540px]': localOpen,
+                    'mobile:max-tablet:animate-drawer-in-mobile tablet:max-desktop:animate-drawer-in-tablet  desktop:animate-drawer-in-desktop': localOpen,
+                    'mobile:max-tablet:animate-drawer-out-mobile tablet:max-desktop:animate-drawer-out-tablet  desktop:animate-drawer-out-desktop': !localOpen,
+                    'right-0': !localOpen,
                 })}
             >
                 <div>
@@ -85,7 +96,7 @@ const MiniComponent = (props) => {
                                         'active:shadow-none',
                                         'active:shadow-none',
                                     )}
-                                    onClick={() => setOpen(false)}
+                                    onClick={handleClose}
                                     icon={<XMarkIcon />}
                                     iconProps={{ className: cx('w-[24px]', 'text-neutral-600') }}
                                     iconPosition="left"

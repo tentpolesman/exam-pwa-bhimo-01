@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+// /* eslint-disable no-unused-vars */
 /* eslint-disable object-curly-newline */
 /* eslint-disable max-len */
 /* eslint-disable no-console */
@@ -7,23 +7,26 @@
 /* eslint-disable func-names */
 /* eslint-disable radix */
 /* eslint-disable max-len */
-import { custDataNameCookie, features, modules, sentry } from '@config';
+import {
+    custDataNameCookie,
+    // features,
+    modules,
+    // sentry
+} from '@config';
 import { getLastPathWithoutLogin, getLoginInfo } from '@helper_auth';
 import { setLocalStorage, setResolver, testLocalStorage } from '@helper_localstorage';
 import { getAppEnv } from '@root/core/helpers/env';
 import { cmsPageVar, currencyVar, storeConfigVar } from '@root/core/services/graphql/cache';
 import { storeConfig as ConfigSchema, getCategories } from '@services/graphql/schema/config';
 import { appWithTranslation } from 'next-i18next';
-
 import Cookie from 'js-cookie';
-// import { unregister } from 'next-offline/runtime';
 import App from 'next/app';
 import React from 'react';
 import { gql } from '@apollo/client';
 import PageProgressLoader from '@common_pageprogress';
 import graphRequest from '@graphql_request';
 import routeMiddleware from '@middleware_route';
-import getConfig from 'next/config';
+// import getConfig from 'next/config';
 import TagManager from 'react-gtm-module';
 import ModalCookies from '@core_modules/theme/components/modalCookies';
 import { getDeviceByUA, getUAString } from '@root/core/helpers/deviceDection';
@@ -43,7 +46,16 @@ import { getDeviceByUA, getUAString } from '@root/core/helpers/deviceDection';
 // import { Integrations } from '@sentry/tracing';
 // import * as Sentry from '@sentry/node';
 
-const { publicRuntimeConfig } = getConfig();
+// sentry imports
+// import * as Sentry from '@sentry/node';
+// import { RewriteFrames } from '@sentry/integrations';
+// import { Integrations } from '@sentry/tracing';
+// import { RewriteFrames } from '@sentry/integrations';
+// import { Integrations } from '@sentry/tracing';
+
+// import { useApollo } from '@root/core/lib/apollo/apolloClient';
+
+// const { publicRuntimeConfig } = getConfig();
 
 /*
  * ---------------------------------------------
@@ -272,22 +284,6 @@ class MyApp extends App {
         }
 
         /*
-         * LAZY LOADING FONTS
-         * Use this to load non critical fonts
-         */
-        // Fonts();
-
-        /*
-         * ---------------------------------------------
-         * REMOVE THE SERVER SIDE INJECTED CSS
-         * This is for speed performanc purpose
-         */
-        const jssStyles = document.querySelector('#jss-server-side');
-        if (jssStyles) {
-            jssStyles.parentElement.removeChild(jssStyles);
-        }
-
-        /*
          * ---------------------------------------------
          * GTM INITIALIZATION
          */
@@ -380,4 +376,5 @@ class MyApp extends App {
         );
     }
 }
+
 export default appWithTranslation(MyApp);
