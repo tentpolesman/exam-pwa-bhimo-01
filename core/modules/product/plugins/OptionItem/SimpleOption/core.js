@@ -20,16 +20,9 @@ const CoreSimpleOptionItem = ({
     ...other
 }) => {
     const [qty, setQty] = React.useState(1);
-    let cartId = '';
-    let isLogin = '';
     const {
         __typename, sku, name, categories, price_range, stock_status, url_key, sale, review,
     } = data;
-
-    if (typeof window !== 'undefined') {
-        isLogin = getLoginInfo();
-        cartId = getCartId();
-    }
 
     const reviewValue = parseInt(review?.rating_summary, 10) / 20;
     const [addConfigurableProducts] = addConfigurableProductsToCart();
@@ -43,6 +36,8 @@ const CoreSimpleOptionItem = ({
     }
 
     const addToCart = async () => {
+        const isLogin = getLoginInfo();
+        let cartId = getCartId();
         let customizable_options = [];
         const entered_options = [];
         const uids = [];
