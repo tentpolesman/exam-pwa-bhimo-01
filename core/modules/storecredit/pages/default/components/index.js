@@ -22,7 +22,7 @@ const StoreCreditPage = (props) => {
     return (
         <Layout {...props}>
             <div className={cx('storecredit-container')}>
-                <div className={cx('storecredit-balance-wrapper', 'flex', 'items-center')}>
+                <div className={cx('storecredit-balance-wrapper', 'flex', 'items-center', 'mt-[10px]')}>
                     <div>
                         <Typography variant="bd-2b">
                             {t('storecredit:balance')}
@@ -68,36 +68,37 @@ const StoreCreditPage = (props) => {
                                         <>
                                             {storeCredit?.transaction_history?.items.map((val, index) => (
                                                 <tr className={cx('even:bg-white', 'odd:bg-neutral-50')} key={index}>
-                                                    <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-4')}>
-                                                        {val.transaction_id}
+                                                    <td className={cx('p-4')}>
+                                                        <Typography variant="bd-2b">{val.transaction_id}</Typography>
                                                     </td>
-                                                    <td
-                                                        className={cx(
-                                                            val?.store_credit_adjustment?.value < 0 ? 'text-red-500' : 'text-green-500',
-                                                            'text-base',
-                                                            'font-normal',
-                                                            'leading-2lg',
-                                                            'p-4',
-                                                        )}
-                                                    >
-                                                        {formatPrice(
-                                                            val.store_credit_adjustment.value,
-                                                            val.store_credit_adjustment.currency,
-                                                            currencyCache,
-                                                        )}
+                                                    <td className={cx('p-4')}>
+                                                        <Typography
+                                                            variant="bd-2b"
+                                                            className={cx(
+                                                                val?.store_credit_adjustment?.value < 0 ? '!text-red-500' : '!text-green-500',
+                                                            )}
+                                                        >
+                                                            {formatPrice(
+                                                                val.store_credit_adjustment.value,
+                                                                val.store_credit_adjustment.currency,
+                                                                currencyCache,
+                                                            )}
+                                                        </Typography>
                                                     </td>
-                                                    <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-4')}>
-                                                        {formatPrice(
-                                                            val.store_credit_balance.value,
-                                                            val.store_credit_balance.currency,
-                                                            currencyCache,
-                                                        )}
+                                                    <td className={cx('p-4')}>
+                                                        <Typography variant="bd-2b">
+                                                            {formatPrice(
+                                                                val.store_credit_balance.value,
+                                                                val.store_credit_balance.currency,
+                                                                currencyCache,
+                                                            )}
+                                                        </Typography>
                                                     </td>
-                                                    <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-4')}>
-                                                        {val.comment}
+                                                    <td className={cx('p-4')}>
+                                                        <Typography variant="bd-2b">{val.comment}</Typography>
                                                     </td>
-                                                    <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-4')}>
-                                                        {formatDate(val.created_at, 'DD/MM/YYYY')}
+                                                    <td className={cx('p-4')}>
+                                                        <Typography variant="bd-2b">{formatDate(val.created_at, 'DD/MM/YYYY')}</Typography>
                                                     </td>
                                                 </tr>
                                             ))}

@@ -1,3 +1,8 @@
+/* eslint-disable react/no-danger */
+/* eslint-disable indent */
+/* eslint-disable react/jsx-indent-props */
+/* eslint-disable react/jsx-closing-bracket-location */
+
 import Link from 'next/link';
 import { formatPrice } from '@helper_currency';
 import formatDate from '@helper_date';
@@ -13,8 +18,8 @@ import Alert from '@common_alert';
 
 const RewardPointView = (props) => {
     const {
-        data, t, loading, getPath, getId, rowsPerPage, page, handleChangePage, handleChangeRowsPerPage, currencyCache,
-    } = props;
+ data, t, loading, getPath, getId, rowsPerPage, page, handleChangePage, handleChangeRowsPerPage, currencyCache,
+} = props;
 
     const hasTransaction = data?.transaction_history?.items && data?.transaction_history?.items?.length > 0;
     const pageInfo = data?.transaction_history?.page_info;
@@ -102,44 +107,44 @@ const RewardPointView = (props) => {
                                         <>
                                             {data?.transaction_history?.items.map((val, index) => (
                                                 <tr className={cx('even:bg-white', 'odd:bg-neutral-50')} key={index}>
-                                                    <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-4')}>
-                                                        {val.transactionId}
+                                                    <td className={cx('p-4')}>
+                                                        <Typography variant="bd-2b">{val.transactionId}</Typography>
                                                     </td>
-                                                    <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-4')}>
-                                                        {formatPoint(val.balance)}
+                                                    <td className={cx('p-4')}>
+                                                        <Typography variant="bd-2b">{formatPoint(val.balance)}</Typography>
                                                     </td>
-                                                    <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-4')}>
-                                                        {val.comment.split('<a').length > 1 && val.comment.includes('/sales/order/view/order_id') ? (
-                                                            <div
-                                                                className={cx('')}
-                                                                // eslint-disable-next-line react/no-danger
-                                                                dangerouslySetInnerHTML={{
-                                                                    __html: `${val.comment.split('<a')[0]}
-                                                                            <a href="${getPath(val.comment)}">#${getId(val.comment)}</a>
-                                                                            `,
-                                                                }}
-                                                            />
-                                                        ) : (
-                                                            // eslint-disable-next-line react/no-danger
-                                                            <div className={cx('')} dangerouslySetInnerHTML={{ __html: val.comment }} />
-                                                        )}
+                                                    <td className={cx('p-4')}>
+                                                        <Typography variant="bd-2b">
+                                                            {val.comment.split('<a').length > 1
+                                                            && val.comment.includes('/sales/order/view/order_id') ? (
+                                                                <div
+                                                                    dangerouslySetInnerHTML={{
+                                                                        __html: `${val.comment.split('<a')[0]}
+                                                                            <a href="${getPath(val.comment)}">#${getId(val.comment)}</a>`,
+                                                                    }}
+                                                                />
+                                                            ) : (
+                                                                <div dangerouslySetInnerHTML={{ __html: val.comment }} />
+                                                            )}
+                                                        </Typography>
                                                     </td>
-                                                    <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-4')}>
-                                                        {val.expirationDate ? formatDate(val.expirationDate, 'DD/MM/YYYY') : '-'}
+                                                    <td className={cx('p-4')}>
+                                                        <Typography variant="bd-2b">
+                                                            {val.expirationDate ? formatDate(val.expirationDate, 'DD/MM/YYYY') : '-'}
+                                                        </Typography>
                                                     </td>
-                                                    <td
-                                                        className={cx(
-                                                            val?.points < 0 ? 'text-red-500' : 'text-green-500',
-                                                            'text-base',
-                                                            'font-normal',
-                                                            'leading-2lg',
-                                                            'p-4',
-                                                        )}
-                                                    >
-                                                        {formatPoint(val.points)}
+                                                    <td className={cx('p-4')}>
+                                                        <Typography
+                                                            variant="bd-2b"
+                                                            className={cx(val?.points < 0 ? '!text-red-500' : '!text-green-500')}
+                                                        >
+                                                            {formatPoint(val.points)}
+                                                        </Typography>
                                                     </td>
-                                                    <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-4')}>
-                                                        {val.transactionDate ? formatDate(val.transactionDate, 'DD/MM/YYYY') : '-'}
+                                                    <td className={cx('p-4')}>
+                                                        <Typography variant="bd-2b">
+                                                            {val.transactionDate ? formatDate(val.transactionDate, 'DD/MM/YYYY') : '-'}
+                                                        </Typography>
                                                     </td>
                                                 </tr>
                                             ))}
