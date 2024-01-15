@@ -19,8 +19,8 @@ const ItemProduct = (props) => {
 
     return (
         <div className="flex flex-col">
-            <div className="">
-                <div className="">
+            <div className="flex flex-row items-center basis-full gap-4">
+                <div className="w-[105px] h-[105px]">
                     <Image
                         src={image_url}
                         className=""
@@ -31,7 +31,7 @@ const ItemProduct = (props) => {
                         storeConfig={storeConfig}
                     />
                 </div>
-                <div className="">
+                <div className="flex flex-col">
                     <Typography variant="span">{name}</Typography>
                     <Typography variant="span">{formatPrice(price_incl_tax, currency)}</Typography>
                     <Typography variant="span" className="">

@@ -7,9 +7,12 @@ import Link from 'next/link';
 import cx from 'classnames';
 
 import EllipsisVerticalIcon from '@heroicons/react/24/solid/EllipsisVerticalIcon';
+import Show from '@common/Show';
 
 const MobileTabletActionMenu = (props) => {
-    const { t, orderNumber, reOrder } = props;
+    const {
+        t, orderNumber, reOrder, return: isRma, handlingReturn = () => {},
+    } = props;
 
     const [open, setOpen] = React.useState(false);
 
@@ -25,6 +28,15 @@ const MobileTabletActionMenu = (props) => {
                     {t('order:reorder')}
                 </Typography>
             </li>
+            <Show when={isRma}>
+                <li className={cx('text-md', 'px-4', 'py-2', 'hover:bg-neutral-100', 'cursor-pointer')}>
+                    <Button variant="plain" onClick={handlingReturn}>
+                        <Typography variant="span" type="regular" decoration="underline">
+                            {t('order:smReturn')}
+                        </Typography>
+                    </Button>
+                </li>
+            </Show>
         </ul>
     );
 
