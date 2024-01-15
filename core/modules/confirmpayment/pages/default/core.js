@@ -75,7 +75,7 @@ const ConfirmPaymentPage = (props) => {
     }, [bankList]);
 
     const handleChangeDate = (date) => {
-        formik.setFieldValue('date', date);
+        formik.setFieldValue('date', date === null ? '' : date);
     };
     const handleDropFile = (files) => {
         const fileName = files[0].file.name;
