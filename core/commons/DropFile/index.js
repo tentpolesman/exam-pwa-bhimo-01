@@ -37,12 +37,18 @@ const DropFile = ({
     hintText,
     loading,
     className = '',
+    labelProps = {},
 }) => {
     const { t } = useTranslation(['common']);
     const [isInternalError, setIsInternalError] = React.useState(null);
     const [dropFile, setDropFile] = React.useState(dropValue);
     const isError = error || isInternalError;
-    const isTempImageExists = showListFile && value && value?.length > 0;
+    const isTempImageExists = showListFile && ((value && value?.length > 0) || (dropFile && dropFile.length > 0));
+
+    const {
+        className: classNameLabel = '',
+        ...otherLabelProps
+    } = labelProps;
 
     const checkImage = async (files) => {
         const promises = [];
@@ -135,7 +141,12 @@ const DropFile = ({
         <div className="flex flex-col">
             {
                 title && (
-                    <Typography variant="h4" color={error ? 'red' : 'default'} className="mb-[12px]">
+                    <Typography
+                        variant="h4"
+                        color={error ? 'red' : 'default'}
+                        className={cx('mb-[12px]', classNameLabel)}
+                        {...otherLabelProps}
+                    >
                         {title}
                     </Typography>
                 )
@@ -185,7 +196,11 @@ const DropFile = ({
                         <div className="container-dnd-file flex items-center">
                             <PhotoIcon className="mr-3 text-neutral-700 w-5 h-5" />
                             <div className="flex flex-col items-center">
-                                {value?.map((file, index) => (<Typography variant="bd-2b" key={index}>{file.name}</Typography>))}
+                                {
+                                    value && value.length > 0
+                                        ? value?.map((file, index) => (<Typography variant="bd-2b" key={index}>{file.name}</Typography>))
+                                        : dropFile?.map((file, index) => (<Typography variant="bd-2b" key={index}>{file.name}</Typography>))
+                                }
                             </div>
                         </div>
                     </Show>
