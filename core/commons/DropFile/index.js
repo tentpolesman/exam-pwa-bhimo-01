@@ -7,6 +7,8 @@ import propTypes from 'prop-types';
 import Show from '@common_show';
 import CircularProgress from '@common_circularprogress';
 import cx from 'classnames';
+import { CloudArrowUpIcon, PhotoIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { uniq } from 'lodash';
 
 const toBase64 = (file) => new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -17,7 +19,7 @@ const toBase64 = (file) => new Promise((resolve, reject) => {
 
 const DropFile = ({
     label,
-    width = 509,
+    width = null,
     error = false,
     title,
     showListFile,
@@ -34,6 +36,7 @@ const DropFile = ({
     maxHeight,
     hintText,
     loading,
+    className = '',
 }) => {
     const { t } = useTranslation(['common']);
     const [isInternalError, setIsInternalError] = React.useState(null);
@@ -78,8 +81,8 @@ const DropFile = ({
                 setIsInternalError(errorImage);
             } else {
                 if (multiple) {
-                    setDropFile([...dropFile, ...files]);
-                    if (setValue) setValue([...dropFile, ...files]);
+                    setDropFile(uniq([...dropFile, ...files], ''));
+                    if (setValue) setValue(uniq([...dropFile, ...files]));
                 } else {
                     setDropFile([files[0]]);
                     if (setValue) setValue([files[0]]);
@@ -148,6 +151,7 @@ const DropFile = ({
                         !isTempImageExists && 'border-[1px] border-neutral-400 border-dashed justify-center text-center',
                         isError && 'border-red-600 text-red-600 text-center',
                         isTempImageExists && 'border-[1px] border-neutral-100 bg-neutral-100 text-left justify-between',
+                        className,
                     )
                 }
             >
@@ -170,9 +174,7 @@ const DropFile = ({
                                 variant="bd-2b"
                                 className={cx('flex items-center justify-center', isError && 'border-red-600 text-red-600')}
                             >
-                                <span className={cx('material-symbols-outlined', 'mr-[8px]', 'text-[20px]')}>
-                                    cloud_upload
-                                </span>
+                                <CloudArrowUpIcon className="mr-3 w-5 h-5" />
                                 {isDragActive ? t('common:fileUpload:dragActive') : t('common:fileUpload:dragNonActive')}
                             </Typography>
                         </div>
@@ -181,9 +183,7 @@ const DropFile = ({
                     {/* SHOW FILES NAME */}
                     <Show when={isTempImageExists}>
                         <div className="container-dnd-file flex items-center">
-                            <span className={cx('material-symbols-outlined', 'mr-[8px]', 'text-neutral-700', 'text-[20px]')}>
-                                image
-                            </span>
+                            <PhotoIcon className="mr-3 text-neutral-700 w-5 h-5" />
                             <div className="flex flex-col items-center">
                                 {value?.map((file, index) => (<Typography variant="bd-2b" key={index}>{file.name}</Typography>))}
                             </div>
@@ -216,9 +216,8 @@ const DropFile = ({
                             setDropFile([]);
                         }}
                     >
-                        <span className={cx('material-symbols-outlined', 'text-neutral-600', 'text-[20px]')}>
-                            close
-                        </span>
+                        {' '}
+                        <XMarkIcon className="text-neutral-600 w-5 h-5" />
                     </button>
                 </Show>
             </div>

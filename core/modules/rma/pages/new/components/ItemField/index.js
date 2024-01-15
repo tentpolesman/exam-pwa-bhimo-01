@@ -11,13 +11,14 @@ const ItemField = ({
     required = false,
     t,
     ItemFieldView,
+    ...other
 }) => {
     const [select, setSelect] = React.useState('');
-    const handleSelect = (event) => {
-        setSelect(event.target.value);
+    const handleSelect = (value) => {
+        setSelect(value);
         onSelect({
             ...propsValue,
-            value: event.target.value,
+            value,
         });
     };
     let error = false;
@@ -34,6 +35,7 @@ const ItemField = ({
             error={error}
             errorMessage={errorMessage}
             t={t}
+            {...other}
         />
     );
 };

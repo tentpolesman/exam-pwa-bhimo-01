@@ -25,7 +25,10 @@ import ExclamationTriangleIcon from '@heroicons/react/24/outline/ExclamationTria
 import Alert from '@common_alert';
 
 const DefaultView = (props) => {
-    const { data, t, storeConfig, reOrder, pageSize, handleChangePage, handleChangePageSize, error } = props;
+    const {
+        data, t, storeConfig, reOrder, pageSize, handleChangePage, handleChangePageSize, error,
+        returnUrl,
+    } = props;
 
     // cache currency
     const currencyCache = useReactiveVar(currencyVar);
@@ -128,6 +131,13 @@ const DefaultView = (props) => {
                                                             <button type="button" onClick={() => reOrder(val.order_number)}>
                                                                 <a className={cx('text-base', 'px-4', 'hover:text-primary-700')}>Reorder</a>
                                                             </button>
+                                                            {val.detail[0].aw_rma && val.detail[0].aw_rma.status && (
+                                                                <Button variant="plain" onClick={() => returnUrl(val.order_number)}>
+                                                                    <Typography variant="span" type="regular" decoration="underline">
+                                                                        {t('order:smReturn')}
+                                                                    </Typography>
+                                                                </Button>
+                                                            )}
                                                         </div>
                                                         <div className={cx('desktop:hidden')}>
                                                             <div
@@ -140,7 +150,13 @@ const DefaultView = (props) => {
                                                                     'tablet:max-desktop:py-6',
                                                                 )}
                                                             >
-                                                                <MobileTabletActionMenu t={t} orderNumber={val.order_number} reOrder={reOrder} />
+                                                                <MobileTabletActionMenu
+                                                                    return={val.detail[0].aw_rma && val.detail[0].aw_rma.status}
+                                                                    handlingReturn={() => returnUrl(val.order_number)}
+                                                                    t={t}
+                                                                    orderNumber={val.order_number}
+                                                                    reOrder={reOrder}
+                                                                />
                                                             </div>
                                                         </div>
                                                     </td>
