@@ -2,7 +2,6 @@
 import React from 'react';
 import gqlService from '@core_modules/checkout/services/graphql';
 import Skeleton from '@common_skeleton';
-import _ from 'lodash';
 import TagManager from 'react-gtm-module';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -45,7 +44,7 @@ const Address = (props) => {
 
     const { address } = checkout.selected;
     const { loading, data } = checkout;
-    const street = _.isNull(address) ? null : address.street.join(' ');
+    const street = address?.street?.join(' ') ?? null;
     let dialogProps;
 
     let dest_latitude = {};
@@ -103,22 +102,28 @@ const Address = (props) => {
     const updateAddressState = (result) => {
         const updatedCart = result.data.setBillingAddressOnCart.cart;
         if (isOnlyVirtualProductOnCart) {
-            dispatch(setSelectedData({
-                billing: updatedCart?.billing_address,
-                address: updatedCart?.billing_address,
-            }));
+            dispatch(
+                setSelectedData({
+                    billing: updatedCart?.billing_address,
+                    address: updatedCart?.billing_address,
+                }),
+            );
         } else {
             const [shippingAddress] = updatedCart.shipping_addresses;
             if (shippingAddress && data.isGuest) {
-                dispatch(setSelectedData({
-                    address: shippingAddress,
-                }));
+                dispatch(
+                    setSelectedData({
+                        address: shippingAddress,
+                    }),
+                );
             }
 
             if (checkout.selected.delivery === 'home' && typeof shippingAddress.is_valid_city !== 'undefined') {
-                dispatch(setErrorState({
-                    shippingAddress: !shippingAddress.is_valid_city,
-                }));
+                dispatch(
+                    setErrorState({
+                        shippingAddress: !shippingAddress.is_valid_city,
+                    }),
+                );
             }
         }
         dispatch(setLoading({ addresses: false }));
@@ -126,9 +131,11 @@ const Address = (props) => {
             ...checkout.data.cart,
             ...updatedCart,
         };
-        dispatch(setCheckoutData({
-            cart: mergeCart,
-        }));
+        dispatch(
+            setCheckoutData({
+                cart: mergeCart,
+            }),
+        );
 
         if (refetchDataCart && typeof refetchDataCart() === 'function') {
             refetchDataCart();
@@ -254,21 +261,23 @@ const Address = (props) => {
                         .then((dataAddress) => {
                             if (dataAddress && dataAddress.data && dataAddress.data.updateCustomerAddress) {
                                 const shipping = dataAddress.data.updateCustomerAddress;
-                                dispatch(setSelectedData({
-                                    address: {
-                                        firstname: shipping.firstname,
-                                        lastname: shipping.lastname,
-                                        city: shipping.city,
-                                        region: {
-                                            ...shipping.region,
-                                            label: shipping.region.region,
+                                dispatch(
+                                    setSelectedData({
+                                        address: {
+                                            firstname: shipping.firstname,
+                                            lastname: shipping.lastname,
+                                            city: shipping.city,
+                                            region: {
+                                                ...shipping.region,
+                                                label: shipping.region.region,
+                                            },
+                                            country: shipping.country,
+                                            postcode: shipping.postcode,
+                                            telephone: shipping.telephone,
+                                            street: shipping.street,
                                         },
-                                        country: shipping.country,
-                                        postcode: shipping.postcode,
-                                        telephone: shipping.telephone,
-                                        street: shipping.street,
-                                    },
-                                }));
+                                    }),
+                                );
                                 dispatch(setLoading({ order: false, addresses: false }));
                             }
                             setShippingBilling();
