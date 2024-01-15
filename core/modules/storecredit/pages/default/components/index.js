@@ -11,7 +11,9 @@ import SkeletonStoreCredit from '@core_modules/storecredit/pages/default/compone
 import Alert from '@common_alert';
 
 const StoreCreditPage = (props) => {
-    const { t, storeCredit, loading, rowsPerPage, page, handleChangePage, handleChangeRowsPerPage, currencyCache } = props;
+    const {
+        t, storeCredit, loading, rowsPerPage, page, handleChangePage, handleChangeRowsPerPage, currencyCache,
+    } = props;
 
     const hasTransaction = storeCredit?.transaction_history?.items && storeCredit?.transaction_history?.items?.length > 0;
     const pageInfo = storeCredit?.transaction_history?.page_info;
@@ -19,11 +21,12 @@ const StoreCreditPage = (props) => {
 
     return (
         <Layout {...props}>
-            <div className={cx('storecredit-container', 'mobile:px-[15px]', 'tablet:px-[0px]', 'desktop:px-[0px]')}>
+            <div className={cx('storecredit-container')}>
                 <div className={cx('storecredit-balance-wrapper', 'flex', 'items-center')}>
                     <div>
                         <Typography variant="bd-2b">
-                            {t('storecredit:balance')}{' '}
+                            {t('storecredit:balance')}
+                            {' '}
                             <Show when={!loading}>
                                 <b>
                                     {formatPrice(
@@ -45,7 +48,11 @@ const StoreCreditPage = (props) => {
                         <table className={cx('w-full', 'text-base', 'border-[1px]', 'border-neutral-100')}>
                             <thead>
                                 <tr className={cx('text-neutral-500', 'font-semibold', 'leading-2lg', 'text-left')}>
-                                    <th className={cx('px-4', 'py-3')}>{t('storecredit:transactionId')} #</th>
+                                    <th className={cx('px-4', 'py-3')}>
+                                        {t('storecredit:transactionId')}
+                                        {' '}
+                                        #
+                                    </th>
                                     <th className={cx('px-4', 'py-3')}>{t('storecredit:adjustment')}</th>
                                     <th className={cx('px-4', 'py-3')}>{t('storecredit:creditbalance')}</th>
                                     <th className={cx('px-4', 'py-3')}>{t('storecredit:comment')}</th>

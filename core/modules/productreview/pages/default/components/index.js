@@ -32,7 +32,7 @@ const ProductReviewPage = (props) => {
 
     return (
         <Layout {...props}>
-            <div className={cx('productreview-container', 'mobile:px-[15px]', 'tablet:px-[0px]', 'desktop:px-[0px]')}>
+            <div className={cx('productreview-container')}>
                 <DetailProductReview t={t} open={isOpenDetail} setOpen={() => openDetail(false)} reviewItem={reviewItem} storeConfig={storeConfig} />
                 <div className={cx('pt-5')}>
                     <div className={cx('relative', 'overflow-x-auto', 'rounded-lg')}>
