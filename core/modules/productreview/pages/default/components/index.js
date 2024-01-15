@@ -12,9 +12,12 @@ import cx from 'classnames';
 import SkeletonProductReview from '@core_modules/productreview/pages/default/components/skeleton';
 import DetailProductReview from '@core_modules/productreview/pages/default/components/detail';
 import Alert from '@common_alert';
+import { createExcerpt } from '@helper_text';
 
 const ProductReviewPage = (props) => {
-    const { t, reviewCustomer, loading, rowsPerPage, page, handleChangePage, handleChangeRowsPerPage } = props;
+    const {
+        t, reviewCustomer, loading, rowsPerPage, page, handleChangePage, handleChangeRowsPerPage, storeConfig,
+    } = props;
 
     const [isOpenDetail, setOpenDetail] = React.useState(false);
     const [reviewItem, setReviewItem] = React.useState(null);
@@ -30,7 +33,7 @@ const ProductReviewPage = (props) => {
     return (
         <Layout {...props}>
             <div className={cx('productreview-container', 'mobile:px-[15px]', 'tablet:px-[0px]', 'desktop:px-[0px]')}>
-                <DetailProductReview t={t} open={isOpenDetail} setOpen={() => openDetail(false)} reviewItem={reviewItem} />
+                <DetailProductReview t={t} open={isOpenDetail} setOpen={() => openDetail(false)} reviewItem={reviewItem} storeConfig={storeConfig} />
                 <div className={cx('pt-5')}>
                     <div className={cx('relative', 'overflow-x-auto', 'rounded-lg')}>
                         <table className={cx('w-full', 'text-base', 'border-[1px]', 'border-neutral-100')}>
@@ -66,7 +69,7 @@ const ProductReviewPage = (props) => {
                                                         <RatingStar value={val?.ratings_breakdown[0]?.value ?? 0} />
                                                     </td>
                                                     <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-4')}>
-                                                        {val.text}
+                                                        {createExcerpt(val.text, 80)}
                                                     </td>
                                                     <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-4')}>
                                                         <button
