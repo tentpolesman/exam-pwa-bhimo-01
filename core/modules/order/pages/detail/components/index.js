@@ -430,7 +430,7 @@ const DetailOrder = (props) => {
                                 <Typography className={cx('mobile:text-2md', 'tablet:text-lg', 'capitalize')}>{t('order:orderItem')}</Typography>
                             </div>
                             <div className="mobile:basis-full">
-                                <Table data={items} t={t} currency={currency} currencyCache={currencyCache} />
+                                <Table data={items} t={t} currency={currency} currencyCache={currencyCache} storeConfig={storeConfig} />
                             </div>
                             <div className="mobile:basis-full flex flex-row tablet:justify-end mt-4">
                                 <div className="mobile:basis-full tablet:basis-4/12 flex flex-col gap-y-2">

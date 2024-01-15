@@ -111,7 +111,8 @@
         "new": "Baru",
         "free": "Free",
         "none": "Tidak ada",
-        "note": "Catatan"
+        "note": "Catatan",
+        "sku": "SKU"
     },
     "error": {
         "notFound": "Data tidak di temukan",

@@ -5,12 +5,23 @@
 /* eslint-disable semi-style */
 import Image from '@common_image';
 import Typography from '@common_typography';
-
 import { formatPrice } from '@helper_currency';
-
 import cx from 'classnames';
-
 import { basePath } from '@config';
+
+const MobileTableItemComponent = ({ label, value }) => (
+    <div className={cx('flex flex-row')}>
+        <div className="w-[35%]">
+            <Typography type="bold">{label}</Typography>
+        </div>
+        <div className="w-[5%]">
+            <Typography>{' : '}</Typography>
+        </div>
+        <div className="w-[60%]">
+            <Typography>{value}</Typography>
+        </div>
+    </div>
+);
 
 const TableListProduct = (props) => {
     const { data, t, currency, currencyCache } = props;
@@ -33,21 +44,28 @@ const TableListProduct = (props) => {
                             )}
                             key={index}
                         >
-                            <div className={cx('product-image', 'w-[105px]', 'h-[130px]')}>
+                            <div className={cx('product-image', 'h-[100px]', 'w-[100px]', 'mt-[5px]', 'mb-[5px]', 'mr-[5px]')}>
                                 <Image
                                     src={product.image_url || `${basePath}/assets/img/placeholder.png`}
-                                    width={105}
-                                    height={130}
+                                    width={100}
+                                    height={100}
                                     alt={product.name}
+                                    storeConfig={props?.storeConfig}
                                 />
                             </div>
                             <div className={cx('product-info', 'flex', 'flex-col', 'justify-center')}>
-                                <Typography>{product.name}</Typography>
-                                <Typography>{product.sku}</Typography>
-                                <Typography>{product.note}</Typography>
-                                <Typography>{formatPrice(product.price_incl_tax, currency, currencyCache)}</Typography>
-                                <Typography>{product.qty_ordered}</Typography>
-                                <Typography>{formatPrice(product.row_total_incl_tax, currency, currencyCache)}</Typography>
+                                <MobileTableItemComponent label={t('common:product:titleProduct')} value={product.name} />
+                                <MobileTableItemComponent label={t('common:title:sku')} value={product.sku} />
+                                <MobileTableItemComponent label={t('common:title:note')} value={product.note ?? '-'} />
+                                <MobileTableItemComponent
+                                    label={t('common:title:price')}
+                                    value={formatPrice(product.price_incl_tax, currency, currencyCache)}
+                                />
+                                <MobileTableItemComponent label={t('common:title:shortQty')} value={product.qty_ordered} />
+                                <MobileTableItemComponent
+                                    label={t('common:subtotal')}
+                                    value={formatPrice(product.row_total_incl_tax, currency, currencyCache)}
+                                />
                             </div>
                         </div>
                     ))}
@@ -94,31 +112,32 @@ const TableListProduct = (props) => {
                                     key={index}
                                 >
                                     <td>
-                                        <div className={cx('h-[130px]', 'w-[105px]')}>
+                                        <div className={cx('h-[100px]', 'w-[100px]', 'mt-[5px]', 'mb-[5px]', 'mr-[5px]')}>
                                             <Image
                                                 src={val.image_url || `${basePath}/assets/img/placeholder.png`}
-                                                width={105}
-                                                height={130}
+                                                width={100}
+                                                height={100}
                                                 alt={val.name}
+                                                storeConfig={props?.storeConfig}
                                             />
                                         </div>
                                     </td>
-                                    <td className="tablet:text-left">
+                                    <td className="tablet:text-left px-[5px]">
                                         <Typography>{val.name}</Typography>
                                     </td>
-                                    <td className="tablet:text-center">
+                                    <td className="tablet:text-left px-[5px]">
                                         <Typography>{val.sku}</Typography>
                                     </td>
-                                    <td className="tablet:text-center">
-                                        <Typography>{val.note || '-'}</Typography>
+                                    <td className="tablet:text-left px-[5px]">
+                                        <Typography>{val.note ?? '-'}</Typography>
                                     </td>
-                                    <td className="tablet:text-center">
+                                    <td className="tablet:text-left px-[5px]">
                                         <Typography>{formatPrice(val.price_incl_tax, currency, currencyCache)}</Typography>
                                     </td>
-                                    <td className="tablet:text-center">
+                                    <td className="tablet:text-center px-[5px]">
                                         <Typography>{val.qty_ordered}</Typography>
                                     </td>
-                                    <td className="tablet:text-center">
+                                    <td className="tablet:text-left px-[5px]">
                                         <Typography>{formatPrice(val.row_total_incl_tax, currency, currencyCache)}</Typography>
                                     </td>
                                 </tr>

@@ -113,7 +113,8 @@
         "new": "New",
         "free": "Free",
         "none": "None",
-        "note": "Note"
+        "note": "Note",
+        "sku": "SKU"
     },
     "error": {
         "notFound": "Data not found",
