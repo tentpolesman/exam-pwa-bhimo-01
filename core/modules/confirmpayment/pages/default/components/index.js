@@ -22,12 +22,16 @@ const ConfirmPayment = (props) => {
                         label={t('payment:confirmPayment:form:orderNumber')}
                         value={formik.values.order_number}
                         onChange={formik.handleChange}
-                        error={!!(formik.errors.order_number && formik.touched.order_number)}
-                        errorMessage={(formik.errors.order_number && formik.touched.order_number) ? formik.errors.order_number : null}
+                        hintProps={{
+                            displayHintText: !!(formik.errors.order_number && formik.touched.order_number),
+                            hintType: formik.errors.order_number && formik.touched.order_number ? 'error' : '',
+                            hintText: (formik.errors.order_number && formik.touched.order_number) ? formik.errors.order_number : null,
+                        }}
                         className="w-full"
                         inputProps={{
                             className: 'w-full',
                         }}
+                        absolute={false}
                     />
                     {
                         banks.length > 0
@@ -45,6 +49,7 @@ const ConfirmPayment = (props) => {
                                     textFiledProps={{
                                         className: '!w-full desktop:w-[50%]',
                                         classWrapper: 'mt-2',
+                                        absolute: false,
                                     }}
                                 />
                             )
@@ -54,12 +59,16 @@ const ConfirmPayment = (props) => {
                                     label={t('payment:confirmPayment:form:bankName')}
                                     value={formik.values.payment}
                                     onChange={formik.handleChange}
-                                    error={!!(formik.errors.payment && formik.touched.payment)}
-                                    errorMessage={(formik.errors.payment && formik.touched.payment) ? formik.errors.payment : null}
                                     className="w-full"
                                     inputProps={{
                                         className: 'w-full',
                                     }}
+                                    hintProps={{
+                                        displayHintText: !!(formik.errors.payment && formik.touched.payment),
+                                        hintType: formik.errors.payment && formik.touched.payment ? 'error' : '',
+                                        hintText: (formik.errors.payment && formik.touched.payment) ? formik.errors.payment : null,
+                                    }}
+                                    absolute={false}
                                 />
                             )
                     }
@@ -68,44 +77,57 @@ const ConfirmPayment = (props) => {
                         label={t('payment:confirmPayment:form:bankAccountNumber')}
                         value={formik.values.account_number}
                         onChange={formik.handleChange}
-                        error={!!(formik.errors.account_number && formik.touched.account_number)}
-                        errorMessage={(formik.errors.account_name && formik.touched.account_number) ? formik.errors.account_number : null}
                         className="w-full"
                         inputProps={{
                             className: 'w-full',
                         }}
+                        hintProps={{
+                            displayHintText: !!(formik.errors.account_number && formik.touched.account_number),
+                            hintType: formik.errors.account_number && formik.touched.account_number ? 'error' : '',
+                            hintText: (formik.errors.account_number && formik.touched.account_number) ? formik.errors.account_number : null,
+                        }}
+                        absolute={false}
                     />
                     <TextField
                         name="account_name"
                         label={t('payment:confirmPayment:form:bankAccountName')}
                         value={formik.values.account_name}
                         onChange={formik.handleChange}
-                        error={!!(formik.errors.account_name && formik.touched.account_name)}
-                        errorMessage={(formik.errors.account_name && formik.touched.account_name) ? formik.errors.account_name : null}
                         className="w-full"
                         inputProps={{
                             className: 'w-full',
                         }}
+                        hintProps={{
+                            displayHintText: !!(formik.errors.account_name && formik.touched.account_name),
+                            hintType: formik.errors.account_name && formik.touched.account_name ? 'error' : '',
+                            hintText: (formik.errors.account_name && formik.touched.account_name) ? formik.errors.account_number : null,
+                        }}
+                        absolute={false}
                     />
                     <TextField
                         name="amount"
                         label={t('payment:confirmPayment:form:amountTranfer')}
                         value={formik.values.amount}
                         onChange={formik.handleChange}
-                        error={!!(formik.errors.amount && formik.touched.amount)}
-                        errorMessage={(formik.errors.amount && formik.touched.amount) ? formik.errors.amount : null}
                         className="w-full"
                         inputProps={{
                             className: 'w-full',
                         }}
+                        hintProps={{
+                            displayHintText: !!(formik.errors.amount && formik.touched.amount),
+                            hintType: formik.errors.amount && formik.touched.amount ? 'error' : '',
+                            hintText: (formik.errors.amount && formik.touched.amount) ? formik.errors.account_number : null,
+                        }}
+                        absolute={false}
                     />
                     <Datepicker
-                        classWrapper="mb-5"
                         label={t('payment:confirmPayment:form:tranferDate')}
-                        name="dob"
+                        name="date"
                         classLabel={cx('capitalize', 'mb-[8px]')}
                         value={formik.values.date}
                         onChange={handleChangeDate}
+                        error={!!(formik.errors.date && formik.touched.date)}
+                        errorMessage={(formik.errors.date && formik.touched.date) ? formik.errors.date : null}
                     />
                     <DropFile
                         title={t('payment:confirmPayment:form:file')}
