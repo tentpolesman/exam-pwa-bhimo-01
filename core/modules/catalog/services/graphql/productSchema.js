@@ -124,7 +124,10 @@ export const getProduct = (config = {}, router) => gql`
       __typename
       items {
         seller {
+          seller_id
           seller_name
+          seller_path
+          seller_city
         }
         id
         sku
@@ -565,7 +568,12 @@ query getDetailproduct($url_key: String!){
           label,
           url
         }
-        seller_id
+        seller {
+          seller_id
+          seller_name
+          seller_path
+          seller_city
+        }
       }
       total_count
     }
