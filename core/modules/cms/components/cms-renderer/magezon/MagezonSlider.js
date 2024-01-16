@@ -120,8 +120,8 @@ const MagezonSliderContent = (props) => {
         preload,
         width,
         height,
-        // width_mobile,
-        // height_mobile,
+        width_mobile,
+        height_mobile,
         autoplay,
         loop,
         control,
@@ -254,12 +254,12 @@ const MagezonSliderContent = (props) => {
                     <div className="magezon-slide-image">
                         <Image
                             src={`${mediaUrl}/${image}`}
-                            // srcMobile={`${mediaUrl}/${image}`}
+                            srcMobile={`${mediaUrl}/${image}`}
                             alt={heading}
                             width={width}
                             height={height}
-                            // widthMobile={width_mobile}
-                            // heightMobile={height_mobile}
+                            widthMobile={width_mobile}
+                            heightMobile={height_mobile}
                             useContainer={false}
                             storeConfig={storeConfig}
                             preload={preload}
@@ -388,7 +388,6 @@ const MagezonSlider = (props) => {
         owl_dots_insie,
         slider_height,
         storeConfig,
-        deviceType,
     } = props;
 
     const [slideIdx, setSlideIndex] = useState(0);
@@ -396,14 +395,13 @@ const MagezonSlider = (props) => {
 
     let slideHeight = storeConfig.pwa?.magezon_slider_desktop_height;
     let slideWidth = storeConfig.pwa?.magezon_slider_desktop_width;
-    const slideHeightMobile = storeConfig.pwa?.magezon_slider_mobile_height;
-    const slideWidthMobile = storeConfig.pwa?.magezon_slider_mobile_width;
+    let slideHeightMobile = storeConfig.pwa?.magezon_slider_mobile_height;
+    let slideWidthMobile = storeConfig.pwa?.magezon_slider_mobile_width;
     slideHeight = typeof slideHeight === 'string' ? parseInt(slideHeight, 10) : slideHeight;
     slideWidth = typeof slideWidth === 'string' ? parseInt(slideWidth, 10) : slideWidth;
-    if (deviceType?.isMobile) {
-        slideHeight = typeof slideHeightMobile === 'string' ? parseInt(slideHeightMobile, 10) : slideHeightMobile;
-        slideWidth = typeof slideWidthMobile === 'string' ? parseInt(slideWidthMobile, 10) : slideWidthMobile;
-    }
+    slideHeightMobile = typeof slideHeightMobile === 'string' ? parseInt(slideHeightMobile, 10) : slideHeightMobile;
+    slideWidthMobile = typeof slideWidthMobile === 'string' ? parseInt(slideWidthMobile, 10) : slideWidthMobile;
+
     const navSize = owl_nav_size === 'mini' ? 10 : owl_nav_size === 'small' ? 15 : owl_nav_size === 'normal' ? 20 : 25;
     let sliderRef = useRef();
 
@@ -542,8 +540,8 @@ const MagezonSlider = (props) => {
                                         content_position={content_position}
                                         height={slideHeight}
                                         width={slideWidth}
-                                        // height_mobile={slideHeightMobile}
-                                        // width_mobile={slideWidthMobile}
+                                        height_mobile={slideHeightMobile}
+                                        width_mobile={slideWidthMobile}
                                         storeConfig={storeConfig}
                                         {...item}
                                         preload={i === 0}
@@ -557,8 +555,8 @@ const MagezonSlider = (props) => {
                                             content_position={content_position}
                                             height={slideHeight}
                                             width={slideWidth}
-                                            // height_mobile={slideHeightMobile}
-                                            // width_mobile={slideWidthMobile}
+                                            height_mobile={slideHeightMobile}
+                                            width_mobile={slideWidthMobile}
                                             storeConfig={storeConfig}
                                             {...item}
                                             preload={i === 0}
@@ -697,19 +695,19 @@ const MagezonSlider = (props) => {
                     }
                     .magezon-slider--dot-nav-item {
                         ${owl_active_background_color
-            ? `
+                            ? `
                             background-color: ${owl_background_color} !important;
                             border: unset !important;
                         `
-            : ''};
+                            : ''};
                     }
                     .magezon-slider--dot-nav-item-active {
                         ${owl_active_background_color
-            ? `
+                            ? `
                             background-color: ${owl_active_background_color} !important;
                             border: unset !important;
                         `
-            : ''};
+                            : ''};
                     }
                 `}
             </style>

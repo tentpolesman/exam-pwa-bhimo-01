@@ -47,7 +47,6 @@ const MagezonAccordion = (props) => {
         title_color,
         title_font_size,
         storeConfig,
-        deviceType,
     } = props;
     const accordionsState = {};
     let ExpandMoreIcon;
@@ -136,7 +135,7 @@ const MagezonAccordion = (props) => {
                                     classContent="accordion-content"
                                     CustomIcon={expandedList[`accordion-${index}`] ? ExpandLessIcon : ExpandMoreIcon}
                                 >
-                                    <MagezonSection elements={element.elements} storeConfig={storeConfig} deviceType={deviceType} />
+                                    <MagezonSection elements={element.elements} storeConfig={storeConfig} />
                                 </Accordion>
                             );
                         })}
