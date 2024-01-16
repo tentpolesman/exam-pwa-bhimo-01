@@ -9,20 +9,20 @@ const WidgetRenderer = dynamic(() => import('@core_modules/cms/components/cms-re
 
 const MixedContent = (props) => {
     const {
-        key, storeConfig, contents, ...item
+        key, storeConfig, contents, deviceType, ...item
     } = props;
 
     return (
         <>
             {contents[0] !== '' && <WidgetRenderer content={contents[0]} {...item} storeConfig={storeConfig} />}
-            <MagezonElement {...item} storeConfig={storeConfig} />
+            <MagezonElement {...item} storeConfig={storeConfig} deviceType={deviceType} />
             {contents[2] !== '' && <WidgetRenderer content={contents[2]} {...item} storeConfig={storeConfig} />}
         </>
     );
 };
 
 const MagezonRenderer = (props) => {
-    const { content, storeConfig } = props;
+    const { content, storeConfig, deviceType } = props;
     const { t } = useTranslation(['common']);
     const mixedContents = content.replace('[/mgz_pagebuilder]', '[mgz_pagebuilder]').split('[mgz_pagebuilder]');
     const removeIdentifier = useMemo(() => {
@@ -41,9 +41,9 @@ const MagezonRenderer = (props) => {
                 && removeIdentifier.elements
                 && removeIdentifier.elements.length > 0
                 && removeIdentifier.elements.map((item, key) => (mixedContents[0] !== '' || mixedContents[2] !== '' ? (
-                    <MixedContent key={key} {...item} storeConfig={storeConfig} contents={mixedContents} />
+                    <MixedContent key={key} {...item} storeConfig={storeConfig} contents={mixedContents} deviceType={deviceType} />
                 ) : (
-                    <MagezonElement key={key} {...item} storeConfig={storeConfig} />
+                    <MagezonElement key={key} {...item} storeConfig={storeConfig} deviceType={deviceType} />
                 )))}
             {!removeIdentifier && (
                 <div className="desktop:max-w-[1280px] tablet:max-w-[768px] my-0 mx-auto">

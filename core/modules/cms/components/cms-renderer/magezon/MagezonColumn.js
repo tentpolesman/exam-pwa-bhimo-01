@@ -23,6 +23,7 @@ const MagezonColumn = (props) => {
         lg_hide,
         xl_hide,
         storeConfig,
+        deviceType,
         ...other
     } = props;
 
@@ -54,7 +55,9 @@ const MagezonColumn = (props) => {
     return (
         <>
             <div className={cx(classColumn, className)}>
-                {elements && elements.length > 0 && elements.map((item, key) => <MagezonElement key={key} {...item} storeConfig={storeConfig} />)}
+                {elements
+                    && elements.length > 0
+                    && elements.map((item, key) => <MagezonElement key={key} {...item} storeConfig={storeConfig} deviceType={deviceType} />)}
             </div>
             <style jsx>
                 {`
