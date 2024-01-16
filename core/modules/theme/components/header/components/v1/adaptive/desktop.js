@@ -248,7 +248,6 @@ const DesktopHeader = (props) => {
                                 {...logoDimensions}
                                 {...logoAdditionalProps}
                                 storeConfig={storeConfig}
-                                preload
                             />
                         </Link>
                     </div>
