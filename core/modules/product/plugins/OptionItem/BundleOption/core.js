@@ -105,13 +105,6 @@ const OptionsItemsBundle = (props) => {
 
     const configProduct = getBundleProduct(sku);
     const { loading } = configProduct;
-    let cartId = '';
-    let isLogin = 0;
-
-    if (typeof window !== 'undefined') {
-        isLogin = getLoginInfo();
-        cartId = getCartId();
-    }
 
     React.useEffect(() => {
         mount.current = true;
@@ -131,6 +124,8 @@ const OptionsItemsBundle = (props) => {
     const cartUser = getCustomerCartId();
 
     const handleAddToCart = async (qty) => {
+        const isLogin = getLoginInfo();
+        let cartId = getCartId();
         const errorMessage = {
             variant: 'error',
             text: t('product:failedAddCart'),

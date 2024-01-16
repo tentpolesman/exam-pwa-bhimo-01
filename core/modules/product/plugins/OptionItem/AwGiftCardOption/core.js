@@ -24,8 +24,6 @@ const CoreGiftCardOptionItem = ({
     ...other
 }) => {
     const [qty, setQty] = React.useState(1);
-    let cartId = '';
-    let isLogin = '';
 
     // prettier-ignore
     const {
@@ -35,11 +33,6 @@ const CoreGiftCardOptionItem = ({
         aw_gc_amounts, aw_gc_open_amount_max, aw_gc_open_amount_min, aw_gc_email_templates,
         aw_gc_type, review, sale,
     } = data;
-
-    if (typeof window !== 'undefined') {
-        isLogin = getLoginInfo();
-        cartId = getCartId();
-    }
 
     const reviewValue = parseInt(review.rating_summary, 0) / 20;
     const [addToCartGC] = addGiftCardProductsToCart();
@@ -116,6 +109,8 @@ const CoreGiftCardOptionItem = ({
         validationSchema: formValidationSchema,
         isInitialValid: false,
         onSubmit: async (values) => {
+            const isLogin = getLoginInfo();
+            let cartId = getCartId();
             let customizable_options = [];
             const entered_options = [];
             if (modules.product.customizableOptions.enabled && customizableOptions && customizableOptions.length > 0) {

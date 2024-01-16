@@ -31,17 +31,10 @@ const OptionsItemDownload = ({
     ...other
 }) => {
     const [qty, setQty] = React.useState(1);
-    let cartId = '';
-    let isLogin = 0;
 
     const {
         __typename, sku, name, categories, price_range, stock_status, url_key, review, sale,
     } = data;
-
-    if (typeof window !== 'undefined') {
-        isLogin = getLoginInfo();
-        cartId = getCartId();
-    }
 
     const reviewValue = parseInt(review.rating_summary, 10) / 20;
     const [addCartDownload] = addDownloadProductToCart();
@@ -106,6 +99,8 @@ const OptionsItemDownload = ({
     };
 
     const addToCart = async () => {
+        const isLogin = getLoginInfo();
+        let cartId = getCartId();
         let customizable_options = [];
         const entered_options = [];
         if (modules.product.customizableOptions.enabled && customizableOptions && customizableOptions.length > 0) {
