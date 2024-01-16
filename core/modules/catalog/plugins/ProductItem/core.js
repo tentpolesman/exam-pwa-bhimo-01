@@ -489,7 +489,7 @@ const ProductItem = (props) => {
                                     icon={<CompareIcon />}
                                     iconProps={{ className: '!w-4 !h-4 group-hover:text-neutral-white' }}
                                     variant="outlined"
-                                    onClick={() => handleSetCompareList(props)}
+                                    onClick={() => handleSetCompareList(props?.id)}
                                     className={classNames(
                                         '!p-[10px] !border-neutral-200 hover:bg-primary group',
                                         'hover:!shadow-none focus:!shadow-none hover:!opacity-100',

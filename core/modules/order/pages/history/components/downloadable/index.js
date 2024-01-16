@@ -7,6 +7,7 @@ import Pagination from '@common_pagination';
 import Alert from '@common/Alert';
 import Show from '@common_show';
 import formatDate from '@helper_date';
+import ArrowDownTrayIcon from '@heroicons/react/24/outline/ArrowDownTrayIcon';
 
 const DefaultView = (props) => {
     const { data, t } = props;
@@ -29,7 +30,11 @@ const DefaultView = (props) => {
                     <table className={cx('w-full', 'text-base', 'border-[1px]', 'border-neutral-100')}>
                         <thead>
                             <tr className={cx('text-neutral-500', 'font-semibold', 'leading-2lg', 'text-left')}>
-                                <th className={cx('px-4', 'py-3')}>{t('order:order')} #</th>
+                                <th className={cx('px-4', 'py-3')}>
+                                    {t('order:order')}
+                                    {' '}
+                                    #
+                                </th>
                                 <th className={cx('px-4', 'py-3')}>{t('order:date')}</th>
                                 <th className={cx('px-4', 'py-3')}>{t('order:titleDownload')}</th>
                                 <th className={cx('px-4', 'py-3')}>{t('order:status')}</th>
@@ -40,33 +45,46 @@ const DefaultView = (props) => {
                             <Show when={data?.length > 0}>
                                 {itemList?.[page - 1]?.map((val, index) => (
                                     <tr className={cx('even:bg-white', 'odd:bg-neutral-50')} key={index}>
-                                        <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-4')}>
-                                            <Link
-                                                href={`/sales/order/view/order_id/${val.order_increment_id}`}
-                                                className={cx('hover:text-primary-700')}
-                                            >
-                                                {val.order_increment_id}
+                                        <td className={cx('p-4')}>
+                                            <Link href={`/sales/order/view/order_id/${val.order_increment_id}`} className={cx('hover:underline')}>
+                                                <Typography variant="bd-2b" className={cx('!text-primary-700', 'hover:underline')}>
+                                                    {val.order_increment_id}
+                                                </Typography>
                                             </Link>
                                         </td>
-                                        <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-4')}>
-                                            {formatDate(val.date, 'M/DD/YY')}
+                                        <td className={cx('p-4')}>
+                                            <Typography variant="bd-2b">{formatDate(val.date, 'M/DD/YY')}</Typography>
                                         </td>
-                                        <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-4')}>
-                                            <span className={cx('pr-4')}>{val.title}</span>
+                                        <td className={cx('p-4')}>
+                                            <div>
+                                                <Typography variant="bd-2b">{val.title}</Typography>
+                                            </div>
                                             <Show when={val.status === 'available'}>
-                                                <Link
-                                                    href={val.download_url}
-                                                    target="_blank"
-                                                    rel="noreferrer"
-                                                    className={cx('pl-4', 'border-l-[1px]', 'border-neutral-200', 'hover:text-primary-700')}
-                                                >
-                                                    {val.link_title}
+                                                <Link href={val.download_url} target="_blank" rel="noreferrer">
+                                                    <div
+                                                        className={cx(
+                                                            'flex flex-row items-center',
+                                                            'text-primary-700',
+                                                            'border-b-[1px] border-neutral-white',
+                                                            'hover:border-primary-700',
+                                                            'w-max',
+                                                        )}
+                                                    >
+                                                        <div className="h-[15px] w-[15px] mr-[5px]">
+                                                            <ArrowDownTrayIcon />
+                                                        </div>
+                                                        <Typography variant="bd-2b" className={cx('!text-primary-700')}>
+                                                            {val.link_title}
+                                                        </Typography>
+                                                    </div>
                                                 </Link>
                                             </Show>
                                         </td>
-                                        <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-4')}>{val.status}</td>
                                         <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-4')}>
-                                            {val.remaining_downloads}
+                                            <Typography variant="bd-2b">{val.status}</Typography>
+                                        </td>
+                                        <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-4')}>
+                                            <Typography variant="bd-2b">{val.remaining_downloads}</Typography>
                                         </td>
                                     </tr>
                                 ))}
