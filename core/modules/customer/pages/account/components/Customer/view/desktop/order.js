@@ -91,7 +91,7 @@ const OrderView = (props) => {
                                 <th className={cx('px-4', 'py-3')}>{t('customer:order:shippedTo')}</th>
                                 <th className={cx('px-4', 'py-3')}>{t('customer:order:orderTotal')}</th>
                                 <th className={cx('px-4', 'py-3')}>{t('customer:order:status')}</th>
-                                <th className={cx('px-4', 'py-3')}>{t('customer:order:action')}</th>
+                                <th className={cx('px-4', 'py-3', 'text-center')}>{t('customer:order:action')}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -124,20 +124,17 @@ const OrderView = (props) => {
                                             </td>
                                             <td>{generateBadge(val.status, val.status_label)}</td>
                                             <td>
-                                                <Link
-                                                    href={`/sales/order/view/order_id/${val.order_number}`}
-                                                    className={cx(
-                                                        'text-base',
-                                                        'px-4',
-                                                        'border-r-[1px]',
-                                                        'border-neutral-200',
-                                                        'hover:text-primary-700',
-                                                    )}
-                                                >
-                                                    View
+                                                <Link href={`/sales/order/view/order_id/${val.order_number}`} className={cx('px-4')}>
+                                                    <Typography variant="bd-2b" className={cx('!text-primary-700', 'hover:underline')}>
+                                                        {t('order:view')}
+                                                    </Typography>
                                                 </Link>
                                                 <button type="button" onClick={() => reOrder(val.order_number)}>
-                                                    <a className={cx('text-base', 'px-4', 'hover:text-primary-700')}>Reorder</a>
+                                                    <a className={cx('px-4', 'desktop:border-l-[1px]', 'desktop:border-neutral-200')}>
+                                                        <Typography variant="bd-2b" className={cx('!text-primary-700', 'hover:underline')}>
+                                                            {t('order:reorder')}
+                                                        </Typography>
+                                                    </a>
                                                 </button>
                                             </td>
                                         </tr>
