@@ -12,9 +12,12 @@ import cx from 'classnames';
 import SkeletonProductReview from '@core_modules/productreview/pages/default/components/skeleton';
 import DetailProductReview from '@core_modules/productreview/pages/default/components/detail';
 import Alert from '@common_alert';
+import { createExcerpt } from '@helper_text';
 
 const ProductReviewPage = (props) => {
-    const { t, reviewCustomer, loading, rowsPerPage, page, handleChangePage, handleChangeRowsPerPage } = props;
+    const {
+        t, reviewCustomer, loading, rowsPerPage, page, handleChangePage, handleChangeRowsPerPage, storeConfig,
+    } = props;
 
     const [isOpenDetail, setOpenDetail] = React.useState(false);
     const [reviewItem, setReviewItem] = React.useState(null);
@@ -29,8 +32,8 @@ const ProductReviewPage = (props) => {
 
     return (
         <Layout {...props}>
-            <div className={cx('productreview-container', 'mobile:px-[15px]', 'tablet:px-[0px]', 'desktop:px-[0px]')}>
-                <DetailProductReview t={t} open={isOpenDetail} setOpen={() => openDetail(false)} reviewItem={reviewItem} />
+            <div className={cx('productreview-container')}>
+                <DetailProductReview t={t} open={isOpenDetail} setOpen={() => openDetail(false)} reviewItem={reviewItem} storeConfig={storeConfig} />
                 <div className={cx('pt-5')}>
                     <div className={cx('relative', 'overflow-x-auto', 'rounded-lg')}>
                         <table className={cx('w-full', 'text-base', 'border-[1px]', 'border-neutral-100')}>
@@ -52,31 +55,33 @@ const ProductReviewPage = (props) => {
                                         <>
                                             {reviewCustomer?.items?.map((val, index) => (
                                                 <tr className={cx('even:bg-white', 'odd:bg-neutral-50')} key={index}>
-                                                    <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-4')}>
-                                                        {formatDate(val.created_at, 'DD/MM/YYYY')}
+                                                    <td className={cx('p-4')}>
+                                                        <Typography variant="bd-2b">{formatDate(val.created_at, 'DD/MM/YYYY')}</Typography>
                                                     </td>
-                                                    <td className={cx('text-green-500', 'text-base', 'font-normal', 'leading-2lg', 'p-4')}>
+                                                    <td className={cx('p-4')}>
                                                         <Link href={`/${val.product.url_key}`} legacyBehavior>
                                                             <a target="_blank" rel="noopener noreferrer">
-                                                                {val.product.name}
+                                                                <Typography variant="bd-2b">{val.product.name}</Typography>
                                                             </a>
                                                         </Link>
                                                     </td>
-                                                    <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-4')}>
+                                                    <td className={cx('p-4')}>
                                                         <RatingStar value={val?.ratings_breakdown[0]?.value ?? 0} />
                                                     </td>
-                                                    <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-4')}>
-                                                        {val.text}
+                                                    <td className={cx('p-4')}>
+                                                        <Typography variant="bd-2b">{createExcerpt(val.text, 80)}</Typography>
                                                     </td>
-                                                    <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-4')}>
+                                                    <td className={cx('p-4')}>
                                                         <button
                                                             type="button"
                                                             onClick={() => openDetail(true, val)}
                                                             aria-label="see-details"
                                                             className="w-max"
                                                         >
-                                                            <a className={cx('text-base', 'text-primary-700', 'hover:underline')}>
-                                                                {t('productreview:seeDetails')}
+                                                            <a>
+                                                                <Typography variant="bd-2b" className={cx('!text-primary-700', 'hover:underline')}>
+                                                                    {t('productreview:seeDetails')}
+                                                                </Typography>
                                                             </a>
                                                         </button>
                                                     </td>

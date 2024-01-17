@@ -165,14 +165,6 @@ const ConfigurableOptionCore = (props) => {
         await setFirstSelected({ ...firstSelected });
     };
 
-    let cartId = '';
-    let isLogin = 0;
-
-    if (typeof window !== 'undefined') {
-        isLogin = getLoginInfo();
-        cartId = getCartId();
-    }
-
     const [addConfigurableProducts] = addConfigurableProductsToCart();
     const [getGuestCartId] = queryGetGuestCartId();
     const cartUser = getCustomerCartId();
@@ -180,6 +172,8 @@ const ConfigurableOptionCore = (props) => {
     const [error, setError] = React.useState({});
 
     const addToCart = async () => {
+        const isLogin = getLoginInfo();
+        let cartId = getCartId();
         let customizable_options = [];
         const entered_options = [];
         const uids = [];
