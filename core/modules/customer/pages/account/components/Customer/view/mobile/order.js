@@ -140,7 +140,8 @@ const OrderView = (props) => {
                                                     t={t}
                                                     orderNumber={val.order_number}
                                                     reOrder={reOrder}
-                                                    returnUrl={returnUrl}
+                                                    return={val.detail[0].aw_rma && val.detail[0].aw_rma.status}
+                                                    handlingReturn={() => returnUrl(val.order_number)}
                                                 />
                                             </td>
                                         </tr>
