@@ -84,6 +84,7 @@ const Select = (props) => {
                         'shadow-md',
                         'cursor-pointer',
                         'bg-neutral-white',
+                        'absolute',
                         'z-50',
                         optionClass,
                     )}

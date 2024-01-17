@@ -18,37 +18,26 @@ const HistoryOrder = (props) => {
         headerTitle: t('order:title'),
         bottomNav: false,
     };
-    const [page, setPage] = React.useState(0);
+    const [page, setPage] = React.useState(1);
     const [pageSize, setPageSize] = React.useState(size || 10);
-    const [loadMore, setLoadMore] = React.useState(false);
 
     const [actionReorder] = mutationReorder();
 
-    const handleChangePage = (newPage = 0) => {
-        if (newPage > page) {
-            setLoadMore(true);
-        }
-        setPage(newPage - 1);
+    const handleChangePage = (newPage) => {
+        setPage(newPage);
     };
 
-    const handleChangePageSize = (event) => {
-        setLoadMore(true);
-        setPageSize(parseInt(event.target.value, 10));
-        setPage(0);
+    const handleChangePageSize = (value) => {
+        setPageSize(parseInt(value, 10));
+        setPage(1);
     };
 
     const { loading, data, error } = getOrder({
         pageSize,
-        currentPage: page + 1,
+        currentPage: page,
     });
 
-    React.useEffect(() => {
-        if (!loading && data && data.customer && data.customer.orders && data.customer.orders.items.length) {
-            setLoadMore(false);
-        }
-    }, [loading, data]);
-
-    if (loading || (!data && !loadMore)) {
+    if (loading || !data) {
         return (
             <Layout pageConfig={pageConfig} {...props}>
                 <CustomerLayout {...props}>
@@ -125,8 +114,7 @@ const HistoryOrder = (props) => {
         <Layout pageConfig={pageConfig} {...props}>
             <Content
                 {...props}
-                loadMore={loadMore}
-                data={data && data.customer && data.customer.orders}
+                data={data?.customer?.orders}
                 page={page}
                 pageSize={pageSize}
                 loading={loading}

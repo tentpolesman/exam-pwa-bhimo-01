@@ -36,7 +36,7 @@ const OptionsItemDownload = ({
         __typename, sku, name, categories, price_range, stock_status, url_key, review, sale,
     } = data;
 
-    const reviewValue = parseInt(review.rating_summary, 10) / 20;
+    const reviewValue = parseInt(review?.rating_summary ?? 0, 10) / 20;
     const [addCartDownload] = addDownloadProductToCart();
     const [getGuestCartId] = queryGetGuestCartId();
     const [items, setItems] = React.useState([]);
@@ -94,9 +94,7 @@ const OptionsItemDownload = ({
         setPrice(final_price_value);
     };
 
-    const handleOptionAll = () => {
-
-    };
+    const handleOptionAll = () => {};
 
     const addToCart = async () => {
         const isLogin = getLoginInfo();
