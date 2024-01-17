@@ -15,7 +15,7 @@ const UserInfo = (props) => {
     return (
         <>
             {isLogin ? (
-                <div onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}>
+                <div onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)} className={cx('myaccount-menu')}>
                     <Popover
                         content={<PopoverContent />}
                         open={open}
@@ -34,7 +34,7 @@ const UserInfo = (props) => {
                     </Popover>
                 </div>
             ) : (
-                <Link href="/customer/account/login">
+                <Link href="/customer/account/login" className={cx('login-register-link')}>
                     <UserIcon
                         className={cx(
                             'w-[24px]',

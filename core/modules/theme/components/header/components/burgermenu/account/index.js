@@ -47,7 +47,7 @@ const BurgerMenuAccount = (props) => {
                                 </>
                             ) : (
                                 <>
-                                    <Link className={cx('py-3', 'px-4')} href="/customer/account/login" prefetch={false}>
+                                    <Link className={cx('py-3', 'px-4', 'login-register-link')} href="/customer/account/login" prefetch={false}>
                                         <Typography>Log in / Register</Typography>
                                     </Link>
                                 </>
