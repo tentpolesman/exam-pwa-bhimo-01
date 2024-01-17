@@ -233,10 +233,10 @@ const DefaultView = (props) => {
                             {t('order:title')}
                         </Typography>
                     </div>
-                    <div className={cx('divider', 'border-b-[1.5px] border-neutral-200', 'mt-[24px]')} />
+                    <div className={cx('divider', 'border-b-[1.5px] border-neutral-200', 'mt-[16px]', 'mobile:!mb-[20px] tablet:mb-[24px]')} />
 
                     <Show when={error}>
-                        <Alert severity="error" withIcon className={cx('mt-[24px]')}>
+                        <Alert severity="error" withIcon>
                             {error?.message}
                         </Alert>
                     </Show>
@@ -255,7 +255,7 @@ const DefaultView = (props) => {
                                             'rounded-[6px]',
                                             'px-[24px]',
                                             'py-[20px]',
-                                            'my-[24px]',
+                                            'mobile:!mb-[16px] tablet:!mb-[24px]',
                                         )}
                                     >
                                         <div className={cx('flex', 'flex-row', 'justify-between')}>
@@ -322,7 +322,7 @@ const DefaultView = (props) => {
                             </>
                         </Show>
                         <Show when={!hasData}>
-                            <Alert severity="warning" withIcon className={cx('mt-[24px]')}>
+                            <Alert severity="warning" withIcon>
                                 {t('customer:order:emptyMessage')}
                             </Alert>
                         </Show>
