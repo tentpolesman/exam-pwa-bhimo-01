@@ -16,12 +16,12 @@ import Alert from '@common_alert';
 import ArrowDownIcon from '@heroicons/react/20/solid/ArrowDownIcon';
 
 const OrderView = (props) => {
-    const { customerOrders, t, reOrder } = props;
+    const {
+        customerOrders, t, reOrder, returnUrl,
+    } = props;
 
     // cache currency
     const currencyCache = useReactiveVar(currencyVar);
-
-    const customerData = Cookies.get('cdt') && JSON.parse(Cookies.get('cdt'));
     const currencyData = Cookies.get('app_currency') && JSON.parse(Cookies.get('app_currency'));
 
     const generateBadge = (status, status_label) => {
@@ -106,12 +106,8 @@ const OrderView = (props) => {
                                                 {formatDate(val.created_at, 'DD/MM/YYYY')}
                                             </td>
                                             <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-4')}>
-                                                {val.detail[0].shipping_address !== null
-                                                    ? val.detail[0].shipping_address.firstname
-                                                    : customerData.firstname}{' '}
-                                                {val.detail[0].shipping_address !== null
-                                                    ? val.detail[0].shipping_address.lastname
-                                                    : customerData.lastname}
+                                                {val.detail[0].shipping_address.firstname || val.detail[0].billing_address.firstname}{' '}
+                                                {val.detail[0].shipping_address.lastname || val.detail[0].billing_address.lastname}
                                             </td>
                                             <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-4')}>
                                                 {formatPrice(
@@ -136,6 +132,15 @@ const OrderView = (props) => {
                                                         </Typography>
                                                     </a>
                                                 </button>
+                                                {val.detail[0].aw_rma && val.detail[0].aw_rma.status && (
+                                                    <button type="button" onClick={() => returnUrl(val.order_number)}>
+                                                        <a className={cx('px-4', 'desktop:border-l-[1px]', 'desktop:border-neutral-200')}>
+                                                            <Typography variant="bd-2b" className={cx('!text-primary-700', 'hover:underline')}>
+                                                                {t('order:smReturn')}
+                                                            </Typography>
+                                                        </a>
+                                                    </button>
+                                                )}
                                             </td>
                                         </tr>
                                     ))}

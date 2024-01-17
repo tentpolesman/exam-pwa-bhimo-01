@@ -3,6 +3,7 @@ import { modules } from '@config';
 import gqlService from '@core_modules/customer/services/graphql';
 import Layout from '@layout_customer';
 import React from 'react';
+import { getHost } from '@helpers/config';
 
 const Customer = (props) => {
     const {
@@ -46,6 +47,23 @@ const Customer = (props) => {
     if (customerOrders && customerOrders.customerOrders) {
         userData = { ...userData, customerOrders: customerOrders.customerOrders };
     }
+
+    const returnUrl = (order_number) => {
+        if (storeConfig && storeConfig.OmsRma.enable_oms_rma) {
+            const omsRmaLink = storeConfig.OmsRma.oms_rma_link;
+            const omsChannelCode = storeConfig.oms_channel_code;
+            const backUrl = window.location.href;
+            const customerEmail = userData?.customer?.email;
+            // eslint-disable-next-line max-len
+            const encodedQuerystring = `email=${encodeURIComponent(customerEmail)}&order_number=${encodeURIComponent(
+                order_number,
+            )}&channel_code=${encodeURIComponent(omsChannelCode)}&from=${encodeURIComponent(backUrl)}`;
+            const omsUrl = `${omsRmaLink}?${encodedQuerystring}`;
+            window.location.replace(omsUrl);
+        } else {
+            window.location.replace(`${getHost()}/rma/customer/new/order_id/${order_number}`);
+        }
+    };
 
     const pushIf = (condition, ...elements) => (condition ? elements : []);
 
@@ -95,6 +113,7 @@ const Customer = (props) => {
                 storeConfig={storeConfig}
                 isLogin={isLogin}
                 reOrder={reOrder}
+                returnUrl={returnUrl}
             />
         </Layout>
     );
