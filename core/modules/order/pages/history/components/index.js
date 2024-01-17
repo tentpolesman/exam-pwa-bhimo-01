@@ -39,8 +39,10 @@ const DefaultView = (props) => {
                 <Badge
                     softColor
                     warning
-                    className={cx('rounded-md', 'w-fit')}
-                    label={<Typography className={cx('text-yellow-800', 'leading-md')}>{status_label}</Typography>}
+                    className={cx('rounded-md', 'w-fit', 'mobile:!py-[2px] tablet:!py-[2px]')}
+                    label={
+                        <Typography className={cx('text-yellow-800', 'leading-md', 'mobile:text-sm', 'desktop:text-base')}>{status_label}</Typography>
+                    }
                 />
             );
         }
@@ -49,8 +51,10 @@ const DefaultView = (props) => {
                 <Badge
                     softColor
                     error
-                    className={cx('rounded-md', 'w-fit')}
-                    label={<Typography className={cx('text-red-800', 'leading-md')}>{status_label}</Typography>}
+                    className={cx('rounded-md', 'w-fit', 'mobile:!py-[2px] tablet:!py-[2px]')}
+                    label={
+                        <Typography className={cx('text-red-800', 'leading-md', 'mobile:text-sm', 'desktop:text-base')}>{status_label}</Typography>
+                    }
                 />
             );
         }
@@ -59,8 +63,10 @@ const DefaultView = (props) => {
                 <Badge
                     softColor
                     success
-                    className={cx('rounded-md', 'w-fit')}
-                    label={<Typography className={cx('text-green-800', 'leading-md')}>{status_label}</Typography>}
+                    className={cx('rounded-md', 'w-fit', 'mobile:!py-[2px] tablet:!py-[2px]')}
+                    label={
+                        <Typography className={cx('text-green-800', 'leading-md', 'mobile:text-sm', 'desktop:text-base')}>{status_label}</Typography>
+                    }
                 />
             );
         }
@@ -121,7 +127,7 @@ const DefaultView = (props) => {
 
     return (
         <Layout t={t}>
-            <div className={cx('pt-5')}>
+            <div className={cx('pt-[20px]')}>
                 {/** Desktop */}
                 <div className={cx('mobile:max-desktop:hidden')}>
                     <div className={cx('relative', 'overflow-x-auto', 'rounded-lg')}>
@@ -146,7 +152,7 @@ const DefaultView = (props) => {
                                 <Show when={!error}>
                                     <Show when={hasData}>
                                         <>
-                                            {data.items.map((val, index) => (
+                                            {data?.items?.map((val, index) => (
                                                 <tr className={cx('even:bg-white', 'odd:bg-neutral-50')} key={index}>
                                                     <td className={cx('p-4')}>
                                                         <Typography variant="bd-2b">{val.order_number}</Typography>
@@ -196,26 +202,6 @@ const DefaultView = (props) => {
                                                                 </button>
                                                             )}
                                                         </div>
-                                                        <div className={cx('desktop:hidden')}>
-                                                            <div
-                                                                className={cx(
-                                                                    'mobile:max-desktop:flex',
-                                                                    'mobile:max-desktop:flex-row',
-                                                                    'mobile:max-desktop:content-center',
-                                                                    'mobile:max-desktop:justify-center',
-                                                                    'mobile:max-desktop:items-center',
-                                                                    'tablet:max-desktop:py-6',
-                                                                )}
-                                                            >
-                                                                <MobileTabletActionMenu
-                                                                    return={val.detail[0].aw_rma && val.detail[0].aw_rma.status}
-                                                                    handlingReturn={() => returnUrl(val.order_number)}
-                                                                    t={t}
-                                                                    orderNumber={val.order_number}
-                                                                    reOrder={reOrder}
-                                                                />
-                                                            </div>
-                                                        </div>
                                                     </td>
                                                 </tr>
                                             ))}
@@ -241,8 +227,13 @@ const DefaultView = (props) => {
                 </div>
 
                 {/** Mobile & Tablet */}
-                <div className={cx('desktop:hidden')}>
-                    <div className={cx('divider', 'border-b-[1.5px] border-neutral-200')} />
+                <div className={cx('desktop:hidden', 'pt-[10px]')}>
+                    <div className={cx('mobile-title')}>
+                        <Typography variant="bd-2b" className={cx('text-lg font-semibold')}>
+                            {t('order:title')}
+                        </Typography>
+                    </div>
+                    <div className={cx('divider', 'border-b-[1.5px] border-neutral-200', 'mt-[24px]')} />
 
                     <Show when={error}>
                         <Alert severity="error" withIcon className={cx('mt-[24px]')}>
@@ -253,7 +244,7 @@ const DefaultView = (props) => {
                     <Show when={!error}>
                         <Show when={hasData}>
                             <>
-                                {data.items.map((val, index) => (
+                                {data?.items?.map((val, index) => (
                                     <div
                                         key={`mobile-order-item-${index}`}
                                         className={cx(
@@ -279,11 +270,15 @@ const DefaultView = (props) => {
                                                 />
                                             </div>
                                         </div>
-                                        <div className={cx('mt-[12px]')}>
-                                            <Typography variant="bd-2b">{val.order_number}</Typography>
+                                        <div className={cx('mt-[8px]')}>
+                                            <Typography variant="bd-2b" className={cx('font-semibold')}>
+                                                #{val.order_number}
+                                            </Typography>
                                         </div>
                                         <div>
-                                            <Typography variant="bd-2b">{formatDate(val.created_at, 'DD/MM/YYYY')}</Typography>
+                                            <Typography variant="bd-2b" className={cx('text-sm', 'text-neutral-500')}>
+                                                {formatDate(val.created_at, 'DD/MM/YYYY')}
+                                            </Typography>
                                         </div>
                                         <div className={cx('divider', 'border-b-[1px] border-neutral-200', 'my-[12px]')} />
                                         <div
@@ -292,17 +287,17 @@ const DefaultView = (props) => {
                                                 'justify-between',
                                                 'mobile:flex-col',
                                                 'mobile:items-start',
-                                                'mobile:gap-[12px]',
+                                                'mobile:gap-[6px]',
                                                 'tablet:flex-row',
                                                 'tablet:items-center',
-                                                'tablet:gap-[12px]',
+                                                'tablet:gap-[6px]',
                                             )}
                                         >
-                                            <div className={cx('flex', 'flex-row text-primary')}>
+                                            <div className={cx('flex', 'flex-row', 'text-primary', 'items-center')}>
                                                 <div className={cx('w-[20px] h-[20px] mr-[8px]')}>
                                                     <TruckIcon />
                                                 </div>
-                                                <Typography>
+                                                <Typography variant="bd-2b" className={cx('!text-neutral-500')}>
                                                     {t('order:shipTo')}{' '}
                                                     {val.detail[0].shipping_address.firstname || val.detail[0].billing_address.firstname}{' '}
                                                     {val.detail[0].shipping_address.lastname || val.detail[0].billing_address.lastname}
@@ -310,7 +305,9 @@ const DefaultView = (props) => {
                                             </div>
                                             <div className={cx('flex', 'flex-col')}>
                                                 <div>
-                                                    <Typography>{t('customer:order:orderTotal')}</Typography>
+                                                    <Typography variant="bd-2b" className={cx('text-xs', '!text-neutral-500', '!leading-none')}>
+                                                        {t('customer:order:orderTotal')}
+                                                    </Typography>
                                                 </div>
                                                 <div>
                                                     <Typography>
