@@ -46,7 +46,7 @@ const CustomImage = ({
         w = width * 2;
         h = height * 2;
     }
-    const optimizedUrl = src.toLowerCase().indexOf('http://') === 0 || src.toLowerCase().indexOf('https://') === 0
+    const optimizedUrl = src?.toLowerCase().indexOf('http://') === 0 || src?.toLowerCase().indexOf('https://') === 0
         ? generateThumborUrl(src, w, h, enable, useHttpsOrHttp, thumborUrl, quality)
         : src;
 
