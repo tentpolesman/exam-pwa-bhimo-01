@@ -584,6 +584,7 @@ export const getDownloadProduct = (sku) => {
           id
           name
           url_key
+          links_title
           downloadable_product_links {
             id
             uid

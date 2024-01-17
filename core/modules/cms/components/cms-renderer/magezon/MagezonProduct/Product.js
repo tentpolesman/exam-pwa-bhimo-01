@@ -51,7 +51,7 @@ const Product = (props) => {
         enablePrice: product_price,
         enableRating: product_review,
         enableProductName: product_name,
-        className: cx('carousel-item', '!min-w-[160px]', 'tablet:!min-w-[230px]', 'desktop:!min-w-[288px]', {
+        className: cx('carousel-item', '!min-w-[138px]', 'tablet:!min-w-[230px]', 'desktop:!min-w-[288px]', {
             'flex-shrink-0': !isSingleProduct,
             '!basis-[160px] !tablet:basis-[230px] !desktop:basis-[288px]': !isProductGrid && !isSingleProduct,
             '[&:not(:last-child)]:mb-4': isProductList,
@@ -185,7 +185,7 @@ const Product = (props) => {
                         }
                         @media screen and (min-width: ${BREAKPOINTS.md}px) and (max-width: ${BREAKPOINTS.lg}px) {
                             .product-grid-item {
-                                max-width: calc(100% / ${item_md});
+                                max-width: calc(100% / ${item_md} - (0.5rem));
                             }
                             .product-grid-item :global(.product-image-container),
                             .product-grid-item :global(img.product-image) {
@@ -194,7 +194,7 @@ const Product = (props) => {
                         }
                         @media screen and (min-width: ${BREAKPOINTS.sm}px) and (max-width: ${BREAKPOINTS.md}px) {
                             .product-grid-item {
-                                max-width: calc(100% / ${item_sm});
+                                max-width: calc(100% / ${item_sm} - (0.5rem));
                             }
                             .product-grid-item :global(.product-image-container),
                             .product-grid-item :global(img.product-image) {
@@ -203,7 +203,7 @@ const Product = (props) => {
                         }
                         @media screen and (min-width: ${BREAKPOINTS.xs}px) and (max-width: ${BREAKPOINTS.sm}px) {
                             .product-grid-item {
-                                max-width: calc(100% / ${item_xs});
+                                max-width: calc(100% / ${item_xs} - (0.3rem));
                             }
                             .product-grid-item :global(.product-image-container),
                             .product-grid-item :global(img.product-image) {

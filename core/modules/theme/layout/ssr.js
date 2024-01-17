@@ -34,10 +34,10 @@ const getSSRProps = async ({ apolloClient, storeConfigExtra = '' }) => {
             });
 
             // news letter
-            await apolloClient.query({
-                query: getCmsBlocks,
-                variables: { identifiers: 'weltpixel_newsletter_v5' },
-            });
+            // await apolloClient.query({
+            //     query: getCmsBlocks,
+            //     variables: { identifiers: 'weltpixel_newsletter_v5' },
+            // });
 
             // footer
             await apolloClient.query({
