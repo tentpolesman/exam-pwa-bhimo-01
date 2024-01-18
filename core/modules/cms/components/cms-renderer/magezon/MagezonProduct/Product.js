@@ -7,7 +7,7 @@ import ProductItem from '@plugin_productitem';
 import ContainerScroll from '@common/ContainerScroll';
 import cx from 'classnames';
 import { generateGridItemClass } from '@helpers/style';
-import { BREAKPOINTS, COLORS } from '@root/core/theme/vars';
+import { BREAKPOINTS, COLORS } from '@core/theme/vars';
 
 const Product = (props) => {
     const {
@@ -171,7 +171,7 @@ const Product = (props) => {
                             }
                             .product-grid-item :global(.product-image-container),
                             .product-grid-item :global(img.product-image) {
-                                width: calc(242px * 4 / ${item_xl} - (0.1rem)) !important;
+                                width: calc(320px * 4 / ${item_xl} - (0.1rem)) !important;
                             }
                         }
                         @media screen and (min-width: ${BREAKPOINTS.lg}px) and (max-width: ${BREAKPOINTS.xl}px) {

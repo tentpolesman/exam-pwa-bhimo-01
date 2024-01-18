@@ -12,7 +12,7 @@ import MagezonLink from '@core_modules/cms/components/cms-renderer/magezon/Magez
 import { getStoreHost } from '@helpers/config';
 import ChevronLeft from '@heroicons/react/20/solid/ChevronLeftIcon';
 import ChevronRight from '@heroicons/react/20/solid/ChevronRightIcon';
-import { BREAKPOINTS } from '@root/core/theme/vars';
+import { BREAKPOINTS } from '@core/theme/vars';
 import cx from 'classnames';
 import React, { useRef, useState } from 'react';
 import Slider from 'react-slick';
@@ -695,19 +695,19 @@ const MagezonSlider = (props) => {
                     }
                     .magezon-slider--dot-nav-item {
                         ${owl_active_background_color
-                            ? `
+            ? `
                             background-color: ${owl_background_color} !important;
                             border: unset !important;
                         `
-                            : ''};
+            : ''};
                     }
                     .magezon-slider--dot-nav-item-active {
                         ${owl_active_background_color
-                            ? `
+            ? `
                             background-color: ${owl_active_background_color} !important;
                             border: unset !important;
                         `
-                            : ''};
+            : ''};
                     }
                 `}
             </style>

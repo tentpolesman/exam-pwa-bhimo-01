@@ -22,6 +22,8 @@ const OrderStatusIcon = (props) => {
     if (status === 'canceled') {
         steps = ['pending', 'canceled'];
     }
+    //  order status index in steps
+    const indexStatus = steps.indexOf(status);
 
     const generateLabel = (label) => t(`order:labelStatus:${label}`);
 
@@ -63,11 +65,12 @@ const OrderStatusIcon = (props) => {
                                                     'mobile:max-tablet:w-10',
                                                     'z-[2]',
                                                     'justify-center',
-                                                    'bg-primary',
+                                                    'border-[3px]',
+                                                    'border-primary',
                                                     'rounded-full',
                                                     {
-                                                        'bg-neutral-white': status === step,
-                                                        'bg-primary': status !== step,
+                                                        'bg-neutral-white': index === indexStatus,
+                                                        'bg-primary': index !== indexStatus,
                                                     },
                                                 )}
                                             >
@@ -82,8 +85,8 @@ const OrderStatusIcon = (props) => {
                                                         'mobile:max-tablet:w-4',
                                                         'mobile:max-tablet:h-4',
                                                         {
-                                                            'text-primary': status === step,
-                                                            'text-neutral-white': status !== step,
+                                                            'text-primary': index === indexStatus,
+                                                            'text-neutral-white': index !== indexStatus,
                                                         },
                                                     ),
                                                 )}
@@ -111,7 +114,15 @@ const OrderStatusIcon = (props) => {
                                         'absolute',
                                     )}
                                 >
-                                    <span className={cx('bg-primary', 'border-0', 'h-1', 'rounded-sm', 'block')} />
+                                    <span
+                                        className={cx(
+                                            index <= indexStatus ? 'bg-primary' : 'bg-neutral-400',
+                                            'border-0',
+                                            'h-1',
+                                            'rounded-sm',
+                                            'block',
+                                        )}
+                                    />
                                 </div>
                                 <div class="flex flex-col items-center">
                                     <div className={cx('flex', 'shrink-0')}>
@@ -128,9 +139,11 @@ const OrderStatusIcon = (props) => {
                                                 'justify-center',
                                                 'rounded-full',
                                                 {
-                                                    'bg-neutral-200 border-none': index > 0 && status !== step,
-                                                    'bg-neutral-white border-[3px] border-primary': status === step,
+                                                    'bg-neutral-200 border-none': index > indexStatus,
+                                                    'bg-primary border-none': index < indexStatus,
+                                                    'bg-neutral-white border-[3px] border-primary': index === indexStatus,
                                                 },
+                                                index < indexStatus ? 'border-[3px] border-primary' : '',
                                             )}
                                         >
                                             {generateIconUsed(
@@ -144,8 +157,9 @@ const OrderStatusIcon = (props) => {
                                                     'mobile:max-tablet:w-4',
                                                     'mobile:max-tablet:h-4',
                                                     {
-                                                        'text-neutral-400': index > 0 && status !== step,
-                                                        'text-primary': status === step,
+                                                        'text-neutral-400': index > indexStatus,
+                                                        'text-neutral-white': index < indexStatus,
+                                                        'text-primary': index === indexStatus,
                                                     },
                                                 ),
                                             )}

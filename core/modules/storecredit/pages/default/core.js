@@ -3,7 +3,7 @@ import CustomerLayout from '@layout_customer';
 import { debuging } from '@config';
 import { getStoreCredit } from '@core_modules/storecredit/services/graphql';
 import { useReactiveVar } from '@apollo/client';
-import { currencyVar } from '@root/core/services/graphql/cache';
+import { currencyVar } from '@core/services/graphql/cache';
 
 const PageStoreCredit = (props) => {
     const {

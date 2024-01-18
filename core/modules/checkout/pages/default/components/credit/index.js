@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
     selectCheckoutState, setIsNewUpdate, setLoading,
 } from '@core_modules/checkout/redux/checkoutSlice';
-import { setCheckoutData } from '@root/core/helpers/cookies';
+import { setCheckoutData } from '@core/helpers/cookies';
 
 const DiscountSection = (props) => {
     const {

@@ -1,6 +1,7 @@
 import React from 'react';
 import Typography from '@common_typography';
 import ItemField from '@core_modules/rma/pages/new/components/ItemField';
+import Divider from '@common/Divider';
 
 const ItemProduct = (props) => {
     const {
@@ -90,7 +91,7 @@ const ItemProduct = (props) => {
     };
 
     return (
-        <div className="flex flex-col">
+        <div className="flex flex-col gap-3">
             <ItemProductView
                 checked={checked}
                 disabled={disabled}
@@ -102,7 +103,7 @@ const ItemProduct = (props) => {
                 {...other}
             />
 
-            <div className="">
+            <div className="bg-neutral-50 p-4 flex flex-col gap-3">
                 {disabled ? <Typography color="red">{t('rma:noItemReturn')}</Typography> : null}
                 {other_rma_request && other_rma_request.length > 0 ? (
                     <OtherRmaLink
@@ -151,8 +152,13 @@ const ItemProduct = (props) => {
                           }
                           return null;
                       })
-                    : !disabled && <Typography align="center">{t('rma:form:label:tickSelect')}</Typography>}
+                    : !disabled && (
+                        <div className="w-full flex items-center justify-center">
+                            <Typography className="text-center">{t('rma:form:label:tickSelect')}</Typography>
+                        </div>
+                    )}
             </div>
+            <Divider />
         </div>
     );
 };

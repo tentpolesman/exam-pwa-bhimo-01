@@ -8,7 +8,7 @@ import Router from 'next/router';
 
 import { modules } from '@config';
 import { getHost, getStoreHost } from '@helpers/config';
-import { getAppEnv } from '@root/core/helpers/env';
+import { getAppEnv } from '@core/helpers/env';
 import { availableRoute } from './routeServer';
 
 export const routeNoAuth = (path) => {

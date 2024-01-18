@@ -246,9 +246,10 @@ const DetailOrder = (props) => {
                                         <br />
                                         {detail[0].detail[0].shipping_address.street || ''}
                                         <br />
-                                        {`${detail[0]?.detail[0]?.shipping_address?.city?.split(', ')[0] || ''}, ${
-                                            detail[0]?.detail[0]?.shipping_address?.region || ''
-                                        } ${detail[0]?.detail[0]?.shipping_address?.postcode || ''}`}
+                                        {`${detail[0].detail[0].shipping_address.city
+                                            ? detail[0].detail[0].shipping_address.city.split(', ')[0] : ''}, ${
+                                            detail[0].detail[0].shipping_address.region || ''
+                                        } ${detail[0].detail[0].shipping_address.postcode || ''}`}
                                         <br />
                                         {detail[0]?.detail[0]?.shipping_address?.country || ''}
                                         {detail[0]?.detail[0]?.shipping_address?.telephone || ''}
@@ -430,7 +431,7 @@ const DetailOrder = (props) => {
                                 <Typography className={cx('mobile:text-2md', 'tablet:text-lg', 'capitalize')}>{t('order:orderItem')}</Typography>
                             </div>
                             <div className="mobile:basis-full">
-                                <Table data={items} t={t} currency={currency} currencyCache={currencyCache} />
+                                <Table data={items} t={t} currency={currency} currencyCache={currencyCache} storeConfig={storeConfig} />
                             </div>
                             <div className="mobile:basis-full flex flex-row tablet:justify-end mt-4">
                                 <div className="mobile:basis-full tablet:basis-4/12 flex flex-col gap-y-2">

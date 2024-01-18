@@ -2,7 +2,7 @@ import Layout from '@layout';
 import { useRouter } from 'next/router';
 import { getOrderDetail } from '@core_modules/order/services/graphql';
 import { useReactiveVar } from '@apollo/client';
-import { currencyVar } from '@root/core/services/graphql/cache';
+import { currencyVar } from '@core/services/graphql/cache';
 import PropTypes from 'prop-types';
 
 const OrderPrint = (props) => {

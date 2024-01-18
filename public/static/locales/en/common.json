@@ -108,12 +108,13 @@
         "shortQty": "Qty",
         "action": "Action",
         "extraFee": "Extra Fee",
-        "relatedProduct": "You may also like",
+        "relatedProduct": "People also buy",
         "sale": "Sale",
         "new": "New",
         "free": "Free",
         "none": "None",
-        "note": "Note"
+        "note": "Note",
+        "sku": "SKU"
     },
     "error": {
         "notFound": "Data not found",
@@ -220,8 +221,8 @@
         "addReviewTitle": "Add Review Title",
         "addReview": "Add Review",
         "writeReview": "Write Review",
-        "detail": "Detail",
-        "moreInfo": "More Info",
+        "detail": "Description",
+        "moreInfo": "Addional Information",
         "shareToYourFriend": "Share to your friend and family!",
         "showMore": "Show More",
         "showLess": "Show Less",

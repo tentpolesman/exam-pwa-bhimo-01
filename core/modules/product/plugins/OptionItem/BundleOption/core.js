@@ -7,7 +7,7 @@ import { getLoginInfo } from '@helper_auth';
 import { getCartId, setCartId } from '@helper_cartid';
 import { formatPrice } from '@helper_currency';
 import { useReactiveVar } from '@apollo/client';
-import { currencyVar } from '@root/core/services/graphql/cache';
+import { currencyVar } from '@core/services/graphql/cache';
 import TagManager from 'react-gtm-module';
 import {
     addBundleProductsToCart,
@@ -105,13 +105,6 @@ const OptionsItemsBundle = (props) => {
 
     const configProduct = getBundleProduct(sku);
     const { loading } = configProduct;
-    let cartId = '';
-    let isLogin = 0;
-
-    if (typeof window !== 'undefined') {
-        isLogin = getLoginInfo();
-        cartId = getCartId();
-    }
 
     React.useEffect(() => {
         mount.current = true;
@@ -131,6 +124,8 @@ const OptionsItemsBundle = (props) => {
     const cartUser = getCustomerCartId();
 
     const handleAddToCart = async (qty) => {
+        const isLogin = getLoginInfo();
+        let cartId = getCartId();
         const errorMessage = {
             variant: 'error',
             text: t('product:failedAddCart'),

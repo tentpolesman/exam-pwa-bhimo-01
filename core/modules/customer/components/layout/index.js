@@ -8,7 +8,9 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 const Layout = (props) => {
-    const { children, t, title, activeMenu, storeConfig } = props;
+    const {
+        children, t, title, activeMenu, storeConfig,
+    } = props;
     const pushIf = (condition, ...elements) => (condition ? elements : []);
     const router = useRouter();
     let titlePage = '';
@@ -27,7 +29,7 @@ const Layout = (props) => {
         }),
         { href: '/sales/downloadable/history', title: t('customer:menu:myDownload') },
         {
-            href: storeConfig && storeConfig.OmsRma.enable_oms_rma ? storeConfig.OmsRma.oms_rma_link : '/rma/customer',
+            href: storeConfig?.OmsRma?.enable_oms_rma ? storeConfig.OmsRma.oms_rma_link : '/rma/customer',
             title: t('customer:menu:return'),
         },
         ...pushIf(modules.storecredit.enabled, {

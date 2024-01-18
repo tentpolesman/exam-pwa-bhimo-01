@@ -5,6 +5,7 @@ const Divider = ({
     width = '100%',
     color = 'bg-neutral-200',
     className,
+    orientation = 'horizontal',
 }) => (
     <div
         style={{
@@ -12,7 +13,7 @@ const Divider = ({
             ...(width ? { width } : null),
         }}
         className={cx(
-            'h-[1px] w-[100%] ',
+            orientation === 'horizontal' ? 'h-[1px] w-[100%]' : 'h-[100%] w-[1px]',
             color,
             className,
         )}

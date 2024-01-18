@@ -11,7 +11,7 @@ import cx from 'classnames';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import React, { useRef } from 'react';
-import { COLORS } from '@root/core/theme/vars';
+import { COLORS } from '@core/theme/vars';
 
 const MenuChildren = dynamic(() => import('@common_header/components/v1/mcategoryChildren'), { ssr: true });
 

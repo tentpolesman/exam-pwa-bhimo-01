@@ -3,31 +3,25 @@ import React, { useEffect } from 'react';
 import propTypes from 'prop-types';
 import { useRouter } from 'next/router';
 import getQueryFromPath from '@helper_generatequery';
-import { getProductAgragations, getProduct, getProductPrice } from '@core_modules/catalog/services/graphql';
-import { priceVar } from '@root/core/services/graphql/cache';
+import { getProductAggregations, getProduct, getProductPrice } from '@core_modules/catalog/services/graphql';
+import { priceVar } from '@core/services/graphql/cache';
 import { useReactiveVar } from '@apollo/client';
 import * as Schema from '@core_modules/catalog/services/graphql/productSchema';
-
 import Content from '@plugin_productlist/components';
-
-import { getLocalStorage, setLocalStorage } from '@root/core/helpers/localstorage';
+import { getLocalStorage, setLocalStorage } from '@core/helpers/localstorage';
 import generateConfig from '@core_modules/catalog/helpers/generateConfig';
 import getCategoryFromAgregations from '@core_modules/catalog/helpers/getCategory';
 import getPrice from '@core_modules/catalog/helpers/getPrice';
-
 import { getTagManager, getTagManagerGA4 } from '@core_modules/catalog/helpers/catalogTagManager';
 import TagManager from 'react-gtm-module';
 import Alert from '@common/Alert';
 
 const ProductList = (props) => {
     const {
-        storeConfig, defaultSort, catId, sellerId = null,
-        banner, isLogin, customFilter, t, categoryPath,
-        url_path, ...other
+        storeConfig, defaultSort, catId, sellerId = null, banner, isLogin, customFilter, t, categoryPath, url_path, ...other
     } = props;
     const router = useRouter();
     const { path, query } = getQueryFromPath(router);
-
     /**
      * config from BO
      * pagination or loadmore
@@ -35,10 +29,17 @@ const ProductList = (props) => {
     const isPagination = storeConfig && storeConfig.pwa && storeConfig.pwa.product_listing_navigation !== 'infinite_scroll';
 
     let availableFilter = [];
-    const { data: dataAgg } = getProductAgragations({
-        skip: !query || Object.keys(query).length === 0,
-    });
-    availableFilter = dataAgg && dataAgg.products ? dataAgg.products.aggregations : [];
+    let aggrProps = {};
+    if (catId && catId !== 0) {
+        aggrProps = {
+            ...aggrProps,
+            variables: {
+                filter: { category_id: { eq: String(catId) } },
+            },
+        };
+    }
+    const { data: dataAgg } = getProductAggregations(aggrProps);
+    availableFilter = dataAgg?.products?.aggregations ?? [];
 
     // cache price
     const cachePrice = useReactiveVar(priceVar);
@@ -113,8 +114,7 @@ const ProductList = (props) => {
                     if (v.selectedFilter[idx] !== '' && !v[idx]) {
                         if (v.selectedFilter[idx] !== undefined && !idx.includes('seller/')) {
                             queryParams += `${queryParams !== '' ? '&' : ''}${idx}=${v.selectedFilter[idx]}`;
-                        } else if (v.selectedFilter[idx] !== ''
-                        && idx.includes('seller') && idx.includes('filter')) {
+                        } else if (v.selectedFilter[idx] !== '' && idx.includes('seller') && idx.includes('filter')) {
                             // for etalase filter
                             const newParam = idx.split('?');
                             queryParams += `${queryParams !== '' ? '&' : ''}${newParam[1]}=${v.selectedFilter[idx]}`;
@@ -147,26 +147,28 @@ const ProductList = (props) => {
         const setSortOnSellerPage = queryKeys.filter((key) => key.match(banner ? /seller\/\d\d\?sort/ : /seller\/\d\d\/product\?sort/));
         const setFilterSellerPage = queryKeys.find((key) => key === urlFilter);
 
-        let filterObj = [{
-            type: 'seller_id',
-            value: sellerId,
-        }];
+        let filterObj = [
+            {
+                type: 'seller_id',
+                value: sellerId,
+            },
+        ];
         // set default sort when there is no sort in query
         if (setSortOnSellerPage.length > 0) {
             query.sort = query[setSortOnSellerPage[0]];
         }
         if (setFilterSellerPage) {
-            filterObj = [{
-                type: 'etalase',
-                value: query[setFilterSellerPage],
-            },
-            {
-                type: 'seller_id',
-                value: sellerId,
-            },
+            filterObj = [
+                {
+                    type: 'etalase',
+                    value: query[setFilterSellerPage],
+                },
+                {
+                    type: 'seller_id',
+                    value: sellerId,
+                },
             ];
         }
-
         config = {
             customFilter: false,
             search: '',
@@ -180,7 +182,10 @@ const ProductList = (props) => {
     const context = (isLogin && isLogin == 1) || (config.sort && config.sort.key === 'random') ? { request: 'internal' } : {};
 
     const {
-        loading, data, fetchMore, error: errorGetProduct,
+        loading,
+        data,
+        fetchMore,
+        error: errorGetProduct,
     } = getProduct(
         config,
         {
@@ -193,14 +198,17 @@ const ProductList = (props) => {
         router,
     );
     /* ====Start get price Product==== */
-    const [getProdPrice, { data: dataPrice, loading: loadPrice, error: errorPrice }] = getProductPrice(config, {
-        variables: {
-            pageSize,
-            currentPage: page,
+    const [getProdPrice, { data: dataPrice, loading: loadPrice, error: errorPrice }] = getProductPrice(
+        config,
+        {
+            variables: {
+                pageSize,
+                currentPage: page,
+            },
+            context,
         },
-        context,
-    },
-    router);
+        router,
+    );
 
     const generateIdentifier = `page_${page}_${router.asPath}`;
 
@@ -256,7 +264,7 @@ const ProductList = (props) => {
     const aggregations = React.useMemo(() => {
         const agg = [];
         if (!customFilter && !loading && products.aggregations) {
-        // eslint-disable-next-line no-plusplus
+            // eslint-disable-next-line no-plusplus
             for (let index = 0; index < products.aggregations.length; index++) {
                 agg.push({
                     field: products.aggregations[index].attribute_code,
@@ -408,11 +416,7 @@ const ProductList = (props) => {
     };
 
     if (errorGetProduct || errorPrice) {
-        return (
-            <Alert severity="error">
-                {t('catalog:emptyProductSearchResult')}
-            </Alert>
-        );
+        return <Alert severity="error">{t('catalog:emptyProductSearchResult')}</Alert>;
     }
 
     return (

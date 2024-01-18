@@ -3,9 +3,11 @@ import { gql } from '@apollo/client';
 import { modules } from '@config';
 
 const productDetail = (config = {}) => `
-    seller_id
     seller {
+      seller_id
       seller_name
+      seller_path
+      seller_city
     }
     id
     name
@@ -352,7 +354,12 @@ export const getProduct = (config = {}) => {
                 text
               }
             }
-            seller_id
+            seller {
+              seller_id
+              seller_name
+              seller_path
+              seller_city
+            }
           }
           total_count
         }
@@ -704,7 +711,13 @@ query Products($url: String){
     }
   ) {
     items {
-      seller_id
+      seller {
+        seller_id
+        seller_name
+        seller_path
+        seller_city
+      }
+      
       id
       __typename
     }

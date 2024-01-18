@@ -4,12 +4,10 @@ import TextField from '@common_forms/TextField';
 import RatingStar from '@common_ratingstar';
 import cx from 'classnames';
 
-const ReviewCardForm = ({
-    t,
-    Formik,
-}) => (
+const ReviewCardForm = ({ t, Formik }) => (
     <div className={cx('review-form')}>
         <TextField
+            required
             absolute={false}
             className="w-full"
             onChange={Formik.handleChange}
@@ -30,6 +28,7 @@ const ReviewCardForm = ({
         <div className={cx('section-rating', 'mt-[24px]')}>
             <Typography>
                 {t('product:rate')}
+                <span className={cx('text-red-600')}> *</span>
             </Typography>
             <RatingStar
                 value={Formik.values.rating}
@@ -40,11 +39,12 @@ const ReviewCardForm = ({
             />
             {Formik.touched.rating && Formik.errors.rating && (
                 <Typography variant="bd-2b" color="!text-red">
-                    {(Formik.touched.rating && Formik.errors.rating) ? Formik.errors.rating : ''}
+                    {Formik.touched.rating && Formik.errors.rating ? Formik.errors.rating : ''}
                 </Typography>
             )}
         </div>
         <TextField
+            required
             absolute={false}
             className="w-full"
             classWrapper="mt-[24px]"
@@ -63,6 +63,8 @@ const ReviewCardForm = ({
             }}
         />
         <TextField
+            required
+            multiline
             absolute={false}
             name="detail"
             className="w-full"
@@ -80,7 +82,10 @@ const ReviewCardForm = ({
                 className: 'mt-[6px]',
                 displayHintText: !!(Formik.touched.detail && Formik.errors.detail) || true,
                 hintType: Formik.touched.detail && Formik.errors.detail ? 'error' : 'info',
-                hintText: Formik.touched.detail && Formik.errors.detail ? (Formik.touched.detail && Formik.errors.detail) || null : t('common:form:maxChar', { length: 500 }),
+                hintText:
+                    Formik.touched.detail && Formik.errors.detail
+                        ? (Formik.touched.detail && Formik.errors.detail) || null
+                        : t('common:form:maxChar', { length: 500 }),
             }}
         />
     </div>

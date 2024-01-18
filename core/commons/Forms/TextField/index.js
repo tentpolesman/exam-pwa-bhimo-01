@@ -29,12 +29,15 @@ const TextField = React.forwardRef((props, ref) => {
         onFocusGoogleMap = false,
         classWrapper = '',
         required = false,
+        propsLabelText = {},
         ...restProps
     } = props;
 
     const [isFocus, setIsFocus] = useState(false);
 
-    const { className: hintClassName, displayHintText = false, hintType = '', hintText = '' } = hintProps;
+    const {
+        className: hintClassName, displayHintText = false, hintType = '', hintText = '',
+    } = hintProps;
     const { className: leftIconClasses, ...otherLeftIconProps } = leftIconProps;
     const { className: rightIconClasses, ...otherRightIconProps } = rightIconProps;
 
@@ -78,7 +81,7 @@ const TextField = React.forwardRef((props, ref) => {
         <div className={cx('flex flex-col relative', classWrapper)}>
             {label ? (
                 <label className={cx('mb-2', classNameLabel)}>
-                    <Typography>{label}</Typography>
+                    <Typography {...propsLabelText}>{label}</Typography>
                     <Show when={required}>
                         <span className={cx('text-red-600')}> *</span>
                     </Show>
@@ -143,6 +146,7 @@ const TextField = React.forwardRef((props, ref) => {
                             'focus:outline-0',
                             'placeholder:text-neutral-200',
                             'text-neutral',
+                            'focus:shadow-[0_0_0_1px] focus:shadow-primary',
                             {
                                 'placeholder:!text-neutral-400': isFocus,
                                 '!pl-4': !leftIcon,

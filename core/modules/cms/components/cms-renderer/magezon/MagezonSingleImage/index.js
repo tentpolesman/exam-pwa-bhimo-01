@@ -6,7 +6,7 @@
 import React from 'react';
 import Thumbor from '@common_image';
 import { getStoreHost } from '@helpers/config';
-import { getAppEnv } from '@root/core/helpers/env';
+import { getAppEnv } from '@core/helpers/env';
 import MagezonLink from '@core_modules/cms/components/cms-renderer/magezon/MagezonLink';
 import PopupMapVideo from '@core_modules/cms/components/cms-renderer/magezon/MagezonSingleImage/PopupMapVideo';
 import { basePath } from '@config';

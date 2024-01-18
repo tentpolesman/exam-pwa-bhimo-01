@@ -1,5 +1,5 @@
 import { useWindowSize } from '@uidotdev/usehooks';
-import { BREAKPOINTS } from '@root/core/theme/vars';
+import { BREAKPOINTS } from '@core/theme/vars';
 
 const useMediaQuery = () => {
     const size = useWindowSize();

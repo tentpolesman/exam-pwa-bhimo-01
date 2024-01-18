@@ -14,7 +14,7 @@ import CircularProgress from '@common/CircularProgress';
 import Show from '@common_show';
 import DrawerFilter from '@common_drawer';
 
-import { getLocalStorage, setLocalStorage } from '@root/core/helpers/localstorage';
+import { getLocalStorage, setLocalStorage } from '@core/helpers/localstorage';
 
 import Sorting from '@plugin_productlist/components/Shorting';
 import ProductListSkeleton from '@plugin_productlist/components/ProductListSkeleton';

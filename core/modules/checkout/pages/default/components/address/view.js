@@ -5,7 +5,7 @@ import Typography from '@common_typography';
 import _ from 'lodash';
 import ModalAddress from '@core_modules/checkout/pages/default/components/ModalAddress';
 import { useReactiveVar } from '@apollo/client';
-import { storeConfigVar } from '@root/core/services/graphql/cache';
+import { storeConfigVar } from '@core/services/graphql/cache';
 import classNames from 'classnames';
 import Show from '@common/Show';
 import dynamic from 'next/dynamic';

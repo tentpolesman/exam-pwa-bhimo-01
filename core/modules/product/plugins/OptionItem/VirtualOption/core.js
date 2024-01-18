@@ -19,17 +19,10 @@ const CoreOptionsItemVirtual = ({
     ...other
 }) => {
     const [qty, setQty] = React.useState(1);
-    let cartId = '';
-    let isLogin = '';
 
     const {
         __typename, sku, name, categories, price_range, stock_status, url_key, review, sale,
     } = data;
-
-    if (typeof window !== 'undefined') {
-        isLogin = getLoginInfo();
-        cartId = getCartId();
-    }
 
     let [loading, setLoading] = React.useState(false);
     if (typeof customLoading !== 'undefined' && typeof setCustomLoading === 'function') {
@@ -43,6 +36,8 @@ const CoreOptionsItemVirtual = ({
     const cartUser = getCustomerCartId();
 
     const addToCart = async () => {
+        const isLogin = getLoginInfo();
+        let cartId = getCartId();
         let customizable_options = [];
         const entered_options = [];
         if (modules.product.customizableOptions.enabled && customizableOptions && customizableOptions.length > 0) {

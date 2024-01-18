@@ -106,12 +106,13 @@
         "shortQty": "Jml",
         "action": "Aksi",
         "extraFee": "Biaya Tambahan",
-        "relatedProduct": "Anda mungkin juga menyukainya",
+        "relatedProduct": "Orang juga membeli",
         "sale": "Diskon",
         "new": "Baru",
         "free": "Free",
         "none": "Tidak ada",
-        "note": "Catatan"
+        "note": "Catatan",
+        "sku": "SKU"
     },
     "error": {
         "notFound": "Data tidak di temukan",

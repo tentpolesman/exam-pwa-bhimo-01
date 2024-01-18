@@ -3,7 +3,7 @@ import ChevronRightIcon from '@heroicons/react/24/outline/ChevronRightIcon';
 import cx from 'classnames';
 import propTypes from 'prop-types';
 import React, { useMemo } from 'react';
-import useMediaQuery from '@root/core/hooks/useMediaQuery';
+import useMediaQuery from '@core/hooks/useMediaQuery';
 
 function generateRange(start, end) {
     const length = end - start + 1;
