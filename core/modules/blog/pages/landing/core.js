@@ -11,11 +11,8 @@ import { getBlogCategoryList, getBlogPostList } from '@core_modules/blog/service
 import Layout from '@layout';
 import propTypes from 'prop-types';
 import React, { useEffect, useMemo, useState } from 'react';
-// import { find, isEqual } from 'lodash';
 import CommonImage from '@common_image';
 import { basePath } from '@config';
-// import { getStoreHost } from '@root/core/helpers/config';
-// import { getAppEnv } from '@root/core/helpers/env';
 import Button from '@common/Button';
 import Pagination from '@common/Pagination';
 import Typography from '@common/Typography';
@@ -136,12 +133,7 @@ const FeaturedPosts = (props) => {
 };
 
 const BlogCategories = (props) => {
-    const {
-        // loading,
-        data,
-        // error,
-        handleChangeCategory,
-    } = props;
+    const { data, handleChangeCategory } = props;
     const categories =
         [
             { title: 'All Categories' },
@@ -176,7 +168,6 @@ const CoreLanding = (props) => {
         ...pageConfig,
     };
     const [page, setPage] = React.useState(1);
-    // const [loadMore, setLoadMore] = React.useState(false);
 
     const [getBlogs, { loading, data, error }] = getBlogPostList();
     const [getBlogCategories, blogCategoriesResult] = getBlogCategoryList();
@@ -188,9 +179,6 @@ const CoreLanding = (props) => {
     const mediaQueries = { isMobile, isTablet, isDesktop };
 
     const handleLoadMore = (newPage = 0) => {
-        // if (newPage > page) {
-        //     setLoadMore(true);
-        // }
         setPage(newPage);
     };
 
@@ -217,8 +205,6 @@ const CoreLanding = (props) => {
     useEffect(() => {
         setPage(1);
     }, [currentCategory]);
-
-    console.log('featuredPosts', featuredPosts);
 
     const blogPosts = useMemo(() => {
         const findObjectByTypeRecursive = (objects, targetType) => {

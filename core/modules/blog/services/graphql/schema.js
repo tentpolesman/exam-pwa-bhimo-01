@@ -127,6 +127,9 @@ export const getBlogPostList = gql`
                     content
                 }
                 content
+                related_products {
+                    url_key
+                }
             }
         }
     }
