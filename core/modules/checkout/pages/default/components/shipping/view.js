@@ -94,10 +94,12 @@ const ShippingView = (props) => {
         setExpandedMulti(newExpanded ? tempData : false);
     };
 
+    const isMultiSeller = storeConfig.enable_oms_multiseller === '1' || storeConfig.enable_oms_multiseller === 1;
+
     React.useEffect(() => {
         if (
             data.shippingMethods.length !== 0 &&
-            storeConfig.enable_oms_multiseller === '1' &&
+            isMultiSeller &&
             setExpandedMulti.length === 0 &&
             setExpandedActiveMulti.length === 0
         ) {
@@ -124,7 +126,7 @@ const ShippingView = (props) => {
         content = <DeliveryItem value={{ price }} label={t('checkout:instorePickup')} selected borderBottom={false} />;
     } else if (loading.shipping || loading.addresses || loading.all || loadingSellerInfo) {
         content = <Loader />;
-        if (storeConfig.enable_oms_multiseller === '1') {
+        if (isMultiSeller) {
             if (data.shippingMethods.length > 0 && data.shippingMethods[0].seller_id) {
                 setLoadingSellerInfo(false);
             } else {
@@ -144,7 +146,7 @@ const ShippingView = (props) => {
 
         const shipping = [];
         // const state = { ...checkout };
-        if (storeConfig.enable_oms_multiseller === '1') {
+        if (isMultiSeller) {
             for (let index = 0; index < group.length; index += 1) {
                 const groupData = [];
                 const key = group[index];
@@ -152,7 +154,7 @@ const ShippingView = (props) => {
                 cnf = cnf.replaceAll(' ', '-').split(',');
 
                 // create group data if same label on config
-                if (storeConfig.enable_oms_multiseller === '1') {
+                if (isMultiSeller) {
                     data.shippingMethods.forEach((avx) => {
                         sellerGroup.push({ seller_id: avx.seller_id, data: [] });
                         for (let idx = 0; idx < avx.available_shipping_methods.length; idx += 1) {
@@ -206,7 +208,7 @@ const ShippingView = (props) => {
 
                 if (groupData.length > 0) {
                     // ad active key if on group data selected payment method
-                    if (storeConfig.enable_oms_multiseller === '1') {
+                    if (isMultiSeller) {
                         shipping.push({
                             group: key,
                             data: groupData,
@@ -293,7 +295,7 @@ const ShippingView = (props) => {
         }
         if (shipping.length > 0) {
             const uniqueSellerGroup = [];
-            if (storeConfig.enable_oms_multiseller === '1') {
+            if (isMultiSeller) {
                 sellerGroup.filter((seller) => {
                     const isDuplicate = uniqueSellerGroup.includes(seller.seller_id);
 
@@ -343,7 +345,7 @@ const ShippingView = (props) => {
                     });
                 }
             }
-            const isMultiSeller = storeConfig.enable_oms_multiseller === '1' || storeConfig.enable_oms_multiseller === 1;
+
             if (isMultiSeller) {
                 content = unique.map((seller) => (
                     <>

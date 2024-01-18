@@ -190,6 +190,7 @@ export const getSellerByName = (name) => {
             latitude
             longitude
             additional_info
+            seller_path
             }
         }
     `;

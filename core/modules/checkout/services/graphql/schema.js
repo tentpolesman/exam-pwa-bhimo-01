@@ -217,11 +217,6 @@ items {
             currency
         }
     }
-    custom_seller{
-    seller_id
-    seller_city
-    seller_name
-    }
     product {
         id
         name
@@ -234,6 +229,11 @@ items {
         small_image {
             url
             label
+        }
+        seller{
+            seller_id
+            seller_city
+            seller_name
         }
         ... on AwGiftCardProduct {
             aw_gc_type
@@ -602,8 +602,8 @@ export const getCheckoutConfigurations = gql`
 `;
 
 export const getSeller = gql`
-    query getSeller($sellerId: [Int!]) {
-        getSeller(input: { seller_id: $sellerId }) {
+    query getSeller($keyword: String) {
+        getSeller(input: { keyword: $keyword }) {
             id
             name
             city

@@ -72,8 +72,8 @@ const Tabs = (props) => {
                             </a>
                         </li>
                     ) : null}
-                    {data &&
-                        data.map((item, index) => {
+                    {data
+                        && data.map((item, index) => {
                             if (index === 0) {
                                 return (
                                     <li
@@ -89,8 +89,8 @@ const Tabs = (props) => {
                                                 !tabHasContent && allItems
                                                     ? cx(tabClasses, 'default-allitems')
                                                     : usedActive === index
-                                                      ? cx(tabClasses, tabActive, 'default-active')
-                                                      : cx(tabClasses),
+                                                        ? cx(tabClasses, tabActive, 'default-active')
+                                                        : cx(tabClasses),
                                             )}
                                             onClick={(e) => {
                                                 if (tabHasContent) {
@@ -114,8 +114,8 @@ const Tabs = (props) => {
                                             !tabHasContent && allItems
                                                 ? cx(tabClasses, 'default-allitems')
                                                 : usedActive === index
-                                                  ? cx(tabClasses, tabActive, 'default-active')
-                                                  : cx(tabClasses),
+                                                    ? cx(tabClasses, tabActive, 'default-active')
+                                                    : cx(tabClasses),
                                         )}
                                         onClick={(e) => {
                                             if (tabHasContent) {

@@ -7,5 +7,9 @@
     "notFound": "Seller not found.",
     "home": "Home",
     "product": "Products",
-    "storeFront": "Etalase"
+    "storeFront": "Etalase",
+    "button": {
+        "about": "About",
+        "chat": "Chat"
+    }
 }

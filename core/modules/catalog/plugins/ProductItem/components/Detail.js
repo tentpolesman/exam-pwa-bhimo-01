@@ -42,20 +42,20 @@ const Detail = (props) => {
     return (
         <div className="flex flex-col gap-1 relative w-full">
             <Show when={enableMultiSeller && seller && seller?.seller_name}>
-                <div className="flex">
+                <Link href={`/seller/${seller?.seller_path}`}>
                     <Typography
                         variant="bd-2"
                         className={cx(
-                            'line-clamp-2 text-primary capitalize mb-[2px] tablet:mb-[6px]',
+                            'line-clamp-1 capitalize',
+                            'leading-5',
                             isGrid && 'text-sm tablet:text-base',
                             !isGrid && 'text-xs tablet:text-base',
                         )}
-                        color="primary"
-                        letter="capitalize"
+                        color="text-primary"
                     >
                         {parser(seller?.seller_name || '')}
                     </Typography>
-                </div>
+                </Link>
             </Show>
             <Show when={enableProductName}>
                 <Link href="/[...slug]" as={`/${urlKey}`} className="w-full plugin-productTitle-typography" onClick={() => handleClick(props)}>
