@@ -1,5 +1,5 @@
 import MagezonElement from '@core_modules/cms/components/cms-renderer/magezon/index';
-import { getColSpanTailwind, getFlexBasisTailwind } from '@root/core/helpers/style';
+import { getColSpanTailwind, getFlexBasisTailwind } from '@core/helpers/style';
 import React from 'react';
 import magezonDesignOptionsCss from '@core_modules/cms/helpers/magezonDesignOptionsCss';
 import cx from 'classnames';

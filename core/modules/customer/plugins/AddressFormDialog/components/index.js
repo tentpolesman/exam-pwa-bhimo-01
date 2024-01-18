@@ -8,7 +8,7 @@ import Dialog from '@common_dialog';
 import Checkbox from '@common_forms/CheckBox';
 import TextField from '@common_forms/TextField';
 import Typography from '@common_typography';
-import { BREAKPOINTS } from '@root/core/theme/vars';
+import { BREAKPOINTS } from '@core/theme/vars';
 import cx from 'classnames';
 import dynamic from 'next/dynamic';
 

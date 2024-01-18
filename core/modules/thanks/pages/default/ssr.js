@@ -1,7 +1,7 @@
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import getLayoutSSRProps from '@core_modules/theme/layout/ssr';
 import createApolloClient from '@lib/apollo/apolloClient';
-import { getCheckoutDataFromRequest } from '@root/core/helpers/cookies';
+import { getCheckoutDataFromRequest } from '@core/helpers/cookies';
 import Router from 'next/router';
 
 const getSSRProps = async (ctx) => {

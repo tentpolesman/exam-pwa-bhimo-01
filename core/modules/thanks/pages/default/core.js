@@ -4,7 +4,7 @@ import { debuging } from '@config';
 import { getOrder, getPaymentBankList, getPaymentInformation } from '@core_modules/thanks/services/graphql';
 import { getCheckoutData, removeCheckoutData } from '@helper_cookies';
 import { useReactiveVar } from '@apollo/client';
-import { currencyVar } from '@root/core/services/graphql/cache';
+import { currencyVar } from '@core/services/graphql/cache';
 import Layout from '@layout';
 import Router from 'next/router';
 import * as React from 'react';

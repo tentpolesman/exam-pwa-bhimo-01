@@ -3,14 +3,14 @@ import React from 'react';
 import Router from 'next/router';
 import Product from '@plugin_productlist';
 import { getStoreHost } from '@helpers/config';
-import { getAppEnv } from '@root/core/helpers/env';
+import { getAppEnv } from '@core/helpers/env';
 import CmsRenderer from '@core_modules/cms/components/cms-renderer';
 import BreadcrumbView from '@common_breadcrumb';
 import BannerView from '@common_image';
 import Typography from '@common/Typography';
 import cx from 'classnames';
 import Show from '@common/Show';
-import { BREAKPOINTS } from '@root/core/theme/vars';
+import { BREAKPOINTS } from '@core/theme/vars';
 
 // sementara di comment dlu, untuk custom filter memakai aggregations product
 // import { getFilter } from '../../../services/graphql';

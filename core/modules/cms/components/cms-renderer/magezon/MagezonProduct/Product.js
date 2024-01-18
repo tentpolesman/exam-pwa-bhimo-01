@@ -7,7 +7,7 @@ import ProductItem from '@plugin_productitem';
 import ContainerScroll from '@common/ContainerScroll';
 import cx from 'classnames';
 import { generateGridItemClass } from '@helpers/style';
-import { BREAKPOINTS, COLORS } from '@root/core/theme/vars';
+import { BREAKPOINTS, COLORS } from '@core/theme/vars';
 
 const Product = (props) => {
     const {

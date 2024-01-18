@@ -10,7 +10,7 @@ import Link from 'next/link';
 
 import Button from '@common_button';
 import Typography from '@common_typography';
-import useMediaQuery from '@root/core/hooks/useMediaQuery';
+import useMediaQuery from '@core/hooks/useMediaQuery';
 
 const SwitcherLanguage = dynamic(() => import('@core_modules/theme/components/header/components/burgermenu/account/plugins/language/index'), {
     ssr: false,
@@ -47,7 +47,7 @@ const BurgerMenuAccount = (props) => {
                                 </>
                             ) : (
                                 <>
-                                    <Link className={cx('py-3', 'px-4')} href="/customer/account/login" prefetch={false}>
+                                    <Link className={cx('py-3', 'px-4', 'login-register-link')} href="/customer/account/login" prefetch={false}>
                                         <Typography>Log in / Register</Typography>
                                     </Link>
                                 </>

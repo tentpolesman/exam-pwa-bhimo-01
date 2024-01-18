@@ -5,7 +5,7 @@ import {
 import { getAppEnv } from '@helpers/env';
 import { removeIsLoginFlagging } from '@helper_auth';
 import { removeCartId } from '@helper_cartid';
-import { removeCookies } from '@root/core/helpers/cookies';
+import { removeCookies } from '@core/helpers/cookies';
 import {
     graphqlEndpoint, HOST, storeCode, requestTimeout, features,
 } from '@root/swift.config.js';

@@ -7,7 +7,7 @@
 /* eslint-disable max-len */
 
 import { useApolloClient, useReactiveVar } from '@apollo/client';
-import { storeConfigVar } from '@root/core/services/graphql/cache';
+import { storeConfigVar } from '@core/services/graphql/cache';
 import cx from 'classnames';
 import Cookies from 'js-cookie';
 import dynamic from 'next/dynamic';

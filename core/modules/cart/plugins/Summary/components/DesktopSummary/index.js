@@ -6,7 +6,7 @@ import Thumbor from '@common_image';
 import Typography from '@common_typography';
 import { formatPrice } from '@helper_currency';
 import { useReactiveVar } from '@apollo/client';
-import { storeConfigVar } from '@root/core/services/graphql/cache';
+import { storeConfigVar } from '@core/services/graphql/cache';
 import cx from 'classnames';
 import React, { useEffect } from 'react';
 import Show from '@common/Show';
