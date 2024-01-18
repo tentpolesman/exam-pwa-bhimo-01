@@ -22,11 +22,75 @@ import cx from 'classnames';
 import Skeleton from '@core_modules/blog/pages/landing/components/Skeleton';
 import useMediaQuery from '@root/core/hooks/useMediaQuery';
 
+const findObjectByTypeRecursive = (objects, targetType) => {
+    for (const obj of objects) {
+        if (obj.type === targetType) {
+            // Found the object with the specified type
+            return obj;
+        }
+
+        if (obj.elements && Array.isArray(obj.elements)) {
+            // If the current object has nested elements, recursively search in them
+            const nestedResult = findObjectByTypeRecursive(obj.elements, targetType);
+            if (nestedResult) {
+                return nestedResult; // Return the result if found in the nested elements
+            }
+        }
+    }
+
+    // Object with the specified type not found in this branch
+    return null;
+};
+
 const FeaturedPosts = (props) => {
-    const { posts, isTablet, isDesktop, storeConfig } = props;
-    const firstPost = posts[0];
-    const secondPost = posts[1];
-    const thirdPost = posts[2];
+    const { isTablet, isDesktop, storeConfig } = props;
+    const [getBlogs, { data }] = getBlogPostList();
+
+    useEffect(() => {
+        getBlogs({
+            variables: {
+                sort: {
+                    position: 'ASC',
+                },
+                filter: {
+                    featured: {
+                        eq: '1',
+                    },
+                },
+            },
+        });
+    }, []);
+
+    const featuredPosts = useMemo(() => {
+        try {
+            if (data?.getBlogPostList?.blog_data?.length > 0) {
+                const formattedData = data.getBlogPostList.blog_data.slice(0, 3).map((blogData) => {
+                    let blogContent = blogData.content.replace('[/mgz_pagebuilder]', '[mgz_pagebuilder]').split('[mgz_pagebuilder]');
+                    blogContent = JSON.parse(blogContent[1]);
+                    const imageUrl = blogData?.image || `${basePath}/assets/img/placeholder.png`;
+                    const textContent = findObjectByTypeRecursive(blogContent.elements, 'text')?.content || '';
+
+                    return {
+                        ...blogData,
+                        content: blogContent,
+                        blogImage: imageUrl,
+                        blogContent: textContent,
+                    };
+                });
+
+                return formattedData;
+            }
+            // eslint-disable-next-line no-empty
+        } catch (err) {
+            // console.log('err', err);
+        }
+    }, [data]);
+
+    const firstPost = (featuredPosts?.length > 0 && featuredPosts[0]) || null;
+    const secondPost = (featuredPosts?.length > 1 && featuredPosts[1]) || null;
+    const thirdPost = (featuredPosts?.length > 2 && featuredPosts[2]) || null;
+    // const secondPost = null;
+    // const thirdPost = null;
 
     const firstPostImageDimensions = {
         width: isDesktop ? 588 : 474,
@@ -38,96 +102,181 @@ const FeaturedPosts = (props) => {
     };
 
     return (
-        <div className="tablet:flex desktop:grid desktop:grid-cols-2 mb-10 tablet:gap-5 desktop:gap-6">
+        <div
+            className={cx('tablet:flex', 'desktop:grid', 'desktop:grid-cols-2', 'mb-10', 'tablet:gap-5', 'desktop:gap-6', {
+                '!flex': !secondPost,
+            })}
+        >
             {firstPost ? (
-                <div className="flex tablet:w-[474px] tablet:h-[270px] desktop:w-[588px] desktop:h-[336px] rounded-lg overflow-hidden relative">
-                    <CommonImage src={firstPost?.blogImage} {...firstPostImageDimensions} storeConfig={storeConfig} />
-                    <div className="w-full absolute bottom-0 p-6 bg-[rgba(0,0,0,0.2)]">
-                        <Typography variant="h2" className="!leading-lg !text-2xl !text-neutral-white">
-                            {firstPost?.title}
-                        </Typography>
-                        <div className="mt-2">
-                            <Typography variant="bd-2b" className="!text-neutral-white">
-                                {firstPost?.publish_date ? formatDate(firstPost.publish_date, 'D MMMM YYYY') : ''}
-                            </Typography>
+                <>
+                    {secondPost ? (
+                        <div
+                            className={cx(
+                                'flex',
+                                'tablet:w-[474px]',
+                                'tablet:h-[270px]',
+                                'desktop:w-[588px]',
+                                'desktop:h-[336px]',
+                                'rounded-lg',
+                                'overflow-hidden',
+                                'relative',
+                            )}
+                        >
+                            <CommonImage src={firstPost?.blogImage} {...firstPostImageDimensions} storeConfig={storeConfig} />
+                            <div className={cx('w-full', 'absolute', 'bottom-0', 'p-6', 'bg-[rgba(0,0,0,0.2)]')}>
+                                <Typography variant="h2" className="!leading-lg !text-2xl !text-neutral-white">
+                                    {firstPost?.title}
+                                </Typography>
+                                <div className="mt-2">
+                                    <Typography variant="bd-2b" className="!text-neutral-white">
+                                        {firstPost?.publish_date ? formatDate(firstPost.publish_date, 'D MMMM YYYY') : ''}
+                                    </Typography>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    ) : (
+                        <div className={cx('flex', 'w-full', 'rounded-lg', 'relative')}>
+                            <div
+                                className={cx(
+                                    'tablet:w-[474px]',
+                                    'tablet:h-full',
+                                    'desktop:w-[588px]',
+                                    'desktop:h-[336px]',
+                                    'rounded-lg',
+                                    'overflow-hidden',
+                                    'mr-6',
+                                )}
+                            >
+                                <CommonImage src={firstPost?.blogImage} {...firstPostImageDimensions} storeConfig={storeConfig} />
+                            </div>
+                            <div className={cx('tablet:w-[282px]', 'desktop:w-[474px]', 'flex', 'flex-col')}>
+                                <Typography variant={isTablet ? 'h5' : 'h2'} className="!leading-lg !text-2xl !text-neutral-500">
+                                    {firstPost?.title}
+                                </Typography>
+                                <div className="tablet:mt-[6px] desktop:mt-[10px]">
+                                    <Typography variant={isTablet ? 'bd-3b' : 'bd-2b'} className="!text-neutral-500">
+                                        {formatDate(firstPost?.publish_date, 'D MMMM YYYY')}
+                                    </Typography>
+                                    <div className="flex flex-col justify-between flex-1">
+                                        <div dangerouslySetInnerHTML={{ __html: `${firstPost?.blogContent.substring(0, 118)}...` }} />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </>
+            ) : null}
+            {secondPost ? (
+                <div className="flex flex-col gap-3 desktop:gap-4">
+                    {secondPost ? (
+                        <>
+                            {thirdPost ? (
+                                <div className="flex desktop:w-[588px] tablet:h-[129px] desktop:h-[160px] relative">
+                                    <div className="w-[320px] tablet:w-[226px] desktop:w-[282px] rounded-lg overflow-hidden desktop:mr-6">
+                                        <CommonImage src={secondPost?.blogImage} {...sidePostImageDimensions} storeConfig={storeConfig} />
+                                    </div>
+                                    <div
+                                        className={cx(
+                                            'w-full',
+                                            'desktop:w-[282px]',
+                                            'flex',
+                                            'flex-col',
+                                            'tablet:max-desktop:absolute',
+                                            'tablet:max-desktop:bottom-0',
+                                            'tablet:max-desktop:p-[10px]',
+                                            'tablet:max-desktop:bg-[rgba(0,0,0,0.2)]',
+                                        )}
+                                    >
+                                        <Typography
+                                            variant={isTablet ? 'h5' : 'h2'}
+                                            className="!leading-lg desktop:!text-2xl tablet:text-neutral-white desktop:!text-neutral-500"
+                                        >
+                                            {secondPost?.title}
+                                        </Typography>
+                                        <div className="tablet:mt-[6px] desktop:mt-[10px]">
+                                            <Typography
+                                                variant={isTablet ? 'bd-3b' : 'bd-2b'}
+                                                className="tablet:text-neutral-white desktop:!text-neutral-500"
+                                            >
+                                                {formatDate(secondPost?.publish_date, 'D MMMM YYYY')}
+                                            </Typography>
+                                            {isDesktop ? (
+                                                <div className="flex flex-col justify-between flex-1">
+                                                    <div dangerouslySetInnerHTML={{ __html: `${secondPost?.blogContent.substring(0, 118)}...` }} />
+                                                </div>
+                                            ) : null}
+                                        </div>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div
+                                    className={cx(
+                                        'flex',
+                                        'tablet:w-[350px]',
+                                        'tablet:h-[270px]',
+                                        'desktop:w-[588px]',
+                                        'desktop:h-[336px]',
+                                        'rounded-lg',
+                                        'overflow-hidden',
+                                        'relative',
+                                    )}
+                                >
+                                    <CommonImage src={secondPost?.blogImage} {...firstPostImageDimensions} storeConfig={storeConfig} />
+                                    <div className="w-full absolute bottom-0 p-6 bg-[rgba(0,0,0,0.2)]">
+                                        <Typography variant="h2" className="!leading-lg !text-2xl !text-neutral-white">
+                                            {secondPost?.title}
+                                        </Typography>
+                                        <div className="mt-2">
+                                            <Typography variant="bd-2b" className="!text-neutral-white">
+                                                {secondPost?.publish_date ? formatDate(secondPost.publish_date, 'D MMMM YYYY') : ''}
+                                            </Typography>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                        </>
+                    ) : null}
+                    {thirdPost ? (
+                        <div className="flex desktop:w-[588px] tablet:h-[129px] desktop:h-[160px] relative">
+                            <div className="w-[320px] tablet:w-[226px] desktop:w-[282px]  rounded-lg overflow-hidden desktop:mr-6">
+                                <CommonImage src={thirdPost?.blogImage} {...sidePostImageDimensions} storeConfig={storeConfig} />
+                            </div>
+                            <div
+                                className={cx(
+                                    'w-full',
+                                    'desktop:w-[282px]',
+                                    'flex',
+                                    'flex-col',
+                                    'tablet:max-desktop:absolute',
+                                    'tablet:max-desktop:bottom-0',
+                                    'tablet:max-desktop:p-[10px]',
+                                    'tablet:max-desktop:bg-[rgba(0,0,0,0.2)]',
+                                )}
+                            >
+                                <Typography
+                                    variant={isTablet ? 'h5' : 'h2'}
+                                    className="!leading-lg desktop:!text-2xl tablet:text-neutral-white desktop:!text-neutral-500"
+                                >
+                                    {thirdPost?.title}
+                                </Typography>
+                                <div className="tablet:mt-[6px] desktop:mt-[10px]">
+                                    <Typography
+                                        variant={isTablet ? 'bd-3b' : 'bd-2b'}
+                                        className="tablet:text-neutral-white desktop:!text-neutral-500"
+                                    >
+                                        {formatDate(thirdPost?.publish_date, 'D MMMM YYYY')}
+                                    </Typography>
+                                    {isDesktop ? (
+                                        <div className="flex flex-col justify-between flex-1">
+                                            <div dangerouslySetInnerHTML={{ __html: `${thirdPost?.blogContent.substring(0, 118)}...` }} />
+                                        </div>
+                                    ) : null}
+                                </div>
+                            </div>
+                        </div>
+                    ) : null}
                 </div>
             ) : null}
-            <div className="flex flex-col gap-3 desktop:gap-4">
-                {secondPost ? (
-                    <div className="flex desktop:w-[588px] tablet:h-[129px] desktop:h-[160px] relative">
-                        <div className="w-[320px] tablet:w-[226px] desktop:w-[282px] rounded-lg overflow-hidden desktop:mr-6">
-                            <CommonImage src={secondPost?.blogImage} {...sidePostImageDimensions} storeConfig={storeConfig} />
-                        </div>
-                        <div
-                            className={cx(
-                                'w-full',
-                                'desktop:w-[282px]',
-                                'flex',
-                                'flex-col',
-                                'tablet:max-desktop:absolute',
-                                'tablet:max-desktop:bottom-0',
-                                'tablet:max-desktop:p-[10px]',
-                                'tablet:max-desktop:bg-[rgba(0,0,0,0.2)]',
-                            )}
-                        >
-                            <Typography
-                                variant={isTablet ? 'h5' : 'h2'}
-                                className="!leading-lg desktop:!text-2xl tablet:text-neutral-white desktop:!text-neutral-500"
-                            >
-                                {secondPost?.title}
-                            </Typography>
-                            <div className="tablet:mt-[6px] desktop:mt-[10px]">
-                                <Typography variant={isTablet ? 'bd-3b' : 'bd-2b'} className="tablet:text-neutral-white desktop:!text-neutral-500">
-                                    {formatDate(secondPost?.publish_date, 'D MMMM YYYY')}
-                                </Typography>
-                                {isDesktop ? (
-                                    <div className="flex flex-col justify-between flex-1">
-                                        <div dangerouslySetInnerHTML={{ __html: `${secondPost?.blogContent.substring(0, 118)}...` }} />
-                                    </div>
-                                ) : null}
-                            </div>
-                        </div>
-                    </div>
-                ) : null}
-                {thirdPost ? (
-                    <div className="flex desktop:w-[588px] tablet:h-[129px] desktop:h-[160px] relative">
-                        <div className="w-[320px] tablet:w-[226px] desktop:w-[282px]  rounded-lg overflow-hidden desktop:mr-6">
-                            <CommonImage src={thirdPost?.blogImage} {...sidePostImageDimensions} storeConfig={storeConfig} />
-                        </div>
-                        <div
-                            className={cx(
-                                'w-full',
-                                'desktop:w-[282px]',
-                                'flex',
-                                'flex-col',
-                                'tablet:max-desktop:absolute',
-                                'tablet:max-desktop:bottom-0',
-                                'tablet:max-desktop:p-[10px]',
-                                'tablet:max-desktop:bg-[rgba(0,0,0,0.2)]',
-                            )}
-                        >
-                            <Typography
-                                variant={isTablet ? 'h5' : 'h2'}
-                                className="!leading-lg desktop:!text-2xl tablet:text-neutral-white desktop:!text-neutral-500"
-                            >
-                                {thirdPost?.title}
-                            </Typography>
-                            <div className="tablet:mt-[6px] desktop:mt-[10px]">
-                                <Typography variant={isTablet ? 'bd-3b' : 'bd-2b'} className="tablet:text-neutral-white desktop:!text-neutral-500">
-                                    {formatDate(thirdPost?.publish_date, 'D MMMM YYYY')}
-                                </Typography>
-                                {isDesktop ? (
-                                    <div className="flex flex-col justify-between flex-1">
-                                        <div dangerouslySetInnerHTML={{ __html: `${thirdPost?.blogContent.substring(0, 118)}...` }} />
-                                    </div>
-                                ) : null}
-                            </div>
-                        </div>
-                    </div>
-                ) : null}
-            </div>
         </div>
     );
 };
@@ -191,6 +340,9 @@ const CoreLanding = (props) => {
             pageSize: 10,
             currentPage: page,
             filter: {},
+            sort: {
+                publish_date: 'DESC',
+            },
         };
         if (currentCategory !== null) {
             variables.filter = { category_id: { eq: currentCategory } };
@@ -207,26 +359,6 @@ const CoreLanding = (props) => {
     }, [currentCategory]);
 
     const blogPosts = useMemo(() => {
-        const findObjectByTypeRecursive = (objects, targetType) => {
-            for (const obj of objects) {
-                if (obj.type === targetType) {
-                    // Found the object with the specified type
-                    return obj;
-                }
-
-                if (obj.elements && Array.isArray(obj.elements)) {
-                    // If the current object has nested elements, recursively search in them
-                    const nestedResult = findObjectByTypeRecursive(obj.elements, targetType);
-                    if (nestedResult) {
-                        return nestedResult; // Return the result if found in the nested elements
-                    }
-                }
-            }
-
-            // Object with the specified type not found in this branch
-            return null;
-        };
-
         try {
             if (data?.getBlogPostList?.blog_data?.length > 0) {
                 const formattedData = data.getBlogPostList.blog_data.map((blogData) => {
@@ -273,7 +405,7 @@ const CoreLanding = (props) => {
 
     return (
         <Layout {...props} pageConfig={config}>
-            {featuredPosts?.length > 0 && !isMobile ? <FeaturedPosts posts={featuredPosts} {...mediaQueries} storeConfig={storeConfig} /> : null}
+            {featuredPosts?.length > 0 && !isMobile ? <FeaturedPosts {...mediaQueries} storeConfig={storeConfig} /> : null}
             {!blogCategoriesResult?.loading && blogCategoriesResult?.data ? (
                 <BlogCategories {...blogCategoriesResult} handleChangeCategory={handleChangeCategory} />
             ) : null}

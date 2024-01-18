@@ -130,6 +130,8 @@ export const getBlogPostList = gql`
                 related_products {
                     url_key
                 }
+                featured
+                position
             }
         }
     }
