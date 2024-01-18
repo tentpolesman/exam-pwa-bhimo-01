@@ -89,8 +89,6 @@ const FeaturedPosts = (props) => {
     const firstPost = (featuredPosts?.length > 0 && featuredPosts[0]) || null;
     const secondPost = (featuredPosts?.length > 1 && featuredPosts[1]) || null;
     const thirdPost = (featuredPosts?.length > 2 && featuredPosts[2]) || null;
-    // const secondPost = null;
-    // const thirdPost = null;
 
     const firstPostImageDimensions = {
         width: isDesktop ? 588 : 474,
@@ -100,6 +98,8 @@ const FeaturedPosts = (props) => {
         width: isDesktop ? 282 : 226,
         height: isDesktop ? 160 : 129,
     };
+
+    if (!firstPost) return null;
 
     return (
         <div
