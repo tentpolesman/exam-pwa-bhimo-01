@@ -26,7 +26,7 @@ import Skeleton from '@core_modules/blog/pages/landing/components/Skeleton';
 import useMediaQuery from '@root/core/hooks/useMediaQuery';
 
 const FeaturedPosts = (props) => {
-    const { posts, isTablet, isDesktop } = props;
+    const { posts, isTablet, isDesktop, storeConfig } = props;
     const firstPost = posts[0];
     const secondPost = posts[1];
     const thirdPost = posts[2];
@@ -44,7 +44,7 @@ const FeaturedPosts = (props) => {
         <div className="tablet:flex desktop:grid desktop:grid-cols-2 mb-10 tablet:gap-5 desktop:gap-6">
             {firstPost ? (
                 <div className="flex tablet:w-[474px] tablet:h-[270px] desktop:w-[588px] desktop:h-[336px] rounded-lg overflow-hidden relative">
-                    <CommonImage src={firstPost?.blogImage} {...firstPostImageDimensions} />
+                    <CommonImage src={firstPost?.blogImage} {...firstPostImageDimensions} storeConfig={storeConfig} />
                     <div className="w-full absolute bottom-0 p-6 bg-[rgba(0,0,0,0.2)]">
                         <Typography variant="h2" className="!leading-lg !text-2xl !text-neutral-white">
                             {firstPost?.title}
@@ -57,11 +57,11 @@ const FeaturedPosts = (props) => {
                     </div>
                 </div>
             ) : null}
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-3 desktop:gap-4">
                 {secondPost ? (
                     <div className="flex desktop:w-[588px] tablet:h-[129px] desktop:h-[160px] relative">
                         <div className="w-[320px] tablet:w-[226px] desktop:w-[282px] rounded-lg overflow-hidden desktop:mr-6">
-                            <CommonImage src={secondPost?.blogImage} {...sidePostImageDimensions} />
+                            <CommonImage src={secondPost?.blogImage} {...sidePostImageDimensions} storeConfig={storeConfig} />
                         </div>
                         <div
                             className={cx(
@@ -97,7 +97,7 @@ const FeaturedPosts = (props) => {
                 {thirdPost ? (
                     <div className="flex desktop:w-[588px] tablet:h-[129px] desktop:h-[160px] relative">
                         <div className="w-[320px] tablet:w-[226px] desktop:w-[282px]  rounded-lg overflow-hidden desktop:mr-6">
-                            <CommonImage src={thirdPost?.blogImage} {...sidePostImageDimensions} />
+                            <CommonImage src={thirdPost?.blogImage} {...sidePostImageDimensions} storeConfig={storeConfig} />
                         </div>
                         <div
                             className={cx(
@@ -167,11 +167,7 @@ const BlogCategories = (props) => {
 };
 
 const CoreLanding = (props) => {
-    const {
-        t,
-        pageConfig = {},
-        // storeConfig
-    } = props;
+    const { t, pageConfig = {}, storeConfig } = props;
     const config = {
         title: 'Blog',
         header: 'relative', // available values: "absolute", "relative", false (default)
@@ -291,7 +287,7 @@ const CoreLanding = (props) => {
 
     return (
         <Layout {...props} pageConfig={config}>
-            {featuredPosts?.length > 0 && !isMobile ? <FeaturedPosts posts={featuredPosts} {...mediaQueries} /> : null}
+            {featuredPosts?.length > 0 && !isMobile ? <FeaturedPosts posts={featuredPosts} {...mediaQueries} storeConfig={storeConfig} /> : null}
             {!blogCategoriesResult?.loading && blogCategoriesResult?.data ? (
                 <BlogCategories {...blogCategoriesResult} handleChangeCategory={handleChangeCategory} />
             ) : null}
@@ -323,7 +319,7 @@ const CoreLanding = (props) => {
                                             'tablet:mr-6',
                                         )}
                                     >
-                                        <CommonImage src={blog.blogImage} width={282} height={174} />
+                                        <CommonImage src={blog.blogImage} width={282} height={174} storeConfig={storeConfig} />
                                     </div>
                                     <div className="w-full tablet:w-[320px] desktop:w-[282px] flex flex-col max-tablet:mt-4">
                                         <Typography variant={isMobile ? 'h4' : 'h2'} className="!leading-lg tablet:!text-2xl">
