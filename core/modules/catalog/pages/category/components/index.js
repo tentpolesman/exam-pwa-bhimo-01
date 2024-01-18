@@ -1,3 +1,6 @@
+/* eslint-disable max-len */
+/* eslint-disable operator-linebreak */
+/* eslint-disable object-curly-newline */
 /* eslint-disable react/no-danger */
 import React from 'react';
 import Router from 'next/router';
@@ -118,7 +121,7 @@ const CategoryPage = ({ data, storeConfig, t, ...other }) => {
                 <div className="flex flex-col w-full mb-4 desktop:mb-8 gap-4">
                     <div className="relative w-full h-full">
                         {dataCategory.banner.length > 0 && dataCategory.url !== '' ? (
-                            <BannerView src={dataCategory.url} width={BREAKPOINTS.xl} storeConfig={storeConfig} preload={true} useContainer={false} />
+                            <BannerView src={dataCategory.url} width={BREAKPOINTS.xl} storeConfig={storeConfig} preload useContainer={false} />
                         ) : null}
                     </div>
                     {dataCategory.banner.length > 0 && dataCategory.banner[0] && dataCategory.banner[0]?.description && (
@@ -135,24 +138,23 @@ const CategoryPage = ({ data, storeConfig, t, ...other }) => {
                     </Show>
                 </div>
 
-                {categoryList &&
-                    (!categoryList.display_mode || categoryList.display_mode === 'PRODUCTS_AND_PAGE' || categoryList.display_mode === 'PRODUCTS') && (
-                        <Product
-                            // sementara di comment dlu, untuk custom filter memakai aggregations product
-                            // customFilter={customFilter.loading ? [] : customFilter.data.getFilterAttributeOptions.data}
-                            catId={categoryList.id}
-                            categoryPath={categoryList.url_path}
-                            catalog_search_engine={storeConfig.catalog_search_engine}
-                            t={t}
-                            category={categoryTabs(categoryList?.children ?? [])}
-                            dataTabs={categoryTabs(categoryList?.children ?? [])}
-                            onChangeTabs={handleChange}
-                            onChangeCategory={handleCategory}
-                            storeConfig={storeConfig}
-                            defaultSort={{ key: 'position', value: 'ASC' }}
-                            {...other}
-                        />
-                    )}
+                {categoryList && (!categoryList.display_mode || categoryList.display_mode === 'PRODUCTS_AND_PAGE' || categoryList.display_mode === 'PRODUCTS') && (
+                    <Product
+                        // sementara di comment dlu, untuk custom filter memakai aggregations product
+                        // customFilter={customFilter.loading ? [] : customFilter.data.getFilterAttributeOptions.data}
+                        catId={categoryList.id}
+                        categoryPath={categoryList.url_path}
+                        catalog_search_engine={storeConfig.catalog_search_engine}
+                        t={t}
+                        category={categoryTabs(categoryList?.children ?? [])}
+                        dataTabs={categoryTabs(categoryList?.children ?? [])}
+                        onChangeTabs={handleChange}
+                        onChangeCategory={handleCategory}
+                        storeConfig={storeConfig}
+                        defaultSort={{ key: 'position', value: 'ASC' }}
+                        {...other}
+                    />
+                )}
             </div>
         </>
     );

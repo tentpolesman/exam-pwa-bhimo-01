@@ -695,19 +695,19 @@ const MagezonSlider = (props) => {
                     }
                     .magezon-slider--dot-nav-item {
                         ${owl_active_background_color
-                            ? `
+            ? `
                             background-color: ${owl_background_color} !important;
                             border: unset !important;
                         `
-                            : ''};
+            : ''};
                     }
                     .magezon-slider--dot-nav-item-active {
                         ${owl_active_background_color
-                            ? `
+            ? `
                             background-color: ${owl_active_background_color} !important;
                             border: unset !important;
                         `
-                            : ''};
+            : ''};
                     }
                 `}
             </style>

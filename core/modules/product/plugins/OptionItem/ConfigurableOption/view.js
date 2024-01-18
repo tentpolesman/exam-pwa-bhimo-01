@@ -27,7 +27,7 @@ const ConfigurableView = (props) => {
     return (
         <>
             <div className="flex flex-col gap-2 tablet:gap-4">
-                {showSwatches && updatedOptions.map((item, index) => (
+                {showSwatches && updatedOptions?.map((item, index) => (
                     <Item
                         key={index}
                         option={item.options}

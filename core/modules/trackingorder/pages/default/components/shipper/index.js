@@ -60,7 +60,7 @@ const ShipperView = (props) => {
                 driver_license_number: detail?.driver?.vehicle_number || '',
                 update_date: detail?.last_updated_date ? formatDate(detail.last_updated_date, 'DD-MM-YYYY HH:mm') : '',
                 last_status: detail?.trackings?.length > 0 ? detail?.trackings[detail.trackings.length - 1]?.shipper_status?.description : '',
-                live_tracking: detail?.trackURL && detail?.trackURL !== '' ? detail.trackURL : '123',
+                live_tracking: detail?.trackURL && detail?.trackURL !== '' ? detail.trackURL : '',
             };
         }
 
