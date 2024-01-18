@@ -4,12 +4,12 @@
 /* eslint-disable react/destructuring-assignment */
 import TextField from '@common_forms/TextField';
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
-import { encrypt } from '@root/core/helpers/clientEncryption';
+import { encrypt } from '@core/helpers/clientEncryption';
 import { useTranslation } from 'next-i18next';
 import React, { useEffect, useState } from 'react';
 
 import cx from 'classnames';
-import { capitalizeEachWord } from '@root/core/helpers/text';
+import { capitalizeEachWord } from '@core/helpers/text';
 
 // Set initial refs for google maps instance
 const refs = {

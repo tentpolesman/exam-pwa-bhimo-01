@@ -7,7 +7,7 @@ import { getLoginInfo } from '@helper_auth';
 import { getCartId, setCartId } from '@helper_cartid';
 import { formatPrice } from '@helper_currency';
 import { useReactiveVar } from '@apollo/client';
-import { currencyVar } from '@root/core/services/graphql/cache';
+import { currencyVar } from '@core/services/graphql/cache';
 import TagManager from 'react-gtm-module';
 import {
     addBundleProductsToCart,

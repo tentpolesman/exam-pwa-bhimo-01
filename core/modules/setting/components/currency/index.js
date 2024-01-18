@@ -8,7 +8,7 @@ import React from 'react';
 
 import ViewSwitcherCurrency from '@core_modules/setting/components/currency/view';
 
-import { currencyVar } from '@root/core/services/graphql/cache';
+import { currencyVar } from '@core/services/graphql/cache';
 
 const COOKIES_APP_CURRENCY = 'app_currency';
 

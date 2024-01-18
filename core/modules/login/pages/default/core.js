@@ -32,7 +32,7 @@ import { getCustomer } from '@core_modules/login/services/graphql/schema';
 import { assignCompareListToCustomer } from '@core_modules/productcompare/service/graphql';
 import { loginConfig } from '@services/graphql/repository/pwa_config';
 import { localCompare } from '@services/graphql/schema/local';
-import { priceVar } from '@root/core/services/graphql/cache';
+import { priceVar } from '@core/services/graphql/cache';
 
 const Message = dynamic(() => import('@common_toast'), { ssr: false });
 const appEnv = getAppEnv();

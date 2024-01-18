@@ -15,8 +15,8 @@ import {
 } from '@config';
 import { getLastPathWithoutLogin, getLoginInfo } from '@helper_auth';
 import { setLocalStorage, setResolver, testLocalStorage } from '@helper_localstorage';
-import { getAppEnv } from '@root/core/helpers/env';
-import { cmsPageVar, currencyVar, storeConfigVar } from '@root/core/services/graphql/cache';
+import { getAppEnv } from '@core/helpers/env';
+import { cmsPageVar, currencyVar, storeConfigVar } from '@core/services/graphql/cache';
 import { storeConfig as ConfigSchema, getCategories } from '@services/graphql/schema/config';
 import { appWithTranslation } from 'next-i18next';
 import Cookie from 'js-cookie';
@@ -29,7 +29,7 @@ import routeMiddleware from '@middleware_route';
 // import getConfig from 'next/config';
 import TagManager from 'react-gtm-module';
 import ModalCookies from '@core_modules/theme/components/modalCookies';
-import { getDeviceByUA, getUAString } from '@root/core/helpers/deviceDection';
+import { getDeviceByUA, getUAString } from '@core/helpers/deviceDection';
 
 /* Firebase /*
 /* Commented by default to avoid unused code which directly impact on performance socre
@@ -53,7 +53,7 @@ import { getDeviceByUA, getUAString } from '@root/core/helpers/deviceDection';
 // import { RewriteFrames } from '@sentry/integrations';
 // import { Integrations } from '@sentry/tracing';
 
-// import { useApollo } from '@root/core/lib/apollo/apolloClient';
+// import { useApollo } from '@core/lib/apollo/apolloClient';
 
 // const { publicRuntimeConfig } = getConfig();
 

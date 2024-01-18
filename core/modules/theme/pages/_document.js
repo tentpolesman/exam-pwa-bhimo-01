@@ -3,7 +3,7 @@
 /* eslint-disable react/no-danger */
 import React from 'react';
 import Document, { Html, Main, NextScript } from 'next/document';
-import { COLORS } from '@root/core/theme/vars';
+import { COLORS } from '@core/theme/vars';
 import { /* rollbar, */ basePath } from '@config';
 import HeadCustom from '@next_headcustom';
 

@@ -8,7 +8,7 @@
 import { useReactiveVar } from '@apollo/client';
 import { formatPrice } from '@helper_currency';
 import formatDate from '@helper_date';
-import { currencyVar } from '@root/core/services/graphql/cache';
+import { currencyVar } from '@core/services/graphql/cache';
 import Cookies from 'js-cookie';
 import cx from 'classnames';
 import Badge from '@common_badge';

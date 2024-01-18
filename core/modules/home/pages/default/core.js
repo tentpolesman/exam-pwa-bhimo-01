@@ -2,7 +2,7 @@
 import Layout from '@layout';
 import { getHost } from '@helper_config';
 import Content from '@core_modules/home/pages/default/components';
-import { currencyVar } from '@root/core/services/graphql/cache';
+import { currencyVar } from '@core/services/graphql/cache';
 import { keyLocalStorage } from '@config';
 import Cookies from 'js-cookie';
 import { useEffect } from 'react';

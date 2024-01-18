@@ -1,7 +1,7 @@
 import { modules } from '@config';
 import graphRequest from '@graphql_request';
 import { getHomePageConfig } from '@core_modules/home/service/graphql/schema';
-import { storeConfigVar } from '@root/core/services/graphql/cache';
+import { storeConfigVar } from '@core/services/graphql/cache';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import getCmsSSRProps from '@core_modules/cms/pages/default/ssr';
 import getLayoutSSRProps from '@core_modules/theme/layout/ssr';

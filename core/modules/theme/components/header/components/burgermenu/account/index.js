@@ -10,7 +10,7 @@ import Link from 'next/link';
 
 import Button from '@common_button';
 import Typography from '@common_typography';
-import useMediaQuery from '@root/core/hooks/useMediaQuery';
+import useMediaQuery from '@core/hooks/useMediaQuery';
 
 const SwitcherLanguage = dynamic(() => import('@core_modules/theme/components/header/components/burgermenu/account/plugins/language/index'), {
     ssr: false,

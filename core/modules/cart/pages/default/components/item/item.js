@@ -8,7 +8,7 @@ import ConfirmationDelete from '@core_modules/cart/pages/default/components/conf
 import Link from 'next/link';
 import { useState } from 'react';
 import Show from '@common/Show';
-import { formatPrice } from '@root/core/helpers/currency';
+import { formatPrice } from '@core/helpers/currency';
 import Button from '@common/Button';
 import { TrashIcon } from '@heroicons/react/24/outline';
 import ButtonQty from '@common/ButtonQty';

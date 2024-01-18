@@ -7,7 +7,7 @@
 /* eslint-disable no-unused-expressions */
 import { initialName, relativeTimeFrom } from '@core_modules/customer/helpers/chatHelper';
 import CustomDropFile from '@core_modules/customer/plugins/ChatPlugin/components/CustomDropFile';
-import formatDate from '@root/core/helpers/date';
+import formatDate from '@core/helpers/date';
 import React, { useEffect, useRef } from 'react';
 
 import classNames from 'classnames';

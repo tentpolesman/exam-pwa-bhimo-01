@@ -1,5 +1,5 @@
 import CmsRenderer from '@core_modules/cms/components/cms-renderer';
-import { COLORS } from '@root/core/theme/vars';
+import { COLORS } from '@core/theme/vars';
 
 const FooterView = (props) => {
     const { data, t, loading, error, storeConfig } = props;

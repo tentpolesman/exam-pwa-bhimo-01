@@ -24,10 +24,10 @@ import { getStoreHost } from '@helpers/config';
 import { getCheckoutData, removeCheckoutData } from '@helpers/cookies';
 import { formatPrice } from '@helper_currency';
 import { setLocalStorage } from '@helper_localstorage';
-import { getAppEnv } from '@root/core/helpers/env';
+import { getAppEnv } from '@core/helpers/env';
 import { updatePwaCheckoutLog } from '@services/graphql/repository/log';
 import { useFormik } from 'formik';
-import { currencyVar } from '@root/core/services/graphql/cache';
+import { currencyVar } from '@core/services/graphql/cache';
 import * as Schema from '@core_modules/checkout/services/graphql/schema';
 import * as Yup from 'yup';
 

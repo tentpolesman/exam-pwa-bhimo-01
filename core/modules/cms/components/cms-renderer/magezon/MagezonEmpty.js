@@ -1,4 +1,4 @@
-import { BREAKPOINTS } from '@root/core/theme/vars';
+import { BREAKPOINTS } from '@core/theme/vars';
 import cx from 'classnames';
 
 const MagezonEmpty = (props) => {

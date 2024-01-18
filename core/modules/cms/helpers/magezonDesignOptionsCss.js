@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 /* eslint-disable no-underscore-dangle */
-import { BREAKPOINTS } from '@root/core/theme/vars';
+import { BREAKPOINTS } from '@core/theme/vars';
 import css from 'styled-jsx/css';
 
 const generateDesignOptions = (classSelector, designOptions) => {
