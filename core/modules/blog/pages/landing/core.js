@@ -21,6 +21,7 @@ import formatDate from '@root/core/helpers/date';
 import cx from 'classnames';
 import Skeleton from '@core_modules/blog/pages/landing/components/Skeleton';
 import useMediaQuery from '@root/core/hooks/useMediaQuery';
+import WidgetRenderer from '@core_modules/cms/components/cms-renderer/WidgetRenderer';
 
 const findObjectByTypeRecursive = (objects, targetType) => {
     for (const obj of objects) {
@@ -158,7 +159,7 @@ const FeaturedPosts = (props) => {
                                         {formatDate(firstPost?.publish_date, 'D MMMM YYYY')}
                                     </Typography>
                                     <div className="flex flex-col justify-between flex-1">
-                                        <div dangerouslySetInnerHTML={{ __html: `${firstPost?.blogContent.substring(0, 118)}...` }} />
+                                        <WidgetRenderer content={`${firstPost?.blogContent.substring(0, 118)}...`} skipTags={['pwa', 'a', 'img']} />
                                     </div>
                                 </div>
                             </div>
@@ -202,7 +203,10 @@ const FeaturedPosts = (props) => {
                                             </Typography>
                                             {isDesktop ? (
                                                 <div className="flex flex-col justify-between flex-1">
-                                                    <div dangerouslySetInnerHTML={{ __html: `${secondPost?.blogContent.substring(0, 118)}...` }} />
+                                                    <WidgetRenderer
+                                                        content={`${secondPost?.blogContent.substring(0, 118)}...`}
+                                                        skipTags={['pwa', 'a', 'img']}
+                                                    />
                                                 </div>
                                             ) : null}
                                         </div>
@@ -268,7 +272,10 @@ const FeaturedPosts = (props) => {
                                     </Typography>
                                     {isDesktop ? (
                                         <div className="flex flex-col justify-between flex-1">
-                                            <div dangerouslySetInnerHTML={{ __html: `${thirdPost?.blogContent.substring(0, 118)}...` }} />
+                                            <WidgetRenderer
+                                                content={`${thirdPost?.blogContent.substring(0, 118)}...`}
+                                                skipTags={['pwa', 'a', 'img']}
+                                            />
                                         </div>
                                     ) : null}
                                 </div>
@@ -449,9 +456,10 @@ const CoreLanding = (props) => {
                                             </Typography>
                                         </div>
                                         <div className="flex flex-col justify-between flex-1">
-                                            <div
+                                            <WidgetRenderer
                                                 className="max-tablet:text-sm max-tablet:leading-4"
-                                                dangerouslySetInnerHTML={{ __html: `${blog.blogContent.substring(0, 118)}...` }}
+                                                content={`${blog.blogContent.substring(0, 118)}...`}
+                                                skipTags={['pwa', 'a', 'img']}
                                             />
                                             <Button variant="plain" link={`/blog/${blog.id}`} className="!p-0">
                                                 <Typography className="!text-primary">Read More</Typography>
