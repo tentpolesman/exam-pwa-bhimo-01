@@ -20,4 +20,7 @@ export const awBlogPostWithRelatedPosts = (options = {}) => useLazyQuery(schema.
     fetchPolicy: 'cache-and-network',
     errorPolicy: 'all',
 });
+
+export const getBlogPostList = () => useLazyQuery(schema.getBlogPostList);
+export const getBlogCategoryList = () => useLazyQuery(schema.getBlogCategoryList);
 export default {};
