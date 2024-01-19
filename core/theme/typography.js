@@ -1,4 +1,4 @@
-import { storeConfigVar } from '@root/core/services/graphql/cache';
+import { storeConfigVar } from '@core/services/graphql/cache';
 
 const pwaConfig = storeConfigVar();
 

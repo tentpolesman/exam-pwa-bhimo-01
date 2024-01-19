@@ -8,7 +8,7 @@ import { useQuery, useReactiveVar } from '@apollo/client';
 import { debuging, features, modules } from '@config';
 import { getPriceFromList } from '@core_modules/product/helpers/getPrice';
 import { localCompare } from '@services/graphql/schema/local';
-import { currencyVar, priceVar } from '@root/core/services/graphql/cache';
+import { currencyVar, priceVar } from '@core/services/graphql/cache';
 import { getCustomerUid } from '@core_modules/productcompare/service/graphql';
 import { getCookies } from '@helper_cookies';
 import { useRouter } from 'next/router';

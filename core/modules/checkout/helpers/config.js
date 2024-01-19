@@ -1,6 +1,6 @@
 import { getStoreHost, getHost } from '@helpers/config';
 import { modules } from '@config';
-import { getAppEnv } from '@root/core/helpers/env';
+import { getAppEnv } from '@core/helpers/env';
 
 const { checkoutOnly, ipayUrl } = modules.checkout;
 

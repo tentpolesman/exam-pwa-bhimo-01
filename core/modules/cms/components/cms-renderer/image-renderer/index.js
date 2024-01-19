@@ -1,6 +1,6 @@
 import Image from '@common_image';
 import { strToCSSObject } from '@helpers/text';
-import { generateThumborUrl } from '@root/core/helpers/image';
+import { generateThumborUrl } from '@core/helpers/image';
 import { getStoreHost } from '@helpers/config';
 import { getAppEnv } from '@helpers/env';
 

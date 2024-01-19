@@ -19,7 +19,7 @@ import MagnifyingGlassIcon from '@heroicons/react/24/outline/MagnifyingGlassIcon
 
 import Drawer from '@common_drawer';
 import Tabs from '@common_tabs';
-import useMediaQuery from '@root/core/hooks/useMediaQuery';
+import useMediaQuery from '@core/hooks/useMediaQuery';
 
 const Autocomplete = dynamic(() => import('@core_modules/theme/components/header/components/autocomplete'), { ssr: true });
 const Menu = dynamic(() => import('@core_modules/theme/components/header/components/v1/mcategory'), { ssr: true });
@@ -139,7 +139,7 @@ const DesktopHeader = (props) => {
                         'desktop:px-10 tablet:px-6 mobile:px-4',
                     )}
                 >
-                    <InstallDesktop />
+                    <InstallDesktop t={t} />
                     {!isMobile ? (
                         <div
                             className={cx(
@@ -248,7 +248,6 @@ const DesktopHeader = (props) => {
                                 {...logoDimensions}
                                 {...logoAdditionalProps}
                                 storeConfig={storeConfig}
-                                preload
                             />
                         </Link>
                     </div>

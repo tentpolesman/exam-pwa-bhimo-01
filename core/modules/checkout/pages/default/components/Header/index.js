@@ -3,7 +3,7 @@
 import { getStoreHost } from '@helpers/config';
 import { modules } from '@config';
 import Router from 'next/router';
-import { getAppEnv } from '@root/core/helpers/env';
+import { getAppEnv } from '@core/helpers/env';
 import Image from '@common_image';
 
 const HeaderCheckout = ({ storeConfig }) => {

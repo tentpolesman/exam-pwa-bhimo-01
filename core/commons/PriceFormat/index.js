@@ -2,7 +2,7 @@
 import { useReactiveVar } from '@apollo/client';
 import BundleProductTypePrice from '@common_priceformat/BundleProductTypePrice';
 import ProductTypePrice from '@common_priceformat/ProductTypePrice';
-import { currencyVar } from '@root/core/services/graphql/cache';
+import { currencyVar } from '@core/services/graphql/cache';
 import { useTranslation } from 'next-i18next';
 import React from 'react';
 

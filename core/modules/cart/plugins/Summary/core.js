@@ -2,7 +2,7 @@
 import config from '@config';
 import { formatPrice } from '@helper_currency';
 import { useReactiveVar } from '@apollo/client';
-import { currencyVar } from '@root/core/services/graphql/cache';
+import { currencyVar } from '@core/services/graphql/cache';
 import propTypes from 'prop-types';
 import DesktopView from '@plugin_summary/components/DesktopSummary';
 import { useEffect, useState } from 'react';

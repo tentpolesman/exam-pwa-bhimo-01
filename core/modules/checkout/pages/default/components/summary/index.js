@@ -6,7 +6,7 @@ import { modules } from '@config';
 import { removeCartId, setCartId } from '@helper_cartid';
 import { getHost, getStoreHost } from '@helper_config';
 import { setCheckoutData } from '@helper_cookies';
-import { storeConfigVar } from '@root/core/services/graphql/cache';
+import { storeConfigVar } from '@core/services/graphql/cache';
 import { localTotalCart } from '@services/graphql/schema/local';
 import React, { useEffect, useState } from 'react';
 import Router from 'next/router';
@@ -17,7 +17,7 @@ import Skeleton from '@common_skeleton';
 import SummaryPlugin from '@plugin_summary';
 
 import ModalXendit from '@core_modules/checkout/pages/default/components/ModalXendit/index';
-import { getAppEnv } from '@root/core/helpers/env';
+import { getAppEnv } from '@core/helpers/env';
 
 import { useDispatch, useSelector } from 'react-redux';
 import {

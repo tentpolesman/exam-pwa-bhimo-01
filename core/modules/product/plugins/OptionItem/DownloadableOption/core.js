@@ -36,7 +36,7 @@ const OptionsItemDownload = ({
         __typename, sku, name, categories, price_range, stock_status, url_key, review, sale,
     } = data;
 
-    const reviewValue = parseInt(review.rating_summary, 10) / 20;
+    const reviewValue = parseInt(review?.rating_summary ?? 0, 10) / 20;
     const [addCartDownload] = addDownloadProductToCart();
     const [getGuestCartId] = queryGetGuestCartId();
     const [items, setItems] = React.useState([]);
@@ -45,6 +45,7 @@ const OptionsItemDownload = ({
     const downloadProduct = getDownloadProduct(sku);
     const { loading } = downloadProduct;
     let [loadingAdd, setLoadingAdd] = React.useState(false);
+    const [linksTitle, setLinksTitle] = React.useState('');
 
     if (typeof customLoading !== 'undefined' && typeof setCustomLoading === 'function') {
         loadingAdd = customLoading;
@@ -60,6 +61,7 @@ const OptionsItemDownload = ({
     React.useEffect(() => {
         if (items.length === 0 && downloadProduct.data && downloadProduct.data.products) {
             setItems([...downloadProduct.data.products.items[0].downloadable_product_links]);
+            setLinksTitle(downloadProduct.data.products.items[0].links_title);
         }
     }, [downloadProduct.data]);
 
@@ -94,9 +96,7 @@ const OptionsItemDownload = ({
         setPrice(final_price_value);
     };
 
-    const handleOptionAll = () => {
-
-    };
+    const handleOptionAll = () => {};
 
     const addToCart = async () => {
         const isLogin = getLoginInfo();
@@ -277,6 +277,7 @@ const OptionsItemDownload = ({
     return (
         <View
             items={items}
+            linksTitle={linksTitle}
             downloadProductSamples={downloadProductSamples}
             handleAddToCart={handleAddToCart}
             handleOptionAll={handleOptionAll}

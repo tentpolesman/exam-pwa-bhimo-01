@@ -8,7 +8,7 @@ import { setCartId } from '@helper_cartid';
 import { getHost } from '@helpers/config';
 import Layout from '@layout';
 import CustomerLayout from '@layout_customer';
-import { currencyVar } from '@root/core/services/graphql/cache';
+import { currencyVar } from '@core/services/graphql/cache';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 

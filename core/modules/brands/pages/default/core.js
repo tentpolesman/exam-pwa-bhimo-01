@@ -6,9 +6,11 @@ import allData from '@core_modules/brands/helpers/generateAllData';
 
 const Base = (props) => {
     const {
-        Content, Skeleton, generateAllData, pageConfig, t, desktop,
+        Content, Skeleton, pageConfig, t,
     } = props;
+
     const { data, loading } = getBrands({ pageSize: 100, currentPage: 1 });
+
     const config = {
         title: t('brands:title'),
         header: 'relative', // available values: "absolute", "relative", false (default)
@@ -17,6 +19,7 @@ const Base = (props) => {
         bottomNav: false,
         pageType: 'brands',
     };
+
     if (loading) {
         return (
             <Layout {...props} pageConfig={pageConfig || config}>
@@ -24,12 +27,17 @@ const Base = (props) => {
             </Layout>
         );
     }
-    const { getBrandList } = data;
 
-    const allBrands = generateAllData ? generateAllData(getBrandList.items) : allData(getBrandList.items);
+    const { getBrandList } = data;
+    const allBrands = allData(getBrandList?.items ?? []);
+
     return (
         <Layout {...props} pageConfig={pageConfig || config}>
-            <Content {...props} all={allBrands} featured={getBrandList.featured} desktop={desktop} />
+            <Content
+                {...props}
+                all={allBrands}
+                featured={getBrandList?.featured || []}
+            />
         </Layout>
     );
 };

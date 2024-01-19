@@ -5,7 +5,7 @@ import React from 'react';
 import Header from '@core_modules/theme/components/header/components/v1/adaptive/desktop';
 import cx from 'classnames';
 
-import { BREAKPOINTS } from '@root/core/theme/vars';
+import { BREAKPOINTS } from '@core/theme/vars';
 
 const HeaderV1 = (props) => {
     const {

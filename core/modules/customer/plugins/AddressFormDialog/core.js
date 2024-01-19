@@ -7,7 +7,7 @@ import { getCountries as getAllCountries, getCityByRegionId, getRegions } from '
 import helperCookies from '@helper_cookies';
 import { regexPhone } from '@helper_regex';
 import { groupingCity, groupingSubCity } from '@helpers/city';
-import { storeConfigVar } from '@root/core/services/graphql/cache';
+import { storeConfigVar } from '@core/services/graphql/cache';
 import { useFormik } from 'formik';
 import React, { useCallback, useEffect, useState } from 'react';
 import * as Yup from 'yup';

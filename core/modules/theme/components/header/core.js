@@ -8,7 +8,7 @@ import { getCategories, getCustomer, removeToken } from '@core_modules/theme/ser
 import { removeIsLoginFlagging } from '@helper_auth';
 import { removeCartId } from '@helper_cartid';
 import { removeCookies } from '@helper_cookies';
-import { priceVar } from '@root/core/services/graphql/cache';
+import { priceVar } from '@core/services/graphql/cache';
 import { localCompare, localTotalCart } from '@services/graphql/schema/local';
 import firebase from 'firebase/app';
 import Cookies from 'js-cookie';

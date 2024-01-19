@@ -280,7 +280,7 @@ const ProductDetailAction = ({
                     )}
                 >
                     <Show when={useShareProduct}>
-                        <div className={cx('porudct-detail-info-footer-share')}>
+                        <div className={cx('product-detail-info-footer-share')}>
                             <Share />
                         </div>
                     </Show>

@@ -1,8 +1,10 @@
 import CmsRenderer from '@core_modules/cms/components/cms-renderer';
-import { COLORS } from '@root/core/theme/vars';
+import { COLORS } from '@core/theme/vars';
 
 const FooterView = (props) => {
-    const { data, t, loading, error, storeConfig } = props;
+    const {
+        data, t, loading, error, storeConfig,
+    } = props;
 
     if (error) {
         return <div className="m-15 p-2 bg-red-500 text-neutral-white">{t('common:error:fetchError')}</div>;

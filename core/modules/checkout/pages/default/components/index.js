@@ -40,7 +40,7 @@ import Button from '@common/Button';
 import ArrowLeftIcon from '@heroicons/react/24/solid/ArrowLeftIcon';
 
 import { getStoreHost } from '@helpers/config';
-import { getAppEnv } from '@root/core/helpers/env';
+import { getAppEnv } from '@core/helpers/env';
 
 import { useSelector } from 'react-redux';
 import {

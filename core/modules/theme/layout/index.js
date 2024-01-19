@@ -7,7 +7,7 @@
 /* eslint-disable max-len */
 
 import { useApolloClient, useReactiveVar } from '@apollo/client';
-import { storeConfigVar } from '@root/core/services/graphql/cache';
+import { storeConfigVar } from '@core/services/graphql/cache';
 import cx from 'classnames';
 import Cookies from 'js-cookie';
 import dynamic from 'next/dynamic';
@@ -311,7 +311,7 @@ const Layout = (props) => {
     };
 
     const generateClasses = () => {
-        let classes = `${(!isCms && router.pathname !== '/') ? 'desktop:max-w-[1280px] desktop:px-10 tablet:max-w-[768px] tablet:px-6 mobile:px-4 my-0 mx-auto' : ''} ${font.variable} font-sans !font-pwa-default`;
+        let classes = `${(!isCms && router.pathname !== '/') ? 'desktop:max-w-[1280px] min-h-[350px] desktop:px-10 tablet:max-w-[768px] tablet:px-6 mobile:px-4 my-0 mx-auto' : ''} ${font.variable} font-sans !font-pwa-default`;
 
         if (pageConfig.bottomNav && storeConfig?.pwa?.mobile_navigation === 'bottom_navigation' && storeConfig?.pwa?.enabler_footer_mobile) {
             classes += ' mb-[60px]';

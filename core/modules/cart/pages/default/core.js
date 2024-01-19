@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 import Layout from '@layout';
 import { localTotalCart } from '@services/graphql/schema/local';
 import { useReactiveVar } from '@apollo/client';
-import { currencyVar } from '@root/core/services/graphql/cache';
+import { currencyVar } from '@core/services/graphql/cache';
 import {
     addWishlist as mutationWishlist, getCartDataLazy, getCartItemLazy,
     deleteCartItem, updateCartitem, addProductToCartPromo, applyCouponToCart, removeCouponFromCart, cancelAndReOrder,

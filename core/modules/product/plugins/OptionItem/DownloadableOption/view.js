@@ -12,6 +12,7 @@ const DownloadView = (props) => {
     const {
         t,
         items,
+        linksTitle,
         downloadProductSamples,
         handleOptionDownloadable,
         handleOptionAll,
@@ -33,6 +34,9 @@ const DownloadView = (props) => {
         <>
             <div className="options-container">
                 <Show when={!isPlp && items && items.length > 0}>
+                    <Show when={linksTitle}>
+                        <Typography variant="bd-2" className="mb-[12px] block">{linksTitle}</Typography>
+                    </Show>
                     {
                         items.map(
                             (val, key) => (

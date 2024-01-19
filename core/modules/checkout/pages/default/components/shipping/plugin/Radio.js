@@ -9,7 +9,7 @@ import propTypes from 'prop-types';
 import { getCartId } from '@helper_cartid';
 import { getLocalStorage } from '@helper_localstorage';
 import { useReactiveVar } from '@apollo/client';
-import { storeConfigVar } from '@root/core/services/graphql/cache';
+import { storeConfigVar } from '@core/services/graphql/cache';
 import React from 'react';
 
 const RadioItem = (props) => {

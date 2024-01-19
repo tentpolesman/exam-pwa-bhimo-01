@@ -5,7 +5,7 @@ import CircularProgress from '@common_circularprogress';
 import TextField from '@common_forms/TextField';
 import Typography from '@common_typography';
 import { useReactiveVar } from '@apollo/client';
-import { storeConfigVar } from '@root/core/services/graphql/cache';
+import { storeConfigVar } from '@core/services/graphql/cache';
 import 'react-phone-number-input/style.css';
 
 const PhoneInput = dynamic(() => import('react-phone-number-input'));

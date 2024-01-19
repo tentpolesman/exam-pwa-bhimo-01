@@ -1,7 +1,7 @@
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable max-len */
 // import Thumbor from '@common_image';
-import CmsPage from '@core_modules/cms/pages/default';
+import CmsPage from '@core_modules/cms/pages/default/core';
 import cx from 'classnames';
 
 import Layout from '@layout';

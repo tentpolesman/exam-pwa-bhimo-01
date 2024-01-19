@@ -10,7 +10,7 @@ import Typography from '@common_typography';
 import Link from 'next/link';
 import PhotoSwipe from '@core_modules/cms/components/cms-renderer/magezon/MagezonInstagramFeed/components/PhotoSwipe';
 import SimpleReactLightbox, { SRLWrapper } from 'simple-react-lightbox';
-import { getFlexBasisTailwind } from '@root/core/helpers/style';
+import { getFlexBasisTailwind } from '@core/helpers/style';
 import cx from 'classnames';
 
 const MagezonInstagramFeedView = (props) => {

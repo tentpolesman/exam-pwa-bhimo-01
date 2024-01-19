@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { debuging } from '@config';
 import { getRewardPoint } from '@core_modules/rewardpoint/services/graphql';
 import { useReactiveVar } from '@apollo/client';
-import { currencyVar } from '@root/core/services/graphql/cache';
+import { currencyVar } from '@core/services/graphql/cache';
 
 const RewardPoint = (props) => {
     const {

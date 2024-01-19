@@ -1,7 +1,7 @@
 /* eslint-disable radix */
 import { getCartId } from '@helper_cartid';
 import { useMutation } from '@apollo/client';
-import { currencyVar } from '@root/core/services/graphql/cache';
+import { currencyVar } from '@core/services/graphql/cache';
 import { getMiniCartData } from '@core_modules/cart/services/graphql';
 import * as Schema from '@core_modules/cart/services/graphql/schema';
 import TagManager from 'react-gtm-module';

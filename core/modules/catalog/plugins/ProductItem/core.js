@@ -15,10 +15,10 @@ import { addProductsToCompareList } from '@core_modules/product/services/graphql
 import { getCustomerUid } from '@core_modules/productcompare/service/graphql';
 import { localCompare } from '@services/graphql/schema/local';
 import { getStoreHost } from '@helpers/config';
-import { getAppEnv } from '@root/core/helpers/env';
+import { getAppEnv } from '@core/helpers/env';
 import ModalQuickView from '@plugin_productitem/components/QuickView';
 import TagManager from 'react-gtm-module';
-import { priceVar } from '@root/core/services/graphql/cache';
+import { priceVar } from '@core/services/graphql/cache';
 
 import ImageProductView from '@plugin_productitem/components/Image';
 import DetailProductView from '@plugin_productitem/components/Detail';
@@ -447,7 +447,7 @@ const ProductItem = (props) => {
                                 'hover:shadow-[0_0_0_4px] hover:shadow-primary-300',
                             )}
                         >
-                            <Typography color="white" className="font-normal text-sm">
+                            <Typography color="white" className="font-normal text-sm tablet:truncate">
                                 {t('common:button:addToCart')}
                             </Typography>
                         </Button>

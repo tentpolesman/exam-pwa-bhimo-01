@@ -44,9 +44,9 @@ const Swatch = ({
             <div
                 className={cx(
                     'p-[1px]',
-                    'rounded-full border-[1px] border-neutral-white',
-                    checked ? 'border-[1px] border-primary-700' : '',
-                    disabled ? 'border-yellow-400 opacity-40' : 'hover:border-[1px] hover:border-primary-700',
+                    'rounded-full border-[2px] border-neutral-white',
+                    checked ? 'border-[2px] border-primary-700' : '',
+                    disabled ? 'border-yellow-400 opacity-40' : 'hover:border-[2px] hover:border-primary-700',
                 )}
             >
                 <div
@@ -85,7 +85,8 @@ const Swatch = ({
                 disabled && 'bg-neutral-50 border-neutral-200 text-neutral-200',
                 'text-base',
                 'swatches-text',
-                'border-[1px]',
+                'border-[2px]',
+                'font-medium',
                 'rounded-[6px]',
                 'py-[6px] px-[12px]',
                 'relative',

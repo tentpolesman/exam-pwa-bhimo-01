@@ -7,7 +7,7 @@ import Router from 'next/router';
 import { modules } from '@config';
 import { getStoreHost } from '@helpers/config';
 import Cookies from 'js-cookie';
-import { getAppEnv } from '@root/core/helpers/env';
+import { getAppEnv } from '@core/helpers/env';
 import gqlService from '@core_modules/checkout/services/graphql';
 import Toast from '@common_toast';
 import {

@@ -24,7 +24,7 @@ import { getCustomer, subscribeNewsletter } from '@core_modules/register/service
 import { requestOtpRegister } from '@core_modules/login/services/graphql';
 
 import { registerConfig } from '@services/graphql/repository/pwa_config';
-import { priceVar } from '@root/core/services/graphql/cache';
+import { priceVar } from '@core/services/graphql/cache';
 
 const appEnv = getAppEnv();
 

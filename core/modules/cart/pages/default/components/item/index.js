@@ -8,7 +8,7 @@ import Typography from '@common_typography';
 import ItemProduct from '@core_modules/cart/pages/default/components/item/item';
 import TableList from '@core_modules/cart/pages/default/components/item/TableListItem';
 import { useReactiveVar } from '@apollo/client';
-import { storeConfigVar } from '@root/core/services/graphql/cache';
+import { storeConfigVar } from '@core/services/graphql/cache';
 import React from 'react';
 import Divider from '@common/Divider';
 import { ChevronRightIcon } from '@heroicons/react/24/outline';

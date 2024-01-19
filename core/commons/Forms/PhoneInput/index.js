@@ -2,7 +2,7 @@ import { useReactiveVar } from '@apollo/client';
 import CountrySelect from '@common_forms/PhoneInput/CountrySelect';
 import Show from '@common_show';
 import Typography from '@common_typography';
-import { storeConfigVar } from '@root/core/services/graphql/cache';
+import { storeConfigVar } from '@core/services/graphql/cache';
 import cx from 'classnames';
 import ReactPhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
@@ -25,6 +25,11 @@ const PhoneInput = (props) => {
     const pwaConfig = useReactiveVar(storeConfigVar);
     const defaultCountry = pwaConfig && pwaConfig.general_country_default;
 
+    let inputValue = value;
+    if (value && value !== '' && value[0] === '0') {
+        inputValue = `${inputValue.substring(1)}`;
+    }
+
     return (
         <div className={cx('flex', 'flex-col', className)} {...restProps}>
             {label ? (
@@ -39,7 +44,7 @@ const PhoneInput = (props) => {
             ) : null}
             <ReactPhoneInput
                 defaultCountry={defaultCountry}
-                value={value}
+                value={inputValue}
                 onChange={(e) => onChange(e)}
                 initialValueFormat="national"
                 className={cx(

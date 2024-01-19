@@ -8,7 +8,7 @@ import Dialog from '@common_dialog';
 import Checkbox from '@common_forms/CheckBox';
 import TextField from '@common_forms/TextField';
 import Typography from '@common_typography';
-import { BREAKPOINTS } from '@root/core/theme/vars';
+import { BREAKPOINTS } from '@core/theme/vars';
 import cx from 'classnames';
 import dynamic from 'next/dynamic';
 
@@ -100,7 +100,6 @@ const AddressView = (props) => {
                     className="addressForm-province-autoComplete"
                     inputClassName={cx('w-full')}
                     popoverWrapperClassName={cx('w-full', 'flex', 'flex-col')}
-                    popoverClassName={cx('!top-[100%]')}
                     popoverContentClassName={cx('px-4', 'text-base', 'text-neutral-800', 'hover:text-neutral-500', 'max-h-[30vh]', '!px-2')}
                     disabled={!formik.values.country}
                     itemOptions={addressState.dropdown.region}
@@ -175,7 +174,6 @@ const AddressView = (props) => {
                     className="addressForm-city-autoComplete"
                     inputClassName={cx('w-full')}
                     popoverWrapperClassName={cx('w-full', 'flex', 'flex-col')}
-                    popoverClassName={cx('!top-[100%]')}
                     popoverContentClassName={cx('px-4', 'text-base', 'text-neutral-800', 'hover:text-neutral-500', 'max-h-[30vh]', '!px-2')}
                     itemOptions={addressState.dropdown.city}
                     name="city"
@@ -237,7 +235,6 @@ const AddressView = (props) => {
                     className="addressForm-district-autoComplete"
                     inputClassName={cx('w-full')}
                     popoverWrapperClassName={cx('w-full', 'flex', 'flex-col')}
-                    popoverClassName={cx('!top-[100%]')}
                     popoverContentClassName={cx('px-4', 'text-base', 'text-neutral-800', 'hover:text-neutral-500', 'max-h-[30vh]', '!px-2')}
                     disabled={!formik.values.city}
                     itemOptions={addressState.dropdown.district}
@@ -296,7 +293,6 @@ const AddressView = (props) => {
                     id="controlled-village"
                     className="addressForm-village-autoComplete"
                     inputClassName={cx('w-full')}
-                    popoverClassName={cx('!top-[100%]')}
                     popoverWrapperClassName={cx('w-full', 'flex', 'flex-col')}
                     popoverContentClassName={cx('px-4', 'text-base', 'text-neutral-800', 'hover:text-neutral-500', 'max-h-[30vh]', '!px-2')}
                     disabled={!formik.values.district}

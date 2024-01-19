@@ -9,7 +9,7 @@ import propTypes from 'prop-types';
 import React from 'react';
 
 import Button from '@common_button';
-import { BREAKPOINTS } from '@root/core/theme/vars';
+import { BREAKPOINTS } from '@core/theme/vars';
 
 import ChevronLeftIcon from '@heroicons/react/20/solid/ChevronLeftIcon';
 import ChevronRightIcon from '@heroicons/react/20/solid/ChevronRightIcon';

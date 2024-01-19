@@ -145,7 +145,8 @@
     },
     "header": {
         "welcome": "Welcome!",
-        "hi": "Hi, $!"
+        "hi": "Hi, $!",
+        "downloadApps": "Download Apps"
     },
     "message": {
         "feedSuccess": "Product success added to wishlist",
@@ -221,8 +222,8 @@
         "addReviewTitle": "Add Review Title",
         "addReview": "Add Review",
         "writeReview": "Write Review",
-        "detail": "Detail",
-        "moreInfo": "More Info",
+        "detail": "Description",
+        "moreInfo": "Addional Information",
         "shareToYourFriend": "Share to your friend and family!",
         "showMore": "Show More",
         "showLess": "Show Less",
