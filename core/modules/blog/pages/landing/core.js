@@ -22,6 +22,7 @@ import cx from 'classnames';
 import Skeleton from '@core_modules/blog/pages/landing/components/Skeleton';
 import useMediaQuery from '@root/core/hooks/useMediaQuery';
 import WidgetRenderer from '@core_modules/cms/components/cms-renderer/WidgetRenderer';
+import Link from 'next/link';
 
 const findObjectByTypeRecursive = (objects, targetType) => {
     for (const obj of objects) {
@@ -90,6 +91,8 @@ const FeaturedPosts = (props) => {
     const firstPost = (featuredPosts?.length > 0 && featuredPosts[0]) || null;
     const secondPost = (featuredPosts?.length > 1 && featuredPosts[1]) || null;
     const thirdPost = (featuredPosts?.length > 2 && featuredPosts[2]) || null;
+    // const secondPost = null;
+    // const thirdPost = null;
 
     const firstPostImageDimensions = {
         width: isDesktop ? 588 : 474,
@@ -111,7 +114,8 @@ const FeaturedPosts = (props) => {
             {firstPost ? (
                 <>
                     {secondPost ? (
-                        <div
+                        <Link
+                            href={`/blog/${firstPost.identifier}`}
                             className={cx(
                                 'flex',
                                 'tablet:w-[474px]',
@@ -134,26 +138,30 @@ const FeaturedPosts = (props) => {
                                     </Typography>
                                 </div>
                             </div>
-                        </div>
+                        </Link>
                     ) : (
                         <div className={cx('flex', 'w-full', 'rounded-lg', 'relative')}>
-                            <div
-                                className={cx(
-                                    'tablet:w-[474px]',
-                                    'tablet:h-full',
-                                    'desktop:w-[588px]',
-                                    'desktop:h-[336px]',
-                                    'rounded-lg',
-                                    'overflow-hidden',
-                                    'mr-6',
-                                )}
-                            >
-                                <CommonImage src={firstPost?.blogImage} {...firstPostImageDimensions} storeConfig={storeConfig} />
-                            </div>
+                            <Link href={`/blog/${firstPost.identifier}`}>
+                                <div
+                                    className={cx(
+                                        'tablet:w-[474px]',
+                                        'tablet:h-full',
+                                        'desktop:w-[588px]',
+                                        'desktop:h-[336px]',
+                                        'rounded-lg',
+                                        'overflow-hidden',
+                                        'mr-6',
+                                    )}
+                                >
+                                    <CommonImage src={firstPost?.blogImage} {...firstPostImageDimensions} storeConfig={storeConfig} />
+                                </div>
+                            </Link>
                             <div className={cx('tablet:w-[282px]', 'desktop:w-[474px]', 'flex', 'flex-col')}>
-                                <Typography variant={isTablet ? 'h5' : 'h2'} className="!leading-lg !text-2xl !text-neutral-500">
-                                    {firstPost?.title}
-                                </Typography>
+                                <Link href={`/blog/${firstPost.identifier}`}>
+                                    <Typography variant={isTablet ? 'h5' : 'h2'} className="!leading-lg !text-2xl !text-neutral-500">
+                                        {firstPost?.title}
+                                    </Typography>
+                                </Link>
                                 <div className="tablet:mt-[6px] desktop:mt-[10px]">
                                     <Typography variant={isTablet ? 'bd-3b' : 'bd-2b'} className="!text-neutral-500">
                                         {formatDate(firstPost?.publish_date, 'D MMMM YYYY')}
@@ -173,9 +181,11 @@ const FeaturedPosts = (props) => {
                         <>
                             {thirdPost ? (
                                 <div className="flex desktop:w-[588px] tablet:h-[129px] desktop:h-[160px] relative">
-                                    <div className="w-[320px] tablet:w-[226px] desktop:w-[282px] rounded-lg overflow-hidden desktop:mr-6">
-                                        <CommonImage src={secondPost?.blogImage} {...sidePostImageDimensions} storeConfig={storeConfig} />
-                                    </div>
+                                    <Link href={`/blog/${secondPost.identifier}`}>
+                                        <div className="w-[320px] tablet:w-[226px] desktop:w-[282px] rounded-lg overflow-hidden desktop:mr-6">
+                                            <CommonImage src={secondPost?.blogImage} {...sidePostImageDimensions} storeConfig={storeConfig} />
+                                        </div>
+                                    </Link>
                                     <div
                                         className={cx(
                                             'w-full',
@@ -188,12 +198,14 @@ const FeaturedPosts = (props) => {
                                             'tablet:max-desktop:bg-[rgba(0,0,0,0.2)]',
                                         )}
                                     >
-                                        <Typography
-                                            variant={isTablet ? 'h5' : 'h2'}
-                                            className="!leading-lg desktop:!text-2xl tablet:text-neutral-white desktop:!text-neutral-500"
-                                        >
-                                            {secondPost?.title}
-                                        </Typography>
+                                        <Link href={`/blog/${secondPost.identifier}`}>
+                                            <Typography
+                                                variant={isTablet ? 'h5' : 'h2'}
+                                                className="!leading-lg desktop:!text-2xl tablet:text-neutral-white desktop:!text-neutral-500"
+                                            >
+                                                {secondPost?.title}
+                                            </Typography>
+                                        </Link>
                                         <div className="tablet:mt-[6px] desktop:mt-[10px]">
                                             <Typography
                                                 variant={isTablet ? 'bd-3b' : 'bd-2b'}
@@ -213,7 +225,8 @@ const FeaturedPosts = (props) => {
                                     </div>
                                 </div>
                             ) : (
-                                <div
+                                <Link
+                                    href={`/blog/${secondPost.identifier}`}
                                     className={cx(
                                         'flex',
                                         'tablet:w-[350px]',
@@ -236,15 +249,17 @@ const FeaturedPosts = (props) => {
                                             </Typography>
                                         </div>
                                     </div>
-                                </div>
+                                </Link>
                             )}
                         </>
                     ) : null}
                     {thirdPost ? (
                         <div className="flex desktop:w-[588px] tablet:h-[129px] desktop:h-[160px] relative">
-                            <div className="w-[320px] tablet:w-[226px] desktop:w-[282px]  rounded-lg overflow-hidden desktop:mr-6">
-                                <CommonImage src={thirdPost?.blogImage} {...sidePostImageDimensions} storeConfig={storeConfig} />
-                            </div>
+                            <Link href={`/blog/${thirdPost.identifier}`}>
+                                <div className="w-[320px] tablet:w-[226px] desktop:w-[282px]  rounded-lg overflow-hidden desktop:mr-6">
+                                    <CommonImage src={thirdPost?.blogImage} {...sidePostImageDimensions} storeConfig={storeConfig} />
+                                </div>
+                            </Link>
                             <div
                                 className={cx(
                                     'w-full',
@@ -257,12 +272,14 @@ const FeaturedPosts = (props) => {
                                     'tablet:max-desktop:bg-[rgba(0,0,0,0.2)]',
                                 )}
                             >
-                                <Typography
-                                    variant={isTablet ? 'h5' : 'h2'}
-                                    className="!leading-lg desktop:!text-2xl tablet:text-neutral-white desktop:!text-neutral-500"
-                                >
-                                    {thirdPost?.title}
-                                </Typography>
+                                <Link href={`/blog/${thirdPost.identifier}`}>
+                                    <Typography
+                                        variant={isTablet ? 'h5' : 'h2'}
+                                        className="!leading-lg desktop:!text-2xl tablet:text-neutral-white desktop:!text-neutral-500"
+                                    >
+                                        {thirdPost?.title}
+                                    </Typography>
+                                </Link>
                                 <div className="tablet:mt-[6px] desktop:mt-[10px]">
                                     <Typography
                                         variant={isTablet ? 'bd-3b' : 'bd-2b'}
@@ -434,22 +451,26 @@ const CoreLanding = (props) => {
                                         'tablet:h-[174px]',
                                     )}
                                 >
-                                    <div
-                                        className={cx(
-                                            'w-full',
-                                            'tablet:w-[282px]',
-                                            'tablet:h-[174px]',
-                                            'rounded-lg',
-                                            'overflow-hidden',
-                                            'tablet:mr-6',
-                                        )}
-                                    >
-                                        <CommonImage src={blog.blogImage} width={282} height={174} storeConfig={storeConfig} />
-                                    </div>
+                                    <Link href={`/blog/${blog.identifier}`}>
+                                        <div
+                                            className={cx(
+                                                'w-full',
+                                                'tablet:w-[282px]',
+                                                'tablet:h-[174px]',
+                                                'rounded-lg',
+                                                'overflow-hidden',
+                                                'tablet:mr-6',
+                                            )}
+                                        >
+                                            <CommonImage src={blog.blogImage} width={282} height={174} storeConfig={storeConfig} />
+                                        </div>
+                                    </Link>
                                     <div className="w-full tablet:w-[320px] desktop:w-[282px] flex flex-col max-tablet:mt-4">
-                                        <Typography variant={isMobile ? 'h4' : 'h2'} className="!leading-lg tablet:!text-2xl">
-                                            {blog.title}
-                                        </Typography>
+                                        <Link href={`/blog/${blog.identifier}`}>
+                                            <Typography variant={isMobile ? 'h4' : 'h2'} className="!leading-lg tablet:!text-2xl">
+                                                {blog.title}
+                                            </Typography>
+                                        </Link>
                                         <div className="tablet:my-[10px]">
                                             <Typography variant="bd-2b" className="!text-neutral-500 max-tablet:text-xs">
                                                 {formatDate(blog.publish_date, 'D MMMM YYYY')}
@@ -461,7 +482,7 @@ const CoreLanding = (props) => {
                                                 content={`${blog.blogContent.substring(0, 118)}...`}
                                                 skipTags={['pwa', 'a', 'img']}
                                             />
-                                            <Button variant="plain" link={`/blog/${blog.id}`} className="!p-0">
+                                            <Button variant="plain" link={`/blog/${blog.identifier}`} className="!p-0">
                                                 <Typography className="!text-primary">Read More</Typography>
                                             </Button>
                                         </div>

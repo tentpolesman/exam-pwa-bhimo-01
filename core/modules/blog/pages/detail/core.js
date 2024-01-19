@@ -83,7 +83,7 @@ const CoreDetail = (props) => {
         getBlogs({
             variables: {
                 filter: {
-                    post_id: {
+                    identifier: {
                         eq: id,
                     },
                 },
