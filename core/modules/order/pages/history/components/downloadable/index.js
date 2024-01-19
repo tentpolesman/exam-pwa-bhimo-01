@@ -23,6 +23,31 @@ const DefaultView = (props) => {
         setPage(value);
     };
 
+    const hasData = itemCount > 0;
+
+    const PaginationComponent = () => (
+        <div
+            className={cx(
+                'table-data pt-6 flex justify-between',
+                'tablet:items-center tablet:flex-row',
+                'mobile:flex-col',
+            )}
+        >
+            <div className="flex justify-between items-center flex-1">
+                <Typography className={cx('font-normal', 'leading-2lg')}>{`${itemCount ?? 0} ${t('common:label:data')}`}</Typography>
+            </div>
+            <div className={cx('flex', 'flex-row', 'items-center', 'mobile:max-tablet:pt-4', 'mobile:max-tablet:justify-center')}>
+                <Pagination
+                    handleChangePage={handleChangePage}
+                    page={page}
+                    siblingCount={0}
+                    className={cx('!p-0')}
+                    totalPage={totalPage}
+                />
+            </div>
+        </div>
+    );
+
     return (
         <Layout t={t} wishlist={[]}>
             <div className={cx('pt-5')}>
@@ -42,7 +67,7 @@ const DefaultView = (props) => {
                             </tr>
                         </thead>
                         <tbody>
-                            <Show when={data?.length > 0}>
+                            <Show when={hasData}>
                                 {itemList?.[page - 1]?.map((val, index) => (
                                     <tr className={cx('even:bg-white', 'odd:bg-neutral-50')} key={index}>
                                         <td className={cx('p-4')}>
@@ -89,7 +114,7 @@ const DefaultView = (props) => {
                                     </tr>
                                 ))}
                             </Show>
-                            <Show when={data?.length === 0}>
+                            <Show when={!hasData}>
                                 <tr className={cx('even:bg-white', 'odd:bg-neutral-50')}>
                                     <td colSpan={5} className="p-4">
                                         <Alert severity="warning" withIcon>
@@ -101,12 +126,10 @@ const DefaultView = (props) => {
                         </tbody>
                     </table>
                 </div>
-                <div className={cx('pt-8 flex items-center justify-between')}>
-                    <Typography variant="p-2" className={cx('')}>
-                        {`${itemCount} Item(s)`}
-                    </Typography>
-                    <Pagination handleChangePage={handleChangePage} page={page} siblingCount={0} className={cx('!p-0')} totalPage={totalPage} />
-                </div>
+                {/** show pagination */}
+                <Show when={hasData}>
+                    <PaginationComponent />
+                </Show>
             </div>
         </Layout>
     );

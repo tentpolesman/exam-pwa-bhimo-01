@@ -81,7 +81,13 @@ const DefaultView = (props) => {
     };
 
     const PaginationComponent = () => (
-        <div className={cx('table-data', 'pt-6', 'flex', 'tablet:items-center', 'mobile:flex-col', 'tablet:flex-row', 'justify-between')}>
+        <div
+            className={cx(
+                'table-data pt-6 flex justify-between',
+                'tablet:items-center tablet:flex-row',
+                'mobile:flex-col',
+            )}
+        >
             <div className="flex justify-between items-center flex-1">
                 <Typography className={cx('font-normal', 'leading-2lg')}>{`${data?.total_count ?? 0} ${t('common:label:data')}`}</Typography>
                 <div className="flex items-center">
@@ -117,7 +123,7 @@ const DefaultView = (props) => {
                 <Pagination
                     handleChangePage={handleChangePage}
                     page={data?.current_page}
-                    siblingCount={1}
+                    siblingCount={0}
                     className={cx('!p-0')}
                     totalPage={data?.total_pages}
                 />
