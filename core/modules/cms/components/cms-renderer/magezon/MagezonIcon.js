@@ -32,7 +32,7 @@ const MagezonIcon = (props) => {
             <style jsx>
                 {`
                     .magezon-icon :global(i) {
-                        color: ${icon_color || '#000000'};
+                        color: ${icon_color || 'var(--color-pwa-font_color)'};
                     }
                     .magezon-icon :global(.magezon-icon-inner) {
                         position: relative;
