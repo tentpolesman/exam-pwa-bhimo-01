@@ -28,7 +28,7 @@ const ItemConfigurableView = (props) => {
             label={false}
             classNames={{
                 radioGroupClasses: classNames(
-                    '!flex-row w-max gap-1 !mt-0',
+                    '!flex-row w-max gap-0.5 !mt-0',
                     (error && (Object.keys(error).length > 0)) && 'mb-1',
                 ),
             }}

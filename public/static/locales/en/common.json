@@ -145,7 +145,8 @@
     },
     "header": {
         "welcome": "Welcome!",
-        "hi": "Hi, $!"
+        "hi": "Hi, $!",
+        "downloadApps": "Download Apps"
     },
     "message": {
         "feedSuccess": "Product success added to wishlist",

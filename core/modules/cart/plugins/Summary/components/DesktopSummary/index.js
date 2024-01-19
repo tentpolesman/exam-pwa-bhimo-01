@@ -333,7 +333,7 @@ const Summary = (props) => {
                         </div>
                     </Accordion>
                 </Show>
-                <Button onClick={handleActionSummary} className="w-full group" size="lg" classNameText="justify-center">
+                <Button onClick={handleActionSummary} className="w-full group tablet:max-w-[720px] my-[0px] mx-[auto] tablet:block" size="lg" classNameText="justify-center">
                     <Typography variant="bd-2" className="!text-neutral-white">
                         {label || t('common:button:checkout')}
                     </Typography>

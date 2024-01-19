@@ -172,7 +172,7 @@ const Login = (props) => {
                                         </Link>
                                     </div>
                                     <Show when={enableRecaptcha}>
-                                        <div className="w-full">
+                                        <div className="w-full xs:scale-[.85] sm:scale-[1] origin-[0]">
                                             <ReCAPTCHA sitekey={sitekey} onChange={handleChangeCaptcha} ref={recaptchaRef} />
                                             <Show when={checkIsFieldError(formikPhoneEmail, 'captcha')}>
                                                 <Typography
@@ -229,7 +229,7 @@ const Login = (props) => {
                                         </Link>
                                     </div>
                                     <Show when={enableRecaptcha}>
-                                        <div className="w-full">
+                                        <div className="w-full xs:scale-[.85] sm:scale-[1] origin-[0]">
                                             <ReCAPTCHA sitekey={sitekey} onChange={handleChangeCaptcha} ref={recaptchaRef} />
                                             <Show when={checkIsFieldError(formik, 'captcha')}>
                                                 <Typography
@@ -262,10 +262,13 @@ const Login = (props) => {
                                 />
 
                                 <Show when={enableRecaptcha}>
-                                    <div className="w-full">
+                                    <div className="w-full xs:scale-[.85] sm:scale-[1] origin-[0]">
                                         <ReCAPTCHA sitekey={sitekey} onChange={handleChangeCaptcha} ref={recaptchaRef} />
                                         <Show when={checkIsFieldError(formikOtp, 'captcha')}>
-                                            <Typography className={cx('text-base font-normal leading-lg tracking-normal text-pwa-font my-2 !text-red')}>
+                                            <Typography className={cx(
+                                                'text-base font-normal leading-lg tracking-normal text-pwa-font my-2 !text-red',
+                                            )}
+                                            >
                                                 {fieldErrorMessage(formikOtp, 'captcha')}
                                             </Typography>
                                         </Show>

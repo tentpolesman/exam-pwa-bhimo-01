@@ -5,7 +5,7 @@ import DevicePhoneMobileIcon from '@heroicons/react/24/solid/DevicePhoneMobileIc
 import Typography from '@common_typography';
 import cx from 'classnames';
 
-const DesktopInstall = ({ id = 'wrapper-desktop__install' }) => {
+const DesktopInstall = ({ id = 'wrapper-desktop__install', t }) => {
     const onClick = () => {
         const timestamp = Date.now();
         const identifier = `${(Math.floor(Math.random() * 100) * Math.floor(Math.random() * 100))}_${timestamp}`;
@@ -40,7 +40,7 @@ const DesktopInstall = ({ id = 'wrapper-desktop__install' }) => {
                 variant="tertiary"
                 classNameText={cx('!text-neutral-700')}
             >
-                <Typography>Download Apps</Typography>
+                <Typography>{t('common:header:downloadApps')}</Typography>
             </Button>
         </div>
     );

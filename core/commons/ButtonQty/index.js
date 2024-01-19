@@ -108,6 +108,8 @@ const ButtonQty = ({
                 'gap-[7px]',
                 'p-[4px]',
                 'border-neutral-200',
+                'xs:!max-w-[118px]',
+                'sm:!max-w-[initial]',
                 classNameInputContainer,
             )}
         >
