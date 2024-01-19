@@ -88,7 +88,7 @@ const ProductDetailAction = ({
                     storeConfig={storeConfig}
                     onClickZoomImage={useProductImagePreview && enablePopupImage ? handleOpenImageDetail : null}
                     {...imageSliderProps}
-                    FooterComponentImagePreview={
+                    FooterComponentImagePreview={(
                         <ProductLabel
                             className="absolute top-[15px] left-[17px]"
                             stockStatus={data?.stock_status}
@@ -107,7 +107,7 @@ const ProductDetailAction = ({
                                 },
                             }}
                         />
-                    }
+                    )}
                 />
             </div>
             <div
@@ -262,7 +262,7 @@ const ProductDetailAction = ({
                     )}
                 >
                     <Show when={useShareProduct}>
-                        <div className={cx('porudct-detail-info-footer-share')}>
+                        <div className={cx('product-detail-info-footer-share')}>
                             <Share />
                         </div>
                     </Show>
