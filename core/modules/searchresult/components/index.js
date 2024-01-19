@@ -10,7 +10,7 @@ const SearchResult = (props) => {
         storeConfig, t, q, isLogin,
     } = props;
     return (
-        <div className="flex flex-col w-full h-full">
+        <div className="flex flex-col w-full h-full gap-3">
             {/* add url path if no redirect to slug */}
             <div className="hidden-mobile">
                 <Typography variant="span" className="flex flex-row justify-between items-center uppercase">
@@ -20,7 +20,7 @@ const SearchResult = (props) => {
                 </Typography>
             </div>
             <CategoryList {...props} />
-            <Show when={storeConfig.enable_oms_multiseller === '1'}>
+            <Show when={storeConfig.enable_oms_multiseller === '1' || storeConfig.enable_oms_multiseller === 1}>
                 <SellerList {...props} />
             </Show>
             <div className="flex flex-col gap-4">

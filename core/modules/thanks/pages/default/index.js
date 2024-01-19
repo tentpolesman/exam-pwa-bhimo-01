@@ -7,7 +7,7 @@ import { withApollo } from '@lib_apollo';
 
 const Page = (props) => {
     const { storeConfig } = props;
-    if (storeConfig.enable_oms_multiseller === '1') {
+    if (storeConfig.enable_oms_multiseller === '1' || storeConfig.enable_oms_multiseller === 1) {
         return (
             <CoreMultiseller
                 {...props}

@@ -31,7 +31,7 @@ const ContentDetail = ({
 
     let enableMultiSeller = false;
     if (storeConfig) {
-        enableMultiSeller = storeConfig.enable_oms_multiseller === '1';
+        enableMultiSeller = storeConfig.enable_oms_multiseller === '1' || storeConfig.enable_oms_multiseller === 1;
     }
 
     let dataSeller;

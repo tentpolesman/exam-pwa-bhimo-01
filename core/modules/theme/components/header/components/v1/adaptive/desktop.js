@@ -139,7 +139,7 @@ const DesktopHeader = (props) => {
                         'desktop:px-10 tablet:px-6 mobile:px-4',
                     )}
                 >
-                    <InstallDesktop />
+                    <InstallDesktop t={t} />
                     {!isMobile ? (
                         <div
                             className={cx(

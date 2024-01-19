@@ -279,11 +279,6 @@ items {
       currency
     }
   }
-  custom_seller{
-    seller_id
-    seller_city
-    seller_name
-  }
   product {
     id
     name
@@ -293,6 +288,12 @@ items {
     }
     url_key
     sku
+    seller {
+      seller_id
+      seller_city
+      seller_name
+      seller_path
+    }
   }
 }
 `;

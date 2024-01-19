@@ -64,16 +64,32 @@ const ContainerScroll = ({
                     )}
                 >
                     <Button
-                        variant="tertiary"
-                        className={cx('container-scroll-arrow-left', '!px-[10px]', 'pointer-events-auto', 'shadow-md', 'group/left-nav', leftNavClassName)}
+                        variant="plain"
+                        className={cx(
+                            'container-scroll-arrow-left',
+                            'bg-neutral-white',
+                            '!px-[10px]',
+                            'pointer-events-auto',
+                            'shadow-md',
+                            'group/left-nav',
+                            leftNavClassName,
+                        )}
                         classNameText="!text-neutral group-hover/left-nav:!text-primary"
                         onClick={onClickArrowLeft}
                     >
                         <ChevronLeftIcon className="w-6 h-6" style={{ width: arrowSize, height: arrowSize }} />
                     </Button>
                     <Button
-                        variant="tertiary"
-                        className={cx('container-scroll-arrow-right', '!px-[10px]', 'pointer-events-auto', 'shadow-md', 'group/right-nav', rightNavClassName)}
+                        variant="plain"
+                        className={cx(
+                            'container-scroll-arrow-right',
+                            'bg-neutral-white',
+                            '!px-[10px]',
+                            'pointer-events-auto',
+                            'shadow-md',
+                            'group/right-nav',
+                            rightNavClassName,
+                        )}
                         classNameText="!text-neutral group-hover/right-nav:!text-primary"
                         onClick={onClickArrowRight}
                     >

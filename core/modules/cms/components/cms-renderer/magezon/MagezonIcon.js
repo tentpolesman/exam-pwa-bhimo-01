@@ -32,7 +32,7 @@ const MagezonIcon = (props) => {
             <style jsx>
                 {`
                     .magezon-icon :global(i) {
-                        color: ${icon_color || 'var(--color-pwa-button_text_color)'};
+                        color: ${icon_color || 'var(--color-pwa-font_color)'};
                     }
                     .magezon-icon :global(.magezon-icon-inner) {
                         position: relative;
@@ -64,8 +64,8 @@ const MagezonIcon = (props) => {
                         font-size: 1.6em;
                     }
                     .magezon-icon-size-md :global(.magezon-icon-inner) {
-                        width: 1.5rem;
-                        height: 1.5rem;
+                        width: 4em;
+                        height: 4em;
                     }
                     .magezon-icon-size-md :global(i) {
                         font-size: 1.5rem;

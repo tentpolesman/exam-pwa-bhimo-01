@@ -107,6 +107,10 @@ export const checkoutSlice = createSlice({
             state.data = {
                 ...state.data,
                 ...action.payload,
+                // cart: {
+                //     ...(state.data.cart || {}),
+                //     ...(action.payload.cart || {}),
+                // },
             };
         },
         setPickupLocationCode(state, action) {

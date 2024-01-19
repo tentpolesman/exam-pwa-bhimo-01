@@ -136,9 +136,10 @@ const Content = (props) => {
                 confirmationMessage={`${t('checkout:invalidTokenConfirmation')}`}
             />
             <div className="xs:basis-full sm:basis-full md:basis-full lg:basis-full center">
-                {checkout && checkout.data && checkout.data.cart && checkout.data.cart.promoBanner.length > 0 && (
-                    <GimmickBanner data={checkout.data.cart.promoBanner || []} />
-                )}
+                {checkout && checkout.data && checkout.data.cart
+                    && checkout.data.cart?.promoBanner?.length && checkout.data.cart?.promoBanner?.length > 0 ? (
+                        <GimmickBanner data={checkout.data.cart.promoBanner || []} />
+                    ) : null}
             </div>
             <div className="flex flex-col desktop:flex-row-reverse gap-6 tablet:gap-8 desktop:gap-10">
                 <div className="summary-cart w-full desktop:max-w-[370px]">

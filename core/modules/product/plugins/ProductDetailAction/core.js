@@ -454,6 +454,8 @@ const ProductDetailAction = ({
         item?.id || null,
     );
 
+    const enableMultiSeller = storeConfig.enable_oms_multiseller === '1' || storeConfig.enable_oms_multiseller === 1;
+
     return (
         <Content
             isLogin={isLogin}
@@ -509,6 +511,7 @@ const ProductDetailAction = ({
             currencyCode={currencyCode}
             useProductRelated={useProductRelated}
             useProductUpsell={useProductUpsell}
+            enableMultiSeller={enableMultiSeller}
             data={{
                 ...item,
                 labels,

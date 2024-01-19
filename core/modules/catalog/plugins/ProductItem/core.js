@@ -447,7 +447,7 @@ const ProductItem = (props) => {
                                 'hover:shadow-[0_0_0_4px] hover:shadow-primary-300',
                             )}
                         >
-                            <Typography color="white" className="font-normal text-sm">
+                            <Typography color="white" className="font-normal text-sm tablet:truncate">
                                 {t('common:button:addToCart')}
                             </Typography>
                         </Button>

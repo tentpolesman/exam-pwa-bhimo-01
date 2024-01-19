@@ -91,14 +91,13 @@ const Summary = (props) => {
             pickup_item_store_info,
             custom_price,
             product,
-            custom_seller,
             ...other
         }) => {
-            let item = groupData.find((p) => p.seller_id === custom_seller.seller_id);
+            let item = groupData.find((p) => p.seller_id === product.seller.seller_id);
             if (!item) {
                 item = {
-                    seller_id: custom_seller.seller_id,
-                    seller_name: custom_seller.seller_name ? custom_seller.seller_name : 'Default Seller',
+                    seller_id: product.seller.seller_id,
+                    seller_name: product.seller.seller_name ? product.seller.seller_name : 'Default Seller',
                     productList: [],
                     subtotal: {
                         currency: '',
@@ -333,7 +332,7 @@ const Summary = (props) => {
                         </div>
                     </Accordion>
                 </Show>
-                <Button onClick={handleActionSummary} className="w-full group" size="lg" classNameText="justify-center">
+                <Button onClick={handleActionSummary} className="w-full group tablet:max-w-[720px] my-[0px] mx-[auto] tablet:block" size="lg" classNameText="justify-center">
                     <Typography variant="bd-2" className="!text-neutral-white">
                         {label || t('common:button:checkout')}
                     </Typography>

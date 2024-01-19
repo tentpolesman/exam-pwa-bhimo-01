@@ -1,37 +1,31 @@
+import cx from 'classnames';
 import Skeleton from '@common_skeleton';
-import GridList from '@common_gridlist';
-import Typography from '@common_typography';
 
-const Item = () => ((
-    <>
-        <Skeleton />
-        <Skeleton />
-        <Skeleton />
-        <Skeleton />
-    </>
-));
-
-const SkeletonBrands = ({ t }) => (
-    <>
-        <Typography className="text-center uppercase font-bold mb-[15px] flex flex-col justify-center items-center">
-            {t('brands:featuredBrands')}
-        </Typography>
-        <Skeleton className="rounded-[50%] mb-[20px]" width="100%" height={218} />
-        <Typography
-            className="text-center uppercase font-bold mb-[15px] flex flex-col justify-center items-center"
-            align="center"
-            letter="uppercase"
-            type="bold"
-            variant="span"
-        >
-            {t('brands:allBrands')}
-        </Typography>
-        <GridList
-            data={[1, 2, 3, 4]}
-            ItemComponent={Item}
-            className="desktop:grid-cols-4 tablet:grid-cols-3 mobile:grid-cols-2"
-        />
-    </>
+const SkeletonBrands = () => (
+    <div>
+        <div className={cx('flex justify-center')}>
+            <Skeleton width="160px" height={20} />
+        </div>
+        <div className={cx('mt-[16px]')}>
+            <Skeleton width="100%" height={200} />
+        </div>
+        <div className={cx('flex justify-center mt-[42px]')}>
+            <Skeleton width="90%" height={60} />
+        </div>
+        {
+            Array(3).fill(0).map((_, idx) => (
+                <div
+                    className={cx(
+                        'mt-[42px]',
+                    )}
+                    key={idx}
+                >
+                    <Skeleton width="50px" height={20} />
+                    <Skeleton className="mt-[12px]" width="100%" height={200} />
+                </div>
+            ))
+        }
+    </div>
 );
 
 export default SkeletonBrands;

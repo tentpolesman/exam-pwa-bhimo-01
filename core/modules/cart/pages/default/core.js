@@ -16,6 +16,7 @@ import {
 import Backdrop from '@common/Backdrop';
 
 import Content from '@core_modules/cart/pages/default/components';
+import Skeleton from '@core_modules/cart/pages/default/components/skeleton';
 
 const Cart = (props) => {
     const {
@@ -555,6 +556,7 @@ const Cart = (props) => {
         return (
             <Layout pageConfig={config || pageConfig} {...props}>
                 <Backdrop open />
+                <Skeleton />
             </Layout>
         );
     }
