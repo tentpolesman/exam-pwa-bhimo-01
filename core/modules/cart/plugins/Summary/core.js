@@ -84,7 +84,7 @@ const CoreSummary = (props) => {
                 haveOthersTotal = true;
             }
 
-            if (storeConfig.enable_oms_multiseller === '1') {
+            if (storeConfig.enable_oms_multiseller && storeConfig.enable_oms_multiseller !== '0') {
                 const multiShipping = shipping_addresses;
                 let totalShipping = 0;
                 // eslint-disable-next-line array-callback-return

@@ -32,6 +32,7 @@ const Share = ({
     whatsapp = true,
     facebook = true,
     twitter = true,
+    size = 'sm',
     label,
 }) => {
     const { t } = useTranslation(['common', 'product']);
@@ -40,6 +41,16 @@ const Share = ({
     const labelFinal = label || `${t('product:shareTitle')}:`;
     const linkShare = getHost() + route.asPath;
     const [showShareBottom, setShowShareBottom] = React.useState(false);
+
+    let iconSize = 16;
+
+    if (size === 'md') {
+        iconSize = 20;
+    }
+
+    if (size === 'lg') {
+        iconSize = 24;
+    }
 
     if (isMobile) {
         return (
@@ -84,9 +95,9 @@ const Share = ({
                                 >
                                     <Image
                                         src="/assets/img/logo_whatsapp.svg"
-                                        width={16}
-                                        height={16}
-                                        style={{ width: 16, height: 16 }}
+                                        width={iconSize}
+                                        height={iconSize}
+                                        style={{ width: iconSize, height: iconSize }}
                                         alt="image share whatsapp mobile"
                                     />
                                     <Typography variant="bd-2a" className="ml-[6px]">WhatsApp</Typography>
@@ -101,9 +112,9 @@ const Share = ({
                                 >
                                     <Image
                                         src="/assets/img/logo_facebook.svg"
-                                        width={16}
-                                        height={16}
-                                        style={{ width: 16, height: 16 }}
+                                        width={iconSize}
+                                        height={iconSize}
+                                        style={{ width: iconSize, height: iconSize }}
                                         alt="image share facebook mobile"
                                     />
                                     <Typography variant="bd-2a" className="ml-[6px]">Facebook</Typography>
@@ -118,9 +129,9 @@ const Share = ({
                                 >
                                     <Image
                                         src="/assets/img/logo_x.svg"
-                                        width={16}
-                                        height={16}
-                                        style={{ width: 16, height: 16 }}
+                                        width={iconSize}
+                                        height={iconSize}
+                                        style={{ width: iconSize, height: iconSize }}
                                         alt="image share twitter mobile"
                                     />
                                     <Typography variant="bd-2a" className="ml-[6px]">Twitter</Typography>
@@ -152,9 +163,9 @@ const Share = ({
                         icon={(
                             <Image
                                 src="/assets/img/logo_whatsapp.svg"
-                                width={16}
-                                height={16}
-                                style={{ width: 16, height: 16 }}
+                                width={iconSize}
+                                height={iconSize}
+                                style={{ width: iconSize, height: iconSize }}
                                 alt="image share whatsapp"
                             />
                         )}
@@ -167,13 +178,12 @@ const Share = ({
                         linkTarget="_blank"
                         variant="plain"
                         iconOnly
-                        classNameText="w-[16px] h-[16px]"
                         icon={(
                             <Image
                                 src="/assets/img/logo_facebook.svg"
-                                width={16}
-                                height={16}
-                                style={{ width: 16, height: 16 }}
+                                width={iconSize}
+                                height={iconSize}
+                                style={{ width: iconSize, height: iconSize }}
                                 alt="image share facebook"
                             />
                         )}
@@ -186,13 +196,12 @@ const Share = ({
                         linkTarget="_blank"
                         variant="plain"
                         iconOnly
-                        classNameText="w-[16px] h-[16px]"
                         icon={(
                             <Image
                                 src="/assets/img/logo_x.svg"
-                                width={16}
-                                height={16}
-                                style={{ width: 16, height: 16 }}
+                                width={iconSize}
+                                height={iconSize}
+                                style={{ width: iconSize, height: iconSize }}
                                 alt="image share twitter"
                             />
                         )}

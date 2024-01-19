@@ -15,6 +15,9 @@ import dynamic from 'next/dynamic';
 import cx from 'classnames';
 import { HeartIcon, ArrowsRightLeftIcon } from '@heroicons/react/24/outline';
 
+import parser from 'html-react-parser';
+import Link from 'next/link';
+
 const ImageSlider = dynamic(() => import('@common_imageslider'), { ssr: true });
 const RatingStar = dynamic(() => import('@common_ratingstar'), { ssr: false });
 const ProductTabs = dynamic(() => import('@core_modules/product/pages/default/components/ProductTabs'), { ssr: false });
@@ -76,6 +79,7 @@ const ProductDetailAction = ({
     currencyCache,
     openOption,
     setOpenOption,
+    enableMultiSeller,
 }) => (
     <div className="plugin-product-detail-action">
         <div
@@ -121,8 +125,22 @@ const ProductDetailAction = ({
                     classContentWrapper,
                 )}
             >
+                <Show when={enableMultiSeller && data?.seller && data?.seller?.seller_name}>
+                    <Link href={`/seller/${data?.seller?.seller_path}`}>
+                        <Typography
+                            variant="bd-2"
+                            className={cx(
+                                'line-clamp-1 capitalize',
+                                'leading-5',
+                            )}
+                            color="text-primary"
+                        >
+                            {parser(data?.seller?.seller_name || '')}
+                        </Typography>
+                    </Link>
+                </Show>
                 <Typography variant="h1" className="first-letter:uppercase mb-[12px] desktop:mt-[0px] tablet:mt-[0px] mobile:mt-[24px]">
-                    {data?.name || '-'}
+                    {parser(data?.name || '-')}
                 </Typography>
                 <Show when={!isAwGiftCard && !loadPrice}>
                     <div className={cx('product-detail-info-price-container', isMobile && 'flex justify-between')}>
@@ -169,7 +187,7 @@ const ProductDetailAction = ({
                     variant="plain"
                     className="!p-0 flex items-center"
                     onClick={() => {
-                        reviewRef?.current?.scrollIntoView({ behavior: 'smooth' });
+                            reviewRef?.current?.scrollIntoView({ behavior: 'smooth' });
                     }}
                 >
                     <div className="flex mt-[12px]">
@@ -238,7 +256,7 @@ const ProductDetailAction = ({
                                     className="w-[100%] h-[25px] absolute bottom-[0px]"
                                     style={{
                                         background:
-                                            'linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.7497373949579832) 43%, rgba(255,255,255,0) 100%)',
+                                                'linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.7497373949579832) 43%, rgba(255,255,255,0) 100%)',
                                     }}
                                 />
                             </Show>

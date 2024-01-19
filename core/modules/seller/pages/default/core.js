@@ -6,14 +6,16 @@ import { getHost } from '@helper_config';
 import Layout from '@layout';
 import { useRouter } from 'next/router';
 import React from 'react';
+import Content from '@core_modules/seller/pages/default/components';
+import ContentProducts from '@core_modules/seller/pages/default/components/Products';
 
 const Seller = (props) => {
-    const { t, storeConfig, pageConfig, Content, ContentProducts, isLogin, ...other } = props;
+    const { t, storeConfig, pageConfig, isLogin, ...other } = props;
     const router = useRouter();
 
     const { data: dataSeller, error: errorSeller, loading: loadingSeller } = getSeller({
         variables: {
-            sellerId: parseInt(router.query.sellerId, 10),
+            seller_path: router.query.sellerPath,
         },
     });
 
@@ -58,7 +60,7 @@ const Seller = (props) => {
             isSellerPage
         >
             {
-                (bannerMobile && router.route === '/seller/[sellerId]') ? (
+                (bannerMobile && router.route === '/seller/[sellerPath]') ? (
                     <Content
                         t={t}
                         storeConfig={storeConfig}
@@ -66,7 +68,6 @@ const Seller = (props) => {
                         errorSeller={errorSeller}
                         loadingSeller={loadingSeller}
                         link={link}
-                        sellerId={router.query.sellerId}
                         route={router}
                         isLogin={isLogin}
                         handleChat={handleChat}
@@ -83,7 +84,6 @@ const Seller = (props) => {
                             errorSeller={errorSeller}
                             loadingSeller={loadingSeller}
                             link={link}
-                            sellerId={router.query.sellerId}
                             route={router}
                             isLogin={isLogin}
                             handleChat={handleChat}
@@ -93,7 +93,6 @@ const Seller = (props) => {
                         />
                     )
             }
-
         </Layout>
     );
 };

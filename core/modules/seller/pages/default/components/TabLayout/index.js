@@ -1,49 +1,49 @@
 /* eslint-disable max-len */
 import React from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
-import Typography from '@common_typography';
+import Tabs from '@common/Tabs';
 
 function TabLayout({ noBanner, t, children }) {
     const router = useRouter();
-    const { route, query: { sellerId } } = router;
-    const isTabOne = route === '/seller/[sellerId]';
-    const isTabTwo = route === '/seller/[sellerId]/product' || noBanner;
+    const { route, query: { sellerPath } } = router;
+    const isTabTwo = route === '/seller/[sellerPath]/product' || noBanner;
+
+    const data = [
+        {
+            title: t('seller:home'),
+            content: '',
+            type: 'html',
+        },
+        {
+            title: t('seller:product'),
+            content: '',
+            type: 'html',
+        },
+    ];
 
     return (
         <>
-            <div className="">
-                {
-                    !noBanner && (
-                        <>
-                            <Link replace href={{ pathname: `/seller/${sellerId}` }}>
-
-                                <Typography type={isTabOne ? 'bold' : 'regular'} style={isTabOne ? { borderBottom: '2px solid #000' } : null} variant="h2" letter="capitalize">
-                                    {t('seller:home')}
-                                </Typography>
-
-                            </Link>
-                            <Link replace href={{ pathname: `/seller/${sellerId}/product` }}>
-
-                                <Typography style={isTabTwo ? { borderBottom: '2px solid #000' } : null} type={isTabTwo ? 'bold' : 'regular'} variant="h2" letter="capitalize">
-                                    {t('seller:product')}
-                                </Typography>
-
-                            </Link>
-                        </>
-                    )
-                }
-                {
-                    noBanner && (
-                        <a>
-                            <Typography style={isTabTwo ? { borderBottom: '2px solid #000' } : null} type={isTabTwo ? 'bold' : 'regular'} variant="h2" letter="capitalize">
-                                {t('seller:product')}
-                            </Typography>
-                        </a>
-                    )
-                }
+            <Tabs
+                data={data}
+                tabHasContent={false}
+                t={t}
+                allItems={false}
+                tabHasContentClass="pt-[24px]"
+                tabContentClassName="mt-[24px]"
+                tabTitleClassName="hover:border-b-[4px] cursor-pointer !min-w-0 !px-[20px] !py-[13px]"
+                tabTitleActiveClassName="border-b-[4px]"
+                activeTabsProps={isTabTwo ? 1 : 0}
+                onChange={(e) => {
+                    if (e === 0) {
+                        router.replace(`/seller/${sellerPath}`);
+                    } else if (e === 1) {
+                        router.replace(`/seller/${sellerPath}/product`);
+                    }
+                }}
+            />
+            <div className="mt-4">
+                {children}
             </div>
-            <div>{children}</div>
         </>
     );
 }

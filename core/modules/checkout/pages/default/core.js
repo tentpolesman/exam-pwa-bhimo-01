@@ -8,7 +8,7 @@
 /* eslint-disable max-len */
 /* eslint-disable no-unused-vars */
 /* eslint-disable eqeqeq */
-import React from 'react';
+import React, { useCallback } from 'react';
 import Toast from '@common_toast';
 import gqlService from '@core_modules/checkout/services/graphql';
 import Layout from '@layout';
@@ -82,10 +82,12 @@ const Checkout = (props) => {
     let pwaCheckoutState = null;
     let urlRedirect = modules.checkout.checkoutOnly ? getStoreHost(appEnv) : '/checkout/cart';
 
+    const isMultiSeller = storeConfig?.enable_oms_multiseller === '1' || storeConfig?.enable_oms_multiseller === 1;
+
     const [cartId, setCartId] = React.useState(propsCardId);
     const [setCheckoutSession] = gqlService.setCheckoutSession();
     const [checkoutTokenState, setCheckoutTokenState] = React.useState();
-    const [loadingSellerInfo, setLoadingSellerInfo] = React.useState(storeConfig.enable_oms_multiseller === '1');
+    const [loadingSellerInfo, setLoadingSellerInfo] = React.useState(isMultiSeller);
     const [amountSeller, setAmountSeller] = React.useState(0);
     const [currentIndexSeller, setCurrentIndexSeller] = React.useState(0);
     const [sellerInfoState, setSellerInfoState] = React.useState([]);
@@ -125,7 +127,6 @@ const Checkout = (props) => {
                 .then(async (result) => { })
                 .catch((e) => {
                     // eslint-disable-next-line no-console
-                    console.log(e);
                 });
         }
     }, [cartId, propsCardId, setCheckoutSession]);
@@ -256,8 +257,7 @@ const Checkout = (props) => {
         formik.setFieldValue('billing', billing);
     };
 
-    const updateAddressState = (result) => {
-        const state = { ...checkout };
+    const updateAddressState = useCallback((result) => {
         const updatedCart = result.data.setBillingAddressOnCart.cart;
         if (isOnlyVirtualProductOnCart) {
             dispatch(setSelectedData({
@@ -266,7 +266,7 @@ const Checkout = (props) => {
             }));
         } else {
             const [shippingAddress] = updatedCart.shipping_addresses;
-            if (shippingAddress && state.data.isGuest) {
+            if (shippingAddress && checkout.data.isGuest) {
                 dispatch(setSelectedData({
                     address: shippingAddress,
                 }));
@@ -280,7 +280,7 @@ const Checkout = (props) => {
         }
         dispatch(setLoading({ addresses: false }));
         const mergeCart = {
-            ...state.data.cart,
+            ...(checkout.data.cart || {}),
             ...updatedCart,
         };
         dispatch(setCheckoutData({
@@ -295,7 +295,7 @@ const Checkout = (props) => {
         }
 
         updateFormik(mergeCart);
-    };
+    }, [checkout]);
 
     React.useEffect(() => {
         if (currentIndexSeller === amountSeller - 1 && sellerInfoState.length > 0) {
@@ -308,12 +308,12 @@ const Checkout = (props) => {
                 const unGroupedData = itemCart.cart.items;
 
                 // eslint-disable-next-line no-shadow
-                const groupData = unGroupedData.reduce((groupData, { id, quantity, pickup_item_store_info, prices, product, custom_seller, ...other }) => {
-                    let item = groupData.find((p) => p.seller_id === custom_seller.seller_id);
+                const groupData = unGroupedData.reduce((groupData, { id, quantity, pickup_item_store_info, prices, product, ...other }) => {
+                    let item = groupData.find((p) => p.seller_id === product.seller.seller_id);
                     if (!item) {
                         item = {
-                            seller_id: custom_seller.seller_id ? custom_seller.seller_id : null,
-                            seller_name: custom_seller.seller_name ? custom_seller.seller_name : 'Default Seller',
+                            seller_id: product.seller.seller_id ? product.seller.seller_id : null,
+                            seller_name: product.seller.seller_name ? product.seller.seller_name : 'Default Seller',
                             productList: [],
                             subtotal: {
                                 currency: '',
@@ -427,7 +427,7 @@ const Checkout = (props) => {
         dispatch(setCheckoutData({
             defaultAddress: customer ? address : null,
             cart: {
-                ...checkout.data.cart,
+                ...(checkout.data.cart || {}),
                 ...cart,
             },
             isCouponAppliedToCart: cart && cart.applied_coupons ? cart.applied_coupons : false,
@@ -438,7 +438,7 @@ const Checkout = (props) => {
         shipping = cart && cart.shipping_addresses && cart.shipping_addresses.length > 0 ? cart.shipping_addresses : null;
 
         if (shipping && !checkout.refetchItemOnly) {
-            if (storeConfig.enable_oms_multiseller === '1') {
+            if (isMultiSeller) {
                 dispatch(setSelectedData({
                     address: {
                         firstname: shipping[0].firstname,
@@ -493,7 +493,7 @@ const Checkout = (props) => {
                     telephone: address.telephone,
                     street: address.street,
                     country: address.country,
-                    pickup_location_code: storeConfig.enable_oms_multiseller === '1' ? shipping[0].pickup_location_code : shipping.pickup_location_code,
+                    pickup_location_code: isMultiSeller ? shipping[0].pickup_location_code : shipping.pickup_location_code,
                 }
             }));
         }
@@ -504,12 +504,12 @@ const Checkout = (props) => {
             const unGroupedData = itemCart.cart.items;
 
             // eslint-disable-next-line no-shadow
-            const groupData = unGroupedData.reduce((groupData, { id, quantity, pickup_item_store_info, prices, product, custom_seller, ...other }) => {
-                let item = groupData.find((p) => p.seller_id === custom_seller.seller_id);
+            const groupData = unGroupedData.reduce((groupData, { id, quantity, pickup_item_store_info, prices, product, ...other }) => {
+                let item = groupData.find((p) => p.seller_id === product.seller.seller_id);
                 if (!item) {
                     item = {
-                        seller_id: custom_seller.seller_id ? custom_seller.seller_id : null,
-                        seller_name: custom_seller.seller_name ? custom_seller.seller_name : null,
+                        seller_id: product.seller.seller_id ? product.seller.seller_id : null,
+                        seller_name: product.seller.seller_name ? product.seller.seller_name : null,
                         productList: [],
                         subtotal: {
                             currency: '',
@@ -540,7 +540,7 @@ const Checkout = (props) => {
 
         // init shipping method
         // if multiseller active
-        if (storeConfig.enable_oms_multiseller === '1' && !checkout.refetchItemOnly) {
+        if (isMultiSeller && !checkout.refetchItemOnly) {
             if (shipping && shipping[0].available_shipping_methods) {
                 const availableMultiShipping = shipping.map((shippingPerSeller) => ({
                     seller_id: shippingPerSeller.seller_id ? shippingPerSeller.seller_id : 0,
@@ -556,14 +556,14 @@ const Checkout = (props) => {
                 // eslint-disable-next-line consistent-return
                 availableMultiShipping.map(async ({ seller_id, available_shipping_methods }, index) => {
                     let sellerInfo;
-                    if (seller_id !== 0 || seller_id !== null) {
+                    if (seller_id && seller_id === 0 && seller_id !== null) {
                         sellerInfo = await apolloClient
-                            .query({ query: Schema.getSeller, variables: { sellerId: parseInt(seller_id, 10) } })
+                            .query({ query: Schema.getSeller, variables: { keyword: seller_id } })
                             .then(({ data }) => {
                                 return {
-                                    seller_id,
-                                    seller_name: data.getSeller.length > 0 ? data.getSeller[0].name : 'Default Seller',
-                                    seller_city: data.getSeller.length > 0 ? data.getSeller[0].city : 'Default Seller City',
+                                    seller_path: data.getSeller.length > 0 ? data.getSeller[0]?.seller_path : '',
+                                    seller_name: data.getSeller.length > 0 ? data.getSeller[0]?.name : 'Default Seller',
+                                    seller_city: data.getSeller.length > 0 ? data.getSeller[0]?.city : 'Default Seller City',
                                     available_shipping_methods: available_shipping_methods.map((shippingItemMultiseller) => ({
                                         ...shippingItemMultiseller,
                                         label: `${shippingItemMultiseller.method_title === null ? '' : `${shippingItemMultiseller.method_title} - `
@@ -820,12 +820,12 @@ const Checkout = (props) => {
                 const unGroupedData = itemCart.cart.items;
 
                 // eslint-disable-next-line no-shadow
-                const groupData = unGroupedData.reduce((groupData, { id, quantity, pickup_item_store_info, prices, product, custom_seller, ...other }) => {
-                    let item = groupData.find((p) => p.seller_id === custom_seller.seller_id);
+                const groupData = unGroupedData.reduce((groupData, { id, quantity, pickup_item_store_info, prices, product, ...other }) => {
+                    let item = groupData.find((p) => p.seller_id === product.seller.seller_id);
                     if (!item) {
                         item = {
-                            seller_id: custom_seller.seller_id ? custom_seller.seller_id : 0,
-                            seller_name: custom_seller.seller_name ? custom_seller.seller_name : 'Default Seller',
+                            seller_id: product.seller.seller_id ? product.seller.seller_id : 0,
+                            seller_name: product.seller.seller_name ? product.seller.seller_name : 'Default Seller',
                             productList: [],
                             subtotal: {
                                 currency: '',
@@ -852,7 +852,7 @@ const Checkout = (props) => {
                 cartItemBySeller = groupData;
             }
 
-            if (shipping && storeConfig.enable_oms_multiseller === '1' && !checkout.refetchItemOnly) {
+            if (shipping && isMultiSeller && !checkout.refetchItemOnly) {
                 const sellerList = (arr) => JSON.stringify(
                     arr
                     .filter(({ seller_id: x }) => x)
@@ -966,7 +966,7 @@ const Checkout = (props) => {
             dispatch(setLoading({ totalPrice: false }));
             dispatch(setCheckoutData({
                 cart: {
-                    ...checkout.data.cart,
+                    ...(checkout.data.cart || {}),
                     prices: itemPrice.cart.prices,
                     promoBanner: itemPrice.cart.promoBanner,
                     available_free_items: itemPrice.cart.available_free_items,
@@ -975,12 +975,11 @@ const Checkout = (props) => {
         }
     }, [itemPrice]);
 
-    React.useMemo(() => {
+    React.useEffect(() => {
         if (checkout.data.cart) {
             const { cart } = checkout.data;
-            const state = { ...checkout };
             // init shipping address
-            if (storeConfig.enable_oms_multiseller === '1') {
+            if (isMultiSeller) {
                 const shipping = cart && cart.shipping_addresses && cart.shipping_addresses.length > 0 ? cart.shipping_addresses : null;
                 if (shipping && shipping[0].available_shipping_methods && shipping[0].available_shipping_methods.length > 0) {
                     const availableMultiShipping = shipping.map((shippingPerSeller) => ({
@@ -1058,7 +1057,7 @@ const Checkout = (props) => {
     }, [checkout.data.cart]);
 
     // GA 4 dataLayer
-    React.useMemo(() => {
+    React.useEffect(() => {
         if (checkout && checkout.data && checkout.data.cart && checkout.data.cart.items.length > 0) {
             const { cart } = checkout.data;
             TagManager.dataLayer({ dataLayer: { ecommerce: null } });
@@ -1153,11 +1152,9 @@ const Checkout = (props) => {
             },
         })
             .then(async (result) => {
-                let state = { ...checkout };
-
                 if (result && result.data && result.data.setPaymentMethodOnCart && result.data.setPaymentMethodOnCart.cart) {
                     const mergeCart = {
-                        ...state.data.cart,
+                        ...(checkout.data.cart || {}),
                         ...result.data.setPaymentMethodOnCart.cart,
                     };
                     dispatch(setCheckoutData({

@@ -12,10 +12,10 @@ import Popover from '@common_popover';
 import PriceFormat from '@common_priceformat';
 
 import Image from '@common_image';
-import BuildingStorefrontIcon from '@heroicons/react/24/outline/BuildingStorefrontIcon';
 
 import Magnify from '@heroicons/react/24/outline/MagnifyingGlassIcon';
 import XMarkIcon from '@heroicons/react/24/outline/XMarkIcon';
+import Typography from '@common/Typography';
 
 let globalTimeout = null;
 
@@ -63,6 +63,7 @@ const generateItemData = (product, category, seller, enableMultiseller) => {
                 name: element.name,
                 status: element.status,
                 position: index,
+                seller_path: element.seller_path,
                 type: 'seller',
             };
             result.push(sell);
@@ -78,7 +79,7 @@ export default function AutocompleteSearch(props) {
     const [isShow, setIsShow] = React.useState(false);
     const [searchKeyword, setSearchKeyword] = React.useState('');
 
-    const enableMultiseller = storeConfig.enable_oms_multiseller === '1';
+    const enableMultiseller = storeConfig.enable_oms_multiseller === '1' || storeConfig.enable_oms_multiseller === 1;
 
     const [actGetProduct, { loading, data, called }] = getProduct(searchKeyword);
     const [actGetCategory, { data: dCategory, loading: lCategory, called: cCategory }] = getCategoryByName(searchKeyword);
@@ -138,18 +139,12 @@ export default function AutocompleteSearch(props) {
 
     const PopoverContent = () => {
         const PopoverItem = (propsPopoverItem, key) => {
-            const { name, type, position, small_image, breadcrumbs, logo, city, seller_name } = propsPopoverItem;
+            const { name, type, position, small_image, breadcrumbs, logo, city } = propsPopoverItem;
 
             const handleOnClickItem = (onClickProps) => {
-                const { result: resultType, id: seller_id, url_key } = onClickProps;
-                if (resultType === 'seller') {
-                    Router.push(
-                        {
-                            pathname: '/[...slug]',
-                            query: {},
-                        },
-                        `/seller/${seller_id}`,
-                    );
+                const { result: resultType, type: typeProps, url_key, seller_path } = onClickProps;
+                if (resultType === 'seller' || typeProps === 'seller') {
+                    Router.push(`/seller/${seller_path}`);
                 } else {
                     Router.push(
                         {
@@ -195,12 +190,6 @@ export default function AutocompleteSearch(props) {
                                         textClassName={cx('!text-sm', '!leading-4', '!font-normal', '!text-neutral-500')}
                                     />
                                 </div>
-                                {seller_name && enableMultiseller && (
-                                    <div className="info-seller">
-                                        <BuildingStorefrontIcon />
-                                        <div className="title-seller">{seller_name}</div>
-                                    </div>
-                                )}
                             </div>
                         </>
                     ) : null}
@@ -228,15 +217,30 @@ export default function AutocompleteSearch(props) {
                                 <div className={cx('top-title', 'py-2', 'normal-case', 'font-semibold', 'leading-5', 'text-base')}>Merchants</div>
                             ) : null}
                             <div
-                                className={cx('grid', 'xs:grid-cols-[48px_1fr]', 'gap-x-2', 'py-2', 'hover:bg-neutral-50', 'hover:cursor-pointer')}
+                                className={cx('grid', 'gap-x-2', 'py-2', 'hover:bg-neutral-50', 'hover:cursor-pointer')}
                                 key={key}
                                 onClick={() => handleOnClickItem(propsPopoverItem)}
                                 role="presentation"
                             >
-                                <div className="image-container">
-                                    <Image alt={name} src={logo} width={48} height={48} storeConfig={storeConfig} />
+                                <div className="flex flex-row gap-4 items-center">
+                                    <div className="float-left">
+                                        <div className={cx(
+                                            'rounded-lg flex items-center justify-center w-[50px] h-[50px]',
+                                            'bg-neutral-100 !overflow-hidden',
+                                        )}
+                                        >
+                                            <Image src={logo} width={64} height={64} alt={name} storeConfig={storeConfig} />
+                                        </div>
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <Typography variant="bd-2a" className="capitalize !leading-5">
+                                            {name}
+                                        </Typography>
+                                        <Typography variant="bd-3b" className="capitalize">
+                                            {citySplit ? citySplit[0] : ''}
+                                        </Typography>
+                                    </div>
                                 </div>
-                                <div className="seller-info">{`${name} - ${citySplit ? citySplit[0] : ''}`}</div>
                             </div>
                         </>
                     ) : null}
