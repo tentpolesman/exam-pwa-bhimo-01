@@ -15,6 +15,7 @@ import cx from 'classnames';
 import { useRouter } from 'next/router';
 import propTypes from 'prop-types';
 import React, { useEffect } from 'react';
+import Share from '@common_share';
 
 const RelatedProduct = (props) => {
     const { url_key, storeConfig } = props;
@@ -83,7 +84,7 @@ const CoreDetail = (props) => {
         getBlogs({
             variables: {
                 filter: {
-                    post_id: {
+                    identifier: {
                         eq: id,
                     },
                 },
@@ -122,10 +123,15 @@ const CoreDetail = (props) => {
                             {`Last Updated: ${formatDate(blogPost.update_time, 'D MMMM YYYY')}`}
                         </Typography>
                     </div>
-                    <div className="tablet:w-[720px] tablet:h-[360px] desktop:w-[1200px] desktop:h-[600px] rounded-2xl overflow-hidden">
-                        <CommonImage src={blogPost?.image} height={600} width={1200} storeConfig={storeConfig} />
-                    </div>
+                    {blogPost?.image ? (
+                        <div className="tablet:w-[720px] tablet:h-[360px] desktop:w-[1200px] desktop:h-[600px] rounded-2xl overflow-hidden">
+                            <CommonImage src={blogPost?.image} height={600} width={1200} storeConfig={storeConfig} />
+                        </div>
+                    ) : null}
                     <div className="mt-6">{blogPost?.content ? <CmsRenderer content={blogPost.content} storeConfig={storeConfig} /> : null}</div>
+                    <div className="my-10">
+                        <Share />
+                    </div>
                     {blogPost?.related_products?.length > 0 ? (
                         <div>
                             <Typography variant="h1" className="capitalize mb-6 mt-10 text-3xl">
