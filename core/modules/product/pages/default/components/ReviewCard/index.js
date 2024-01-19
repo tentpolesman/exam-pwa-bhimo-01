@@ -30,7 +30,7 @@ const CustomerReview = (props) => {
                 </div>
             </div>
             <div className={cx('rating-card-detail-container')}>
-                <Typography variant="bd-1a" className="first-letter:uppercase">
+                <Typography variant="bd-1a" className="first-letter:uppercase break-words">
                     { detail || '-' }
                 </Typography>
             </div>
