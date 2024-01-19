@@ -127,7 +127,6 @@ const Checkout = (props) => {
                 .then(async (result) => { })
                 .catch((e) => {
                     // eslint-disable-next-line no-console
-                    console.log(e);
                 });
         }
     }, [cartId, propsCardId, setCheckoutSession]);
@@ -284,10 +283,6 @@ const Checkout = (props) => {
             ...(checkout.data.cart || {}),
             ...updatedCart,
         };
-        console.log('--- cart 1 ----');
-        console.log(checkout.data);
-        console.log(mergeCart);
-        console.log('--- cart 1 ----');
         dispatch(setCheckoutData({
             cart: mergeCart
         }));
@@ -427,13 +422,6 @@ const Checkout = (props) => {
             customer = manageCustomer.data.customer;
             [address] = customer ? customer.addresses.filter((item) => item.default_shipping) : [null];
         }
-
-        console.log('--- cart 2 ----');
-        console.log({
-            ...(checkout.data.cart || {}),
-            ...cart,
-        });
-        console.log('--- cart 2 ----');
 
         // save init data
         dispatch(setCheckoutData({
@@ -976,14 +964,6 @@ const Checkout = (props) => {
         if (itemPrice && itemPrice.cart) {
             dispatch(setIsNewUpdate(false));
             dispatch(setLoading({ totalPrice: false }));
-            console.log('--- cart 3 ----');
-            console.log({
-                ...(checkout.data.cart || {}),
-                prices: itemPrice.cart.prices,
-                promoBanner: itemPrice.cart.promoBanner,
-                available_free_items: itemPrice.cart.available_free_items,
-            });
-            console.log('--- cart 3 ----');
             dispatch(setCheckoutData({
                 cart: {
                     ...(checkout.data.cart || {}),
@@ -1177,9 +1157,6 @@ const Checkout = (props) => {
                         ...(checkout.data.cart || {}),
                         ...result.data.setPaymentMethodOnCart.cart,
                     };
-                    console.log('--- cart 4 ----');
-                    console.log(mergeCart);
-                    console.log('--- cart 4 ----');
                     dispatch(setCheckoutData({
                         cart: mergeCart,
                     }));
