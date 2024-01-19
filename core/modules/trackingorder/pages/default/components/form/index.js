@@ -105,7 +105,7 @@ const FormCom = (props) => {
             <Typography className="flex justify-center mb-10 mt-14 tablet:mt-0" variant="h1">
                 {t('trackingorder:trackingOrder')}
             </Typography>
-            <div className="flex justify-center">
+            <div className="flex justify-center max-tablet:mb-16">
                 <div
                     className="max-w-[400px] w-full tablet:w-[550px] tablet:max-w-[550px] desktop:w-[650px] desktop:max-w-[650px]
                             rounded-md border border-neutral-200 bg-white flex-col gap-6 inline-flex

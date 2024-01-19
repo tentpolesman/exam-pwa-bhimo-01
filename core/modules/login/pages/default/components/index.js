@@ -100,7 +100,7 @@ const Login = (props) => {
             <Typography className="flex justify-center mb-10 mt-14 tablet:mt-0" variant="h1">
                 {t('login:login')}
             </Typography>
-            <div className="flex justify-center">
+            <div className="flex justify-center max-tablet:mb-16">
                 {showOtp ? (
                     <OtpView
                         {...props}
@@ -265,9 +265,8 @@ const Login = (props) => {
                                     <div className="w-full xs:scale-[.85] sm:scale-[1] origin-[0]">
                                         <ReCAPTCHA sitekey={sitekey} onChange={handleChangeCaptcha} ref={recaptchaRef} />
                                         <Show when={checkIsFieldError(formikOtp, 'captcha')}>
-                                            <Typography className={cx(
-                                                'text-base font-normal leading-lg tracking-normal text-pwa-font my-2 !text-red',
-                                            )}
+                                            <Typography
+                                                className={cx('text-base font-normal leading-lg tracking-normal text-pwa-font my-2 !text-red')}
                                             >
                                                 {fieldErrorMessage(formikOtp, 'captcha')}
                                             </Typography>
