@@ -103,7 +103,7 @@ const CoreDetail = (props) => {
                 <div className="flex flex-col">
                     <Skeleton />
                     <Skeleton className="my-4 !w-[200px]" />
-                    <Skeleton className="my-4 !w-[1200px] !h-[600px] !rounded-2xl" />
+                    <Skeleton className="my-4 !w-full desktop:!w-[1200px] !h-[600px] !rounded-2xl" />
                 </div>
             ) : null}
             {blogPost ? (
@@ -129,7 +129,10 @@ const CoreDetail = (props) => {
                         </div>
                     ) : null}
                     <div className="mt-6">{blogPost?.content ? <CmsRenderer content={blogPost.content} storeConfig={storeConfig} /> : null}</div>
-                    <div className="my-10">
+                    <div className="flex my-10 gap-1">
+                        <Typography className="tablet:hidden">
+                            {t('blog:share')}
+                        </Typography>
                         <Share />
                     </div>
                     {blogPost?.related_products?.length > 0 ? (
