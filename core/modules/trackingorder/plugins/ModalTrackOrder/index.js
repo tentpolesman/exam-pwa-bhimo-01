@@ -33,7 +33,6 @@ const ModalResult = (props) => {
             shippingMethods.forEach((method) => {
                 const { data_detail } = method;
                 if (data_detail && data_detail !== '[]') {
-                    console.log('here');
                     let dt = data_detail;
                     dt = dt.replace(/'/g, '`');
                     dt = dt.replace(/"/g, "'");
