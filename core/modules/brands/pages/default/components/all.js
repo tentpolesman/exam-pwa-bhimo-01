@@ -29,7 +29,9 @@ const BrandItem = ({ group, children }) => (
             {
                 children.map((child, childIdx) => {
                     if (child.is_active !== 1) return null;
-                    const hrefLink = child.category_url ? child.category_url : `/catalogsearch/result?brand=${child.name}`;
+                    const hrefLink = child.category_url
+                        ? child.category_url
+                        : `/catalogsearch/result?q=${child.name}&brand=${child.name}`;
                     return (
                         <li key={childIdx}>
                             <Show when={child.attribute_id}>

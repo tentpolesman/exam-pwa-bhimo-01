@@ -467,7 +467,7 @@ const AddressView = (props) => {
                                             checkboxClasses: cx('cursor-pointer'),
                                         }}
                                     >
-                                        <label htmlFor={`addressform-defaultshippingbilling-checkbox-${addressId || 'new'}`}>
+                                        <label className="mt-[-2px]" htmlFor={`addressform-defaultshippingbilling-checkbox-${addressId || 'new'}`}>
                                             <Typography>{t('customer:address:useDefault')}</Typography>
                                         </label>
                                     </Checkbox>
@@ -488,7 +488,7 @@ const AddressView = (props) => {
                                             checkboxClasses: cx('cursor-pointer'),
                                         }}
                                     >
-                                        <label htmlFor={`addressform-confirmpinpoint-checkbox-${addressId || 'new'}`}>
+                                        <label className="mt-[-2px]" htmlFor={`addressform-confirmpinpoint-checkbox-${addressId || 'new'}`}>
                                             <Typography>{`${t('customer:address:confirmPinPoint')}`}</Typography>
                                         </label>
                                     </Checkbox>

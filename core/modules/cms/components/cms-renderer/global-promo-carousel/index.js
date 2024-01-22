@@ -16,8 +16,7 @@ import ChevronRightIcon from '@heroicons/react/20/solid/ChevronRightIcon';
 
 const WidgetSliderCarousel = (props) => {
     // WIP : AUTOPLAY
-    // const { content, className, autoPlaySpeed = 4000 } = props;
-    const { content, className } = props;
+    const { content, className, autoPlaySpeed = 5000 } = props;
 
     const [activeTabs, setActiveTabs] = React.useState(0);
     let countTabs = 0;
@@ -59,14 +58,17 @@ const WidgetSliderCarousel = (props) => {
     };
 
     // WIP : AUTOPLAY
-    // setInterval(() => {
-    //     const activeCurrent = activeTabs;
-    //     if (activeCurrent + 1 === countTabs) {
-    //         setActiveTabs(0);
-    //     } else {
-    //         setActiveTabs(activeCurrent + 1);
-    //     }
-    // }, autoPlaySpeed);
+    React.useEffect(() => {
+        const autoPlayInterval = setInterval(() => {
+            if (activeTabs + 1 === countTabs) {
+                setActiveTabs(0);
+            } else {
+                setActiveTabs(activeTabs + 1);
+            }
+        }, autoPlaySpeed);
+
+        return () => clearInterval(autoPlayInterval);
+    }, [activeTabs]);
 
     if (content && content !== '') {
         return (

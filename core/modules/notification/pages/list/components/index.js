@@ -66,32 +66,65 @@ const NotificationList = (props) => {
         setPage(value);
     };
 
+    const hasData = notifCount > 0;
+
+    const PaginationComponent = () => (
+        <div
+            className={cx(
+                'table-data pt-6 flex justify-between',
+                'tablet:items-center tablet:flex-row',
+                'mobile:flex-col',
+            )}
+        >
+            <div className="flex justify-between items-center flex-1">
+                <Typography className={cx('font-normal', 'leading-2lg')}>{`${notifCount ?? 0} ${t('common:label:data')}`}</Typography>
+            </div>
+            <div className={cx('flex', 'flex-row', 'items-center', 'mobile:max-tablet:pt-4', 'mobile:max-tablet:justify-center')}>
+                <Pagination
+                    handleChangePage={handleChangePage}
+                    page={page}
+                    siblingCount={0}
+                    className={cx('!p-0')}
+                    totalPage={totalPage}
+                />
+            </div>
+        </div>
+    );
+
     return (
         <Layout {...props}>
             <div className={cx('pt-5')}>
-                {notifList[page - 1].map((item, i) => (
-                    <div
-                        key={i}
-                        onClick={() => handleItemClick(item)}
-                        className={cx('relative border-t-[1px] border-b-[1px] border-neutral-100', 'px-8 py-6 cursor-pointer hover:bg-neutral-100')}
-                    >
-                        <Typography variant={item.unread ? 'p-2a' : 'p-2'} className={cx()}>
-                            {item.subject}
-                        </Typography>
-                        <Typography variant={item.unread ? 'p-3a' : 'p-3'} className={cx('mt-1')}>
-                            {localDateString(item.createdAt)}
-                        </Typography>
-                        <Show when={item.unread}>
-                            <div className={cx('absolute left-[14px] top-[50%] bg-primary-700 rounded-full', 'translate-y-[-50%] w-[6px] h-[6px]')} />
-                        </Show>
-                    </div>
-                ))}
-                <div className={cx('pt-8 flex items-center justify-between')}>
-                    <Typography variant="p-2" className={cx('')}>
-                        {`${notifCount} Item(s)`}
-                    </Typography>
-                    <Pagination handleChangePage={handleChangePage} page={page} siblingCount={0} className={cx('!p-0')} totalPage={totalPage} />
-                </div>
+                <Show when={hasData}>
+                    {notifList[page - 1].map((item, i) => (
+                        <div
+                            key={i}
+                            onClick={() => handleItemClick(item)}
+                            className={cx(
+                                'relative border-t-[1px] border-b-[1px] border-neutral-100',
+                                'px-8 py-6 cursor-pointer hover:bg-neutral-100',
+                            )}
+                        >
+                            <Typography variant={item.unread ? 'p-2a' : 'p-2'} className={cx()}>
+                                {item.subject}
+                            </Typography>
+                            <Typography variant={item.unread ? 'p-3a' : 'p-3'} className={cx('mt-1')}>
+                                {localDateString(item.createdAt)}
+                            </Typography>
+                            <Show when={item.unread}>
+                                <div
+                                    className={cx(
+                                        'absolute left-[14px] top-[50%] bg-primary-700 rounded-full',
+                                        'translate-y-[-50%] w-[6px] h-[6px]',
+                                    )}
+                                />
+                            </Show>
+                        </div>
+                    ))}
+                </Show>
+                {/** show pagination */}
+                <Show when={hasData}>
+                    <PaginationComponent />
+                </Show>
             </div>
         </Layout>
     );

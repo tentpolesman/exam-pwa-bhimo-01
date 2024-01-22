@@ -451,7 +451,7 @@ const ImageSlider = ({
                         'desktop:m-0 tablet:m-0 mobile:m-0',
                     )}
                     itemsLength={data?.length}
-                    style={isMobile ? { width: screenWidth } : {}}
+                    style={isMobile ? { width: screenWidth - 32 } : {}}
                 >
                     {
                         data && data?.map((item, index) => {

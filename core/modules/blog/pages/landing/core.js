@@ -158,7 +158,7 @@ const FeaturedPosts = (props) => {
                             </Link>
                             <div className={cx('tablet:w-[282px]', 'desktop:w-[474px]', 'flex', 'flex-col')}>
                                 <Link href={`/blog/${firstPost.identifier}`}>
-                                    <Typography variant={isTablet ? 'h5' : 'h2'} className="!leading-lg !text-2xl !text-neutral-500">
+                                    <Typography variant={isTablet ? 'h5' : 'h2'} className="!leading-lg !text-2xl">
                                         {firstPost?.title}
                                     </Typography>
                                 </Link>
@@ -201,7 +201,7 @@ const FeaturedPosts = (props) => {
                                         <Link href={`/blog/${secondPost.identifier}`}>
                                             <Typography
                                                 variant={isTablet ? 'h5' : 'h2'}
-                                                className="!leading-lg desktop:!text-2xl tablet:text-neutral-white desktop:!text-neutral-500"
+                                                className="!leading-lg desktop:!text-2xl max-desktop:text-neutral-white"
                                             >
                                                 {secondPost?.title}
                                             </Typography>
@@ -256,7 +256,7 @@ const FeaturedPosts = (props) => {
                     {thirdPost ? (
                         <div className="flex desktop:w-[588px] tablet:h-[129px] desktop:h-[160px] relative">
                             <Link href={`/blog/${thirdPost.identifier}`}>
-                                <div className="w-[320px] tablet:w-[226px] desktop:w-[282px]  rounded-lg overflow-hidden desktop:mr-6">
+                                <div className="w-[320px] tablet:w-[226px] desktop:w-[282px] rounded-lg overflow-hidden desktop:mr-6">
                                     <CommonImage src={thirdPost?.blogImage} {...sidePostImageDimensions} storeConfig={storeConfig} />
                                 </div>
                             </Link>
@@ -275,7 +275,7 @@ const FeaturedPosts = (props) => {
                                 <Link href={`/blog/${thirdPost.identifier}`}>
                                     <Typography
                                         variant={isTablet ? 'h5' : 'h2'}
-                                        className="!leading-lg desktop:!text-2xl tablet:text-neutral-white desktop:!text-neutral-500"
+                                        className="!leading-lg desktop:!text-2xl max-desktop:text-neutral-white"
                                     >
                                         {thirdPost?.title}
                                     </Typography>

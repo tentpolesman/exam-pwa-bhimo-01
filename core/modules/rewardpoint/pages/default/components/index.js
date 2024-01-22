@@ -37,6 +37,57 @@ const RewardPointView = (props) => {
         return pointFormat;
     };
 
+    const PaginationComponent = () => (
+        <div
+            className={cx(
+                'table-data pt-6 flex justify-between',
+                'tablet:items-center tablet:flex-row',
+                'mobile:flex-col',
+            )}
+        >
+            <div className="flex justify-between items-center flex-1">
+                <Typography className={cx('font-normal', 'leading-2lg')}>{`${totalCount ?? 0} ${t('common:label:data')}`}</Typography>
+                <div className="flex items-center">
+                    <Typography className={cx('font-normal', 'leading-2lg', 'p-3')}>{t('common:label:show')}</Typography>
+                    <Select
+                        name="show"
+                        value={rowsPerPage}
+                        onChange={handleChangeRowsPerPage}
+                        options={[
+                            {
+                                label: 10,
+                                value: 10,
+                            },
+                            {
+                                label: 20,
+                                value: 20,
+                            },
+                            {
+                                label: 50,
+                                value: 50,
+                            },
+                            {
+                                label: t('common:label:all'),
+                                value: data?.total_count,
+                            },
+                        ]}
+                        textFiledProps={{ className: cx('w-[80px]') }}
+                        inputProps={{ className: cx('!py-0') }}
+                    />
+                </div>
+            </div>
+            <div className={cx('flex', 'flex-row', 'items-center', 'mobile:max-tablet:pt-4', 'mobile:max-tablet:justify-center')}>
+                <Pagination
+                    handleChangePage={handleChangePage}
+                    page={page}
+                    siblingCount={0}
+                    className={cx('!p-0')}
+                    totalPage={pageInfo?.total_pages}
+                />
+            </div>
+        </div>
+    );
+
     return (
         <Layout {...props}>
             <div className={cx('rewardpoint-container')}>
@@ -161,51 +212,21 @@ const RewardPointView = (props) => {
                             </tbody>
                         </table>
                     </div>
-                    <div className={cx('table-data', 'pt-6', 'flex', 'flex-row', 'justify-between')}>
-                        <div className={cx('pt-2')}>
-                            <Show when={loading}>
-                                <Skeleton width={50} height={25} />
-                            </Show>
-                            <Show when={!loading}>
-                                <Typography className={cx('font-normal', 'leading-2lg')}>{`${totalCount ?? 0} ${t('common:label:data')}`}</Typography>
-                            </Show>
+                    {/** show pagination */}
+                    <Show when={hasTransaction && !loading}>
+                        <PaginationComponent />
+                    </Show>
+                    {/** skeleton pagination */}
+                    <Show when={loading}>
+                        <div
+                            className={cx(
+                                'pt-6 flex items-center justify-between',
+                            )}
+                        >
+                            <Skeleton width={50} height={25} />
+                            <Skeleton width={150} height={50} />
                         </div>
-                        <div className={cx('flex', 'flex-row')}>
-                            <Typography className={cx('font-normal', 'leading-2lg', 'p-3')}>{t('common:label:show')}</Typography>
-                            <Select
-                                name="show"
-                                value={rowsPerPage}
-                                onChange={handleChangeRowsPerPage}
-                                options={[
-                                    {
-                                        label: 10,
-                                        value: 10,
-                                    },
-                                    {
-                                        label: 20,
-                                        value: 20,
-                                    },
-                                    {
-                                        label: 50,
-                                        value: 50,
-                                    },
-                                    {
-                                        label: t('common:label:all'),
-                                        value: totalCount,
-                                    },
-                                ]}
-                                textFiledProps={{ className: cx('w-[80px]') }}
-                                inputProps={{ className: cx('!py-0') }}
-                            />
-                            <Pagination
-                                handleChangePage={handleChangePage}
-                                page={page}
-                                siblingCount={1}
-                                className={cx('!p-0')}
-                                totalPage={pageInfo?.total_pages}
-                            />
-                        </div>
-                    </div>
+                    </Show>
                 </div>
             </div>
         </Layout>
