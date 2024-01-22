@@ -27,7 +27,7 @@ const PhoneInput = (props) => {
 
     let inputValue = value;
     if (value && value !== '' && value[0] === '0') {
-        inputValue = `${inputValue.substring(1)}`;
+        inputValue = `+62${inputValue.substring(1)}`;
     }
 
     return (
