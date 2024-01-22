@@ -1,13 +1,12 @@
 /* eslint-disable object-curly-newline */
 /* eslint-disable react/jsx-one-expression-per-line */
 import Link from 'next/link';
-
 import cx from 'classnames';
-
 import Popover from '@common_popover';
 import Typography from '@common_typography';
-
 import UserIcon from '@heroicons/react/24/solid/UserIcon';
+import Show from '@common_show';
+import Skeleton from '@common_skeleton';
 
 const UserInfo = (props) => {
     const { t, isLogin, customer, open, setOpen, PopoverContent } = props;
@@ -23,13 +22,20 @@ const UserInfo = (props) => {
                         className={cx('w-[160px]', 'top-[99%]', 'left-[0%]')}
                         contentClassName={cx('rounded-sm')}
                     >
-                        <div className="popover-children">
-                            <UserIcon className={cx('w-[24px]', 'text-neutral-600', 'inline-block', 'ml-1')} />
-                            {customer && customer.firstname && (
+                        <div className="popover-children flex flex-row">
+                            <div>
+                                <UserIcon className={cx('w-[24px]', 'text-neutral-600', 'inline-block', 'ml-1')} />
+                            </div>
+                            <Show when={customer?.firstname}>
                                 <Typography variant="bd-2b" className={cx('inline-block', 'pl-2', '!text-primary-700')}>
-                                    {customer.firstname.length <= 12 ? `${customer.firstname}` : `${customer.firstname.substring(0, 15)}...`}
+                                    {customer?.firstname?.length <= 12 ? `${customer?.firstname}` : `${customer?.firstname?.substring(0, 15)}...`}
                                 </Typography>
-                            )}
+                            </Show>
+                            <Show when={!customer?.firstname}>
+                                <div className={cx('ml-[10px]')}>
+                                    <Skeleton height={24} width={70} />
+                                </div>
+                            </Show>
                         </div>
                     </Popover>
                 </div>

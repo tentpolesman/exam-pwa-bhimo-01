@@ -8,7 +8,7 @@
 /* eslint-disable radix */
 /* eslint-disable max-len */
 import {
-    custDataNameCookie,
+    // custDataNameCookie,
     features,
     modules,
     // sentry
@@ -106,16 +106,16 @@ class MyApp extends App {
          */
         let isLogin = 0;
         let lastPathNoAuth = '';
-        let customerData = {};
+        // let customerData = {};
         const allcookie = req ? req.cookies : {};
         let removeDecimalConfig;
         if (typeof window !== 'undefined') {
             isLogin = getLoginInfo();
             lastPathNoAuth = getLastPathWithoutLogin();
-            customerData = Cookie.getJSON(custDataNameCookie);
+            // customerData = Cookie.getJSON(custDataNameCookie);
         } else {
             isLogin = allcookie.isLogin || 0;
-            customerData = allcookie[custDataNameCookie];
+            // customerData = allcookie[custDataNameCookie];
             lastPathNoAuth = req.cookies && typeof req.cookies !== 'undefined' && req.cookies.lastPathNoAuth && typeof req.cookies.lastPathNoAuth !== 'undefined'
                 ? req.cookies.lastPathNoAuth
                 : '/customer/account';
@@ -204,9 +204,9 @@ class MyApp extends App {
                 ...pageProps,
                 app_cookies,
                 storeConfig,
-                isLogin,
+                // isLogin,
                 lastPathNoAuth,
-                customerData,
+                // customerData,
                 removeDecimalConfig,
                 dataMenu,
                 frontendOptions,
