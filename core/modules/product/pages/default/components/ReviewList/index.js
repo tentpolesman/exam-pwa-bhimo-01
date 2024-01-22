@@ -196,7 +196,14 @@ const ReviewList = ({
                         {t('product:customerReview')}
                     </Typography>
                 </div>
-                <div className={cx('container-review-list-action', 'flex justify-between items-center', 'mb-[24px]')}>
+                <div
+                    className={cx(
+                        'container-review-list-action',
+                        'flex justify-between sm:items-center sm:flex-row',
+                        'mb-[24px]',
+                        'xs:flex-col xs:items-start xs:gap-y-[14px]',
+                    )}
+                >
                     <div className={cx('review-list-label-rating', 'flex items-center')}>
                         <RatingStar value={getReviewsCount || 0} />
                         <Typography variant="p-2" className="ml-[6px]">
@@ -204,7 +211,14 @@ const ReviewList = ({
                         </Typography>
                     </div>
                     <Show when={isLogin == 1 || guest_review === '1'}>
-                        <Button variant="outlined" onClick={() => onWriteReview()}>
+                        <Button
+                            variant="outlined"
+                            onClick={() => onWriteReview()}
+                            className={cx(
+                                'xs:py-[8px] xs:px-[16px]',
+                                'sm:py-[10px] sm:px-[20px]',
+                            )}
+                        >
                             <Typography variant="bd-2" type="bold" letter="uppercase">
                                 {t('product:writeReview')}
                             </Typography>
