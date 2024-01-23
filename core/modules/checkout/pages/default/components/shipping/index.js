@@ -34,28 +34,38 @@ const Shipping = (props) => {
     const handleShipping = async (val) => {
         if (val) {
             const { cart } = checkout.data;
-            if (storeConfig.enable_oms_multiseller === '1') {
+            const isMultiSeller = storeConfig.enable_oms_multiseller === '1' || storeConfig.enable_oms_multiseller === 1;
+            if (isMultiSeller) {
                 const [carrier_code, method_code, seller_id] = val.split('_');
-                const setBySellerId = checkout.selected.shipping.find((item) => item.seller_id === seller_id);
+                const setBySellerId = checkout.selected.shipping.find((item) => item.seller_id === parseInt(seller_id, 10));
+                let newShippingData = [];
                 if (setBySellerId) {
-                    checkout.selected.shipping.find((item) => item.seller_id === seller_id).name.carrier_code = carrier_code;
-                    checkout.selected.shipping.find((item) => item.seller_id === seller_id).name.method_code = method_code;
+                    const newValue = { ...setBySellerId };
+                    const newShipping = checkout.selected.shipping.filter((item) => item.seller_id !== parseInt(seller_id, 10));
+                    newValue.name = {
+                        ...newValue.name,
+                        carrier_code,
+                        method_code,
+                    };
+                    newShippingData = [...newShipping, newValue];
+                    dispatch(setSelectedData({ shipping: newShippingData }));
                 }
                 const inputShippingMethod = [];
                 const GTMShippingMethod = [];
 
-                const checkEmpty = checkout.selected.shipping.find((item) => item.name.carrier_code === null);
+                const checkEmpty = newShippingData.find((item) => item.name.carrier_code === null);
                 const cartIdCookie = getCartId();
                 const checkoutShippingMethodLocalStorage = getLocalStorage('checkout_shipping_method');
 
                 if (!checkEmpty) {
-                    checkout.selected.shipping.forEach((selectedShipping) => {
+                    newShippingData.forEach((selectedShipping) => {
                         inputShippingMethod.push({
                             carrier_code: selectedShipping.name.carrier_code,
                             method_code: selectedShipping.name.method_code,
-                            seller_id: selectedShipping.seller_id,
+                            seller_id: typeof selectedShipping.seller_id === 'string'
+                                ? selectedShipping.seller_id : selectedShipping.seller_id,
                         });
-                        const sellerShipping = data.shippingMethods.filter((item) => item.seller_id === selectedShipping.seller_id);
+                        const sellerShipping = checkout.data.shippingMethods.filter((item) => item.seller_id === selectedShipping.seller_id);
                         const sellerSelectedShipping = sellerShipping[0].available_shipping_methods.filter(
                             (item) => item.method_code === selectedShipping.name.method_code,
                         );
@@ -75,7 +85,7 @@ const Shipping = (props) => {
                             const tempArray = checkoutShippingMethodLocalStorage.map(({ cartId, data: dataShipping }) => {
                                 const tempShippingData = dataShipping.map((item, index) => ({
                                     ...item,
-                                    ...checkout.selected.shipping[index],
+                                    ...newShippingData[index],
                                 }));
                                 if (cartId === cartIdCookie) {
                                     return {
@@ -93,7 +103,7 @@ const Shipping = (props) => {
                             const tempArray = [];
                             tempArray.push({
                                 cartId: cartIdCookie,
-                                data: checkout.selected.shipping,
+                                data: newShippingData,
                             });
                             setLocalStorage('checkout_shipping_method', tempArray);
                         }
@@ -101,7 +111,7 @@ const Shipping = (props) => {
                         const tempArray = [];
                         tempArray.push({
                             cartId: cartIdCookie,
-                            data: checkout.selected.shipping,
+                            data: newShippingData,
                         });
                         setLocalStorage('checkout_shipping_method', tempArray);
                     }
@@ -356,7 +366,6 @@ const Shipping = (props) => {
             handleShipping={handleShipping}
             loading={loading}
             selected={selected}
-            data={data}
             isOnlyVirtualProductOnCart={isOnlyVirtualProductOnCart}
             setLoadingSellerInfo={setLoadingSellerInfo}
             loadingSellerInfo={loadingSellerInfo}

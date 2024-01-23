@@ -9,11 +9,11 @@ const SelectOption = (props) => {
     } = props;
 
     let variant = 'text';
-    if (content.includes('#')) {
+    if (content?.includes('#')) {
         variant = 'color';
     }
 
-    if (content.includes('https') || (thumbnail && thumbnail !== '')) {
+    if (content?.includes('https') || (thumbnail && thumbnail !== '')) {
         variant = 'image';
     }
 
