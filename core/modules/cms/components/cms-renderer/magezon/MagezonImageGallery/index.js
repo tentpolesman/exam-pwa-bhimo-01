@@ -39,12 +39,14 @@ const MagezonImageGallery = (props) => {
     let sliderRef = useRef();
     const navRef = useRef();
     const elementRef = useRef();
+    const slideHeight = storeConfig.pwa?.magezon_slider_desktop_height;
+    const slideWidth = storeConfig.pwa?.magezon_slider_desktop_width;
     const dimensionProps = {
-        maxWidth: maxwidth.indexOf('%') !== -1 ? maxwidth : `${maxwidth}px`,
-        minWidth: minwidth.indexOf('%') !== -1 ? minwidth : `${minwidth}px`,
-        minHeight: minheight.indexOf('%') !== -1 ? minheight : `${minheight}px`,
-        width: width.indexOf('%') !== -1 ? width : `${width}px`,
-        height: !zoom ? (height.indexOf('%') !== -1 ? height : `${height}px`) : '100%',
+        maxWidth: maxwidth ? maxwidth.indexOf('%') !== -1 ? maxwidth : `${maxwidth}px` : `${slideWidth}px`,
+        minWidth: minwidth ? minwidth.indexOf('%') !== -1 ? minwidth : `${minwidth}px` : `${slideWidth}px`,
+        minHeight: minheight ? minheight.indexOf('%') !== -1 ? minheight : `${minheight}px` : `${slideHeight}px`,
+        width: width ? width.indexOf('%') !== -1 ? width : `${width}px` : `${slideWidth}px`,
+        height: !zoom && height ? (height.indexOf('%') !== -1 ? height : `${height}px`) : `${slideHeight}px`,
     };
 
     const setAutoplay = () => {
