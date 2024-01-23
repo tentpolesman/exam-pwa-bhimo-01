@@ -45,7 +45,7 @@ const BurgerMenuCategories = (props) => {
                         <div className={cx('border-b-[1px]', 'border-neutral-100', 'py-3', 'px-4')} key={index}>
                             {categories.children.length > 0 ? (
                                 <div className={cx('flex', 'justify-between', 'items-center')}>
-                                    <Link href={categories.url_path} prefetch={false}>
+                                    <Link href={`/${categories.url_path}`} prefetch={false}>
                                         <div className={cx('font-medium', 'text-base', 'leading-[18px]', 'hover:cursor-pointer')}>
                                             {categories.name}
                                         </div>
@@ -60,7 +60,7 @@ const BurgerMenuCategories = (props) => {
                                     </div>
                                 </div>
                             ) : (
-                                <Link href={categories.url_path} prefetch={false}>
+                                <Link href={`/${categories.url_path}`} prefetch={false}>
                                     <Typography className={cx('font-medium', 'text-base', 'leading-[18px]', 'hover:cursor-pointer')}>
                                         {categories.name}
                                     </Typography>
@@ -90,7 +90,7 @@ const BurgerMenuCategories = (props) => {
                                     <div className={cx('border-b-[1px]', 'border-neutral-100', 'py-3', 'px-4')} key={index}>
                                         {categories.children.length > 0 ? (
                                             <div className={cx('flex', 'justify-between', 'items-center')}>
-                                                <Link href={categories.url_path} prefetch={false}>
+                                                <Link href={`/${categories.url_path}`} prefetch={false}>
                                                     <div className={cx('font-medium', 'text-base', 'leading-[18px]', 'hover:cursor-pointer')}>
                                                         {categories.name}
                                                     </div>
@@ -105,7 +105,7 @@ const BurgerMenuCategories = (props) => {
                                                 </div>
                                             </div>
                                         ) : (
-                                            <Link href={categories.url_path} prefetch={false}>
+                                            <Link href={`/${categories.url_path}`} prefetch={false}>
                                                 <Typography className={cx('font-medium', 'text-base', 'leading-5')}>{categories.name}</Typography>
                                             </Link>
                                         )}
@@ -117,7 +117,7 @@ const BurgerMenuCategories = (props) => {
                             <div className={cx('border-b-[1px]', 'border-neutral-100', 'py-3', 'px-4')} key={index}>
                                 {categories.children.length > 0 ? (
                                     <div className={cx('flex', 'justify-between', 'items-center')}>
-                                        <Link href={categories.url_path} prefetch={false}>
+                                        <Link href={`/${categories.url_path}`} prefetch={false}>
                                             <div className={cx('font-medium', 'text-base', 'leading-[18px]', 'hover:cursor-pointer')}>
                                                 {categories.name}
                                             </div>
@@ -132,7 +132,7 @@ const BurgerMenuCategories = (props) => {
                                         </div>
                                     </div>
                                 ) : (
-                                    <Link href={categories.url_path} prefetch={false}>
+                                    <Link href={`/${categories.url_path}`} prefetch={false}>
                                         <Typography className={cx('font-medium', 'text-base', 'leading-5')}>{categories.name}</Typography>
                                     </Link>
                                 )}
@@ -160,7 +160,7 @@ const BurgerMenuCategories = (props) => {
                                     <div className={cx('border-b-[1px]', 'border-neutral-100', 'py-3', 'px-4')} key={index}>
                                         {categories.children.length > 0 ? (
                                             <div className={cx('flex', 'justify-between', 'items-center')}>
-                                                <Link href={categories.url_path} prefetch={false}>
+                                                <Link href={`/${categories.url_path}`} prefetch={false}>
                                                     <div className={cx('font-medium', 'text-base', 'leading-[18px]', 'hover:cursor-pointer')}>
                                                         {categories.name}
                                                     </div>
@@ -175,7 +175,7 @@ const BurgerMenuCategories = (props) => {
                                                 </div>
                                             </div>
                                         ) : (
-                                            <Link href={categories.url_path} prefetch={false}>
+                                            <Link href={`/${categories.url_path}`} prefetch={false}>
                                                 <Typography className={cx('font-medium', 'text-base', 'leading-5')}>{categories.name}</Typography>
                                             </Link>
                                         )}
@@ -187,7 +187,7 @@ const BurgerMenuCategories = (props) => {
                             <div className={cx('border-b-[1px]', 'border-neutral-100', 'py-3', 'px-4')} key={index}>
                                 {categories.children.length > 0 ? (
                                     <div className={cx('flex', 'justify-between', 'items-center')}>
-                                        <Link href={categories.url_path} prefetch={false}>
+                                        <Link href={`/${categories.url_path}`} prefetch={false}>
                                             <div className={cx('font-medium', 'text-base', 'leading-[18px]', 'hover:cursor-pointer')}>
                                                 {categories.name}
                                             </div>
@@ -202,7 +202,7 @@ const BurgerMenuCategories = (props) => {
                                         </div>
                                     </div>
                                 ) : (
-                                    <Link href={categories.url_path} prefetch={false}>
+                                    <Link href={`/${categories.url_path}`} prefetch={false}>
                                         <Typography className={cx('font-medium', 'text-base', 'leading-5')}>{categories.name}</Typography>
                                     </Link>
                                 )}
@@ -227,7 +227,7 @@ const BurgerMenuCategories = (props) => {
                                         />
                                     </div>
                                     <div className={cx('border-b-[1px]', 'border-neutral-100', 'py-3', 'px-4')} key={index}>
-                                        <Link href={categories.url_path} prefetch={false}>
+                                        <Link href={`/${categories.url_path}`} prefetch={false}>
                                             <Typography className={cx('font-medium', 'text-base', 'leading-5')}>{categories.name}</Typography>
                                         </Link>
                                     </div>
@@ -236,7 +236,7 @@ const BurgerMenuCategories = (props) => {
                         }
                         return (
                             <div className={cx('border-b-[1px]', 'border-neutral-100', 'py-3', 'px-4')} key={index}>
-                                <Link href={categories.url_path} prefetch={false}>
+                                <Link href={`/${categories.url_path}`} prefetch={false}>
                                     <Typography className={cx('font-medium', 'text-base', 'leading-5')}>{categories.name}</Typography>
                                 </Link>
                             </div>
