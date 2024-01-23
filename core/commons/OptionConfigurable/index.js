@@ -4,16 +4,15 @@ import Swatch from '@common/Forms/Swatch';
 
 const SelectOption = (props) => {
     const {
-        value, selected, onChange, className = '', disabled = false, thumbnail, content,
-        variant: customVariant,
+        value, selected, onChange, className = '', disabled = false, thumbnail, content, variant: customVariant,
     } = props;
 
     let variant = 'text';
-    if (content.includes('#')) {
+    if (content?.includes('#')) {
         variant = 'color';
     }
 
-    if (content.includes('https') || (thumbnail && thumbnail !== '')) {
+    if (content?.includes('https') || (thumbnail && thumbnail !== '')) {
         variant = 'image';
     }
 
@@ -29,7 +28,7 @@ const SelectOption = (props) => {
             checked={selected}
             value={content}
             onClick={handleChange}
-            label={(thumbnail && thumbnail !== '') ? thumbnail : content}
+            label={thumbnail && thumbnail !== '' ? thumbnail : content}
             className={className}
         />
     );

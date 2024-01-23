@@ -122,7 +122,8 @@
         "fetchError": "Connection Error. Please try again later.",
         "browser": "Browser not supported",
         "videoNotSupported": "Your browser does not support the video tag.",
-        "captcha": "Recaptcha verification failed, please try again."
+        "captcha": "Recaptcha verification failed, please try again.",
+        "wentWrong": "Something went wrong. Please try again later."
     },
     "fileUpload": {
         "reject": "Cannot upload, Files must be a type ",
