@@ -26,10 +26,10 @@ const ConfirmationView = ({
 
     return (
         <>
-            <div className="flex flex-col py-5 w-full" id="checkoutAgreements">
-                {
-                    agreements && agreements.checkoutAgreements.map((item, index) => (
-                        <div className="flex flex-col" id="agreement-row" key={index}>
+            {
+                agreements && agreements.checkoutAgreements.map((item, index) => (
+                    <div className="flex flex-col py-5 w-full checkoutAgreements" key={index}>
+                        <div className="flex flex-col agreement-row">
                             <div>
                                 {
                                     item.mode === 'MANUAL' ? (
@@ -80,9 +80,9 @@ const ConfirmationView = ({
                                 />
                             </div>
                         </div>
-                    ))
-                }
-            </div>
+                    </div>
+                ))
+            }
         </>
     );
 };

@@ -21,6 +21,7 @@ const RadioDeliveryItem = (props) => {
         price_incl_tax,
         storeConfig,
         disabled = false,
+        id,
     } = props;
     const handleChange = () => {
         if (!disabled) {
@@ -68,7 +69,7 @@ const RadioDeliveryItem = (props) => {
         rightSide = (
             <div className="flex flex-row">
                 <div className="xs:basis-full sm:basis-1/2">
-                    <Typography variant="p" type={labelType} className="ml-auto font-bold text-right">
+                    <Typography variant="bd-2" type={labelType} className="ml-auto font-bold text-right">
                         {price_incl_tax.value !== 0 ? formatPrice(price_incl_tax.value, amount.currency, currencyCache
                             || base_currency_code, currencyCache) : 'FREE'}
                     </Typography>
@@ -94,6 +95,8 @@ const RadioDeliveryItem = (props) => {
         </div>
     );
 
+    const itemId = id || `${label}_${value}_${Math.random(Date.now())}`.replace(/ /g, '_');
+
     return (
         <div className="checkoutRadioItem flex flex-row">
             <Radio
@@ -102,18 +105,18 @@ const RadioDeliveryItem = (props) => {
                 variant="single"
                 checked={selected}
                 onClick={handleChange}
-                id={`${label}_${value}`.replace(/ /g, '_')}
                 classNames={{
                     radioClasses: classNames(
                         'cursor-pointer',
                         disabled ? '!border-neutral-500 focus:!border-500 !text-neutral-500' : '',
                     ),
                 }}
+                id={itemId}
                 disabled={disabled}
             />
 
             <label
-                for={`${label}_${value}`.replace(/ /g, '_')}
+                for={itemId}
                 className={classNames(
                     'flex flex-row items-center w-full justify-between',
                     'cursor-pointer',
