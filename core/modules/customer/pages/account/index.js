@@ -1,18 +1,12 @@
 import { withTranslation } from 'next-i18next';
 import { withApollo } from '@lib_apollo';
+import dynamic from 'next/dynamic';
 
-import Core from '@core_modules/customer/pages/account/core';
-import Skeleton from '@core_modules/customer/pages/account/components/Skeleton';
-import CustomerView from '@core_modules/customer/pages/account/components/Customer/view';
-import GuestView from '@core_modules/customer/pages/account/components/Guest';
+const Core = dynamic(() => import('@core_modules/customer/pages/account/core'), { ssr: false });
+const Skeleton = dynamic(() => import('@core_modules/customer/pages/account/components/Skeleton'), { ssr: false });
+const CustomerView = dynamic(() => import('@core_modules/customer/pages/account/components/Customer/view'), { ssr: false });
+const GuestView = dynamic(() => import('@core_modules/customer/pages/account/components/Guest'), { ssr: false });
 
-const Page = (props) => (
-    <Core
-        {...props}
-        CustomerView={CustomerView}
-        Skeleton={Skeleton}
-        GuestView={GuestView}
-    />
-);
+const Page = (props) => <Core {...props} CustomerView={CustomerView} Skeleton={Skeleton} GuestView={GuestView} />;
 
 export default withApollo({ ssr: true })(withTranslation()(Page));

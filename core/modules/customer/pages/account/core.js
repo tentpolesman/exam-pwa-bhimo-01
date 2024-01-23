@@ -2,13 +2,14 @@ import Layout from '@layout';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { setCartId } from '@helper_cartid';
+import { getLoginInfo } from '@helper_auth';
 import { reOrder as mutationReorder, getCmsBlocks } from '@core_modules/customer/services/graphql';
 
 const Customer = dynamic(() => import('@core_modules/customer/pages/account/components/Customer'), { ssr: false });
 
 const CustomerAccount = (props) => {
     const {
-        t, isLogin, CustomerView, Skeleton, GuestView, pageConfig, storeConfig,
+        t, CustomerView, Skeleton, GuestView, pageConfig, storeConfig,
     } = props;
     const router = useRouter();
     const config = {
@@ -26,19 +27,22 @@ const CustomerAccount = (props) => {
                 variables: {
                     order_id,
                 },
-            }).then(async (res) => {
-                if (res.data && res.data.reorder && res.data.reorder.cart_id) {
-                    await setCartId(res.data.reorder.cart_id);
-                    setTimeout(() => {
-                        router.push('/checkout/cart');
-                    }, 1000);
-                }
-                window.backdropLoader(false);
-            }).catch(() => {
-                window.backdropLoader(false);
-            });
+            })
+                .then(async (res) => {
+                    if (res.data && res.data.reorder && res.data.reorder.cart_id) {
+                        await setCartId(res.data.reorder.cart_id);
+                        setTimeout(() => {
+                            router.push('/checkout/cart');
+                        }, 1000);
+                    }
+                    window.backdropLoader(false);
+                })
+                .catch(() => {
+                    window.backdropLoader(false);
+                });
         }
     };
+    const isLogin = getLoginInfo();
 
     if (isLogin) {
         return (
