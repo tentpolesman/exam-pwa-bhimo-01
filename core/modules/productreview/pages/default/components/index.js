@@ -265,7 +265,7 @@ const ProductReviewPage = (props) => {
                             </Show>
                             <Show when={!hasData}>
                                 <Alert severity="warning" withIcon>
-                                    {t('storecredit:emptyMessage')}
+                                    {t('productreview:emptyMessage')}
                                 </Alert>
                             </Show>
                         </Show>
