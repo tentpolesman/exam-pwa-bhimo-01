@@ -4,8 +4,7 @@ import dynamic from 'next/dynamic';
 
 const Core = dynamic(() => import('@core_modules/productreview/pages/default/core'), { ssr: false });
 const Content = dynamic(() => import('@core_modules/productreview/pages/default/components'), { ssr: false });
-const ErrorView = dynamic(() => import('@core_modules/productreview/pages/default/components/error'), { ssr: false });
 
-const MyProductReview = (props) => <Core {...props} Content={Content} ErrorView={ErrorView} />;
+const MyProductReview = (props) => <Core {...props} Content={Content} />;
 
 export default withApollo({ ssr: true })(withTranslation()(MyProductReview));

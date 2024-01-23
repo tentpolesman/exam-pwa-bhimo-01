@@ -1,11 +1,9 @@
 import Layout from '@layout';
-import CustomerLayout from '@layout_customer';
-import { debuging } from '@config';
 import { getReview } from '@core_modules/productreview/services/graphql';
 
 const PageReview = (props) => {
     const {
-        t, Content, pageConfig, rowsPerPage = 10, storeConfig, ErrorView,
+        t, Content, pageConfig, rowsPerPage = 10, storeConfig,
     } = props;
     const config = {
         title: t('productreview:title'),
@@ -31,16 +29,6 @@ const PageReview = (props) => {
         currentPageReview: page,
     });
 
-    if (error) {
-        return (
-            <Layout {...props} pageConfig={pageConfig || config}>
-                <CustomerLayout {...props}>
-                    <ErrorView {...props} message={debuging.originalError ? error.message.split(':')[1] : t('common:error:fetchError')} />
-                </CustomerLayout>
-            </Layout>
-        );
-    }
-
     if (data) {
         reviewCustomer = data.customer.reviews;
     }
@@ -50,6 +38,7 @@ const PageReview = (props) => {
                 t={t}
                 reviewCustomer={reviewCustomer}
                 loading={loading}
+                error={error}
                 rowsPerPage={perPage}
                 page={page}
                 handleChangePage={handleChangePage}
