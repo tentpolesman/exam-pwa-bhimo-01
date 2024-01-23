@@ -7,26 +7,62 @@ import Show from '@common_show';
 import Select from '@common_forms/Select';
 import Pagination from '@common_pagination';
 import Skeleton from '@common_skeleton';
-import SkeletonStoreCredit from '@core_modules/storecredit/pages/default/components/skeleton';
+import { SkeletonDesktop, SkeletonMobile } from '@core_modules/storecredit/pages/default/components/skeleton';
 import Alert from '@common_alert';
+
+const MobileTableItemComponent = ({ label, value, CustomComponentValue }) => (
+    <div className={cx('flex flex-row')}>
+        <div className={cx('mobile:w-[40%] tablet:w-[45%]')}>
+            <Typography variant="bd-2b" className={cx('!font-semibold')}>
+                {label}
+            </Typography>
+        </div>
+        <div className="w-[5%]">
+            <Typography variant="bd-2b">{' : '}</Typography>
+        </div>
+        <div className={cx('mobile:w-[55%] tablet:w-[50%]')}>
+            <Show when={!!CustomComponentValue}>{CustomComponentValue}</Show>
+            <Show when={!CustomComponentValue}>
+                <Typography variant="bd-2b">{value}</Typography>
+            </Show>
+        </div>
+    </div>
+);
 
 const StoreCreditPage = (props) => {
     const {
-        t, storeCredit, loading, rowsPerPage, page, handleChangePage, handleChangeRowsPerPage, currencyCache,
+        t, storeCredit, loading, error, rowsPerPage, page, handleChangePage, handleChangeRowsPerPage, currencyCache,
     } = props;
 
-    const hasTransaction = storeCredit?.transaction_history?.items && storeCredit?.transaction_history?.items?.length > 0;
+    const hasData = storeCredit?.transaction_history?.items && storeCredit?.transaction_history?.items?.length > 0;
     const pageInfo = storeCredit?.transaction_history?.page_info;
     const totalCount = storeCredit?.transaction_history?.total_count ?? 0;
 
+    const StoreCreditBalanceComponent = () => (
+        <div className={cx('storecredit-balance-wrapper', 'flex', 'items-center', 'mt-[10px]')}>
+            <div>
+                <Typography variant="bd-2b">
+                    {t('storecredit:balance')}
+                    {' '}
+                    <Show when={!loading && !error}>
+                        <b>
+                            {formatPrice(
+                                    storeCredit?.current_balance?.value ?? 0,
+                                    storeCredit?.current_balance?.currency ?? 'IDR',
+                                    currencyCache,
+                            )}
+                        </b>
+                    </Show>
+                </Typography>
+            </div>
+            <Show when={loading}>
+                <Skeleton width={50} height={15} className={cx('ml-[5px]', 'mt-[2px]')} />
+            </Show>
+        </div>
+    );
+
     const PaginationComponent = () => (
-        <div
-            className={cx(
-                'table-data pt-6 flex justify-between',
-                'tablet:items-center tablet:flex-row',
-                'mobile:flex-col',
-            )}
-        >
+        <div className={cx('table-data pt-6 flex justify-between', 'tablet:items-center tablet:flex-row', 'mobile:flex-col')}>
             <div className="flex justify-between items-center flex-1">
                 <Typography className={cx('font-normal', 'leading-2lg')}>{`${totalCount ?? 0} ${t('common:label:data')}`}</Typography>
                 <div className="flex items-center">
@@ -73,29 +109,10 @@ const StoreCreditPage = (props) => {
     return (
         <Layout {...props}>
             <div className={cx('storecredit-container')}>
-                <div className={cx('storecredit-balance-wrapper', 'flex', 'items-center', 'mt-[10px]')}>
-                    <div>
-                        <Typography variant="bd-2b">
-                            {t('storecredit:balance')}
-                            {' '}
-                            <Show when={!loading}>
-                                <b>
-                                    {formatPrice(
-                                        storeCredit?.current_balance?.value ?? 0,
-                                        storeCredit?.current_balance?.currency ?? 'IDR',
-                                        currencyCache,
-                                    )}
-                                </b>
-                            </Show>
-                        </Typography>
-                    </div>
-                    <Show when={loading}>
-                        <Skeleton width={50} height={15} className={cx('ml-[5px]', 'mt-[2px]')} />
-                    </Show>
-                </div>
-
-                <div className={cx('pt-5')}>
-                    <div className={cx('relative', 'overflow-x-auto', 'rounded-lg')}>
+                {/** Desktop */}
+                <div className={cx('mobile:max-desktop:hidden')}>
+                    <StoreCreditBalanceComponent />
+                    <div className={cx('relative', 'overflow-x-auto', 'rounded-lg', 'pt-5')}>
                         <table className={cx('w-full', 'text-base', 'border-[1px]', 'border-neutral-100')}>
                             <thead>
                                 <tr className={cx('text-neutral-500', 'font-semibold', 'leading-2lg', 'text-left')}>
@@ -112,74 +129,150 @@ const StoreCreditPage = (props) => {
                             </thead>
                             <tbody>
                                 <Show when={loading}>
-                                    <SkeletonStoreCredit />
+                                    <SkeletonDesktop />
                                 </Show>
                                 <Show when={!loading}>
-                                    <Show when={hasTransaction}>
-                                        <>
-                                            {storeCredit?.transaction_history?.items.map((val, index) => (
-                                                <tr className={cx('even:bg-white', 'odd:bg-neutral-50')} key={index}>
-                                                    <td className={cx('p-4')}>
-                                                        <Typography variant="bd-2b">{val.transaction_id}</Typography>
-                                                    </td>
-                                                    <td className={cx('p-4')}>
-                                                        <Typography
-                                                            variant="bd-2b"
-                                                            className={cx(
-                                                                val?.store_credit_adjustment?.value < 0 ? '!text-red-500' : '!text-green-500',
-                                                            )}
-                                                        >
-                                                            {formatPrice(
-                                                                val.store_credit_adjustment.value,
-                                                                val.store_credit_adjustment.currency,
-                                                                currencyCache,
-                                                            )}
-                                                        </Typography>
-                                                    </td>
-                                                    <td className={cx('p-4')}>
-                                                        <Typography variant="bd-2b">
-                                                            {formatPrice(
-                                                                val.store_credit_balance.value,
-                                                                val.store_credit_balance.currency,
-                                                                currencyCache,
-                                                            )}
-                                                        </Typography>
-                                                    </td>
-                                                    <td className={cx('p-4')}>
-                                                        <Typography variant="bd-2b">{val.comment}</Typography>
-                                                    </td>
-                                                    <td className={cx('p-4')}>
-                                                        <Typography variant="bd-2b">{formatDate(val.created_at, 'DD/MM/YYYY')}</Typography>
-                                                    </td>
-                                                </tr>
-                                            ))}
-                                        </>
-                                    </Show>
-                                    <Show when={!hasTransaction}>
+                                    <Show when={error}>
                                         <td colSpan={5}>
-                                            <Alert severity="warning" withIcon>
-                                                {t('storecredit:emptyMessage')}
+                                            <Alert severity="error" withIcon>
+                                                {error?.message ?? t('common:error:fetchError')}
                                             </Alert>
                                         </td>
+                                    </Show>
+                                    <Show when={!error}>
+                                        <Show when={hasData}>
+                                            <>
+                                                {storeCredit?.transaction_history?.items.map((val, index) => (
+                                                    <tr className={cx('even:bg-white', 'odd:bg-neutral-50')} key={index}>
+                                                        <td className={cx('p-4')}>
+                                                            <Typography variant="bd-2b">{val.transaction_id}</Typography>
+                                                        </td>
+                                                        <td className={cx('p-4')}>
+                                                            <Typography
+                                                                variant="bd-2b"
+                                                                className={cx(
+                                                                    val?.store_credit_adjustment?.value < 0 ? '!text-red-500' : '!text-green-500',
+                                                                )}
+                                                            >
+                                                                {formatPrice(
+                                                                    val.store_credit_adjustment.value,
+                                                                    val.store_credit_adjustment.currency,
+                                                                    currencyCache,
+                                                                )}
+                                                            </Typography>
+                                                        </td>
+                                                        <td className={cx('p-4')}>
+                                                            <Typography variant="bd-2b">
+                                                                {formatPrice(
+                                                                    val.store_credit_balance.value,
+                                                                    val.store_credit_balance.currency,
+                                                                    currencyCache,
+                                                                )}
+                                                            </Typography>
+                                                        </td>
+                                                        <td className={cx('p-4')}>
+                                                            <Typography variant="bd-2b">{val.comment}</Typography>
+                                                        </td>
+                                                        <td className={cx('p-4')}>
+                                                            <Typography variant="bd-2b">{formatDate(val.created_at, 'DD/MM/YYYY')}</Typography>
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                            </>
+                                        </Show>
+                                        <Show when={!hasData}>
+                                            <td colSpan={5}>
+                                                <Alert severity="warning" withIcon>
+                                                    {t('storecredit:emptyMessage')}
+                                                </Alert>
+                                            </td>
+                                        </Show>
                                     </Show>
                                 </Show>
                             </tbody>
                         </table>
                     </div>
                     {/** show pagination */}
-                    <Show when={hasTransaction && !loading}>
+                    <Show when={hasData && !loading}>
                         <PaginationComponent />
                     </Show>
-                    {/** skeleton pagination */}
+                </div>
+
+                {/** Mobile Tablet */}
+                <div className={cx('desktop:hidden', 'pt-[10px]')}>
+                    <div className={cx('mobile-title')}>
+                        <Typography variant="bd-2b" className={cx('text-lg font-semibold')}>
+                            {t('storecredit:title')}
+                        </Typography>
+                    </div>
+                    <StoreCreditBalanceComponent />
+
+                    <div className={cx('divider', 'border-b-[1.5px] border-neutral-200', 'mt-[16px]', 'mobile:!mb-[20px] tablet:mb-[24px]')} />
+
                     <Show when={loading}>
-                        <div
-                            className={cx(
-                                'pt-6 flex items-center justify-between',
-                            )}
-                        >
-                            <Skeleton width={50} height={25} />
-                            <Skeleton width={150} height={50} />
-                        </div>
+                        <SkeletonMobile />
+                    </Show>
+
+                    <Show when={!loading}>
+                        <Show when={error}>
+                            <Alert severity="error" withIcon>
+                                {error?.message ?? t('common:error:fetchError')}
+                            </Alert>
+                        </Show>
+
+                        <Show when={!error}>
+                            <Show when={hasData}>
+                                <>
+                                    {storeCredit?.transaction_history?.items.map((val, index) => (
+                                        <div
+                                            key={`mobile-downloadable-item-${index}`}
+                                            className={cx(
+                                                'mobile-downloadable-item',
+                                                'flex',
+                                                'flex-col',
+                                                'border-[1px] border-neutral-200',
+                                                'rounded-[6px]',
+                                                'px-[24px]',
+                                                'py-[20px]',
+                                                'mobile:!mb-[16px] tablet:!mb-[24px]',
+                                            )}
+                                        >
+                                            <MobileTableItemComponent label={t('storecredit:transactionId')} value={val.transaction_id} />
+                                            <MobileTableItemComponent
+                                                label={t('storecredit:adjustment')}
+                                                CustomComponentValue={(
+                                                    <Typography
+                                                        variant="bd-2b"
+                                                        className={cx(val?.store_credit_adjustment?.value < 0 ? '!text-red-500' : '!text-green-500')}
+                                                    >
+                                                        {formatPrice(
+                                                            val.store_credit_adjustment.value,
+                                                            val.store_credit_adjustment.currency,
+                                                            currencyCache,
+                                                        )}
+                                                    </Typography>
+                                                )}
+                                            />
+                                            <MobileTableItemComponent
+                                                label={t('storecredit:creditbalance')}
+                                                value={formatPrice(val.store_credit_balance.value, val.store_credit_balance.currency, currencyCache)}
+                                            />
+                                            <MobileTableItemComponent label={t('storecredit:comment')} value={val.comment} />
+                                            <MobileTableItemComponent
+                                                label={t('storecredit:date')}
+                                                value={formatDate(val.created_at, 'DD/MM/YYYY')}
+                                            />
+                                        </div>
+                                    ))}
+                                    <PaginationComponent />
+                                </>
+                            </Show>
+                            <Show when={!hasData}>
+                                <Alert severity="warning" withIcon>
+                                    {t('storecredit:emptyMessage')}
+                                </Alert>
+                            </Show>
+                        </Show>
                     </Show>
                 </div>
             </div>

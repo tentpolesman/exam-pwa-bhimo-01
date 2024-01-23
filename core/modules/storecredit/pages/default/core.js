@@ -1,13 +1,11 @@
 import Layout from '@layout';
-import CustomerLayout from '@layout_customer';
-import { debuging } from '@config';
 import { getStoreCredit } from '@core_modules/storecredit/services/graphql';
 import { useReactiveVar } from '@apollo/client';
 import { currencyVar } from '@core/services/graphql/cache';
 
 const PageStoreCredit = (props) => {
     const {
-        t, Content, pageConfig, rowsPerPage = 10, ErrorView,
+        t, Content, pageConfig, rowsPerPage = 10,
     } = props;
     const config = {
         title: t('storecredit:title'),
@@ -43,15 +41,6 @@ const PageStoreCredit = (props) => {
         pageSizeStoreCredit: perPage,
         currentPageStoreCredit: page,
     });
-    if (error) {
-        return (
-            <Layout {...props} pageConfig={pageConfig || config}>
-                <CustomerLayout {...props}>
-                    <ErrorView {...props} message={debuging.originalError ? error.message.split(':')[1] : t('common:error:fetchError')} />
-                </CustomerLayout>
-            </Layout>
-        );
-    }
 
     if (data) {
         storeCredit = data.customer.store_credit;
@@ -62,6 +51,7 @@ const PageStoreCredit = (props) => {
                 t={t}
                 storeCredit={storeCredit}
                 loading={loading}
+                error={error}
                 rowsPerPage={perPage}
                 page={page}
                 handleChangePage={handleChangePage}

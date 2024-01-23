@@ -17,6 +17,14 @@ export const getCustomer = () =>
         fetchPolicy: 'no-cache',
     });
 
+export const getCustomerLazy = () =>
+    useLazyQuery(schema.getCustomer, {
+        context: {
+            request: 'internal',
+        },
+        fetchPolicy: 'no-cache',
+    });
+
 export const getIsSubscribedCustomer = () =>
     useLazyQuery(schema.getCustomer, {
         context: {
