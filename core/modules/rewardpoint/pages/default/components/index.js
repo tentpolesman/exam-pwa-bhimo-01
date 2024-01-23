@@ -13,15 +13,34 @@ import Show from '@common_show';
 import Select from '@common_forms/Select';
 import Pagination from '@common_pagination';
 import Skeleton from '@common_skeleton';
-import SkeletonRewardPoint from '@core_modules/rewardpoint/pages/default/components/skeleton';
+import { SkeletonDesktop, SkeletonMobile } from '@core_modules/rewardpoint/pages/default/components/skeleton';
 import Alert from '@common_alert';
+
+const MobileTableItemComponent = ({ label, value, CustomComponentValue }) => (
+    <div className={cx('flex flex-row')}>
+        <div className={cx('mobile:w-[40%] tablet:w-[45%]')}>
+            <Typography variant="bd-2b" className={cx('!font-semibold')}>
+                {label}
+            </Typography>
+        </div>
+        <div className="w-[5%]">
+            <Typography variant="bd-2b">{' : '}</Typography>
+        </div>
+        <div className={cx('mobile:w-[55%] tablet:w-[50%]')}>
+            <Show when={!!CustomComponentValue}>{CustomComponentValue}</Show>
+            <Show when={!CustomComponentValue}>
+                <Typography variant="bd-2b">{value}</Typography>
+            </Show>
+        </div>
+    </div>
+);
 
 const RewardPointView = (props) => {
     const {
- data, t, loading, getPath, getId, rowsPerPage, page, handleChangePage, handleChangeRowsPerPage, currencyCache,
+ data, t, loading, error, getPath, getId, rowsPerPage, page, handleChangePage, handleChangeRowsPerPage, currencyCache,
 } = props;
 
-    const hasTransaction = data?.transaction_history?.items && data?.transaction_history?.items?.length > 0;
+    const hasData = data?.transaction_history?.items && data?.transaction_history?.items?.length > 0;
     const pageInfo = data?.transaction_history?.page_info;
     const totalCount = data?.transaction_history?.total_count ?? 0;
 
@@ -37,14 +56,53 @@ const RewardPointView = (props) => {
         return pointFormat;
     };
 
+    const RewardPointInfoComponent = () => (
+        <>
+            <div className={cx('rewardpoint-balance-wrapper', 'flex', 'items-center', 'mt-[10px]')}>
+                <div>
+                    <Typography variant="bd-2b">
+                        {t('rewardpoint:balanceTitle')}
+                        {' '}
+                        <Show when={!loading}>
+                            <b>{formatPoint(data.balance)}</b>
+                        </Show>
+                    </Typography>
+                </div>
+                <Show when={loading}>
+                    <Skeleton width={50} height={15} className={cx('ml-[5px]', 'mt-[2px]')} />
+                </Show>
+            </div>
+            <div className={cx('rewardpoint-canbe-wrapper', 'flex', 'items-center')}>
+                <div>
+                    <Typography variant="bd-2b">
+                        {t('rewardpoint:canbeTitle')}
+                        {' '}
+                        <Show when={!loading}>
+                            <b>{formatPrice(data.balanceCurrency ?? 0, 'IDR', currencyCache)}</b>
+                        </Show>
+                    </Typography>
+                </div>
+                <Show when={loading}>
+                    <Skeleton width={50} height={15} className={cx('ml-[5px]', 'mt-[2px]')} />
+                </Show>
+            </div>
+            <div className={cx('rewardpoint-learn-more', 'flex', 'items-center')}>
+                <div>
+                    <Typography variant="bd-2b">
+                        {t('rewardpoint:learnMore').split('$')[0]}
+                        <Link href="/[...slug]" as="/aw-reward-points" legacyBehavior>
+                            <a target="_blank" rel="noopener noreferrer" className={cx('text-primary-700', 'hover:underline')}>
+                                {t('rewardpoint:learnMore').split('$')[1]}
+                            </a>
+                        </Link>
+                    </Typography>
+                </div>
+            </div>
+        </>
+        );
+
     const PaginationComponent = () => (
-        <div
-            className={cx(
-                'table-data pt-6 flex justify-between',
-                'tablet:items-center tablet:flex-row',
-                'mobile:flex-col',
-            )}
-        >
+        <div className={cx('table-data pt-6 flex justify-between', 'tablet:items-center tablet:flex-row', 'mobile:flex-col')}>
             <div className="flex justify-between items-center flex-1">
                 <Typography className={cx('font-normal', 'leading-2lg')}>{`${totalCount ?? 0} ${t('common:label:data')}`}</Typography>
                 <div className="flex items-center">
@@ -91,49 +149,10 @@ const RewardPointView = (props) => {
     return (
         <Layout {...props}>
             <div className={cx('rewardpoint-container')}>
-                <div className={cx('rewardpoint-balance-wrapper', 'flex', 'items-center', 'mt-[10px]')}>
-                    <div>
-                        <Typography variant="bd-2b">
-                            {t('rewardpoint:balanceTitle')}
-                            {' '}
-                            <Show when={!loading}>
-                                <b>{formatPoint(data.balance)}</b>
-                            </Show>
-                        </Typography>
-                    </div>
-                    <Show when={loading}>
-                        <Skeleton width={50} height={15} className={cx('ml-[5px]', 'mt-[2px]')} />
-                    </Show>
-                </div>
-                <div className={cx('rewardpoint-canbe-wrapper', 'flex', 'items-center')}>
-                    <div>
-                        <Typography variant="bd-2b">
-                            {t('rewardpoint:canbeTitle')}
-                            {' '}
-                            <Show when={!loading}>
-                                <b>{formatPrice(data.balanceCurrency ?? 0, 'IDR', currencyCache)}</b>
-                            </Show>
-                        </Typography>
-                    </div>
-                    <Show when={loading}>
-                        <Skeleton width={50} height={15} className={cx('ml-[5px]', 'mt-[2px]')} />
-                    </Show>
-                </div>
-                <div className={cx('rewardpoint-learn-more', 'flex', 'items-center')}>
-                    <div>
-                        <Typography variant="bd-2b">
-                            {t('rewardpoint:learnMore').split('$')[0]}
-                            <Link href="/[...slug]" as="/aw-reward-points" legacyBehavior>
-                                <a target="_blank" rel="noopener noreferrer" className={cx('text-primary-700', 'hover:underline')}>
-                                    {t('rewardpoint:learnMore').split('$')[1]}
-                                </a>
-                            </Link>
-                        </Typography>
-                    </div>
-                </div>
-
-                <div className={cx('pt-5')}>
-                    <div className={cx('relative', 'overflow-x-auto', 'rounded-lg')}>
+                {/** Desktop */}
+                <div className={cx('mobile:max-desktop:hidden')}>
+                    <RewardPointInfoComponent />
+                    <div className={cx('relative', 'overflow-x-auto', 'rounded-lg', 'pt-5')}>
                         <table className={cx('w-full', 'text-base', 'border-[1px]', 'border-neutral-100')}>
                             <thead>
                                 <tr className={cx('text-neutral-500', 'font-semibold', 'leading-2lg', 'text-left')}>
@@ -151,81 +170,169 @@ const RewardPointView = (props) => {
                             </thead>
                             <tbody>
                                 <Show when={loading}>
-                                    <SkeletonRewardPoint />
+                                    <SkeletonDesktop />
                                 </Show>
                                 <Show when={!loading}>
-                                    <Show when={hasTransaction}>
-                                        <>
-                                            {data?.transaction_history?.items.map((val, index) => (
-                                                <tr className={cx('even:bg-white', 'odd:bg-neutral-50')} key={index}>
-                                                    <td className={cx('p-4')}>
-                                                        <Typography variant="bd-2b">{val.transactionId}</Typography>
-                                                    </td>
-                                                    <td className={cx('p-4')}>
-                                                        <Typography variant="bd-2b">{formatPoint(val.balance)}</Typography>
-                                                    </td>
-                                                    <td className={cx('p-4')}>
-                                                        <Typography variant="bd-2b">
-                                                            {val.comment.split('<a').length > 1
-                                                            && val.comment.includes('/sales/order/view/order_id') ? (
-                                                                <div
-                                                                    dangerouslySetInnerHTML={{
-                                                                        __html: `${val.comment.split('<a')[0]}
-                                                                            <a href="${getPath(val.comment)}">#${getId(val.comment)}</a>`,
-                                                                    }}
-                                                                />
-                                                            ) : (
-                                                                <div dangerouslySetInnerHTML={{ __html: val.comment }} />
-                                                            )}
-                                                        </Typography>
-                                                    </td>
-                                                    <td className={cx('p-4')}>
-                                                        <Typography variant="bd-2b">
-                                                            {val.expirationDate ? formatDate(val.expirationDate, 'DD/MM/YYYY') : '-'}
-                                                        </Typography>
-                                                    </td>
-                                                    <td className={cx('p-4')}>
-                                                        <Typography
-                                                            variant="bd-2b"
-                                                            className={cx(val?.points < 0 ? '!text-red-500' : '!text-green-500')}
-                                                        >
-                                                            {formatPoint(val.points)}
-                                                        </Typography>
-                                                    </td>
-                                                    <td className={cx('p-4')}>
-                                                        <Typography variant="bd-2b">
-                                                            {val.transactionDate ? formatDate(val.transactionDate, 'DD/MM/YYYY') : '-'}
-                                                        </Typography>
-                                                    </td>
-                                                </tr>
-                                            ))}
-                                        </>
-                                    </Show>
-                                    <Show when={!hasTransaction}>
+                                    <Show when={error}>
                                         <td colSpan={6}>
-                                            <Alert severity="warning" withIcon>
-                                                {t('rewardpoint:emptyMessage')}
+                                            <Alert severity="error" withIcon>
+                                                {error?.message ?? t('common:error:fetchError')}
                                             </Alert>
                                         </td>
+                                    </Show>
+
+                                    <Show when={!error}>
+                                        <Show when={hasData}>
+                                            <>
+                                                {data?.transaction_history?.items?.map((val, index) => (
+                                                    <tr className={cx('even:bg-white', 'odd:bg-neutral-50')} key={index}>
+                                                        <td className={cx('p-4')}>
+                                                            <Typography variant="bd-2b">{val.transactionId}</Typography>
+                                                        </td>
+                                                        <td className={cx('p-4')}>
+                                                            <Typography variant="bd-2b">{formatPoint(val.balance)}</Typography>
+                                                        </td>
+                                                        <td className={cx('p-4')}>
+                                                            <Typography variant="bd-2b">
+                                                                {val.comment.split('<a').length > 1
+                                                                && val.comment.includes('/sales/order/view/order_id') ? (
+                                                                    <div
+                                                                        dangerouslySetInnerHTML={{
+                                                                            __html: `${val.comment.split('<a')[0]}
+                                                                            <a href="${getPath(val.comment)}">#${getId(val.comment)}</a>`,
+                                                                        }}
+                                                                    />
+                                                                ) : (
+                                                                    <div dangerouslySetInnerHTML={{ __html: val.comment }} />
+                                                                )}
+                                                            </Typography>
+                                                        </td>
+                                                        <td className={cx('p-4')}>
+                                                            <Typography variant="bd-2b">
+                                                                {val.expirationDate ? formatDate(val.expirationDate, 'DD/MM/YYYY') : '-'}
+                                                            </Typography>
+                                                        </td>
+                                                        <td className={cx('p-4')}>
+                                                            <Typography
+                                                                variant="bd-2b"
+                                                                className={cx(val?.points < 0 ? '!text-red-500' : '!text-green-500')}
+                                                            >
+                                                                {formatPoint(val.points)}
+                                                            </Typography>
+                                                        </td>
+                                                        <td className={cx('p-4')}>
+                                                            <Typography variant="bd-2b">
+                                                                {val.transactionDate ? formatDate(val.transactionDate, 'DD/MM/YYYY') : '-'}
+                                                            </Typography>
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                            </>
+                                        </Show>
+
+                                        <Show when={!hasData}>
+                                            <td colSpan={6}>
+                                                <Alert severity="warning" withIcon>
+                                                    {t('rewardpoint:emptyMessage')}
+                                                </Alert>
+                                            </td>
+                                        </Show>
                                     </Show>
                                 </Show>
                             </tbody>
                         </table>
                     </div>
                     {/** show pagination */}
-                    <Show when={hasTransaction && !loading}>
+                    <Show when={hasData && !loading}>
                         <PaginationComponent />
                     </Show>
-                    {/** skeleton pagination */}
+                </div>
+
+                {/** Mobile Tablet */}
+                <div className={cx('desktop:hidden', 'pt-[10px]')}>
+                    <div className={cx('mobile-title')}>
+                        <Typography variant="bd-2b" className={cx('text-lg font-semibold')}>
+                            {t('rewardpoint:title')}
+                        </Typography>
+                    </div>
+                    <RewardPointInfoComponent />
+
+                    <div className={cx('divider', 'border-b-[1.5px] border-neutral-200', 'mt-[16px]', 'mobile:!mb-[20px] tablet:mb-[24px]')} />
+
                     <Show when={loading}>
-                        <div
-                            className={cx(
-                                'pt-6 flex items-center justify-between',
-                            )}
-                        >
-                            <Skeleton width={50} height={25} />
-                            <Skeleton width={150} height={50} />
-                        </div>
+                        <SkeletonMobile />
+                    </Show>
+
+                    <Show when={!loading}>
+                        <Show when={error}>
+                            <Alert severity="error" withIcon>
+                                {error?.message ?? t('common:error:fetchError')}
+                            </Alert>
+                        </Show>
+
+                        <Show when={!error}>
+                            <Show when={hasData}>
+                                <>
+                                    {data?.transaction_history?.items?.map((val, index) => (
+                                        <div
+                                            key={`mobile-item-${index}`}
+                                            className={cx(
+                                                'mobile-item',
+                                                'flex',
+                                                'flex-col',
+                                                'border-[1px] border-neutral-200',
+                                                'rounded-[6px]',
+                                                'px-[24px]',
+                                                'py-[20px]',
+                                                'mobile:!mb-[16px] tablet:!mb-[24px]',
+                                            )}
+                                        >
+                                            <MobileTableItemComponent label={t('rewardpoint:transactionId')} value={val.transactionId} />
+                                            <MobileTableItemComponent label={t('rewardpoint:balance')} value={formatPoint(val.balance)} />
+                                            <MobileTableItemComponent
+                                                label={t('rewardpoint:comment')}
+                                                CustomComponentValue={(
+                                                    <Typography variant="bd-2b">
+                                                        {val.comment.split('<a').length > 1 && val.comment.includes('/sales/order/view/order_id') ? (
+                                                            <div
+                                                                dangerouslySetInnerHTML={{
+                                                                    __html: `${val.comment.split('<a')[0]}
+                                                                            <a href="${getPath(val.comment)}">#${getId(val.comment)}</a>`,
+                                                                }}
+                                                            />
+                                                        ) : (
+                                                            <div dangerouslySetInnerHTML={{ __html: val.comment }} />
+                                                        )}
+                                                    </Typography>
+                                                  )}
+                                            />
+                                            <MobileTableItemComponent
+                                                label={t('rewardpoint:expired')}
+                                                value={val.expirationDate ? formatDate(val.expirationDate, 'DD/MM/YYYY') : '-'}
+                                            />
+                                            <MobileTableItemComponent
+                                                label={t('rewardpoint:point')}
+                                                CustomComponentValue={(
+                                                    <Typography variant="bd-2b" className={cx(val?.points < 0 ? '!text-red-500' : '!text-green-500')}>
+                                                        {formatPoint(val.points)}
+                                                    </Typography>
+                                                  )}
+                                            />
+                                            <MobileTableItemComponent
+                                                label={t('rewardpoint:transactionDate')}
+                                                value={val.transactionDate ? formatDate(val.transactionDate, 'DD/MM/YYYY') : '-'}
+                                            />
+                                        </div>
+                                    ))}
+                                    <PaginationComponent />
+                                </>
+                            </Show>
+                            <Show when={!hasData}>
+                                <Alert severity="warning" withIcon>
+                                    {t('storecredit:emptyMessage')}
+                                </Alert>
+                            </Show>
+                        </Show>
                     </Show>
                 </div>
             </div>
