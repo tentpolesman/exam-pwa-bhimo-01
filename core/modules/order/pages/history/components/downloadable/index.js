@@ -33,7 +33,6 @@ const DefaultView = (props) => {
     const {
         data, t, loading, error,
     } = props;
-
     const [page, setPage] = useState(1);
     const itemCount = data?.length;
     const itemLimit = 10;
@@ -85,9 +84,13 @@ const DefaultView = (props) => {
 
                                 <Show when={!loading}>
                                     <Show when={error}>
-                                        <Alert severity="error" withIcon>
-                                            {error?.message ?? t('common:error:fetchError')}
-                                        </Alert>
+                                        <tr>
+                                            <td colSpan={5}>
+                                                <Alert severity="error" withIcon>
+                                                    {error?.message ?? t('common:error:fetchError')}
+                                                </Alert>
+                                            </td>
+                                        </tr>
                                     </Show>
 
                                     <Show when={!error}>
@@ -143,8 +146,8 @@ const DefaultView = (props) => {
                                         </Show>
 
                                         <Show when={!hasData}>
-                                            <tr className={cx('even:bg-white', 'odd:bg-neutral-50')}>
-                                                <td colSpan={5} className="p-4">
+                                            <tr>
+                                                <td colSpan={5}>
                                                     <Alert severity="warning" withIcon>
                                                         {t('customer:order:emptyMessage')}
                                                     </Alert>

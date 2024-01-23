@@ -150,9 +150,13 @@ const DefaultView = (props) => {
 
                                 <Show when={!loading}>
                                     <Show when={error}>
-                                        <Alert severity="error" withIcon>
-                                            {error?.message ?? t('common:error:fetchError')}
-                                        </Alert>
+                                        <tr>
+                                            <td colSpan={6}>
+                                                <Alert severity="error" withIcon>
+                                                    {error?.message ?? t('common:error:fetchError')}
+                                                </Alert>
+                                            </td>
+                                        </tr>
                                     </Show>
 
                                     <Show when={!error}>
