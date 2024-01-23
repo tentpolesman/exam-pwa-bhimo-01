@@ -28,6 +28,7 @@ import { frontendConfig } from '@helpers/frontendOptions';
 import { localTotalCart } from '@services/graphql/schema/local';
 import localFont from 'next/font/local';
 import Script from 'next/script';
+import { getLoginInfo } from '@helper_auth';
 
 /**
  * Set font family using nextjs helper,
@@ -81,7 +82,7 @@ const Layout = (props) => {
         // CustomHeader = false,
         i18n,
         storeConfig = {},
-        isLogin,
+        // isLogin,
         // headerProps = {},
         data = {},
         t,
@@ -103,6 +104,8 @@ const Layout = (props) => {
     const { ogContent = {}, schemaOrg = null, headerDesktop = true, footer = true } = pageConfig;
     const router = useRouter();
     const appEnv = getAppEnv();
+    // login get From cookies
+    const isLogin = getLoginInfo();
 
     const [dialog, setDialog] = useState({
         open: false,
@@ -311,7 +314,11 @@ const Layout = (props) => {
     };
 
     const generateClasses = () => {
-        let classes = `${(!isCms && router.pathname !== '/') ? 'desktop:max-w-[1280px] min-h-[350px] desktop:px-10 tablet:max-w-[768px] tablet:px-6 mobile:px-4 my-0 mx-auto' : ''} ${font.variable} font-sans !font-pwa-default`;
+        let classes = `${
+            !isCms && router.pathname !== '/'
+                ? 'desktop:max-w-[1280px] min-h-[350px] desktop:px-10 tablet:max-w-[768px] tablet:px-6 mobile:px-4 my-0 mx-auto'
+                : ''
+        } ${font.variable} font-sans !font-pwa-default`;
 
         if (pageConfig.bottomNav && storeConfig?.pwa?.mobile_navigation === 'bottom_navigation' && storeConfig?.pwa?.enabler_footer_mobile) {
             classes += ' mb-[60px]';

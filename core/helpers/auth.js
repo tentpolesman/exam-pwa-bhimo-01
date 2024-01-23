@@ -26,8 +26,11 @@ export const setLogin = (isLogin = 0, expired) => {
 };
 
 export const getLoginInfo = () => {
-    const isLogin = cookies.get('isLogin');
-    return parseInt(isLogin) || 0;
+    if (typeof window !== 'undefined') {
+        const isLogin = cookies.get('isLogin');
+        return parseInt(isLogin) || 0;
+    }
+    return 0;
 };
 
 export const removeIsLoginFlagging = () => {

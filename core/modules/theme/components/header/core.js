@@ -4,7 +4,7 @@
 import { useApolloClient } from '@apollo/client';
 import { custDataNameCookie, features, modules } from '@config';
 import Content from '@core_modules/theme/components/header/components';
-import { getCategories, getCustomer, removeToken } from '@core_modules/theme/services/graphql';
+import { getCategories, getCustomerLazy, removeToken } from '@core_modules/theme/services/graphql';
 import { removeIsLoginFlagging } from '@helper_auth';
 import { removeCartId } from '@helper_cartid';
 import { removeCookies } from '@helper_cookies';
@@ -32,6 +32,8 @@ const CoreTopNavigation = (props) => {
     let data = propsMenu;
     let loading = !propsMenu;
     const [deviceWidth, setDeviceWidth] = React.useState(0);
+    const [customerData, setCustomerData] = React.useState({});
+    const [getCustomerInfoLazy] = getCustomerLazy();
     if (!data && storeConfig && storeConfig.pwa) {
         const { data: dataMenu, loading: loadingMenu } = getCategories();
         data = dataMenu;
@@ -39,17 +41,22 @@ const CoreTopNavigation = (props) => {
     }
     const [value, setValue] = React.useState('');
     const [deleteTokenGql] = removeToken();
-    let customerData = {};
-    if (isLogin && typeof window !== 'undefined') {
-        const customer = getCustomer();
-        if (customer.data) {
-            customerData = customer.data;
-        }
-    }
     const client = useApolloClient();
 
     React.useEffect(() => {
+        // get customer info data
+        const getCustomerInfo = async () => {
+            if (isLogin) {
+                const res = await getCustomerInfoLazy();
+                const resData = res?.data;
+                if (resData) {
+                    setCustomerData(resData);
+                }
+            }
+        };
+
         if (typeof window !== 'undefined') {
+            getCustomerInfo();
             setDeviceWidth(window.innerWidth);
         }
     }, []);
