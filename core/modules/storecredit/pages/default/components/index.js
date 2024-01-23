@@ -90,6 +90,7 @@ const StoreCreditPage = (props) => {
             </div>
             <div className={cx('flex', 'flex-row', 'items-center', 'mobile:max-tablet:pt-4', 'mobile:max-tablet:justify-center')}>
                 <Pagination
+                    clickToTop
                     handleChangePage={handleChangePage}
                     page={page}
                     siblingCount={0}

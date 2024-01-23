@@ -99,7 +99,7 @@ const RewardPointView = (props) => {
                 </div>
             </div>
         </>
-        );
+    );
 
     const PaginationComponent = () => (
         <div className={cx('table-data pt-6 flex justify-between', 'tablet:items-center tablet:flex-row', 'mobile:flex-col')}>
@@ -136,6 +136,7 @@ const RewardPointView = (props) => {
             </div>
             <div className={cx('flex', 'flex-row', 'items-center', 'mobile:max-tablet:pt-4', 'mobile:max-tablet:justify-center')}>
                 <Pagination
+                    clickToTop
                     handleChangePage={handleChangePage}
                     page={page}
                     siblingCount={0}
