@@ -1,13 +1,10 @@
 import { withTranslation } from 'next-i18next';
 import { withApollo } from '@lib_apollo';
-import CoreBase from '@core_modules/rma/pages/history/core';
-import Content from '@core_modules/rma/pages/history/components';
+import dynamic from 'next/dynamic';
 
-const Page = (props) => (
-    <CoreBase
-        Content={Content}
-        {...props}
-    />
-);
+const Core = dynamic(() => import('@core_modules/rma/pages/history/core'), { ssr: false });
+const Content = dynamic(() => import('@core_modules/rma/pages/history/components'), { ssr: false });
+
+const Page = (props) => <Core Content={Content} {...props} />;
 
 export default withApollo({ ssr: true })(withTranslation()(Page));
