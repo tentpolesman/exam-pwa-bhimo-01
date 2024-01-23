@@ -1,15 +1,13 @@
-import { debuging } from '@config';
 import { getOrder, reOrder as mutationReorder } from '@core_modules/order/services/graphql';
 import { setCartId } from '@helper_cartid';
 import { getHost } from '@helpers/config';
 import Layout from '@layout';
-import CustomerLayout from '@layout_customer';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 
 const HistoryOrder = (props) => {
     const {
-        t, Content, Skeleton, ErrorView, size, storeConfig,
+        t, Content, size, storeConfig,
     } = props;
     const router = useRouter();
     const pageConfig = {
@@ -36,24 +34,6 @@ const HistoryOrder = (props) => {
         pageSize,
         currentPage: page,
     });
-
-    if (loading || !data) {
-        return (
-            <Layout pageConfig={pageConfig} {...props}>
-                <CustomerLayout {...props}>
-                    <Skeleton />
-                </CustomerLayout>
-            </Layout>
-        );
-    }
-
-    if (error) {
-        return (
-            <Layout pageConfig={pageConfig} {...props}>
-                <ErrorView type="error" message={debuging.originalError ? error.message.split(':')[1] : t('common:error:fetchError')} />
-            </Layout>
-        );
-    }
 
     const reOrder = (order_id) => {
         if (order_id && order_id !== '') {
@@ -129,15 +109,11 @@ const HistoryOrder = (props) => {
 };
 
 HistoryOrder.propTypes = {
-    ErrorView: PropTypes.func,
     Content: PropTypes.func,
-    Skeleton: PropTypes.func,
 };
 
 HistoryOrder.defaultProps = {
-    ErrorView: () => null,
     Content: () => null,
-    Skeleton: () => null,
 };
 
 export default HistoryOrder;

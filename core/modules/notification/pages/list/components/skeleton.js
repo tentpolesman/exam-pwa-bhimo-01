@@ -25,6 +25,14 @@ function SkeletonContent() {
                     </div>
                 </div>
             ))}
+            <div
+                className={cx(
+                    'pt-6 flex items-center justify-between',
+                )}
+            >
+                <Skeleton width={50} height={25} />
+                <Skeleton width={150} height={50} />
+            </div>
         </div>
     );
 }
