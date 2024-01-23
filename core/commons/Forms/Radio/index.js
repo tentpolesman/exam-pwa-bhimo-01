@@ -151,6 +151,7 @@ const Radio = (props) => {
                                     onChange={handleChangeCustom}
                                     storeConfig={storeConfig}
                                     disabled={item.disabled || disabled}
+                                    id={uniqueIdName}
                                     {...customItemProps}
                                 />
                                 {ComponentOptional(item)}

@@ -62,20 +62,20 @@ const ItemAddress = (props) => {
                 >
                     <div className="w-full pb-2 flex flex-col">
                         <label htmlFor={id} className="flex flex-col cursor-pointer">
-                            <Typography className="" variant="p">
+                            <Typography className="" variant="bd-2">
                                 {`${firstname} ${lastname}`}
                             </Typography>
-                            <Typography className="" variant="p">
+                            <Typography className="" variant="bd-2">
                                 {street}
                                 ,
                             </Typography>
-                            <Typography className="" variant="p">
+                            <Typography className="" variant="bd-2">
                                 {city !== '' && `${city}, `}
                                 {region !== '' && `${region.region || ''}, `}
                                 {country !== '' && `${country.full_name_locale || ''}, `}
                                 {postcode !== '' && postcode}
                             </Typography>
-                            <Typography className="" variant="p">
+                            <Typography className="" variant="bd-2">
                                 {telephone}
                             </Typography>
                         </label>

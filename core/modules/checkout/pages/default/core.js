@@ -312,7 +312,7 @@ const Checkout = (props) => {
                     let item = groupData.find((p) => p.seller_id === product.seller.seller_id);
                     if (!item) {
                         item = {
-                            seller_id: product.seller.seller_id ? product.seller.seller_id : null,
+                            seller_id: product.seller.seller_id || null,
                             seller_name: product.seller.seller_name ? product.seller.seller_name : 'Default Seller',
                             productList: [],
                             subtotal: {
@@ -346,7 +346,7 @@ const Checkout = (props) => {
         }
     }, [currentIndexSeller, amountSeller, sellerInfoState, loadingSellerInfo]);
 
-    const initData = () => {
+    const initData = useCallback(async () => {
         let { cart } = dataCart;
         const { errorItems, items } = itemCart.cart;
         cart = { ...cart, ...(checkout.data.cart ? checkout.data.cart : {}), items };
@@ -508,7 +508,7 @@ const Checkout = (props) => {
                 let item = groupData.find((p) => p.seller_id === product.seller.seller_id);
                 if (!item) {
                     item = {
-                        seller_id: product.seller.seller_id ? product.seller.seller_id : null,
+                        seller_id: product.seller.seller_id || null,
                         seller_name: product.seller.seller_name ? product.seller.seller_name : null,
                         productList: [],
                         subtotal: {
@@ -541,26 +541,27 @@ const Checkout = (props) => {
         // init shipping method
         // if multiseller active
         if (isMultiSeller && !checkout.refetchItemOnly) {
+            let dataSeller = [];
+
             if (shipping && shipping[0].available_shipping_methods) {
-                const availableMultiShipping = shipping.map((shippingPerSeller) => ({
-                    seller_id: shippingPerSeller.seller_id ? shippingPerSeller.seller_id : 0,
+                let availableMultiShipping = shipping.map((shippingPerSeller) => ({
+                    seller_id: shippingPerSeller.seller_id || 0,
                     available_shipping_methods: shippingPerSeller.available_shipping_methods.filter(
                         (item) => item.carrier_code !== 'pickup' && item.carrier_code !== 'instore'
                     ),
                 }));
 
                 setAmountSeller(availableMultiShipping.length);
-
-                const dataSeller = [];
-
-                // eslint-disable-next-line consistent-return
-                availableMultiShipping.map(async ({ seller_id, available_shipping_methods }, index) => {
+                const promiseGetSeller = [];
+                for (let idx = 0; idx < availableMultiShipping.length; idx += 1) {
+                    const { seller_id, available_shipping_methods } = availableMultiShipping[idx];
                     let sellerInfo;
-                    if (seller_id && seller_id === 0 && seller_id !== null) {
-                        sellerInfo = await apolloClient
-                            .query({ query: Schema.getSeller, variables: { keyword: seller_id } })
+                    if (seller_id && seller_id !== 0 && seller_id !== null) {
+                        promiseGetSeller.push(apolloClient
+                            .query({ query: Schema.getSeller, variables: { seller_id: [seller_id] } })
                             .then(({ data }) => {
                                 return {
+                                    seller_id,
                                     seller_path: data.getSeller.length > 0 ? data.getSeller[0]?.seller_path : '',
                                     seller_name: data.getSeller.length > 0 ? data.getSeller[0]?.name : 'Default Seller',
                                     seller_city: data.getSeller.length > 0 ? data.getSeller[0]?.city : 'Default Seller City',
@@ -572,13 +573,12 @@ const Checkout = (props) => {
                                         value: `${shippingItemMultiseller.carrier_code}_${shippingItemMultiseller.method_code}`,
                                     })),
                                 };
-                            });
-                        dataSeller.push(sellerInfo);
+                            }));
                         setSellerInfoState((prevState) => [...prevState, sellerInfo]);
-                        setCurrentIndexSeller(index);
+                        setCurrentIndexSeller(idx);
                     } else {
-                        setCurrentIndexSeller(index);
-                        return {
+                        setCurrentIndexSeller(idx);
+                        sellerInfo = {
                             seller_id: 0,
                             seller_name: 'Default Seller',
                             seller_city: 'Default Seller City',
@@ -591,7 +591,18 @@ const Checkout = (props) => {
                             })),
                         };
                     }
-                });
+
+                    if (sellerInfo) {
+                        dataSeller.push(sellerInfo);
+                    }
+                }
+
+                const allSeller = await Promise.all(promiseGetSeller);
+
+                dataSeller = [
+                    ...dataSeller,
+                    ...(allSeller || [])
+                ];
 
                 dispatch(setCheckoutData({
                     seller: dataSeller,
@@ -623,7 +634,7 @@ const Checkout = (props) => {
                     shipping: shipping.map((ship) => {
                         if (ship.selected_shipping_method) {
                             return {
-                                seller_id: ship.seller_id,
+                                seller_id: ship.seller_id || 0,
                                 name: {
                                     carrier_code: ship.selected_shipping_method.carrier_code,
                                     method_code: ship.selected_shipping_method.method_code,
@@ -633,7 +644,7 @@ const Checkout = (props) => {
                             };
                         }
                         return {
-                            seller_id: ship.seller_id,
+                            seller_id: ship.seller_id || 0,
                             name: { carrier_code: null, method_code: null },
                             price: null,
                             original_price: null,
@@ -755,7 +766,7 @@ const Checkout = (props) => {
         dispatch(setRefetchItemOnly(false));
 
         updateFormik(cart);
-    };
+    }, [checkout, dataCart]);
 
     React.useEffect(() => {
         dispatch(setCheckoutData({
@@ -824,7 +835,7 @@ const Checkout = (props) => {
                     let item = groupData.find((p) => p.seller_id === product.seller.seller_id);
                     if (!item) {
                         item = {
-                            seller_id: product.seller.seller_id ? product.seller.seller_id : 0,
+                            seller_id: product.seller.seller_id || 0,
                             seller_name: product.seller.seller_name ? product.seller.seller_name : 'Default Seller',
                             productList: [],
                             subtotal: {
@@ -989,7 +1000,7 @@ const Checkout = (props) => {
 
                     dispatch(setCheckoutData({
                         shippingMethods: availableMultiShipping.map(({ seller_id, available_shipping_methods }) => ({
-                            seller_id,
+                            seller_id: seller_id || 0,
                             available_shipping_methods: available_shipping_methods.map((shippingItemMultiseller) => ({
                                 ...shippingItemMultiseller,
                                 label: `${shippingItemMultiseller.method_title === null ? '' : `${shippingItemMultiseller.method_title} - `} ${shippingItemMultiseller.carrier_title
@@ -1006,7 +1017,7 @@ const Checkout = (props) => {
                         shipping: shipping.map((ship) => {
                             if (ship.selected_shipping_method) {
                                 return {
-                                    seller_id: ship.seller_id,
+                                    seller_id: ship.seller_id || 0,
                                     name: {
                                         carrier_code: ship.selected_shipping_method.carrier_code,
                                         method_code: ship.selected_shipping_method.method_code,
@@ -1016,7 +1027,7 @@ const Checkout = (props) => {
                                 };
                             }
                             return {
-                                seller_id: ship.seller_id,
+                                seller_id: ship.seller_id || 0,
                                 name: { carrier_code: null, method_code: null },
                                 price: null,
                                 original_price: null,
