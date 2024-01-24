@@ -309,7 +309,7 @@ const MagezonImageGallery = (props) => {
                                             className={cx(
                                                 'cursor-pointer',
                                                 'rounded-full',
-                                                'shadow-[0_0_1px_0.5px]',
+                                                'shadow-[0_0_3px_0.5px]',
                                                 'w-[6px] tablet:w-[10px] desktop:w-3',
                                                 'h-[6px] tablet:h-[10px] desktop:h-3',
                                                 'mx-[6px]',
