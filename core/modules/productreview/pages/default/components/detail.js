@@ -20,7 +20,7 @@ const ProductReview = (props) => {
     const ratingProduct = reviewItem?.product?.rating_summary ? parseInt(reviewItem.product.rating_summary, 10) / 20 : 0;
 
     return (
-        <Dialog variant="plain" open={open} onClose={setOpen}>
+        <Dialog variant="plain" open={open}>
             <div>
                 <div
                     className={cx(
@@ -34,7 +34,7 @@ const ProductReview = (props) => {
                     <div className={cx('overflow-y-auto', 'max-h-[85vh]')}>
                         <div className={cx('pb-[10px]', 'flex justify-end')}>
                             <div
-                                onClick={setOpen}
+                                onClick={() => setOpen(false)}
                                 aria-label="close"
                                 aria-hidden="true"
                                 className={cx('bg-neutral-white', 'h-[30px]', 'w-[30px]', 'hover:cursor-pointer')}

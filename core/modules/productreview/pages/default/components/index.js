@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
-import React from 'react';
+import React, { useEffect } from 'react';
 import formatDate from '@helper_date';
 import Layout from '@layout_customer';
 import RatingStar from '@common_ratingstar';
@@ -27,6 +27,12 @@ const ProductReviewPage = (props) => {
         setOpenDetail(state);
         setReviewItem(val);
     };
+
+    useEffect(() => {
+        if (!isOpenDetail) {
+            setReviewItem(null);
+        }
+    }, [isOpenDetail]);
 
     const hasReview = reviewCustomer?.items && reviewCustomer?.items?.length > 0;
     const pageInfo = reviewCustomer?.page_info;
@@ -87,7 +93,13 @@ const ProductReviewPage = (props) => {
     return (
         <Layout {...props}>
             <div className={cx('productreview-container')}>
-                <DetailProductReview t={t} open={isOpenDetail} setOpen={() => openDetail(false)} reviewItem={reviewItem} storeConfig={storeConfig} />
+                <DetailProductReview
+                    t={t}
+                    open={isOpenDetail}
+                    setOpen={setOpenDetail}
+                    reviewItem={reviewItem}
+                    storeConfig={storeConfig}
+                />
                 <div className={cx('pt-5')}>
                     <div className={cx('relative', 'overflow-x-auto', 'rounded-lg')}>
                         <table className={cx('w-full', 'text-base', 'border-[1px]', 'border-neutral-100')}>

@@ -30,7 +30,7 @@ const ScrollTop = () => {
         <div
             onClick={scrollTop}
             role="presentation"
-            className={cx('fixed', 'bottom-space-16', 'right-space-16', 'z-scroll-to-top', 'visible', {
+            className={cx('z-scroll-to-top', 'visible', 'flex', 'justify-end', 'mb-4', 'mr-4', {
                 'hidden invisible': !trigger,
             })}
         >

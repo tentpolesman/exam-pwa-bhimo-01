@@ -123,7 +123,8 @@
         "browser": "Browser not supported",
         "videoNotSupported": "Your browser does not support the video tag.",
         "captcha": "Recaptcha verification failed, please try again.",
-        "wentWrong": "Something went wrong. Please try again later."
+        "wentWrong": "Something went wrong. Please try again later.",
+        "webpNotSupported": "Your web browser does not support WebP image format. Please consider upgrading your web browser to have better experience viewing the website."
     },
     "fileUpload": {
         "reject": "Cannot upload, Files must be a type ",
