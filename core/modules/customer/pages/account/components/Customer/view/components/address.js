@@ -55,26 +55,37 @@ const AddressView = (props) => {
     }
 
     return (
-        <div className={cx('pt-10')}>
-            <div className={cx('address-title-section', 'pb-[18px]', 'border-b-[1.5px]', 'border-neutral-200', 'flex', 'flex-row')}>
-                <Typography variant="h3" className={cx('mobile:max-desktop:hidden', 'pl-0')}>
+        <div className={cx('pt-10', '')}>
+            <div
+                className={cx(
+                    'address-title-section',
+                    'pb-[18px]',
+                    'border-b-[1.5px]',
+                    'border-neutral-200',
+                    'flex',
+                    'flex-row',
+                    'justify-between',
+                    'items-center',
+                )}
+            >
+                <Typography variant="h3" className={cx('pl-0')}>
                     {t('customer:menu:address')}
                 </Typography>
-                <Button link="/customer/account/profile" variant="plain" className={cx('pl-6', '!py-0')}>
+                <Button link="/customer/account/profile" variant="plain" className={cx('pl-6', 'pr-0', '!py-0')}>
                     <Typography variant="bd-2a" className={cx('!text-neutral-500', 'underline', 'underline-offset-2')}>
                         {t('customer:address:editTitle')}
                     </Typography>
                 </Button>
             </div>
             {addresses.length > 0 && defaultAddress ? (
-                <div className={cx('flex', 'flex-row', 'pt-[18px]', 'gap-x-5')}>
-                    <div className={cx('sm:basis-1/2', 'lg:basis-1/2', 'border-[1px]', 'border-neutral-200', 'rounded-md', 'pl-5', 'py-5')}>
+                <div className={cx('flex', 'mobile:flex-col', 'tablet:flex-row', 'pt-[18px]', 'mobile:max-tablet:gap-y-4', 'tablet:gap-x-5')}>
+                    <div className={cx('mobile:basis-full', 'desktop:basis-1/2', 'border-[1px]', 'border-neutral-200', 'rounded-md', 'pl-5', 'py-5')}>
                         <Typography variant="bd-1a" className={cx('!text-neutral-800')}>
                             {t('customer:address:defaultBilling')}
                         </Typography>
                         {generateData(defaultBilling, props)}
                     </div>
-                    <div className={cx('sm:basis-1/2', 'lg:basis-1/2', 'border-[1px]', 'border-neutral-200', 'rounded-md', 'pl-5', 'py-5')}>
+                    <div className={cx('mobile:basis-full', 'desktop:basis-1/2', 'border-[1px]', 'border-neutral-200', 'rounded-md', 'pl-5', 'py-5')}>
                         <Typography variant="bd-1a" className={cx('!text-neutral-800')}>
                             {t('customer:address:defaultShipping')}
                         </Typography>

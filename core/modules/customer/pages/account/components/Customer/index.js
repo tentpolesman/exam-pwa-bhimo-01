@@ -4,10 +4,12 @@ import gqlService from '@core_modules/customer/services/graphql';
 import Layout from '@layout_customer';
 import React from 'react';
 import { getHost } from '@helpers/config';
+import Skeleton from '@core_modules/customer/pages/account/components/Skeleton';
+import Show from '@common/Show';
 
 const Customer = (props) => {
     const {
-        t, Skeleton, CustomerView, storeConfig, isLogin, reOrder, ...other
+        t, CustomerView, storeConfig, isLogin, reOrder, ...other
     } = props;
     let userData = {};
     let wishlist = [];
@@ -102,6 +104,9 @@ const Customer = (props) => {
 
     return (
         <Layout {...props}>
+            <Show when={!data || loading || error}>
+                <Skeleton />
+            </Show>
             <CustomerView
                 {...other}
                 t={t}

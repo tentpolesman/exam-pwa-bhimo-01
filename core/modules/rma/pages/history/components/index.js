@@ -91,7 +91,7 @@ const HistoryContent = (props) => {
                 {/** Desktop */}
                 <Show when={isDesktop}>
                     <div className={cx('desktop-view')}>
-                        <div className={cx('relative', 'overflow-x-auto', 'rounded-lg', 'pt-5')}>
+                        <div className={cx('relative', 'overflow-x-auto', 'rounded-lg')}>
                             <table className={cx('w-full', 'text-base', 'border-[1px]', 'border-neutral-100')}>
                                 <thead>
                                     <tr className={cx('text-neutral-500', 'font-semibold', 'leading-2lg', 'text-left')}>
@@ -191,15 +191,7 @@ const HistoryContent = (props) => {
 
                 {/** Mobile Tablet */}
                 <Show when={!isDesktop}>
-                    <div className={cx('mobile-tablet-view', 'pt-[10px]')}>
-                        <div className={cx('mobile-title')}>
-                            <Typography variant="bd-2b" className={cx('text-lg font-semibold')}>
-                                {t('rma:history')}
-                            </Typography>
-                        </div>
-
-                        <div className={cx('divider', 'border-b-[1.5px] border-neutral-200', 'mt-[16px]', 'mobile:!mb-[20px] tablet:mb-[24px]')} />
-
+                    <div className={cx('mobile-tablet-view')}>
                         <Show when={loading}>
                             <SkeletonMobile />
                         </Show>

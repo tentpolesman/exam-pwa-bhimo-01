@@ -40,7 +40,7 @@ const StoreCreditPage = (props) => {
     const totalCount = storeCredit?.transaction_history?.total_count ?? 0;
 
     const StoreCreditBalanceComponent = () => (
-        <div className={cx('storecredit-balance-wrapper', 'flex', 'items-center', 'mt-[10px]')}>
+        <div className={cx('storecredit-balance-wrapper', 'flex', 'items-center')}>
             <div>
                 <Typography variant="bd-2b">
                     {t('storecredit:balance')}
@@ -51,7 +51,7 @@ const StoreCreditPage = (props) => {
                 </Typography>
             </div>
             <Show when={loading}>
-                <Skeleton width={50} height={15} className={cx('ml-[5px]', 'mt-[2px]')} />
+                <Skeleton width={50} height={15} className={cx('ml-[5px]')} />
             </Show>
         </div>
     );
@@ -198,12 +198,7 @@ const StoreCreditPage = (props) => {
 
                 {/** Mobile Tablet */}
                 <Show when={!isDesktop}>
-                    <div className={cx('mobile-tablet-view', 'pt-[10px]')}>
-                        <div className={cx('mobile-title')}>
-                            <Typography variant="bd-2b" className={cx('text-lg font-semibold')}>
-                                {t('storecredit:title')}
-                            </Typography>
-                        </div>
+                    <div className={cx('mobile-tablet-view')}>
                         <StoreCreditBalanceComponent />
 
                         <div className={cx('divider', 'border-b-[1.5px] border-neutral-200', 'mt-[16px]', 'mobile:!mb-[20px] tablet:mb-[24px]')} />

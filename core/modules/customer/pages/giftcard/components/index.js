@@ -32,7 +32,7 @@ const GiftCard = (props) => {
     if (loading) {
         return (
             <Layout {...props}>
-                <div className={cx('giftcard-container', 'mt-[15px]')}>
+                <div className={cx('giftcard-container')}>
                     <Loader />
                 </div>
             </Layout>
@@ -42,7 +42,7 @@ const GiftCard = (props) => {
     if (error) {
         return (
             <Layout {...props}>
-                <div className={cx('giftcard-container', 'mt-[15px]')}>
+                <div className={cx('giftcard-container')}>
                     <Alert className="mb-[10px]" severity="error" withIcon>
                         {debuging.originalError ? error.message.split(':')[1] : t('common:error:fetchError')}
                     </Alert>
@@ -55,7 +55,7 @@ const GiftCard = (props) => {
 
     return (
         <Layout {...props}>
-            <div className={cx('giftcard-container', 'mt-[15px]')}>
+            <div className={cx('giftcard-container')}>
                 <ModalDetail
                     t={t}
                     storeConfig={storeConfig}

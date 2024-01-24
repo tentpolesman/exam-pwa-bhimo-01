@@ -9,7 +9,7 @@ const Customer = dynamic(() => import('@core_modules/customer/pages/account/comp
 
 const CustomerAccount = (props) => {
     const {
-        t, CustomerView, Skeleton, GuestView, pageConfig, storeConfig,
+        t, CustomerView, GuestView, pageConfig, storeConfig,
     } = props;
     const router = useRouter();
     const config = {
@@ -47,7 +47,7 @@ const CustomerAccount = (props) => {
     if (isLogin) {
         return (
             <Layout pageConfig={pageConfig || config} {...props}>
-                <Customer {...props} data={data} CustomerView={CustomerView} Skeleton={Skeleton} reOrder={reOrder} />
+                <Customer {...props} data={data} CustomerView={CustomerView} reOrder={reOrder} />
             </Layout>
         );
     }

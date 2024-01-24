@@ -45,7 +45,7 @@ const Content = (props) => {
 
     return (
         <Layout {...props}>
-            <div className={cx('flex', 'flex-col', 'w-full', 'h-full', 'text-base', 'pt-5')}>
+            <div className={cx('flex', 'flex-col', 'w-full', 'h-full', 'text-base')}>
                 {/** Desktop */}
                 <Show when={isDesktop}>
                     <div className={cx('desktop-view')}>
