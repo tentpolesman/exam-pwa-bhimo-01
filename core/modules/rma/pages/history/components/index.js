@@ -8,6 +8,7 @@ import Show from '@common_show';
 import cx from 'classnames';
 import { SkeletonDesktop, SkeletonMobile } from '@core_modules/rma/pages/history/components/Skeleton';
 import MobileTabletActionMenu from '@core_modules/rma/pages/history/components/plugins/MobileTabletActionMenu';
+import Link from 'next/link';
 
 const MobileTableItemComponent = ({ label, value, CustomComponentValue }) => (
     <div className={cx('flex flex-row')}>
@@ -94,10 +95,7 @@ const HistoryContent = (props) => {
                                 <tr className={cx('text-neutral-500', 'font-semibold', 'leading-2lg', 'text-left')}>
                                     <th className={cx('px-4', 'py-3')}>{t('rma:table:returnId')}</th>
                                     <th className={cx('px-4', 'py-3')}>{t('rma:table:orderId')}</th>
-                                    <th className={cx('px-4', 'py-3')}>
-                                        {' '}
-                                        {t('rma:table:products')}
-                                    </th>
+                                    <th className={cx('px-4', 'py-3')}>{t('rma:table:products')}</th>
                                     <th className={cx('px-4', 'py-3')}>{t('rma:table:status')}</th>
                                     <th className={cx('px-4', 'py-3')}>{t('common:label:action')}</th>
                                 </tr>
@@ -124,7 +122,14 @@ const HistoryContent = (props) => {
                                                             <Typography variant="bd-2b">{val.increment_id}</Typography>
                                                         </td>
                                                         <td className={cx('p-4')}>
-                                                            <Typography variant="bd-2b">{val.order_number}</Typography>
+                                                            <Link
+                                                                href={`/sales/order/view/order_id/${val.order_number}`}
+                                                                className={cx('hover:underline')}
+                                                            >
+                                                                <Typography variant="bd-2b" className={cx('!text-primary-700', 'hover:underline')}>
+                                                                    {val.order_number}
+                                                                </Typography>
+                                                            </Link>
                                                         </td>
                                                         <td className={cx('p-4')}>
                                                             <Typography variant="bd-2b">
@@ -224,7 +229,16 @@ const HistoryContent = (props) => {
                                                 />
                                             </div>
                                             <MobileTableItemComponent label={t('rma:table:returnId')} value={val.increment_id} />
-                                            <MobileTableItemComponent label={t('rma:table:orderId')} value={val.order_number} />
+                                            <MobileTableItemComponent
+                                                label={t('rma:table:orderId')}
+                                                CustomComponentValue={(
+                                                    <Link href={`/sales/order/view/order_id/${val.order_number}`} className={cx('hover:underline')}>
+                                                        <Typography variant="bd-2b" className={cx('!text-primary-700', 'hover:underline')}>
+                                                            {val.order_number}
+                                                        </Typography>
+                                                    </Link>
+                                                )}
+                                            />
                                             <MobileTableItemComponent
                                                 label={t('rma:table:products')}
                                                 value={val.items.map((item, idx) => `${item.name}${idx > 0 ? ', ' : ''}`)}
