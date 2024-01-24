@@ -1,5 +1,7 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
 import Dialog from '@common_dialog';
+import Typography from '@common_typography';
+import Show from '@common_show';
 import Radio from '@common_forms/Radio';
 import AddressFormDialog from '@plugin_addressform';
 import React, { useState } from 'react';
@@ -64,7 +66,7 @@ const TableAddress = (props) => {
                     'bg-neutral-50': idx % 2 !== 1,
                 })}
             >
-                <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-2')}>
+                <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'px-4', 'py-3')}>
                     <Radio
                         color="default"
                         size="sm"
@@ -79,9 +81,9 @@ const TableAddress = (props) => {
                         }}
                     />
                 </td>
-                <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-2')}>{firstname}</td>
-                <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-2')}>{lastname}</td>
-                <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-2')}>
+                <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'px-4', 'py-3')}>{firstname}</td>
+                <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'px-4', 'py-3')}>{lastname}</td>
+                <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'px-4', 'py-3')}>
                     {country.id === 'ID' ? (
                         <>
                             <p>{`${street},`}</p>
@@ -101,38 +103,27 @@ const TableAddress = (props) => {
                         </>
                     )}
                 </td>
-                <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-2')}>{telephone}</td>
-                {selectedAddressId !== addressId ? (
-                    <>
-                        <td>
-                            <button type="button" onClick={() => setOpen(!open)}>
-                                <a className={cx('text-base', 'px-4', 'hover:text-primary-700', 'underline', 'underline-offset-2')}>
-                                    {t('customer:address:editAddress')}
-                                </a>
-                            </button>
-                        </td>
-                        <td>
-                            {selectedAddressId !== addressId && (
-                                <button type="button" onClick={() => setOpenDelete(true)}>
-                                    <a className={cx('text-base', 'px-4', 'hover:text-primary-700', 'underline', 'underline-offset-2')}>
-                                        {t('customer:address:removeTitle')}
-                                    </a>
-                                </button>
-                            )}
-                        </td>
-                    </>
-                ) : (
-                    <>
-                        <td>
-                            <button type="button" onClick={() => setOpen(!open)}>
-                                <a className={cx('text-base', 'px-4', 'hover:text-primary-700', 'underline', 'underline-offset-2')}>
-                                    {t('customer:address:editAddress')}
-                                </a>
-                            </button>
-                        </td>
-                        <td />
-                    </>
-                )}
+                <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'px-4', 'py-3')}>{telephone}</td>
+                <td>
+                    <button type="button" onClick={() => setOpen(!open)}>
+                        <a className="px-4">
+                            <Typography variant="bd-2b" className={cx('!text-primary-700', 'hover:underline')}>
+                                {t('customer:address:editAddress')}
+                            </Typography>
+                        </a>
+                    </button>
+                </td>
+                <td>
+                    <Show when={selectedAddressId !== addressId}>
+                        <button type="button" onClick={() => setOpenDelete(true)}>
+                            <a className="px-4">
+                                <Typography variant="bd-2b" className={cx('!text-primary-700', 'hover:underline')}>
+                                    {t('customer:address:removeTitle')}
+                                </Typography>
+                            </a>
+                        </button>
+                    </Show>
+                </td>
             </tr>
         </>
     );

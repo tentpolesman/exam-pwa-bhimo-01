@@ -103,17 +103,21 @@ const ItemAddress = (props) => {
                             <p>{`T: ${telephone}`}</p>
                         </div>
                     )}
-                    <Button variant="plain" className={cx('pl-0', '!py-0')} onClick={() => setOpen(true)}>
-                        <Typography className={cx('underline', 'underline-offset-2', 'cursor-pointer')}>
-                            {t('customer:address:editAddress')}
-                        </Typography>
-                    </Button>
-                    <Show when={selectedAddressId !== addressId}>
-                        <Button variant="plain" className={cx('pl-0', '!py-0')} onClick={() => setOpenDelete(true)}>
-                            <Typography className={cx('underline', 'underline-offset-2', 'cursor-pointer')}>
-                                {t('customer:address:removeTitle')}
+                    <button type="button" onClick={() => setOpen(!open)}>
+                        <a className="pr-4">
+                            <Typography variant="bd-2b" className={cx('!text-primary-700', 'hover:underline')}>
+                                {t('customer:address:editAddress')}
                             </Typography>
-                        </Button>
+                        </a>
+                    </button>
+                    <Show when={selectedAddressId !== addressId}>
+                        <button type="button" onClick={() => setOpenDelete(true)}>
+                            <a className="px-4">
+                                <Typography variant="bd-2b" className={cx('!text-primary-700', 'hover:underline')}>
+                                    {t('customer:address:removeTitle')}
+                                </Typography>
+                            </a>
+                        </button>
                     </Show>
                 </div>
             </div>

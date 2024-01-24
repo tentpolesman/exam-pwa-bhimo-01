@@ -10,17 +10,19 @@ import formatDate from '@helper_date';
 import ArrowDownTrayIcon from '@heroicons/react/24/outline/ArrowDownTrayIcon';
 import { SkeletonDesktop, SkeletonMobile } from '@core_modules/order/pages/history/components/downloadable/skeleton';
 
-const MobileTableItemComponent = ({ label, value, CustomComponentValue }) => (
+const MobileTableItemComponent = ({
+    label, value, CustomComponentValue, isLong = false,
+}) => (
     <div className={cx('flex flex-row')}>
-        <div className={cx('mobile:w-[30%] tablet:w-[35%]')}>
+        <div className={cx('tablet:w-[35%]', isLong ? 'mobile:max-tablet:hidden' : 'mobile:w-[30%]')}>
             <Typography variant="bd-2b" className={cx('!font-semibold')}>
                 {label}
             </Typography>
         </div>
-        <div className="w-[5%]">
+        <div className={cx('w-[5%]', isLong ? 'mobile:max-tablet:hidden' : '')}>
             <Typography variant="bd-2b">{' : '}</Typography>
         </div>
-        <div className={cx('mobile:w-[65%] tablet:w-[60%]')}>
+        <div className={cx(isLong ? 'mobile:w-full' : 'mobile:w-[65%]', 'tablet:w-[60%]')}>
             <Show when={!!CustomComponentValue}>{CustomComponentValue}</Show>
             <Show when={!CustomComponentValue}>
                 <Typography variant="bd-2b">{value}</Typography>
@@ -52,7 +54,14 @@ const DefaultView = (props) => {
                 <Typography className={cx('font-normal', 'leading-2lg')}>{`${itemCount ?? 0} ${t('common:label:data')}`}</Typography>
             </div>
             <div className={cx('flex', 'flex-row', 'items-center', 'mobile:max-tablet:pt-4', 'mobile:max-tablet:justify-center')}>
-                <Pagination handleChangePage={handleChangePage} page={page} siblingCount={0} className={cx('!p-0')} totalPage={totalPage} />
+                <Pagination
+                    clickToTop
+                    handleChangePage={handleChangePage}
+                    page={page}
+                    siblingCount={0}
+                    className={cx('!p-0')}
+                    totalPage={totalPage}
+                />
             </div>
         </div>
     );
@@ -203,7 +212,8 @@ const DefaultView = (props) => {
                                             )}
                                         >
                                             <MobileTableItemComponent
-                                                label={`${t('order:order')} #`}
+                                                isLong
+                                                label={`${t('order:order')}`}
                                                 CustomComponentValue={(
                                                     <Link
                                                         href={`/sales/order/view/order_id/${val.order_increment_id}`}

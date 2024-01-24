@@ -103,7 +103,7 @@
     "product": "Produk",
     "comment": "Komentar",
     "addToCart": "Tambahkan ke keranjang",
-    "action": "Aksi",
+    "action": "Tindakan",
     "addToWishlist": "Tambahkan ke Daftar Keinginan",
     "wishlistSharing": "Berbagi daftar keinginan",
     "sharingInformation": "Berbagi Informasi",
@@ -121,7 +121,7 @@
     "shippedTo": "Pengiriman",
     "orderTotal": "Total order",
     "status": "Status",
-    "action": "Aksi"
+    "action": "Tindakan"
   },
   "notHaveNotification" : "Anda belum mempunyai notifikasi",
   "notHaveOrder" : "Riwayat transaksi kosong"

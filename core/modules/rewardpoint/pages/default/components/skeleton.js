@@ -1,8 +1,8 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
-import Skeleton from '@common_skeleton';
 import cx from 'classnames';
+import Skeleton from '@common_skeleton';
 
-const SkeletonRewardPoint = () => (
+export const SkeletonDesktop = () => (
     <>
         <tr className={cx('even:bg-white', 'odd:bg-neutral-50')}>
             <td colSpan={6}>
@@ -21,4 +21,17 @@ const SkeletonRewardPoint = () => (
         </tr>
     </>
 );
-export default SkeletonRewardPoint;
+
+export const SkeletonMobile = () => (
+    <>
+        <div className={cx('mt-[12px]')}>
+            <Skeleton width="100%" height={100} />
+        </div>
+        <div className={cx('mt-[12px]')}>
+            <Skeleton width="100%" height={100} />
+        </div>
+        <div className={cx('mt-[12px]')}>
+            <Skeleton width="100%" height={100} />
+        </div>
+    </>
+);

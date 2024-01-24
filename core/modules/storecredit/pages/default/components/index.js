@@ -44,14 +44,8 @@ const StoreCreditPage = (props) => {
                 <Typography variant="bd-2b">
                     {t('storecredit:balance')}
                     {' '}
-                    <Show when={!loading && !error}>
-                        <b>
-                            {formatPrice(
-                                    storeCredit?.current_balance?.value ?? 0,
-                                    storeCredit?.current_balance?.currency ?? 'IDR',
-                                    currencyCache,
-                            )}
-                        </b>
+                    <Show when={!loading}>
+                        <b>{formatPrice(storeCredit?.current_balance?.value ?? 0, storeCredit?.current_balance?.currency ?? 'IDR', currencyCache)}</b>
                     </Show>
                 </Typography>
             </div>
@@ -96,6 +90,7 @@ const StoreCreditPage = (props) => {
             </div>
             <div className={cx('flex', 'flex-row', 'items-center', 'mobile:max-tablet:pt-4', 'mobile:max-tablet:justify-center')}>
                 <Pagination
+                    clickToTop
                     handleChangePage={handleChangePage}
                     page={page}
                     siblingCount={0}
@@ -225,9 +220,9 @@ const StoreCreditPage = (props) => {
                                 <>
                                     {storeCredit?.transaction_history?.items.map((val, index) => (
                                         <div
-                                            key={`mobile-downloadable-item-${index}`}
+                                            key={`mobile-item-${index}`}
                                             className={cx(
-                                                'mobile-downloadable-item',
+                                                'mobile-item',
                                                 'flex',
                                                 'flex-col',
                                                 'border-[1px] border-neutral-200',
