@@ -10,7 +10,7 @@ const ViewDesktop = (props) => {
     } = props;
     const { customer, customerOrders } = userData;
     return (
-        <div className={cx('mobile:max-desktop:hidden')}>
+        <div className={cx('desktop-view')}>
             <div className={cx('mt-4')}>
                 <Account customer={customer} t={t} storeConfig={storeConfig} />
                 <Address customer={customer} t={t} storeConfig={storeConfig} />
