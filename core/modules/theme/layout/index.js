@@ -329,7 +329,7 @@ const Layout = (props) => {
             !isCms && router.pathname !== '/'
                 ? 'desktop:max-w-[1280px] min-h-[350px] desktop:px-10 tablet:max-w-[768px] tablet:px-6 mobile:px-4 my-0 mx-auto'
                 : ''
-        } ${font.variable} font-sans !font-pwa-default`;
+        } ${font.variable} font-sans !font-pwa-default ${isPdp ? 'mobile:!px-0 tablet:!px-6 desktop:!px-10' : ''}`;
 
         if (pageConfig.bottomNav && storeConfig?.pwa?.mobile_navigation === 'bottom_navigation' && storeConfig?.pwa?.enabler_footer_mobile) {
             classes += ' mb-[60px]';
@@ -546,7 +546,7 @@ const Layout = (props) => {
             {/* END CHAT FEATURES */}
 
             {withLayoutFooter && (
-                <footer className={cx('!block', 'sm:mt-[50px]', font.variable, 'font-sans', '!font-pwa-default')} ref={refFooter}>
+                <footer className={cx('!block', 'mt-[50px]', font.variable, 'font-sans', '!font-pwa-default')} ref={refFooter}>
                     {footer ? <Footer storeConfig={storeConfig} t={t} /> : null}
                     <Copyright storeConfig={storeConfig} t={t} />
                 </footer>

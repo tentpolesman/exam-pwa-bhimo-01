@@ -123,17 +123,25 @@ const Content = (props) => {
             </div>
             <Dialog
                 open={checkoutTokenState}
-                handleYes={() => {
+                positiveAction={() => {
                     setCheckoutTokenState(!checkoutTokenState);
                     Router.reload();
                 }}
-                handleCancel={() => {
+                positiveLabel="Reload"
+                negativeAction={() => {
                     setCheckoutTokenState(!checkoutTokenState);
                     Router.push('/checkout/cart');
                 }}
-                yesNo
-                message={`${t('checkout:invalidToken')}`}
-                confirmationMessage={`${t('checkout:invalidTokenConfirmation')}`}
+                negativeLabel={t('checkout:error:backToStore')}
+                variant="container"
+                title={`${t('checkout:invalidTokenConfirmation')}`}
+                content={(
+                    <>
+                        <Typography>
+                            {`${t('checkout:invalidToken')}`}
+                        </Typography>
+                    </>
+                )}
             />
             <div className="xs:basis-full sm:basis-full md:basis-full lg:basis-full center">
                 {checkout && checkout.data && checkout.data.cart
@@ -168,14 +176,14 @@ const Content = (props) => {
                         setCheckout={setCheckout}
                         PromoModalItemView={PromoModalItemView}
                     />
-                    {modules.checkout.cashback.enabled && checkout.data.cart && checkout.data.cart.applied_cashback.is_cashback && (
+                    {modules.checkout.cashback.enabled && checkout.data.cart && checkout.data.cart?.applied_cashback?.is_cashback ? (
                         <CashbackInfoView
                             message={chasbackMessage}
                             price={checkout.data.cart.applied_cashback.data[0].amount}
                             currency={storeConfig.base_currency_code}
                             promo_name={checkout.data.cart.applied_cashback.data[0].promo_name}
                         />
-                    )}
+                    ) : null}
 
                     {/* {modules.checkout.inStorePickup.enabled && (
                     <div className="flex flex-row xs:basis-full">

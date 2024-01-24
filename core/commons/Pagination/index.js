@@ -12,7 +12,7 @@ function generateRange(start, end) {
 
 const Pagination = (props) => {
     const {
-        handleChangePage, mobile, showArrowButton, page, totalPage, className, siblingCount,
+        handleChangePage, mobile, showArrowButton, page, totalPage, className, siblingCount, clickToTop = false,
     } = props;
     const longPage = totalPage && totalPage > siblingCount;
     const { isMobile } = useMediaQuery();
@@ -70,21 +70,31 @@ const Pagination = (props) => {
         return [];
     }, [page, longPage, mobile]);
 
+    // scroll to top when change page with many data
+    const scrollTop = () => {
+        if (typeof window !== 'undefined' && clickToTop) {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    };
+
     const handlePrevious = () => {
         if (page > 1) {
             handleChangePage(page - 1);
+            scrollTop();
         }
     };
 
     const handleNext = () => {
         if (page < totalPage) {
             handleChangePage(page + 1);
+            scrollTop();
         }
     };
 
     const handeClickPage = (itemPage) => {
         if (itemPage !== 'dot' && itemPage !== page) {
             handleChangePage(itemPage);
+            scrollTop();
         }
     };
 

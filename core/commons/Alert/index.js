@@ -58,7 +58,7 @@ const Alert = ({
                             <div className={cx('w-[24px] h-[24px] mr-[6px]', iconClassName)}>
                                 <Icon />
                             </div>
-                            <div className="text-center">{children}</div>
+                            <div className="text-left">{children}</div>
                         </div>
                     </Show>
                     <Show when={!withIcon}>{children}</Show>

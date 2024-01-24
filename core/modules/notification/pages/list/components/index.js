@@ -69,18 +69,13 @@ const NotificationList = (props) => {
     const hasData = notifCount > 0;
 
     const PaginationComponent = () => (
-        <div
-            className={cx(
-                'table-data pt-6 flex justify-between',
-                'tablet:items-center tablet:flex-row',
-                'mobile:flex-col',
-            )}
-        >
+        <div className={cx('table-data pt-6 flex justify-between', 'tablet:items-center tablet:flex-row', 'mobile:flex-col')}>
             <div className="flex justify-between items-center flex-1">
                 <Typography className={cx('font-normal', 'leading-2lg')}>{`${notifCount ?? 0} ${t('common:label:data')}`}</Typography>
             </div>
             <div className={cx('flex', 'flex-row', 'items-center', 'mobile:max-tablet:pt-4', 'mobile:max-tablet:justify-center')}>
                 <Pagination
+                    clickToTop
                     handleChangePage={handleChangePage}
                     page={page}
                     siblingCount={0}
@@ -112,10 +107,7 @@ const NotificationList = (props) => {
                             </Typography>
                             <Show when={item.unread}>
                                 <div
-                                    className={cx(
-                                        'absolute left-[14px] top-[50%] bg-primary-700 rounded-full',
-                                        'translate-y-[-50%] w-[6px] h-[6px]',
-                                    )}
+                                    className={cx('absolute left-[14px] top-[50%] bg-primary-700 rounded-full', 'translate-y-[-50%] w-[6px] h-[6px]')}
                                 />
                             </Show>
                         </div>

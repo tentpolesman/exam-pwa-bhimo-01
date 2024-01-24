@@ -6,17 +6,18 @@ const OrderCommentView = (props) => {
     } = props;
     return (
         <>
-            <div className="flex flex-col">
-                <div className="flex flex-row items-center my-3">
+            <div className="flex flex-col w-full">
+                <div className="flex flex-row items-center my-3 w-full">
                     <TextField
                         name="orderComment"
                         onChange={formik.handleChange}
                         value={formik.values.orderComment}
                         placeholder="Order Note"
                         label="Order Note"
-                        classWrapper="max-w-full"
+                        classWrapper="w-full"
+                        className="w-full"
                         inputProps={{
-                            className: 'w-full',
+                            className: 'w-full!',
                         }}
                         multiline
                         row="4"

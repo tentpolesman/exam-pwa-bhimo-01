@@ -37,6 +37,7 @@ const ItemView = (props) => {
         updateItem,
         id,
         isMultiSeller,
+        aw_giftcard_option,
     } = props;
 
     const cartCustomOptions = SimpleMiniCustomizable || ConfigurableMiniCustomizable || customizable_options;
@@ -128,6 +129,22 @@ const ItemView = (props) => {
                             </div>
                         ) : null}
 
+                        {aw_giftcard_option && aw_giftcard_option.length ? (
+                            <div className="flex flex-col gap-3 tablet:gap-2 mt-1">
+                                {aw_giftcard_option.map((val, idx) => (
+                                    <div className="flex flex-col tablet:flex-row gap-1" key={idx}>
+                                        <Typography variant="bd-1b">
+                                            {`${val.label}: `}
+                                        </Typography>
+
+                                        <Typography variant="bd-1b">
+                                            {val.value}
+                                        </Typography>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : null}
+
                         <Show when={isMultiSeller}>
                             <div className="mt-2">
                                 <OrderNote note={note} cartItemId={cartItemId} quantity={quantity} />
@@ -186,6 +203,8 @@ const ItemProduct = (props) => {
         errorCartItems,
         storeConfig,
         currencyCache,
+        aw_giftcard_option,
+
     } = props;
 
     const { id, custom_price: prices } = props;
@@ -225,6 +244,7 @@ const ItemProduct = (props) => {
             customizable_options={SimpleMiniCustomizable || ConfigurableMiniCustomizable || customizable_options}
             storeConfig={storeConfig}
             currencyCache={currencyCache}
+            aw_giftcard_option={aw_giftcard_option}
         />
     );
 };

@@ -111,7 +111,7 @@ const Content = (props) => {
                 </Show>
                 <Show when={dataCart && dataCart.items && dataCart.items.length > 0}>
                     <div className="flex flex-col desktop:flex-row-reverse gap-6 tablet:gap-8 desktop:gap-10">
-                        <div className="summary-cart w-full desktop:max-w-[370px]">
+                        <div className="summary-cart w-full desktop:min-w-[370px] desktop:max-w-[370px]">
                             <Show when={!loadingSummary && allData}>
                                 <Summary
                                     disabled={errorCartItems || (errorCart && errorCart.length > 0)}

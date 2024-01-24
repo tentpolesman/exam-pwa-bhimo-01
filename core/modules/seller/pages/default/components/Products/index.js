@@ -62,7 +62,7 @@ const ContentProducts = (props) => {
                                                 // FilterModalView={FilterModalView}
                                                 defaultSort={{ key: 'position', value: 'ASC' }}
                                                 {...props}
-                                                sellerId={dataSeller?.getSeller[0]?.name}
+                                                sellerId={JSON.stringify(dataSeller?.getSeller[0]?.seller_id)}
                                             />
                                         )
                                     }

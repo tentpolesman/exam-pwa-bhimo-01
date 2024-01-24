@@ -33,6 +33,7 @@ import HeartIcon from '@heroicons/react/24/outline/HeartIcon';
 import CompareIcon from '@heroicons/react/24/outline/ArrowsRightLeftIcon';
 import EyeIcon from '@heroicons/react/24/outline/EyeIcon';
 import EyeSolidIcon from '@heroicons/react/20/solid/EyeIcon';
+import TrashIcon from '@heroicons/react/24/solid/TrashIcon';
 import Show from '@common/Show';
 import Badge from '@common/Badge';
 
@@ -56,6 +57,8 @@ const ProductItem = (props) => {
         enableProductCompare = true,
         enableShortDescription = true,
         preload,
+        usedInWishlist = false,
+        handlingRemove = () => {},
         ...other
     } = props;
     const {
@@ -470,13 +473,26 @@ const ProductItem = (props) => {
                     </Show>
                     <Show when={showWishlist || showProductCompare}>
                         <div className="flex-row gap-1 hidden tablet:flex desktop:flex">
-                            <Show when={showWishlist}>
+                            <Show when={showWishlist && !usedInWishlist}>
                                 <Button
                                     iconOnly
                                     icon={<HeartIcon />}
                                     iconProps={{ className: feed ? '!w-4 !h-4 text-neutral-white' : '!w-4 !h-4 group-hover:text-neutral-white' }}
                                     variant={feed ? 'primary' : 'outlined'}
                                     onClick={() => handleFeed(props)}
+                                    className={classNames(
+                                        '!p-[10px] !border-neutral-200 hover:bg-primary group',
+                                        'hover:!shadow-none focus:!shadow-none hover:!opacity-100',
+                                    )}
+                                />
+                            </Show>
+                            <Show when={usedInWishlist}>
+                                <Button
+                                    iconOnly
+                                    icon={<TrashIcon />}
+                                    iconProps={{ className: '!w-4 !h-4 group-hover:text-neutral-white text-primary' }}
+                                    variant="outlined"
+                                    onClick={() => handlingRemove()}
                                     className={classNames(
                                         '!p-[10px] !border-neutral-200 hover:bg-primary group',
                                         'hover:!shadow-none focus:!shadow-none hover:!opacity-100',

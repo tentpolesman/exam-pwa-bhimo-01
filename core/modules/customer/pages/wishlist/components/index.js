@@ -44,7 +44,7 @@ const Content = (props) => {
                 )}
                 <div
                     className={cx(
-                        'grid tablet:grid-cols-3 tablet:gap-3 mobile:grid-cols-1',
+                        'grid tablet:grid-cols-3 tablet:gap-4 mobile:grid-cols-2 mobile:gap-2',
                     )}
                 >
                     {wishlist.map((item, index) => (

@@ -16,6 +16,7 @@ export const getSeller = gql`
             banner_desktop
             banner_mobile
             seller_path
+            seller_id
         }
     }
 `;

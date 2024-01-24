@@ -1,15 +1,13 @@
 import urlParser from '@helper_urlparser';
 import Layout from '@layout';
-import CustomerLayout from '@layout_customer';
 import PropTypes from 'prop-types';
-import { debuging } from '@config';
 import { getRewardPoint } from '@core_modules/rewardpoint/services/graphql';
 import { useReactiveVar } from '@apollo/client';
 import { currencyVar } from '@core/services/graphql/cache';
 
 const RewardPoint = (props) => {
     const {
-        t, Content, ErrorView, pageConfig, rowsPerPage,
+        t, Content, pageConfig, rowsPerPage,
     } = props;
 
     const config = {
@@ -54,15 +52,6 @@ const RewardPoint = (props) => {
         },
     };
 
-    if (error) {
-        return (
-            <Layout {...props} pageConfig={pageConfig || config}>
-                <CustomerLayout {...props}>
-                    <ErrorView {...props} message={debuging.originalError ? error.message.split(':')[1] : t('common:error:fetchError')} />
-                </CustomerLayout>
-            </Layout>
-        );
-    }
     if (data && data.customerRewardPoints) customerRewardPoints = data.customerRewardPoints;
     const getId = (string) => string.split('#')[1].split('</a')[0];
     const getPath = (string) => {
@@ -81,6 +70,7 @@ const RewardPoint = (props) => {
                 t={t}
                 data={customerRewardPoints}
                 loading={loading}
+                error={error}
                 getPath={getPath}
                 getId={getId}
                 rowsPerPage={count}

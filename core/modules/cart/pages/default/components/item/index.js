@@ -69,7 +69,6 @@ const ItemView = (props) => {
                             </div>
                             {seller.children.map((item, index) => (
                                 <ItemProduct
-                                    {...item}
                                     cartItemId={item.id}
                                     key={index}
                                     t={t}
@@ -86,6 +85,7 @@ const ItemView = (props) => {
                                     currencyCache={currencyCache}
                                     isMultiSeller={isMultiSeller}
                                     {...other}
+                                    {...item}
                                 />
                             ))}
                         </React.Fragment>
@@ -94,7 +94,6 @@ const ItemView = (props) => {
                     data.items.map((item, idx) => (
                         <React.Fragment key={idx}>
                             <ItemProduct
-                                {...item}
                                 cartItemId={item.id}
                                 t={t}
                                 editMode={editMode}
@@ -109,6 +108,7 @@ const ItemView = (props) => {
                                 handleFeed={handleFeed}
                                 currencyCache={currencyCache}
                                 {...other}
+                                {...item}
                             />
                             <Divider />
                         </React.Fragment>

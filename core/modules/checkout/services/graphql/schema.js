@@ -602,11 +602,12 @@ export const getCheckoutConfigurations = gql`
 `;
 
 export const getSeller = gql`
-    query getSeller($keyword: String) {
-        getSeller(input: { keyword: $keyword }) {
+    query getSeller($seller_id: [Int]) {
+        getSeller(input: { seller_id: $seller_id }) {
             id
             name
             city
+            seller_path
         }
     }
 `;
