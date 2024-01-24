@@ -24,12 +24,13 @@ import Alert from '@common_alert';
 import Show from '@common_show';
 import TruckIcon from '@heroicons/react/24/solid/TruckIcon';
 import { SkeletonDesktop, SkeletonMobile } from '@core_modules/order/pages/history/components/skeleton';
+import useMediaQuery from '@hook/useMediaQuery';
 
 const DefaultView = (props) => {
     const {
         data, loading, t, storeConfig, reOrder, pageSize, handleChangePage, handleChangePageSize, error, returnUrl,
     } = props;
-
+    const { isDesktop } = useMediaQuery();
     // cache currency
     const currencyCache = useReactiveVar(currencyVar);
     const hasData = data?.items?.length;
@@ -131,80 +132,79 @@ const DefaultView = (props) => {
         <Layout t={t}>
             <div className={cx('pt-[20px]')}>
                 {/** Desktop */}
-                <div className={cx('mobile:max-desktop:hidden')}>
-                    <div className={cx('relative', 'overflow-x-auto', 'rounded-lg')}>
-                        <table className={cx('w-full', 'text-base', 'border-[1px]', 'border-neutral-100')}>
-                            <thead>
-                                <tr className={cx('text-neutral-500', 'font-semibold', 'leading-2lg', 'text-left')}>
-                                    <th className={cx('px-4', 'py-3')}>{t('customer:order:order')} #</th>
-                                    <th className={cx('px-4', 'py-3')}>{t('customer:order:date')}</th>
-                                    <th className={cx('px-4', 'py-3')}>{t('customer:order:shippedTo')}</th>
-                                    <th className={cx('px-4', 'py-3')}>{t('customer:order:orderTotal')}</th>
-                                    <th className={cx('px-4', 'py-3')}>{t('customer:order:status')}</th>
-                                    <th className={cx('px-4', 'py-3', 'text-center')}>{t('customer:order:action')}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <Show when={loading}>
-                                    <SkeletonDesktop />
-                                </Show>
-
-                                <Show when={!loading}>
-                                    <Show when={error}>
-                                        <tr>
-                                            <td colSpan={6}>
-                                                <Alert severity="error" withIcon>
-                                                    {error?.message ?? t('common:error:fetchError')}
-                                                </Alert>
-                                            </td>
-                                        </tr>
+                <Show when={isDesktop}>
+                    <div className={cx('desktop-view')}>
+                        <div className={cx('relative', 'overflow-x-auto', 'rounded-lg')}>
+                            <table className={cx('w-full', 'text-base', 'border-[1px]', 'border-neutral-100')}>
+                                <thead>
+                                    <tr className={cx('text-neutral-500', 'font-semibold', 'leading-2lg', 'text-left')}>
+                                        <th className={cx('px-4', 'py-3')}>{t('customer:order:order')} #</th>
+                                        <th className={cx('px-4', 'py-3')}>{t('customer:order:date')}</th>
+                                        <th className={cx('px-4', 'py-3')}>{t('customer:order:shippedTo')}</th>
+                                        <th className={cx('px-4', 'py-3')}>{t('customer:order:orderTotal')}</th>
+                                        <th className={cx('px-4', 'py-3')}>{t('customer:order:status')}</th>
+                                        <th className={cx('px-4', 'py-3', 'text-center')}>{t('customer:order:action')}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <Show when={loading}>
+                                        <SkeletonDesktop />
                                     </Show>
 
-                                    <Show when={!error}>
-                                        <Show when={hasData}>
-                                            <>
-                                                {data?.items?.map((val, index) => (
-                                                    <tr className={cx('even:bg-white', 'odd:bg-neutral-50')} key={index}>
-                                                        <td className={cx('p-4')}>
-                                                            <Typography variant="bd-2b">{val.order_number}</Typography>
-                                                        </td>
-                                                        <td className={cx('p-4')}>
-                                                            <Typography variant="bd-2b">{formatDate(val.created_at, 'DD/MM/YYYY')}</Typography>
-                                                        </td>
-                                                        <td className={cx('p-4')}>
-                                                            <Typography variant="bd-2b">
-                                                                {val.detail[0].shipping_address.firstname || val.detail[0].billing_address.firstname}{' '}
-                                                                {val.detail[0].shipping_address.lastname || val.detail[0].billing_address.lastname}
-                                                            </Typography>
-                                                        </td>
-                                                        <td className={cx('p-4')}>
-                                                            <Typography variant="bd-2b">
-                                                                {formatPrice(val.grand_total, storeConfig.base_currency_code || 'IDR', currencyCache)}
-                                                            </Typography>
-                                                        </td>
-                                                        <td>{generateBadge(val.status, val.status_label)}</td>
-                                                        <td>
-                                                            <div className={cx('mobile:max-desktop:hidden')}>
-                                                                <Link href={`/sales/order/view/order_id/${val.order_number}`} className={cx('px-4')}>
-                                                                    <Typography
-                                                                        variant="bd-2b"
-                                                                        className={cx('!text-primary-700', 'hover:underline')}
+                                    <Show when={!loading}>
+                                        <Show when={error}>
+                                            <tr>
+                                                <td colSpan={6}>
+                                                    <Alert severity="error" withIcon>
+                                                        {error?.message ?? t('common:error:fetchError')}
+                                                    </Alert>
+                                                </td>
+                                            </tr>
+                                        </Show>
+
+                                        <Show when={!error}>
+                                            <Show when={hasData}>
+                                                <>
+                                                    {data?.items?.map((val, index) => (
+                                                        <tr className={cx('even:bg-white', 'odd:bg-neutral-50')} key={index}>
+                                                            <td className={cx('p-4')}>
+                                                                <Typography variant="bd-2b">{val.order_number}</Typography>
+                                                            </td>
+                                                            <td className={cx('p-4')}>
+                                                                <Typography variant="bd-2b">{formatDate(val.created_at, 'DD/MM/YYYY')}</Typography>
+                                                            </td>
+                                                            <td className={cx('p-4')}>
+                                                                <Typography variant="bd-2b">
+                                                                    {val.detail[0].shipping_address.firstname
+                                                                        || val.detail[0].billing_address.firstname}{' '}
+                                                                    {val.detail[0].shipping_address.lastname
+                                                                        || val.detail[0].billing_address.lastname}
+                                                                </Typography>
+                                                            </td>
+                                                            <td className={cx('p-4')}>
+                                                                <Typography variant="bd-2b">
+                                                                    {formatPrice(
+                                                                        val.grand_total,
+                                                                        storeConfig.base_currency_code || 'IDR',
+                                                                        currencyCache,
+                                                                    )}
+                                                                </Typography>
+                                                            </td>
+                                                            <td>{generateBadge(val.status, val.status_label)}</td>
+                                                            <td>
+                                                                <div className={cx('mobile:max-desktop:hidden')}>
+                                                                    <Link
+                                                                        href={`/sales/order/view/order_id/${val.order_number}`}
+                                                                        className={cx('px-4')}
                                                                     >
-                                                                        {t('order:view')}
-                                                                    </Typography>
-                                                                </Link>
-                                                                <button type="button" onClick={() => reOrder(val.order_number)}>
-                                                                    <a className={cx('px-4', 'desktop:border-l-[1px]', 'desktop:border-neutral-200')}>
                                                                         <Typography
                                                                             variant="bd-2b"
                                                                             className={cx('!text-primary-700', 'hover:underline')}
                                                                         >
-                                                                            {t('order:reorder')}
+                                                                            {t('order:view')}
                                                                         </Typography>
-                                                                    </a>
-                                                                </button>
-                                                                {val.detail[0].aw_rma && val.detail[0].aw_rma.status && (
-                                                                    <button type="button" onClick={() => returnUrl(val.order_number)}>
+                                                                    </Link>
+                                                                    <button type="button" onClick={() => reOrder(val.order_number)}>
                                                                         <a
                                                                             className={cx(
                                                                                 'px-4',
@@ -216,145 +216,168 @@ const DefaultView = (props) => {
                                                                                 variant="bd-2b"
                                                                                 className={cx('!text-primary-700', 'hover:underline')}
                                                                             >
-                                                                                {t('order:smReturn')}
+                                                                                {t('order:reorder')}
                                                                             </Typography>
                                                                         </a>
                                                                     </button>
-                                                                )}
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                ))}
-                                            </>
-                                        </Show>
-                                        <Show when={!hasData}>
-                                            <tr>
-                                                <td colSpan={6}>
-                                                    <Alert severity="warning" withIcon>
-                                                        {t('customer:order:emptyMessage')}
-                                                    </Alert>
-                                                </td>
-                                            </tr>
+                                                                    {val.detail[0].aw_rma && val.detail[0].aw_rma.status && (
+                                                                        <button type="button" onClick={() => returnUrl(val.order_number)}>
+                                                                            <a
+                                                                                className={cx(
+                                                                                    'px-4',
+                                                                                    'desktop:border-l-[1px]',
+                                                                                    'desktop:border-neutral-200',
+                                                                                )}
+                                                                            >
+                                                                                <Typography
+                                                                                    variant="bd-2b"
+                                                                                    className={cx('!text-primary-700', 'hover:underline')}
+                                                                                >
+                                                                                    {t('order:smReturn')}
+                                                                                </Typography>
+                                                                            </a>
+                                                                        </button>
+                                                                    )}
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    ))}
+                                                </>
+                                            </Show>
+                                            <Show when={!hasData}>
+                                                <tr>
+                                                    <td colSpan={6}>
+                                                        <Alert severity="warning" withIcon>
+                                                            {t('customer:order:emptyMessage')}
+                                                        </Alert>
+                                                    </td>
+                                                </tr>
+                                            </Show>
                                         </Show>
                                     </Show>
-                                </Show>
-                            </tbody>
-                        </table>
+                                </tbody>
+                            </table>
+                        </div>
+                        {/** show pagination */}
+                        <Show when={hasData}>
+                            <PaginationComponent />
+                        </Show>
                     </div>
-                    {/** show pagination */}
-                    <Show when={hasData}>
-                        <PaginationComponent />
-                    </Show>
-                </div>
+                </Show>
 
                 {/** Mobile & Tablet */}
-                <div className={cx('desktop:hidden', 'pt-[10px]')}>
-                    <div className={cx('mobile-title')}>
-                        <Typography variant="bd-2b" className={cx('text-lg font-semibold')}>
-                            {t('order:title')}
-                        </Typography>
-                    </div>
-                    <div className={cx('divider', 'border-b-[1.5px] border-neutral-200', 'mt-[16px]', 'mobile:!mb-[20px] tablet:mb-[24px]')} />
+                <Show when={!isDesktop}>
+                    <div className={cx('mobile-tablet-view', 'pt-[10px]')}>
+                        <div className={cx('mobile-title')}>
+                            <Typography variant="bd-2b" className={cx('text-lg font-semibold')}>
+                                {t('order:title')}
+                            </Typography>
+                        </div>
+                        <div className={cx('divider', 'border-b-[1.5px] border-neutral-200', 'mt-[16px]', 'mobile:!mb-[20px] tablet:mb-[24px]')} />
 
-                    <Show when={loading}>
-                        <SkeletonMobile />
-                    </Show>
-
-                    <Show when={!loading}>
-                        <Show when={error}>
-                            <Alert severity="error" withIcon>
-                                {error?.message ?? t('common:error:fetchError')}
-                            </Alert>
+                        <Show when={loading}>
+                            <SkeletonMobile />
                         </Show>
 
-                        <Show when={!error}>
-                            <Show when={hasData}>
-                                <>
-                                    {data?.items?.map((val, index) => (
-                                        <div
-                                            key={`mobile-order-item-${index}`}
-                                            className={cx(
-                                                'mobile-order-item',
-                                                'flex',
-                                                'flex-col',
-                                                'border-[1px] border-neutral-200',
-                                                'rounded-[6px]',
-                                                'px-[24px]',
-                                                'py-[20px]',
-                                                'mobile:!mb-[16px] tablet:!mb-[24px]',
-                                            )}
-                                        >
-                                            <div className={cx('flex', 'flex-row', 'justify-between')}>
-                                                {generateBadge(val.status, val.status_label)}
-                                                <div>
-                                                    <MobileTabletActionMenu
-                                                        return={val.detail[0].aw_rma && val.detail[0].aw_rma.status}
-                                                        handlingReturn={() => returnUrl(val.order_number)}
-                                                        t={t}
-                                                        orderNumber={val.order_number}
-                                                        reOrder={reOrder}
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className={cx('mt-[8px]')}>
-                                                <Typography variant="bd-2b" className={cx('font-semibold')}>
-                                                    #{val.order_number}
-                                                </Typography>
-                                            </div>
-                                            <div>
-                                                <Typography variant="bd-2b" className={cx('text-sm', 'text-neutral-500')}>
-                                                    {formatDate(val.created_at, 'DD/MM/YYYY')}
-                                                </Typography>
-                                            </div>
-                                            <div className={cx('divider', 'border-b-[1px] border-neutral-200', 'my-[12px]')} />
-                                            <div
-                                                className={cx(
-                                                    'flex',
-                                                    'justify-between',
-                                                    'mobile:flex-col',
-                                                    'mobile:items-start',
-                                                    'mobile:gap-[6px]',
-                                                    'tablet:flex-row',
-                                                    'tablet:items-center',
-                                                    'tablet:gap-[6px]',
-                                                )}
-                                            >
-                                                <div className={cx('flex', 'flex-row', 'text-primary', 'items-center')}>
-                                                    <div className={cx('w-[20px] h-[20px] mr-[8px]')}>
-                                                        <TruckIcon />
-                                                    </div>
-                                                    <Typography variant="bd-2b" className={cx('!text-neutral-500')}>
-                                                        {t('order:shipTo')}{' '}
-                                                        {val.detail[0].shipping_address.firstname || val.detail[0].billing_address.firstname}{' '}
-                                                        {val.detail[0].shipping_address.lastname || val.detail[0].billing_address.lastname}
-                                                    </Typography>
-                                                </div>
-                                                <div className={cx('flex', 'flex-col')}>
-                                                    <div>
-                                                        <Typography variant="bd-2b" className={cx('text-xs', '!text-neutral-500', '!leading-none')}>
-                                                            {t('customer:order:orderTotal')}
-                                                        </Typography>
-                                                    </div>
-                                                    <div>
-                                                        <Typography>
-                                                            {formatPrice(val.grand_total, storeConfig.base_currency_code || 'IDR', currencyCache)}
-                                                        </Typography>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))}
-                                    <PaginationComponent />
-                                </>
-                            </Show>
-                            <Show when={!hasData}>
-                                <Alert severity="warning" withIcon>
-                                    {t('customer:order:emptyMessage')}
+                        <Show when={!loading}>
+                            <Show when={error}>
+                                <Alert severity="error" withIcon>
+                                    {error?.message ?? t('common:error:fetchError')}
                                 </Alert>
                             </Show>
+
+                            <Show when={!error}>
+                                <Show when={hasData}>
+                                    <>
+                                        {data?.items?.map((val, index) => (
+                                            <div
+                                                key={`mobile-order-item-${index}`}
+                                                className={cx(
+                                                    'mobile-order-item',
+                                                    'flex',
+                                                    'flex-col',
+                                                    'border-[1px] border-neutral-200',
+                                                    'rounded-[6px]',
+                                                    'px-[24px]',
+                                                    'py-[20px]',
+                                                    'mobile:!mb-[16px] tablet:!mb-[24px]',
+                                                )}
+                                            >
+                                                <div className={cx('flex', 'flex-row', 'justify-between')}>
+                                                    {generateBadge(val.status, val.status_label)}
+                                                    <div>
+                                                        <MobileTabletActionMenu
+                                                            return={val.detail[0].aw_rma && val.detail[0].aw_rma.status}
+                                                            handlingReturn={() => returnUrl(val.order_number)}
+                                                            t={t}
+                                                            orderNumber={val.order_number}
+                                                            reOrder={reOrder}
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div className={cx('mt-[8px]')}>
+                                                    <Typography variant="bd-2b" className={cx('font-semibold')}>
+                                                        #{val.order_number}
+                                                    </Typography>
+                                                </div>
+                                                <div>
+                                                    <Typography variant="bd-2b" className={cx('text-sm', 'text-neutral-500')}>
+                                                        {formatDate(val.created_at, 'DD/MM/YYYY')}
+                                                    </Typography>
+                                                </div>
+                                                <div className={cx('divider', 'border-b-[1px] border-neutral-200', 'my-[12px]')} />
+                                                <div
+                                                    className={cx(
+                                                        'flex',
+                                                        'justify-between',
+                                                        'mobile:flex-col',
+                                                        'mobile:items-start',
+                                                        'mobile:gap-[6px]',
+                                                        'tablet:flex-row',
+                                                        'tablet:items-center',
+                                                        'tablet:gap-[6px]',
+                                                    )}
+                                                >
+                                                    <div className={cx('flex', 'flex-row', 'text-primary', 'items-center')}>
+                                                        <div className={cx('w-[20px] h-[20px] mr-[8px]')}>
+                                                            <TruckIcon />
+                                                        </div>
+                                                        <Typography variant="bd-2b" className={cx('!text-neutral-500')}>
+                                                            {t('order:shipTo')}{' '}
+                                                            {val.detail[0].shipping_address.firstname || val.detail[0].billing_address.firstname}{' '}
+                                                            {val.detail[0].shipping_address.lastname || val.detail[0].billing_address.lastname}
+                                                        </Typography>
+                                                    </div>
+                                                    <div className={cx('flex', 'flex-col')}>
+                                                        <div>
+                                                            <Typography
+                                                                variant="bd-2b"
+                                                                className={cx('text-xs', '!text-neutral-500', '!leading-none')}
+                                                            >
+                                                                {t('customer:order:orderTotal')}
+                                                            </Typography>
+                                                        </div>
+                                                        <div>
+                                                            <Typography>
+                                                                {formatPrice(val.grand_total, storeConfig.base_currency_code || 'IDR', currencyCache)}
+                                                            </Typography>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                        <PaginationComponent />
+                                    </>
+                                </Show>
+                                <Show when={!hasData}>
+                                    <Alert severity="warning" withIcon>
+                                        {t('customer:order:emptyMessage')}
+                                    </Alert>
+                                </Show>
+                            </Show>
                         </Show>
-                    </Show>
-                </div>
+                    </div>
+                </Show>
             </div>
         </Layout>
     );

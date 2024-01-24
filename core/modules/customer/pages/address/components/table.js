@@ -6,7 +6,6 @@ import Radio from '@common_forms/Radio';
 import AddressFormDialog from '@plugin_addressform';
 import React, { useState } from 'react';
 import cx from 'classnames';
-import useMediaQuery from '@hook/useMediaQuery';
 
 const TableAddress = (props) => {
     const {
@@ -41,7 +40,6 @@ const TableAddress = (props) => {
         removeAddress(addressId);
         setOpenDelete(true);
     };
-    const { isDesktop } = useMediaQuery();
     return (
         <>
             <Dialog
@@ -53,17 +51,17 @@ const TableAddress = (props) => {
                 negativeLabel={t('common:button:cancel')}
                 negativeAction={() => setOpenDelete(!openDelete)}
             />
-            {isDesktop ? (
-                <AddressFormDialog
-                    {...props}
-                    open={open}
-                    onSubmitAddress={handleAddress}
-                    loading={loadingAddress}
-                    success={success}
-                    setOpen={() => setOpen(!open)}
-                    pageTitle={t('customer:address:editTitle')}
-                />
-            ) : null}
+
+            <AddressFormDialog
+                {...props}
+                open={open}
+                onSubmitAddress={handleAddress}
+                loading={loadingAddress}
+                success={success}
+                setOpen={() => setOpen(!open)}
+                pageTitle={t('customer:address:editTitle')}
+            />
+
             <tr
                 className={cx({
                     'bg-white': idx % 2 === 1,

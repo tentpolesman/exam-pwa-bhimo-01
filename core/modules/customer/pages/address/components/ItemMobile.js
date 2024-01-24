@@ -1,13 +1,11 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
-import Button from '@common_button';
 import Radio from '@common_forms/Radio';
 import Typography from '@common_typography';
 import AddressFormDialog from '@plugin_addressform';
 import cx from 'classnames';
 import Show from '@common_show';
 import Dialog from '@common_dialog';
-import useMediaQuery from '@hook/useMediaQuery';
 
 const ItemAddress = (props) => {
     const {
@@ -42,7 +40,6 @@ const ItemAddress = (props) => {
         removeAddress(addressId);
         setOpenDelete(true);
     };
-    const { isDesktop } = useMediaQuery();
 
     return (
         <div className={cx('py-2')}>
@@ -55,17 +52,16 @@ const ItemAddress = (props) => {
                 negativeLabel={t('common:button:cancel')}
                 negativeAction={() => setOpenDelete(!openDelete)}
             />
-            {!isDesktop ? (
-                <AddressFormDialog
-                    {...props}
-                    open={open}
-                    onSubmitAddress={handleAddress}
-                    loading={loadingAddress}
-                    success={success}
-                    setOpen={() => setOpen(!open)}
-                    pageTitle={t('customer:address:editTitle')}
-                />
-            ) : null}
+
+            <AddressFormDialog
+                {...props}
+                open={open}
+                onSubmitAddress={handleAddress}
+                loading={loadingAddress}
+                success={success}
+                setOpen={() => setOpen(!open)}
+                pageTitle={t('customer:address:editTitle')}
+            />
             <div
                 className={cx('flex', 'flex-row', 'shadow-sm', 'p-4', 'justify-start', 'rounded-lg', 'gap-x-4', 'border-[1px]', 'border-neutral-300')}
             >

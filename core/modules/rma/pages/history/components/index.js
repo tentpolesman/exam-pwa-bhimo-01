@@ -9,6 +9,7 @@ import cx from 'classnames';
 import { SkeletonDesktop, SkeletonMobile } from '@core_modules/rma/pages/history/components/Skeleton';
 import MobileTabletActionMenu from '@core_modules/rma/pages/history/components/plugins/MobileTabletActionMenu';
 import Link from 'next/link';
+import useMediaQuery from '@hook/useMediaQuery';
 
 const MobileTableItemComponent = ({ label, value, CustomComponentValue }) => (
     <div className={cx('flex flex-row')}>
@@ -33,7 +34,7 @@ const HistoryContent = (props) => {
     const {
         t, data, loading, error, page, rowsPerPage, handleChangePage, handleChangeRowsPerPage,
     } = props;
-
+    const { isDesktop } = useMediaQuery();
     const hasData = data?.getCustomerRequestAwRma?.items && data?.getCustomerRequestAwRma?.items?.length > 0;
     const totalPages = data?.getCustomerRequestAwRma?.total_pages;
     const totalCount = data?.getCustomerRequestAwRma?.total_count ?? 0;
@@ -88,175 +89,185 @@ const HistoryContent = (props) => {
         <Layout {...props}>
             <div className={cx('rma-container')}>
                 {/** Desktop */}
-                <div className={cx('mobile:max-desktop:hidden')}>
-                    <div className={cx('relative', 'overflow-x-auto', 'rounded-lg', 'pt-5')}>
-                        <table className={cx('w-full', 'text-base', 'border-[1px]', 'border-neutral-100')}>
-                            <thead>
-                                <tr className={cx('text-neutral-500', 'font-semibold', 'leading-2lg', 'text-left')}>
-                                    <th className={cx('px-4', 'py-3')}>{t('rma:table:returnId')}</th>
-                                    <th className={cx('px-4', 'py-3')}>{t('rma:table:orderId')}</th>
-                                    <th className={cx('px-4', 'py-3')}>{t('rma:table:products')}</th>
-                                    <th className={cx('px-4', 'py-3')}>{t('rma:table:status')}</th>
-                                    <th className={cx('px-4', 'py-3')}>{t('common:label:action')}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <Show when={loading}>
-                                    <SkeletonDesktop />
-                                </Show>
-                                <Show when={!loading}>
-                                    <Show when={error}>
-                                        <td colSpan={5}>
-                                            <Alert severity="error" withIcon>
-                                                {error?.message ?? t('common:error:fetchError')}
-                                            </Alert>
-                                        </td>
+                <Show when={isDesktop}>
+                    <div className={cx('desktop-view')}>
+                        <div className={cx('relative', 'overflow-x-auto', 'rounded-lg', 'pt-5')}>
+                            <table className={cx('w-full', 'text-base', 'border-[1px]', 'border-neutral-100')}>
+                                <thead>
+                                    <tr className={cx('text-neutral-500', 'font-semibold', 'leading-2lg', 'text-left')}>
+                                        <th className={cx('px-4', 'py-3')}>{t('rma:table:returnId')}</th>
+                                        <th className={cx('px-4', 'py-3')}>{t('rma:table:orderId')}</th>
+                                        <th className={cx('px-4', 'py-3')}>{t('rma:table:products')}</th>
+                                        <th className={cx('px-4', 'py-3')}>{t('rma:table:status')}</th>
+                                        <th className={cx('px-4', 'py-3')}>{t('common:label:action')}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <Show when={loading}>
+                                        <SkeletonDesktop />
                                     </Show>
+                                    <Show when={!loading}>
+                                        <Show when={error}>
+                                            <td colSpan={5}>
+                                                <Alert severity="error" withIcon>
+                                                    {error?.message ?? t('common:error:fetchError')}
+                                                </Alert>
+                                            </td>
+                                        </Show>
 
-                                    <Show when={!error}>
-                                        <Show when={hasData}>
-                                            <>
-                                                {data?.getCustomerRequestAwRma?.items?.map((val, index) => (
-                                                    <tr className={cx('even:bg-white', 'odd:bg-neutral-50')} key={index}>
-                                                        <td className={cx('p-4')}>
-                                                            <Typography variant="bd-2b">{val.increment_id}</Typography>
-                                                        </td>
-                                                        <td className={cx('p-4')}>
-                                                            <Link
-                                                                href={`/sales/order/view/order_id/${val.order_number}`}
-                                                                className={cx('hover:underline')}
-                                                            >
-                                                                <Typography variant="bd-2b" className={cx('!text-primary-700', 'hover:underline')}>
-                                                                    {val.order_number}
-                                                                </Typography>
-                                                            </Link>
-                                                        </td>
-                                                        <td className={cx('p-4')}>
-                                                            <Typography variant="bd-2b">
-                                                                {val.items.map((item, idx) => `${item.name}${idx > 0 ? ', ' : ''}`)}
-                                                            </Typography>
-                                                        </td>
-                                                        <td className={cx('p-4')}>
-                                                            <Typography variant="bd-2b">{val.status.name}</Typography>
-                                                        </td>
-                                                        <td className={cx('p-4')}>
-                                                            <button
-                                                                type="button"
-                                                                onClick={() =>
-                                                                    Router.push(
-                                                                        '/rma/customer/view/id/[id]',
-                                                                        `/rma/customer/view/id/${val.increment_id}`,
-                                                                    )}
-                                                                aria-label="view-detail"
-                                                                className="w-max"
-                                                            >
-                                                                <a>
+                                        <Show when={!error}>
+                                            <Show when={hasData}>
+                                                <>
+                                                    {data?.getCustomerRequestAwRma?.items?.map((val, index) => (
+                                                        <tr className={cx('even:bg-white', 'odd:bg-neutral-50')} key={index}>
+                                                            <td className={cx('p-4')}>
+                                                                <Typography variant="bd-2b">{val.increment_id}</Typography>
+                                                            </td>
+                                                            <td className={cx('p-4')}>
+                                                                <Link
+                                                                    href={`/sales/order/view/order_id/${val.order_number}`}
+                                                                    className={cx('hover:underline')}
+                                                                >
                                                                     <Typography
                                                                         variant="bd-2b"
                                                                         className={cx('!text-primary-700', 'hover:underline')}
                                                                     >
-                                                                        {t('rma:table:view')}
+                                                                        {val.order_number}
                                                                     </Typography>
-                                                                </a>
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                                ))}
-                                            </>
-                                        </Show>
+                                                                </Link>
+                                                            </td>
+                                                            <td className={cx('p-4')}>
+                                                                <Typography variant="bd-2b">
+                                                                    {val.items.map((item, idx) => `${item.name}${idx > 0 ? ', ' : ''}`)}
+                                                                </Typography>
+                                                            </td>
+                                                            <td className={cx('p-4')}>
+                                                                <Typography variant="bd-2b">{val.status.name}</Typography>
+                                                            </td>
+                                                            <td className={cx('p-4')}>
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={() =>
+                                                                        Router.push(
+                                                                            '/rma/customer/view/id/[id]',
+                                                                            `/rma/customer/view/id/${val.increment_id}`,
+                                                                        )}
+                                                                    aria-label="view-detail"
+                                                                    className="w-max"
+                                                                >
+                                                                    <a>
+                                                                        <Typography
+                                                                            variant="bd-2b"
+                                                                            className={cx('!text-primary-700', 'hover:underline')}
+                                                                        >
+                                                                            {t('rma:table:view')}
+                                                                        </Typography>
+                                                                    </a>
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    ))}
+                                                </>
+                                            </Show>
 
-                                        <Show when={!hasData}>
-                                            <td colSpan={5}>
-                                                <Alert severity="warning" withIcon>
-                                                    {t('rma:empty')}
-                                                </Alert>
-                                            </td>
+                                            <Show when={!hasData}>
+                                                <td colSpan={5}>
+                                                    <Alert severity="warning" withIcon>
+                                                        {t('rma:empty')}
+                                                    </Alert>
+                                                </td>
+                                            </Show>
                                         </Show>
                                     </Show>
-                                </Show>
-                            </tbody>
-                        </table>
+                                </tbody>
+                            </table>
+                        </div>
+                        {/** show pagination */}
+                        <Show when={hasData && !loading}>
+                            <PaginationComponent />
+                        </Show>
                     </div>
-                    {/** show pagination */}
-                    <Show when={hasData && !loading}>
-                        <PaginationComponent />
-                    </Show>
-                </div>
+                </Show>
 
                 {/** Mobile Tablet */}
-                <div className={cx('desktop:hidden', 'pt-[10px]')}>
-                    <div className={cx('mobile-title')}>
-                        <Typography variant="bd-2b" className={cx('text-lg font-semibold')}>
-                            {t('rma:history')}
-                        </Typography>
-                    </div>
+                <Show when={!isDesktop}>
+                    <div className={cx('mobile-tablet-view', 'pt-[10px]')}>
+                        <div className={cx('mobile-title')}>
+                            <Typography variant="bd-2b" className={cx('text-lg font-semibold')}>
+                                {t('rma:history')}
+                            </Typography>
+                        </div>
 
-                    <div className={cx('divider', 'border-b-[1.5px] border-neutral-200', 'mt-[16px]', 'mobile:!mb-[20px] tablet:mb-[24px]')} />
+                        <div className={cx('divider', 'border-b-[1.5px] border-neutral-200', 'mt-[16px]', 'mobile:!mb-[20px] tablet:mb-[24px]')} />
 
-                    <Show when={loading}>
-                        <SkeletonMobile />
-                    </Show>
-
-                    <Show when={!loading}>
-                        <Show when={error}>
-                            <Alert severity="error" withIcon>
-                                {error?.message ?? t('common:error:fetchError')}
-                            </Alert>
+                        <Show when={loading}>
+                            <SkeletonMobile />
                         </Show>
 
-                        <Show when={!error}>
-                            <Show when={hasData}>
-                                <>
-                                    {data?.getCustomerRequestAwRma?.items?.map((val, index) => (
-                                        <div
-                                            key={`mobile-item-${index}`}
-                                            className={cx(
-                                                'mobile-item',
-                                                'flex',
-                                                'flex-col',
-                                                'border-[1px] border-neutral-200',
-                                                'rounded-[6px]',
-                                                'px-[24px]',
-                                                'py-[20px]',
-                                                'mobile:!mb-[16px] tablet:!mb-[24px]',
-                                            )}
-                                        >
-                                            <div className={cx('flex', 'justify-end')}>
-                                                <MobileTabletActionMenu
-                                                    t={t}
-                                                    openDetail={() =>
-                                                        Router.push('/rma/customer/view/id/[id]', `/rma/customer/view/id/${val.increment_id}`)}
-                                                />
-                                            </div>
-                                            <MobileTableItemComponent label={t('rma:table:returnId')} value={val.increment_id} />
-                                            <MobileTableItemComponent
-                                                label={t('rma:table:orderId')}
-                                                CustomComponentValue={(
-                                                    <Link href={`/sales/order/view/order_id/${val.order_number}`} className={cx('hover:underline')}>
-                                                        <Typography variant="bd-2b" className={cx('!text-primary-700', 'hover:underline')}>
-                                                            {val.order_number}
-                                                        </Typography>
-                                                    </Link>
-                                                )}
-                                            />
-                                            <MobileTableItemComponent
-                                                label={t('rma:table:products')}
-                                                value={val.items.map((item, idx) => `${item.name}${idx > 0 ? ', ' : ''}`)}
-                                            />
-                                            <MobileTableItemComponent label={t('rma:table:status')} value={val.status.name} />
-                                        </div>
-                                    ))}
-                                    <PaginationComponent />
-                                </>
-                            </Show>
-                            <Show when={!hasData}>
-                                <Alert severity="warning" withIcon>
-                                    {t('rma:empty')}
+                        <Show when={!loading}>
+                            <Show when={error}>
+                                <Alert severity="error" withIcon>
+                                    {error?.message ?? t('common:error:fetchError')}
                                 </Alert>
                             </Show>
+
+                            <Show when={!error}>
+                                <Show when={hasData}>
+                                    <>
+                                        {data?.getCustomerRequestAwRma?.items?.map((val, index) => (
+                                            <div
+                                                key={`mobile-item-${index}`}
+                                                className={cx(
+                                                    'mobile-item',
+                                                    'flex',
+                                                    'flex-col',
+                                                    'border-[1px] border-neutral-200',
+                                                    'rounded-[6px]',
+                                                    'px-[24px]',
+                                                    'py-[20px]',
+                                                    'mobile:!mb-[16px] tablet:!mb-[24px]',
+                                                )}
+                                            >
+                                                <div className={cx('flex', 'justify-end')}>
+                                                    <MobileTabletActionMenu
+                                                        t={t}
+                                                        openDetail={() =>
+                                                            Router.push('/rma/customer/view/id/[id]', `/rma/customer/view/id/${val.increment_id}`)}
+                                                    />
+                                                </div>
+                                                <MobileTableItemComponent label={t('rma:table:returnId')} value={val.increment_id} />
+                                                <MobileTableItemComponent
+                                                    label={t('rma:table:orderId')}
+                                                    CustomComponentValue={(
+                                                        <Link
+                                                            href={`/sales/order/view/order_id/${val.order_number}`}
+                                                            className={cx('hover:underline')}
+                                                        >
+                                                            <Typography variant="bd-2b" className={cx('!text-primary-700', 'hover:underline')}>
+                                                                {val.order_number}
+                                                            </Typography>
+                                                        </Link>
+                                                    )}
+                                                />
+                                                <MobileTableItemComponent
+                                                    label={t('rma:table:products')}
+                                                    value={val.items.map((item, idx) => `${item.name}${idx > 0 ? ', ' : ''}`)}
+                                                />
+                                                <MobileTableItemComponent label={t('rma:table:status')} value={val.status.name} />
+                                            </div>
+                                        ))}
+                                        <PaginationComponent />
+                                    </>
+                                </Show>
+                                <Show when={!hasData}>
+                                    <Alert severity="warning" withIcon>
+                                        {t('rma:empty')}
+                                    </Alert>
+                                </Show>
+                            </Show>
                         </Show>
-                    </Show>
-                </div>
+                    </div>
+                </Show>
             </div>
         </Layout>
     );
