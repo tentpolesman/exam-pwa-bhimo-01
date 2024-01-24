@@ -157,6 +157,8 @@ export const configpwa = gql`
     {
         storeConfig {
             enable_oms_multiseller
+            secure_base_media_url
+            header_logo_src
             pwa {
                 add_to_cart_enable
                 app_name
