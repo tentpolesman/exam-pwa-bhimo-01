@@ -536,7 +536,7 @@ const Layout = (props) => {
             {/* END CHAT FEATURES */}
 
             {withLayoutFooter && (
-                <footer className={cx('!block', 'sm:mt-[50px]', font.variable, 'font-sans', '!font-pwa-default')} ref={refFooter}>
+                <footer className={cx('!block', 'mt-[50px]', font.variable, 'font-sans', '!font-pwa-default')} ref={refFooter}>
                     {footer ? <Footer storeConfig={storeConfig} t={t} /> : null}
                     <Copyright storeConfig={storeConfig} t={t} />
                 </footer>
