@@ -70,7 +70,7 @@ const DefaultView = (props) => {
 
     return (
         <Layout t={t} wishlist={[]}>
-            <div className={cx('pt-[20px]')}>
+            <div>
                 {/** Desktop */}
                 <Show when={isDesktop}>
                     <div className={cx('desktop-view')}>
@@ -180,14 +180,7 @@ const DefaultView = (props) => {
 
                 {/** Mobile */}
                 <Show when={!isDesktop}>
-                    <div className={cx('mobile-tablet-view', 'pt-[10px]')}>
-                        <div className={cx('mobile-title')}>
-                            <Typography variant="bd-2b" className={cx('text-lg font-semibold')}>
-                                {t('customer:menu:myDownload')}
-                            </Typography>
-                        </div>
-                        <div className={cx('divider', 'border-b-[1.5px] border-neutral-200', 'mt-[16px]', 'mobile:!mb-[20px] tablet:mb-[24px]')} />
-
+                    <div className={cx('mobile-tablet-view')}>
                         <Show when={loading}>
                             <SkeletonMobile />
                         </Show>

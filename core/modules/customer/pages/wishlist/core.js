@@ -13,7 +13,7 @@ import { basePath } from '@config';
 const Wishlist = (props) => {
     let wishlist = [];
     const {
-        Content, t, isLogin, pageConfig, Skeleton, storeConfig,
+        Content, t, isLogin, pageConfig, storeConfig,
     } = props;
     const config = {
         title: t('customer:wishlist:pageTitle'),
@@ -24,7 +24,7 @@ const Wishlist = (props) => {
     const [addToCart] = addSimpleProductsToCart();
     const [removeWishlist] = gqlremoveWishlist();
     const {
-        data, loading, error, refetch,
+        data, loading, refetch,
     } = getCustomer(storeConfig);
     const [setShareWishlist, { loading: shareLoading }] = shareWishlist();
 
@@ -71,15 +71,6 @@ const Wishlist = (props) => {
         skip: !isLogin || typeof window === 'undefined',
     });
 
-    if (!data || loading || error) {
-        return (
-            <Layout pageConfig={pageConfig || config} {...props}>
-                <CustomerLayout {...props}>
-                    <Skeleton />
-                </CustomerLayout>
-            </Layout>
-        );
-    }
     if (data) {
         wishlist = data.customer.wishlist.items.map(({ id, product }) => ({
             ...product,
@@ -214,18 +205,20 @@ const Wishlist = (props) => {
 
     return (
         <Layout pageConfig={pageConfig || config} {...props}>
-            <Content
-                t={t}
-                wishlist={wishlist}
-                refetch={refetch}
-                handleRemove={handleRemove}
-                handleToCart={handleToCart}
-                handleAddAlltoBag={handleAddAlltoBag}
-                loading={loading}
-                shareLoading={shareLoading}
-                handleShareWishlist={handleShareWishlist}
-                storeConfig={storeConfig}
-            />
+            <CustomerLayout {...props}>
+                <Content
+                    t={t}
+                    wishlist={wishlist}
+                    refetch={refetch}
+                    handleRemove={handleRemove}
+                    handleToCart={handleToCart}
+                    handleAddAlltoBag={handleAddAlltoBag}
+                    loading={loading}
+                    shareLoading={shareLoading}
+                    handleShareWishlist={handleShareWishlist}
+                    storeConfig={storeConfig}
+                />
+            </CustomerLayout>
         </Layout>
     );
 };

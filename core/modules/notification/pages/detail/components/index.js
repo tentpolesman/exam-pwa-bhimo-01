@@ -6,7 +6,9 @@ import Skeleton from '@core_modules/notification/pages/detail/components/skeleto
 import Alert from '@common/Alert';
 
 const NotificationData = (props) => {
-    const { t, loading, error, data, localDateString } = props;
+    const {
+        t, loading, error, data, localDateString,
+    } = props;
 
     if (loading) {
         return (
@@ -18,7 +20,7 @@ const NotificationData = (props) => {
     if (error) {
         return (
             <Layout {...props} title={t('customer:menu:notification')}>
-                <div className={cx('pt-5')}>
+                <div>
                     <Alert severity="error">
                         <Typography variant="p-2a" className={cx()}>
                             {`Error: ${error.message}`}
@@ -31,7 +33,7 @@ const NotificationData = (props) => {
     if (!data) {
         return (
             <Layout {...props} title={t('customer:menu:notification')}>
-                <div className={cx('pt-5')}>
+                <div>
                     <Alert severity="warning" className={cx('pt-5')}>
                         <Typography variant="p-2a" className={cx()}>
                             {t('notification:not_found')}
@@ -46,8 +48,8 @@ const NotificationData = (props) => {
 
     return (
         <Layout {...props} activeMenu="/inboxnotification/notification" title={t('customer:menu:notification')}>
-            <div className={cx('pt-5')}>
-                <Typography variant="p-3" className={cx('mb-5')}>
+            <div>
+                <Typography variant="p-2" className={cx('mb-5 font-semibold')}>
                     {localDateString(item.createdAt)}
                 </Typography>
                 <Typography variant="p-2" className={cx('mb-1')}>

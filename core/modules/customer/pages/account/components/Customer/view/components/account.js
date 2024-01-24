@@ -6,12 +6,12 @@ import Button from '@common_button';
 import Typography from '@common_typography';
 
 const AddressView = ({ customer, t }) => (
-    <>
-        <Typography variant="h3" className={cx('mobile:max-desktop:hidden', 'pl-0', 'pb-[18px]', 'border-b-[1.5px]', 'border-neutral-200')}>
+    <div className={cx('')}>
+        <Typography variant="h3" className={cx('pl-0', 'pb-[18px]', 'mb-[18px]', 'border-b-[1.5px]', 'border-neutral-200')}>
             {t('customer:menu:accountInformation')}
         </Typography>
-        <div className={cx('flex', 'flex-row', 'pt-[18px]', 'gap-x-5')}>
-            <div className={cx('sm:basis-1/2', 'lg:basis-1/2', 'border-[1px]', 'border-neutral-200', 'rounded-md', 'pl-5', 'py-5')}>
+        <div className={cx('flex', 'mobile:flex-col', 'desktop:flex-row', 'mobile:max-desktop:gap-y-4', 'desktop:gap-x-5')}>
+            <div className={cx('mobile:basis-full', 'desktop:basis-1/2', 'border-[1px]', 'border-neutral-200', 'rounded-md', 'pl-5', 'py-5')}>
                 <Typography variant="bd-1a">{t('customer:menu:contactInformation')}</Typography>
                 <p className={cx('pt-5')}>
                     <Typography className={cx('block', 'font-normal')}>
@@ -36,7 +36,7 @@ const AddressView = ({ customer, t }) => (
                     </div>
                 </p>
             </div>
-            <div className={cx('sm:basis-1/2', 'lg:basis-1/2', 'border-[1px]', 'border-neutral-200', 'rounded-md', 'pl-5', 'py-5')}>
+            <div className={cx('mobile:basis-full', 'desktop:basis-1/2', 'border-[1px]', 'border-neutral-200', 'rounded-md', 'pl-5', 'py-5')}>
                 <Typography variant="bd-1a">{t('customer:menu:newsletter')}</Typography>
                 <p className={cx('pt-5')}>
                     <Typography className={cx('block', 'font-normal')}>
@@ -54,7 +54,7 @@ const AddressView = ({ customer, t }) => (
                 </p>
             </div>
         </div>
-    </>
+    </div>
 );
 
 export default AddressView;

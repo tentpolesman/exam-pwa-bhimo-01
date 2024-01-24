@@ -61,7 +61,7 @@ const Layout = (props) => {
     return (
         <>
             <div className="desktop:flex desktop:flex-row desktop:gap-x-[18px] mobile:grid mobile:grid-cols-1">
-                <div className={cx('desktop:hidden')}>
+                <div className={cx('desktop:hidden', 'mb-6')}>
                     <Accordion
                         label={<Typography className={cx('!text-lg', 'font-semibold', 'leading-7')}>{title || titlePage}</Typography>}
                         classLabel={cx('p-2')}
@@ -218,7 +218,7 @@ const Layout = (props) => {
                     </div>
                 </div>
                 <div className="desktop:basis-9/12 xs:basis-full sm:basis-full">
-                    <Typography variant="h2" type="bold" letter="capitalize" className={cx('mobile:max-desktop:hidden', 'pl-0')}>
+                    <Typography variant="h2" type="bold" letter="capitalize" className={cx('mobile:max-desktop:hidden', 'pl-0', 'mb-[20px]')}>
                         {title || titlePage}
                     </Typography>
                     {children}

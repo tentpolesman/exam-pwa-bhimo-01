@@ -14,7 +14,7 @@ import cx from 'classnames';
 import Badge from '@common_badge';
 import Button from '@common_button';
 import Typography from '@common_typography';
-import MobileTabletActionMenu from '@core_modules/customer/pages/account/components/Customer/view/mobile/plugins/MobileTabletActionMenu';
+import MobileTabletActionMenu from '@core_modules/customer/pages/account/components/Customer/view/components/plugins/MobileTabletActionMenu';
 import ArrowDownIcon from '@heroicons/react/20/solid/ArrowDownIcon';
 import Alert from '@common_alert';
 import Show from '@common_show';
@@ -25,7 +25,7 @@ const OrderView = (props) => {
     const {
         customerOrders, t, reOrder, returnUrl,
     } = props;
-    const { isTablet } = useMediaQuery();
+    const { isMobile } = useMediaQuery();
 
     // cache currency
     const currencyCache = useReactiveVar(currencyVar);
@@ -75,11 +75,11 @@ const OrderView = (props) => {
 
     return (
         <div className={cx('pt-10', '')}>
-            <div className={cx('address-title-section', 'pb-[18px]', 'border-b-[1.5px]', 'border-neutral-200', 'flex', 'flex-row')}>
-                <Typography variant="h3" className={cx('desktop:hidden', 'pl-0')}>
+            <div className={cx('address-title-section', 'pb-[18px]', 'border-b-[1.5px]', 'border-neutral-200', 'flex', 'flex-row', 'justify-between', 'items-center')}>
+                <Typography variant="h3" className={cx('pl-0')}>
                     {t('customer:order:recentOrder')}
                 </Typography>
-                <Button link="/sales/order/history" variant="plain" className={cx('pl-6', '!py-0')}>
+                <Button link="/sales/order/history" variant="plain" className={cx('pl-6', 'pr-0', '!py-0')}>
                     <Typography variant="bd-2a" className={cx('!text-neutral-500', 'underline', 'underline-offset-2')}>
                         {t('customer:menu:viewall')}
                     </Typography>
@@ -87,7 +87,7 @@ const OrderView = (props) => {
             </div>
             <div className={cx('pt-[18px]')}>
                 {/** Tablet View */}
-                <Show when={isTablet}>
+                <Show when={!isMobile}>
                     <div className={cx('tablet-view', 'relative', 'overflow-x-auto', 'rounded-lg')}>
                         <table className={cx('w-full', 'text-base', 'border-[1px]', 'border-neutral-100')}>
                             <thead>
@@ -165,7 +165,7 @@ const OrderView = (props) => {
                     </div>
                 </Show>
                 {/** Mobile View */}
-                <Show when={!isTablet}>
+                <Show when={isMobile}>
                     <div className={cx('mobile-view')}>
                         <Show when={hasData}>
                             <>

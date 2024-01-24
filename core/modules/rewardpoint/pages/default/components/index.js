@@ -59,7 +59,7 @@ const RewardPointView = (props) => {
 
     const RewardPointInfoComponent = () => (
         <>
-            <div className={cx('rewardpoint-balance-wrapper', 'flex', 'items-center', 'mt-[10px]')}>
+            <div className={cx('rewardpoint-balance-wrapper', 'flex', 'items-center')}>
                 <div>
                     <Typography variant="bd-2b">
                         {t('rewardpoint:balanceTitle')}
@@ -254,12 +254,7 @@ const RewardPointView = (props) => {
 
                 {/** Mobile Tablet */}
                 <Show when={!isDesktop}>
-                    <div className={cx('mobile-tablet-view', 'pt-[10px]')}>
-                        <div className={cx('mobile-title')}>
-                            <Typography variant="bd-2b" className={cx('text-lg font-semibold')}>
-                                {t('rewardpoint:title')}
-                            </Typography>
-                        </div>
+                    <div className={cx('mobile-tablet-view')}>
                         <RewardPointInfoComponent />
 
                         <div className={cx('divider', 'border-b-[1.5px] border-neutral-200', 'mt-[16px]', 'mobile:!mb-[20px] tablet:mb-[24px]')} />

@@ -1,15 +1,11 @@
 import React from 'react';
-import cx from 'classnames';
-import Skeleton from '@common_skeleton';
+import ProductListSkeleton from '@plugin_productlist/components/ProductListSkeleton';
 
 function SkeletonContent() {
     return (
-        <div className={cx('pt-5')}>
-            <Skeleton
-                width="100%"
-                height={200}
-            />
-        </div>
+        <>
+            <ProductListSkeleton isGrid />
+        </>
     );
 }
 

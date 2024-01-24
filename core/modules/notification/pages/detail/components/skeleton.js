@@ -4,7 +4,7 @@ import Skeleton from '@common_skeleton';
 
 function SkeletonContent() {
     return (
-        <div className={cx('pt-5 w-full flex flex-col [&>*+*]:mt-[24px]')}>
+        <div className={cx('w-full flex flex-col [&>*+*]:mt-[24px]')}>
             <Skeleton
                 width={140}
                 height={20}
