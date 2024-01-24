@@ -84,14 +84,22 @@ const OptionItemAction = (props) => {
                     <Button
                         id="plugin-addToCart-btn"
                         className={cx('w-full h-[48px] [&.button-link]:justify-center', customStyleBtnAddToCard)}
-                        classNameText="justify-center"
+                        classNameText="justify-center xs:flex-wrap sm:flex-nowrap"
                         variant="primary"
                         onClick={handleAddToCart}
                         loading={loading}
                         disabled={disabled || IS_OOS}
                         {...additionalProps}
                     >
-                        {(isPlp && !isSimpleOrConfigurable) ? t('common:button:viewItem') : labelAddToCart || t('common:button:addToCart')}
+                        <Typography
+                            color="white"
+                            className={cx(
+                                'font-medium',
+                                loading ? 'xs:truncate xs:max-w-[calc(100%-30px)]' : '',
+                            )}
+                        >
+                            {(isPlp && !isSimpleOrConfigurable) ? t('common:button:viewItem') : labelAddToCart || t('common:button:addToCart')}
+                        </Typography>
                     </Button>
                 )}
             </div>

@@ -28,7 +28,7 @@ const UserInfo = (props) => {
                             </div>
                             <Show when={customer?.firstname}>
                                 <Typography variant="bd-2b" className={cx('inline-block', 'pl-2', '!text-primary-700')}>
-                                    {customer?.firstname?.length <= 12 ? `${customer?.firstname}` : `${customer?.firstname?.substring(0, 15)}...`}
+                                    {customer?.firstname?.length <= 15 ? `${customer?.firstname}` : `${customer?.firstname?.substring(0, 15)}...`}
                                 </Typography>
                             </Show>
                             <Show when={!customer?.firstname}>

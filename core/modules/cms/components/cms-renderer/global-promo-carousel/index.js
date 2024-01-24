@@ -19,6 +19,7 @@ const WidgetSliderCarousel = (props) => {
     const { content, className, autoPlaySpeed = 5000 } = props;
 
     const [activeTabs, setActiveTabs] = React.useState(0);
+    const [showNav, setShowNav] = React.useState(false);
     let countTabs = 0;
 
     const optionSlider = {
@@ -57,6 +58,12 @@ const WidgetSliderCarousel = (props) => {
         },
     };
 
+    React.useEffect(() => {
+        if (countTabs > 1) {
+            setShowNav(true);
+        }
+    }, [countTabs]);
+
     // WIP : AUTOPLAY
     React.useEffect(() => {
         const autoPlayInterval = setInterval(() => {
@@ -74,53 +81,58 @@ const WidgetSliderCarousel = (props) => {
         return (
             <div className={className}>
                 <div className={cx('slider-container', 'h-[45px]', 'overflow-hidden', 'text-center', 'p-[8px_25%]')}>
-                    <Button
-                        onClick={() => {
-                            if (activeTabs - 1 < 0) {
-                                setActiveTabs(countTabs - 1);
-                            } else {
-                                setActiveTabs(activeTabs - 1);
-                            }
-                        }}
-                        className={cx(
-                            'absolute',
-                            'mobile:max-tablet:left-[0%]',
-                            'tablet:left-[5%]',
-                            'tablet:!top-[40%]',
-                            'mobile:max-tablet:!top-[50%]',
-                            '!py-0',
-                            'bg-[transparent]',
-                            'translate-y-[-50%]',
-                        )}
-                        variant="plain"
-                        iconOnly
-                        icon={<ChevronLeftIcon />}
-                        iconProps={{ className: '!text-neutral-white !opacity-100 mobile:max-tablet:h-[20px] mobile:max-tablet:w-[20px]' }}
-                    />
+                    {showNav ? (
+                        <Button
+                            onClick={() => {
+                                if (activeTabs - 1 < 0) {
+                                    setActiveTabs(countTabs - 1);
+                                } else {
+                                    setActiveTabs(activeTabs - 1);
+                                }
+                            }}
+                            className={cx(
+                                'absolute',
+                                'mobile:max-tablet:left-[0%]',
+                                'tablet:left-[5%]',
+                                'tablet:!top-[40%]',
+                                'mobile:max-tablet:!top-[50%]',
+                                '!py-0',
+                                'bg-[transparent]',
+                                'translate-y-[-50%]',
+                            )}
+                            variant="plain"
+                            iconOnly
+                            icon={<ChevronLeftIcon />}
+                            iconProps={{ className: '!text-neutral-white !opacity-100 mobile:max-tablet:h-[20px] mobile:max-tablet:w-[20px]' }}
+                        />
+                    ) : null}
+
                     {parse(content, options)}
-                    <Button
-                        onClick={() => {
-                            if (activeTabs + 1 === countTabs) {
-                                setActiveTabs(0);
-                            } else {
-                                setActiveTabs(activeTabs + 1);
-                            }
-                        }}
-                        className={cx(
-                            'absolute',
-                            'mobile:max-tablet:right-[0%]',
-                            'tablet:right-[5%]',
-                            'tablet:!top-[40%]',
-                            'mobile:max-tablet:!top-[50%]',
-                            '!py-0',
-                            'bg-[transparent]',
-                            'translate-y-[-50%]',
-                        )}
-                        variant="plain"
-                        iconOnly
-                        icon={<ChevronRightIcon />}
-                        iconProps={{ className: '!text-neutral-white !opacity-100 mobile:max-tablet:h-[20px] mobile:max-tablet:w-[20px]' }}
-                    />
+                    {showNav ? (
+                        <Button
+                            onClick={() => {
+                                if (activeTabs + 1 === countTabs) {
+                                    setActiveTabs(0);
+                                } else {
+                                    setActiveTabs(activeTabs + 1);
+                                }
+                            }}
+                            className={cx(
+                                'absolute',
+                                'mobile:max-tablet:right-[0%]',
+                                'tablet:right-[5%]',
+                                'tablet:!top-[40%]',
+                                'mobile:max-tablet:!top-[50%]',
+                                '!py-0',
+                                'bg-[transparent]',
+                                'translate-y-[-50%]',
+                            )}
+                            variant="plain"
+                            iconOnly
+                            icon={<ChevronRightIcon />}
+                            iconProps={{ className: '!text-neutral-white !opacity-100 mobile:max-tablet:h-[20px] mobile:max-tablet:w-[20px]' }}
+                        />
+                    ) : null}
                 </div>
                 <style jsx>
                     {`

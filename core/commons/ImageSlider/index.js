@@ -312,6 +312,7 @@ const ImageSlider = ({
                                 <div
                                     className="mb-[12px] relative"
                                     key={`image-slider-vertical-${index}`}
+                                    onClick={() => onSelectedImage({ index, item })}
                                 >
                                     <Show when={isVideo}>
                                         <PlayIcon
@@ -333,7 +334,6 @@ const ImageSlider = ({
                                         quality={80}
                                         widthMobile={thumbnailImageWidth}
                                         heightMobile={thumbnailImageHeight}
-                                        onClick={() => onSelectedImage({ index, item })}
                                         className={cx(
                                             isActive && 'border-[1px] border-neutral-500',
                                             'w-full h-full',
@@ -470,6 +470,7 @@ const ImageSlider = ({
                                             'mobile:first:ml-[16px] mobile:last:mr-[6px]',
                                         )
                                     }
+                                    onClick={() => onSelectedImage({ index, item })}
                                 >
                                     <Show when={isVideo}>
                                         <PlayIcon
@@ -491,7 +492,6 @@ const ImageSlider = ({
                                         quality={80}
                                         widthMobile={thumbnailImageWidth}
                                         heightMobile={thumbnailImageHeight}
-                                        onClick={() => onSelectedImage({ index, item })}
                                         styleContainer={{
                                             height: thumbnailImageHeight,
                                             width: thumbnailImageWidth,

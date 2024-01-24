@@ -43,7 +43,7 @@ const Content = (props) => {
 
     return (
         <Layout {...props}>
-            <div className={cx('flex', 'flex-col', 'w-full', 'h-full', 'text-base', 'pt-5', 'px-4')}>
+            <div className={cx('flex', 'flex-col', 'w-full', 'h-full', 'text-base', 'pt-5')}>
                 <div className={cx('desktop:hidden')}>
                     <Show when={loading}>
                         <SkeletonMobile />
