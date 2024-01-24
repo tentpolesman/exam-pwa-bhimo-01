@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
-import React from 'react';
+import React, { useEffect } from 'react';
 import formatDate from '@helper_date';
 import Layout from '@layout_customer';
 import RatingStar from '@common_ratingstar';
@@ -47,6 +47,12 @@ const ProductReviewPage = (props) => {
         setOpenDetail(state);
         setReviewItem(val);
     };
+
+    useEffect(() => {
+        if (!isOpenDetail) {
+            setReviewItem(null);
+        }
+    }, [isOpenDetail]);
 
     const hasData = reviewCustomer?.items && reviewCustomer?.items?.length > 0;
     const pageInfo = reviewCustomer?.page_info;
@@ -103,7 +109,13 @@ const ProductReviewPage = (props) => {
         <Layout {...props}>
             <div className={cx('productreview-container')}>
                 {/** Modal See Detail */}
-                <DetailProductReview t={t} open={isOpenDetail} setOpen={() => openDetail(false)} reviewItem={reviewItem} storeConfig={storeConfig} />
+                <DetailProductReview
+                    t={t}
+                    open={isOpenDetail}
+                    setOpen={setOpenDetail}
+                    reviewItem={reviewItem}
+                    storeConfig={storeConfig}
+                />
 
                 {/** Desktop */}
                 <Show when={isDesktop}>

@@ -62,7 +62,7 @@ const Content = (props) => {
 
     return (
         <div
-            className={cx('swtpwa-home', 'w-full', 'h-full', 'overflow-x-hidden', {
+            className={cx('swtpwa-home', 'w-full', 'h-full', 'overflow-x-hidden', 'relative', {
                 'p-0': useCms,
                 'flex flex-col justify-center items-center pb-[30px]': !useCms,
             })}
