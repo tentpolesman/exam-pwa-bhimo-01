@@ -24,7 +24,7 @@ const NotificationList = (props) => {
     if (error) {
         return (
             <Layout {...props}>
-                <div className={cx('pt-5')}>
+                <div>
                     <Alert severity="error" withIcon>{`Error: ${error.message}`}</Alert>
                 </div>
             </Layout>
@@ -33,7 +33,7 @@ const NotificationList = (props) => {
     if (!data) {
         return (
             <Layout {...props}>
-                <div className={cx('pt-5')}>
+                <div>
                     <Alert severity="warning" withIcon>
                         {t('notification:not_found')}
                     </Alert>
@@ -45,7 +45,7 @@ const NotificationList = (props) => {
     if (data.customerNotificationList.items.length === 0) {
         return (
             <Layout {...props}>
-                <div className={cx('pt-5')}>
+                <div>
                     <Alert severity="warning" withIcon>
                         {t('notification:empty')}
                     </Alert>
@@ -88,7 +88,7 @@ const NotificationList = (props) => {
 
     return (
         <Layout {...props}>
-            <div className={cx('pt-5')}>
+            <div>
                 <Show when={hasData}>
                     {notifList[page - 1].map((item, i) => (
                         <div

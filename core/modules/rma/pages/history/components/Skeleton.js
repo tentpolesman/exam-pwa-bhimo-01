@@ -24,7 +24,7 @@ export const SkeletonDesktop = () => (
 
 export const SkeletonMobile = () => (
     <>
-        <div className={cx('mt-[12px]')}>
+        <div>
             <Skeleton width="100%" height={100} />
         </div>
         <div className={cx('mt-[12px]')}>

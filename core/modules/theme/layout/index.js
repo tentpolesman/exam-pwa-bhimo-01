@@ -29,6 +29,8 @@ import { localTotalCart } from '@services/graphql/schema/local';
 import localFont from 'next/font/local';
 import Script from 'next/script';
 import { getLoginInfo } from '@helper_auth';
+import supportsWebP from 'supports-webp';
+import Typography from '@common/Typography';
 
 /**
  * Set font family using nextjs helper,
@@ -106,6 +108,7 @@ const Layout = (props) => {
     const appEnv = getAppEnv();
     // login get From cookies
     const isLogin = getLoginInfo();
+    const [hasWebpSupport, setHasWebpSupport] = useState(true);
 
     const [dialog, setDialog] = useState({
         open: false,
@@ -303,6 +306,14 @@ const Layout = (props) => {
             TagManager.dataLayer(tagManagerArgs);
         }
         // setMainMinimumHeight(refFooter.current.clientHeight + refHeader.current.clientHeight);
+
+        if (typeof window !== 'undefined') {
+            supportsWebP.then((supported) => {
+                if (!supported) {
+                    setHasWebpSupport(false);
+                }
+            });
+        }
     }, []);
 
     const styles = {
@@ -513,7 +524,6 @@ const Layout = (props) => {
                     <NewsletterPopup t={t} storeConfig={storeConfig} pageConfig={pageConfig} isLogin={isLogin} />
                 )} */}
                 {children}
-                <ScrollToTop deviceType={deviceType} showGlobalPromo={showGlobalPromo} {...props} />
             </main>
 
             {/* CHAT FEATURES */}
@@ -554,6 +564,29 @@ const Layout = (props) => {
                     className={bodyStyles.itemProduct}
                 />
             )} */}
+            <div className="fixed bottom-0 flex flex-col w-full z-scroll-to-top">
+                <ScrollToTop deviceType={deviceType} showGlobalPromo={showGlobalPromo} {...props} />
+                {!hasWebpSupport ? (
+                    <div className="bg-yellow w-full">
+                        <Typography
+                            variant="h2"
+                            className={cx(
+                                '!text-neutral-white',
+                                '!text-sm',
+                                'p-1',
+                                font.variable,
+                                'font-sans',
+                                '!font-pwa-default',
+                                'text-center',
+                                'font-normal',
+                                '!leading-base',
+                            )}
+                        >
+                            {t('common:error:webpNotSupported')}
+                        </Typography>
+                    </div>
+                ) : null}
+            </div>
             <Script src="/install.js" defer />
         </>
     );

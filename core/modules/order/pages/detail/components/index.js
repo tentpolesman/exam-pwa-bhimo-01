@@ -124,7 +124,7 @@ const DetailOrder = (props) => {
                     />
                 )}
                 <div className="flex flex-col gap-y-4">
-                    <div className={cx('mobile:max-tablet:hidden', 'flex', 'flex-row', 'justify-between', 'tablet:mt-8', 'desktop:mt-4')}>
+                    <div className={cx('mobile:max-tablet:hidden', 'flex', 'flex-row', 'justify-between')}>
                         <div>
                             <Typography variant="h1" className={cx('mobile:text-2md', 'tablet:text-lg', 'desktop:text-xl')}>
                                 {t('order:order')}
