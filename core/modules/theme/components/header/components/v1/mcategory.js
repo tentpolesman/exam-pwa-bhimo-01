@@ -29,6 +29,9 @@ const Menu = (props) => {
     }
     const generateLink = (cat) => {
         const link = cat.link ? getPath(cat.link) : `/${cat.url_path}`;
+        if (cat.customLink) {
+            return [cat.url_path, cat.url_path];
+        }
         return ['/[...slug]', link];
     };
     const handleClick = async (cat) => {
@@ -75,6 +78,8 @@ const Menu = (props) => {
         </svg>
     `;
 
+    // console.log(menu);
+
     return (
         <>
             <ul className="nav" role="menubar" id="header-nav-menubar">
@@ -112,7 +117,7 @@ const Menu = (props) => {
                                 }}
                                 className={cx('text-md', 'font-medium', 'tracking-normal', 'px-4', 'py-[13px]', 'hover:text-primary-700')}
                             >
-                                {val.link && val.link !== '#' ? (
+                                {((val.link && val.link !== '#') || val.customLink) ? (
                                     <>
                                         {val.before_html && (
                                             <div
