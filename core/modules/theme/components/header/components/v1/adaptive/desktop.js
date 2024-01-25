@@ -33,7 +33,7 @@ const InstallDesktop = dynamic(() => import('@core_modules/theme/components/cust
 const BurgerMenuCategories = dynamic(() => import('@core_modules/theme/components/header/components/burgermenu/categories'), { ssr: false });
 const BurgerMenuAccount = dynamic(() => import('@core_modules/theme/components/header/components/burgermenu/account'), { ssr: false });
 
-const CmsMenuList = dynamic(() => import('@core_modules/theme/components/header/components/v1/CmsMenuList'), { ssr: false });
+const CmsMenuList = dynamic(() => import('@core_modules/theme/components/header/components/v1/CmsMenuList'), { ssr: true });
 
 const DesktopHeader = (props) => {
     const {

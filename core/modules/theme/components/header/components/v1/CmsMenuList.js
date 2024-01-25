@@ -1,6 +1,5 @@
 import parse from 'html-react-parser';
 import dynamic from 'next/dynamic';
-import { useEffect, useState } from 'react';
 
 const Menu = dynamic(() => import('@core_modules/theme/components/header/components/v1/mcategory'), { ssr: true });
 
@@ -53,24 +52,22 @@ export const generateChildren = (dataChild = [], latestLevel = 1) => {
 
 const CmsMenuList = (props) => {
     const { rawData = '', storeConfig = {} } = props;
-    const [dataMenu, setDataMenu] = useState([]);
+    // const [dataMenu, setDataMenu] = useState([]);
+    let dataMenu = [];
 
-    useEffect(() => {
-        let menus = [];
+    if (rawData) {
         const parseMenu = parse(rawData.replace(/\n /g, '').replace(/\n/g, ''));
         if (parseMenu.length > 0) {
             parseMenu.forEach((ulFirst) => {
                 if (ulFirst.type && ulFirst.type === 'ul') {
                     if (ulFirst?.props?.children && ulFirst?.props?.children.length) {
                         const ulChildren = ulFirst.props.children;
-                        menus = generateChildren(ulChildren, 1);
+                        dataMenu = generateChildren(ulChildren, 1);
                     }
                 }
             });
         }
-
-        setDataMenu(menus);
-    }, [rawData]);
+    }
 
     return <>{dataMenu && dataMenu.length > 0 ? <Menu customMenu={dataMenu} storeConfig={storeConfig} /> : null}</>;
 };

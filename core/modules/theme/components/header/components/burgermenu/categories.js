@@ -8,12 +8,10 @@ import parse from 'html-react-parser';
 import Link from 'next/link';
 
 import Typography from '@common_typography';
-import { useEffect, useState } from 'react';
 import { generateChildren } from '@core_modules/theme/components/header/components/v1/CmsMenuList';
 
 const BurgerMenuCategories = (props) => {
     const { data = [], cmsMenu } = props;
-    const [cmsMenuList, setCmsMenuList] = useState([]);
 
     const chevronLeft = `
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 inline-block relative right-0">
@@ -40,22 +38,21 @@ const BurgerMenuCategories = (props) => {
     const [activeSubMenuLv2, setActiveSubMenuLv2] = React.useState(false);
     const [activeSubMenuLv2Index, setActiveSubMenuLv2Index] = React.useState(0);
 
-    useEffect(() => {
-        let menus = [];
+    let cmsMenuList = [];
+
+    if (cmsMenu) {
         const parseMenu = parse(cmsMenu.replace(/\n /g, '').replace(/\n/g, ''));
         if (parseMenu.length > 0) {
             parseMenu.forEach((ulFirst) => {
                 if (ulFirst.type && ulFirst.type === 'ul') {
                     if (ulFirst?.props?.children && ulFirst?.props?.children.length) {
                         const ulChildren = ulFirst.props.children;
-                        menus = generateChildren(ulChildren, 1);
+                        cmsMenuList = generateChildren(ulChildren, 1);
                     }
                 }
             });
         }
-
-        setCmsMenuList(menus);
-    }, [cmsMenu]);
+    }
 
     const mergeData = [...data, ...cmsMenuList];
 

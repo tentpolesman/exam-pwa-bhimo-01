@@ -44,7 +44,9 @@ const CoreTopNavigation = (props) => {
 
     let cmsMenu;
 
-    const { data: resCmsMenu } = getCmsBlocks({ identifiers: [cmsStaticMainMenuIdentifier] });
+    const { data: resCmsMenu } = getCmsBlocks({ identifiers: [cmsStaticMainMenuIdentifier] }, {
+        skip: !cmsStaticMainMenuIdentifier,
+    });
 
     if (resCmsMenu?.cmsBlocks?.items) {
         cmsMenu = resCmsMenu?.cmsBlocks?.items[0].content;
