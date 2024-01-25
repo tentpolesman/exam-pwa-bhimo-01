@@ -4,13 +4,16 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import cx from 'classnames';
-
+import parse from 'html-react-parser';
 import Link from 'next/link';
 
 import Typography from '@common_typography';
+import { useEffect, useState } from 'react';
+import { generateChildren } from '@core_modules/theme/components/header/components/v1/CmsMenuList';
 
 const BurgerMenuCategories = (props) => {
-    const { data } = props;
+    const { data = [], cmsMenu } = props;
+    const [cmsMenuList, setCmsMenuList] = useState([]);
 
     const chevronLeft = `
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 inline-block relative right-0">
@@ -37,11 +40,30 @@ const BurgerMenuCategories = (props) => {
     const [activeSubMenuLv2, setActiveSubMenuLv2] = React.useState(false);
     const [activeSubMenuLv2Index, setActiveSubMenuLv2Index] = React.useState(0);
 
+    useEffect(() => {
+        let menus = [];
+        const parseMenu = parse(cmsMenu.replace(/\n /g, '').replace(/\n/g, ''));
+        if (parseMenu.length > 0) {
+            parseMenu.forEach((ulFirst) => {
+                if (ulFirst.type && ulFirst.type === 'ul') {
+                    if (ulFirst?.props?.children && ulFirst?.props?.children.length) {
+                        const ulChildren = ulFirst.props.children;
+                        menus = generateChildren(ulChildren, 1);
+                    }
+                }
+            });
+        }
+
+        setCmsMenuList(menus);
+    }, [cmsMenu]);
+
+    const mergeData = [...data, ...cmsMenuList];
+
     return (
         <div className={cx('p-4')}>
             <div className={cx('grid', 'grid-cols-1')}>
                 {!activeSubMenu &&
-                    data.map((categories, index) => (
+                    mergeData.map((categories, index) => (
                         <div className={cx('border-b-[1px]', 'border-neutral-100', 'py-3', 'px-4')} key={index}>
                             {categories.children.length > 0 ? (
                                 <div className={cx('flex', 'justify-between', 'items-center')}>
@@ -71,7 +93,7 @@ const BurgerMenuCategories = (props) => {
                 {activeSubMenu &&
                     !activeSubMenuLv1 &&
                     !activeSubMenuLv2 &&
-                    data[activeSubMenuIndex].children.map((categories, index) => {
+                    mergeData[activeSubMenuIndex].children.map((categories, index) => {
                         if (index === 0) {
                             return (
                                 <>
@@ -83,7 +105,7 @@ const BurgerMenuCategories = (props) => {
                                                 setActiveSubMenuIndex(0);
                                             }}
                                             dangerouslySetInnerHTML={{
-                                                __html: `<span>${chevronLeft}</span><span class="font-medium text-base leading-[18px]">${data[activeSubMenuIndex].name}</span>`,
+                                                __html: `<span>${chevronLeft}</span><span class="font-medium text-base leading-[18px]">${mergeData[activeSubMenuIndex].name}</span>`,
                                             }}
                                         />
                                     </div>
@@ -141,7 +163,7 @@ const BurgerMenuCategories = (props) => {
                     })}
                 {activeSubMenuLv1 &&
                     !activeSubMenuLv2 &&
-                    data[activeSubMenuIndex].children[activeSubMenuLv1Index].children.map((categories, index) => {
+                    mergeData[activeSubMenuIndex].children[activeSubMenuLv1Index].children.map((categories, index) => {
                         if (index === 0) {
                             return (
                                 <>
@@ -153,7 +175,7 @@ const BurgerMenuCategories = (props) => {
                                                 setActiveSubMenuLv1Index(0);
                                             }}
                                             dangerouslySetInnerHTML={{
-                                                __html: `<span>${chevronLeft}</span><span class="font-medium text-base leading-[18px]">${data[activeSubMenuIndex].name} / ${data[activeSubMenuIndex].children[activeSubMenuLv1Index].name}</span>`,
+                                                __html: `<span>${chevronLeft}</span><span class="font-medium text-base leading-[18px]">${mergeData[activeSubMenuIndex].name} / ${mergeData[activeSubMenuIndex].children[activeSubMenuLv1Index].name}</span>`,
                                             }}
                                         />
                                     </div>
@@ -210,7 +232,7 @@ const BurgerMenuCategories = (props) => {
                         );
                     })}
                 {activeSubMenuLv2 &&
-                    data[activeSubMenuIndex].children[activeSubMenuLv1Index].children[activeSubMenuLv2Index].children.map((categories, index) => {
+                    mergeData[activeSubMenuIndex].children[activeSubMenuLv1Index].children[activeSubMenuLv2Index].children.map((categories, index) => {
                         if (index === 0) {
                             return (
                                 <>
@@ -222,7 +244,7 @@ const BurgerMenuCategories = (props) => {
                                                 setActiveSubMenuLv2Index(0);
                                             }}
                                             dangerouslySetInnerHTML={{
-                                                __html: `<span>${chevronLeft}</span><span class="font-medium text-base leading-[18px]">${data[activeSubMenuIndex].name} / ${data[activeSubMenuIndex].children[activeSubMenuLv1Index].name} / ${data[activeSubMenuIndex].children[activeSubMenuLv1Index].children[activeSubMenuLv2Index].name}</span>`,
+                                                __html: `<span>${chevronLeft}</span><span class="font-medium text-base leading-[18px]">${mergeData[activeSubMenuIndex].name} / ${mergeData[activeSubMenuIndex].children[activeSubMenuLv1Index].name} / ${mergeData[activeSubMenuIndex].children[activeSubMenuLv1Index].children[activeSubMenuLv2Index].name}</span>`,
                                             }}
                                         />
                                     </div>

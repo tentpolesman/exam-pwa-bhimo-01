@@ -33,6 +33,8 @@ const InstallDesktop = dynamic(() => import('@core_modules/theme/components/cust
 const BurgerMenuCategories = dynamic(() => import('@core_modules/theme/components/header/components/burgermenu/categories'), { ssr: false });
 const BurgerMenuAccount = dynamic(() => import('@core_modules/theme/components/header/components/burgermenu/account'), { ssr: false });
 
+const CmsMenuList = dynamic(() => import('@core_modules/theme/components/header/components/v1/CmsMenuList'), { ssr: false });
+
 const DesktopHeader = (props) => {
     const {
         //
@@ -46,6 +48,7 @@ const DesktopHeader = (props) => {
         loadingMenu,
         handleLogout,
         deviceWidth,
+        cmsMenu,
         ...other
     } = props;
     const { modules } = config;
@@ -84,7 +87,7 @@ const DesktopHeader = (props) => {
     const burgerMenuData = [
         {
             title: 'Menu',
-            content: dataMenu && <BurgerMenuCategories data={filteredData} />,
+            content: dataMenu && <BurgerMenuCategories data={filteredData} cmsMenu={cmsMenu} />,
             type: 'react-component',
         },
         {
@@ -322,7 +325,14 @@ const DesktopHeader = (props) => {
             </div>
             <div className={cx('bottom-header', 'tablet:max-w-[768px]', 'desktop:max-w-[1280px]', 'm-[0_auto]', 'px-6')}>
                 <div className="flex flex-row menu-category mobile:max-desktop:hidden">
-                    <div className="xs:basis-full menu-middle">{loadingMenu ? <></> : <Menu data={dataMenu} storeConfig={storeConfig} />}</div>
+                    <div className="xs:basis-full menu-middle">
+                        <nav className="menu-wrapper" role="navigation">
+                            {loadingMenu ? <></> : <Menu data={dataMenu} storeConfig={storeConfig} />}
+                            {
+                                cmsMenu ? <CmsMenuList rawData={cmsMenu} storeConfig={storeConfig} /> : null
+                            }
+                        </nav>
+                    </div>
                 </div>
                 {isSearchShown && isMobile ? (
                     <div className={cx('bottom-header-mobile__search')}>
