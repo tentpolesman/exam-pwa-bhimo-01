@@ -36,10 +36,11 @@ const generateDesignOptions = (classSelector, designOptions) => {
      * @returns returns defaultValue if given values if of empty string or NaN
      */
     const returnDefaultIfNan = (value, defaultValue = 0) => {
-        if (Number.isNaN(Number(value)) || value === '') {
+        const removePx = value ? value.replace('px', '') : '';
+        if (Number.isNaN(Number(removePx)) || removePx === '') {
             return defaultValue;
         }
-        return value;
+        return removePx;
     };
 
     const generateOtherDesignOptions = (opts) => {
@@ -184,8 +185,10 @@ const generateDesignOptions = (classSelector, designOptions) => {
             }
         `;
     }
+
     return css.resolve`
         .${classSelector} :global(> *) {
+            overflow: hidden;
             ${(margin_top || margin_right || margin_bottom || margin_left) ? `
                 margin: ${returnDefaultIfNan(margin_top)}px ${returnDefaultIfNan(margin_right)}px ${returnDefaultIfNan(margin_bottom)}px ${returnDefaultIfNan(margin_left)}px;
             ` : ''}
