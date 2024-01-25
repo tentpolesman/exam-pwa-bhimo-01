@@ -47,10 +47,15 @@ const CoreTopNavigation = (props) => {
         // get customer info data
         const getCustomerInfo = async () => {
             if (isLogin) {
-                const res = await getCustomerInfoLazy();
-                const resData = res?.data;
-                if (resData) {
-                    setCustomerData(resData);
+                const custCookie = Cookies.getJSON(custDataNameCookie);
+                if (custCookie) {
+                    setCustomerData({ customer: custCookie });
+                } else {
+                    const res = await getCustomerInfoLazy();
+                    const resData = res?.data;
+                    if (resData) {
+                        setCustomerData(resData);
+                    }
                 }
             }
         };
