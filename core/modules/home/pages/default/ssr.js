@@ -1,7 +1,6 @@
 import { modules } from '@config';
 import graphRequest from '@graphql_request';
 import { getHomePageConfig } from '@core_modules/home/service/graphql/schema';
-import { storeConfigVar } from '@core/services/graphql/cache';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import getCmsSSRProps from '@core_modules/cms/pages/default/ssr';
 import getLayoutSSRProps from '@core_modules/theme/layout/ssr';
@@ -22,12 +21,6 @@ const getSSRProps = async (ctx) => {
     if (!modules.checkout.checkoutOnly && ctx && ctx.req) {
         const homeConfig = await graphRequest(getHomePageConfig);
         homePageConfig = homeConfig.storeConfig;
-    } else if (!modules.checkout.checkoutOnly && typeof window !== 'undefined') {
-        homePageConfig = storeConfigVar();
-        if (!homePageConfig) {
-            const homeConfig = await graphRequest(getHomePageConfig);
-            homePageConfig = homeConfig.storeConfig;
-        }
     }
 
     const identifier = homePageConfig?.pwa?.use_cms_page_identifier ?? '';
