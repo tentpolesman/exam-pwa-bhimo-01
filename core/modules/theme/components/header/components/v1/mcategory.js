@@ -16,12 +16,16 @@ import { COLORS } from '@core/theme/vars';
 const MenuChildren = dynamic(() => import('@common_header/components/v1/mcategoryChildren'), { ssr: true });
 
 const Menu = (props) => {
-    const { data } = props;
+    const { data, customMenu = [] } = props;
     // WIP : Custom Header Menu
     // const cmsPages = storeConfig && storeConfig.cms_page ? storeConfig.cms_page.split(',') : [];
     let menu = data?.categories?.items[0]?.children;
     if (!menu) {
         menu = [];
+    }
+
+    if ((customMenu && customMenu.length > 0) && (!menu || !menu.length)) {
+        menu = customMenu;
     }
     const generateLink = (cat) => {
         const link = cat.link ? getPath(cat.link) : `/${cat.url_path}`;
@@ -72,7 +76,7 @@ const Menu = (props) => {
     `;
 
     return (
-        <nav className="menu-wrapper" role="navigation">
+        <>
             <ul className="nav" role="menubar" id="header-nav-menubar">
                 {menu.map((val, idx) => {
                     if (val.include_in_menu && val.name) {
@@ -230,7 +234,7 @@ const Menu = (props) => {
                     }
                 `}
             </style>
-        </nav>
+        </>
     );
 };
 

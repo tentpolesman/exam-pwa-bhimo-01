@@ -6,6 +6,7 @@ import { storeConfigVar } from '@core/services/graphql/cache';
 import cx from 'classnames';
 import ReactPhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
+import metadata from '@common_forms/PhoneInput/metadata.json';
 
 const PhoneInput = (props) => {
     const {
@@ -67,6 +68,7 @@ const PhoneInput = (props) => {
                 }}
                 countrySelectComponent={CountrySelect}
                 placeholder={placeholder}
+                metadata={metadata}
             />
             {error && errorMessage ? (
                 <Typography variant="bd-2b" className={cx('my-2', '!text-red')}>

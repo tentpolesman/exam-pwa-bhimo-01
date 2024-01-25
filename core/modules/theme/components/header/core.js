@@ -2,7 +2,7 @@
 /* eslint-disable indent */
 /* eslint-disable no-unused-expressions */
 import { useApolloClient } from '@apollo/client';
-import { custDataNameCookie, features, modules } from '@config';
+import { cmsStaticMainMenuIdentifier, custDataNameCookie, features, modules } from '@config';
 import Content from '@core_modules/theme/components/header/components';
 import { getCategories, getCustomerLazy, removeToken } from '@core_modules/theme/services/graphql';
 import { removeIsLoginFlagging } from '@helper_auth';
@@ -13,6 +13,7 @@ import { localCompare, localTotalCart } from '@services/graphql/schema/local';
 import firebase from 'firebase/app';
 import Cookies from 'js-cookie';
 import Router from 'next/router';
+import { getCmsBlocks } from '@core_modules/cart/services/graphql';
 
 const CoreTopNavigation = (props) => {
     const {
@@ -33,12 +34,22 @@ const CoreTopNavigation = (props) => {
     let loading = !propsMenu;
     const [deviceWidth, setDeviceWidth] = React.useState(0);
     const [customerData, setCustomerData] = React.useState({});
+
     const [getCustomerInfoLazy] = getCustomerLazy();
     if (!data && storeConfig && storeConfig.pwa) {
         const { data: dataMenu, loading: loadingMenu } = getCategories();
         data = dataMenu;
         loading = loadingMenu;
     }
+
+    let cmsMenu;
+
+    const { data: resCmsMenu } = getCmsBlocks({ identifiers: [cmsStaticMainMenuIdentifier] });
+
+    if (resCmsMenu?.cmsBlocks?.items) {
+        cmsMenu = resCmsMenu?.cmsBlocks?.items[0].content;
+    }
+
     const [value, setValue] = React.useState('');
     const [deleteTokenGql] = removeToken();
     const client = useApolloClient();
@@ -109,6 +120,7 @@ const CoreTopNavigation = (props) => {
             Router.push(`/catalogsearch/result?q=${encodeURIComponent(value)}`);
         }
     };
+
     return (
         <Content
             t={t}
@@ -131,6 +143,7 @@ const CoreTopNavigation = (props) => {
             isHomepage={isHomepage}
             deviceType={deviceType}
             deviceWidth={deviceWidth}
+            cmsMenu={cmsMenu}
             {...other}
         />
     );

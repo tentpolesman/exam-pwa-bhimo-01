@@ -81,6 +81,7 @@ const rollbar = {
 /* Dashboard */
 // identifiers for cmsBlocks in contact page
 const cmsSocialMediaLinkIdentifiers = 'pwa_socmed_links';
+const cmsStaticMainMenuIdentifier = 'static-main-menu';
 
 /* Social media link */
 // social media link in dashboard
@@ -569,4 +570,5 @@ module.exports = {
     requestTimeout,
     customerTokenKey,
     sitemap,
+    cmsStaticMainMenuIdentifier,
 };
