@@ -7,16 +7,18 @@ const ScrollTop = () => {
     const [trigger, setTrigger] = React.useState(false);
     const maxHeightToShow = 200;
 
+    // eslint-disable-next-line consistent-return
     React.useEffect(() => {
         if (typeof window !== 'undefined') {
             const checkScrollTop = () => {
-                if (!trigger && window.pageYOffset > maxHeightToShow && window.innerWidth > 768) {
+                if (!trigger && window.pageYOffset > maxHeightToShow) {
                     setTrigger(true);
-                } else if (trigger && window.pageYOffset < maxHeightToShow && window.innerWidth > 768) {
+                } else if (trigger && window.pageYOffset < maxHeightToShow) {
                     setTrigger(false);
                 }
             };
             window.addEventListener('scroll', checkScrollTop);
+            return () => window.removeEventListener('scroll', checkScrollTop);
         }
     }, [window, trigger]);
 

@@ -78,7 +78,7 @@ const CheckBox = (props) => {
                     onClick={onClick}
                     checked={checked}
                     className={cx(
-                        'form-checkbox',
+                        'swift-form-checkbox',
                         'w-4',
                         'h-4',
                         'mr-2',
@@ -136,7 +136,7 @@ const CheckBox = (props) => {
                                 type="checkbox"
                                 disabled={item.disabled || disabled}
                                 className={cx(
-                                    'form-checkbox',
+                                    'swift-form-checkbox',
                                     'w-4',
                                     'h-4',
                                     'mr-2',

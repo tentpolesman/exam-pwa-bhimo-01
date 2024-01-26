@@ -446,7 +446,7 @@ const ProductItem = (props) => {
                             onClick={handleAddToCart}
                             loading={loading}
                             className={classNames(
-                                '!py-0 w-max h-[38px] desktop:h-[40px] tablet:max-w-[116px] desktop:max-w-max justify-center',
+                                'swift-action-tocart !py-0 w-max h-[38px] desktop:h-[40px] tablet:max-w-[116px] desktop:max-w-max justify-center',
                                 'hover:shadow-[0_0_0_4px] hover:shadow-primary-300',
                             )}
                         >
@@ -481,7 +481,7 @@ const ProductItem = (props) => {
                                     variant={feed ? 'primary' : 'outlined'}
                                     onClick={() => handleFeed(props)}
                                     className={classNames(
-                                        '!p-[10px] !border-neutral-200 hover:bg-primary group',
+                                        'swift-action-towishlist !p-[10px] !border-neutral-200 hover:bg-primary group',
                                         'hover:!shadow-none focus:!shadow-none hover:!opacity-100',
                                     )}
                                 />
@@ -507,7 +507,7 @@ const ProductItem = (props) => {
                                     variant="outlined"
                                     onClick={() => handleSetCompareList(props?.id)}
                                     className={classNames(
-                                        '!p-[10px] !border-neutral-200 hover:bg-primary group',
+                                        'swift-action-tocompare !p-[10px] !border-neutral-200 hover:bg-primary group',
                                         'hover:!shadow-none focus:!shadow-none hover:!opacity-100',
                                     )}
                                 />
@@ -553,7 +553,7 @@ const ProductItem = (props) => {
                         'shadow border border-neutral-100 rounded-lg p-2 lg:p-4',
                         'desktop:hover:shadow-lg',
                         'tablet:max-w-[230px] desktop:min-w-[288px] desktop:max-w-full',
-                        'flex flex-col catalog-item-product',
+                        'flex flex-col swift-catalog-item-product',
                         className,
                     )}
                 >
