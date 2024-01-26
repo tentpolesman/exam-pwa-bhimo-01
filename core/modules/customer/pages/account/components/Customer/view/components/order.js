@@ -75,11 +75,22 @@ const OrderView = (props) => {
 
     return (
         <div className={cx('pt-10', '')}>
-            <div className={cx('address-title-section', 'pb-[18px]', 'border-b-[1.5px]', 'border-neutral-200', 'flex', 'flex-row', 'justify-between', 'items-center')}>
+            <div
+                className={cx(
+                    'address-title-section',
+                    'pb-[18px]',
+                    'border-b-[1.5px]',
+                    'border-neutral-200',
+                    'flex',
+                    'flex-row',
+                    'justify-between',
+                    'items-center',
+                )}
+            >
                 <Typography variant="h3" className={cx('pl-0')}>
                     {t('customer:order:recentOrder')}
                 </Typography>
-                <Button link="/sales/order/history" variant="plain" className={cx('pl-6', 'pr-0', '!py-0')}>
+                <Button link="/sales/order/history" variant="plain" className={cx('swift-viewallorder', 'pl-6', 'pr-0', '!py-0')}>
                     <Typography variant="bd-2a" className={cx('!text-neutral-500', 'underline', 'underline-offset-2')}>
                         {t('customer:menu:viewall')}
                     </Typography>
