@@ -1,4 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
+/* eslint-disable @next/next/no-img-element */
 
 import { basePath } from '@config';
 
@@ -24,7 +25,7 @@ const Maintenance = () => (
                     flex-direction: column;
                     position: relative;
                 }
-                .img-logo{
+                .img-logo {
                     width: 200px;
                     margin-bottom: 50px;
                 }
@@ -41,10 +42,10 @@ const Maintenance = () => (
                     font-size: 26px;
                 }
                 p {
-                    margin: 10px  0;
+                    margin: 10px 0;
                 }
                 @media only screen and (max-width: 600px) {
-                    .img-logo{
+                    .img-logo {
                         max-width: 100px;
                     }
                     .img-center {

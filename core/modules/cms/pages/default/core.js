@@ -30,17 +30,12 @@ const CmsSlug = (props) => {
         bottomNav: false,
         header: 'relative', // available values: "absolute", "relative", false (default)
         ogContent,
+        tagSelector: 'swift-page-cms',
     };
     const isHome = pageConfig?.pageType;
 
     return (
-        <Layout
-            {...props}
-            pageConfig={pageConfig || Config}
-            data={data}
-            isCms
-            isHomepage={isHome == 'home'}
-        >
+        <Layout {...props} pageConfig={pageConfig || Config} data={data} isCms isHomepage={isHome === 'home'}>
             {other.storeConfig.pwa.use_cms_page_enable ? <h1 style={{ display: 'none' }}>{Config.title}</h1> : null}
             <Content data={data} t={t} loading={loading} error={error} {...other} />
         </Layout>

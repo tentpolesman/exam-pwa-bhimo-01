@@ -9,6 +9,7 @@ const HistoryDownload = (props) => {
         header: 'relative', // available values: "absolute", "relative", false (default)
         headerTitle: t('customer:menu:myDownload'),
         bottomNav: false,
+        tagSelector: 'swift-page-downloadablehistory',
     };
 
     const { loading, data, error } = getOrderDownloadable();

@@ -339,6 +339,7 @@ const CoreLanding = (props) => {
         headerTitle: 'Blog',
         bottomNav: false,
         ...pageConfig,
+        tagSelector: 'swift-page-bloglanding',
     };
     const [page, setPage] = React.useState(1);
 

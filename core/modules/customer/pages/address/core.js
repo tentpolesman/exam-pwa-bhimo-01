@@ -17,12 +17,13 @@ import React, { useEffect, useState } from 'react';
 const Content = dynamic(() => import('@core_modules/customer/pages/address/components'), { ssr: false });
 
 const AddressCustomer = (props) => {
-    const { t, pageConfig } = props;
+    const { t } = props;
     const config = {
         title: t('customer:address:pageTitle'),
         headerTitle: t('customer:address:pageTitle'),
         header: 'relative', // available values: "absolute", "relative", false (default)
         bottomNav: false,
+        tagSelector: 'swift-page-customeraddress',
     };
 
     // graphql
@@ -200,7 +201,7 @@ const AddressCustomer = (props) => {
         }
     };
     return (
-        <Layout pageConfig={pageConfig || config} {...props}>
+        <Layout pageConfig={config} {...props}>
             <Content
                 t={t}
                 loading={loading}

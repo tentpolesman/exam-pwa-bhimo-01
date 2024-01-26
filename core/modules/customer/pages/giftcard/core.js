@@ -9,12 +9,11 @@ const GiftCard = (props) => {
         header: 'relative', // available values: "absolute", "relative", false (default)
         headerTitle: 'Gift Card',
         bottomNav: false,
+        tagSelector: 'swift-page-giftcard',
     };
     // cache currency
     const currencyCache = useReactiveVar(currencyVar);
-    const {
-        t, storeConfig, Content, pageConfig,
-    } = props;
+    const { t, storeConfig, Content } = props;
     const [open, setOpen] = React.useState(false);
     const [selectedCode, setSelectedCode] = React.useState('');
     const [search, setSearch] = React.useState({
@@ -48,7 +47,7 @@ const GiftCard = (props) => {
         }
     };
     return (
-        <Layout {...props} pageConfig={pageConfig || config}>
+        <Layout {...props} pageConfig={config}>
             <Content
                 {...props}
                 t={t}

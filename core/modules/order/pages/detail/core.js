@@ -31,6 +31,7 @@ const OrderDetail = (props) => {
         header: 'relative', // available values: "absolute", "relative", false (default)
         headerTitle: `${t('order:order')} #${detail.length > 0 ? detail[0].order_number : ''}`,
         bottomNav: false,
+        tagSelector: 'swift-page-orderdetail',
     };
     const [params] = React.useState({
         order_id: id,

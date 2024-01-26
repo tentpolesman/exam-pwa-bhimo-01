@@ -19,16 +19,12 @@ const getSSRProps = async (ctx) => {
     const obj = {
         slug: ctx?.query?.slug,
         ...(await serverSideTranslations(ctx.locale, ['common', 'product', 'category', 'validate', 'catalog', 'contact'])),
-        token: (ctx.query && allcookie[customerTokenKey]) ? allcookie[customerTokenKey] : '',
+        token: ctx.query && allcookie[customerTokenKey] ? allcookie[customerTokenKey] : '',
         isLogin: allcookie.isLogin || 0,
         url_key: '',
     };
 
-    let cmsList = {};
-    if (typeof window === 'undefined' && !ctx.req?.cookies[storeConfigNameCookie]) {
-        cmsList = await graphRequest(getCmsList);
-    }
-
+    const cmsList = await graphRequest(getCmsList);
     obj.cms_page = cmsList.storeConfig && cmsList.storeConfig.cms_page ? cmsList.storeConfig.cms_page : '';
 
     // ============== URL RESOLVER ================

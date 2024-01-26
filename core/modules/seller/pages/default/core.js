@@ -13,7 +13,11 @@ const Seller = (props) => {
     const { t, storeConfig, pageConfig, isLogin, ...other } = props;
     const router = useRouter();
 
-    const { data: dataSeller, error: errorSeller, loading: loadingSeller } = getSeller({
+    const {
+        data: dataSeller,
+        error: errorSeller,
+        loading: loadingSeller,
+    } = getSeller({
         variables: {
             seller_path: router.query.sellerPath,
         },
@@ -33,6 +37,7 @@ const Seller = (props) => {
         currentPage: 1,
         filter: [],
         pageType: 'seller',
+        tagSelector: 'swift-page-seller',
         ...storeConfig.pwa,
     };
 
@@ -52,47 +57,38 @@ const Seller = (props) => {
     };
 
     return (
-        <Layout
-            isShowChat={false}
-            pageConfig={pageConfig || config}
-            {...props}
-            data={dataSeller}
-            isSellerPage
-        >
-            {
-                (bannerMobile && router.route === '/seller/[sellerPath]') ? (
-                    <Content
-                        t={t}
-                        storeConfig={storeConfig}
-                        dataSeller={dataSeller}
-                        errorSeller={errorSeller}
-                        loadingSeller={loadingSeller}
-                        link={link}
-                        route={router}
-                        isLogin={isLogin}
-                        handleChat={handleChat}
-                        showChat={showChat}
-                        banner={!bannerDesktop || !bannerMobile}
-                        {...other}
-                    />
-                )
-                    : (
-                        <ContentProducts
-                            t={t}
-                            storeConfig={storeConfig}
-                            dataSeller={dataSeller}
-                            errorSeller={errorSeller}
-                            loadingSeller={loadingSeller}
-                            link={link}
-                            route={router}
-                            isLogin={isLogin}
-                            handleChat={handleChat}
-                            showChat={showChat}
-                            banner={!bannerDesktop || !bannerMobile}
-                            {...other}
-                        />
-                    )
-            }
+        <Layout isShowChat={false} pageConfig={pageConfig || config} {...props} data={dataSeller} isSellerPage>
+            {bannerMobile && router.route === '/seller/[sellerPath]' ? (
+                <Content
+                    t={t}
+                    storeConfig={storeConfig}
+                    dataSeller={dataSeller}
+                    errorSeller={errorSeller}
+                    loadingSeller={loadingSeller}
+                    link={link}
+                    route={router}
+                    isLogin={isLogin}
+                    handleChat={handleChat}
+                    showChat={showChat}
+                    banner={!bannerDesktop || !bannerMobile}
+                    {...other}
+                />
+            ) : (
+                <ContentProducts
+                    t={t}
+                    storeConfig={storeConfig}
+                    dataSeller={dataSeller}
+                    errorSeller={errorSeller}
+                    loadingSeller={loadingSeller}
+                    link={link}
+                    route={router}
+                    isLogin={isLogin}
+                    handleChat={handleChat}
+                    showChat={showChat}
+                    banner={!bannerDesktop || !bannerMobile}
+                    {...other}
+                />
+            )}
         </Layout>
     );
 };

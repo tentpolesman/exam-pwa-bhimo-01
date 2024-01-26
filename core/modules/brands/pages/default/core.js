@@ -5,9 +5,7 @@ import { getBrands } from '@core_modules/brands/services/graphql';
 import allData from '@core_modules/brands/helpers/generateAllData';
 
 const Base = (props) => {
-    const {
-        Content, Skeleton, pageConfig, t,
-    } = props;
+    const { Content, Skeleton, t } = props;
 
     const { data, loading } = getBrands({ pageSize: 100, currentPage: 1 });
 
@@ -18,11 +16,12 @@ const Base = (props) => {
         headerBackIcon: 'arrow', // available values: "close", "arrow"
         bottomNav: false,
         pageType: 'brands',
+        tagSelector: 'swift-page-brands',
     };
 
     if (loading) {
         return (
-            <Layout {...props} pageConfig={pageConfig || config}>
+            <Layout {...props} pageConfig={config}>
                 <Skeleton {...props} />
             </Layout>
         );
@@ -32,12 +31,8 @@ const Base = (props) => {
     const allBrands = allData(getBrandList?.items ?? []);
 
     return (
-        <Layout {...props} pageConfig={pageConfig || config}>
-            <Content
-                {...props}
-                all={allBrands}
-                featured={getBrandList?.featured || []}
-            />
+        <Layout {...props} pageConfig={config}>
+            <Content {...props} all={allBrands} featured={getBrandList?.featured || []} />
         </Layout>
     );
 };

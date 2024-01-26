@@ -10,8 +10,15 @@ import { localTotalCart } from '@services/graphql/schema/local';
 import { useReactiveVar } from '@apollo/client';
 import { currencyVar } from '@core/services/graphql/cache';
 import {
-    addWishlist as mutationWishlist, getCartDataLazy, getCartItemLazy,
-    deleteCartItem, updateCartitem, addProductToCartPromo, applyCouponToCart, removeCouponFromCart, cancelAndReOrder,
+    addWishlist as mutationWishlist,
+    getCartDataLazy,
+    getCartItemLazy,
+    deleteCartItem,
+    updateCartitem,
+    addProductToCartPromo,
+    applyCouponToCart,
+    removeCouponFromCart,
+    cancelAndReOrder,
 } from '@core_modules/cart/services/graphql';
 import Backdrop from '@common/Backdrop';
 
@@ -20,7 +27,7 @@ import Skeleton from '@core_modules/cart/pages/default/components/skeleton';
 
 const Cart = (props) => {
     const {
-        t, token, isLogin, pageConfig, storeConfig, ...other
+        t, token, isLogin, storeConfig, ...other
     } = props;
 
     // cache currency
@@ -55,6 +62,7 @@ const Cart = (props) => {
         headerBackIcon: 'close', // available values: "close", "arrow"
         bottomNav: false,
         pageType: 'cart',
+        tagSelector: 'swift-page-cart',
     };
 
     const toggleEditMode = () => {
@@ -186,8 +194,7 @@ const Cart = (props) => {
 
         if (responseCart.error) {
             const errorList = [];
-            if (responseCart.error && responseCart.error.graphQLErrors
-                && responseCart.error.graphQLErrors.length > 0) {
+            if (responseCart.error && responseCart.error.graphQLErrors && responseCart.error.graphQLErrors.length > 0) {
                 for (let idx = 0; idx < responseCart.error.graphQLErrors.length; idx += 1) {
                     const { message } = responseCart.error.graphQLErrors[idx];
                     const regexp = new RegExp(/stock/i);
@@ -216,17 +223,15 @@ const Cart = (props) => {
             eventLabel: itemProps.product.name,
             label: itemProps.product.name,
             ecommerce: {
-                currencyCode: itemProps.prices?.price_incl_tax.currency
-                || itemProps.custom_price?.price_incl_tax.currency
-                || storeConfig.base_currency_code,
+                currencyCode:
+                    itemProps.prices?.price_incl_tax.currency || itemProps.custom_price?.price_incl_tax.currency || storeConfig.base_currency_code,
                 remove: {
                     cartItem: itemProps.id,
                     quantity: itemProps.quantity,
                     product: {
                         name: itemProps.product.name,
                         id: itemProps.product.sku,
-                        price: itemProps.prices?.price_incl_tax.value
-                        || itemProps.custom_price?.price_incl_tax.value || 0,
+                        price: itemProps.prices?.price_incl_tax.value || itemProps.custom_price?.price_incl_tax.value || 0,
                         dimensions4: itemProps.product.stock_status || '',
                     },
                 },
@@ -241,13 +246,14 @@ const Cart = (props) => {
                         {
                             item_name: itemProps.product.name,
                             item_id: itemProps.product.sku,
-                            price: itemProps.prices?.price_incl_tax.value
-                            || itemProps.custom_price?.price_incl_tax.value || 0,
+                            price: itemProps.prices?.price_incl_tax.value || itemProps.custom_price?.price_incl_tax.value || 0,
                             // item_category: itemProps.product.categories.length > 0 ? itemProps.product.categories[0].name : '',
                             // item_list_name: itemProps.product.categories.length > 0 ? itemProps.product.categories[0].name : '',
                             quantity: itemProps.quantity,
-                            currency: itemProps.custom_price?.price_incl_tax.currency
-                            || itemProps.prices?.price_incl_tax.currency || storeConfig.base_currency_code,
+                            currency:
+                                itemProps.custom_price?.price_incl_tax.currency
+                                || itemProps.prices?.price_incl_tax.currency
+                                || storeConfig.base_currency_code,
                         },
                     ],
                 },
@@ -485,15 +491,13 @@ const Cart = (props) => {
                     eventLabel: itemProps.product.name,
                     label: itemProps.product.name,
                     ecommerce: {
-                        currencyCode: itemProps.prices?.price.currency
-                        || itemProps.custom_price?.price_incl_tax.currency,
+                        currencyCode: itemProps.prices?.price.currency || itemProps.custom_price?.price_incl_tax.currency,
                         add: {
                             products: [
                                 {
                                     name: itemProps.product.name,
                                     id: itemProps.product.sku,
-                                    price: itemProps.prices?.price.value
-                                    || itemProps.custom_price?.price_incl_tax.value || 0,
+                                    price: itemProps.prices?.price.value || itemProps.custom_price?.price_incl_tax.value || 0,
                                     // category: itemProps.product.categories.length > 0 ? itemProps.product.categories[0].name : '',
                                     // list: itemProps.product.categories.length > 0 ? itemProps.product.categories[0].name : '',
                                     dimensions4: itemProps.product.stock_status,
@@ -510,12 +514,10 @@ const Cart = (props) => {
                         action: {
                             items: [
                                 {
-                                    currency: itemProps.prices?.price.currency
-                                    || itemProps.custom_price?.price_incl_tax.currency,
+                                    currency: itemProps.prices?.price.currency || itemProps.custom_price?.price_incl_tax.currency,
                                     item_name: itemProps.product.name,
                                     item_id: itemProps.product.sku,
-                                    price: itemProps.prices?.price.value
-                                    || itemProps.custom_price?.price_incl_tax.value || 0,
+                                    price: itemProps.prices?.price.value || itemProps.custom_price?.price_incl_tax.value || 0,
                                     // item_category: itemProps.product.categories.length > 0 ? itemProps.product.categories[0].name : '',
                                     item_stock_status: itemProps.product.stock_status,
                                 },
@@ -554,7 +556,7 @@ const Cart = (props) => {
 
     if (loadingCart) {
         return (
-            <Layout pageConfig={config || pageConfig} {...props}>
+            <Layout pageConfig={config} {...props}>
                 <Backdrop open />
                 <Skeleton />
             </Layout>
@@ -585,7 +587,7 @@ const Cart = (props) => {
         removeCoupon,
     };
     return (
-        <Layout pageConfig={config || pageConfig} {...props} showRecentlyBar={false}>
+        <Layout pageConfig={config} {...props} showRecentlyBar={false}>
             <Content currencyCache={currencyCache} {...other} {...contentProps} />
         </Layout>
     );

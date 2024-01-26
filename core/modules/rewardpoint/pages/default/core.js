@@ -6,22 +6,21 @@ import { useReactiveVar } from '@apollo/client';
 import { currencyVar } from '@core/services/graphql/cache';
 
 const RewardPoint = (props) => {
-    const {
-        t, Content, pageConfig, rowsPerPage,
-    } = props;
+    const { t, Content } = props;
 
     const config = {
         title: t('rewardpoint:title'),
         header: 'relative', // available values: "absolute", "relative", false (default)
         headerTitle: t('rewardpoint:title'),
         bottomNav: false,
+        tagSelector: 'swift-page-rewardpoint',
     };
 
     // cache currency
     const currencyCache = useReactiveVar(currencyVar);
 
     const [page, setPage] = React.useState(1);
-    const [count, setRowsPerPage] = React.useState(rowsPerPage || 10);
+    const [count, setRowsPerPage] = React.useState(10);
     const handleChangePage = (newPage) => {
         setPage(newPage);
     };
@@ -65,7 +64,7 @@ const RewardPoint = (props) => {
     };
 
     return (
-        <Layout {...props} pageConfig={pageConfig || config}>
+        <Layout {...props} pageConfig={config}>
             <Content
                 t={t}
                 data={customerRewardPoints}

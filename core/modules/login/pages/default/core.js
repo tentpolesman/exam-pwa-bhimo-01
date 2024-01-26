@@ -42,11 +42,13 @@ const Login = (props) => {
         t, storeConfig, query, lastPathNoAuth, Content, pageConfig,
     } = props;
     const config = {
+        ...pageConfig,
         title: t('login:login'),
         header: 'relative', // available values: "absolute", "relative", false (default)
         headerTitle: t('login:login'),
         headerBackIcon: 'close',
         bottomNav: false,
+        tagSelector: 'swift-page-login',
     };
     // state
     const [showOtp, setShowOtp] = React.useState(false);
@@ -568,7 +570,7 @@ const Login = (props) => {
     }, []);
 
     return (
-        <Layout {...props} pageConfig={pageConfig || config} isLoginPage>
+        <Layout {...props} pageConfig={config}>
             <Content
                 formik={formik}
                 formikOtp={formikOtp}

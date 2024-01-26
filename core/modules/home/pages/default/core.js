@@ -1,17 +1,15 @@
-/* eslint-disable no-unused-vars */
 import Layout from '@layout';
 import { getHost } from '@helper_config';
 import Content from '@core_modules/home/pages/default/components';
 import { currencyVar } from '@core/services/graphql/cache';
-import { keyLocalStorage } from '@config';
 import Cookies from 'js-cookie';
 import { useEffect } from 'react';
+import cx from 'classnames';
 
 const HomeCore = (props) => {
     // eslint-disable-next-line object-curly-newline
     const { pageConfig, storeConfig, homePageConfig, ...other } = props;
 
-    const homeKey = keyLocalStorage.home;
     const useCms = storeConfig?.pwa?.use_cms_page_enable;
 
     useEffect(() => {
@@ -47,25 +45,30 @@ const HomeCore = (props) => {
         },
     ];
 
+    const additionalStyle = cx('w-full', 'h-full', 'overflow-x-hidden', 'relative', {
+        'p-0': useCms,
+        'flex flex-col justify-center items-center pb-[30px]': !useCms,
+    });
+
     const config = {
+        ...pageConfig,
         title: storeConfig.default_title,
         header: false, // available values: "absolute", "relative", false (default)
         bottomNav: 'home',
         pageType: 'home',
+        tagSelector: `swift-page-home ${additionalStyle}`,
         schemaOrg,
-        ...pageConfig,
     };
 
     return (
         <>
-            {
-                useCms ? <Content cmsHome={config} storeConfig={storeConfig} homePageConfig={homePageConfig} {...other} />
-                    : (
-                        <Layout {...props} pageConfig={config} isHomepage>
-                            <Content storeConfig={storeConfig} homePageConfig={homePageConfig} {...other} />
-                        </Layout>
-                    )
-            }
+            {useCms ? (
+                <Content cmsHome={config} storeConfig={storeConfig} homePageConfig={homePageConfig} {...other} />
+            ) : (
+                <Layout {...props} pageConfig={config} isHomepage>
+                    <Content storeConfig={storeConfig} homePageConfig={homePageConfig} {...other} />
+                </Layout>
+            )}
         </>
     );
 };

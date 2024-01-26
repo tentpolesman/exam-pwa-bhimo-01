@@ -14,14 +14,14 @@ import Alert from '@common/Alert';
 
 const PageStoreCredit = (props) => {
     const {
-        t, Content, pageConfig, checkoutData, storeConfig, Skeleton, ...other
+        t, Content, checkoutData, storeConfig, Skeleton, ...other
     } = props;
     const config = {
         title: t('thanks:title'),
         headerTitle: t('thanks:title'),
         bottomNav: false,
         pageType: 'purchase',
-        ...pageConfig,
+        tagSelector: 'swift-page-thanks',
     };
 
     // cache currency
@@ -29,7 +29,11 @@ const PageStoreCredit = (props) => {
 
     const { data, loading, error } = getOrder(typeof checkoutData === 'string' ? JSON.parse(checkoutData) : checkoutData);
     const [getBankList, { data: bankList, error: errorBankList }] = getPaymentBankList();
-    const { data: paymentInformation, loading: paymentLoading, error: paymentError } = getPaymentInformation(
+    const {
+        data: paymentInformation,
+        loading: paymentLoading,
+        error: paymentError,
+    } = getPaymentInformation(
         typeof checkoutData === 'string'
             ? {
                 order_number: JSON.parse(checkoutData).order_number,
@@ -135,12 +139,16 @@ const PageStoreCredit = (props) => {
         }
     }, [data]);
 
-    React.useEffect(() => (function cleanup() {
-        if (typeof window !== 'undefined') {
-            const cdt = getCheckoutData();
-            if (cdt) removeCheckoutData();
-        }
-    }), []);
+    React.useEffect(
+        () =>
+            function cleanup() {
+                if (typeof window !== 'undefined') {
+                    const cdt = getCheckoutData();
+                    if (cdt) removeCheckoutData();
+                }
+            },
+        [],
+    );
 
     React.useEffect(() => {
         if (!bankList) {
@@ -159,9 +167,7 @@ const PageStoreCredit = (props) => {
     if (error || errorBankList || paymentError) {
         return (
             <Layout t={t} {...other} pageConfig={config} storeConfig={storeConfig}>
-                <Alert variant="error">
-                    {debuging.originalError ? error.message.split(':')[1] : t('common:error:fetchError')}
-                </Alert>
+                <Alert variant="error">{debuging.originalError ? error.message.split(':')[1] : t('common:error:fetchError')}</Alert>
             </Layout>
         );
     }
@@ -208,9 +214,7 @@ const PageStoreCredit = (props) => {
         );
     }
 
-    return (
-        <Alert variant="warning">{t('common:error:notFound')}</Alert>
-    );
+    return <Alert variant="warning">{t('common:error:notFound')}</Alert>;
 };
 
 export default PageStoreCredit;

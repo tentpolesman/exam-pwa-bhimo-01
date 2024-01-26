@@ -2,19 +2,14 @@
 /* eslint-disable max-len */
 // import Thumbor from '@common_image';
 import CmsPage from '@core_modules/cms/pages/default/core';
-import cx from 'classnames';
-
 import Layout from '@layout';
 
 const Content = (props) => {
-    let useCmsPage = {};
-
     const {
         cmsHome, homePageConfig, storeConfig: config, ...other
     } = props;
-
     let storeConfig = config;
-    const useCms = storeConfig?.pwa?.use_cms_page_enable;
+    let useCmsPage = {};
 
     if (homePageConfig && homePageConfig.pwa) {
         storeConfig = {
@@ -29,8 +24,6 @@ const Content = (props) => {
             identifier: storeConfig.pwa.use_cms_page_identifier,
         };
     }
-
-    // const logoUrl = `${props.storeConfig.secure_base_media_url}logo/${props.storeConfig.header_logo_src}`;
 
     let content = '';
 
@@ -60,16 +53,7 @@ const Content = (props) => {
         );
     }
 
-    return (
-        <div
-            className={cx('swtpwa-home', 'w-full', 'h-full', 'overflow-x-hidden', 'relative', {
-                'p-0': useCms,
-                'flex flex-col justify-center items-center pb-[30px]': !useCms,
-            })}
-        >
-            {content}
-        </div>
-    );
+    return <>{content}</>;
 };
 
 export default Content;

@@ -5,14 +5,14 @@ import { getHistoryRma } from '@core_modules/rma/services/graphql';
 
 const ReturnOrder = (props) => {
     const {
-        t, Content, rowsPerPage = 10, pageConfig = {}, ...other
+        t, Content, rowsPerPage = 10, ...other
     } = props;
     const config = {
         title: t('rma:history'),
         header: 'relative', // available values: "absolute", "relative", false (default)
         headerTitle: t('rma:history'),
         bottomNav: false,
-        ...pageConfig,
+        tagSelector: 'swift-page-rmahistory',
     };
     const [page, setPage] = React.useState(1);
     const [perPage, setRowsPerPage] = React.useState(rowsPerPage);
