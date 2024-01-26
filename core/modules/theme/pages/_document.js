@@ -43,7 +43,7 @@ export default class MyDocument extends Document {
                         />
                     ) : null} */}
                 </HeadCustom>
-                <body className="loading">
+                <body>
                     <Main />
                     <NextScript />
                 </body>
