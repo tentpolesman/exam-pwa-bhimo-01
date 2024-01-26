@@ -14,11 +14,7 @@ const Customer = (props) => {
     let userData = {};
     let wishlist = [];
     const { data, loading, error } = gqlService.getCustomer(storeConfig);
-    const { data: customerNotificationList } = gqlService.customerNotificationList();
     const { data: customerOrders } = gqlService.getCustomerOrder();
-    const totalUnread = customerNotificationList
-        && customerNotificationList.customerNotificationList
-        && customerNotificationList.customerNotificationList.totalUnread;
 
     if (!data || loading || error) {
         return (
@@ -43,9 +39,6 @@ const Customer = (props) => {
         }
     }
 
-    if (customerNotificationList && customerNotificationList.customerNotificationList) {
-        userData = { ...userData, notificationList: customerNotificationList.customerNotificationList };
-    }
     if (customerOrders && customerOrders.customerOrders) {
         userData = { ...userData, customerOrders: customerOrders.customerOrders };
     }
@@ -113,7 +106,6 @@ const Customer = (props) => {
                 modules={modules}
                 menu={menu}
                 userData={userData}
-                totalUnread={totalUnread}
                 wishlist={wishlist}
                 storeConfig={storeConfig}
                 isLogin={isLogin}

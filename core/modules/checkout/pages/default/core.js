@@ -766,7 +766,7 @@ const Checkout = (props) => {
         dispatch(setRefetchItemOnly(false));
 
         updateFormik(cart);
-    }, [checkout, dataCart]);
+    }, [checkout, dataCart, itemCart]);
 
     React.useEffect(() => {
         dispatch(setCheckoutData({
