@@ -10,10 +10,7 @@ import { getCookies } from '@helper_cookies';
 import { getLocalStorage, setLocalStorage } from '@helper_localstorage';
 import { StripHtmlTags } from '@helper_text';
 import { useRouter } from 'next/router';
-import {
-    getProduct,
-    getSeller,
-} from '@core_modules/product/services/graphql';
+import { getProduct, getSeller } from '@core_modules/product/services/graphql';
 
 const ContentDetail = ({
     t, slug, product, keyProduct, Content, isLogin, storeConfig, ssrProduct,
@@ -160,14 +157,7 @@ const ContentDetail = ({
 
 const PageDetail = (props) => {
     const {
-        t,
-        slug,
-        Content,
-        isLogin,
-        pageConfig,
-        CustomHeader,
-        storeConfig,
-        ssrProduct,
+        t, slug, Content, isLogin, CustomHeader, storeConfig, ssrProduct,
     } = props;
 
     /**
@@ -268,9 +258,7 @@ const PageDetail = (props) => {
     if (isError) {
         return (
             <Layout pageConfig={{}} CustomHeader={CustomHeader ? <CustomHeader /> : <></>} {...props}>
-                <div className="product-detail-error">
-                    {errorMessage}
-                </div>
+                <div className="product-detail-error">{errorMessage}</div>
             </Layout>
         );
     }
@@ -324,17 +312,11 @@ const PageDetail = (props) => {
             'og:title': product.items[productByUrl].meta_title || product.items[productByUrl].name,
         },
         schemaOrg,
+        tagSelector: 'swift-page-pdp',
     };
 
     return (
-        <Layout
-            isShowChat={false}
-            pageConfig={pageConfig || config}
-            CustomHeader={CustomHeader ? <CustomHeader /> : <></>}
-            data={data}
-            isPdp
-            {...props}
-        >
+        <Layout isShowChat={false} pageConfig={config} CustomHeader={CustomHeader ? <CustomHeader /> : <></>} data={data} isPdp {...props}>
             <ContentDetail
                 t={t}
                 slug={slug[0]}

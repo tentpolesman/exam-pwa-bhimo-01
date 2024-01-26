@@ -15,6 +15,7 @@ const HistoryOrder = (props) => {
         header: 'relative', // available values: "absolute", "relative", false (default)
         headerTitle: t('order:title'),
         bottomNav: false,
+        tagSelector: 'swift-page-orderhistory',
     };
     const [page, setPage] = React.useState(1);
     const [pageSize, setPageSize] = React.useState(size || 10);

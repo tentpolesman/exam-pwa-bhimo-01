@@ -20,14 +20,14 @@ const AddressView = ({ customer, t }) => (
                     <Typography className={cx('block', 'pt-3', 'font-normal')}>{customer.email}</Typography>
                     <div className={cx('account-action', 'pt-5', 'grid', 'grid-cols-[2fr_10fr]')}>
                         <div className={cx('account-action-btn', 'border-r-[1px]', 'border-neutral-700')}>
-                            <Button link="/customer/account/profile" variant="plain" className={cx('pl-0', '!py-0')}>
+                            <Button link="/customer/account/profile" variant="plain" className={cx('swift-changeaccountinfo', 'pl-0', '!py-0')}>
                                 <Typography variant="bd-2a" className={cx('!text-primary-700')}>
                                     {t('common:button:change')}
                                 </Typography>
                             </Button>
                         </div>
                         <div className={cx('account-action-btn')}>
-                            <Button link="/customer/account/profile" variant="plain" className={cx('pl-6', '!py-0')}>
+                            <Button link="/customer/account/profile" variant="plain" className={cx('swift-changeaccountinfo', 'pl-6', '!py-0')}>
                                 <Typography variant="bd-2a" className={cx('!text-primary-700')}>
                                     {t('customer:newPassword:title')}
                                 </Typography>
@@ -44,7 +44,7 @@ const AddressView = ({ customer, t }) => (
                     </Typography>
                     <div className={cx('account-action', 'pt-5', 'grid', 'grid-cols-[2fr_10fr]')}>
                         <div className={cx('newsletter-action-btn')}>
-                            <Button link="/customer/newsletter" variant="plain" className={cx('pl-0', '!py-0')}>
+                            <Button link="/customer/newsletter" variant="plain" className={cx('swift-changesubcription', 'pl-0', '!py-0')}>
                                 <Typography variant="bd-2a" className={cx('!text-primary-700')}>
                                     {t('common:button:change')}
                                 </Typography>

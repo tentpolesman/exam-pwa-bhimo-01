@@ -21,6 +21,7 @@ const Page = (props) => {
     const storeConfig = dataConfig?.storeConfig || configStore;
     let config = {
         ...pageConfig,
+        tagSelector: 'swift-page-plp',
     };
     let schemaOrg = null;
     let ogDesc;
@@ -37,6 +38,7 @@ const Page = (props) => {
             ogKeyword = StripHtmlTags(data.categoryList[0].meta_keywords) || '';
         }
         config = {
+            ...config,
             title: data.categoryList[0]?.meta_title || data.categoryList[0]?.name || '',
             headerTitle: data && !data.categoryList[0].image_path ? data.categoryList[0].name : '',
             header: data && data.categoryList[0].image_path ? 'absolute' : 'relative', // available values: "absolute", "relative", false (default)
@@ -49,6 +51,7 @@ const Page = (props) => {
             schemaOrg,
         };
     }
+
     if (loading && !data) {
         return (
             <Layout {...props} pageConfig={config}>
@@ -61,7 +64,7 @@ const Page = (props) => {
         return <ErrorView statusCode={404} {...props} />;
     }
     return (
-        <Layout {...props} pageConfig={pageConfig} data={null} isPlp>
+        <Layout {...props} pageConfig={config} data={null} isPlp>
             <Content categoryId={categoryId} data={data} {...other} storeConfig={storeConfig} />
         </Layout>
     );

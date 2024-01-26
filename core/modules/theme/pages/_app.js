@@ -23,7 +23,6 @@ import Cookie from 'js-cookie';
 import App from 'next/app';
 import React from 'react';
 import { gql } from '@apollo/client';
-import PageProgressLoader from '@common_pageprogress';
 import graphRequest from '@graphql_request';
 import routeMiddleware from '@middleware_route';
 // import getConfig from 'next/config';
@@ -370,7 +369,6 @@ class MyApp extends App {
 
         return (
             <>
-                <PageProgressLoader />
                 <Component {...pageProps} />
             </>
         );

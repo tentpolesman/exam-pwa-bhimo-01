@@ -9,13 +9,15 @@ const Customer = dynamic(() => import('@core_modules/customer/pages/account/comp
 
 const CustomerAccount = (props) => {
     const {
-        t, CustomerView, GuestView, pageConfig, storeConfig,
+        t, CustomerView, GuestView, storeConfig,
     } = props;
+    const isLogin = getLoginInfo();
     const router = useRouter();
     const config = {
         title: t('customer:dashboard:pageTitle'),
         header: false, // available values: "absolute", "relative", false (default)
         bottomNav: 'account',
+        tagSelector: isLogin ? 'swift-page-dashboard' : 'swift-page-guest-view',
     };
     const [actionReorder] = mutationReorder();
     const { data } = getCmsBlocks({ identifiers: [storeConfig.pwa.footer_version] });
@@ -42,17 +44,16 @@ const CustomerAccount = (props) => {
                 });
         }
     };
-    const isLogin = getLoginInfo();
 
     if (isLogin) {
         return (
-            <Layout pageConfig={pageConfig || config} {...props}>
+            <Layout pageConfig={config} {...props}>
                 <Customer {...props} data={data} CustomerView={CustomerView} reOrder={reOrder} />
             </Layout>
         );
     }
     return (
-        <Layout pageConfig={pageConfig || config} {...props}>
+        <Layout pageConfig={config} {...props}>
             <GuestView {...props} data={data} />
         </Layout>
     );

@@ -32,10 +32,12 @@ const Register = (props) => {
     const { t, storeConfig, pageConfig, Content, query, lastPathNoAuth } = props;
 
     const config = {
+        ...pageConfig,
         title: t('register:pageTitle'),
         header: 'relative', // available values: "absolute", "relative", false (default)
         headerTitle: t('register:title'),
         bottomNav: false,
+        tagSelector: 'swift-page-register',
     };
     // enable recaptcha
     let enableRecaptcha = false;
@@ -470,7 +472,7 @@ const Register = (props) => {
     };
 
     return (
-        <Layout pageConfig={pageConfig || config} {...props} isLoginPage>
+        <Layout pageConfig={config} {...props}>
             <Content {...contentProps} />
         </Layout>
     );

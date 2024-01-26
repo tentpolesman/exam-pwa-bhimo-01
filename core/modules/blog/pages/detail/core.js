@@ -74,6 +74,7 @@ const CoreDetail = (props) => {
         headerTitle: 'Blog',
         bottomNav: false,
         ...pageConfig,
+        tagSelector: 'swift-page-blogdetail',
     };
 
     const [getBlogs, { loading, data, error }] = getBlogPostList();
@@ -130,9 +131,7 @@ const CoreDetail = (props) => {
                     ) : null}
                     <div className="mt-6">{blogPost?.content ? <CmsRenderer content={blogPost.content} storeConfig={storeConfig} /> : null}</div>
                     <div className="flex my-10 gap-1">
-                        <Typography className="tablet:hidden">
-                            {t('blog:share')}
-                        </Typography>
+                        <Typography className="tablet:hidden">{t('blog:share')}</Typography>
                         <Share />
                     </div>
                     {blogPost?.related_products?.length > 0 ? (

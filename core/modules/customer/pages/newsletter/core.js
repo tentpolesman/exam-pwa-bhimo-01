@@ -6,7 +6,7 @@ import { getCustomerSettings } from '@core_modules/customer/services/graphql';
 import * as Schema from '@core_modules/customer/services/graphql/schema';
 
 const NewsletterPage = (props) => {
-    const { t, Content, pageConfig } = props;
+    const { t, Content } = props;
     const [actUpdateCustomer, { data: dataUpdate }] = useMutation(Schema.updateCustomer, {
         context: {
             request: 'internal',
@@ -22,6 +22,7 @@ const NewsletterPage = (props) => {
         header: 'relative', // available values: "absolute", "relative", false (default)
         headerTitle: t('customer:setting:newsletter'),
         bottomNav: false,
+        tagSelector: 'swift-page-newsletter',
     };
 
     const handleChange = () => {
@@ -92,7 +93,7 @@ const NewsletterPage = (props) => {
     };
 
     return (
-        <Layout {...props} pageConfig={pageConfig || config}>
+        <Layout {...props} pageConfig={config}>
             <Content
                 t={t}
                 handleSave={handleSave}

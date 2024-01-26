@@ -28,10 +28,13 @@ const Error = (props) => {
     const title = props.title || statusCodes[statusCode] || 'An unexpected error has occurred';
 
     const config = {
+        ...pageConfig,
         title,
+        tagSelector: 'swift-page-error',
     };
+
     return (
-        <Layout pageConfig={pageConfig || config} isLogin={isLogin} {...props} {...storeConfig}>
+        <Layout pageConfig={config} isLogin={isLogin} {...props} {...storeConfig}>
             <Content statusCode={statusCode} title={title} />
         </Layout>
     );

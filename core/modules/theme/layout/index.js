@@ -31,7 +31,7 @@ import Script from 'next/script';
 import { getLoginInfo } from '@helper_auth';
 import supportsWebP from 'supports-webp';
 import Typography from '@common/Typography';
-
+import PageProgressLoader from '@common_pageprogress';
 /**
  * Set font family using nextjs helper,
  * path property needs to be an absolute path
@@ -423,6 +423,8 @@ const Layout = (props) => {
 
     const canonicalUrl = `${getHost()}${router.asPath}`;
     const defaultLang = i18n && i18n.language === 'id' ? 'id_ID' : 'en_US';
+    const pageNameSelector = pageConfig?.tagSelector ?? 'swift-page-default';
+
     return (
         <>
             <Head>
@@ -473,61 +475,63 @@ const Layout = (props) => {
             {/* {showPopup && storeConfig && storeConfig.pwa && storeConfig.pwa.header_version !== 'v2' ? (
                 <PopupInstallAppMobile appName={appName} installMessage={installMessage} />
             ) : null} */}
-            {allowHeaderCheckout && (
-                <header ref={refHeader} className={cx(font.variable, 'font-sans', '!font-pwa-default')}>
-                    <GlobalPromoMessage
-                        t={t}
-                        storeConfig={storeConfig}
-                        showGlobalPromo={showGlobalPromo}
-                        appName={appName}
-                        installMessage={installMessage}
+            <div className={pageNameSelector}>
+                <PageProgressLoader />
+                {allowHeaderCheckout && (
+                    <header ref={refHeader} className={cx(font.variable, 'font-sans', '!font-pwa-default')}>
+                        <GlobalPromoMessage
+                            t={t}
+                            storeConfig={storeConfig}
+                            showGlobalPromo={showGlobalPromo}
+                            appName={appName}
+                            installMessage={installMessage}
+                        />
+                        <Header
+                            t={t}
+                            pageConfig={pageConfig}
+                            storeConfig={storeConfig}
+                            isLogin={isLogin}
+                            app_cookies={app_cookies}
+                            showGlobalPromo={showGlobalPromo}
+                            enablePopupInstallation={showPopup}
+                            appName={appName}
+                            installMessage={installMessage}
+                            dataMenu={dataMenu}
+                            isHomepage={isHomepage}
+                            deviceType={deviceType}
+                            i18n={i18n}
+                        />
+                    </header>
+                )}
+                <main className={generateClasses()}>
+                    <Backdrop open={state.backdropLoader} />
+                    <Dialog
+                        open={dialog.open}
+                        title={dialog.title}
+                        content={dialog.content}
+                        positiveLabel={dialog.positiveLabel}
+                        positiveAction={dialog.positiveAction}
+                        negativeLabel={dialog.negativeLabel}
+                        negativeAction={dialog.negativeAction}
                     />
-                    <Header
-                        t={t}
-                        pageConfig={pageConfig}
-                        storeConfig={storeConfig}
-                        isLogin={isLogin}
-                        app_cookies={app_cookies}
-                        showGlobalPromo={showGlobalPromo}
-                        enablePopupInstallation={showPopup}
-                        appName={appName}
-                        installMessage={installMessage}
-                        dataMenu={dataMenu}
-                        isHomepage={isHomepage}
-                        deviceType={deviceType}
-                        i18n={i18n}
+                    <Toast
+                        close={state.toastMessage.close}
+                        setOpen={handleCloseMessage}
+                        open={state.toastMessage.open}
+                        variant={state.toastMessage.variant}
+                        message={state.toastMessage.text}
+                        position={state.toastMessage.position}
+                        positionNumber={state.toastMessage.positionNumber}
+                        autoHideDuration={state.toastMessage.duration}
                     />
-                </header>
-            )}
-            <main className={generateClasses()}>
-                <Backdrop open={state.backdropLoader} />
-                <Dialog
-                    open={dialog.open}
-                    title={dialog.title}
-                    content={dialog.content}
-                    positiveLabel={dialog.positiveLabel}
-                    positiveAction={dialog.positiveAction}
-                    negativeLabel={dialog.negativeLabel}
-                    negativeAction={dialog.negativeAction}
-                />
-                <Toast
-                    close={state.toastMessage.close}
-                    setOpen={handleCloseMessage}
-                    open={state.toastMessage.open}
-                    variant={state.toastMessage.variant}
-                    message={state.toastMessage.text}
-                    position={state.toastMessage.position}
-                    positionNumber={state.toastMessage.positionNumber}
-                    autoHideDuration={state.toastMessage.duration}
-                />
-                {/* {!isHomepage && storeConfig.weltpixel_newsletter_general_enable === '1' && (
+                    {/* {!isHomepage && storeConfig.weltpixel_newsletter_general_enable === '1' && (
                     <NewsletterPopup t={t} storeConfig={storeConfig} pageConfig={pageConfig} isLogin={isLogin} />
                 )} */}
-                {children}
-            </main>
+                    {children}
+                </main>
 
-            {/* CHAT FEATURES */}
-            {/* {features.chatSystem.enable && isShowChat && (
+                {/* CHAT FEATURES */}
+                {/* {features.chatSystem.enable && isShowChat && (
                 <div className={bodyStyles.chatPlugin}>
                     {isLogin ? (
                         <ChatContent />
@@ -543,15 +547,15 @@ const Layout = (props) => {
                     )}
                 </div>
             )} */}
-            {/* END CHAT FEATURES */}
+                {/* END CHAT FEATURES */}
 
-            {withLayoutFooter && (
-                <footer className={cx('!block', 'mt-[50px]', font.variable, 'font-sans', '!font-pwa-default')} ref={refFooter}>
-                    {footer ? <Footer storeConfig={storeConfig} t={t} /> : null}
-                    <Copyright storeConfig={storeConfig} t={t} />
-                </footer>
-            )}
-            {/* {storeConfig.cookie_restriction && !restrictionCookies && (
+                {withLayoutFooter && (
+                    <footer className={cx('!block', 'mt-[50px]', font.variable, 'font-sans', '!font-pwa-default')} ref={refFooter}>
+                        {footer ? <Footer storeConfig={storeConfig} t={t} /> : null}
+                        <Copyright storeConfig={storeConfig} t={t} />
+                    </footer>
+                )}
+                {/* {storeConfig.cookie_restriction && !restrictionCookies && (
                 <RestrictionPopup handleRestrictionCookies={handleRestrictionCookies} restrictionStyle={bodyStyles.cookieRestriction} />
             )}
             {showRecentlyBar && !onlyCms && (
@@ -564,30 +568,31 @@ const Layout = (props) => {
                     className={bodyStyles.itemProduct}
                 />
             )} */}
-            <div className="fixed bottom-0 flex flex-col w-full z-scroll-to-top">
-                <ScrollToTop deviceType={deviceType} showGlobalPromo={showGlobalPromo} {...props} />
-                {!hasWebpSupport ? (
-                    <div className="bg-yellow w-full">
-                        <Typography
-                            variant="h2"
-                            className={cx(
-                                '!text-neutral-white',
-                                '!text-sm',
-                                'p-1',
-                                font.variable,
-                                'font-sans',
-                                '!font-pwa-default',
-                                'text-center',
-                                'font-normal',
-                                '!leading-base',
-                            )}
-                        >
-                            {t('common:error:webpNotSupported')}
-                        </Typography>
-                    </div>
-                ) : null}
+                <div className="fixed bottom-0 flex flex-col w-full z-scroll-to-top">
+                    <ScrollToTop deviceType={deviceType} showGlobalPromo={showGlobalPromo} {...props} />
+                    {!hasWebpSupport ? (
+                        <div className="bg-yellow w-full">
+                            <Typography
+                                variant="h2"
+                                className={cx(
+                                    '!text-neutral-white',
+                                    '!text-sm',
+                                    'p-1',
+                                    font.variable,
+                                    'font-sans',
+                                    '!font-pwa-default',
+                                    'text-center',
+                                    'font-normal',
+                                    '!leading-base',
+                                )}
+                            >
+                                {t('common:error:webpNotSupported')}
+                            </Typography>
+                        </div>
+                    ) : null}
+                </div>
+                <Script src="/install.js" defer />
             </div>
-            <Script src="/install.js" defer />
         </>
     );
 };

@@ -16,7 +16,6 @@ const Contact = (props) => {
     const {
         //
         t,
-        pageConfig,
         isCms = false,
         storeConfig,
     } = props;
@@ -29,6 +28,7 @@ const Contact = (props) => {
         headerTitle: t('contact:pageTitle'),
         header: 'relative', // available values: "absolute", "relative", false (default)
         bottomNav: false,
+        tagSelector: 'swift-page-contact',
     };
     const [message, setMessage] = React.useState({
         open: false,
@@ -45,38 +45,39 @@ const Contact = (props) => {
 
     if (appEnv === 'local') {
         sitekey = dataContactConfig
-                && dataContactConfig.storeConfig
-                && dataContactConfig.storeConfig.pwa
-                && dataContactConfig.storeConfig.pwa.recaptcha_site_key_local;
+            && dataContactConfig.storeConfig
+            && dataContactConfig.storeConfig.pwa
+            && dataContactConfig.storeConfig.pwa.recaptcha_site_key_local;
     } else if (appEnv === 'dev') {
         sitekey = dataContactConfig
-                && dataContactConfig.storeConfig
-                && dataContactConfig.storeConfig.pwa
-                && dataContactConfig.storeConfig.pwa.recaptcha_site_key_dev;
+            && dataContactConfig.storeConfig
+            && dataContactConfig.storeConfig.pwa
+            && dataContactConfig.storeConfig.pwa.recaptcha_site_key_dev;
     } else if (appEnv === 'stage') {
         sitekey = dataContactConfig
-                && dataContactConfig.storeConfig
-                && dataContactConfig.storeConfig.pwa
-                && dataContactConfig.storeConfig.pwa.recaptcha_site_key_stage;
+            && dataContactConfig.storeConfig
+            && dataContactConfig.storeConfig.pwa
+            && dataContactConfig.storeConfig.pwa.recaptcha_site_key_stage;
     } else if (appEnv === 'prod') {
         sitekey = dataContactConfig
-                && dataContactConfig.storeConfig
-                && dataContactConfig.storeConfig.pwa
-                && dataContactConfig.storeConfig.pwa.recaptcha_site_key_prod;
+            && dataContactConfig.storeConfig
+            && dataContactConfig.storeConfig.pwa
+            && dataContactConfig.storeConfig.pwa.recaptcha_site_key_prod;
     }
 
     const [contactusFormSubmit] = gqlService.contactusFormSubmit();
     if (!loadingConfig && dataContactConfig && dataContactConfig.storeConfig && dataContactConfig.storeConfig.pwa) {
-        if (dataContactConfig.storeConfig.pwa.cms_contact_identifiers
-            && dataContactConfig.storeConfig.pwa.cms_contact_identifiers !== '') {
+        if (dataContactConfig.storeConfig.pwa.cms_contact_identifiers && dataContactConfig.storeConfig.pwa.cms_contact_identifiers !== '') {
             cmsContactIdentifiers = dataContactConfig.storeConfig.pwa.cms_contact_identifiers;
         }
 
         if (dataContactConfig.storeConfig.pwa.recaptcha_contact_enable !== null) {
-            enableRecaptcha = (storeConfig && storeConfig.pwa.recaptcha_enable)
-                            && (dataContactConfig && dataContactConfig.storeConfig
-                                && dataContactConfig.storeConfig.pwa
-                                && dataContactConfig.storeConfig.pwa.recaptcha_contact_enable);
+            enableRecaptcha = storeConfig
+                && storeConfig.pwa.recaptcha_enable
+                && dataContactConfig
+                && dataContactConfig.storeConfig
+                && dataContactConfig.storeConfig.pwa
+                && dataContactConfig.storeConfig.pwa.recaptcha_contact_enable;
         }
     }
 
@@ -193,8 +194,8 @@ const Contact = (props) => {
     }
 
     return (
-        <Layout pageConfig={pageConfig || Config} {...props}>
-            {(!load && !loading && !loadingConfig) && (!dataContactConfig || error) ? (
+        <Layout pageConfig={Config} {...props}>
+            {!load && !loading && !loadingConfig && (!dataContactConfig || error) ? (
                 <Alert severity="error" className="capitalize">
                     {!cmsContactIdentifiers
                         ? t('contact:nullCmsIdentifer')

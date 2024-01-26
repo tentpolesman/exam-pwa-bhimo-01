@@ -24,7 +24,7 @@ const generateData = (data, { t }) => (
         </Typography>
         <Typography className={cx('block', 'font-normal')}>{`${data.city.split(', ')[0]} ${data.postcode}`}</Typography>
         <Typography className={cx('block', 'font-normal')}>{`T: ${data.telephone}`}</Typography>
-        <Button link="/customer/account/address" variant="plain" className={cx('pl-0', '!pb-0', 'pt-5')}>
+        <Button link="/customer/account/address" variant="plain" className={cx('swift-changeaddress', 'pl-0', '!pb-0', 'pt-5')}>
             <Typography variant="bd-2a" className={cx('!text-primary-700')}>
                 {t('customer:address:changeAddress')}
             </Typography>
@@ -71,7 +71,7 @@ const AddressView = (props) => {
                 <Typography variant="h3" className={cx('pl-0')}>
                     {t('customer:menu:address')}
                 </Typography>
-                <Button link="/customer/account/profile" variant="plain" className={cx('pl-6', 'pr-0', '!py-0')}>
+                <Button link="/customer/account/address" variant="plain" className={cx('swift-changeaddress', 'pl-6', 'pr-0', '!py-0')}>
                     <Typography variant="bd-2a" className={cx('!text-neutral-500', 'underline', 'underline-offset-2')}>
                         {t('customer:address:editTitle')}
                     </Typography>

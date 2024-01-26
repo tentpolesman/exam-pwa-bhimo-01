@@ -14,6 +14,7 @@ const Tracking = (props) => {
         header: 'relative', // available values: "absolute", "relative", false (default)
         headerTitle: t('trackingorder:trackingOrder'),
         bottomNav: false,
+        tagSelector: 'swift-page-trackingorder',
     };
 
     const [orderField, setOrderField] = React.useState({

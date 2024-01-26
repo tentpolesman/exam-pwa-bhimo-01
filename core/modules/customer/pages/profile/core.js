@@ -163,18 +163,19 @@ const ProfilePage = (props) => {
 };
 
 const Profile = (props) => {
-    const { t, pageConfig, storeConfig } = props;
+    const { t, storeConfig } = props;
     const config = {
         title: t('customer:profile:title'),
         header: 'relative', // available values: "absolute", "relative", false (default)
         headerTitle: t('customer:profile:title'),
         bottomNav: false,
+        tagSelector: 'swift-page-accountinfo',
     };
 
     const { error, loading, data } = getCustomer(storeConfig);
 
     return (
-        <Layout pageConfig={pageConfig || config} {...props}>
+        <Layout pageConfig={config} {...props}>
             <ProfilePage {...props} loading={loading} data={data && data.customer ? data.customer : null} error={error} />
         </Layout>
     );
