@@ -5,7 +5,6 @@ import Button from '@common_button';
 import Thumbor from '@common_image';
 import Typography from '@common_typography';
 import { formatPrice } from '@helper_currency';
-import { useReactiveVar } from '@apollo/client';
 import { storeConfigVar } from '@core/services/graphql/cache';
 import cx from 'classnames';
 import React, { useEffect } from 'react';
@@ -28,7 +27,7 @@ const Summary = (props) => {
         dataCart, storeConfig, currencyCache, label,
         mobilePosition, // top: static on top, bottom: assolute on bottom like bottom sheet
     } = props;
-    const storeConfigLocalStorage = useReactiveVar(storeConfigVar);
+    const storeConfigLocalStorage = storeConfigVar();
     const [openItem, setOpenItem] = React.useState(false);
     const [openItemMobile, setOpenItemMobile] = React.useState(false);
 

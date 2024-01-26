@@ -1,7 +1,6 @@
 /* eslint-disable no-lonely-if */
 import config from '@config';
 import { formatPrice } from '@helper_currency';
-import { useReactiveVar } from '@apollo/client';
 import { currencyVar } from '@core/services/graphql/cache';
 import propTypes from 'prop-types';
 import DesktopView from '@plugin_summary/components/DesktopSummary';
@@ -13,7 +12,7 @@ const CoreSummary = (props) => {
         ...other
     } = props;
     // cache currency
-    const currencyCache = useReactiveVar(currencyVar);
+    const currencyCache = currencyVar();
 
     const [dataSummary, setDataSummary] = useState([]);
     const [total, setTotal] = useState(0);

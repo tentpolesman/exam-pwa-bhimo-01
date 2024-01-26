@@ -6,7 +6,6 @@ import React from 'react';
 import { getLoginInfo } from '@helper_auth';
 import { getCartId, setCartId } from '@helper_cartid';
 import { formatPrice } from '@helper_currency';
-import { useReactiveVar } from '@apollo/client';
 import { currencyVar } from '@core/services/graphql/cache';
 import TagManager from 'react-gtm-module';
 import {
@@ -91,7 +90,7 @@ const OptionsItemsBundle = (props) => {
     } = props;
 
     // cache currency
-    const currencyCache = useReactiveVar(currencyVar);
+    const currencyCache = currencyVar();
 
     const reviewValue = parseInt(review?.rating_summary || 0, 0) / 20;
     const [items, setItems] = React.useState([]);

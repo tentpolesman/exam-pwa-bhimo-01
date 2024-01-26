@@ -5,7 +5,6 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable no-plusplus */
 /* eslint-disable react/no-unescaped-entities */
-import { useReactiveVar } from '@apollo/client';
 import { formatPrice } from '@helper_currency';
 import formatDate from '@helper_date';
 import { currencyVar } from '@core/services/graphql/cache';
@@ -28,7 +27,7 @@ const OrderView = (props) => {
     const { isMobile } = useMediaQuery();
 
     // cache currency
-    const currencyCache = useReactiveVar(currencyVar);
+    const currencyCache = currencyVar();
     const currencyData = Cookies.get('app_currency') && JSON.parse(Cookies.get('app_currency'));
     const hasData = customerOrders?.items?.length;
 

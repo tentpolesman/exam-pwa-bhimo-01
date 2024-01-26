@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable semi-style */
-import { useReactiveVar } from '@apollo/client';
 import {
     getOrderDetail, getPaymentInformation, getTrackingOrder, reOrder as mutationReorder,
 } from '@core_modules/order/services/graphql';
@@ -20,7 +19,7 @@ const OrderDetail = (props) => {
     } = props;
 
     // cache currency
-    const currencyCache = useReactiveVar(currencyVar);
+    const currencyCache = currencyVar();
 
     const { storeConfig } = other;
     const router = useRouter();

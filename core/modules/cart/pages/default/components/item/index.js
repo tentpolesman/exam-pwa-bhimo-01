@@ -7,7 +7,6 @@
 import Typography from '@common_typography';
 import ItemProduct from '@core_modules/cart/pages/default/components/item/item';
 import TableList from '@core_modules/cart/pages/default/components/item/TableListItem';
-import { useReactiveVar } from '@apollo/client';
 import { storeConfigVar } from '@core/services/graphql/cache';
 import React from 'react';
 import Divider from '@common/Divider';
@@ -16,7 +15,7 @@ import Button from '@common/Button';
 
 const ItemView = (props) => {
     const { data, t, toggleEditMode, editMode, deleteItem, handleFeed, toggleEditDrawer, currencyCache, ...other } = props;
-    const storeConfigLocalStorage = useReactiveVar(storeConfigVar);
+    const storeConfigLocalStorage = storeConfigVar();
     let cartItemBySeller = {};
 
     let isMultiSeller = false;

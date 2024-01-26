@@ -1,7 +1,6 @@
 /* eslint-disable operator-linebreak */
 /* eslint-disable array-callback-return */
 /* eslint-disable consistent-return */
-import { useReactiveVar } from '@apollo/client';
 import { modules, storeConfigNameCookie } from '@config';
 import { getCountries as getAllCountries, getCityByRegionId, getRegions } from '@core_modules/customer/services/graphql';
 import helperCookies from '@helper_cookies';
@@ -47,7 +46,7 @@ const AddressFormDialog = (props) => {
         storeConfig = helperCookies.get(storeConfigNameCookie);
     }
 
-    const pwaConfig = useReactiveVar(storeConfigVar);
+    const pwaConfig = storeConfigVar();
     const gmapKey = pwaConfig && pwaConfig.icube_pinlocation_gmap_key ? pwaConfig.icube_pinlocation_gmap_key : null;
     const geocodingKey = pwaConfig && pwaConfig.icube_pinlocation_geocoding_key ? pwaConfig.icube_pinlocation_geocoding_key : null;
     const { pin_location_latitude, pin_location_longitude } = pwaConfig ?? {};
