@@ -16,7 +16,7 @@ import Cookies from 'js-cookie';
 import Head from 'next/head';
 import Router from 'next/router';
 import TagManager from 'react-gtm-module';
-import { useApolloClient, useReactiveVar } from '@apollo/client';
+import { useApolloClient } from '@apollo/client';
 import { modules, nameCheckoutState } from '@config';
 import { getCartCallbackUrl, getLoginCallbackUrl, getSuccessCallbackUrl } from '@core_modules/checkout/helpers/config';
 import { getCartId } from '@helpers/cartId';
@@ -75,7 +75,7 @@ const Checkout = (props) => {
     const checkout = useSelector(selectCheckoutState);
 
     // cache currency
-    const currencyCache = useReactiveVar(currencyVar);
+    const currencyCache = currencyVar();
     const appEnv = getAppEnv();
 
     let { isLogin } = props;

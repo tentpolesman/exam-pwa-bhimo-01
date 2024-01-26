@@ -4,7 +4,7 @@
 import cx from 'classnames';
 import TagManager from 'react-gtm-module';
 import useMediaQuery from '@hook/useMediaQuery';
-import { useQuery, useReactiveVar } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { debuging, features, modules } from '@config';
 import { getPriceFromList } from '@core_modules/product/helpers/getPrice';
 import { localCompare } from '@services/graphql/schema/local';
@@ -62,8 +62,8 @@ const ProductDetailAction = ({
     const reviewRef = React.useRef(null);
 
     // cache currency
-    const currencyCache = useReactiveVar(currencyVar);
-    const cachePrice = useReactiveVar(priceVar);
+    const currencyCache = currencyVar();
+    const cachePrice = priceVar();
     const generateIdentifier = slug.replace(/ /g, '-');
     const mount = React.useRef(null);
     const reviewValue = parseInt(item.review.rating_summary, 0) / 20;

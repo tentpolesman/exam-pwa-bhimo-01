@@ -3,7 +3,6 @@
 /* eslint-disable @next/next/no-img-element */
 import Typography from '@common_typography';
 import { formatPrice } from '@helpers/currency';
-import { useReactiveVar } from '@apollo/client';
 import { currencyVar } from '@core/services/graphql/cache';
 import Radio from '@common_forms/Radio';
 import classNames from 'classnames';
@@ -30,7 +29,7 @@ const RadioDeliveryItem = (props) => {
     };
 
     // cache currency
-    const currencyCache = useReactiveVar(currencyVar);
+    const currencyCache = currencyVar();
 
     const labelType = selected ? 'bold' : 'regular';
     let rightSide;

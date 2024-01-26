@@ -1,4 +1,3 @@
-import { useReactiveVar } from '@apollo/client';
 import CountrySelect from '@common_forms/PhoneInput/CountrySelect';
 import Show from '@common_show';
 import Typography from '@common_typography';
@@ -23,7 +22,7 @@ const PhoneInput = (props) => {
         ...restProps
     } = props;
 
-    const pwaConfig = useReactiveVar(storeConfigVar);
+    const pwaConfig = storeConfigVar();
     const defaultCountry = pwaConfig && pwaConfig.general_country_default;
 
     let inputValue = value;

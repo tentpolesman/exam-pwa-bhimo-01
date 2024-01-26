@@ -9,7 +9,6 @@
 /* eslint-disable eqeqeq */
 /* eslint-disable max-len */
 import Link from 'next/link';
-import { useReactiveVar } from '@apollo/client';
 import { currencyVar } from '@core/services/graphql/cache';
 import cx from 'classnames';
 import Layout from '@layout_customer';
@@ -32,7 +31,7 @@ const DefaultView = (props) => {
     } = props;
     const { isDesktop } = useMediaQuery();
     // cache currency
-    const currencyCache = useReactiveVar(currencyVar);
+    const currencyCache = currencyVar();
     const hasData = data?.items?.length;
 
     const generateBadge = (status, status_label) => {

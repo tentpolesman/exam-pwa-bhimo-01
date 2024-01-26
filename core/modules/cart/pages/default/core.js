@@ -7,7 +7,6 @@ import TagManager from 'react-gtm-module';
 import { useRouter } from 'next/router';
 import Layout from '@layout';
 import { localTotalCart } from '@services/graphql/schema/local';
-import { useReactiveVar } from '@apollo/client';
 import { currencyVar } from '@core/services/graphql/cache';
 import {
     addWishlist as mutationWishlist, getCartDataLazy, getCartItemLazy,
@@ -24,7 +23,7 @@ const Cart = (props) => {
     } = props;
 
     // cache currency
-    const currencyCache = useReactiveVar(currencyVar);
+    const currencyCache = currencyVar();
     const router = useRouter();
     const { paymentFailed, orderId, cart_id: failedCartId } = router.query;
     const dataCart = {

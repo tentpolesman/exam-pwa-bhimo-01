@@ -1,7 +1,7 @@
 /* eslint-disable comma-dangle */
 /* eslint-disable no-lonely-if */
 /* eslint-disable radix */
-import { useApolloClient, useReactiveVar } from '@apollo/client';
+import { useApolloClient } from '@apollo/client';
 import { modules } from '@config';
 import { removeCartId, setCartId } from '@helper_cartid';
 import { getHost, getStoreHost } from '@helper_config';
@@ -61,7 +61,7 @@ const Summary = ({
     const [placeOrderWithOrderComment] = gqlService.placeOrderWithOrderComment({ onError: () => {} });
     const [getSnapOrderStatusByOrderId, snapStatus] = gqlService.getSnapOrderStatusByOrderId({ onError: () => {} });
     const [getCustCartId, manageCustCartId] = gqlService.getCustomerCartId();
-    const storeConfigLocalStorage = useReactiveVar(storeConfigVar);
+    const storeConfigLocalStorage = storeConfigVar();
     // indodana
     const [getIndodanaRedirect, urlIndodana] = gqlService.getIndodanaUrl();
     // xendit

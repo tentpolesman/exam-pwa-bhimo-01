@@ -1,6 +1,5 @@
 import Layout from '@layout';
 import { getGiftCard } from '@core_modules/customer/services/graphql';
-import { useReactiveVar } from '@apollo/client';
 import { currencyVar } from '@core/services/graphql/cache';
 
 const GiftCard = (props) => {
@@ -11,7 +10,7 @@ const GiftCard = (props) => {
         bottomNav: false,
     };
     // cache currency
-    const currencyCache = useReactiveVar(currencyVar);
+    const currencyCache = currencyVar();
     const {
         t, storeConfig, Content, pageConfig,
     } = props;

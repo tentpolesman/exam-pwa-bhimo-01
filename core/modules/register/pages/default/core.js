@@ -1,7 +1,7 @@
 /* eslint-disable object-curly-newline */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable max-len */
-import { useQuery, useReactiveVar, useMutation } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client';
 import { custDataNameCookie, expiredToken } from '@config';
 import { getLastPathWithoutLogin, setEmailConfirmationFlag, setLogin } from '@helper_auth';
 import { getCartId, setCartId } from '@helper_cartid';
@@ -41,7 +41,7 @@ const Register = (props) => {
     let enableRecaptcha = false;
 
     // cache price
-    const cachePrice = useReactiveVar(priceVar);
+    const cachePrice = priceVar();
 
     const { loading: loadingRegisterConfig, data: dataRegisterConfig } = registerConfig();
     if (!loadingRegisterConfig && dataRegisterConfig && dataRegisterConfig.storeConfig && dataRegisterConfig.storeConfig.pwa) {

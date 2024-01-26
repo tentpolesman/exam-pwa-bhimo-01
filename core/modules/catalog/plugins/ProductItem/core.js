@@ -4,7 +4,7 @@ import { getLoginInfo } from '@helper_auth';
 import { setCookies, getCookies } from '@helper_cookies';
 import { useTranslation } from 'next-i18next';
 import route, { useRouter } from 'next/router';
-import { useQuery, useReactiveVar } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import React from 'react';
 import { setResolver, getResolver } from '@helper_localstorage';
 import { getSessionStorage, setSessionStorage } from '@helpers/sessionstorage';
@@ -137,7 +137,7 @@ const ProductItem = (props) => {
     const [getProductPrice, { data: dataPrice, loading: loadPrice, error: errorPrice }] = getDetailProductPrice(storeConfig.pwa || {});
 
     // cache price
-    const cachePrice = useReactiveVar(priceVar);
+    const cachePrice = priceVar();
 
     const generateIdentifier = () => {
         let identifier = url_key;

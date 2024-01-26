@@ -6,7 +6,7 @@
 /* eslint-disable react/no-danger */
 /* eslint-disable max-len */
 
-import { useApolloClient, useReactiveVar } from '@apollo/client';
+import { useApolloClient } from '@apollo/client';
 import { storeConfigVar } from '@core/services/graphql/cache';
 import cx from 'classnames';
 import Cookies from 'js-cookie';
@@ -136,7 +136,7 @@ const Layout = (props) => {
     const [, setRestrictionCookies] = useState(false);
     const [setCompareList] = createCompareList();
     const showGlobalPromo = features.globalPromo.enable;
-    const frontendCache = useReactiveVar(storeConfigVar);
+    const frontendCache = storeConfigVar();
 
     // get app name config
 
