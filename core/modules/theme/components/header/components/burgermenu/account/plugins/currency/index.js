@@ -10,7 +10,6 @@ import React from 'react';
 
 import ViewSwitcherCurrency from '@core_modules/theme/components/header/components/burgermenu/account/plugins/currency/view';
 
-import { useReactiveVar } from '@apollo/client';
 import { currencyVar } from '@core/services/graphql/cache';
 
 const COOKIES_APP_CURRENCY = 'app_currency';
@@ -24,7 +23,7 @@ const SwitcherCurrency = (props) => {
     const mount = React.useRef();
 
     // cache currency
-    const cacheCurrency = useReactiveVar(currencyVar);
+    const cacheCurrency = currencyVar();
 
     React.useEffect(() => {
         mount.current = true;

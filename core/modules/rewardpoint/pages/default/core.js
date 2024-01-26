@@ -2,7 +2,6 @@ import urlParser from '@helper_urlparser';
 import Layout from '@layout';
 import PropTypes from 'prop-types';
 import { getRewardPoint } from '@core_modules/rewardpoint/services/graphql';
-import { useReactiveVar } from '@apollo/client';
 import { currencyVar } from '@core/services/graphql/cache';
 
 const RewardPoint = (props) => {
@@ -17,7 +16,7 @@ const RewardPoint = (props) => {
     };
 
     // cache currency
-    const currencyCache = useReactiveVar(currencyVar);
+    const currencyCache = currencyVar();
 
     const [page, setPage] = React.useState(1);
     const [count, setRowsPerPage] = React.useState(10);

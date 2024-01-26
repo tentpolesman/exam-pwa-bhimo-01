@@ -4,7 +4,6 @@ import Button from '@common_button';
 import Typography from '@common_typography';
 import _ from 'lodash';
 import ModalAddress from '@core_modules/checkout/pages/default/components/ModalAddress';
-import { useReactiveVar } from '@apollo/client';
 import { storeConfigVar } from '@core/services/graphql/cache';
 import classNames from 'classnames';
 import Show from '@common/Show';
@@ -37,7 +36,7 @@ const AddressView = (props) => {
     const dispatch = useDispatch();
     const checkout = useSelector(selectCheckoutState);
 
-    const pwaConfig = useReactiveVar(storeConfigVar);
+    const pwaConfig = storeConfigVar();
     const gmapKey = pwaConfig && pwaConfig.icube_pinlocation_gmap_key ? pwaConfig.icube_pinlocation_gmap_key : null;
     const { formik } = other;
 

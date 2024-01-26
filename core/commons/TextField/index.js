@@ -4,7 +4,6 @@ import classNames from 'classnames';
 import CircularProgress from '@common_circularprogress';
 import TextField from '@common_forms/TextField';
 import Typography from '@common_typography';
-import { useReactiveVar } from '@apollo/client';
 import { storeConfigVar } from '@core/services/graphql/cache';
 import 'react-phone-number-input/style.css';
 
@@ -28,7 +27,7 @@ const CustomTextField = ({
     ...other
 }) => {
     const customClass = classNames('form-control w-full h-full max-h-[100px] mt-[10px] mb-[20px]', className);
-    const pwaConfig = useReactiveVar(storeConfigVar);
+    const pwaConfig = storeConfigVar();
 
     let customTextFieldInput = (
         <div disabled={disabled || loading} fullWidth={fullWidth} error={error} variant={variant} className={customClass}>

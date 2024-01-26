@@ -5,7 +5,6 @@ import { useRouter } from 'next/router';
 import getQueryFromPath from '@helper_generatequery';
 import { getProductAggregations, getProduct, getProductPrice } from '@core_modules/catalog/services/graphql';
 import { priceVar } from '@core/services/graphql/cache';
-import { useReactiveVar } from '@apollo/client';
 import * as Schema from '@core_modules/catalog/services/graphql/productSchema';
 import Content from '@plugin_productlist/components';
 import { getLocalStorage, setLocalStorage } from '@core/helpers/localstorage';
@@ -42,7 +41,7 @@ const ProductList = (props) => {
     availableFilter = dataAgg?.products?.aggregations ?? [];
 
     // cache price
-    const cachePrice = useReactiveVar(priceVar);
+    const cachePrice = priceVar();
     /**
      * start handle previous
      * backPage = (from category)

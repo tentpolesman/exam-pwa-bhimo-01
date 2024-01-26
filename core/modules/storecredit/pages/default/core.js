@@ -1,6 +1,5 @@
 import Layout from '@layout';
 import { getStoreCredit } from '@core_modules/storecredit/services/graphql';
-import { useReactiveVar } from '@apollo/client';
 import { currencyVar } from '@core/services/graphql/cache';
 
 const PageStoreCredit = (props) => {
@@ -14,7 +13,7 @@ const PageStoreCredit = (props) => {
     };
 
     // cache currency
-    const currencyCache = useReactiveVar(currencyVar);
+    const currencyCache = currencyVar();
 
     const [page, setPage] = React.useState(1);
     const [perPage, setRowsPerPage] = React.useState(10);

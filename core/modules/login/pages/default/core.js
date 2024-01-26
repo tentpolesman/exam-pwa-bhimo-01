@@ -7,7 +7,7 @@ import { useFormik } from 'formik';
 import firebase from 'firebase/app';
 import Cookies from 'js-cookie';
 import { features, custDataNameCookie, expiredToken } from '@config';
-import { useQuery, useReactiveVar } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 
 import { getAppEnv } from '@helpers/env';
 import { getLastPathWithoutLogin, setLogin } from '@helper_auth';
@@ -100,7 +100,7 @@ const Login = (props) => {
     });
 
     // cache price
-    const cachePrice = useReactiveVar(priceVar);
+    const cachePrice = priceVar();
 
     let cartId = '';
     const handleCloseMessage = () => {

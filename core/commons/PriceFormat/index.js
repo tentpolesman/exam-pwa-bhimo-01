@@ -1,5 +1,4 @@
 /* eslint-disable camelcase */
-import { useReactiveVar } from '@apollo/client';
 import BundleProductTypePrice from '@common_priceformat/BundleProductTypePrice';
 import ProductTypePrice from '@common_priceformat/ProductTypePrice';
 import { currencyVar } from '@core/services/graphql/cache';
@@ -23,7 +22,7 @@ const PriceFormat = ({
     ...other
 }) => {
     const { t } = useTranslation(['common']);
-    const currencyCache = useReactiveVar(currencyVar);
+    const currencyCache = currencyVar();
 
     if (!priceRange) {
         return <div className="price-format-invalid">{t('common:label:invalidPrice')}</div>;
