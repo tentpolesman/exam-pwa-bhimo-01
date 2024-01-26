@@ -81,6 +81,8 @@ const rollbar = {
 /* Dashboard */
 // identifiers for cmsBlocks in contact page
 const cmsSocialMediaLinkIdentifiers = 'pwa_socmed_links';
+
+// set empty or false to disable dynamic menu
 const cmsStaticMainMenuIdentifier = 'static-main-menu';
 
 /* Social media link */

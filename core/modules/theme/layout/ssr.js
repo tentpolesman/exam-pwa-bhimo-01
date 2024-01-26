@@ -2,6 +2,7 @@ import { getCmsBlocks, categories } from '@core_modules/theme/services/graphql/s
 import { getStoreName, getCurrencySchema } from '@core_modules/setting/services/graphql/schema';
 import { gql } from '@apollo/client';
 import graphRequestClear from '@graphql_ssr';
+import { cmsStaticMainMenuIdentifier } from '@config';
 
 const layoutStoreConfigSchema = (storeConfigExtra) => gql`
         {
@@ -44,6 +45,14 @@ const getSSRProps = async ({ apolloClient, storeConfigExtra = '' }) => {
                 query: getCmsBlocks,
                 variables: { identifiers: [storeConfig?.pwa?.footer_version] },
             });
+
+            // cms block dynamic mega menu
+            if (cmsStaticMainMenuIdentifier) {
+                await apolloClient.query({
+                    query: getCmsBlocks,
+                    variables: { identifiers: [cmsStaticMainMenuIdentifier] },
+                });
+            }
 
             await apolloClient.query({
                 query: getCmsBlocks,
