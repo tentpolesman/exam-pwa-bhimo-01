@@ -18,7 +18,7 @@ const getSSRProps = async (ctx) => {
         modules.checkout.checkoutOnly ? ['common', 'checkout', 'customer', 'validate'] : ['common', 'home', 'catalog', 'product'],
     );
 
-    let homePageConfig;
+    let homePageConfig = null;
     if (!modules.checkout.checkoutOnly && ctx && ctx.req) {
         const homeConfig = await graphRequest(getHomePageConfig);
         homePageConfig = homeConfig.storeConfig;
@@ -31,7 +31,9 @@ const getSSRProps = async (ctx) => {
     }
 
     const identifier = homePageConfig?.pwa?.use_cms_page_identifier ?? '';
-    await getCmsSSRProps({ apolloClient, identifier });
+    if (!modules.checkout.checkoutOnly) {
+        await getCmsSSRProps({ apolloClient, identifier });
+    }
 
     // for gql ssr cache
     const apolloState = apolloClient.cache.extract();

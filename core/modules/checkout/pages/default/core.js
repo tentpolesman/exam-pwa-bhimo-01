@@ -348,7 +348,7 @@ const Checkout = (props) => {
 
     const initData = useCallback(async () => {
         let { cart } = dataCart;
-        const { errorItems, items } = itemCart.cart;
+        const { errorItems, items } = itemCart?.cart;
         cart = { ...cart, ...(checkout.data.cart ? checkout.data.cart : {}), items };
         // check error items
         if (errorItems && errorItems.length > 0) {
@@ -766,7 +766,7 @@ const Checkout = (props) => {
         dispatch(setRefetchItemOnly(false));
 
         updateFormik(cart);
-    }, [checkout, dataCart]);
+    }, [checkout, dataCart, itemCart]);
 
     React.useEffect(() => {
         dispatch(setCheckoutData({

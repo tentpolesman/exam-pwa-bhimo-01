@@ -135,13 +135,6 @@ const routeMiddleware = (params) => {
                 res.statusCode = 302;
                 res.setHeader('Location', getStoreHost(getAppEnv()));
             }
-        } else if (typeof window !== 'undefined') {
-            const destinationUrl = pathname;
-            const currentUrl = window.sessionStorage.getItem('currentUrl');
-            const prevUrl = window.sessionStorage.getItem('prevUrl');
-            if (destinationUrl === '/' && currentUrl === '/' && prevUrl === '/') {
-                window.location.href = getStoreHost(getAppEnv());
-            }
         }
     }
 };
