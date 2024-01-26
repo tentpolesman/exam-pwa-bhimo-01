@@ -24,18 +24,23 @@ const Menu = (props) => {
         menu = [];
     }
 
-    if ((customMenu && customMenu.length > 0) && (!menu || !menu.length)) {
+    if (customMenu && customMenu.length > 0 && (!menu || !menu.length)) {
         menu = customMenu;
     }
     const generateLink = (cat) => {
         const link = cat.link ? getPath(cat.link) : `/${cat.url_path}`;
         if (cat.customLink) {
-            return [cat.url_path, cat.url_path];
+            return [`/${cat.url_path}`, `/${cat.url_path}`];
         }
         return ['/[...slug]', link];
     };
     const handleClick = async (cat) => {
-        const link = cat.link ? getPath(cat.link) : `/${cat.url_path}`;
+        let link = cat.link ? getPath(cat.link) : `/${cat.url_path}`;
+
+        if (cat?.customLink) {
+            link = cat.url_path;
+        }
+
         const urlResolver = getResolver();
         // WIP : Custom Header Menu
         // if (storeConfig.pwa.ves_menu_enable) {
@@ -117,7 +122,7 @@ const Menu = (props) => {
                                 }}
                                 className={cx('text-md', 'font-medium', 'tracking-normal', 'px-4', 'py-[13px]', 'hover:text-primary-700')}
                             >
-                                {((val.link && val.link !== '#') || val.customLink) ? (
+                                {val.link && val.link !== '#' ? (
                                     <>
                                         {val.before_html && (
                                             <div
