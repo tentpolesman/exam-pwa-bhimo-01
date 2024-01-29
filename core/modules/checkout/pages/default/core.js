@@ -570,7 +570,9 @@ const Checkout = (props) => {
             cartItemBySeller = groupData;
         }
 
-        if (shipping && shipping[0].available_shipping_methods?.length === 0) setLoadingSellerInfo(false);
+        if (!shipping || !shipping[0].available_shipping_methods?.length) {
+            setLoadingSellerInfo(false);
+        }
 
         // init shipping method
         // if multiseller active
