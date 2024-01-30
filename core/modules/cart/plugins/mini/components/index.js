@@ -23,6 +23,7 @@ import Button from '@common_button';
 import CommonsDrawer from '@common_drawer';
 import Typography from '@common_typography';
 import XMarkIcon from '@heroicons/react/24/solid/XMarkIcon';
+import { useCallback } from 'react';
 
 const MiniComponent = (props) => {
     const router = useRouter();
@@ -32,7 +33,7 @@ const MiniComponent = (props) => {
     const subtotal_including_tax = data?.custom_total_price?.subtotal_including_tax?.value || 0;
     const subtotal_including_tax_currency = data?.custom_total_price?.subtotal_including_tax?.currency || 'IDR';
     const cartId = getCartId();
-    const [getScv2Url] = getCheckoutScv2Url();
+    const [getScv2Url, { loading: loaddingScv2Url }] = getCheckoutScv2Url();
     const [localOpen, setLocalOpen] = React.useState(open);
 
     const handleClose = () => {
@@ -41,6 +42,59 @@ const MiniComponent = (props) => {
             setOpen(false);
         }, 500);
     };
+
+    const handlingAddToCart = useCallback(() => {
+        const minimumOrderEnabled = storeConfig.minimum_order_enable;
+        const grandTotalValue = data.custom_total_price.grand_total.value;
+        const minimumOrderAmount = storeConfig.minimum_order_amount;
+        if (minimumOrderEnabled && grandTotalValue < minimumOrderAmount) {
+            const errorMessage = {
+                variant: 'error',
+                text: `Unable to place order: Minimum order amount is ${formatPrice(
+                    minimumOrderAmount,
+                    currencyCache,
+                )}`,
+                open: true,
+            };
+            window.toastMessage({
+                ...errorMessage,
+            });
+            setTimeout(() => {
+                router.push('/checkout/cart');
+            }, 3000);
+        } else if (subtotal_including_tax) {
+            if (
+                    storeConfig.pwacheckout?.enable === '1' &&
+                    storeConfig.pwacheckout?.version === 'V2' &&
+                    cartId
+            ) {
+                getScv2Url({
+                    variables: {
+                        cartId,
+                    },
+                })
+                    .then((res) => {
+                        window.location.replace(res.data.generateScv2Url.scv2_url);
+                    })
+                    .catch(() => {
+                        window.toastMessage({
+                            open: true,
+                            text: t('common:cart:cartError'),
+                            variant: 'error',
+                        });
+                    });
+            } else {
+                setOpen();
+                router.push('/checkout');
+            }
+        } else {
+            window.toastMessage({
+                open: true,
+                text: t('common:cart:cartError'),
+                variant: 'error',
+            });
+        }
+    }, [cartId]);
 
     return (
         <>
@@ -154,59 +208,9 @@ const MiniComponent = (props) => {
                                                 'w-full',
                                                 'rounded-md',
                                             )}
+                                            loading={loaddingScv2Url}
                                             classNameText={cx('justify-center')}
-                                            onClick={() => {
-                                                const minimumOrderEnabled = storeConfig.minimum_order_enable;
-                                                const grandTotalValue = data.custom_total_price.grand_total.value;
-                                                const minimumOrderAmount = storeConfig.minimum_order_amount;
-                                                if (minimumOrderEnabled && grandTotalValue < minimumOrderAmount) {
-                                                    const errorMessage = {
-                                                        variant: 'error',
-                                                        text: `Unable to place order: Minimum order amount is ${formatPrice(
-                                                            minimumOrderAmount,
-                                                            currencyCache,
-                                                        )}`,
-                                                        open: true,
-                                                    };
-                                                    window.toastMessage({
-                                                        ...errorMessage,
-                                                    });
-                                                    setTimeout(() => {
-                                                        router.push('/checkout/cart');
-                                                    }, 3000);
-                                                } else if (subtotal_including_tax) {
-                                                    if (
-                                                        storeConfig.pwacheckout?.enable === '1' &&
-                                                        storeConfig.pwacheckout?.version === 'V2' &&
-                                                        cartId
-                                                    ) {
-                                                        getScv2Url({
-                                                            variables: {
-                                                                cart_id: cartId,
-                                                            },
-                                                        })
-                                                            .then((res) => {
-                                                                window.location.replace(res.data.internalGetScv2Url.url);
-                                                            })
-                                                            .catch(() => {
-                                                                window.toastMessage({
-                                                                    open: true,
-                                                                    text: t('common:cart:cartError'),
-                                                                    variant: 'error',
-                                                                });
-                                                            });
-                                                    } else {
-                                                        setOpen();
-                                                        router.push('/checkout');
-                                                    }
-                                                } else {
-                                                    window.toastMessage({
-                                                        open: true,
-                                                        text: t('common:cart:cartError'),
-                                                        variant: 'error',
-                                                    });
-                                                }
-                                            }}
+                                            onClick={handlingAddToCart}
                                             variant="primary"
                                             id="plugin-minicart-checkoutBtn"
                                         >
