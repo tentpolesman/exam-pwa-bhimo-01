@@ -94,7 +94,7 @@ const Radio = (props) => {
                     onClick={onClick}
                     disabled={disabled}
                     className={cx(
-                        'form-radio',
+                        'swift-form-radio',
                         'w-4',
                         'h-4',
                         'mr-2',
@@ -165,7 +165,7 @@ const Radio = (props) => {
                                 type="radio"
                                 disabled={item.disabled || disabled}
                                 className={cx(
-                                    'form-radio',
+                                    'swift-form-radio',
                                     'w-4',
                                     'h-4',
                                     'mr-2',

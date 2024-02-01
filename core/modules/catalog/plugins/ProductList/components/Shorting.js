@@ -63,7 +63,7 @@ const Sorting = (props) => {
             className="h-[38px]"
             value={shortingValue && shortingValue.length > 0 ? shortingValue[0].label : ''}
             textFiledProps={{
-                className: 'h-[38px] !border-neutral-200 tablet:h-auto !w-[auto] ml-2 tablet:-mt-[1px]',
+                className: 'swift-sorting-container h-[38px] !border-neutral-200 tablet:h-auto !w-[auto] ml-2 tablet:-mt-[1px]',
                 rightIconProps: {
                     className: '!text-neutral-600',
                 },

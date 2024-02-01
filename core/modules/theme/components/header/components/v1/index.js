@@ -25,6 +25,7 @@ const HeaderV1 = (props) => {
         ...other
     } = props;
 
+    // eslint-disable-next-line consistent-return
     React.useEffect(() => {
         if (typeof window !== 'undefined') {
             // handle sticky
@@ -59,10 +60,10 @@ const HeaderV1 = (props) => {
                         globalPromoheight = document.querySelector('#global-promo-message')?.offsetHeight;
                         topHeaderheight = isDesktop
                             ? document.querySelector('.desktop-header .top-header')?.offsetHeight
-                            : document.querySelector('#top-header-tablet')?.offsetHeight;
+                            : document.querySelector('#top-header')?.offsetHeight || 0;
                         midHeaderheight = isDesktop
                             ? document.querySelector('.desktop-header .middle-header')?.offsetHeight
-                            : document.querySelector('.tablet-header .middle-header-tablet')?.offsetHeight;
+                            : document.querySelector('.tablet-header .middle-header-tablet')?.offsetHeight || 0;
                         bottomHeaderheight = isDesktop ? document.querySelector('.desktop-header .bottom-header')?.offsetHeight : 0;
 
                         if (scrollTopPosition > lastScrollTop) {
@@ -85,6 +86,7 @@ const HeaderV1 = (props) => {
                         lastScrollTop = scrollTopPosition <= 0 ? 0 : scrollTopPosition;
                     };
                     window.addEventListener('scroll', handleScroll);
+                    return () => window.removeEventListener('scroll', handleScroll);
                 }
             }
         }
