@@ -49,7 +49,7 @@ const Content = (props) => {
     } = useMediaQuery();
 
     const cartId = getCartId();
-    const [getScv2Url] = getCheckoutScv2Url();
+    const [getScv2Url, { loading: loadingScv2Url }] = getCheckoutScv2Url();
     const handleOnCheckoutClicked = () => {
         const minimumOrderEnabled = storeConfig.minimum_order_enable;
         const grandTotalValue = allData.prices.grand_total.value;
@@ -67,11 +67,11 @@ const Content = (props) => {
         } else if (storeConfig.pwacheckout?.enable === '1' && storeConfig.pwacheckout?.version === 'V2' && cartId) {
             getScv2Url({
                 variables: {
-                    cart_id: cartId,
+                    cartId,
                 },
             })
                 .then((res) => {
-                    window.location.replace(res.data.internalGetScv2Url.url);
+                    window.location.replace(res.data.generateScv2Url.scv2_url);
                 })
                 .catch(() => {
                     window.toastMessage({
@@ -122,6 +122,7 @@ const Content = (props) => {
                                     editMode={editMode}
                                     storeConfig={storeConfig}
                                     {...other}
+                                    loading={other.loading || loadingScv2Url}
                                     handleActionSummary={handleOnCheckoutClicked}
                                 />
                             </Show>

@@ -146,12 +146,12 @@ const Radio = (props) => {
                             <>
                                 <CustomItem
                                     key={index}
-                                    {...item}
                                     selected={JSON.stringify(value) === JSON.stringify(item.value)}
                                     onChange={handleChangeCustom}
                                     storeConfig={storeConfig}
                                     disabled={item.disabled || disabled}
-                                    id={uniqueIdName}
+                                    id={item.id || uniqueIdName}
+                                    {...item}
                                     {...customItemProps}
                                 />
                                 {ComponentOptional(item)}
@@ -160,7 +160,7 @@ const Radio = (props) => {
                     }
 
                     return (
-                        <div className="flex items-center mb-1">
+                        <div className="flex items-center mb-1" key={index}>
                             <input
                                 type="radio"
                                 disabled={item.disabled || disabled}
