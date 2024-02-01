@@ -21,6 +21,7 @@ const RadioDeliveryItem = (props) => {
         storeConfig,
         disabled = false,
         id,
+        name,
     } = props;
     const handleChange = () => {
         if (!disabled) {
@@ -112,10 +113,11 @@ const RadioDeliveryItem = (props) => {
                 }}
                 id={itemId}
                 disabled={disabled}
+                name={name || itemId}
             />
 
             <label
-                for={itemId}
+                htmlFor={itemId}
                 className={classNames(
                     'flex flex-row items-center w-full justify-between',
                     'cursor-pointer',

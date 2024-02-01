@@ -3,9 +3,8 @@ import { modules } from '@config';
 import gqlService from '@core_modules/checkout/services/graphql';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-    selectCheckoutState, setIsNewUpdate, setLoading,
+    selectCheckoutState, setIsNewUpdate, setLoading, setCheckoutData,
 } from '@core_modules/checkout/redux/checkoutSlice';
-import { setCheckoutData } from '@core/helpers/cookies';
 
 const DiscountSection = (props) => {
     const {
