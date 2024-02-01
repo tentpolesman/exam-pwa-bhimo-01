@@ -107,17 +107,24 @@ const AwGiftCardProduct = (props) => {
     };
 
     if (React.isValidElement(CustomFooter)) {
-        return React.cloneElement(CustomFooter, {
-            ...other,
-            loading,
-            disabled,
-            showQty,
-            handleAddToCart,
-            qty,
-            setQty,
-            t,
-            showAddToCart,
-        });
+        return (
+            <>
+                <div />
+                {
+                    React.cloneElement(CustomFooter, {
+                        ...other,
+                        loading,
+                        disabled,
+                        showQty,
+                        handleAddToCart,
+                        qty,
+                        setQty,
+                        t,
+                        showAddToCart,
+                    })
+                }
+            </>
+        );
     }
 
     return (

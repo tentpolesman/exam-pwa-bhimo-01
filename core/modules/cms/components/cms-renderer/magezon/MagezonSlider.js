@@ -14,7 +14,7 @@ import ChevronLeft from '@heroicons/react/20/solid/ChevronLeftIcon';
 import ChevronRight from '@heroicons/react/20/solid/ChevronRightIcon';
 import { BREAKPOINTS } from '@core/theme/vars';
 import cx from 'classnames';
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, Fragment } from 'react';
 import Slider from 'react-slick';
 import useMediaQuery from '@hook/useMediaQuery';
 
@@ -531,7 +531,7 @@ const MagezonSlider = (props) => {
                 <div className="magezon-slider-inner z-auto">
                     <Slider ref={(slider) => (sliderRef = slider)} {...settings}>
                         {items.map((item, i) => (
-                            <>
+                            <Fragment key={i}>
                                 {item?.link_type !== 'full' ? (
                                     <MagezonSliderContent
                                         key={i}
@@ -563,7 +563,7 @@ const MagezonSlider = (props) => {
                                         />
                                     </MagezonLink>
                                 )}
-                            </>
+                            </Fragment>
                         ))}
                     </Slider>
                 </div>

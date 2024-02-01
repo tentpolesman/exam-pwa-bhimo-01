@@ -133,13 +133,13 @@ const ViewProductList = (props) => {
                 </div>
             </Show>
             <Show when={!checkEmpty && !loading}>
-                <div className="hidden desktop:inline-flex flex-col w-full desktop:max-w-[282px]">
+                <div className="swift-filter-container hidden desktop:inline-flex flex-col w-full desktop:max-w-[282px]">
                     <div className="mb-5 h-[36px] border-neutral-100 border-b-[1px]">
                         <Typography variant="h3" className="text-base basis-full capitalize">
                             {t('catalog:filter:title')}
                         </Typography>
                     </div>
-                    <div className="w-fullh-screen">
+                    <div className="swift-filter-content w-fullh-screen">
                         <Filter
                             filter={customFilter || aggregations}
                             defaultSort={JSON.stringify(defaultSort)}
@@ -188,7 +188,7 @@ const ViewProductList = (props) => {
                                 </Button>
                             </div>
                             <div className={cx(
-                                'px-3 py-2 bg-neutral-white flex flex-row gap-3 items-center',
+                                'swift-view-mode-container px-3 py-2 bg-neutral-white flex flex-row gap-3 items-center',
                                 'border rounded-md border-neutral-200',
                                 'h-max w-max',
                             )}
@@ -208,7 +208,7 @@ const ViewProductList = (props) => {
                                                 ? 'w-[20px] h-[20px] text-neutral-600'
                                                 : 'w-[20px] h-[20px] text-neutral-400 hover:text-primary',
                                         }}
-                                        className="!p-0"
+                                        className="swift-view-mode-list !p-0"
                                         onClick={() => handleSetGrid(false)}
                                     />
                                     <Button
@@ -220,7 +220,7 @@ const ViewProductList = (props) => {
                                                 ? 'w-[20px] h-[20px] text-neutral-600'
                                                 : 'w-[20px] h-[20px] text-neutral-400 hover:text-primary',
                                         }}
-                                        className="!p-0"
+                                        className="swift-view-mode-grid !p-0"
                                         onClick={() => handleSetGrid(true)}
                                     />
                                 </div>
@@ -238,6 +238,7 @@ const ViewProductList = (props) => {
                 </Show>
                 <div className={
                     cx(
+                        'swift-product-list',
                         isGrid
                             ? 'grid gap-2 tablet:gap-4 grid-cols-2 tablet:grid-cols-3 desktop:grid-cols-3'
                             : 'grid grid-cols-1 gap-[10px] tablet:gap-10',
@@ -250,7 +251,7 @@ const ViewProductList = (props) => {
                     {
                         !loadList && products.items && products.items.map((item, key) => (
                             <div
-                                className="w-auto h-auto"
+                                className="w-auto h-auto swift-item-product-container"
                                 key={key}
                             >
                                 <ProductItem

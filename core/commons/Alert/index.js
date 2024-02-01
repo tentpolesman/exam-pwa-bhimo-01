@@ -24,12 +24,12 @@ const Alert = ({
     // Icon
     let Icon = <></>;
     if (withIcon) {
-        Icon = CheckCircleIcon;
+        Icon = <CheckCircleIcon />;
 
         if (severity === 'warning') {
-            Icon = ExclamationTriangleIcon;
+            Icon = <ExclamationTriangleIcon />;
         } else if (severity === 'error') {
-            Icon = ExclamationCircleIcon;
+            Icon = <ExclamationCircleIcon />;
         }
     }
 
@@ -56,7 +56,7 @@ const Alert = ({
                     <Show when={withIcon}>
                         <div className="flex flex-row items-center">
                             <div className={cx('w-[24px] h-[24px] mr-[6px]', iconClassName)}>
-                                <Icon />
+                                {Icon}
                             </div>
                             <div className="text-left">{children}</div>
                         </div>

@@ -573,7 +573,6 @@ const Checkout = (props) => {
         if (!shipping || !shipping[0].available_shipping_methods?.length) {
             setLoadingSellerInfo(false);
         }
-
         // init shipping method
         // if multiseller active
         if (isMultiSeller && !checkout.refetchItemOnly) {

@@ -94,7 +94,7 @@ const ModalAddressCustomer = (props) => {
                 if (!!event.target.valueAddress && event.target.valueAddress !== detail.street[0]) {
                     return event.target.valueAddress;
                 }
-                return detail.street[0];
+                return detail?.street?.length ? detail.street[0] : '';
             };
 
             const dataAddress = await updatedDefaultAddress({

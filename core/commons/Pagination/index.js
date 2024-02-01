@@ -99,7 +99,7 @@ const Pagination = (props) => {
     };
 
     return (
-        <div className={cx('flex flex-row p-[10px] bg-neutral-white gap-1', className)}>
+        <div className={cx('swift-pagination flex flex-row p-[10px] bg-neutral-white gap-1', className)}>
             {showArrowButton && (
                 <div
                     aria-label="Previous"
@@ -108,7 +108,11 @@ const Pagination = (props) => {
                     tabIndex={0}
                     onClick={handlePrevious}
                     onKeyUp={() => {}}
-                    className={cx('w-10 h-10 flex items-center justify-center bg-neutral-white rounded-md', page === 1 && 'text-neutral-150')}
+                    className={cx(
+                        'swift-pagination-item w-10 h-10 flex items-center',
+                        'justify-center bg-neutral-white rounded-md',
+                        page === 1 && 'text-neutral-150',
+                    )}
                 >
                     <ChevronLeftIcon className="w-5 h-5" />
                 </div>
@@ -121,7 +125,7 @@ const Pagination = (props) => {
                     tabIndex={item}
                     onKeyUp={() => {}}
                     className={cx(
-                        'w-10 h-10 flex items-center justify-center bg-neutral-white rounded-md',
+                        'swift-pagination-item w-10 h-10 flex items-center justify-center bg-neutral-white rounded-md',
                         item !== 'dot' && !mobile ? 'hover:bg-primary hover:text-neutral-50' : '',
                         item === page && !mobile ? 'bg-primary text-neutral-50' : '',
                         item === 'dot' ? 'bg-neutral-white hover:bg-neutral-white text-neutral-300' : '',
@@ -139,7 +143,11 @@ const Pagination = (props) => {
                     tabIndex={0}
                     onClick={handleNext}
                     onKeyUp={() => {}}
-                    className={cx('w-10 h-10 flex items-center justify-center bg-neutral-white rounded-md', page === totalPage && 'text-neutral-150')}
+                    className={cx(
+                        'swift-pagination-item w-10 h-10 flex items-center',
+                        'justify-center bg-neutral-white rounded-md',
+                        page === totalPage && 'text-neutral-150',
+                    )}
                 >
                     <ChevronRightIcon className="w-5 h-5" />
                 </div>

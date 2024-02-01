@@ -359,11 +359,17 @@ const ShippingView = (props) => {
                                                 }
 
                                                 if (getActive) {
-                                                    return getActive[indexPanel];
+                                                    hasValue = getActive[indexPanel];
                                                 }
-                                                return false;
+
+                                                return hasValue;
                                             };
                                             const open = checkOpenMultiSeller(keyIndex, seller.seller_id, item.data);
+                                            const nameAccordion = t(`checkout:shippingGrouping:${item.group.replace('sg-', '')}`) ===
+                                            `shippingGrouping.${item.group.replace('sg-', '')}`
+                                                ? item.group.replace('sg-', '')
+                                                : t(`checkout:shippingGrouping:${item.group.replace('sg-', '')}`);
+                                            const nameRadioGroup = seller.seller_name + nameAccordion;
                                             return (
                                                 <Accordion
                                                     key={keyIndex}
@@ -374,10 +380,7 @@ const ShippingView = (props) => {
                                                         <div className="flex flex-row items-center px-2">
                                                             <ShippingGroupIcon src={item.group} baseMediaUrl={storeConfig.base_media_url} />
                                                             <Typography letter="uppercase" variant="bd-2" type="bold">
-                                                                {t(`checkout:shippingGrouping:${item.group.replace('sg-', '')}`) ===
-                                                                `shippingGrouping.${item.group.replace('sg-', '')}`
-                                                                    ? item.group.replace('sg-', '')
-                                                                    : t(`checkout:shippingGrouping:${item.group.replace('sg-', '')}`)}
+                                                                {nameAccordion}
                                                             </Typography>
                                                         </div>
                                                     )}
@@ -402,7 +405,10 @@ const ShippingView = (props) => {
                                                                 sellerId={seller.seller_id}
                                                                 value={checkout.selected.shipping}
                                                                 onChange={handleShipping}
-                                                                valueData={item.data}
+                                                                valueData={item.data.map((itemValue) => ({
+                                                                    ...itemValue,
+                                                                    name: nameRadioGroup.replace(/ /g, '-')
+                                                                }))}
                                                                 CustomItem={DeliveryItem}
                                                                 classContainer="w-full"
                                                                 storeConfig={storeConfig}
@@ -443,6 +449,12 @@ const ShippingView = (props) => {
                                 if (item.data.length !== 0) {
                                     const open = expanded === keyIndex || (expanded === null && item.active)
                                     || (!itemActive && expanded === null && keyIndex === 0);
+
+                                    const nameAccordion = t(`checkout:shippingGrouping:${item.group.replace('sg-', '')}`) ===
+                                    `shippingGrouping.${item.group.replace('sg-', '')}`
+                                        ? item.group.replace('sg-', '')
+                                        : t(`checkout:shippingGrouping:${item.group.replace('sg-', '')}`);
+
                                     return (
                                         <Accordion
                                             key={keyIndex}
@@ -453,10 +465,7 @@ const ShippingView = (props) => {
                                                 <div className="flex flex-row items-center px-2">
                                                     <ShippingGroupIcon src={item.group} baseMediaUrl={storeConfig.base_media_url} />
                                                     <Typography letter="uppercase" variant="bd-2" type="bold">
-                                                        {t(`checkout:shippingGrouping:${item.group.replace('sg-', '')}`) ===
-                                                            `shippingGrouping.${item.group.replace('sg-', '')}`
-                                                            ? item.group.replace('sg-', '')
-                                                            : t(`checkout:shippingGrouping:${item.group.replace('sg-', '')}`)}
+                                                        {nameAccordion}
                                                     </Typography>
                                                 </div>
                                             )}
@@ -480,7 +489,10 @@ const ShippingView = (props) => {
                                                     <Radio
                                                         value={checkout.selected.shipping}
                                                         onChange={handleShipping}
-                                                        data={item.data}
+                                                        data={item.data.map((itemValue) => ({
+                                                            ...itemValue,
+                                                            name: nameAccordion.replace(/ /g, '-')
+                                                        }))}
                                                         CustomItem={DeliveryItem}
                                                         classContainer=""
                                                         storeConfig={storeConfig}
