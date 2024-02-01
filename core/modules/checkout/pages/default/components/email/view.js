@@ -63,6 +63,7 @@ const EmailView = (props) => {
                     onChange={formik.handleChange}
                     onBlur={handleBlur}
                     className="w-full"
+                    absolute={false}
                     hintProps={{
                         displayHintText: !!((formik.touched.email && formik.errors.email)),
                         hintText: formik.errors.email,
