@@ -121,7 +121,7 @@ export const customerNotificationList = () =>
         fetchPolicy: 'network-only',
     });
 
-export const getCmsBlocks = (variables) =>
+export const getCmsBlocks = (variables, other = {}) =>
     useQuery(Schema.getCmsBlocks, {
         variables,
         context: {
@@ -129,6 +129,7 @@ export const getCmsBlocks = (variables) =>
         },
         fetchPolicy: isLogin ? 'network-only' : 'cache-first',
         skip: typeof window === 'undefined',
+        ...other,
     });
 
 export const getGiftCard = () =>

@@ -11,9 +11,10 @@ import { getLocalStorage, setLocalStorage } from '@helper_localstorage';
 import { StripHtmlTags } from '@helper_text';
 import { useRouter } from 'next/router';
 import { getProduct, getSeller } from '@core_modules/product/services/graphql';
+import { getLoginInfo } from '@root/core/helpers/auth';
 
 const ContentDetail = ({
-    t, slug, product, keyProduct, Content, isLogin, storeConfig, ssrProduct,
+    t, slug, product, keyProduct, Content, storeConfig, ssrProduct, isLogin,
 }) => {
     const item = product.items[keyProduct];
     const reviewValue = parseInt(item.review.rating_summary, 0) / 20;
@@ -157,8 +158,10 @@ const ContentDetail = ({
 
 const PageDetail = (props) => {
     const {
-        t, slug, Content, isLogin, CustomHeader, storeConfig, ssrProduct,
+        t, slug, Content, CustomHeader, storeConfig, ssrProduct,
     } = props;
+
+    const isLogin = getLoginInfo();
 
     /**
      * Check if partial data exists, AKA being navigated from a PLP or search page.

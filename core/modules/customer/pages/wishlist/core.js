@@ -10,11 +10,12 @@ import {
     addSimpleProductsToCart, getCustomer, removeWishlist as gqlremoveWishlist, shareWishlist,
 } from '@core_modules/customer/services/graphql';
 import { basePath } from '@config';
+import { getLoginInfo } from '@helper_auth';
 
 const Wishlist = (props) => {
     let wishlist = [];
     const {
-        Content, t, isLogin, pageConfig, storeConfig,
+        Content, t, pageConfig, storeConfig,
     } = props;
     const config = {
         title: t('customer:wishlist:pageTitle'),
@@ -23,6 +24,9 @@ const Wishlist = (props) => {
         bottomNav: false,
         tagSelector: 'swift-page-wishlist',
     };
+
+    const isLogin = getLoginInfo();
+
     const [addToCart] = addSimpleProductsToCart();
     const [removeWishlist] = gqlremoveWishlist();
     const { data, loading, refetch } = getCustomer(storeConfig);
