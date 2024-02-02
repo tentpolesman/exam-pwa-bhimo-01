@@ -82,18 +82,21 @@ const SellerInfo = (props) => {
                     >
                         {t('seller:button:about')}
                     </Button>
-                    <Button
-                        className={isMobile ? '!p-0' : '!px-3 !py-1 hover:border-primary'}
-                        variant={isMobile ? 'plain' : 'outlined'}
-                        classNameText="text-md group-hover:text-primary"
-                        icon={<ChatIcon />}
-                        iconPosition="right"
-                        iconProps={{ className: 'w-3 h-3' }}
-                        onClick={handleChat}
-                        iconOnly={isMobile}
-                    >
-                        {t('seller:button:chat')}
-                    </Button>
+
+                    <Show when={features.chatSystem.enable}>
+                        <Button
+                            className={isMobile ? '!p-0' : '!px-3 !py-1 hover:border-primary'}
+                            variant={isMobile ? 'plain' : 'outlined'}
+                            classNameText="text-md group-hover:text-primary"
+                            icon={<ChatIcon />}
+                            iconPosition="right"
+                            iconProps={{ className: 'w-3 h-3' }}
+                            onClick={handleChat}
+                            iconOnly={isMobile}
+                        >
+                            {t('seller:button:chat')}
+                        </Button>
+                    </Show>
 
                     <Show when={!isMobile}>
                         <Button
