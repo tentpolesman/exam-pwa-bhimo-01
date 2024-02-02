@@ -2,8 +2,8 @@
 import React from 'react';
 import Dialog from '@common_dialog';
 import Button from '@common_button';
-import XMarkIcon from '@heroicons/react/20/solid/XMarkIcon';
 import Typography from '@common_typography';
+import cx from 'classnames';
 
 const ModalXenditView = (props) => {
     const {
@@ -14,29 +14,30 @@ const ModalXenditView = (props) => {
 
     return (
         <Dialog
-            aria-labelledby="customized-dialog-title"
+            variant="plain"
             open={open}
-            disableBackdropClick
-            disableEscapeKeyDown
-            className="modal-xendit"
-            PaperProps={{
-                classes: {
-                    root: 'modal-xendit-paper',
-                },
-            }}
         >
             <Button
                 color="primary"
-                className="xendit-btn-close"
+                className={
+                    cx(
+                        'xendit-btn-close bg-neutral-black !rounded-full absolute',
+                        'desktop:right-space-600 desktop:top-0',
+                        'mobile:right-space-100 mobile:top-space-100',
+                        'scrollbar-none',
+                    )
+                }
                 onClick={() => {
                     setOpen();
                     handleCloseXendit();
                 }}
                 disabled={loadSimulate}
             >
-                <XMarkIcon className="text-lg" />
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+                </svg>
             </Button>
-            <div className="dialog-content p-0 bg-none">
+            <div className="dialog-content p-0 bg-neutral-white desktop:w-[500px] desktop:h-[500px] mobile:w-full mobile:h-full scrollbar-none">
                 {
                     payment_code === 'qr_codes' && mode && mode === 'test' && (
                         <div className="form qr-simulate">
@@ -67,7 +68,7 @@ const ModalXenditView = (props) => {
                         ) : (
                             <iframe
                                 id="iframe-invoice"
-                                className="iframe-invoice"
+                                className="iframe-invoice w-full"
                                 title="Invoice"
                                 src={iframeUrl}
                             />
@@ -84,13 +85,6 @@ const ModalXenditView = (props) => {
                     .modal-xendit-paper {
                         overflow-y: visible;
                     }
-                    .xendit-btn-close {
-                        position: absolute;
-                        right: -15px;
-                        top: -15px;
-                        z-index: 99;
-                    }
-
                    .modal-xendit-box {
                        padding: 0px;
                        width: 600px;
