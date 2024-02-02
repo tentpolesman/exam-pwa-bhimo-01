@@ -198,7 +198,7 @@ const Summary = (props) => {
                                                                     <div className="flex flex-row justify-between">
                                                                         <div className="flex flex-row my-2">
                                                                             <span
-                                                                                className="cursor-pointer after:content-['<'] qty-update"
+                                                                                className="cursor-pointer after:content-['<'] swift-qty-update-minus"
                                                                                 onClick={() => {
                                                                                     if (item.quantity > 1) {
                                                                                         updateCart(item.id, item.quantity - 1);
@@ -208,7 +208,7 @@ const Summary = (props) => {
                                                                             <span className="px-2 py-0">{item.quantity}</span>
 
                                                                             <span
-                                                                                className="cursor-pointer after:content-['>'] qty-update"
+                                                                                className="cursor-pointer after:content-['>'] swift-qty-update-plus"
                                                                                 onClick={() => {
                                                                                     updateCart(item.id, item.quantity + 1);
                                                                                 }}
@@ -271,7 +271,7 @@ const Summary = (props) => {
                                                         <div className="flex flex-row justify-between">
                                                             <div className="flex flex-row my-2">
                                                                 <span
-                                                                    className="cursor-pointer after:content-['<'] qty-update"
+                                                                    className="cursor-pointer after:content-['<'] swift-qty-update-minus"
                                                                     onClick={() => {
                                                                         if (item.quantity > 1) {
                                                                             updateCart(item.id, item.quantity - 1);
@@ -281,7 +281,7 @@ const Summary = (props) => {
                                                                 <span className="px-2 py-0">{item.quantity}</span>
 
                                                                 <span
-                                                                    className="cursor-pointer after:content-['>'] qty-update"
+                                                                    className="cursor-pointer after:content-['>'] swift-qty-update-plus"
                                                                     onClick={() => {
                                                                         updateCart(item.id, item.quantity + 1);
                                                                     }}
@@ -379,7 +379,7 @@ const Summary = (props) => {
                                                         >
                                                             {withAction && (
                                                                 <div
-                                                                    className="absolute -top-1.5 right-5 cursor-pointer"
+                                                                    className="absolute -top-1.5 right-5 cursor-pointer swift-update-remove"
                                                                     onClick={() => {
                                                                         deleteCart(item.id);
                                                                     }}
@@ -426,7 +426,7 @@ const Summary = (props) => {
                                                                 {withAction && (
                                                                     <div className="flex flex-row my-2">
                                                                         <span
-                                                                            className="cursor-pointer after:content-['<'] qty-update"
+                                                                            className="cursor-pointer after:content-['<'] swift-qty-update-minus"
                                                                             onClick={() => {
                                                                                 if (item.quantity > 1) {
                                                                                     updateCart(item.id, item.quantity - 1);
@@ -436,7 +436,7 @@ const Summary = (props) => {
                                                                         <span className="px-2 py-0">{item.quantity}</span>
 
                                                                         <span
-                                                                            className="cursor-pointer after:content-['>'] qty-update"
+                                                                            className="cursor-pointer after:content-['>'] swift-qty-update-plus"
                                                                             onClick={() => {
                                                                                 updateCart(item.id, item.quantity + 1);
                                                                             }}
@@ -466,7 +466,7 @@ const Summary = (props) => {
                                             >
                                                 {withAction && (
                                                     <div
-                                                        className="absolute -top-1.5 right-5 cursor-pointer"
+                                                        className="absolute -top-1.5 right-5 cursor-pointer swift-update-remove"
                                                         onClick={() => {
                                                             deleteCart(item.id);
                                                         }}
@@ -513,7 +513,7 @@ const Summary = (props) => {
                                                     {withAction && (
                                                         <div className="flex flex-row my-2">
                                                             <span
-                                                                className="cursor-pointer after:content-['<'] qty-update"
+                                                                className="cursor-pointer after:content-['<'] swift-qty-update-minus"
                                                                 onClick={() => {
                                                                     if (item.quantity > 1) {
                                                                         updateCart(item.id, item.quantity - 1);
@@ -523,7 +523,7 @@ const Summary = (props) => {
                                                             <span className="px-2 py-0">{item.quantity}</span>
 
                                                             <span
-                                                                className="cursor-pointer after:content-['>'] qty-update"
+                                                                className="cursor-pointer after:content-['>'] swift-qty-update-plus"
                                                                 onClick={() => {
                                                                     updateCart(item.id, item.quantity + 1);
                                                                 }}
@@ -584,7 +584,7 @@ const Summary = (props) => {
                             loading={loading}
                             disabled={disabled}
                             onClick={handleActionSummary}
-                            className="w-full plugin-cart-checkoutBtn"
+                            className="w-full swift-plugin-cart-checkoutBtn"
                             classNameText="justify-center"
                         >
                             <Typography variant="bd-2a" color="white" className="uppercase">

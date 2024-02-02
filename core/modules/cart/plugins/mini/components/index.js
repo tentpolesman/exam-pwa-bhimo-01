@@ -136,7 +136,7 @@ const MiniComponent = (props) => {
                                     {`My Cart (${count})`}
                                 </Typography>
                             </div>
-                            <div className={cx('minicart__header--close-action', 'text-right')}>
+                            <div className={cx('swift-minicart__header--close-action', 'text-right')}>
                                 <Button
                                     className={cx(
                                         'tablet:m-0',
@@ -162,7 +162,7 @@ const MiniComponent = (props) => {
                     </div>
                     <div
                         className={cx(
-                            'minicart__items--wrapper',
+                            'swift-minicart__items--wrapper',
                             'border-b-neutral-200',
                             !data.items || data.items.length === 0 ? '!border-none' : 'border-b-[1px]',
                         )}

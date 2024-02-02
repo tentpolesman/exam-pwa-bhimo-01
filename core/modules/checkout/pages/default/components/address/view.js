@@ -101,7 +101,7 @@ const AddressView = (props) => {
                     {loading.addresses || loading.all ? null : (
                         <Button
                             // eslint-disable-next-line no-nested-ternary, max-len
-                            className={data.isGuest && !address ? 'checkout-addAddress-btn' : _.isNull(address) ? 'checkout-manage-btn' : 'checkout-change-btn'}
+                            className={data.isGuest && !address ? 'swift-checkout-addAddress-btn' : _.isNull(address) ? 'swift-checkout-manage-btn' : 'swift-checkout-change-btn'}
                             variant={formik.values.email !== '' && formik.values.email !== formik.values.oldEmail ? 'contained' : 'outlined'}
                             disabled={formik.values.email !== '' && formik.values.email !== formik.values.oldEmail}
                             // href={data.isGuest ? null : '/customer/account/address'}

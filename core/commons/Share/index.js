@@ -169,7 +169,7 @@ const Share = ({
                                 alt="image share whatsapp"
                             />
                         )}
-                        className="!p-0"
+                        className="!p-0 swift-action-share-wa"
                     />
                 </Show>
                 <Show when={facebook}>
@@ -187,7 +187,7 @@ const Share = ({
                                 alt="image share facebook"
                             />
                         )}
-                        className="!p-0"
+                        className="!p-0 swift-action-share-fb"
                     />
                 </Show>
                 <Show when={twitter}>
@@ -205,7 +205,7 @@ const Share = ({
                                 alt="image share twitter"
                             />
                         )}
-                        className="!p-0"
+                        className="!p-0 swift-action-share-twitter"
                     />
                 </Show>
             </div>

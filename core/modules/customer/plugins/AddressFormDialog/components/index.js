@@ -505,7 +505,7 @@ const AddressView = (props) => {
                             )}
                             <div className={cx('p-4', 'relative', 'text-center')}>
                                 <Button
-                                    className={cx(addBtn, 'addressForm-saveAddress-btn', 'w-full')}
+                                    className={cx(addBtn, 'swift-addressForm-saveAddress-btn', 'w-full')}
                                     classNameText={cx('text-center', 'justify-center')}
                                     type="submit"
                                     disabled={loading}

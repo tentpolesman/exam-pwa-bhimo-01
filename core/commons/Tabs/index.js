@@ -65,7 +65,7 @@ const Tabs = (props) => {
                     {!tabHasContent && allItems ? (
                         <li>
                             <a
-                                className={cx('default-active', 'tab-item', 'min-w-[100px]', tabClasses, tabActive)}
+                                className={cx('default-active', 'swift-tab-item', 'min-w-[100px]', tabClasses, tabActive)}
                                 onClick={(e) => e.preventDefault()}
                             >
                                 {t('common:label:allItems')}
@@ -85,7 +85,7 @@ const Tabs = (props) => {
                                     >
                                         <a
                                             className={cx(
-                                                'tab-item',
+                                                'swift-tab-item',
                                                 !tabHasContent && allItems
                                                     ? cx(tabClasses, 'default-allitems')
                                                     : usedActive === index
@@ -110,7 +110,7 @@ const Tabs = (props) => {
                                 <li className={cx(usedActive === index ? tabTitleListActiveClassName : tabTitleListClassName)} key={index}>
                                     <a
                                         className={cx(
-                                            'tab-item',
+                                            'swift-tab-item',
                                             !tabHasContent && allItems
                                                 ? cx(tabClasses, 'default-allitems')
                                                 : usedActive === index
@@ -135,7 +135,7 @@ const Tabs = (props) => {
             </div>
 
             {tabHasContent && data && (
-                <div className={cx('tab-content-wrapper', 'relative', 'pt-[10px]', tabContentClassName)}>
+                <div className={cx('swift-tab-content-wrapper', 'relative', 'pt-[10px]', tabContentClassName)}>
                     {data.map((item, index) => {
                         if (item.type === 'html') {
                             return (

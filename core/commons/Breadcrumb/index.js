@@ -35,7 +35,7 @@ const ItemBreadcrumb = ({
     const { isMobile } = useMediaQuery();
     return (
         <div className={cx(
-            'section-breadcrumb-item',
+            'swift-section-breadcrumb-item',
             'flex',
             'items-center',
         )}
@@ -65,7 +65,7 @@ const Breadcrumb = ({
     className,
 }) => (
     <div className={cx(
-        'section-breadcrumb',
+        'swift-section-breadcrumb',
         'flex',
         'items-center',
         'mb-[10px]',

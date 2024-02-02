@@ -115,7 +115,7 @@ const ButtonQty = ({
         >
 
             <ButtonActionQty
-                className={cx('mx-auto', classNameBtnMinus)}
+                className={cx('mx-auto swift-button-qty-minus', classNameBtnMinus)}
                 label="-"
                 disabled={disabledMin}
                 onClick={handleMinus}
@@ -127,7 +127,7 @@ const ButtonQty = ({
                 onChange={handleLocalChange}
                 className={
                     cx(
-                        'btn-qty-input',
+                        'swift-btn-qty-input',
                         'text-center',
                         '!font-pwa-default',
                         'bg-neutral-white focus:outline-none',
@@ -140,7 +140,7 @@ const ButtonQty = ({
                 }
             />
             <ButtonActionQty
-                className={cx('mx-auto', classNameBtnPlus)}
+                className={cx('mx-auto swift-button-qty-plus', classNameBtnPlus)}
                 label="+"
                 onClick={handlePlus}
                 disabled={disableMax}
