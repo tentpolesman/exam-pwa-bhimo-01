@@ -23,6 +23,7 @@ import Button from '@common_button';
 import CommonsDrawer from '@common_drawer';
 import Typography from '@common_typography';
 import XMarkIcon from '@heroicons/react/24/solid/XMarkIcon';
+import { useCallback } from 'react';
 
 const MiniComponent = (props) => {
     const router = useRouter();
@@ -32,16 +33,80 @@ const MiniComponent = (props) => {
     const subtotal_including_tax = data?.custom_total_price?.subtotal_including_tax?.value || 0;
     const subtotal_including_tax_currency = data?.custom_total_price?.subtotal_including_tax?.currency || 'IDR';
     const cartId = getCartId();
-    const [getScv2Url] = getCheckoutScv2Url();
+    const [getScv2Url, { loading: loaddingScv2Url }] = getCheckoutScv2Url();
+    const [localOpen, setLocalOpen] = React.useState(open);
+
+    const handleClose = () => {
+        setLocalOpen(false);
+        setTimeout(() => {
+            setOpen(false);
+        }, 500);
+    };
+
+    const handlingAddToCart = useCallback(() => {
+        const minimumOrderEnabled = storeConfig.minimum_order_enable;
+        const grandTotalValue = data.custom_total_price.grand_total.value;
+        const minimumOrderAmount = storeConfig.minimum_order_amount;
+        if (minimumOrderEnabled && grandTotalValue < minimumOrderAmount) {
+            const errorMessage = {
+                variant: 'error',
+                text: `Unable to place order: Minimum order amount is ${formatPrice(
+                    minimumOrderAmount,
+                    currencyCache,
+                )}`,
+                open: true,
+            };
+            window.toastMessage({
+                ...errorMessage,
+            });
+            setTimeout(() => {
+                router.push('/checkout/cart');
+            }, 3000);
+        } else if (subtotal_including_tax) {
+            if (
+                    storeConfig.pwacheckout?.enable === '1' &&
+                    storeConfig.pwacheckout?.version === 'V2' &&
+                    cartId
+            ) {
+                getScv2Url({
+                    variables: {
+                        cartId,
+                    },
+                })
+                    .then((res) => {
+                        window.location.replace(res.data.generateScv2Url.scv2_url);
+                    })
+                    .catch(() => {
+                        window.toastMessage({
+                            open: true,
+                            text: t('common:cart:cartError'),
+                            variant: 'error',
+                        });
+                    });
+            } else {
+                setOpen();
+                router.push('/checkout');
+            }
+        } else {
+            window.toastMessage({
+                open: true,
+                text: t('common:cart:cartError'),
+                variant: 'error',
+            });
+        }
+    }, [cartId]);
 
     return (
         <>
             <CommonsDrawer
-                open={open}
-                handleClose={() => setOpen(false)}
+                open={localOpen}
+                handleClose={handleClose}
                 position="right"
                 className={cx('mobile:max-tablet:w-[320px]', 'tablet:max-desktop:w-[396px]', 'desktop:w-[540px]', {
-                    'mobile:max-tablet:right-[320px] tablet:max-desktop:right-[396px] desktop:right-[540px]': open,
+                    'mobile:max-tablet:right-[320px] tablet:max-desktop:right-[396px] desktop:right-[540px]': localOpen,
+                    'mobile:max-tablet:animate-drawer-in-mobile tablet:max-desktop:animate-drawer-in-tablet  desktop:animate-drawer-in-desktop': localOpen,
+                    'mobile:max-tablet:animate-drawer-out-mobile tablet:max-desktop:animate-drawer-out-tablet  desktop:animate-drawer-out-desktop': !localOpen,
+                    'right-0': !localOpen,
                 })}
             >
                 <div>
@@ -64,7 +129,7 @@ const MiniComponent = (props) => {
                                     className={cx(
                                         'mobile:max-tablet:leading-[18px]',
                                         'mobile:max-tablet:font-semibold',
-                                        'mobile:max-tablet:text-md',
+                                        'mobile:max-tablet:text-base',
                                         'mobile:max-tablet:p-4',
                                     )}
                                 >
@@ -85,7 +150,7 @@ const MiniComponent = (props) => {
                                         'active:shadow-none',
                                         'active:shadow-none',
                                     )}
-                                    onClick={() => setOpen(false)}
+                                    onClick={handleClose}
                                     icon={<XMarkIcon />}
                                     iconProps={{ className: cx('w-[24px]', 'text-neutral-600') }}
                                     iconPosition="left"
@@ -95,7 +160,14 @@ const MiniComponent = (props) => {
                             </div>
                         </div>
                     </div>
-                    <div className={cx('minicart__items--wrapper', 'border-b-[1px]', 'border-b-neutral-200')}>
+                    <div
+                        className={cx(
+                            'minicart__items--wrapper',
+                            'border-b-neutral-200',
+                            !data.items || data.items.length === 0 ? '!border-none' : 'border-b-[1px]',
+                        )}
+                    >
+                        {/* <Skeleton /> */}
                         {loading || !data.items ? (
                             <Skeleton />
                         ) : (
@@ -136,59 +208,9 @@ const MiniComponent = (props) => {
                                                 'w-full',
                                                 'rounded-md',
                                             )}
+                                            loading={loaddingScv2Url}
                                             classNameText={cx('justify-center')}
-                                            onClick={() => {
-                                                const minimumOrderEnabled = storeConfig.minimum_order_enable;
-                                                const grandTotalValue = data.custom_total_price.grand_total.value;
-                                                const minimumOrderAmount = storeConfig.minimum_order_amount;
-                                                if (minimumOrderEnabled && grandTotalValue < minimumOrderAmount) {
-                                                    const errorMessage = {
-                                                        variant: 'error',
-                                                        text: `Unable to place order: Minimum order amount is ${formatPrice(
-                                                            minimumOrderAmount,
-                                                            currencyCache,
-                                                        )}`,
-                                                        open: true,
-                                                    };
-                                                    window.toastMessage({
-                                                        ...errorMessage,
-                                                    });
-                                                    setTimeout(() => {
-                                                        router.push('/checkout/cart');
-                                                    }, 3000);
-                                                } else if (subtotal_including_tax) {
-                                                    if (
-                                                        storeConfig.pwacheckout?.enable === '1' &&
-                                                        storeConfig.pwacheckout?.version === 'V2' &&
-                                                        cartId
-                                                    ) {
-                                                        getScv2Url({
-                                                            variables: {
-                                                                cart_id: cartId,
-                                                            },
-                                                        })
-                                                            .then((res) => {
-                                                                window.location.replace(res.data.internalGetScv2Url.url);
-                                                            })
-                                                            .catch(() => {
-                                                                window.toastMessage({
-                                                                    open: true,
-                                                                    text: t('common:cart:cartError'),
-                                                                    variant: 'error',
-                                                                });
-                                                            });
-                                                    } else {
-                                                        setOpen();
-                                                        router.push('/checkout');
-                                                    }
-                                                } else {
-                                                    window.toastMessage({
-                                                        open: true,
-                                                        text: t('common:cart:cartError'),
-                                                        variant: 'error',
-                                                    });
-                                                }
-                                            }}
+                                            onClick={handlingAddToCart}
                                             variant="primary"
                                             id="plugin-minicart-checkoutBtn"
                                         >

@@ -4,11 +4,15 @@ import Button from '@common_button';
 import Typography from '@common_typography';
 import _ from 'lodash';
 import ModalAddress from '@core_modules/checkout/pages/default/components/ModalAddress';
-import { useReactiveVar } from '@apollo/client';
-import { storeConfigVar } from '@root/core/services/graphql/cache';
+import { storeConfigVar } from '@core/services/graphql/cache';
 import classNames from 'classnames';
 import Show from '@common/Show';
 import dynamic from 'next/dynamic';
+
+import { useDispatch, useSelector } from 'react-redux';
+import {
+    selectCheckoutState, setPickupLocationCode, setStatusState,
+} from '@core_modules/checkout/redux/checkoutSlice';
 
 const AddressFormDialog = dynamic(() => import('@plugin_addressform'), { ssr: false });
 
@@ -17,9 +21,7 @@ const CLOSE_ADDRESS_DIALOG = 100;
 const AddressView = (props) => {
     const {
         data,
-        checkout,
         setAddress,
-        setCheckout,
         t,
         dialogProps,
         loading,
@@ -31,7 +33,10 @@ const AddressView = (props) => {
         ...other
     } = props;
 
-    const pwaConfig = useReactiveVar(storeConfigVar);
+    const dispatch = useDispatch();
+    const checkout = useSelector(selectCheckoutState);
+
+    const pwaConfig = storeConfigVar();
     const gmapKey = pwaConfig && pwaConfig.icube_pinlocation_gmap_key ? pwaConfig.icube_pinlocation_gmap_key : null;
     const { formik } = other;
 
@@ -56,9 +61,7 @@ const AddressView = (props) => {
                 open={openAddress}
                 setOpen={(status) => setOpenAddress(status)}
                 t={t}
-                checkout={checkout}
                 setAddress={setAddress}
-                setCheckout={setCheckout}
                 manageCustomer={manageCustomer}
                 {...other}
             />
@@ -74,20 +77,14 @@ const AddressView = (props) => {
                         t={t}
                         onSubmitAddress={async (dataAddress) => {
                             const { cart } = checkout.data;
-                            let state = { ...checkout };
 
                             await setAddress(dataAddress, cart);
-                            state.status.addresses = true;
-                            setCheckout({
-                                ...state,
-                                pickup_location_code: null,
-                            });
+                            dispatch(setStatusState({ addresses: true }));
+                            dispatch(setPickupLocationCode({ addresses: null }));
 
-                            _.delay(() => {
-                                state = { ...checkout };
-                                state.status.openAddressDialog = false;
-                                state.status.addresses = false;
-                                setCheckout(state);
+                            _.delay(async () => {
+                                dispatch(setStatusState({ openAddressDialog: false, addresses: false }));
+                                await setAddress(dataAddress, cart);
                             }, CLOSE_ADDRESS_DIALOG);
                         }}
                         loading={checkout.loading.addresses}
@@ -95,13 +92,7 @@ const AddressView = (props) => {
                         open={checkout.status.openAddressDialog}
                         disableDefaultAddress
                         setOpen={() => {
-                            setCheckout({
-                                ...checkout,
-                                status: {
-                                    ...checkout.status,
-                                    openAddressDialog: false,
-                                },
-                            });
+                            dispatch(setStatusState({ openAddressDialog: false }));
                         }}
                         pageTitle={t('checkout:address:addTitle')}
                         {...other}
@@ -117,13 +108,9 @@ const AddressView = (props) => {
                             onClick={
                                 data.isGuest
                                     ? () => {
-                                        setCheckout({
-                                            ...checkout,
-                                            status: {
-                                                ...checkout.status,
-                                                openAddressDialog: true,
-                                            },
-                                        });
+                                        dispatch(setStatusState({
+                                            openAddressDialog: true,
+                                        }));
                                     }
                                     : () => setOpenAddress(true)
                             }

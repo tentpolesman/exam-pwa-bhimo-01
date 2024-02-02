@@ -55,106 +55,11 @@ export const getCategories = `
 }
 `;
 
-export const getVesMenu = `
-    query getVesMenu($alias: String!) {
-        vesMenu(alias: $alias) {
-            menu_id
-            name
-            items {
-                id
-                status
-                classes
-                category
-                target
-                show_icon
-                icon
-                hover_icon
-                icon_position
-                icon_classes
-                disable_dimension
-                caret
-                hover_caret
-                before_html
-                after_html
-                is_group
-                sub_width
-                dropdown_animation_in
-                dropdown_animation_time
-                dropdown_align
-                dropdown_bgcolor
-                dropdown_bgimage
-                dropdown_bgimagerepeat
-                dropdown_bgpositionx
-                dropdown_bgpositiony
-                dropdown_inlinecss
-                show_header
-                header_html
-                show_left_sidebar
-                left_sidebar_width
-                left_sidebar_html
-                show_content
-                content_width
-                parentcat
-                child_col
-                child_col_type
-                content_html
-                tab_position
-                isgroup_level
-                submenu_sorttype
-                show_right_sidebar
-                right_sidebar_width
-                right_sidebar_html
-                show_footer
-                footer_html
-                color
-                hover_color
-                bg_color
-                bg_hover_color
-                inline_css
-                menu_id
-                name
-                content_type
-                link_type
-                category_id
-                link
-                children {
-                    id
-                    name
-                    link
-                    link_type
-                    category_id
-                    children {
-                        id
-                        name
-                        link
-                        link_type
-                        category_id
-                        children {
-                            id
-                            name
-                            link
-                            link_type
-                            category_id
-                        }
-                    }
-                }
-            }
-        }
-    }
-`;
-
 export const storeConfig = `
 {
     storeConfig {
       allow_guest_checkout
       allow_guests_to_write_product_reviews
-      aw_blog_general_comments_enabled
-      aw_blog_general_disqus_forum_code
-      aw_blog_general_enabled
-      aw_blog_related_products_block_layout
-      aw_blog_related_products_block_position
-      aw_blog_related_products_display_add_to_cart
-      aw_blog_related_products_products_limit
       base_currency_code
       base_media_url
       base_static_url
@@ -176,11 +81,6 @@ export const storeConfig = `
       forgot_password_phone
       gender
       general_country_default
-      global_promo {
-          enable
-          text_color
-          background_color
-      }
       header_logo_src
       head_shortcut_icon
       icube_pinlocation_geocoding_key
@@ -201,8 +101,6 @@ export const storeConfig = `
           add_to_cart_enable
           app_name
           background_color
-          banner_slider_enable
-          banner_slider_title
           button_background_color
           button_background_hover_color
           button_border_color
@@ -211,14 +109,7 @@ export const storeConfig = `
           button_disabled_text_color
           button_text_color
           button_text_hover_color
-          category_list_enable
-          category_list_url_key            
-          category_list_image_size_desktop_height
-          category_list_image_size_desktop_width
-          category_list_image_size_mobile_height
-          category_list_image_size_mobile_width
           cms_contact_identifiers
-          cms_social_media_link_identifer
           configurable_options_enable
           custom_install_app_enable
           default_font
@@ -230,8 +121,6 @@ export const storeConfig = `
           facebook_app_id
           facebook_meta_id_app_id
           facebook_meta_id_enable
-          features_product_enable
-          features_product_url_key
           font_color
           footer_version
           header_version
@@ -266,9 +155,6 @@ export const storeConfig = `
           popup_detail_image_enable
           primary_color
           product_listing_navigation
-          promo_banner_lite_after_width
-          promo_banner_lite_label_width
-          promo_banner_lite_top_width
           quick_view_enable
           rating_enable
           recaptcha_contact_enable
@@ -298,9 +184,6 @@ export const storeConfig = `
           thumbor_url
           use_cms_page_enable
           use_cms_page_identifier
-          ves_menu_alias
-          ves_menu_enable
-          ves_menu_enable
           warning_msg_color
           gtm_enable
           gtm_id_local

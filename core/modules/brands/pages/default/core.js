@@ -5,10 +5,10 @@ import { getBrands } from '@core_modules/brands/services/graphql';
 import allData from '@core_modules/brands/helpers/generateAllData';
 
 const Base = (props) => {
-    const {
-        Content, Skeleton, generateAllData, pageConfig, t, desktop,
-    } = props;
+    const { Content, Skeleton, t } = props;
+
     const { data, loading } = getBrands({ pageSize: 100, currentPage: 1 });
+
     const config = {
         title: t('brands:title'),
         header: 'relative', // available values: "absolute", "relative", false (default)
@@ -16,20 +16,23 @@ const Base = (props) => {
         headerBackIcon: 'arrow', // available values: "close", "arrow"
         bottomNav: false,
         pageType: 'brands',
+        tagSelector: 'swift-page-brands',
     };
+
     if (loading) {
         return (
-            <Layout {...props} pageConfig={pageConfig || config}>
+            <Layout {...props} pageConfig={config}>
                 <Skeleton {...props} />
             </Layout>
         );
     }
-    const { getBrandList } = data;
 
-    const allBrands = generateAllData ? generateAllData(getBrandList.items) : allData(getBrandList.items);
+    const { getBrandList } = data;
+    const allBrands = allData(getBrandList?.items ?? []);
+
     return (
-        <Layout {...props} pageConfig={pageConfig || config}>
-            <Content {...props} all={allBrands} featured={getBrandList.featured} desktop={desktop} />
+        <Layout {...props} pageConfig={config}>
+            <Content {...props} all={allBrands} featured={getBrandList?.featured || []} />
         </Layout>
     );
 };

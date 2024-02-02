@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable semi-style */
 /* eslint-disable no-plusplus */
 /* eslint-disable no-shadow */
@@ -20,6 +19,11 @@ import { PayPalButtons, PayPalScriptProvider } from '@paypal/react-paypal-js';
 
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
+
+import { useSelector } from 'react-redux';
+import {
+    selectCheckoutState,
+} from '@core_modules/checkout/redux/checkoutSlice';
 
 const PO = 'purchaseorder';
 const PaypalCode = 'paypal_express';
@@ -79,8 +83,6 @@ const PaymentView = (props) => {
         loading,
         data,
         clientSecret,
-        checkout,
-        setCheckout,
         t,
         paymentMethodList,
         handlePayment,
@@ -94,6 +96,9 @@ const PaymentView = (props) => {
         displayHowToPay,
         setDisplayHowToPay,
     } = props;
+
+    const checkout = useSelector(selectCheckoutState);
+
     const { modules } = commonConfig;
     const [expanded, setExpanded] = React.useState(null);
     const [openModal, setModal] = React.useState(false);
@@ -272,7 +277,7 @@ const PaymentView = (props) => {
                                                                         stripe={stripePromise}
                                                                         options={{ clientSecret }}
                                                                     >
-                                                                        <StripeCheckoutForm {...props} setCheckout={setCheckout} />
+                                                                        <StripeCheckoutForm {...props} />
                                                                     </Elements>
                                                                 )}
                                                             </>

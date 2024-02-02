@@ -23,7 +23,9 @@ const TYPE_PWA_NEWSLETTER = 'pwa-newsletter-subscribe';
 const DOM_NAME = 'pwa';
 
 const WidgetRenderer = (props) => {
-    const { content, storeConfig, underlinedLink } = props;
+    const {
+        content, storeConfig, underlinedLink, applyProse, skipTags = [], className,
+    } = props;
     const { t } = useTranslation(['common']);
 
     const widgetContent = useMemo(() => {
@@ -82,6 +84,9 @@ const WidgetRenderer = (props) => {
     const WidgetComponent = () => {
         return parse(widgetContent, {
             replace: (domNode) => {
+                if (skipTags.length > 0 && skipTags.some((tag) => tag === domNode.name)) {
+                    return <span />;
+                }
                 if (domNode.name === 'img') {
                     return <ImageRenderer storeConfig={storeConfig} domNode={domNode} />;
                 }
@@ -126,8 +131,9 @@ const WidgetRenderer = (props) => {
 
     return (
         <div
-            className={cx('prose', {
-                'prose-a:no-underline': underlinedLink,
+            className={cx(className, {
+                prose: applyProse,
+                'prose-a:no-underline': applyProse && underlinedLink,
             })}
         >
             {content ? (

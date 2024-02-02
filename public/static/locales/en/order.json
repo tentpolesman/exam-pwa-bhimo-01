@@ -48,7 +48,8 @@
     "orderTotal": "Order total",
     "orderNotFound": "Sorry, order number is not valid",
     "smReturn": "Return",
-    "view": "View Order",
+    "view": "View",
+    "shipTo": "Ship to",
     "billingAddress": "Billing address",
     "orderInfo": "Order Information",
     "orderItem": "Items Ordered",
@@ -57,8 +58,8 @@
         "pending": "Waiting for confirmation",
         "processing": "Processing",
         "shipping": "Shipping",
-        "complete": "Order complete",
-        "canceled": "Order cancel"
+        "complete": "Order completed",
+        "canceled": "Order canceled"
     },
     "orderComment": {
         "title": "About Your Order",

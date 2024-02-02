@@ -1,6 +1,5 @@
 import React from 'react';
 import Button from '@common_button';
-import Header from '@common_headermobile';
 import Typography from '@common_typography';
 import Dialog from '@common_dialog';
 import Router from 'next/router';
@@ -21,15 +20,6 @@ const ModalCategory = (props) => {
     return (
         <Dialog open={open}>
             <div className="container-modal-category">
-                <Header
-                    LeftComponent={{
-                        onClick: setOpen,
-                    }}
-                    pageConfig={{
-                        headerTitle: t('common:title:category'),
-                        header: 'relative',
-                    }}
-                />
                 <div className="flex flex-col px-[80px] pt-[20px] pb-[80px]">
                     <div className="m-0 flex flex-col text-center">
                         <Button

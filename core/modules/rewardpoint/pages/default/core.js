@@ -1,29 +1,25 @@
 import urlParser from '@helper_urlparser';
 import Layout from '@layout';
-import CustomerLayout from '@layout_customer';
 import PropTypes from 'prop-types';
-import { debuging } from '@config';
 import { getRewardPoint } from '@core_modules/rewardpoint/services/graphql';
-import { useReactiveVar } from '@apollo/client';
-import { currencyVar } from '@root/core/services/graphql/cache';
+import { currencyVar } from '@core/services/graphql/cache';
 
 const RewardPoint = (props) => {
-    const {
-        t, Content, ErrorView, pageConfig, rowsPerPage,
-    } = props;
+    const { t, Content } = props;
 
     const config = {
         title: t('rewardpoint:title'),
         header: 'relative', // available values: "absolute", "relative", false (default)
         headerTitle: t('rewardpoint:title'),
         bottomNav: false,
+        tagSelector: 'swift-page-rewardpoint',
     };
 
     // cache currency
-    const currencyCache = useReactiveVar(currencyVar);
+    const currencyCache = currencyVar();
 
     const [page, setPage] = React.useState(1);
-    const [count, setRowsPerPage] = React.useState(rowsPerPage || 10);
+    const [count, setRowsPerPage] = React.useState(10);
     const handleChangePage = (newPage) => {
         setPage(newPage);
     };
@@ -54,15 +50,6 @@ const RewardPoint = (props) => {
         },
     };
 
-    if (error) {
-        return (
-            <Layout {...props} pageConfig={pageConfig || config}>
-                <CustomerLayout {...props}>
-                    <ErrorView {...props} message={debuging.originalError ? error.message.split(':')[1] : t('common:error:fetchError')} />
-                </CustomerLayout>
-            </Layout>
-        );
-    }
     if (data && data.customerRewardPoints) customerRewardPoints = data.customerRewardPoints;
     const getId = (string) => string.split('#')[1].split('</a')[0];
     const getPath = (string) => {
@@ -76,11 +63,12 @@ const RewardPoint = (props) => {
     };
 
     return (
-        <Layout {...props} pageConfig={pageConfig || config}>
+        <Layout {...props} pageConfig={config}>
             <Content
                 t={t}
                 data={customerRewardPoints}
                 loading={loading}
+                error={error}
                 getPath={getPath}
                 getId={getId}
                 rowsPerPage={count}

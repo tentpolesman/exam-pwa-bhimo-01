@@ -7,11 +7,18 @@ import Skeleton from '@common_skeleton';
 import ModalPickupInformation from '@core_modules/checkout/pages/default/components/ModalPickupInformation';
 import ModalSelectStore from '@core_modules/checkout/pages/default/components/ModalSelectStore';
 import gqlService from '@core_modules/checkout/services/graphql';
+import { useSelector } from 'react-redux';
+import {
+    selectCheckoutState,
+} from '@core_modules/checkout/redux/checkoutSlice';
 
 const PickupInformation = (props) => {
     const {
-        t, checkout, setCheckout, formik,
+        t, formik,
     } = props;
+
+    const checkout = useSelector(selectCheckoutState);
+
     const { cart } = checkout.data;
     let listStores = [];
     const pickupStores = gqlService.getPickupStore({
@@ -43,13 +50,11 @@ const PickupInformation = (props) => {
             <ModalPickupInformation
                 open={openModal.openModalInfo}
                 setOpen={() => handleOpen('openModalInfo')}
-                setCheckout={setCheckout}
                 checkout={checkout}
             />
             <ModalSelectStore
                 open={openModal.openModalSelectStore}
                 setOpen={() => handleOpen('openModalSelectStore')}
-                setCheckout={setCheckout}
                 checkout={checkout}
                 listStores={listStores}
             />

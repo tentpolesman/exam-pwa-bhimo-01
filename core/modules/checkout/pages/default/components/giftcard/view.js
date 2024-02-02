@@ -2,11 +2,16 @@ import Typography from '@common_typography';
 import Chip from '@core_modules/checkout/pages/default/components/giftcard/Chip';
 import FieldPoint from '@core_modules/checkout/components/fieldcode';
 import classNames from 'classnames';
+import { useSelector } from 'react-redux';
+import {
+    selectCheckoutState,
+} from '@core_modules/checkout/redux/checkoutSlice';
 
 const GiftCardView = (props) => {
     const {
-        handleApplyGift, handleRemoveGift, formik, appliedGiftCards, checkout, giftCards, t,
+        handleApplyGift, handleRemoveGift, formik, appliedGiftCards, giftCards, t,
     } = props;
+    const checkout = useSelector(selectCheckoutState);
     return (
         <>
             <FieldPoint

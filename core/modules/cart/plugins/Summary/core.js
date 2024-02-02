@@ -1,8 +1,7 @@
 /* eslint-disable no-lonely-if */
 import config from '@config';
 import { formatPrice } from '@helper_currency';
-import { useReactiveVar } from '@apollo/client';
-import { currencyVar } from '@root/core/services/graphql/cache';
+import { currencyVar } from '@core/services/graphql/cache';
 import propTypes from 'prop-types';
 import DesktopView from '@plugin_summary/components/DesktopSummary';
 import { useEffect, useState } from 'react';
@@ -13,7 +12,7 @@ const CoreSummary = (props) => {
         ...other
     } = props;
     // cache currency
-    const currencyCache = useReactiveVar(currencyVar);
+    const currencyCache = currencyVar();
 
     const [dataSummary, setDataSummary] = useState([]);
     const [total, setTotal] = useState(0);
@@ -84,7 +83,7 @@ const CoreSummary = (props) => {
                 haveOthersTotal = true;
             }
 
-            if (storeConfig.enable_oms_multiseller === '1') {
+            if (storeConfig.enable_oms_multiseller && storeConfig.enable_oms_multiseller !== '0') {
                 const multiShipping = shipping_addresses;
                 let totalShipping = 0;
                 // eslint-disable-next-line array-callback-return

@@ -13,6 +13,7 @@ const Caraousel = (props) => {
         storeConfig = {},
         className = '',
         classNameCarousel = '',
+        children,
         ...other
     } = props;
 
@@ -49,6 +50,7 @@ const Caraousel = (props) => {
                         {...other}
                     />
                 ))}
+                {data.length === 0 && children ? children : null}
             </ContainerScroll>
             <style jsx>
                 {`

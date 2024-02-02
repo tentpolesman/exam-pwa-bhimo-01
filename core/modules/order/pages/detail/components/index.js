@@ -124,7 +124,7 @@ const DetailOrder = (props) => {
                     />
                 )}
                 <div className="flex flex-col gap-y-4">
-                    <div className={cx('mobile:max-tablet:hidden', 'flex', 'flex-row', 'justify-between', 'tablet:mt-8', 'desktop:mt-4')}>
+                    <div className={cx('mobile:max-tablet:hidden', 'flex', 'flex-row', 'justify-between')}>
                         <div>
                             <Typography variant="h1" className={cx('mobile:text-2md', 'tablet:text-lg', 'desktop:text-xl')}>
                                 {t('order:order')}
@@ -177,23 +177,16 @@ const DetailOrder = (props) => {
                     <div className={cx('flex', 'flex-row', 'justify-center', 'items-center')}>
                         <OrderStatusIcon status={detail[0].status} t={t} />
                     </div>
-                    <div className={cx('tablet:hidden', 'mobile:px-4', 'flex', 'flex-row', 'justify-between')}>
+                    <div className={cx('tablet:hidden', 'mobile:max-tablet:px-0', 'tablet:px-4', 'flex', 'flex-row', 'justify-between')}>
                         <Button
                             variant="outlined"
                             id="btn-print"
                             onClick={reOrder}
                             icon={<ArrowPathIcon />}
                             iconPosition="left"
-                            className={cx(
-                                'border-neutral-200',
-                                'tablet:!px-2',
-                                'tablet:py-1',
-                                'desktop:!px-4',
-                                'tablet:!px-2',
-                                'tablet:py-1',
-                                'desktop:!py-2',
-                                'rounded-lg',
-                            )}
+                            className={cx('border-neutral-200', 'mobile:!px-3', 'mobile:py-2', 'rounded-lg')}
+                            classNameText={cx('text-sm')}
+                            iconProps={{ className: cx('!w-4', '!h-4') }}
                         >
                             {t('order:reorder')}
                         </Button>
@@ -203,16 +196,9 @@ const DetailOrder = (props) => {
                             onClick={() => printOrder(detail[0].order_number)}
                             icon={<PrinterIcon />}
                             iconPosition="left"
-                            className={cx(
-                                'border-neutral-200',
-                                'tablet:!px-2',
-                                'tablet:py-1',
-                                'desktop:!px-4',
-                                'tablet:!px-2',
-                                'tablet:py-1',
-                                'desktop:!py-2',
-                                'rounded-lg',
-                            )}
+                            className={cx('border-neutral-200', 'mobile:!px-3', 'mobile:py-2', 'rounded-lg')}
+                            classNameText={cx('text-sm')}
+                            iconProps={{ className: cx('!w-4', '!h-4') }}
                         >
                             {t('order:printOrder')}
                         </Button>
@@ -222,11 +208,12 @@ const DetailOrder = (props) => {
                             'flex',
                             'flex-col',
                             'gap-y-4',
+                            'mobile:max-tablet:p-4',
                             'p-6',
                             'border-[1px]',
                             'border-neutral-200',
                             'rounded-lg',
-                            'mobile:max-tablet:mx-4',
+                            'tablet:mx-4',
                         )}
                     >
                         <Typography className={cx('mobile:text-2md', 'tablet:text-lg', 'capitalize')}>{t('order:orderInfo')}</Typography>
@@ -259,15 +246,13 @@ const DetailOrder = (props) => {
                                         <br />
                                         {detail[0].detail[0].shipping_address.street || ''}
                                         <br />
-                                        {detail[0].detail[0].shipping_address.city || ''}
+                                        {`${detail[0].detail[0].shipping_address.city
+                                            ? detail[0].detail[0].shipping_address.city.split(', ')[0] : ''}, ${
+                                            detail[0].detail[0].shipping_address.region || ''
+                                        } ${detail[0].detail[0].shipping_address.postcode || ''}`}
                                         <br />
-                                        {detail[0].detail[0].shipping_address.region || ''}
-                                        <br />
-                                        {detail[0].detail[0].shipping_address.country_id || ''}
-                                        <br />
-                                        {detail[0].detail[0].shipping_address.telephone || ''}
-                                        <br />
-                                        {detail[0].detail[0].shipping_address.postcode || ''}
+                                        {detail[0]?.detail[0]?.shipping_address?.country || ''}
+                                        {detail[0]?.detail[0]?.shipping_address?.telephone || ''}
                                     </Typography>
                                 </div>
                             )}
@@ -319,15 +304,12 @@ const DetailOrder = (props) => {
                                     <br />
                                     {detail[0].detail[0].billing_address.street || ''}
                                     <br />
-                                    {detail[0].detail[0].billing_address.city || ''}
+                                    {`${detail[0].detail[0].billing_address.city.split(', ')[0] || ''}, ${
+                                        detail[0].detail[0].billing_address.region || ''
+                                    } ${detail[0].detail[0].billing_address.postcode || ''}`}
                                     <br />
-                                    {detail[0].detail[0].billing_address.region || ''}
-                                    <br />
-                                    {detail[0].detail[0].billing_address.country_id || ''}
-                                    <br />
+                                    {detail[0].detail[0].billing_address.country || ''}
                                     {detail[0].detail[0].billing_address.telephone || ''}
-                                    <br />
-                                    {detail[0].detail[0].billing_address.postcode || ''}
                                 </Typography>
                             </div>
                             {Object.keys(detail[0].detail[0].shipping_address).length > 0 && (
@@ -338,12 +320,12 @@ const DetailOrder = (props) => {
                                     </Typography>
                                     {shippingMethods.length > 0 && shipping.track_number && shipping.trackorder_type && (
                                         <Button
-                                            variant="text"
+                                            variant="outlined"
                                             onClick={() => handleOpenModal(shipping.trackorder_type, dt)}
                                             align="left"
-                                            className={cx('p-0', '-ml-1')}
+                                            className={cx('p-0', '-ml-1', 'mt-4')}
                                         >
-                                            <Typography type="bold" decoration="underline" align="left">
+                                            <Typography>
                                                 {t('order:trackingOrder')}
                                                 {': '}
                                                 {shipping.track_number} {`(${shipping.trackorder_type})`}
@@ -370,10 +352,10 @@ const DetailOrder = (props) => {
                                     ) {
                                         return (
                                             <React.Fragment key={item}>
-                                                <Typography className={cx('capitalize', '!font-bold', 'tablet:pt-2')}>
+                                                <Typography className={cx('capitalize', '!font-bold', 'mobile:pt-2')}>
                                                     {item.replace('_', ' ')}
                                                 </Typography>
-                                                <Typography className={cx('tablet:pt-2')}>
+                                                <Typography className={cx('mobile:max-tablet:pt-0', 'tablet:pt-2')}>
                                                     {detail[0].detail[0].payment.payment_additional_info[item] || ''}
                                                 </Typography>
                                             </React.Fragment>
@@ -407,7 +389,7 @@ const DetailOrder = (props) => {
                             </div>
                         </div>
                     </div>
-                    <div className={cx('p-6', 'border-[1px]', 'border-neutral-200', 'rounded-lg', 'mobile:max-tablet:mx-4')}>
+                    <div className={cx('mobile:max-tablet:p-4', 'p-6', 'border-[1px]', 'border-neutral-200', 'rounded-lg', 'tablet:mx-4')}>
                         <div className={cx('flex', 'flex-col', 'gap-y-4')}>
                             <div className="mobile:basis-full">
                                 <Typography className={cx('mobile:text-2md', 'tablet:text-lg')}>{t('order:orderComment:title')}</Typography>
@@ -443,13 +425,13 @@ const DetailOrder = (props) => {
                             ) : null}
                         </div>
                     </div>
-                    <div className={cx('p-6', 'border-[1px]', 'border-neutral-200', 'rounded-lg', 'mobile:max-tablet:mx-4')}>
+                    <div className={cx('mobile:max-tablet:p-4', 'p-6', 'border-[1px]', 'border-neutral-200', 'rounded-lg', 'tablet:mx-4')}>
                         <div className="flex flex-col">
                             <div className="mobile:basis-full">
                                 <Typography className={cx('mobile:text-2md', 'tablet:text-lg', 'capitalize')}>{t('order:orderItem')}</Typography>
                             </div>
                             <div className="mobile:basis-full">
-                                <Table data={items} t={t} currency={currency} currencyCache={currencyCache} />
+                                <Table data={items} t={t} currency={currency} currencyCache={currencyCache} storeConfig={storeConfig} />
                             </div>
                             <div className="mobile:basis-full flex flex-row tablet:justify-end mt-4">
                                 <div className="mobile:basis-full tablet:basis-4/12 flex flex-col gap-y-2">

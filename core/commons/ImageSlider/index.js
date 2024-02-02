@@ -312,6 +312,7 @@ const ImageSlider = ({
                                 <div
                                     className="mb-[12px] relative"
                                     key={`image-slider-vertical-${index}`}
+                                    onClick={() => onSelectedImage({ index, item })}
                                 >
                                     <Show when={isVideo}>
                                         <PlayIcon
@@ -333,7 +334,6 @@ const ImageSlider = ({
                                         quality={80}
                                         widthMobile={thumbnailImageWidth}
                                         heightMobile={thumbnailImageHeight}
-                                        onClick={() => onSelectedImage({ index, item })}
                                         className={cx(
                                             isActive && 'border-[1px] border-neutral-500',
                                             'w-full h-full',
@@ -357,7 +357,6 @@ const ImageSlider = ({
                     }}
                     className={
                         cx(
-                            'z-50',
                             'image-slider-preview',
                             'relative desktop:px-[16px] tablet:px-[0px] mobile:px-[16px] rounded-[12px]',
                             detectAutoScreen && 'tablet:mr-auto tablet:ml-[0px] mobile:mx-auto',
@@ -452,7 +451,7 @@ const ImageSlider = ({
                         'desktop:m-0 tablet:m-0 mobile:m-0',
                     )}
                     itemsLength={data?.length}
-                    style={isMobile ? { width: screenWidth } : {}}
+                    style={isMobile ? { width: screenWidth - 32 } : {}}
                 >
                     {
                         data && data?.map((item, index) => {
@@ -471,6 +470,7 @@ const ImageSlider = ({
                                             'mobile:first:ml-[16px] mobile:last:mr-[6px]',
                                         )
                                     }
+                                    onClick={() => onSelectedImage({ index, item })}
                                 >
                                     <Show when={isVideo}>
                                         <PlayIcon
@@ -492,7 +492,6 @@ const ImageSlider = ({
                                         quality={80}
                                         widthMobile={thumbnailImageWidth}
                                         heightMobile={thumbnailImageHeight}
-                                        onClick={() => onSelectedImage({ index, item })}
                                         styleContainer={{
                                             height: thumbnailImageHeight,
                                             width: thumbnailImageWidth,

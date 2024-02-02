@@ -9,6 +9,7 @@ import ArrowPathIcon from '@heroicons/react/24/outline/ArrowPathIcon';
 import CheckCircleIcon from '@heroicons/react/24/outline/CheckCircleIcon';
 import QueueListIcon from '@heroicons/react/24/outline/QueueListIcon';
 import TruckIcon from '@heroicons/react/24/outline/TruckIcon';
+import XMarkIcon from '@heroicons/react/24/outline/XMarkIcon';
 
 const OrderStatusIcon = (props) => {
     const { t } = props;
@@ -21,6 +22,8 @@ const OrderStatusIcon = (props) => {
     if (status === 'canceled') {
         steps = ['pending', 'canceled'];
     }
+    //  order status index in steps
+    const indexStatus = steps.indexOf(status);
 
     const generateLabel = (label) => t(`order:labelStatus:${label}`);
 
@@ -34,6 +37,8 @@ const OrderStatusIcon = (props) => {
                 return <TruckIcon className={className} />;
             case 'complete':
                 return <CheckCircleIcon className={className} />;
+            case 'canceled':
+                return <XMarkIcon className={className} />;
             default:
                 return <QueueListIcon className={className} />;
         }
@@ -42,7 +47,7 @@ const OrderStatusIcon = (props) => {
     return (
         <>
             <div className={cx('w-full', 'min-w-[70px]')}>
-                <div class="flex flex-row items-start p-6 w-full">
+                <div class="flex flex-row items-start mobile:max-tablet:px-0 mobile:max-tablet:py-4 p-6 w-full">
                     {steps.map((step, index) => {
                         if (index === 0) {
                             return (
@@ -60,11 +65,12 @@ const OrderStatusIcon = (props) => {
                                                     'mobile:max-tablet:w-10',
                                                     'z-[2]',
                                                     'justify-center',
-                                                    'bg-primary',
+                                                    'border-[3px]',
+                                                    'border-primary',
                                                     'rounded-full',
                                                     {
-                                                        'bg-neutral-white': status === step,
-                                                        'bg-primary': status !== step,
+                                                        'bg-neutral-white': index === indexStatus,
+                                                        'bg-primary': index !== indexStatus,
                                                     },
                                                 )}
                                             >
@@ -79,15 +85,17 @@ const OrderStatusIcon = (props) => {
                                                         'mobile:max-tablet:w-4',
                                                         'mobile:max-tablet:h-4',
                                                         {
-                                                            'text-primary': status === step,
-                                                            'text-neutral-white': status !== step,
+                                                            'text-primary': index === indexStatus,
+                                                            'text-neutral-white': index !== indexStatus,
                                                         },
                                                     ),
                                                 )}
                                             </div>
                                         </div>
                                         <div className={cx('text-center')}>
-                                            <Typography className={cx('!mt-1', 'mobile:max-tablet:text-sm')}>{generateLabel(step)}</Typography>
+                                            <Typography className={cx('!mt-1', 'mobile:max-tablet:text-xs', 'mobile:max-tablet:leading-sm')}>
+                                                {generateLabel(step)}
+                                            </Typography>
                                         </div>
                                     </div>
                                 </div>
@@ -99,12 +107,22 @@ const OrderStatusIcon = (props) => {
                                     className={cx(
                                         'mobile:max-tablet:top-5',
                                         'tablet:top-8',
+                                        'mobile:max-tablet:left-[calc(-50%)]',
+                                        'mobile:max-tablet:right-[calc(50%)]',
                                         'left-[calc(-50%+20px)]',
                                         'right-[calc(50%+20px)]',
                                         'absolute',
                                     )}
                                 >
-                                    <span className={cx('bg-primary', 'border-0', 'h-1', 'rounded-sm', 'block')} />
+                                    <span
+                                        className={cx(
+                                            index <= indexStatus ? 'bg-primary' : 'bg-neutral-400',
+                                            'border-0',
+                                            'h-1',
+                                            'rounded-sm',
+                                            'block',
+                                        )}
+                                    />
                                 </div>
                                 <div class="flex flex-col items-center">
                                     <div className={cx('flex', 'shrink-0')}>
@@ -121,9 +139,11 @@ const OrderStatusIcon = (props) => {
                                                 'justify-center',
                                                 'rounded-full',
                                                 {
-                                                    'bg-neutral-200 border-none': index > 0 && status !== step,
-                                                    'bg-neutral-white border-[3px] border-primary': status === step,
+                                                    'bg-neutral-200 border-none': index > indexStatus,
+                                                    'bg-primary border-none': index < indexStatus,
+                                                    'bg-neutral-white border-[3px] border-primary': index === indexStatus,
                                                 },
+                                                index < indexStatus ? 'border-[3px] border-primary' : '',
                                             )}
                                         >
                                             {generateIconUsed(
@@ -137,15 +157,18 @@ const OrderStatusIcon = (props) => {
                                                     'mobile:max-tablet:w-4',
                                                     'mobile:max-tablet:h-4',
                                                     {
-                                                        'text-neutral-400': index > 0 && status !== step,
-                                                        'text-primary': status === step,
+                                                        'text-neutral-400': index > indexStatus,
+                                                        'text-neutral-white': index < indexStatus,
+                                                        'text-primary': index === indexStatus,
                                                     },
                                                 ),
                                             )}
                                         </div>
                                     </div>
                                     <div className={cx('text-center')}>
-                                        <Typography className={cx('!mt-1', 'mobile:max-tablet:text-sm')}>{generateLabel(step)}</Typography>
+                                        <Typography className={cx('!mt-1', 'mobile:max-tablet:text-xs', 'mobile:max-tablet:leading-sm')}>
+                                            {generateLabel(step)}
+                                        </Typography>
                                     </div>
                                 </div>
                             </div>

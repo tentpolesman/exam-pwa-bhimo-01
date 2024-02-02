@@ -1,20 +1,22 @@
 import { gql } from '@apollo/client';
 
 export const getSeller = gql`
-    query getSeller($sellerId: [Int!]) {
-        getSeller(input: { seller_id: $sellerId }) {
+    query getSeller($seller_path: String) {
+        getSeller(input: { seller_path: $seller_path }) {
+            id
+            logo
+            name
+            description
             additional_info
             address
             city
-            description
-            id
             latitude
-            logo
             longitude
-            name
             status
             banner_desktop
             banner_mobile
+            seller_path
+            seller_id
         }
     }
 `;

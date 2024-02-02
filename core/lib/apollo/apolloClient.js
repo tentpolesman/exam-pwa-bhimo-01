@@ -5,9 +5,9 @@ import {
 import { getAppEnv } from '@helpers/env';
 import { removeIsLoginFlagging } from '@helper_auth';
 import { removeCartId } from '@helper_cartid';
-import { removeCookies } from '@root/core/helpers/cookies';
+import { removeCookies } from '@core/helpers/cookies';
 import {
-    graphqlEndpoint, HOST, storeCode, requestTimeout,
+    graphqlEndpoint, HOST, storeCode, requestTimeout, features,
 } from '@root/swift.config.js';
 import { onError } from 'apollo-link-error';
 import { RetryLink } from 'apollo-link-retry';
@@ -32,17 +32,19 @@ const logoutLink = onError((err) => {
         window.location.href = '/maintenance';
     } else if (
         (isErrorGQL && graphQLErrors[0].status === 401 && typeof window !== 'undefined')
-        || message.includes('The request is allowed for logged in customer')
-        || message.includes("The current customer isn't authorized.")
+        || (message && message.includes('The request is allowed for logged in customer'))
+        || (message && message.includes("The current customer isn't authorized."))
     ) {
         removeCartId();
         removeIsLoginFlagging();
         removeCookies('uid_product_compare');
-        firebase
-            .auth()
-            .signOut()
-            .then(() => { })
-            .catch(() => { });
+        if (features.firebase.config.apiKey && features.firebase.config.apiKey !== '') {
+            firebase
+                .auth()
+                .signOut()
+                .then(() => { })
+                .catch(() => { });
+        }
         // reference https://stackoverflow.com/questions/10339567/javascript-clear-cache-on-redirect
         window.location.href = `/customer/account/login?n=${new Date().getTime()}`;
     }

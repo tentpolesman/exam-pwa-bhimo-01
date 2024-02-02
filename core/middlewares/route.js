@@ -8,11 +8,11 @@ import Router from 'next/router';
 
 import { modules } from '@config';
 import { getHost, getStoreHost } from '@helpers/config';
-import { getAppEnv } from '@root/core/helpers/env';
+import { getAppEnv } from '@core/helpers/env';
 import { availableRoute } from './routeServer';
 
 export const routeNoAuth = (path) => {
-    const route = ['/customer/account/login', '/customer/account/register', '/customer/account/forgotpassword'];
+    const route = ['/customer/account/login', '/customer/account/create', '/customer/account/forgotpassword'];
 
     const found = route.find((val) => val === path);
 
@@ -134,13 +134,6 @@ const routeMiddleware = (params) => {
             } else {
                 res.statusCode = 302;
                 res.setHeader('Location', getStoreHost(getAppEnv()));
-            }
-        } else if (typeof window !== 'undefined') {
-            const destinationUrl = pathname;
-            const currentUrl = window.sessionStorage.getItem('currentUrl');
-            const prevUrl = window.sessionStorage.getItem('prevUrl');
-            if (destinationUrl === '/' && currentUrl === '/' && prevUrl === '/') {
-                window.location.href = getStoreHost(getAppEnv());
             }
         }
     }

@@ -1,7 +1,7 @@
 /* eslint-disable radix */
 import { getCartId } from '@helper_cartid';
-import { useMutation, useReactiveVar } from '@apollo/client';
-import { currencyVar } from '@root/core/services/graphql/cache';
+import { useMutation } from '@apollo/client';
+import { currencyVar } from '@core/services/graphql/cache';
 import { getMiniCartData } from '@core_modules/cart/services/graphql';
 import * as Schema from '@core_modules/cart/services/graphql/schema';
 import TagManager from 'react-gtm-module';
@@ -11,7 +11,7 @@ const MiniCart = (props) => {
         Content, open, setOpen, count, t, storeConfig,
     } = props;
     // cache currency
-    const currencyCache = useReactiveVar(currencyVar);
+    const currencyCache = currencyVar();
     const [cart, setCart] = React.useState({ items: [] });
     const [errorCart, setErrorCart] = React.useState(false);
     let loadingCart = false;

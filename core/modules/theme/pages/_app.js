@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+// /* eslint-disable no-unused-vars */
 /* eslint-disable object-curly-newline */
 /* eslint-disable max-len */
 /* eslint-disable no-console */
@@ -7,60 +7,79 @@
 /* eslint-disable func-names */
 /* eslint-disable radix */
 /* eslint-disable max-len */
-import { custDataNameCookie, features, modules, sentry } from '@config';
+import {
+    // custDataNameCookie,
+    features,
+    modules,
+    // sentry
+} from '@config';
 import { getLastPathWithoutLogin, getLoginInfo } from '@helper_auth';
-import { getLocalStorage, setLocalStorage, setResolver, testLocalStorage } from '@helper_localstorage';
-import { getAppEnv } from '@root/core/helpers/env';
-import { RewriteFrames } from '@sentry/integrations';
-import { Integrations } from '@sentry/tracing';
-import { getCategories, getVesMenu, storeConfig as ConfigSchema } from '@services/graphql/schema/config';
-import { currencyVar, storeConfigVar, cmsPageVar } from '@root/core/services/graphql/cache';
+import { setLocalStorage, setResolver, testLocalStorage } from '@helper_localstorage';
+import { getAppEnv } from '@core/helpers/env';
+import { cmsPageVar, currencyVar, storeConfigVar } from '@core/services/graphql/cache';
+import { storeConfig as ConfigSchema, getCategories } from '@services/graphql/schema/config';
 import { appWithTranslation } from 'next-i18next';
-// import { RewriteFrames } from '@sentry/integrations';
-// import { Integrations } from '@sentry/tracing';
 import Cookie from 'js-cookie';
-// import { unregister } from 'next-offline/runtime';
 import App from 'next/app';
 import React from 'react';
-
 import { gql } from '@apollo/client';
-import PageProgressLoader from '@common_pageprogress';
 import graphRequest from '@graphql_request';
-import Notification from '@lib_firebase/notification';
-import firebase from '@lib_firebase/index';
 import routeMiddleware from '@middleware_route';
-import getConfig from 'next/config';
+// import getConfig from 'next/config';
 import TagManager from 'react-gtm-module';
-
 import ModalCookies from '@core_modules/theme/components/modalCookies';
-import * as Sentry from '@sentry/node';
-import { getDeviceByUA, getUAString } from '@root/core/helpers/deviceDection';
+import { getDeviceByUA, getUAString } from '@core/helpers/deviceDection';
 
-const { publicRuntimeConfig } = getConfig();
+/* Firebase /*
+/* Commented by default to avoid unused code which directly impact on performance socre
+ * Uncomment this if firebase is used in you progect
+ */
+// import firebase from '@lib_firebase/index';
+// import Notification from '@lib_firebase/notification';
+
+/* Sentry /*
+/* Commented by default to avoid unused code which directly impact on performance socre
+ * Uncomment this if sentry is used in you progect
+ */
+// import { RewriteFrames } from '@sentry/integrations';
+// import { Integrations } from '@sentry/tracing';
+// import * as Sentry from '@sentry/node';
+
+// sentry imports
+// import * as Sentry from '@sentry/node';
+// import { RewriteFrames } from '@sentry/integrations';
+// import { Integrations } from '@sentry/tracing';
+// import { RewriteFrames } from '@sentry/integrations';
+// import { Integrations } from '@sentry/tracing';
+
+// import { useApollo } from '@core/lib/apollo/apolloClient';
+
+// const { publicRuntimeConfig } = getConfig();
 
 /*
  * ---------------------------------------------
  * SENTRY INITIALIZATION
+ * code is commented avoid Sentry in js bundle (performance purposed). feel free to uncoment if you need to implement sentry
  */
-if (sentry.enabled && typeof publicRuntimeConfig !== 'undefined' && sentry.dsn[publicRuntimeConfig.appEnv]) {
-    const distDir = `${publicRuntimeConfig.rootDir}/.next`;
-    Sentry.init({
-        enabled: process.env.NODE_ENV === sentry.enableMode,
-        integrations: [
-            new RewriteFrames({
-                iteratee: (frame) => {
-                    // eslint-disable-next-line no-param-reassign
-                    frame.filename = frame.filename.replace(distDir, 'app:///_next');
-                    return frame;
-                },
-            }),
-            new Integrations.BrowserTracing(),
-        ],
-        environment: publicRuntimeConfig.appEnv,
-        dsn: sentry.dsn[publicRuntimeConfig.appEnv],
-        tracesSampleRate: 0.5,
-    });
-}
+// if (sentry.enabled && typeof publicRuntimeConfig !== 'undefined' && sentry.dsn[publicRuntimeConfig.appEnv]) {
+//     const distDir = `${publicRuntimeConfig.rootDir}/.next`;
+//     Sentry.init({
+//         enabled: process.env.NODE_ENV === sentry.enableMode,
+//         integrations: [
+//             new RewriteFrames({
+//                 iteratee: (frame) => {
+//                     // eslint-disable-next-line no-param-reassign
+//                     frame.filename = frame.filename.replace(distDir, 'app:///_next');
+//                     return frame;
+//                 },
+//             }),
+//             new Integrations.BrowserTracing(),
+//         ],
+//         environment: publicRuntimeConfig.appEnv,
+//         dsn: sentry.dsn[publicRuntimeConfig.appEnv],
+//         tracesSampleRate: 0.5,
+//     });
+// }
 
 class MyApp extends App {
     constructor(props) {
@@ -86,16 +105,16 @@ class MyApp extends App {
          */
         let isLogin = 0;
         let lastPathNoAuth = '';
-        let customerData = {};
+        // let customerData = {};
         const allcookie = req ? req.cookies : {};
         let removeDecimalConfig;
         if (typeof window !== 'undefined') {
             isLogin = getLoginInfo();
             lastPathNoAuth = getLastPathWithoutLogin();
-            customerData = Cookie.getJSON(custDataNameCookie);
+            // customerData = Cookie.getJSON(custDataNameCookie);
         } else {
             isLogin = allcookie.isLogin || 0;
-            customerData = allcookie[custDataNameCookie];
+            // customerData = allcookie[custDataNameCookie];
             lastPathNoAuth = req.cookies && typeof req.cookies !== 'undefined' && req.cookies.lastPathNoAuth && typeof req.cookies.lastPathNoAuth !== 'undefined'
                 ? req.cookies.lastPathNoAuth
                 : '/customer/account';
@@ -126,7 +145,7 @@ class MyApp extends App {
          * GET CONFIGURATIONS FROM COOKIES
          * TO BE PROVIDED INTO PAGE PROPS
          */
-        let dataVesMenu;
+        let dataMenu;
         let frontendOptions;
         let { storeConfig } = pageProps;
 
@@ -146,9 +165,7 @@ class MyApp extends App {
             }
             storeConfig = storeConfig.storeConfig;
             if (!modules.checkout.checkoutOnly) {
-                dataVesMenu = storeConfig.pwa.ves_menu_enable
-                    ? await graphRequest(getVesMenu, { alias: storeConfig.pwa.ves_menu_alias }, {}, { method: 'GET' })
-                    : await graphRequest(getCategories, {}, {}, { method: 'GET' });
+                dataMenu = await graphRequest(getCategories, {}, {}, { method: 'GET' });
             }
             frontendOptions = frontendOptions.storeConfig;
             removeDecimalConfig = storeConfig?.pwa?.remove_decimal_price_enable !== null ? storeConfig?.pwa?.remove_decimal_price_enable : false;
@@ -172,27 +189,6 @@ class MyApp extends App {
                 storeConfig = storeConfig.storeConfig;
             }
 
-            if (!modules.checkout.checkoutOnly) {
-                dataVesMenu = getLocalStorage('pwa_vesmenu');
-                if (!dataVesMenu) {
-                    dataVesMenu = storeConfig.pwa.ves_menu_enable
-                        ? await pageProps.apolloClient
-                            .query({
-                                query: gql`
-                                      ${getVesMenu}
-                                  `,
-                                variables: { alias: storeConfig.pwa.ves_menu_alias },
-                            })
-                            .then(({ data }) => data)
-                        : await pageProps.apolloClient
-                            .query({
-                                query: gql`
-                                      ${getCategories}
-                                  `,
-                            })
-                            .then(({ data }) => data);
-                }
-            }
             frontendOptions = storeConfig;
             removeDecimalConfig = storeConfig?.pwa?.remove_decimal_price_enable !== null ? storeConfig?.pwa?.remove_decimal_price_enable : false;
         }
@@ -207,11 +203,11 @@ class MyApp extends App {
                 ...pageProps,
                 app_cookies,
                 storeConfig,
-                isLogin,
+                // isLogin,
                 lastPathNoAuth,
-                customerData,
+                // customerData,
                 removeDecimalConfig,
-                dataVesMenu,
+                dataMenu,
                 frontendOptions,
                 deviceType,
             },
@@ -252,6 +248,7 @@ class MyApp extends App {
             Notification.init();
             // handle if have message on focus
             try {
+                // eslint-disable-next-line no-undef
                 const messaging = firebase.messaging();
                 // Handle incoming messages. Called when:
                 // - a message is received while the app has focus
@@ -283,22 +280,6 @@ class MyApp extends App {
                 // eslint-disable-next-line no-console
                 console.log(err);
             }
-        }
-
-        /*
-         * LAZY LOADING FONTS
-         * Use this to load non critical fonts
-         */
-        // Fonts();
-
-        /*
-         * ---------------------------------------------
-         * REMOVE THE SERVER SIDE INJECTED CSS
-         * This is for speed performanc purpose
-         */
-        const jssStyles = document.querySelector('#jss-server-side');
-        if (jssStyles) {
-            jssStyles.parentElement.removeChild(jssStyles);
         }
 
         /*
@@ -372,9 +353,6 @@ class MyApp extends App {
         if (typeof window !== 'undefined') {
             cmsPageVar(pageProps.storeConfig && pageProps.storeConfig.cms_page ? pageProps.storeConfig.cms_page : '');
             storeConfigVar(pageProps.storeConfig);
-            if (!modules.checkout.checkoutOnly) {
-                setLocalStorage('pwa_vesmenu', pageProps.dataVesMenu);
-            }
             setLocalStorage('remove_decimal_config', pageProps.removeDecimalConfig);
             setLocalStorage('pricing_config', {
                 locales: pageProps.storeConfig && pageProps.storeConfig.locale,
@@ -391,10 +369,10 @@ class MyApp extends App {
 
         return (
             <>
-                <PageProgressLoader />
                 <Component {...pageProps} />
             </>
         );
     }
 }
+
 export default appWithTranslation(MyApp);

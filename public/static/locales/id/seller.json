@@ -7,5 +7,9 @@
     "notFound": "Penjual tidak ditemukan",
     "home": "Beranda",
     "product": "Produk",
-    "storeFront": "Etalase Toko"
+    "storeFront": "Etalase Toko",
+    "button": {
+        "about": "Tentang",
+        "chat": "Pesan"
+    }
 }

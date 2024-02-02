@@ -34,10 +34,14 @@ const Accordion = (props) => {
     };
 
     return (
-        <details className={cx('group flex flex-col common-accordion', className)} open={open}>
+        <details className={cx('swift-filter-options group flex flex-col common-accordion', className)} open={open}>
             <summary
                 onClick={handleShow}
-                className={cx('flex justify-between items-center font-medium cursor-pointer list-none w-full', classSummary)}
+                className={cx(
+                    'swift-filter-options-title flex justify-between',
+                    'items-center font-medium cursor-pointer list-none w-full',
+                    classSummary,
+                )}
             >
                 {React.isValidElement(CustomAccordionSummary) ? (
                     React.cloneElement(CustomAccordionSummary, {
@@ -58,7 +62,15 @@ const Accordion = (props) => {
                     </>
                 )}
             </summary>
-            <div className={cx('text-neutral-600 mt-4 group-open:animate-fadeIn group-open:duration-700', classContent)}>{children}</div>
+            <div
+                className={cx(
+                    'swift-filter-options-content text-neutral-600 mt-4',
+                    'group-open:animate-fadeIn group-open:duration-700',
+                    classContent,
+                )}
+            >
+                {children}
+            </div>
         </details>
     );
 };

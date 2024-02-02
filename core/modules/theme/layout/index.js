@@ -5,10 +5,9 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/no-danger */
 /* eslint-disable max-len */
-/* eslint-disable */
 
-import { useApolloClient, useReactiveVar } from '@apollo/client';
-import { storeConfigVar } from '@root/core/services/graphql/cache';
+import { useApolloClient } from '@apollo/client';
+import { storeConfigVar } from '@core/services/graphql/cache';
 import cx from 'classnames';
 import Cookies from 'js-cookie';
 import dynamic from 'next/dynamic';
@@ -26,11 +25,13 @@ import { getHost } from '@helper_config';
 import { getCookies, setCookies } from '@helper_cookies';
 import { getAppEnv } from '@helpers/env';
 import { frontendConfig } from '@helpers/frontendOptions';
-import { BREAKPOINTS } from '@root/core/theme/vars';
 import { localTotalCart } from '@services/graphql/schema/local';
 import localFont from 'next/font/local';
 import Script from 'next/script';
-
+import { getLoginInfo } from '@helper_auth';
+import supportsWebP from 'supports-webp';
+import Typography from '@common/Typography';
+import PageProgressLoader from '@common_pageprogress';
 /**
  * Set font family using nextjs helper,
  * path property needs to be an absolute path
@@ -57,11 +58,11 @@ const font = localFont({
     variable: '--font-inter', // set the font css variable name, which we refer in tailwind.config.js
 });
 
-const Header = dynamic(() => import('@common_headerdesktop'), { ssr: true });
+const Header = dynamic(() => import('@common_header'), { ssr: true });
 const Toast = dynamic(() => import('@common_toast'), { ssr: false });
 const Backdrop = dynamic(() => import('@common_backdrop'), { ssr: false });
 const Dialog = dynamic(() => import('@common_dialog'), { ssr: false });
-const GlobalPromoMessage = dynamic(() => import('@core_modules/theme/components/globalPromo'), { ssr: false });
+const GlobalPromoMessage = dynamic(() => import('@core_modules/theme/components/globalPromo'), { ssr: true });
 // const BottomNavigation = dynamic(() => import('@common_bottomnavigation'), { ssr: false });
 // const HeaderMobile = dynamic(() => import('@common_headermobile'), { ssr: false });
 const ScrollToTop = dynamic(() => import('@common_scrolltotop'), { ssr: false });
@@ -76,21 +77,21 @@ const Footer = dynamic(() => import('@common_footer'), { ssr: true });
 
 const Layout = (props) => {
     const {
-        dataVesMenu,
+        dataMenu,
         pageConfig = {},
         children,
         app_cookies,
-        CustomHeader = false,
+        // CustomHeader = false,
         i18n,
         storeConfig = {},
-        isLogin,
-        headerProps = {},
+        // isLogin,
+        // headerProps = {},
         data = {},
         t,
-        onlyCms,
+        // onlyCms,
         withLayoutHeader = true,
         withLayoutFooter = true,
-        showRecentlyBar = false,
+        // showRecentlyBar = false,
         isHomepage = false,
         isPdp = false,
         isCms = false,
@@ -98,19 +99,16 @@ const Layout = (props) => {
         isBdp = false,
         isBlp = false,
         isCheckout = false,
-        isLoginPage = false,
-        isShowChat = true,
+        // isLoginPage = false,
+        // isShowChat = true,
         deviceType = {},
-        preloadImages = [],
     } = props;
     const { ogContent = {}, schemaOrg = null, headerDesktop = true, footer = true } = pageConfig;
     const router = useRouter();
     const appEnv = getAppEnv();
-    if (getCookies(features.globalPromo.key_cookies) === '' && storeConfig.global_promo?.enable) {
-        setCookies(features.globalPromo.key_cookies, true);
-    }
-    const enablePromo =
-        getCookies(features.globalPromo.key_cookies) !== '' ? !!getCookies(features.globalPromo.key_cookies) : storeConfig.global_promo?.enable;
+    // login get From cookies
+    const isLogin = getLoginInfo();
+    const [hasWebpSupport, setHasWebpSupport] = useState(true);
 
     const [dialog, setDialog] = useState({
         open: false,
@@ -135,11 +133,10 @@ const Layout = (props) => {
         backdropLoader: false,
     });
 
-    const [restrictionCookies, setRestrictionCookies] = useState(false);
-    const [showGlobalPromo, setShowGlobalPromo] = React.useState(enablePromo);
-    const [deviceWidth, setDeviceWidth] = React.useState(0);
+    const [, setRestrictionCookies] = useState(false);
     const [setCompareList] = createCompareList();
-    const frontendCache = useReactiveVar(storeConfigVar);
+    const showGlobalPromo = features.globalPromo.enable;
+    const frontendCache = storeConfigVar();
 
     // get app name config
 
@@ -190,14 +187,10 @@ const Layout = (props) => {
         });
     };
 
-    const handleRestrictionCookies = () => {
-        setRestrictionCookies(true);
-        setCookies('user_allowed_save_cookie', true);
-    };
-
-    const handleClosePromo = () => {
-        setShowGlobalPromo(false);
-    };
+    // const handleRestrictionCookies = () => {
+    //     setRestrictionCookies(true);
+    //     setCookies('user_allowed_save_cookie', true);
+    // };
 
     const allowHeaderCheckout = modules.checkout.checkoutOnly ? !modules.checkout.checkoutOnly : withLayoutHeader;
 
@@ -298,7 +291,7 @@ const Layout = (props) => {
                 dataLayer: {
                     pageName: pageConfig.title,
                     pageType: pageConfig.pageType || 'other',
-                    customerGroup: isLogin == 1 ? 'GENERAL' : 'NOT LOGGED IN',
+                    customerGroup: isLogin === 1 ? 'GENERAL' : 'NOT LOGGED IN',
                 },
             };
             if (custData && custData.email) {
@@ -313,6 +306,14 @@ const Layout = (props) => {
             TagManager.dataLayer(tagManagerArgs);
         }
         // setMainMinimumHeight(refFooter.current.clientHeight + refHeader.current.clientHeight);
+
+        if (typeof window !== 'undefined') {
+            supportsWebP.then((supported) => {
+                if (!supported) {
+                    setHasWebpSupport(false);
+                }
+            });
+        }
     }, []);
 
     const styles = {
@@ -324,12 +325,12 @@ const Layout = (props) => {
     };
 
     const generateClasses = () => {
-        let classes = `${!isCms ? 'desktop:max-w-[1280px] desktop:px-10 tablet:max-w-[768px] tablet:px-6 mobile:px-4 my-0 mx-auto' : ''} ${font.variable} font-sans !font-pwa-default`;
-        if (showGlobalPromo) {
-            classes += ' mobile:max-tablet:mt-2 tablet:max-desktop:mt-[145px] desktop:mt-[196px]';
-        } else {
-            classes += ' mobile:max-tablet:mt-2 tablet:max-desktop:mt-[107px] desktop:mt-[158px]';
-        }
+        let classes = `${
+            !isCms && (router.pathname !== '/' || (router.pathname === '/' && modules.checkout.checkoutOnly))
+                ? 'desktop:max-w-[1280px] min-h-[350px] desktop:px-10 tablet:max-w-[768px] tablet:px-6 mobile:px-4 my-0 mx-auto'
+                : ''
+        } ${font.variable} font-sans !font-pwa-default ${isPdp ? 'mobile:!px-0 tablet:!px-6 desktop:!px-10' : ''}`;
+
         if (pageConfig.bottomNav && storeConfig?.pwa?.mobile_navigation === 'bottom_navigation' && storeConfig?.pwa?.enabler_footer_mobile) {
             classes += ' mb-[60px]';
         } else {
@@ -339,7 +340,7 @@ const Layout = (props) => {
         if (storeConfig?.pwa?.mobile_navigation === 'burger_menu' && !isHomepage && !isPdp) {
             classes += ' mt-[55px]';
         } else {
-            classes += ' mt-0';
+            classes += ' xs:mt-6 xl:mt-10';
         }
 
         if (isCheckout) {
@@ -347,11 +348,6 @@ const Layout = (props) => {
         }
 
         return classes;
-    };
-
-    const footerMobile = {
-        marginBottom: pageConfig.bottomNav && storeConfig.pwa && storeConfig.pwa.mobile_navigation === 'bottom_navigation' ? '55px' : 0,
-        display: pageConfig.bottomNav && storeConfig.pwa && storeConfig.pwa.mobile_navigation === 'bottom_navigation' ? 'flex' : null,
     };
 
     if (!headerDesktop) {
@@ -394,84 +390,6 @@ const Layout = (props) => {
         }
     }, [storeConfig]);
 
-    React.useEffect(() => {
-        if (typeof window !== 'undefined') {
-            setDeviceWidth(window.innerWidth);
-        }
-    }, []);
-
-    // let classMain;
-
-    // if (storeConfig && storeConfig.pwa && storeConfig.pwa.enabler_sticky_header) {
-    //     if (isCheckout) {
-    //         classMain = 'checkout-mode';
-    //     } else if (storeConfig.pwa.header_version === 'v2') {
-    //         if (isHomepage) {
-    //             if (ipadL) {
-    //                 classMain = 'main-app-v2-ipad-landscape';
-    //             } else {
-    //                 classMain = 'main-app-v2';
-    //             }
-    //             classMain += ' main-app-homepage';
-    //         } else if (isPdp && desktop) {
-    //             classMain = 'main-app-v2-pdp';
-    //         } else if (isLoginPage && desktop) {
-    //             classMain = 'main-app-v2-login';
-    //         } else if (isPdp && ipad && !desktop) {
-    //             classMain = 'main-app-sticky-v2-ipad';
-    //         } else {
-    //             classMain = 'main-app-v2-not-homepage';
-    //         }
-    //     } else if (storeConfig.pwa.header_version === 'v1') {
-    //         if (isHomepage) {
-    //             classMain = 'main-app-v1-sticky-homepage';
-    //         } else {
-    //             classMain = 'main-app-v1-sticky-not-homepage';
-    //         }
-    //     } else if (storeConfig.pwa.header_version === 'v4') {
-    //         if (isHomepage) {
-    //             if (ipad) {
-    //                 if (storeConfig.pwa.mobile_navigation === 'burger_menu') {
-    //                     classMain = 'main-app-sticky-v4-homepage';
-    //                 } else {
-    //                     classMain = 'main-app-sticky-v4-homepage-not-burgermenu';
-    //                 }
-    //             } else {
-    //                 classMain = 'main-app-sticky-v4-homepage';
-    //             }
-    //         } else if (isPdp) {
-    //             if (ipad) {
-    //                 classMain = 'main-app-sticky-v4-pdp-ipad';
-    //             } else {
-    //                 classMain = 'main-app-sticky-v4-pdp';
-    //             }
-    //         } else {
-    //             classMain = 'main-app-sticky-v4';
-    //         }
-    //     } else if (isHomepage) {
-    //         classMain = 'main-app-sticky-homepage';
-    //     } else {
-    //         classMain = 'main-app-sticky';
-    //     }
-    // } else if (storeConfig && storeConfig.pwa && !storeConfig.pwa.enabler_sticky_header) {
-    //     if (isCheckout) {
-    //         classMain = 'checkout-mode';
-    //     } else if (storeConfig.pwa.header_version === 'v2') {
-    //         if (isHomepage) {
-    //             classMain = 'main-app-v2-not-sticky';
-    //             classMain += ' main-app-homepage';
-    //         } else if (isPdp && ipad) {
-    //             classMain = 'main-app-v2-ipad';
-    //         } else {
-    //             classMain = 'main-app-v2-not-sticky-not-homepage';
-    //         }
-    //     } else if (storeConfig.pwa.header_version === 'v4') {
-    //         classMain = 'main-app-not-sticky';
-    //     } else {
-    //         classMain = 'main-app-not-sticky';
-    //     }
-    // }
-
     let metaDescValue = ogData['og:description'];
     let metaTitleValue = ogData['og:title'];
     let metaKeywordValue = pageConfig.title ? pageConfig.title : storeConfig.default_title ? storeConfig.default_title : 'Swift Pwa';
@@ -505,6 +423,8 @@ const Layout = (props) => {
 
     const canonicalUrl = `${getHost()}${router.asPath}`;
     const defaultLang = i18n && i18n.language === 'id' ? 'id_ID' : 'en_US';
+    const pageNameSelector = pageConfig?.tagSelector ?? 'swift-page-default';
+
     return (
         <>
             <Head>
@@ -551,72 +471,67 @@ const Layout = (props) => {
                     hrefLang={defaultLang}
                     href={canonicalUrl.substring(0, canonicalUrl.indexOf('?') !== -1 ? canonicalUrl.indexOf('?') : canonicalUrl.length)}
                 />
-                {preloadImages && Object.values(preloadImages).map((_image, idx) => <link rel="preload" as="image" href={_image} key={idx} />)}
             </Head>
             {/* {showPopup && storeConfig && storeConfig.pwa && storeConfig.pwa.header_version !== 'v2' ? (
                 <PopupInstallAppMobile appName={appName} installMessage={installMessage} />
             ) : null} */}
-            {allowHeaderCheckout && (
-                <header ref={refHeader} className={cx(font.variable, 'font-sans', '!font-pwa-default')}>
-                    {typeof window !== 'undefined' && storeConfig.global_promo && storeConfig.global_promo.enable && (
+            <div className={pageNameSelector}>
+                <PageProgressLoader />
+                {allowHeaderCheckout && (
+                    <header ref={refHeader} className={cx(font.variable, 'font-sans', '!font-pwa-default')}>
                         <GlobalPromoMessage
                             t={t}
                             storeConfig={storeConfig}
                             showGlobalPromo={showGlobalPromo}
-                            handleClose={handleClosePromo}
                             appName={appName}
                             installMessage={installMessage}
-                            isMobile={deviceWidth < BREAKPOINTS.md}
                         />
-                    )}
-                    <Header
-                        t={t}
-                        pageConfig={pageConfig}
-                        storeConfig={storeConfig}
-                        isLogin={isLogin}
-                        app_cookies={app_cookies}
-                        showGlobalPromo={showGlobalPromo}
-                        enablePopupInstallation={showPopup}
-                        appName={appName}
-                        installMessage={installMessage}
-                        dataVesMenu={dataVesMenu}
-                        isHomepage={isHomepage}
-                        deviceType={deviceType}
-                        handleClosePromo={handleClosePromo}
-                        i18n={i18n}
+                        <Header
+                            t={t}
+                            pageConfig={pageConfig}
+                            storeConfig={storeConfig}
+                            isLogin={isLogin}
+                            app_cookies={app_cookies}
+                            showGlobalPromo={showGlobalPromo}
+                            enablePopupInstallation={showPopup}
+                            appName={appName}
+                            installMessage={installMessage}
+                            dataMenu={dataMenu}
+                            isHomepage={isHomepage}
+                            deviceType={deviceType}
+                            i18n={i18n}
+                        />
+                    </header>
+                )}
+                <main className={generateClasses()}>
+                    <Backdrop open={state.backdropLoader} />
+                    <Dialog
+                        open={dialog.open}
+                        title={dialog.title}
+                        content={dialog.content}
+                        positiveLabel={dialog.positiveLabel}
+                        positiveAction={dialog.positiveAction}
+                        negativeLabel={dialog.negativeLabel}
+                        negativeAction={dialog.negativeAction}
                     />
-                </header>
-            )}
-            <main className={generateClasses()}>
-                <Backdrop open={state.backdropLoader} />
-                <Dialog
-                    open={dialog.open}
-                    title={dialog.title}
-                    content={dialog.content}
-                    positiveLabel={dialog.positiveLabel}
-                    positiveAction={dialog.positiveAction}
-                    negativeLabel={dialog.negativeLabel}
-                    negativeAction={dialog.negativeAction}
-                />
-                <Toast
-                    close={state.toastMessage.close}
-                    setOpen={handleCloseMessage}
-                    open={state.toastMessage.open}
-                    variant={state.toastMessage.variant}
-                    message={state.toastMessage.text}
-                    position={state.toastMessage.position}
-                    positionNumber={state.toastMessage.positionNumber}
-                    autoHideDuration={state.toastMessage.duration}
-                />
-                {/* {!isHomepage && storeConfig.weltpixel_newsletter_general_enable === '1' && (
+                    <Toast
+                        close={state.toastMessage.close}
+                        setOpen={handleCloseMessage}
+                        open={state.toastMessage.open}
+                        variant={state.toastMessage.variant}
+                        message={state.toastMessage.text}
+                        position={state.toastMessage.position}
+                        positionNumber={state.toastMessage.positionNumber}
+                        autoHideDuration={state.toastMessage.duration}
+                    />
+                    {/* {!isHomepage && storeConfig.weltpixel_newsletter_general_enable === '1' && (
                     <NewsletterPopup t={t} storeConfig={storeConfig} pageConfig={pageConfig} isLogin={isLogin} />
                 )} */}
-                {children}
-                <ScrollToTop deviceType={deviceType} showGlobalPromo={showGlobalPromo} {...props} />
-            </main>
+                    {children}
+                </main>
 
-            {/* CHAT FEATURES */}
-            {/* {features.chatSystem.enable && isShowChat && (
+                {/* CHAT FEATURES */}
+                {/* {features.chatSystem.enable && isShowChat && (
                 <div className={bodyStyles.chatPlugin}>
                     {isLogin ? (
                         <ChatContent />
@@ -632,15 +547,15 @@ const Layout = (props) => {
                     )}
                 </div>
             )} */}
-            {/* END CHAT FEATURES */}
+                {/* END CHAT FEATURES */}
 
-            {withLayoutFooter && (
-                <footer className={cx('!block', 'sm:mt-[50px]', font.variable, 'font-sans', '!font-pwa-default')} ref={refFooter}>
-                    {footer ? <Footer storeConfig={storeConfig} t={t} /> : null}
-                    <Copyright storeConfig={storeConfig} t={t} />
-                </footer>
-            )}
-            {/* {storeConfig.cookie_restriction && !restrictionCookies && (
+                {withLayoutFooter && (
+                    <footer className={cx('!block', 'mt-[50px]', font.variable, 'font-sans', '!font-pwa-default')} ref={refFooter}>
+                        {footer ? <Footer storeConfig={storeConfig} t={t} /> : null}
+                        <Copyright storeConfig={storeConfig} t={t} />
+                    </footer>
+                )}
+                {/* {storeConfig.cookie_restriction && !restrictionCookies && (
                 <RestrictionPopup handleRestrictionCookies={handleRestrictionCookies} restrictionStyle={bodyStyles.cookieRestriction} />
             )}
             {showRecentlyBar && !onlyCms && (
@@ -653,7 +568,31 @@ const Layout = (props) => {
                     className={bodyStyles.itemProduct}
                 />
             )} */}
-            <Script src="/install.js" defer />
+                <div className="fixed bottom-0 flex flex-col w-full z-scroll-to-top">
+                    <ScrollToTop deviceType={deviceType} showGlobalPromo={showGlobalPromo} {...props} />
+                    {!hasWebpSupport ? (
+                        <div className="bg-yellow w-full">
+                            <Typography
+                                variant="h2"
+                                className={cx(
+                                    '!text-neutral-white',
+                                    '!text-sm',
+                                    'p-1',
+                                    font.variable,
+                                    'font-sans',
+                                    '!font-pwa-default',
+                                    'text-center',
+                                    'font-normal',
+                                    '!leading-base',
+                                )}
+                            >
+                                {t('common:error:webpNotSupported')}
+                            </Typography>
+                        </div>
+                    ) : null}
+                </div>
+                <Script src="/install.js" defer />
+            </div>
         </>
     );
 };

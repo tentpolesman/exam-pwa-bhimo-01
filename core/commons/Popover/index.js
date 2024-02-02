@@ -29,7 +29,16 @@ const Popover = (props) => {
                 <div hidden={!open} className={cx('min-w-fit w-[100%] h-fit absolute top-[120%] z-[1000] transition-all', className)}>
                     <div
                         className={cx(
-                            'rounded-lg shadow-md mb-[10px] bg-neutral-white max-h-[50vh] z-[1000] overflow-y-auto popover-content',
+                            'rounded-lg',
+                            'shadow-md',
+                            'mb-[10px]',
+                            'border-neutral-300',
+                            'border-[1px]',
+                            'bg-neutral-white',
+                            'max-h-[50vh]',
+                            'z-[1000]',
+                            'overflow-y-auto',
+                            'popover-content',
                             contentClassName,
                         )}
                     >

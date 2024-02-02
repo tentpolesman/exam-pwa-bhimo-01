@@ -49,7 +49,7 @@ const Content = (props) => {
     } = useMediaQuery();
 
     const cartId = getCartId();
-    const [getScv2Url] = getCheckoutScv2Url();
+    const [getScv2Url, { loading: loadingScv2Url }] = getCheckoutScv2Url();
     const handleOnCheckoutClicked = () => {
         const minimumOrderEnabled = storeConfig.minimum_order_enable;
         const grandTotalValue = allData.prices.grand_total.value;
@@ -67,11 +67,11 @@ const Content = (props) => {
         } else if (storeConfig.pwacheckout?.enable === '1' && storeConfig.pwacheckout?.version === 'V2' && cartId) {
             getScv2Url({
                 variables: {
-                    cart_id: cartId,
+                    cartId,
                 },
             })
                 .then((res) => {
-                    window.location.replace(res.data.internalGetScv2Url.url);
+                    window.location.replace(res.data.generateScv2Url.scv2_url);
                 })
                 .catch(() => {
                     window.toastMessage({
@@ -105,13 +105,13 @@ const Content = (props) => {
                     {t('cart:pageTitle')}
                 </Typography>
                 <Show when={dataCart && dataCart.items && dataCart.items.length < 1}>
-                    <div className="pt-4 pb-12 px-[75px] tablet:pt-9">
+                    <div className="pt-4 pb-12 max-px-[75px] tablet:pt-9">
                         <EmptyView t={t} />
                     </div>
                 </Show>
                 <Show when={dataCart && dataCart.items && dataCart.items.length > 0}>
                     <div className="flex flex-col desktop:flex-row-reverse gap-6 tablet:gap-8 desktop:gap-10">
-                        <div className="summary-cart w-full desktop:max-w-[370px]">
+                        <div className="summary-cart w-full desktop:min-w-[370px] desktop:max-w-[370px]">
                             <Show when={!loadingSummary && allData}>
                                 <Summary
                                     disabled={errorCartItems || (errorCart && errorCart.length > 0)}
@@ -122,6 +122,7 @@ const Content = (props) => {
                                     editMode={editMode}
                                     storeConfig={storeConfig}
                                     {...other}
+                                    loading={other.loading || loadingScv2Url}
                                     handleActionSummary={handleOnCheckoutClicked}
                                 />
                             </Show>

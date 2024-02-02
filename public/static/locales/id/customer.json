@@ -58,7 +58,13 @@
     "useDefault" : "Gunakan sebagai default",
     "warningDelete": "Anda yakin mau menghapus alamat ini?",
     "confirmPinPoint": "Saya yakin bahwa pinpoint pada peta cocok dengan alamat saya. Segala bentuk kesalahan dalam pengiriman dikarenakan kesalahan pada pemilihan pinpoint bukan menjadi tanggung jawab marketplace.",
-    "confirmPinPointTitle": "Pernyataan Alamat Pinpoint"
+    "confirmPinPointTitle": "Pernyataan Alamat Pinpoint",
+    "successAdd":"Berhasil menambahkan alamat",
+    "successUpdate": "Berhasil mengubah alamat",
+    "successRemove": "Berhasil menghapus alamat",
+    "failAdd": "Gagal menambahkan alamat",
+    "failUpdate": "Gagal mengubah alamat",
+    "failRemove": "Gagal menghapus alamat"
   },
   "menu": {
     "contactInformation": "Informasi kontak",
@@ -90,9 +96,16 @@
   },
   "giftCard": {
     "notFound": "Anda tidak memiliki gift card",
+    "searchNotFound": "Kode gift card tidak ditemukan",
     "inputSearch": "Masukan kode gift card",
     "buttonSearch": "Cek sisa dan status",
-    "required": "Code tidak boleh kosong"
+    "required": "Kode tidak boleh kosong",
+    "labelResponse": {
+      "balance": "Sisa Saldo",
+      "initial_balance":"Saldo Awal",
+      "code": "Kode",
+      "expiration_date": "Tanggal Kadaluwarsa"
+    }
   },
   "haveAccount": "Jika sudah punya akun",
   "notHaveAccount": "Belum mempunyai akun ?",

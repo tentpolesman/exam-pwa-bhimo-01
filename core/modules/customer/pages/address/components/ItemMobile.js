@@ -1,12 +1,11 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
-
-import Button from '@common_button';
 import Radio from '@common_forms/Radio';
 import Typography from '@common_typography';
 import AddressFormDialog from '@plugin_addressform';
-
 import cx from 'classnames';
+import Show from '@common_show';
+import Dialog from '@common_dialog';
 
 const ItemAddress = (props) => {
     const {
@@ -27,17 +26,33 @@ const ItemAddress = (props) => {
         t,
         selectedAddressId,
         handleChange,
+        removeAddress,
     } = props;
 
     const [open, setOpen] = useState(false);
+    const [openDelete, setOpenDelete] = useState(false);
     React.useEffect(() => {
         if (open && success) {
             setOpen(false);
         }
     }, [loadingAddress]);
+    const handleRemoveAddress = () => {
+        removeAddress(addressId);
+        setOpenDelete(true);
+    };
 
     return (
         <div className={cx('py-2')}>
+            <Dialog
+                open={openDelete}
+                title={t('customer:address:warningDelete')}
+                onClose={() => setOpenDelete(!openDelete)}
+                positiveAction={handleRemoveAddress}
+                positiveLabel={t('common:button:yes')}
+                negativeLabel={t('common:button:cancel')}
+                negativeAction={() => setOpenDelete(!openDelete)}
+            />
+
             <AddressFormDialog
                 {...props}
                 open={open}
@@ -88,11 +103,22 @@ const ItemAddress = (props) => {
                             <p>{`T: ${telephone}`}</p>
                         </div>
                     )}
-                    <Button variant="plain" className={cx('pl-0', '!py-0')} onClick={() => setOpen(true)}>
-                        <Typography className={cx('underline', 'underline-offset-2', 'cursor-pointer')}>
-                            {t('customer:address:editAddress')}
-                        </Typography>
-                    </Button>
+                    <button type="button" onClick={() => setOpen(!open)}>
+                        <a className="pr-4">
+                            <Typography variant="bd-2b" className={cx('!text-primary-700', 'hover:underline')}>
+                                {t('customer:address:editAddress')}
+                            </Typography>
+                        </a>
+                    </button>
+                    <Show when={selectedAddressId !== addressId}>
+                        <button type="button" onClick={() => setOpenDelete(true)}>
+                            <a className="px-4">
+                                <Typography variant="bd-2b" className={cx('!text-primary-700', 'hover:underline')}>
+                                    {t('customer:address:removeTitle')}
+                                </Typography>
+                            </a>
+                        </button>
+                    </Show>
                 </div>
             </div>
         </div>

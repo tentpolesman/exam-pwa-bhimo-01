@@ -15,11 +15,11 @@ import Promo from '@core_modules/checkout/pages/default/components/promo';
 import RewardPoint from '@core_modules/checkout/pages/default/components/rewardpoint';
 import Shipping from '@core_modules/checkout/pages/default/components/shipping';
 import Summary from '@core_modules/checkout/pages/default/components/summary';
+import HeaderView from '@core_modules/checkout/pages/default/components/Header';
 import classNames from 'classnames';
 import dynamic from 'next/dynamic';
 import Router from 'next/router';
 
-import HeaderView from '@core_modules/checkout/pages/default/components/Header';
 import PromoModalItemView from '@core_modules/checkout/pages/default/components/PromoModalItem/view';
 import OrderCommentView from '@core_modules/checkout/pages/default/components/OrderComment/view';
 import ConfirmationView from '@core_modules/checkout/pages/default/components/Confirmation/view';
@@ -40,7 +40,12 @@ import Button from '@common/Button';
 import ArrowLeftIcon from '@heroicons/react/24/solid/ArrowLeftIcon';
 
 import { getStoreHost } from '@helpers/config';
-import { getAppEnv } from '@root/core/helpers/env';
+import { getAppEnv } from '@core/helpers/env';
+
+import { useSelector } from 'react-redux';
+import {
+    selectCheckoutState,
+} from '@core_modules/checkout/redux/checkoutSlice';
 
 const GimmickBanner = dynamic(() => import('@plugin_gimmickbanner'), { ssr: false });
 
@@ -48,7 +53,6 @@ const PromoModalItem = dynamic(() => import('@core_modules/checkout/pages/defaul
 
 const Content = (props) => {
     const {
-        checkout,
         storeConfig,
         chasbackMessage,
         formik,
@@ -75,6 +79,8 @@ const Content = (props) => {
         currencyCache,
     } = props;
 
+    const checkout = useSelector(selectCheckoutState);
+
     const SummaryRef = React.createRef();
     const { order: loading, all: disabled } = checkout.loading;
     // prettier-ignore
@@ -97,45 +103,51 @@ const Content = (props) => {
      */
     return (
         <div id="checkout" className="flex flex-col pb-8 desktop:py-0 relative">
-            <div className={classNames(
-                'flex flex-row items-center justify-center relative',
-                'desktop:hidden w-full absolute top-0',
-                'shadow-lg bg-neutral-white z-scroll-to-top h-[45px] tablet:h-[50px]',
-            )}
+            <div
+                className={classNames(
+                    'flex flex-row items-center justify-center relative',
+                    'desktop:hidden w-full absolute top-0',
+                    'shadow-lg bg-neutral-white z-scroll-to-top h-[45px] tablet:h-[50px]',
+                )}
             >
-                <Button
-                    variant="plain"
-                    onClick={backToStore}
-                    iconOnly
-                    icon={<ArrowLeftIcon />}
-                    className="absolute left-4 !p-0"
-                />
-                <Typography variant="h1" className="!text-md tablet:!text-lg uppercase">Checkout</Typography>
-            </div>
-            <div className="xs:basis-full center hidden desktop:inline">
-                <HeaderView storeConfig={storeConfig} />
+                <Button variant="plain" onClick={backToStore} iconOnly icon={<ArrowLeftIcon />} className="absolute left-4 !p-0" />
+                <Typography variant="h1" className="!text-base tablet:!text-lg uppercase">
+                    Checkout
+                </Typography>
             </div>
             <Typography variant="h1" className="hidden">
                 {t('common:button:checkout')}
             </Typography>
+            <div className="xs:basis-full center hidden desktop:inline">
+                <HeaderView storeConfig={storeConfig} />
+            </div>
             <Dialog
                 open={checkoutTokenState}
-                handleYes={() => {
+                positiveAction={() => {
                     setCheckoutTokenState(!checkoutTokenState);
                     Router.reload();
                 }}
-                handleCancel={() => {
+                positiveLabel="Reload"
+                negativeAction={() => {
                     setCheckoutTokenState(!checkoutTokenState);
                     Router.push('/checkout/cart');
                 }}
-                yesNo
-                message={`${t('checkout:invalidToken')}`}
-                confirmationMessage={`${t('checkout:invalidTokenConfirmation')}`}
+                negativeLabel={t('checkout:error:backToStore')}
+                variant="container"
+                title={`${t('checkout:invalidTokenConfirmation')}`}
+                content={(
+                    <>
+                        <Typography>
+                            {`${t('checkout:invalidToken')}`}
+                        </Typography>
+                    </>
+                )}
             />
             <div className="xs:basis-full sm:basis-full md:basis-full lg:basis-full center">
-                {checkout && checkout.data && checkout.data.cart && checkout.data.cart.promoBanner.length > 0 && (
-                    <GimmickBanner data={checkout.data.cart.promoBanner || []} />
-                )}
+                {checkout && checkout.data && checkout.data.cart
+                    && checkout.data.cart?.promoBanner?.length && checkout.data.cart?.promoBanner?.length > 0 ? (
+                        <GimmickBanner data={checkout.data.cart.promoBanner || []} />
+                    ) : null}
             </div>
             <div className="flex flex-col desktop:flex-row-reverse gap-6 tablet:gap-8 desktop:gap-10">
                 <div className="summary-cart w-full desktop:max-w-[370px]">
@@ -157,7 +169,6 @@ const Content = (props) => {
                     />
                 </div>
                 <div className="content-cart w-full h-full flex flex-col px-4 desktop:px-0">
-
                     <PromoModalItem
                         t={t}
                         storeConfig={storeConfig}
@@ -165,14 +176,14 @@ const Content = (props) => {
                         setCheckout={setCheckout}
                         PromoModalItemView={PromoModalItemView}
                     />
-                    {modules.checkout.cashback.enabled && checkout.data.cart && checkout.data.cart.applied_cashback.is_cashback && (
+                    {modules.checkout.cashback.enabled && checkout.data.cart && checkout.data.cart?.applied_cashback?.is_cashback ? (
                         <CashbackInfoView
                             message={chasbackMessage}
                             price={checkout.data.cart.applied_cashback.data[0].amount}
                             currency={storeConfig.base_currency_code}
                             promo_name={checkout.data.cart.applied_cashback.data[0].promo_name}
                         />
-                    )}
+                    ) : null}
 
                     {/* {modules.checkout.inStorePickup.enabled && (
                     <div className="flex flex-row xs:basis-full">
@@ -256,12 +267,7 @@ const Content = (props) => {
                             currencyCache={currencyCache}
                         />
 
-                        <div
-                            className={classNames(
-                                'flex flex-col border-b border-b-neutral-200',
-                                'w-full py-6 gap-4',
-                            )}
-                        >
+                        <div className={classNames('flex flex-col border-b border-b-neutral-200', 'w-full py-6 gap-4')}>
                             <Typography variant="h2" className="uppercase">
                                 {t('checkout:feePromoLabel')}
                             </Typography>
@@ -371,12 +377,7 @@ const Content = (props) => {
                         />
 
                         {enableMultiSeller ? (
-                            <div
-                                className={classNames(
-                                    'flex flex-col border-b border-b-neutral-200',
-                                    'w-full py-6 gap-4',
-                                )}
-                            >
+                            <div className={classNames('flex flex-col border-b border-b-neutral-200', 'w-full py-6 gap-4')}>
                                 <div className="xs:basis-full sm:basis-full md:basis-full xl:basis-full">
                                     <OrderComment
                                         t={t}

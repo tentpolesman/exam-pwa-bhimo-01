@@ -10,7 +10,7 @@ const ErrorContent = (props) => {
         <div
             className={cx(
                 'px-4 flex flex-col items-center justify-center',
-                'min-h-screen',
+                'min-h-[calc(100vh-21rem)]',
             )}
         >
             <div

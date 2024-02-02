@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable semi-style */
-import { useReactiveVar } from '@apollo/client';
 import {
     getOrderDetail, getPaymentInformation, getTrackingOrder, reOrder as mutationReorder,
 } from '@core_modules/order/services/graphql';
@@ -8,7 +7,7 @@ import { setCartId } from '@helper_cartid';
 import { getHost } from '@helpers/config';
 import Layout from '@layout';
 import CustomerLayout from '@layout_customer';
-import { currencyVar } from '@root/core/services/graphql/cache';
+import { currencyVar } from '@core/services/graphql/cache';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 
@@ -20,7 +19,7 @@ const OrderDetail = (props) => {
     } = props;
 
     // cache currency
-    const currencyCache = useReactiveVar(currencyVar);
+    const currencyCache = currencyVar();
 
     const { storeConfig } = other;
     const router = useRouter();
@@ -31,6 +30,7 @@ const OrderDetail = (props) => {
         header: 'relative', // available values: "absolute", "relative", false (default)
         headerTitle: `${t('order:order')} #${detail.length > 0 ? detail[0].order_number : ''}`,
         bottomNav: false,
+        tagSelector: 'swift-page-orderdetail',
     };
     const [params] = React.useState({
         order_id: id,
@@ -39,7 +39,6 @@ const OrderDetail = (props) => {
     const { loading: loadingPaymentInfo, data: paymentInfo, error: errorPaymentInfo } = getPaymentInformation(params);
     const [actionReorder] = mutationReorder();
     const { loading: loadingTrackingOrder, data: dataTrackingOrder, error: errorTrackingOrder } = getTrackingOrder({ order_id: params.order_id });
-    // return null;
 
     if (error || errorPaymentInfo || errorTrackingOrder) {
         return (

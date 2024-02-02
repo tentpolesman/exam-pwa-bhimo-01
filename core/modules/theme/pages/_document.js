@@ -2,24 +2,20 @@
 /* eslint-disable max-len */
 /* eslint-disable react/no-danger */
 import React from 'react';
-import Document, { Html, Main } from 'next/document';
+import Document, { Html, Main, NextScript } from 'next/document';
+import { COLORS } from '@core/theme/vars';
+import { /* rollbar, */ basePath } from '@config';
 import HeadCustom from '@next_headcustom';
-import NextScriptCustom from '@next_nextscriptcustom';
-import theme from '@theme_theme';
-
-import {
-    rollbar, basePath,
-} from '@config';
 
 export default class MyDocument extends Document {
     render() {
-        let rollbarConfig = {};
-        if (rollbar && rollbar.enabled) {
-            rollbarConfig = rollbar.config;
-            rollbarConfig.payload = {
-                environment: process.env.APP_ENV || 'prod',
-            };
-        }
+        // let rollbarConfig = {};
+        // if (rollbar && rollbar.enabled) {
+        //     rollbarConfig = rollbar.config;
+        //     rollbarConfig.payload = {
+        //         environment: process.env.APP_ENV || 'prod',
+        //     };
+        // }
 
         let lang = 'en';
 
@@ -31,10 +27,10 @@ export default class MyDocument extends Document {
             <Html lang={lang}>
                 <HeadCustom>
                     {/* PWA primary color */}
-                    <meta name="theme-color" content={theme.palette.primary.main} />
+                    <meta name="theme-color" content={COLORS.primary.DEFAULT} />
                     <link rel="manifest" href={`${basePath}/manifest.json`} />
                     <link rel="shortcut icon" href={`${basePath}/favicon.ico`} />
-                    {rollbar && rollbar.enabled ? (
+                    {/* {rollbar && rollbar.enabled ? (
                         <script
                             dangerouslySetInnerHTML={{
                                 __html: `
@@ -45,52 +41,13 @@ export default class MyDocument extends Document {
                                     `,
                             }}
                         />
-                    ) : null}
+                    ) : null} */}
                 </HeadCustom>
-                <body className="loading">
+                <body>
                     <Main />
-                    <NextScriptCustom />
+                    <NextScript />
                 </body>
             </Html>
         );
     }
 }
-
-MyDocument.getInitialProps = async (ctx) => {
-    // Resolution order
-    //
-    // On the server:
-    // 1. app.getInitialProps
-    // 2. page.getInitialProps
-    // 3. document.getInitialProps
-    // 4. app.render
-    // 5. page.render
-    // 6. document.render
-    //
-    // On the server with error:
-    // 1. document.getInitialProps
-    // 2. app.render
-    // 3. page.render
-    // 4. document.render
-    //
-    // On the client
-    // 1. app.getInitialProps
-    // 2. page.getInitialProps
-    // 3. app.render
-    // 4. page.render
-
-    // Render app and page and get the context of the page with collected side effects.
-    const originalRenderPage = ctx.renderPage;
-
-    ctx.renderPage = () => originalRenderPage({
-        enhanceApp: (App) => (props) => <App {...props} />,
-    });
-
-    const initialProps = await Document.getInitialProps(ctx);
-
-    return {
-        ...initialProps,
-        // Styles fragment is rendered after the app and page rendering finish.
-        styles: [...React.Children.toArray(initialProps.styles)],
-    };
-};

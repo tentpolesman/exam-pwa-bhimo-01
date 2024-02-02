@@ -5,8 +5,7 @@ import Button from '@common_button';
 import Thumbor from '@common_image';
 import Typography from '@common_typography';
 import { formatPrice } from '@helper_currency';
-import { useReactiveVar } from '@apollo/client';
-import { storeConfigVar } from '@root/core/services/graphql/cache';
+import { storeConfigVar } from '@core/services/graphql/cache';
 import cx from 'classnames';
 import React, { useEffect } from 'react';
 import Show from '@common/Show';
@@ -28,7 +27,7 @@ const Summary = (props) => {
         dataCart, storeConfig, currencyCache, label,
         mobilePosition, // top: static on top, bottom: assolute on bottom like bottom sheet
     } = props;
-    const storeConfigLocalStorage = useReactiveVar(storeConfigVar);
+    const storeConfigLocalStorage = storeConfigVar();
     const [openItem, setOpenItem] = React.useState(false);
     const [openItemMobile, setOpenItemMobile] = React.useState(false);
 
@@ -91,14 +90,13 @@ const Summary = (props) => {
             pickup_item_store_info,
             custom_price,
             product,
-            custom_seller,
             ...other
         }) => {
-            let item = groupData.find((p) => p.seller_id === custom_seller.seller_id);
+            let item = groupData.find((p) => p.seller_id === product.seller.seller_id);
             if (!item) {
                 item = {
-                    seller_id: custom_seller.seller_id,
-                    seller_name: custom_seller.seller_name ? custom_seller.seller_name : 'Default Seller',
+                    seller_id: product.seller.seller_id,
+                    seller_name: product.seller.seller_name ? product.seller.seller_name : 'Default Seller',
                     productList: [],
                     subtotal: {
                         currency: '',
@@ -131,7 +129,7 @@ const Summary = (props) => {
         <>
             <div className={cx(
                 'fixed desktop:hidden bottom-0 left-0 z-[1100] w-full h-max bg-neutral-white bottom-checkout',
-                'p-4 shadow-inner bg-neutral-white',
+                'shadow-inner bg-neutral-white py-4',
             )}
             >
                 <Show when={mobilePosition === 'bottom' && showItems}>
@@ -154,18 +152,18 @@ const Summary = (props) => {
                         classContent="pb-2 !max-h-[80vh]"
                     >
                         <div className="w-full flex flex-col gap-3 my-5">
-                            <div className="flex fle-col max-h-[50vh] overflow-y-auto">
+                            <div className="flex flex-col max-h-[50vh] overflow-y-auto">
                                 {isMultiSeller ? (
                                     <div className={cx('flex flex-col w-full')}>
                                         {
-                                            cartItemBySeller.map((seller) => (
-                                                <>
-                                                    <div className={cx('py-2 mb-1')}>
+                                            cartItemBySeller && cartItemBySeller.length && cartItemBySeller.map((seller, key) => (
+                                                <React.Fragment key={key}>
+                                                    <div className={cx('py-2 mb-1 bg-neutral-100 px-2')}>
                                                         <Typography variant="bd-1">{seller.seller_name}</Typography>
                                                     </div>
                                                     {seller.productList.map((item, index) => (
                                                         <div
-                                                            className={cx('flex flex-col gap-2 w-full', 'relative', 'divProductSummary')}
+                                                            className={cx('flex flex-col gap-2 w-full px-4', 'relative', 'divProductSummary')}
                                                             key={index}
                                                         >
                                                             <div className="flex flex-row w-full justify-between">
@@ -228,13 +226,13 @@ const Summary = (props) => {
                                                             </div>
                                                         </div>
                                                     ))}
-                                                </>
+                                                </React.Fragment>
                                             ))
                                         }
                                     </div>
                                 ) : null}
                                 {!isMultiSeller ? (
-                                    <div className={cx('flex flex-col gap-3 w-full')}>
+                                    <div className={cx('flex flex-col gap-3 w-full px-4')}>
                                         {items.map((item, index) => (
                                             <div
                                                 className={cx('flex flex-col gap-2 w-full', 'relative', 'divProductSummary')}
@@ -305,7 +303,7 @@ const Summary = (props) => {
                                 ) : null}
                             </div>
                             <Divider />
-                            <div className="flex flex-col gap-4">
+                            <div className="flex flex-col gap-4 px-4">
                                 {summary.data.map((dt, index) => (
                                     <div
                                         key={index}
@@ -322,10 +320,10 @@ const Summary = (props) => {
                                 <div
                                     className={cx('flex flex-row justify-between items-center')}
                                 >
-                                    <Typography variant="bd-1">
+                                    <Typography variant="h2">
                                         Total
                                     </Typography>
-                                    <Typography variant="bd-1">
+                                    <Typography variant="h2">
                                         {summary.total.currency ? formatPrice(summary.total.value, summary.total.currency, currencyCache) : null}
                                     </Typography>
                                 </div>
@@ -333,7 +331,7 @@ const Summary = (props) => {
                         </div>
                     </Accordion>
                 </Show>
-                <Button onClick={handleActionSummary} className="w-full group" size="lg" classNameText="justify-center">
+                <Button onClick={handleActionSummary} className="w-full group tablet:max-w-[720px] my-[0px] mx-[auto] tablet:block" size="lg" classNameText="justify-center">
                     <Typography variant="bd-2" className="!text-neutral-white">
                         {label || t('common:button:checkout')}
                     </Typography>
@@ -367,51 +365,84 @@ const Summary = (props) => {
                         >
                             <div className="flex flex-col">
                                 {isMultiSeller && openItem ? (
-                                    <div className={cx('flex flex-row')}>
+                                    <div className={cx('flex flex-col gap-3')}>
                                         {
-                                            cartItemBySeller.map((seller) => (
-                                                <>
-                                                    <div className={cx('xs:basis-full bg-neutral-100 py-4')}>
+                                            cartItemBySeller.map((seller, key) => (
+                                                <React.Fragment key={key}>
+                                                    <div className={cx('xs:basis-full bg-neutral-100 px-2 py-3')}>
                                                         <Typography variant="bd-2b">{seller.seller_name}</Typography>
                                                     </div>
                                                     {seller.productList.map((item, index) => (
                                                         <div
-                                                            id="divProductSummary"
-                                                            className={cx('xs:basis-full row between-xs', '', 'relative p-5')}
+                                                            className={cx('flex flex-row gap-2 px-5', 'relative', 'divProductSummary')}
                                                             key={index}
                                                         >
-                                                            <div className="xs:basis-4/12">
+                                                            {withAction && (
+                                                                <div
+                                                                    className="absolute -top-1.5 right-5 cursor-pointer"
+                                                                    onClick={() => {
+                                                                        deleteCart(item.id);
+                                                                    }}
+                                                                >
+                                                                    x
+                                                                </div>
+                                                            )}
+                                                            <div className="xs:basis-4/12 relative">
                                                                 <Thumbor
-                                                                    className="product-image-photo"
+                                                                    className="!w-[105px] !h-[105px]"
+                                                                    classContainer="!w-[105px] !h-[105px]"
                                                                     src={item.product.small_image.url}
                                                                     alt={item.product.name}
-                                                                    width={61}
-                                                                    height={75}
+                                                                    width={105}
+                                                                    height={105}
+                                                                    storeConfig={storeConfig}
                                                                 />
+                                                                <Show when={item.prices.row_total.value === 0}>
+                                                                    <Badge
+                                                                        fontSize={10}
+                                                                        success
+                                                                        label={t('common:title:free')}
+                                                                        className="absolute top-1 left-1"
+                                                                    />
+                                                                </Show>
+
                                                             </div>
                                                             <div className={cx('xs:basis-8/12', 'flex flex-col')}>
-                                                                <Typography variant="bd-2b" className="line-clamp-2">{item.product.name}</Typography>
+                                                                <Typography variant="bd-2b" className="line-clamp-2 max-w-[90%]">
+                                                                    {parser(item.product.name)}
+                                                                </Typography>
                                                                 {item.configurable_options && item.configurable_options.length ? (
-                                                                    <div className="m-1">
+                                                                    <div className="my-1 flex flex-col">
                                                                         {item.configurable_options.map((val, idx) => (
-                                                                            <div className="text-xs" key={idx}>
+                                                                            <Typography variant="bd-3b" key={idx}>
                                                                                 <strong>{val.option_label}</strong>
                                                                                 {' '}
                                                                                 :
                                                                                 {val.value_label}
-                                                                            </div>
+                                                                            </Typography>
                                                                         ))}
                                                                     </div>
                                                                 ) : null}
-                                                                <div className="flex-grow" />
-                                                                <div>
-                                                                    <span className="px-0 py-3" style={{ padding: '0' }}>
-                                                                        <Typography variant="bd-2b" type="regular">
-                                                                            Qty:
-                                                                            {` ${item.quantity}`}
-                                                                        </Typography>
-                                                                    </span>
-                                                                </div>
+                                                                {withAction && (
+                                                                    <div className="flex flex-row my-2">
+                                                                        <span
+                                                                            className="cursor-pointer after:content-['<'] qty-update"
+                                                                            onClick={() => {
+                                                                                if (item.quantity > 1) {
+                                                                                    updateCart(item.id, item.quantity - 1);
+                                                                                }
+                                                                            }}
+                                                                        />
+                                                                        <span className="px-2 py-0">{item.quantity}</span>
+
+                                                                        <span
+                                                                            className="cursor-pointer after:content-['>'] qty-update"
+                                                                            onClick={() => {
+                                                                                updateCart(item.id, item.quantity + 1);
+                                                                            }}
+                                                                        />
+                                                                    </div>
+                                                                )}
                                                                 <Typography variant="bd-2b" size="14" letter="uppercase">
                                                                     {item.prices.row_total.value === 0
                                                                         ? t('common:title:free')
@@ -420,7 +451,7 @@ const Summary = (props) => {
                                                             </div>
                                                         </div>
                                                     ))}
-                                                </>
+                                                </React.Fragment>
                                             ))
                                         }
                                     </div>

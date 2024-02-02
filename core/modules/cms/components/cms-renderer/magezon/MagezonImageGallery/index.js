@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable object-curly-newline */
 /* eslint-disable no-return-assign */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
@@ -6,31 +7,16 @@
 
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import Image from '@common_image';
-import ArrowLeftIcon from '@heroicons/react/20/solid/ArrowLeftIcon';
-import ArrowRightIcon from '@heroicons/react/20/solid/ArrowRightIcon';
 import ArrowsPointingOutIcon from '@heroicons/react/20/solid/ArrowsPointingOutIcon';
+import ArrowsPointingInIcon from '@heroicons/react/20/solid/ArrowsPointingInIcon';
 import dynamic from 'next/dynamic';
 import Slider from 'react-slick';
+import cx from 'classnames';
+import PlayCircleIcon from '@heroicons/react/20/solid/PlayCircleIcon';
+import ChevronLeft from '@heroicons/react/20/solid/ChevronLeftIcon';
+import ChevronRight from '@heroicons/react/20/solid/ChevronRightIcon';
 
 const ImageElement = dynamic(import('@core_modules/cms/components/cms-renderer/magezon/MagezonImageGallery/ImageElement'), { ssr: false });
-
-const ArrowRight = (props) => {
-    const { className, onClick } = props;
-    return (
-        <div className={className} onClick={onClick}>
-            <ArrowRightIcon />
-        </div>
-    );
-};
-
-const ArrowLeft = (props) => {
-    const { className, onClick } = props;
-    return (
-        <div className={className} onClick={onClick}>
-            <ArrowLeftIcon />
-        </div>
-    );
-};
 
 const MagezonImageGallery = (props) => {
     // prettier-ignore
@@ -42,45 +28,25 @@ const MagezonImageGallery = (props) => {
         thumbmargin, thumbwidth, width, keyboard,
         shuffle, transition, captions,
         click, allowfullscreen,
-        storeConfig,
+        storeConfig, height,
     } = props;
     const { secure_base_media_url } = storeConfig;
     const [slideIndex, setIndex] = useState(startindex || 0);
     const [zoom, setZoom] = useState(false);
     const [itemsArr, setItemsArr] = useState(items);
     const [hasSetPosition, setHasSetPosition] = useState(false);
-    const maxHeight = 750;
     let focusSlider;
     let sliderRef = useRef();
     const navRef = useRef();
     const elementRef = useRef();
-
-    const calculateHeight = () => {
-        let newHeight = maxHeight;
-        let newWidth = width;
-
-        if (width || minwidth || maxwidth) {
-            if (maxwidth && (Number(width.split('%')[0]) > Number(maxwidth.split('%')[0]))) {
-                newWidth = maxwidth;
-            }
-
-            if (
-                minwidth
-                && (Number(minwidth.split('%')[0]) > Number(width.split('%')[0]) || Number(minwidth.split('%')[0]) > Number(maxwidth.split('%')[0]))
-            ) {
-                newWidth = minwidth;
-            }
-
-            if (width.includes('%')) {
-                newHeight = (newWidth.split('%')[0] / 100) * maxHeight;
-            }
-        }
-
-        if (minheight) {
-            newHeight *= minheight.split('%')[0] / 100;
-        }
-
-        return newHeight;
+    const slideHeight = storeConfig.pwa?.magezon_slider_desktop_height;
+    const slideWidth = storeConfig.pwa?.magezon_slider_desktop_width;
+    const dimensionProps = {
+        maxWidth: maxwidth ? maxwidth.indexOf('%') !== -1 ? maxwidth : `${maxwidth}px` : `${slideWidth}px`,
+        minWidth: minwidth ? minwidth.indexOf('%') !== -1 ? minwidth : `${minwidth}px` : `${slideWidth}px`,
+        minHeight: minheight ? minheight.indexOf('%') !== -1 ? minheight : `${minheight}px` : `${slideHeight}px`,
+        width: width ? width.indexOf('%') !== -1 ? width : `${width}px` : `${slideWidth}px`,
+        height: !zoom && height ? (height.indexOf('%') !== -1 ? height : `${height}px`) : `${slideHeight}px`,
     };
 
     const setAutoplay = () => {
@@ -113,10 +79,11 @@ const MagezonImageGallery = (props) => {
         }
     };
 
-    const shuffleSlick = () => items
-        .map((value) => ({ value, sort: Math.random() }))
-        .sort((a, b) => a.sort - b.sort)
-        .map(({ value }) => value);
+    const shuffleSlick = () =>
+        items
+            .map((value) => ({ value, sort: Math.random() }))
+            .sort((a, b) => a.sort - b.sort)
+            .map(({ value }) => value);
 
     const adjustItems = () => {
         let adjustedItems = items;
@@ -133,7 +100,7 @@ const MagezonImageGallery = (props) => {
     };
 
     const settings = {
-        arrows,
+        arrows: false,
         fade: transition !== 'slide',
         infinite: loop,
         initialSlide: startindex || 0,
@@ -141,12 +108,12 @@ const MagezonImageGallery = (props) => {
         autoplaySpeed: setAutoplay().autoplaySpeed,
         slidesToShow: 1,
         slidesToScroll: 1,
-        width: 600,
+        width: 500,
         swipe,
-        beforeChange: (old, next) => setIndex(next),
-        pauseOnHover: false,
-        nextArrow: <ArrowRight />,
-        prevArrow: <ArrowLeft />,
+        beforeChange: (old, next) => {
+            setIndex(next);
+        },
+        pauseOnHover: true,
     };
 
     const updatedItems = useMemo(() => adjustItems(), [items]);
@@ -190,13 +157,85 @@ const MagezonImageGallery = (props) => {
 
     return (
         <>
-            <div className={`mgz-img-gallery ${zoom ? 'fullscreen' : ''}`}>
-                {/* <Dialog open={true} fullScreen>
-                </Dialog> */}
+            <div className={cx('group', 'mgz-img-gallery', { fullscreen: zoom })}>
                 <div className="mgz-img-gallery-container" ref={elementRef} onClick={clickNavigate}>
+                    {arrows ? (
+                        <div
+                            className={cx(
+                                'flex',
+                                'justify-between',
+                                'opacity-0',
+                                'group-hover:opacity-100',
+                                'pointer-events-none',
+                                'absolute',
+                                'w-full',
+                                'top-[50%]',
+                                '-translate-y-[50%]',
+                                'z-[2]',
+                                'max-tablet:hidden',
+                            )}
+                        >
+                            <div
+                                className={cx(
+                                    'magezon-slider--button-nav-item',
+                                    'pointer-events-auto',
+                                    'cursor-pointer',
+                                    'text-[1.5rem]',
+                                    'bg-neutral-100',
+                                    'p-[10px]',
+                                    'rounded-[6px]',
+                                    'flex-col',
+                                    'justify-center',
+                                    'items-center',
+                                    'w-[40px]',
+                                    'h-[40px]',
+                                    'cursor-pointer',
+                                    'shadow-md',
+                                    'ml-10',
+                                    'flex',
+                                )}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    sliderRef.slickPrev();
+                                }}
+                            >
+                                <ChevronLeft className="w-6 h-6 hover:text-primary" />
+                            </div>
+                            <div
+                                className={cx(
+                                    'magezon-slider--button-nav-item',
+                                    'pointer-events-auto',
+                                    'cursor-pointer',
+                                    'text-[1.5rem]',
+                                    'bg-neutral-100',
+                                    'p-[10px]',
+                                    'rounded-[6px]',
+                                    'flex-col',
+                                    'justify-center',
+                                    'items-center',
+                                    'w-[40px]',
+                                    'h-[40px]',
+                                    'cursor-pointer',
+                                    'shadow-md',
+                                    'mr-10',
+                                    'flex',
+                                )}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    sliderRef.slickNext();
+                                }}
+                            >
+                                <ChevronRight className="w-6 h-6 hover:text-primary" />
+                            </div>
+                        </div>
+                    ) : null}
                     {allowfullscreen && (
-                        <div className="mgz-img-gallery-zoom-btn" onClick={zoomHandler}>
-                            <ArrowsPointingOutIcon />
+                        <div className="mgz-img-gallery-zoom-btn max-desktop:!opacity-100 w-8 h-8 m-2" onClick={zoomHandler}>
+                            {!zoom ? (
+                                <ArrowsPointingOutIcon className="text-neutral-white" />
+                            ) : (
+                                <ArrowsPointingInIcon className="text-neutral-white" />
+                            )}
                         </div>
                     )}
                     <Slider ref={(slider) => (sliderRef = slider)} {...settings}>
@@ -206,10 +245,10 @@ const MagezonImageGallery = (props) => {
                                 {...item}
                                 baseUrl={secure_base_media_url}
                                 pauseSlick={pauseSlick}
-                                height={calculateHeight()}
                                 fit={fit}
                                 captions={captions}
                                 storeConfig={storeConfig}
+                                dimensions={dimensionProps}
                             />
                         ))}
                     </Slider>
@@ -225,12 +264,13 @@ const MagezonImageGallery = (props) => {
                                     key={index}
                                     ref={navRef}
                                     tabIndex={index}
-                                    className={
-                                        nav === 'thumbs'
-                                            ? slideIndex === index && 'mgz-active'
-                                            : nav === 'dots'
-                                                && `mgz-img-gallery-nav-dots-item ${slideIndex === index && 'mgz-img-gallery-nav-dots-item-active'}`
-                                    }
+                                    className={cx('border-2', 'border-[transparent]', {
+                                        'nav-thumbs': nav === 'thumbs',
+                                        'mgz-active': nav === 'thumbs' && slideIndex === index,
+                                        'mgz-img-gallery-nav-dots-item': nav === 'dots',
+                                        'mgz-img-gallery-nav-dots-item-active': nav === 'dots' && slideIndex === index,
+                                        'my-2': nav === 'dots',
+                                    })}
                                     onClick={() => {
                                         sliderRef.slickGoTo(index);
                                     }}
@@ -243,9 +283,45 @@ const MagezonImageGallery = (props) => {
                                         }
                                     }}
                                 >
-                                    {nav === 'thumbs'
-                                        ? <Image src={imgUrl} storeConfig={storeConfig} />
-                                        : <span />}
+                                    {nav === 'thumbs' ? (
+                                        <span className="relative">
+                                            <Image src={imgUrl} storeConfig={storeConfig} width={thumbwidth} height={thumbheight} />
+                                            {item.type === 'video' ? (
+                                                <span
+                                                    className={cx(
+                                                        'absolute',
+                                                        'top-[50%]',
+                                                        'left-[50%]',
+                                                        '-translate-y-[50%]',
+                                                        '-translate-x-[50%]',
+                                                        'text-neutral-white',
+                                                        'w-[32px]',
+                                                        'h-[32px]',
+                                                    )}
+                                                >
+                                                    <PlayCircleIcon />
+                                                </span>
+                                            ) : null}
+                                        </span>
+                                    ) : (
+                                        <div
+                                            key={index}
+                                            className={cx(
+                                                'cursor-pointer',
+                                                'rounded-full',
+                                                'shadow-[0_0_3px_0.5px]',
+                                                'w-[6px] tablet:w-[10px] desktop:w-3',
+                                                'h-[6px] tablet:h-[10px] desktop:h-3',
+                                                'mx-[6px]',
+                                                {
+                                                    'magezon-slider--dot-nav-item-active': slideIndex === index,
+                                                    'bg-primary-100 !shadow-[0_0_0_3px] !shadow-primary': slideIndex === index,
+                                                    'bg-neutral-white': slideIndex !== index,
+                                                },
+                                            )}
+                                            onClick={() => sliderRef.slickGoTo(index)}
+                                        />
+                                    )}
                                 </div>
                             );
                         })}
@@ -264,9 +340,8 @@ const MagezonImageGallery = (props) => {
                         position: fixed;
                         height: 100vh;
                         inset: 0;
-                        background-color: white;
+                        background-color: black;
                         z-index: 1500;
-                        display: block;
                     }
                     .fullscreen .mgz-img-gallery-container {
                         max-height: 100%;
@@ -274,45 +349,27 @@ const MagezonImageGallery = (props) => {
                     }
                     .mgz-img-gallery-container {
                         position: relative;
-                        width: ${width};
-                        min-width: ${minwidth};
-                        max-width: ${maxwidth};
                         width: 100%;
-                        max-height: ${calculateHeight()}px;
                         overflow: hidden;
-                    }
-                    .mgz-img-gallery-nav > div:focus {
-                        outline: none;
                     }
                     .mgz-active {
                         border: 2px solid #00afea;
                         outline: none;
                     }
-                    .mgz-img-gallery-nav-dots-item {
-                        width: 6px;
-                        height: 6px;
-                        border: 1px solid #7f7f7f;
-                        border-radius: 6px;
-                        margin: 10px;
-                    }
-                    .mgz-img-gallery-nav-dots-item-active {
-                        background-color: #7f7f7f; 
-                    }
                     .mgz-img-gallery-zoom-btn {
-                        color: grey;
                         opacity: 0;
                         position: absolute;
                         right: 0;
                         z-index: 1;
                     }
                     .mgz-img-gallery-container:hover .mgz-img-gallery-zoom-btn {
-                        opacity: 0.5;
+                        opacity: 1;
                         transition: opacity 0.3s;
                     }
                     .fullscreen .mgz-img-gallery-zoom-btn {
                         position: fixed;
                         top: 0;
-                        opacity: 0.5;
+                        opacity: 1;
                     }
                     .mgz-img-gallery-zoom-btn:hover {
                         cursor: pointer;
@@ -328,7 +385,6 @@ const MagezonImageGallery = (props) => {
                         display: flex;
                         flex-direction: row;
                         flex-wrap: nowrap;
-                        height: ${calculateHeight()}px;
                         align-items: center;
                         justify-content: center;
                     }
@@ -348,7 +404,7 @@ const MagezonImageGallery = (props) => {
                         transition: opacity 0.3s;
                         opacity: 0;
                         z-index: 1;
-                        background: rgba(0,0,0,0.1);
+                        background: rgba(0, 0, 0, 0.1);
                     }
                     .mgz-img-gallery-container:hover .slick-arrow {
                         opacity: 1;
@@ -356,18 +412,18 @@ const MagezonImageGallery = (props) => {
                     .mgz-img-gallery.fullscreen .slick-arrow {
                         opacity: 1;
                     }
-                    .mgz-img-gallery-container .slick-prev svg, .mgz-img-gallery-container .slick-next svg {
+                    .mgz-img-gallery-container .slick-prev svg,
+                    .mgz-img-gallery-container .slick-next svg {
                         font-size: 20px !important;
                         color: white;
                     }
-                    .mgz-img-gallery-container .slick-prev:before, .mgz-img-gallery-container .slick-next:before {
-                        content: '' !important
+                    .mgz-img-gallery-container .slick-prev:before,
+                    .mgz-img-gallery-container .slick-next:before {
+                        content: '' !important;
                     }
                     .slick-slide > div {
                         height: 100%;
                         width: 100%;
-                        display: flex;
-                        justify-content: center;
                         position: relative;
                     }
                     .mgz-img-gallery.fullscreen .slick-slide > div {
@@ -376,13 +432,7 @@ const MagezonImageGallery = (props) => {
                     .mgz-img-gallery-nav {
                         display: flex;
                     }
-                    .mgz-img-gallery.fullscreen .mgz-img-gallery-nav {
-                        position: fixed;
-                        top: 0;
-                        left: 50%;
-                        transform: translate(-50%);
-                    }
-                    .mgz-img-gallery-nav div {
+                    .mgz-img-gallery-nav .nav-thumbs {
                         margin: ${thumbmargin ? `${thumbmargin}px` : '2px'};
                         width: ${thumbwidth ? `${thumbwidth}px` : '2px'};
                         height: ${thumbheight ? `${thumbheight}px` : '2px'};

@@ -15,7 +15,7 @@ import TagManager from 'react-gtm-module';
 
 const CoreMultiseller = (props) => {
     const {
-        t, pageConfig, checkoutData, storeConfig, ...other
+        t, checkoutData, storeConfig, ...other
     } = props;
 
     const apolloClient = useApolloClient();
@@ -25,7 +25,7 @@ const CoreMultiseller = (props) => {
         headerTitle: t('thanks:title'),
         bottomNav: false,
         pageType: 'purchase',
-        ...pageConfig,
+        tagSelector: 'swift-page-thanks',
     };
 
     const [customerOrder, setCustomerOrder] = React.useState([]);

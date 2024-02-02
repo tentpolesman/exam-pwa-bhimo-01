@@ -3,6 +3,7 @@ import React from 'react';
 import AddressFormDialog from '@plugin_addressform';
 import Radio from '@common/Forms/Radio';
 import Button from '@common/Button';
+import cx from 'classnames';
 
 const ItemAddress = (props) => {
     const {
@@ -37,7 +38,12 @@ const ItemAddress = (props) => {
                 setOpen={() => setOpen(false)}
                 pageTitle={t('customer:address:editTitle')}
             />
-            <div className="flex flex-col checkoutListItemAddress">
+            <div
+                className={cx(
+                    'flex flex-col checkoutListItemAddress border-b border-neutral-200',
+                    'desktop:px-[32px] tablet:px-[32px] mobile:px-[16px]',
+                )}
+            >
                 <Radio
                     variant="single"
                     id={id}
@@ -54,34 +60,33 @@ const ItemAddress = (props) => {
                     }}
                     className="flex flex-row items-center gap-3"
                 >
-                    <div className="w-full border-b pb-2 flex flex-col">
-                        <label for={id} className="flex flex-col">
-                            <Typography className="" variant="p">
+                    <div className="w-full pb-2 flex flex-col">
+                        <label htmlFor={id} className="flex flex-col cursor-pointer">
+                            <Typography className="" variant="bd-2">
                                 {`${firstname} ${lastname}`}
                             </Typography>
-                            <Typography className="" variant="p">
+                            <Typography className="" variant="bd-2">
                                 {street}
                                 ,
                             </Typography>
-                            <Typography className="" variant="p">
+                            <Typography className="" variant="bd-2">
                                 {city !== '' && `${city}, `}
                                 {region !== '' && `${region.region || ''}, `}
                                 {country !== '' && `${country.full_name_locale || ''}, `}
                                 {postcode !== '' && postcode}
                             </Typography>
-                            <Typography className="" variant="p">
+                            <Typography className="" variant="bd-2">
                                 {telephone}
                             </Typography>
                         </label>
 
                         <Button variant="plain" onClick={() => setOpen(true)} className="!p-0">
                             <Typography className="mt-3 cursor-pointer" variant="bd-2">
-                                {t('customer:address:editTitle')}
+                                {t('common:button:edit')}
                             </Typography>
                         </Button>
                     </div>
                 </Radio>
-
             </div>
         </>
     );

@@ -17,6 +17,7 @@ const TableItem = (props) => {
         customizable_options, SimpleMiniCustomizable, ConfigurableMiniCustomizable,
         product, storeConfig, custom_price, configurable_options, links, bundle_options,
         currencyCache, quantity, updateItem, id, confirmDelete, isMultiSeller, t, note,
+        aw_giftcard_option,
     } = props;
 
     const cartCustomOptions = SimpleMiniCustomizable || ConfigurableMiniCustomizable || customizable_options;
@@ -30,7 +31,7 @@ const TableItem = (props) => {
     return (
         <tr className="border-b-[1px] border-b-neutral-200">
             <td align="left" valign="top" className="py-4">
-                <div className="flex flex-row w-max">
+                <div className="grid grid-cols-3">
                     <div className="w-[120px] h-[120px] overflow-hidden justify-center items-center rounded-lg relative">
                         <Link
                             href="/[...slug]"
@@ -52,7 +53,7 @@ const TableItem = (props) => {
                             <Badge fontSize={10} success label={t('common:title:free')} className="z-3 absolute top-1 left-1" />
                         ) : null}
                     </div>
-                    <div className="flex flex-col px-4 w-max">
+                    <div className="flex flex-col px-4 col-span-2">
                         <div className="flex flex-col gap-2">
                             <Link href="/[...slug]" as={`/${product.url_key}`}>
                                 <Typography variant="bd-2b" className="!text-base font-normal line-clamp-2 capitalize">
@@ -69,13 +70,13 @@ const TableItem = (props) => {
                                 </Typography>
                             </Show>
                         </div>
-                        <div className="flex flex-row">
+                        <div className="flex flex-row mt-1">
                             {links && links.length > 0 && (
                                 <div className="xs:basis-full flex flex-row gap-1">
                                     <Typography variant="bd-2b" letter="capitalize" type="bold">
                                         Downloads :
                                     </Typography>
-                                    <div className="flex flex-col">
+                                    <div className="flex flex-col gap-1">
                                         {links.map((item, idx) => (
                                             <Typography variant="bd-2b" letter="capitalize" key={idx}>
                                                 {item.title}
@@ -86,10 +87,10 @@ const TableItem = (props) => {
                             )}
                         </div>
                         {bundle_options && bundle_options.length ? (
-                            <div className="flex flex-col gap-2">
+                            <div className="flex flex-col mt-1 gap-2">
                                 {bundle_options.map((value, idx) => (
                                     <div className="flex flex-col" key={idx}>
-                                        <Typography variant="bd-2">{value.label}</Typography>
+                                        <Typography variant="bd-2b">{value.label}</Typography>
                                         <div className="flex flex-col">
                                             {value.values.map((item, idt) => (
                                                 <Typography variant="bd-2b" key={idt}>
@@ -98,11 +99,9 @@ const TableItem = (props) => {
                                                     x
                                                     {item.label}
                                                     {' '}
-                                                    <strong>
-                                                        +
-                                                        {' '}
-                                                        {formatPrice(item.price, 'IDR', currencyCache)}
-                                                    </strong>
+                                                    +
+                                                    {' '}
+                                                    {formatPrice(item.price, 'IDR', currencyCache)}
                                                 </Typography>
                                             ))}
                                         </div>
@@ -111,21 +110,33 @@ const TableItem = (props) => {
                             </div>
                         ) : null}
                         {cartCustomOptions && cartCustomOptions.length ? (
-                            <div className="product-options">
+                            <div className="flex flex-col gap-1 mt-1">
                                 {cartCustomOptions.map((op, idx) => (
                                     <div className="option-wrapper" key={idx}>
-                                        <div className="flex flex-row option-wrapper__item">
-                                            <strong>
-                                                {op.label}
-                                                {' '}
-                                                :
-                                            </strong>
+                                        <Typography className="flex flex-row option-wrapper__item">
+                                            {`${op.label}: `}
                                             {op.values.map((item, idt) => (
-                                                <p key={idt} className="option-item">
+                                                <p key={idt} className="option-item ml-1">
                                                     {item.label && item.label !== '' ? item.label : item.value}
                                                 </p>
                                             ))}
-                                        </div>
+                                        </Typography>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : null}
+
+                        {aw_giftcard_option && aw_giftcard_option.length ? (
+                            <div className="flex flex-col gap-1 mt-1">
+                                {aw_giftcard_option.map((val, idx) => (
+                                    <div className="flex flex-col tablet:flex-row gap-1" key={idx}>
+                                        <Typography variant="bd-1b">
+                                            {`${val.label}: `}
+                                        </Typography>
+
+                                        <Typography variant="bd-1b">
+                                            {val.value}
+                                        </Typography>
                                     </div>
                                 ))}
                             </div>

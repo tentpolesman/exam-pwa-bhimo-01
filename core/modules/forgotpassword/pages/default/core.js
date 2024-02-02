@@ -10,14 +10,13 @@ import { requestLinkToken, otpConfig } from '../../services/graphql';
 const appEnv = getAppEnv();
 
 const ForgotPassword = (props) => {
-    const {
-        t, storeConfig, pageConfig, Content,
-    } = props;
+    const { t, storeConfig, Content } = props;
     const config = {
         title: t('forgotpassword:title'),
         header: 'relative', // available values: "absolute", "relative", false (default)
         headerTitle: t('forgotpassword:title'),
         bottomNav: false,
+        tagSelector: 'swift-page-forgotpassword',
     };
     const forgotWithPhone = storeConfig.forgot_password_phone;
     const [useEmail, setUseEmail] = React.useState(false);
@@ -176,7 +175,7 @@ const ForgotPassword = (props) => {
     };
 
     return (
-        <Layout pageConfig={pageConfig || config} {...props}>
+        <Layout pageConfig={config} {...props}>
             <Content
                 t={t}
                 loading={loading}

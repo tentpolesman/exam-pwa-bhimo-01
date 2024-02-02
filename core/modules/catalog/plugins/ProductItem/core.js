@@ -4,7 +4,7 @@ import { getLoginInfo } from '@helper_auth';
 import { setCookies, getCookies } from '@helper_cookies';
 import { useTranslation } from 'next-i18next';
 import route, { useRouter } from 'next/router';
-import { useQuery, useReactiveVar } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import React from 'react';
 import { setResolver, getResolver } from '@helper_localstorage';
 import { getSessionStorage, setSessionStorage } from '@helpers/sessionstorage';
@@ -15,10 +15,10 @@ import { addProductsToCompareList } from '@core_modules/product/services/graphql
 import { getCustomerUid } from '@core_modules/productcompare/service/graphql';
 import { localCompare } from '@services/graphql/schema/local';
 import { getStoreHost } from '@helpers/config';
-import { getAppEnv } from '@root/core/helpers/env';
+import { getAppEnv } from '@core/helpers/env';
 import ModalQuickView from '@plugin_productitem/components/QuickView';
 import TagManager from 'react-gtm-module';
-import { priceVar } from '@root/core/services/graphql/cache';
+import { priceVar } from '@core/services/graphql/cache';
 
 import ImageProductView from '@plugin_productitem/components/Image';
 import DetailProductView from '@plugin_productitem/components/Detail';
@@ -33,6 +33,7 @@ import HeartIcon from '@heroicons/react/24/outline/HeartIcon';
 import CompareIcon from '@heroicons/react/24/outline/ArrowsRightLeftIcon';
 import EyeIcon from '@heroicons/react/24/outline/EyeIcon';
 import EyeSolidIcon from '@heroicons/react/20/solid/EyeIcon';
+import TrashIcon from '@heroicons/react/24/solid/TrashIcon';
 import Show from '@common/Show';
 import Badge from '@common/Badge';
 
@@ -56,6 +57,8 @@ const ProductItem = (props) => {
         enableProductCompare = true,
         enableShortDescription = true,
         preload,
+        usedInWishlist = false,
+        handlingRemove = () => {},
         ...other
     } = props;
     const {
@@ -91,15 +94,6 @@ const ProductItem = (props) => {
             setErrorCustomizableOptions(errorCustomizable);
         }
     }, [customizableOptions]);
-
-    const [price] = React.useState({
-        priceRange: other.price_range,
-        priceTiers: other.price_tiers,
-        // eslint-disable-next-line no-underscore-dangle
-        productType: other.__typename,
-        specialFromDate: other.special_from_date,
-        specialToDate: other.special_to_date,
-    });
 
     const checkCustomizableOptionsValue = async () => {
         if (other.options && other.options.length > 0) {
@@ -143,7 +137,7 @@ const ProductItem = (props) => {
     const [getProductPrice, { data: dataPrice, loading: loadPrice, error: errorPrice }] = getDetailProductPrice(storeConfig.pwa || {});
 
     // cache price
-    const cachePrice = useReactiveVar(priceVar);
+    const cachePrice = priceVar();
 
     const generateIdentifier = () => {
         let identifier = url_key;
@@ -329,13 +323,7 @@ const ProductItem = (props) => {
         } else if (modules.checkout.checkoutOnly) {
             window.open(`${getStoreHost(getAppEnv()) + url_key}.html`);
         } else {
-            const { name, small_image } = props;
             const currentPageOffset = window.scrollY;
-            const sharedProp = {
-                name,
-                small_image,
-                price,
-            };
             const urlResolver = getResolver();
             urlResolver[`/${url_key}`] = {
                 type: 'PRODUCT',
@@ -353,7 +341,6 @@ const ProductItem = (props) => {
                     pathname: '/[...slug]',
                     query: {
                         slug: url_key,
-                        productProps: JSON.stringify(sharedProp),
                     },
                 },
                 `/${url_key}`,
@@ -436,11 +423,7 @@ const ProductItem = (props) => {
         return (
             <div className="product-item-price">
                 <Show when={priceProduct}>
-                    <PriceFormat
-                        {...priceProduct}
-                        specialFromDate={special_from_date}
-                        specialToDate={special_to_date}
-                    />
+                    <PriceFormat {...priceProduct} specialFromDate={special_from_date} specialToDate={special_to_date} />
                 </Show>
             </div>
         );
@@ -463,11 +446,11 @@ const ProductItem = (props) => {
                             onClick={handleAddToCart}
                             loading={loading}
                             className={classNames(
-                                '!py-0 w-max h-[38px] desktop:h-[40px] tablet:max-w-[116px] desktop:max-w-max justify-center',
+                                'swift-action-tocart !py-0 w-max h-[38px] desktop:h-[40px] tablet:max-w-[116px] desktop:max-w-max justify-center',
                                 'hover:shadow-[0_0_0_4px] hover:shadow-primary-300',
                             )}
                         >
-                            <Typography color="white" className="font-normal text-sm">
+                            <Typography color="white" className="font-normal text-sm tablet:truncate">
                                 {t('common:button:addToCart')}
                             </Typography>
                         </Button>
@@ -479,11 +462,9 @@ const ProductItem = (props) => {
                                 'hover:shadow-[0_0_0_4px] hover:shadow-primary-300',
                             )}
                             link="/[...slug]"
-                            linkProps={
-                                {
-                                    as: `/${url_key}`,
-                                }
-                            }
+                            linkProps={{
+                                as: `/${url_key}`,
+                            }}
                         >
                             <Typography color="white" className="font-normal text-sm">
                                 {t('common:button:viewItem')}
@@ -492,13 +473,26 @@ const ProductItem = (props) => {
                     </Show>
                     <Show when={showWishlist || showProductCompare}>
                         <div className="flex-row gap-1 hidden tablet:flex desktop:flex">
-                            <Show when={showWishlist}>
+                            <Show when={showWishlist && !usedInWishlist}>
                                 <Button
                                     iconOnly
                                     icon={<HeartIcon />}
                                     iconProps={{ className: feed ? '!w-4 !h-4 text-neutral-white' : '!w-4 !h-4 group-hover:text-neutral-white' }}
                                     variant={feed ? 'primary' : 'outlined'}
                                     onClick={() => handleFeed(props)}
+                                    className={classNames(
+                                        'swift-action-towishlist !p-[10px] !border-neutral-200 hover:bg-primary group',
+                                        'hover:!shadow-none focus:!shadow-none hover:!opacity-100',
+                                    )}
+                                />
+                            </Show>
+                            <Show when={usedInWishlist}>
+                                <Button
+                                    iconOnly
+                                    icon={<TrashIcon />}
+                                    iconProps={{ className: '!w-4 !h-4 group-hover:text-neutral-white text-primary' }}
+                                    variant="outlined"
+                                    onClick={() => handlingRemove()}
                                     className={classNames(
                                         '!p-[10px] !border-neutral-200 hover:bg-primary group',
                                         'hover:!shadow-none focus:!shadow-none hover:!opacity-100',
@@ -511,9 +505,9 @@ const ProductItem = (props) => {
                                     icon={<CompareIcon />}
                                     iconProps={{ className: '!w-4 !h-4 group-hover:text-neutral-white' }}
                                     variant="outlined"
-                                    onClick={() => handleSetCompareList(props)}
+                                    onClick={() => handleSetCompareList(props?.id)}
                                     className={classNames(
-                                        '!p-[10px] !border-neutral-200 hover:bg-primary group',
+                                        'swift-action-tocompare !p-[10px] !border-neutral-200 hover:bg-primary group',
                                         'hover:!shadow-none focus:!shadow-none hover:!opacity-100',
                                     )}
                                 />
@@ -526,8 +520,10 @@ const ProductItem = (props) => {
     };
 
     const isOos = stock_status === 'OUT_OF_STOCK';
-    const viewItemOnly = __typename === 'BundleProduct' || __typename === 'DownloadableProduct'
-    || __typename === 'GroupedProduct' || __typename === 'AwGiftCardProduct';
+    const viewItemOnly = __typename === 'BundleProduct'
+        || __typename === 'DownloadableProduct'
+        || __typename === 'GroupedProduct'
+        || __typename === 'AwGiftCardProduct';
 
     const priceData = getPriceFromList(getPrice(), id);
 
@@ -556,8 +552,8 @@ const ProductItem = (props) => {
                         'w-full inline-block h-full overflow-hidden relative cursor-pointer',
                         'shadow border border-neutral-100 rounded-lg p-2 lg:p-4',
                         'desktop:hover:shadow-lg',
-                        'min-w-[160px] tablet:max-w-[230px] desktop:min-w-[288px] desktop:max-w-full',
-                        'flex flex-col catalog-item-product',
+                        'tablet:max-w-[230px] desktop:min-w-[288px] desktop:max-w-full',
+                        'flex flex-col swift-catalog-item-product',
                         className,
                     )}
                 >
@@ -566,15 +562,8 @@ const ProductItem = (props) => {
                             <LabelView t={t} {...other} isGrid={isGrid} spesificProduct={spesificProduct} />
                         ) : null}
                         {isOos && (
-                            <div className={classNames(
-                                'absolute top-2 tablet:top-3 left-2 tablet:left-3 z-10',
-                            )}
-                            >
-                                <Badge
-                                    bold
-                                    label={stock_status.replace(/_/g, ' ')}
-                                    className="!bg-neutral text-white !text-xs tablet:!text-sm"
-                                />
+                            <div className={classNames('absolute top-2 tablet:top-3 left-2 tablet:left-3 z-10')}>
+                                <Badge bold label={stock_status.replace(/_/g, ' ')} className="!bg-neutral text-white !text-xs tablet:!text-sm" />
                             </div>
                         )}
                         {showQuickView && (
@@ -593,9 +582,7 @@ const ProductItem = (props) => {
                                     )}
                                     size="sm"
                                 >
-                                    <span className="text-sm !text-neutral-900 justify-center">
-                                        {t('catalog:title:quickView')}
-                                    </span>
+                                    <span className="text-sm !text-neutral-900 justify-center">{t('catalog:title:quickView')}</span>
                                 </Button>
                                 <Button
                                     onClick={handleQuickView}
@@ -638,7 +625,7 @@ const ProductItem = (props) => {
                             {...DetailProps}
                             {...other}
                             showShortDescription={showShortDescription}
-                            Pricing={(enablePrice && !showOption) && generatePrice(priceData)}
+                            Pricing={enablePrice && !showOption && generatePrice(priceData)}
                             isGrid={isGrid}
                         />
                         <Show when={showOption}>
@@ -672,9 +659,7 @@ const ProductItem = (props) => {
                                     isPlp
                                 />
                             </div>
-                            <div className="flex flex-col tablet:hidden h-full justify-end">
-                                {generatePrice(priceData)}
-                            </div>
+                            <div className="flex flex-col tablet:hidden h-full justify-end">{generatePrice(priceData)}</div>
                         </Show>
                     </div>
                 </div>
@@ -724,11 +709,7 @@ const ProductItem = (props) => {
                         ) : null}
                         {isOos && (
                             <div className="absolute top-2 tablet:top-3 left-2 tablet:left-3 z-10">
-                                <Badge
-                                    bold
-                                    label={stock_status.replace(/_/g, ' ')}
-                                    className="!bg-neutral text-white !text-xs tablet:!text-sm"
-                                />
+                                <Badge bold label={stock_status.replace(/_/g, ' ')} className="!bg-neutral text-white !text-xs tablet:!text-sm" />
                             </div>
                         )}
                         {showQuickView && (
@@ -747,9 +728,7 @@ const ProductItem = (props) => {
                                     )}
                                     size="sm"
                                 >
-                                    <span className="text-sm !text-neutral-900 justify-center">
-                                        {t('catalog:title:quickView')}
-                                    </span>
+                                    <span className="text-sm !text-neutral-900 justify-center">{t('catalog:title:quickView')}</span>
                                 </Button>
                                 <Button
                                     iconOnly
@@ -793,7 +772,7 @@ const ProductItem = (props) => {
                             enableWishlist={false}
                             urlKey={url_key}
                             showShortDescription
-                            Pricing={(enablePrice && !showOption) && generatePrice(priceData)}
+                            Pricing={enablePrice && !showOption && generatePrice(priceData)}
                             isGrid={isGrid}
                         />
                         {showOption ? (
@@ -825,9 +804,7 @@ const ProductItem = (props) => {
                                 />
                             </div>
                         ) : null}
-                        <div className="flex tablet:hidden">
-                            {generatePrice(priceData)}
-                        </div>
+                        <div className="flex tablet:hidden">{generatePrice(priceData)}</div>
                     </div>
                 </div>
             </div>

@@ -7,7 +7,9 @@ import propTypes from 'prop-types';
 import DefaultLayout from '@layout';
 import { useRouter } from 'next/router';
 import { getFormDataRma, getCustomer } from '@core_modules/rma/services/graphql';
-import Content from './components';
+import dynamic from 'next/dynamic';
+
+const Content = dynamic(() => import('@core_modules/rma/pages/new/components'), { ssr: false });
 
 const CoreNewRma = (props) => {
     const {
@@ -61,19 +63,17 @@ const CoreNewRma = (props) => {
         storeConfig,
         order_number: id,
     };
-    if (loadCustomerData.data && data) {
-        customerData = loadCustomerData.data.customer;
-        return (
-            <DefaultLayout {...props} pageConfig={config}>
-                <Content
-                    {...contentprops}
-                    {...other}
-                    customerData={customerData}
-                />
-            </DefaultLayout>
-        );
-    }
-    return <Loader />;
+
+    customerData = loadCustomerData?.data?.customer || null;
+    return (
+        <DefaultLayout {...props} pageConfig={config}>
+            <Content
+                {...contentprops}
+                {...other}
+                customerData={customerData}
+            />
+        </DefaultLayout>
+    );
 };
 
 CoreNewRma.propTypes = {

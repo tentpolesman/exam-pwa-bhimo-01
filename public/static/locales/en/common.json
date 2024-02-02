@@ -19,6 +19,7 @@
         "edit": "Edit",
         "save": "Save",
         "saved": "Saved",
+        "startShopping": "Start Shopping",
         "continueShopping": "Continue Shopping",
         "confirm": "Confirm",
         "cancel": "Cancel",
@@ -55,7 +56,7 @@
         "deleteFailed": "Delete cart item failed",
         "updateSuccess": "Update cart item success",
         "updateFailed": "Update cart item failed",
-        "emptyCart": "YOU HAVE NO ITEMS IN YOUR SHOPPING CART.",
+        "emptyCart": "Your cart is currently empty.",
         "oos": "Out of stock",
         "inStock": "In stock",
         "cartError": "Something error with your cart, please clear and try again"
@@ -107,12 +108,13 @@
         "shortQty": "Qty",
         "action": "Action",
         "extraFee": "Extra Fee",
-        "relatedProduct": "You may also like",
+        "relatedProduct": "People also buy",
         "sale": "Sale",
         "new": "New",
         "free": "Free",
         "none": "None",
-        "note": "Note"
+        "note": "Note",
+        "sku": "SKU"
     },
     "error": {
         "notFound": "Data not found",
@@ -120,7 +122,9 @@
         "fetchError": "Connection Error. Please try again later.",
         "browser": "Browser not supported",
         "videoNotSupported": "Your browser does not support the video tag.",
-        "captcha": "Recaptcha verification failed, please try again."
+        "captcha": "Recaptcha verification failed, please try again.",
+        "wentWrong": "Something went wrong. Please try again later.",
+        "webpNotSupported": "Your web browser does not support WebP image format. Please consider upgrading your web browser to have better experience viewing the website."
     },
     "fileUpload": {
         "reject": "Cannot upload, Files must be a type ",
@@ -143,7 +147,8 @@
     },
     "header": {
         "welcome": "Welcome!",
-        "hi": "Hi, $!"
+        "hi": "Hi, $!",
+        "downloadApps": "Download Apps"
     },
     "message": {
         "feedSuccess": "Product success added to wishlist",
@@ -219,8 +224,8 @@
         "addReviewTitle": "Add Review Title",
         "addReview": "Add Review",
         "writeReview": "Write Review",
-        "detail": "Detail",
-        "moreInfo": "More Info",
+        "detail": "Description",
+        "moreInfo": "Addional Information",
         "shareToYourFriend": "Share to your friend and family!",
         "showMore": "Show More",
         "showLess": "Show Less",

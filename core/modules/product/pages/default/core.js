@@ -3,7 +3,6 @@
 import React from 'react';
 import TagManager from 'react-gtm-module';
 import generateSchemaOrg from '@core_modules/product/helpers/schema.org';
-import Header from '@core_modules/product/pages/default/components/header';
 import Backdrop from '@common_backdrop';
 import Layout from '@layout';
 import Error from 'next/error';
@@ -11,10 +10,7 @@ import { getCookies } from '@helper_cookies';
 import { getLocalStorage, setLocalStorage } from '@helper_localstorage';
 import { StripHtmlTags } from '@helper_text';
 import { useRouter } from 'next/router';
-import {
-    getProduct,
-    getSeller,
-} from '@core_modules/product/services/graphql';
+import { getProduct, getSeller } from '@core_modules/product/services/graphql';
 
 const ContentDetail = ({
     t, slug, product, keyProduct, Content, isLogin, storeConfig, ssrProduct,
@@ -32,7 +28,7 @@ const ContentDetail = ({
 
     let enableMultiSeller = false;
     if (storeConfig) {
-        enableMultiSeller = storeConfig.enable_oms_multiseller === '1';
+        enableMultiSeller = storeConfig.enable_oms_multiseller === '1' || storeConfig.enable_oms_multiseller === 1;
     }
 
     let dataSeller;
@@ -161,14 +157,7 @@ const ContentDetail = ({
 
 const PageDetail = (props) => {
     const {
-        t,
-        slug,
-        Content,
-        isLogin,
-        pageConfig,
-        CustomHeader,
-        storeConfig,
-        ssrProduct,
+        t, slug, Content, isLogin, CustomHeader, storeConfig, ssrProduct,
     } = props;
 
     /**
@@ -179,20 +168,11 @@ const PageDetail = (props) => {
     const routeKey = routePaths.split('?');
     const routeKeyFilter = routeKey.length > 0 ? routeKey[0].replaceAll('#', '') : null;
     const productProps = router.query.productProps ? JSON.parse(router.query.productProps) : {};
-    const productVariables = Object.keys(productProps).length > 0
-        ? {
-            variables: {
-                includeName: productProps.name && productProps.name !== '',
-                includePrice: productProps.price && true,
-                includeImg: productProps.small_image?.url && true,
-                url: slug[0],
-            },
-        }
-        : {
-            variables: {
-                url: slug[0],
-            },
-        };
+    const productVariables = {
+        variables: {
+            url: slug[0],
+        },
+    };
 
     const { loading, data, error } = getProduct(storeConfig, { ...productVariables });
 
@@ -221,13 +201,6 @@ const PageDetail = (props) => {
                     items: [
                         {
                             ...productResult.items[productByUrlMemo],
-                            name: productProps.name || '',
-                            small_image: productProps.small_image || {},
-                            price: productProps.price || {},
-                            price_range: { ...productProps.price.priceRange },
-                            price_tiers: { ...productProps.price.priceTiers },
-                            special_from_date: { ...productProps.price.specialFromDate },
-                            special_to_date: { ...productProps.price.specialToDate },
                         },
                     ],
                 };
@@ -284,17 +257,15 @@ const PageDetail = (props) => {
 
     if (isError) {
         return (
-            <Layout pageConfig={{}} CustomHeader={CustomHeader ? <CustomHeader /> : <Header />} {...props}>
-                <div className="product-detail-error">
-                    {errorMessage}
-                </div>
+            <Layout pageConfig={{}} CustomHeader={CustomHeader ? <CustomHeader /> : <></>} {...props}>
+                <div className="product-detail-error">{errorMessage}</div>
             </Layout>
         );
     }
 
     if (isLoadingPDP) {
         return (
-            <Layout pageConfig={{}} CustomHeader={CustomHeader ? <CustomHeader /> : <Header />} {...props}>
+            <Layout pageConfig={{}} CustomHeader={CustomHeader ? <CustomHeader /> : <></>} {...props}>
                 <Backdrop open />
             </Layout>
         );
@@ -341,17 +312,11 @@ const PageDetail = (props) => {
             'og:title': product.items[productByUrl].meta_title || product.items[productByUrl].name,
         },
         schemaOrg,
+        tagSelector: 'swift-page-pdp',
     };
 
     return (
-        <Layout
-            isShowChat={false}
-            pageConfig={pageConfig || config}
-            CustomHeader={CustomHeader ? <CustomHeader /> : <Header />}
-            data={data}
-            isPdp
-            {...props}
-        >
+        <Layout isShowChat={false} pageConfig={config} CustomHeader={CustomHeader ? <CustomHeader /> : <></>} data={data} isPdp {...props}>
             <ContentDetail
                 t={t}
                 slug={slug[0]}

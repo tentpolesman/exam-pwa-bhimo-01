@@ -1,12 +1,12 @@
-import dynamic from 'next/dynamic';
-import cx from 'classnames';
-import Layout from '@layout_customer';
 import Button from '@common_button';
+import Checkbox from '@common_forms/CheckBox';
 import PasswordField from '@common_forms/Password';
 import TextField from '@common_forms/TextField';
-import Typography from '@common_typography';
-import Checkbox from '@common_forms/CheckBox';
 import Show from '@common_show';
+import Typography from '@common_typography';
+import Layout from '@layout_customer';
+import cx from 'classnames';
+import dynamic from 'next/dynamic';
 
 const PhoneInput = dynamic(() => import('@common_forms/PhoneInput'), { ssr: false });
 
@@ -27,12 +27,8 @@ const ProfileForm = (props) => {
     } = props;
 
     return (
-        <div
-            className={cx('desktop:w-[50%] w-full pt-5')}
-        >
-            <form
-                onSubmit={formik.handleSubmit}
-            >
+        <div className={cx('desktop:w-[50%] w-full')}>
+            <form onSubmit={formik.handleSubmit}>
                 <TextField
                     className={cx('w-full')}
                     classWrapper={cx('mb-[24px]')}
@@ -93,7 +89,7 @@ const ProfileForm = (props) => {
                         onChange={handleWa}
                         classNames={{ checkboxContainerClasses: cx('flex', 'items-center') }}
                     >
-                        <label for="profile-whatsapptrue">
+                        <label htmlFor="profile-whatsapptrue">
                             <Typography variant="bd-2b">{t('customer:isWhatsapp')}</Typography>
                         </label>
                     </Checkbox>
@@ -126,7 +122,7 @@ const ProfileForm = (props) => {
                         onChange={() => setEditEmail(!editEmail)}
                         classNames={{ checkboxContainerClasses: cx('flex', 'items-center') }}
                     >
-                        <label for="profile-emailtrue">
+                        <label htmlFor="profile-emailtrue">
                             <Typography variant="bd-2b">{`${t('common:button:change')} Email`}</Typography>
                         </label>
                     </Checkbox>
@@ -159,7 +155,7 @@ const ProfileForm = (props) => {
                         onChange={() => setEditPass(!editPass)}
                         classNames={{ checkboxContainerClasses: cx('flex', 'items-center') }}
                     >
-                        <label for="profile-passwordtrue">
+                        <label htmlFor="profile-passwordtrue">
                             <Typography variant="bd-2b">{`${t('common:button:change')} Password`}</Typography>
                         </label>
                     </Checkbox>
@@ -210,10 +206,7 @@ const ProfileForm = (props) => {
                     />
                 </Show>
                 <div className={cx('pt-5')}>
-                    <Button
-                        type="submit"
-                        disabled={updateCustomerStatus.loading || changeCustomerPasswordStatus.loading}
-                    >
+                    <Button type="submit" disabled={updateCustomerStatus.loading || changeCustomerPasswordStatus.loading}>
                         <Typography className={cx('!text-neutral-white')}>{t('common:button:save')}</Typography>
                     </Button>
                 </div>

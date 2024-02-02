@@ -8,9 +8,7 @@ import cx from 'classnames';
 
 const NewsletterView = (props) => {
     // base props
-    const {
-        formik, loading, t, type, storeConfig, ...others
-    } = props;
+    const { formik, loading, t, type, storeConfig, ...others } = props;
 
     // magezon newsletter props
     const {
@@ -89,7 +87,7 @@ const NewsletterView = (props) => {
                         )}
                         {isCms && description ? (
                             <div className={cx('tablet:text-left', 'max-tablet:text-center')}>
-                                <p className={cx('text-md', 'leading-5', 'font-normal')}>{description}</p>
+                                <p className={cx('text-base', 'leading-5', 'font-normal')}>{description}</p>
                             </div>
                         ) : null}
                     </div>
@@ -110,7 +108,7 @@ const NewsletterView = (props) => {
                                     onSubmit={formik.handleSubmit}
                                 >
                                     <TextField
-                                        className={cx('max-tablet:w-full', 'tablet:max-desktop:w-[247px]')}
+                                        className={cx('max-tablet:w-full', 'tablet:max-desktop:w-[247px]', 'h-[44px]')}
                                         value={formik.values.email}
                                         id="email"
                                         name="email"
@@ -123,7 +121,7 @@ const NewsletterView = (props) => {
                                         }}
                                     />
                                     <Button
-                                        className={cx('py-[12px]', 'tablet:ml-2', 'max-tablet:mt-4', 'max-tablet:w-full', 'max-tablet:text-center')}
+                                        className={cx('py-[10px]', 'tablet:ml-2', 'max-tablet:mt-4', 'max-tablet:w-full', 'max-tablet:text-center')}
                                         variant="primary"
                                         loading={loading}
                                         disabled={loading}

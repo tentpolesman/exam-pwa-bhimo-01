@@ -279,11 +279,6 @@ items {
       currency
     }
   }
-  custom_seller{
-    seller_id
-    seller_city
-    seller_name
-  }
   product {
     id
     name
@@ -293,6 +288,12 @@ items {
     }
     url_key
     sku
+    seller {
+      seller_id
+      seller_city
+      seller_name
+      seller_path
+    }
   }
 }
 `;
@@ -704,9 +705,13 @@ export const addProductsToPromoCart = gql`
 `;
 
 export const getCheckoutScv2Url = gql`
-    mutation getCheckoutScv2Url($cart_id: String!) {
-        internalGetScv2Url(cart_id: $cart_id) {
-            url
-        }
-    }
+mutation generateScv2Url($cartId: String!) {
+  generateScv2Url(input: {
+    cartId: $cartId
+  }) {
+    message
+    scv2_url
+    success
+  }
+}
 `;

@@ -9,16 +9,17 @@ import propTypes from 'prop-types';
 import React from 'react';
 
 import Button from '@common_button';
+import { BREAKPOINTS } from '@core/theme/vars';
 
 import ChevronLeftIcon from '@heroicons/react/20/solid/ChevronLeftIcon';
 import ChevronRightIcon from '@heroicons/react/20/solid/ChevronRightIcon';
 
 const WidgetSliderCarousel = (props) => {
     // WIP : AUTOPLAY
-    // const { content, className, autoPlaySpeed = 4000 } = props;
-    const { content, className } = props;
+    const { content, className, autoPlaySpeed = 5000 } = props;
 
     const [activeTabs, setActiveTabs] = React.useState(0);
+    const [showNav, setShowNav] = React.useState(false);
     let countTabs = 0;
 
     const optionSlider = {
@@ -57,67 +58,81 @@ const WidgetSliderCarousel = (props) => {
         },
     };
 
+    React.useEffect(() => {
+        if (countTabs > 1) {
+            setShowNav(true);
+        }
+    }, [countTabs]);
+
     // WIP : AUTOPLAY
-    // setInterval(() => {
-    //     const activeCurrent = activeTabs;
-    //     if (activeCurrent + 1 === countTabs) {
-    //         setActiveTabs(0);
-    //     } else {
-    //         setActiveTabs(activeCurrent + 1);
-    //     }
-    // }, autoPlaySpeed);
+    React.useEffect(() => {
+        const autoPlayInterval = setInterval(() => {
+            if (activeTabs + 1 === countTabs) {
+                setActiveTabs(0);
+            } else {
+                setActiveTabs(activeTabs + 1);
+            }
+        }, autoPlaySpeed);
+
+        return () => clearInterval(autoPlayInterval);
+    }, [activeTabs]);
 
     if (content && content !== '') {
         return (
             <div className={className}>
                 <div className={cx('slider-container', 'h-[45px]', 'overflow-hidden', 'text-center', 'p-[8px_25%]')}>
-                    <Button
-                        onClick={() => {
-                            if (activeTabs - 1 < 0) {
-                                setActiveTabs(countTabs - 1);
-                            } else {
-                                setActiveTabs(activeTabs - 1);
-                            }
-                        }}
-                        className={cx(
-                            'absolute',
-                            'mobile:max-tablet:left-[0%]',
-                            'tablet:left-[5%]',
-                            'tablet:!top-[40%]',
-                            'mobile:max-tablet:!top-[50%]',
-                            '!py-0',
-                            'bg-[transparent]',
-                            'translate-y-[-50%]',
-                        )}
-                        variant="plain"
-                        iconOnly
-                        icon={<ChevronLeftIcon />}
-                        iconProps={{ className: '!text-neutral-white !opacity-100 mobile:max-tablet:h-[20px] mobile:max-tablet:w-[20px]' }}
-                    />
+                    {showNav ? (
+                        <Button
+                            onClick={() => {
+                                if (activeTabs - 1 < 0) {
+                                    setActiveTabs(countTabs - 1);
+                                } else {
+                                    setActiveTabs(activeTabs - 1);
+                                }
+                            }}
+                            className={cx(
+                                'absolute',
+                                'mobile:max-tablet:left-[0%]',
+                                'tablet:left-[5%]',
+                                'tablet:!top-[40%]',
+                                'mobile:max-tablet:!top-[50%]',
+                                '!py-0',
+                                'bg-[transparent]',
+                                'translate-y-[-50%]',
+                            )}
+                            variant="plain"
+                            iconOnly
+                            icon={<ChevronLeftIcon />}
+                            iconProps={{ className: '!text-neutral-white !opacity-100 mobile:max-tablet:h-[20px] mobile:max-tablet:w-[20px]' }}
+                        />
+                    ) : null}
+
                     {parse(content, options)}
-                    <Button
-                        onClick={() => {
-                            if (activeTabs + 1 === countTabs) {
-                                setActiveTabs(0);
-                            } else {
-                                setActiveTabs(activeTabs + 1);
-                            }
-                        }}
-                        className={cx(
-                            'absolute',
-                            'mobile:max-tablet:right-[0%]',
-                            'tablet:right-[5%]',
-                            'tablet:!top-[40%]',
-                            'mobile:max-tablet:!top-[50%]',
-                            '!py-0',
-                            'bg-[transparent]',
-                            'translate-y-[-50%]',
-                        )}
-                        variant="plain"
-                        iconOnly
-                        icon={<ChevronRightIcon />}
-                        iconProps={{ className: '!text-neutral-white !opacity-100 mobile:max-tablet:h-[20px] mobile:max-tablet:w-[20px]' }}
-                    />
+                    {showNav ? (
+                        <Button
+                            onClick={() => {
+                                if (activeTabs + 1 === countTabs) {
+                                    setActiveTabs(0);
+                                } else {
+                                    setActiveTabs(activeTabs + 1);
+                                }
+                            }}
+                            className={cx(
+                                'absolute',
+                                'mobile:max-tablet:right-[0%]',
+                                'tablet:right-[5%]',
+                                'tablet:!top-[40%]',
+                                'mobile:max-tablet:!top-[50%]',
+                                '!py-0',
+                                'bg-[transparent]',
+                                'translate-y-[-50%]',
+                            )}
+                            variant="plain"
+                            iconOnly
+                            icon={<ChevronRightIcon />}
+                            iconProps={{ className: '!text-neutral-white !opacity-100 mobile:max-tablet:h-[20px] mobile:max-tablet:w-[20px]' }}
+                        />
+                    ) : null}
                 </div>
                 <style jsx>
                     {`
@@ -133,7 +148,7 @@ const WidgetSliderCarousel = (props) => {
                             justify-content: center;
                         }
 
-                        @media (max-width: 768px) {
+                        @media (max-width: ${BREAKPOINTS.md - 1}px) {
                             .slider-container {
                                 height: auto;
                                 padding: 5px 10px;

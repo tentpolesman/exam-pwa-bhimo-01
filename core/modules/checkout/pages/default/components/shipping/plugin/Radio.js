@@ -2,176 +2,45 @@
 /* eslint-disable react/forbid-prop-types */
 /* eslint-disable max-len */
 /* eslint-disable no-unused-expressions */
-import Typography from '@common_typography';
 import Radio from '@common_forms/Radio';
-import cx from 'classnames';
 import propTypes from 'prop-types';
-import { getCartId } from '@helper_cartid';
-import { getLocalStorage } from '@helper_localstorage';
-import { useReactiveVar } from '@apollo/client';
-import { storeConfigVar } from '@root/core/services/graphql/cache';
-import React from 'react';
-
-const RadioItem = (props) => {
-    const { value, label, className } = props;
-    const customStyle = cx('', className);
-    return <Radio variant="single" value={value} size="sm" label={label || ''} className={customStyle} />;
-};
+import React, { useEffect, useState } from 'react';
 
 // Inspired by blueprintjs
 function CustomRadio({
-    valueData = [],
-    onChange = () => { },
-    value = '',
-    name = 'radio',
-    ariaLabel = 'radio',
-    label = '',
-    CustomItem,
-    className = {},
-    classContainer = {},
-    classItem = {},
-    flex = 'column',
-    error = false,
-    errorMessage = '',
-    propsItem = {},
-    disabled = false,
-    ComponentOptional = () => { },
-    storeConfig,
-    isShipping = false,
+    id = `radio-${Math.random(12)}`, valueData = [], onChange = () => {}, value = '', CustomItem, disabled = false, storeConfig, sellerId,
 }) {
-    const storeConfigLocalStorage = useReactiveVar(storeConfigVar);
+    const [valueItem, setValueItem] = useState('');
+    useEffect(() => {
+        if (value && value.length > 0) {
+            const items = value.filter((item) => item.seller_id === sellerId && item.name.carrier_code && item.name.method_code)
+                .map((item) => `${item.name.carrier_code}_${item.name.method_code}_${sellerId}`);
+            if (items && items.length > 0) {
+                setValueItem(items[0]);
+            }
+        }
+    }, [value]);
 
-    const rootStyle = cx('flex', className);
-    const containerStyle = cx(flex === 'column' ? 'flex flex-col' : 'flex flex-row', classContainer, '');
-
-    const handleChange = (event) => {
-        !disabled && onChange(event.target.value);
-    };
-
-    const handleChangeCustom = (val) => {
-        !disabled && onChange(val);
-    };
     return (
-        <div className={rootStyle}>
-            <Typography variant="bd-2" className="uppercase">
-                {label}
-            </Typography>
-            <Radio
-                ariaLabel={ariaLabel}
-                name={name}
-                value={value}
-                onChange={handleChange}
-                classes={{
-                    root: containerStyle,
-                }}
-            >
-                {valueData.map((item, index) => {
-                    if (CustomItem) {
-                        if (storeConfigLocalStorage.enable_oms_multiseller === '1') {
-                            let isTrue;
-                            let itemValue;
-                            let matchDataValue;
-                            const cartIdCookie = getCartId();
-                            const checkoutShippingMethod = getLocalStorage('checkout_shipping_method');
-
-                            if (isShipping) {
-                                if (value && value.length > 0) {
-                                    if (!value[0].seller_id && checkoutShippingMethod && checkoutShippingMethod.length > 0) {
-                                        const matchData = checkoutShippingMethod.find((items) => items.cartId === cartIdCookie);
-                                        if (matchData && matchData.data && matchData.data.length === value.length) {
-                                            if (matchData.data[0].name.method_code === value[0].name.method_code) {
-                                                itemValue = `${item.value.split('_')[1]}_${item.value.split('_')[2]}`;
-                                                matchDataValue = matchData.data.find((items) => items.seller_id === item.value.split('_')[2]);
-                                                isTrue = itemValue === `${matchDataValue.name.method_code}_${matchDataValue.seller_id}`;
-                                                return (
-                                                    <>
-                                                        <CustomItem
-                                                            key={index}
-                                                            {...item}
-                                                            selected={isTrue}
-                                                            onChange={handleChangeCustom}
-                                                            className={classItem}
-                                                            storeConfig={storeConfig}
-                                                            {...propsItem}
-                                                        />
-                                                        {ComponentOptional(item)}
-                                                    </>
-                                                );
-                                            }
-                                        } else {
-                                            isTrue = false;
-                                        }
-                                    } else {
-                                        isTrue = false;
-                                    }
-
-                                    itemValue = `${item.value.split('_')[1]}_${item.value.split('_')[2]}`;
-                                    if (value.find((items) => items.seller_id === item.value.split('_')[2])) {
-                                        isTrue =
-                                            itemValue ===
-                                            `${value.find((items) => items.seller_id === item.value.split('_')[2]).name.method_code}_${value.find((items) => items.seller_id === item.value.split('_')[2]).seller_id
-                                            }`;
-                                    } else {
-                                        isTrue = false;
-                                    }
-                                } else {
-                                    isTrue = false;
-                                }
-                                return (
-                                    <>
-                                        <CustomItem
-                                            key={index}
-                                            {...item}
-                                            selected={isTrue}
-                                            onChange={handleChangeCustom}
-                                            className={classItem}
-                                            storeConfig={storeConfig}
-                                            {...propsItem}
-                                        />
-                                        {ComponentOptional(item)}
-                                    </>
-                                );
-                            }
-
-                            return (
-                                <>
-                                    <CustomItem
-                                        key={index}
-                                        {...item}
-                                        selected={JSON.stringify(value) === JSON.stringify(item.value)}
-                                        onChange={handleChangeCustom}
-                                        className={classItem}
-                                        storeConfig={storeConfig}
-                                        {...propsItem}
-                                    />
-                                    {ComponentOptional(item)}
-                                </>
-                            );
-                        }
-                        return (
-                            <>
-                                <CustomItem
-                                    key={index}
-                                    {...item}
-                                    selected={JSON.stringify(value) === JSON.stringify(item.value)}
-                                    onChange={handleChangeCustom}
-                                    className={classItem}
-                                    storeConfig={storeConfig}
-                                    {...propsItem}
-                                />
-                                {ComponentOptional(item)}
-                            </>
-                        );
-                    }
-                    return <RadioItem key={index} {...item} {...propsItem} className={classItem} />;
-                })}
-            </Radio>
-            {error && (
-                <Typography color="text-red">
-                    {errorMessage}
-                </Typography>
-            )}
-        </div>
+        <Radio
+            id={id}
+            value={valueItem}
+            onChange={onChange}
+            data={valueData}
+            CustomItem={CustomItem}
+            classContainer=""
+            storeConfig={storeConfig}
+            propsItem={{
+                borderBottom: false,
+                classContent: '',
+            }}
+            className="!mb-0"
+            classNames={{
+                radioGroupClasses: '!gap-2',
+            }}
+            size="sm"
+            disabled={disabled}
+        />
     );
 }
 
@@ -179,39 +48,15 @@ CustomRadio.propTypes = {
     valueData: propTypes.array.isRequired,
     onChange: propTypes.func,
     value: propTypes.array,
-    name: propTypes.string,
-    ariaLabel: propTypes.string,
-    label: propTypes.string,
     CustomItem: propTypes.element.isRequired,
-    className: propTypes.object,
-    classContainer: propTypes.object,
-    classItem: propTypes.object,
-    flex: propTypes.string,
-    error: propTypes.bool,
-    errorMessage: propTypes.string,
-    propsItem: propTypes.object,
     disabled: propTypes.bool,
-    ComponentOptional: propTypes.func,
     storeConfig: propTypes.object.isRequired,
-    isShipping: propTypes.bool,
 };
 
 CustomRadio.defaultProps = {
-    onChange: () => { },
+    onChange: () => {},
     value: '',
-    name: 'radio',
-    ariaLabel: 'radio',
-    label: '',
-    className: {},
-    classContainer: {},
-    classItem: {},
-    flex: 'column',
-    error: false,
-    errorMessage: '',
-    propsItem: {},
     disabled: false,
-    ComponentOptional: () => { },
-    isShipping: false,
 };
 
 export default CustomRadio;

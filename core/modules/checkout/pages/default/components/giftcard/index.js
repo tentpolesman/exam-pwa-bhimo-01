@@ -1,15 +1,21 @@
 import { modules } from '@config';
 import gqlService from '@core_modules/checkout/services/graphql';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+    selectCheckoutState, setCheckoutData, setIsNewUpdate, setLoading,
+} from '@core_modules/checkout/redux/checkoutSlice';
 
 const GiftCard = (props) => {
     const {
         t,
-        checkout,
-        setCheckout,
         handleOpenMessage,
         formik,
         GiftCardView,
     } = props;
+
+    const dispatch = useDispatch();
+    const checkout = useSelector(selectCheckoutState);
+
     const [applyGiftCardToCart] = gqlService.applyGiftCardToCart({ onError: () => { } });
     const [removeGiftCardFromCart] = gqlService.removeGiftCardFromCart({ onError: () => { } });
     let giftCards = [];
@@ -31,22 +37,14 @@ const GiftCard = (props) => {
     }
 
     const handleApplyGift = async (code = null) => {
-        let state = {
-            ...checkout,
-            loading: {
-                ...checkout.loading,
-                all: false,
-                shipping: false,
-                payment: true,
-                extraFee: false,
-                order: true,
-            },
-        };
-        state.loading.giftCard = true;
-        state.newupdate = true;
-        setCheckout(state);
+        dispatch(setLoading({
+            order: true,
+            giftCard: true,
+            payment: true,
+        }));
+        dispatch(setIsNewUpdate(true));
 
-        const cartId = state.data.cart.id;
+        const cartId = checkout.data.cart.id;
         const finalCode = code || formik.values.giftCard;
 
         const result = await applyGiftCardToCart({
@@ -56,13 +54,14 @@ const GiftCard = (props) => {
             },
         });
 
-        state = { ...checkout };
         if (result && result.data && result.data?.applyGiftCardToCart?.cart) {
             const updatedCart = {
-                ...state.data.cart,
+                ...checkout.data.cart,
                 ...result.data.applyGiftCardToCart.cart,
             };
-            state.data.cart = updatedCart;
+            dispatch(setCheckoutData({
+                cart: updatedCart,
+            }));
             formik.setFieldValue('giftCard', '');
             handleOpenMessage({
                 variant: 'success',
@@ -72,38 +71,22 @@ const GiftCard = (props) => {
             formik.setFieldError('giftCard', t('checkout:message:giftCardError'));
         }
 
-        state.loading.giftCard = false;
-        const finalState = {
-            ...state,
-            loading: {
-                ...checkout.loading,
-                all: false,
-                shipping: false,
-                payment: false,
-                extraFee: false,
-                order: false,
-            },
-        };
-        setCheckout(finalState);
+        dispatch(setLoading({
+            order: false,
+            giftCard: false,
+            payment: false,
+        }));
     };
 
     const handleRemoveGift = async (code) => {
-        let state = {
-            ...checkout,
-            loading: {
-                ...checkout.loading,
-                all: false,
-                shipping: false,
-                payment: true,
-                extraFee: false,
-                order: true,
-            },
-        };
-        state.loading.giftCard = true;
-        state.newupdate = true;
-        setCheckout(state);
+        dispatch(setLoading({
+            order: true,
+            giftCard: true,
+            payment: true,
+        }));
+        dispatch(setIsNewUpdate(true));
 
-        const cartId = state.data.cart.id;
+        const cartId = checkout.data.cart.id;
         const result = await removeGiftCardFromCart({
             variables: {
                 cartId,
@@ -111,32 +94,26 @@ const GiftCard = (props) => {
             },
         });
 
-        state = { ...checkout };
         if (result && result.data) {
             const updatedCart = {
-                ...state.data.cart,
+                ...checkout.data.cart,
                 ...result.data.removeGiftCardFromCart.cart,
             };
-            state.data.cart = updatedCart;
+
+            dispatch(setCheckoutData({
+                cart: updatedCart,
+            }));
             handleOpenMessage({
                 variant: 'success',
                 text: t('checkout:message:giftCardRemoved'),
             });
         }
 
-        state.loading.giftCard = false;
-        const finalState = {
-            ...state,
-            loading: {
-                ...checkout.loading,
-                all: false,
-                shipping: false,
-                payment: false,
-                extraFee: false,
-                order: false,
-            },
-        };
-        setCheckout(finalState);
+        dispatch(setLoading({
+            order: false,
+            giftCard: false,
+            payment: false,
+        }));
     };
 
     if (modules.giftcard.enabled) {

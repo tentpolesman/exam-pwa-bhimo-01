@@ -20,13 +20,6 @@ const GroupedProductOption = ({
 
     const [actionAddToCart] = addProductsToCart();
 
-    let cartId = '';
-    let isLogin = '';
-
-    if (typeof window !== 'undefined') {
-        isLogin = getLoginInfo();
-        cartId = getCartId();
-    }
     const [getGuestCartId] = queryGetGuestCartId();
     const cartUser = getCustomerCartId();
     const { loading: loadData, data: products } = getGroupedProduct(storeConfig, { variables: { sku } });
@@ -46,6 +39,8 @@ const GroupedProductOption = ({
     }
 
     const handleAddToCart = async () => {
+        const isLogin = getLoginInfo();
+        let cartId = getCartId();
         await setLoading(true);
         const cartItems = [];
         const keys = Object.keys(itemsCart);

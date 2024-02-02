@@ -12,9 +12,9 @@ import MagezonLink from '@core_modules/cms/components/cms-renderer/magezon/Magez
 import { getStoreHost } from '@helpers/config';
 import ChevronLeft from '@heroicons/react/20/solid/ChevronLeftIcon';
 import ChevronRight from '@heroicons/react/20/solid/ChevronRightIcon';
-import { BREAKPOINTS } from '@root/core/theme/vars';
+import { BREAKPOINTS } from '@core/theme/vars';
 import cx from 'classnames';
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, Fragment } from 'react';
 import Slider from 'react-slick';
 import useMediaQuery from '@hook/useMediaQuery';
 
@@ -90,6 +90,7 @@ const MagezonSliderContent = (props) => {
         image,
         background_type,
         slider_height,
+        slider_height_mobile,
         button1,
         button1_font_size,
         button2,
@@ -116,9 +117,11 @@ const MagezonSliderContent = (props) => {
         button2_hover_color,
         link_type,
         storeConfig,
-        lazy,
+        preload,
         width,
         height,
+        width_mobile,
+        height_mobile,
         autoplay,
         loop,
         control,
@@ -126,7 +129,7 @@ const MagezonSliderContent = (props) => {
     } = props;
     const mediaUrl = `${getStoreHost()}media`;
     const { isMobile } = useMediaQuery();
-    const sliderHeight = isMobile ? '310px' : `${slider_height}px`;
+    const sliderHeight = isMobile ? `${slider_height_mobile}` : `${slider_height}px`;
 
     const otherButton1Props = {
         button_border_color: button1_border_color,
@@ -251,14 +254,24 @@ const MagezonSliderContent = (props) => {
                     <div className="magezon-slide-image">
                         <Image
                             src={`${mediaUrl}/${image}`}
+                            srcMobile={`${mediaUrl}/${image}`}
                             alt={heading}
                             width={width}
                             height={height}
+                            widthMobile={width_mobile}
+                            heightMobile={height_mobile}
                             useContainer={false}
                             storeConfig={storeConfig}
-                            lazy={lazy}
-                            preload={!lazy}
+                            preload={preload}
                             className="flex w-full h-full"
+                            style={{
+                                width: '100%',
+                                height: '100%',
+                                position: 'absolute',
+                                top: '0',
+                                left: '0',
+                                objectFit: 'cover',
+                            }}
                         />
                     </div>
                 </div>
@@ -379,12 +392,15 @@ const MagezonSlider = (props) => {
 
     const [slideIdx, setSlideIndex] = useState(0);
     const { unhoverStyle, hoverStyle } = useHoverStyle(image_hover_effect);
-    const { isMobile } = useMediaQuery();
 
-    let slideHeight = !isMobile ? storeConfig.pwa?.magezon_slider_desktop_height : 310;
+    let slideHeight = storeConfig.pwa?.magezon_slider_desktop_height;
     let slideWidth = storeConfig.pwa?.magezon_slider_desktop_width;
+    let slideHeightMobile = storeConfig.pwa?.magezon_slider_mobile_height;
+    let slideWidthMobile = storeConfig.pwa?.magezon_slider_mobile_width;
     slideHeight = typeof slideHeight === 'string' ? parseInt(slideHeight, 10) : slideHeight;
     slideWidth = typeof slideWidth === 'string' ? parseInt(slideWidth, 10) : slideWidth;
+    slideHeightMobile = typeof slideHeightMobile === 'string' ? parseInt(slideHeightMobile, 10) : slideHeightMobile;
+    slideWidthMobile = typeof slideWidthMobile === 'string' ? parseInt(slideWidthMobile, 10) : slideWidthMobile;
 
     const navSize = owl_nav_size === 'mini' ? 10 : owl_nav_size === 'small' ? 15 : owl_nav_size === 'normal' ? 20 : 25;
     let sliderRef = useRef();
@@ -397,7 +413,7 @@ const MagezonSlider = (props) => {
         slidesToScroll: 1,
         autoplay: owl_autoplay,
         autoplaySpeed: owl_autoplay_timeout || 2000,
-        adaptiveHeight: true,
+        adaptiveHeight: false,
         pauseOnHover: true,
         lazyLoad: owl_lazyLoad,
         rtl: owl_rtl,
@@ -515,33 +531,39 @@ const MagezonSlider = (props) => {
                 <div className="magezon-slider-inner z-auto">
                     <Slider ref={(slider) => (sliderRef = slider)} {...settings}>
                         {items.map((item, i) => (
-                            <>
+                            <Fragment key={i}>
                                 {item?.link_type !== 'full' ? (
                                     <MagezonSliderContent
                                         key={i}
-                                        slider_height={slider_height}
+                                        slider_height={slideHeight}
+                                        slider_height_mobile={slideHeightMobile}
                                         content_position={content_position}
                                         height={slideHeight}
                                         width={slideWidth}
+                                        height_mobile={slideHeightMobile}
+                                        width_mobile={slideWidthMobile}
                                         storeConfig={storeConfig}
                                         {...item}
-                                        lazy={i !== 0}
+                                        preload={i === 0}
                                     />
                                 ) : (
                                     <MagezonLink link={item?.slide_link}>
                                         <MagezonSliderContent
                                             key={i}
-                                            slider_height={slider_height}
+                                            slider_height={slideHeight}
+                                            slider_height_mobile={slideHeightMobile}
                                             content_position={content_position}
                                             height={slideHeight}
                                             width={slideWidth}
+                                            height_mobile={slideHeightMobile}
+                                            width_mobile={slideWidthMobile}
                                             storeConfig={storeConfig}
                                             {...item}
-                                            lazy={i !== 0}
+                                            preload={i === 0}
                                         />
                                     </MagezonLink>
                                 )}
-                            </>
+                            </Fragment>
                         ))}
                     </Slider>
                 </div>
@@ -672,16 +694,20 @@ const MagezonSlider = (props) => {
                         transition: transform 0.5s;
                     }
                     .magezon-slider--dot-nav-item {
-                        ${owl_active_background_color ? `
+                        ${owl_active_background_color
+            ? `
                             background-color: ${owl_background_color} !important;
                             border: unset !important;
-                        ` : ''};
+                        `
+            : ''};
                     }
                     .magezon-slider--dot-nav-item-active {
-                        ${owl_active_background_color ? `
+                        ${owl_active_background_color
+            ? `
                             background-color: ${owl_active_background_color} !important;
                             border: unset !important;
-                        ` : ''};
+                        `
+            : ''};
                     }
                 `}
             </style>

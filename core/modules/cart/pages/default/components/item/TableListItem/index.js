@@ -15,11 +15,9 @@ import ConfirmationDelete from '@core_modules/cart/pages/default/components/conf
 import React from 'react';
 import Show from '@common/Show';
 import TableItem from '@core_modules/cart/pages/default/components/item/TableListItem/TableItem';
+import Link from 'next/link';
 
-const TableListProduct = ({
-    dataCart, t, deleteItem, handleFeed, toggleEditDrawer, storeConfig = {}, currencyCache,
-    ...other
-}) => {
+const TableListProduct = ({ dataCart, t, deleteItem, handleFeed, toggleEditDrawer, storeConfig = {}, currencyCache, ...other }) => {
     const [confirmDel, setConfirmDel] = React.useState(false);
     const [selectDelete, setSelectDelet] = React.useState(null);
     const confirmDelete = (item) => {
@@ -54,10 +52,10 @@ const TableListProduct = ({
         const unGroupedData = data;
         const groupData = unGroupedData.reduce(
             // eslint-disable-next-line no-shadow
-            (groupData, { SimpleMiniCustomizable, id, note, custom_price, product, quantity, custom_seller, ...etc }) => {
-                let item = groupData.find((p) => p.seller_id === custom_seller.seller_id);
+            (groupData, { SimpleMiniCustomizable, id, note, custom_price, product, quantity, ...etc }) => {
+                let item = groupData.find((p) => p.seller_id === product.seller.seller_id);
                 if (!item) {
-                    item = { seller_id: custom_seller.seller_id, seller_name: custom_seller.seller_name, children: [] };
+                    item = { seller_id: product.seller.seller_id, seller_name: product.seller.seller_name, children: [] };
                     groupData.push(item);
                 }
                 let child = item.children.find((ch) => ch.name === product.name);
@@ -80,6 +78,8 @@ const TableListProduct = ({
         cartItemBySeller = groupData;
     }
 
+    const isMultiSeller = storeConfig.enable_oms_multiseller === 1 || storeConfig.enable_oms_multiseller === '1';
+
     return (
         <>
             <ConfirmationDelete t={t} open={confirmDel} handleDelete={handleDelete} handleCancel={cancelDelete} />
@@ -87,25 +87,50 @@ const TableListProduct = ({
                 <thead>
                     <tr className="border-b-[1px] border-b-neutral-200">
                         <th align="left" className="pb-4">
-                            <Typography className="font-medium text-md">
-                                {`${t('cart:itemDetail')} (${dataCart.total_quantity || 0})`}
-                            </Typography>
+                            <Typography className="font-medium text-base">{`${t('cart:itemDetail')} (${dataCart.total_quantity || 0})`}</Typography>
                         </th>
                         <th align="center" className="pb-4">
-                            <Typography className="font-medium text-md">{t('common:title:qty')}</Typography>
+                            <Typography className="font-medium text-base">{t('common:title:qty')}</Typography>
                         </th>
                         <th align="right" className="pb-4">
-                            <Typography className="font-medium text-md">{t('common:subtotal')}</Typography>
+                            <Typography className="font-medium text-base">{t('common:subtotal')}</Typography>
                         </th>
                     </tr>
                 </thead>
                 <tbody>
-                    <Show when={storeConfig && (!storeConfig.enable_oms_multiseller || storeConfig.enable_oms_multiseller === '0')}>
+                    <Show when={storeConfig && !isMultiSeller}>
                         {data &&
                             data.length > 0 &&
                             data.map((val, key) => (
-                                    <React.Fragment key={key}>
+                                <React.Fragment key={key}>
+                                    <TableItem
+                                        {...val}
+                                        storeConfig={storeConfig}
+                                        currencyCache={currencyCache}
+                                        confirmDelete={confirmDelete}
+                                        t={t}
+                                        {...other}
+                                    />
+                                </React.Fragment>
+                            ))}
+                    </Show>
+
+                    <Show when={storeConfig && isMultiSeller && cartItemBySeller && cartItemBySeller.length > 0}>
+                        {cartItemBySeller.map((seller, key) => (
+                            <React.Fragment key={key}>
+                                <tr>
+                                    <th colSpan={4} align="left" className="bg-neutral-100 p-2">
+                                        <Link href={`/seller/${seller?.seller_path}`}>
+                                            <Typography color="text-primary" variant="bd-2a">
+                                                {seller.seller_name ? seller.seller_name : 'Default Store'}
+                                            </Typography>
+                                        </Link>
+                                    </th>
+                                </tr>
+                                <Show when={seller && seller.children && seller.children.length > 0}>
+                                    {seller?.children.map((val, keyItem) => (
                                         <TableItem
+                                            key={keyItem}
                                             {...val}
                                             storeConfig={storeConfig}
                                             currencyCache={currencyCache}
@@ -113,45 +138,13 @@ const TableListProduct = ({
                                             t={t}
                                             {...other}
                                         />
-                                    </React.Fragment>
-                                ))}
+                                    ))}
+                                </Show>
+                            </React.Fragment>
+                        ))}
                     </Show>
                 </tbody>
             </table>
-            <Show when={storeConfig && storeConfig.enable_oms_multiseller === '1' && cartItemBySeller && cartItemBySeller.length > 0}>
-                <table className="table-auto">
-                    {
-                        cartItemBySeller.map((seller, key) => (
-                            <React.Fragment key={key}>
-                                <thead>
-                                    <tr>
-                                        <th colSpan={4}>
-                                            <Typography variant="bd-2b" type="bold">
-                                                {seller.seller_name ? seller.seller_name : 'Default Store'}
-                                            </Typography>
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <Show when={seller && seller.children && seller.children.length > 0}>
-                                    {
-                                        seller?.children.map((val, keyItem) => (
-                                            <TableItem
-                                                key={keyItem}
-                                                {...val}
-                                                storeConfig={storeConfig}
-                                                currencyCache={currencyCache}
-                                                confirmDelete={confirmDelete}
-                                                t={t}
-                                                {...other}
-                                            />
-                                        ))
-                                    }
-                                </Show>
-                            </React.Fragment>
-                        ))
-                    }
-                </table>
-            </Show>
         </>
     );
 };

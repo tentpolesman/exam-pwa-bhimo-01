@@ -1,26 +1,22 @@
 import Layout from '@layout';
-import CustomerLayout from '@layout_customer';
-import { debuging } from '@config';
 import { getStoreCredit } from '@core_modules/storecredit/services/graphql';
-import { useReactiveVar } from '@apollo/client';
-import { currencyVar } from '@root/core/services/graphql/cache';
+import { currencyVar } from '@core/services/graphql/cache';
 
 const PageStoreCredit = (props) => {
-    const {
-        t, Content, pageConfig, rowsPerPage = 10, ErrorView,
-    } = props;
+    const { t, Content } = props;
     const config = {
         title: t('storecredit:title'),
         header: 'relative', // available values: "absolute", "relative", false (default)
         headerTitle: t('storecredit:title'),
         bottomNav: false,
+        tagSelector: 'swift-page-storecredit',
     };
 
     // cache currency
-    const currencyCache = useReactiveVar(currencyVar);
+    const currencyCache = currencyVar();
 
     const [page, setPage] = React.useState(1);
-    const [perPage, setRowsPerPage] = React.useState(rowsPerPage);
+    const [perPage, setRowsPerPage] = React.useState(10);
 
     const handleChangePage = (value) => {
         setPage(value);
@@ -43,25 +39,17 @@ const PageStoreCredit = (props) => {
         pageSizeStoreCredit: perPage,
         currentPageStoreCredit: page,
     });
-    if (error) {
-        return (
-            <Layout {...props} pageConfig={pageConfig || config}>
-                <CustomerLayout {...props}>
-                    <ErrorView {...props} message={debuging.originalError ? error.message.split(':')[1] : t('common:error:fetchError')} />
-                </CustomerLayout>
-            </Layout>
-        );
-    }
 
     if (data) {
         storeCredit = data.customer.store_credit;
     }
     return (
-        <Layout {...props} pageConfig={pageConfig || config}>
+        <Layout {...props} pageConfig={config}>
             <Content
                 t={t}
                 storeCredit={storeCredit}
                 loading={loading}
+                error={error}
                 rowsPerPage={perPage}
                 page={page}
                 handleChangePage={handleChangePage}

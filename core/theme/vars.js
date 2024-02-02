@@ -1,4 +1,3 @@
-export const MAX_WIDTH = '1440px';
 export const BREAKPOINTS = {
     xs: 0,
     xm: 480, // reminder to review or delete this later
@@ -101,29 +100,37 @@ export const COLORS = {
         },
     },
 };
-export const LETTER_SPACING = {
-    tighter: '-0.3px',
-    tight: '-0.2px',
-    normal: '0px',
-    loose: '0.1px',
-};
 export const LINE_HEIGHT = {
-    sm: '12px',
-    md: '16px',
-    lg: '18px',
-    '2lg': '20px',
-    xl: '24px',
-    '2xl': '32px',
-    '3xl': '40px',
+    xs: '12px',
+    sm: '16px',
+    base: '20px',
+    lg: '24px',
+    xl: '28px',
+    '2xl': '28px',
+    '3xl': '32px',
+    '4xl': '36px',
+    '5xl': '40px',
+    '6xl': '64px',
+    '7xl': '72px',
+    '8xl': '96px',
+    '9xl': '128px',
+    '10xl': '160px',
 };
 export const FONT_SIZE = {
     xs: '10px',
     sm: '12px',
-    md: '14px',
-    '2md': '16px',
-    lg: '20px',
-    xl: '24px',
-    '2xl': '30px',
+    base: '14px',
+    lg: '16px',
+    xl: '18px',
+    '2xl': '20px',
+    '3xl': '24px',
+    '4xl': '30px',
+    '5xl': '36px',
+    '6xl': '48px',
+    '7xl': '60px',
+    '8xl': '72px',
+    '9xl': '96px',
+    '10xl': '128px',
 };
 export const FONT_FAMILY = {
     sans: ['var(--font-inter)'],
@@ -154,6 +161,8 @@ export const ZINDEX = {
     toast: 1202,
     'backdrop-dialog': 1200,
     dialog: 1201,
+    'backdrop-drawer': 1150,
+    drawer: 1151,
 };
 
 export default {};

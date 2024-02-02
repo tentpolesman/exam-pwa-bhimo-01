@@ -2,8 +2,6 @@
 import { useQuery, useLazyQuery } from '@apollo/client';
 import * as Schema from '@services/graphql/schema/pwa_config';
 
-export const vesMenuConfig = () => useQuery(Schema.vesMenuConfig);
-
 export const popupInstallConfig = () => useQuery(Schema.popupInstallConfig);
 
 export const shareIconConfig = () => useQuery(Schema.shareIconConfig);
@@ -30,18 +28,11 @@ export const loginConfig = () => useQuery(Schema.loginConfig);
 
 export const registerConfig = () => useQuery(Schema.registerConfig);
 
-export const featuresConfig = () => useQuery(Schema.featuresConfig);
-
-export const categoryListConfig = () => useQuery(Schema.categoryListConfig);
-
-export const bannerSliderConfig = () => useQuery(Schema.bannerSliderConfig);
-
 export const facebookMetaConfig = () => useQuery(Schema.facebookMetaConfig);
 
 export const productListConfig = () => useLazyQuery(Schema.productListConfig);
 
 export default {
-    vesMenuConfig,
     popupInstallConfig,
     shareIconConfig,
     contactConfig,
@@ -55,8 +46,5 @@ export default {
     quickViewConfig,
     loginConfig,
     registerConfig,
-    featuresConfig,
-    categoryListConfig,
-    bannerSliderConfig,
     facebookMetaConfig,
 };

@@ -9,15 +9,23 @@ import cx from 'classnames';
 import React from 'react';
 import gqlService from '@core_modules/checkout/services/graphql';
 import Dialog from '@common_dialog';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+    selectCheckoutState, setCheckoutData, setErrorState, setSelectedStore,
+} from '@core_modules/checkout/redux/checkoutSlice';
 
 const ModalSelectStore = ({
-    open, setOpen, checkout, setCheckout,
+    open, setOpen,
     listStores = [],
 }) => {
     const { t } = useTranslation(['common', 'checkout', 'validate']);
     const [stores, setStores] = React.useState(listStores);
     const [search, setSearch] = React.useState('');
     const [setPickupStore] = gqlService.setPickupStore();
+
+    const dispatch = useDispatch();
+    const checkout = useSelector(selectCheckoutState);
+
     const [selected, setSelected] = React.useState({
         key: null,
         item: null,
@@ -56,24 +64,20 @@ const ModalSelectStore = ({
                     value: method.code,
                     image: null,
                 }));
-                await setCheckout({
-                    ...checkout,
-                    data: {
-                        ...checkout.data,
-                        cart: {
-                            ...checkout.data.cart,
-                            ...res.data.setPickupStore,
-                        },
-                        paymentMethod,
+                dispatch(setCheckoutData({
+                    cart: {
+                        ...checkout.data.cart,
+                        ...res.data.setPickupStore,
                     },
-                    selectStore: {
-                        ...selected.item,
-                    },
-                    error: {
-                        selectStore: false,
-                        pickupInformation: false,
-                    },
-                });
+                    paymentMethod,
+                }));
+                dispatch(setSelectedStore({
+                    ...selected.item,
+                }));
+                dispatch(setErrorState({
+                    selectStore: false,
+                    pickupInformation: false,
+                }));
                 await setLoading(false);
                 setOpen();
             }).catch((err) => {
@@ -85,16 +89,13 @@ const ModalSelectStore = ({
                 setLoading(false);
             });
         } else {
-            await setCheckout({
-                ...checkout,
-                selectStore: {
-                    ...selected.item,
-                },
-                error: {
-                    ...checkout.error,
-                    pickupInformation: true,
-                },
-            });
+            dispatch(setSelectedStore({
+                ...selected.item,
+            }));
+            dispatch(setErrorState({
+                selectStore: false,
+                pickupInformation: true,
+            }));
 
             await setLoading(false);
             setOpen();

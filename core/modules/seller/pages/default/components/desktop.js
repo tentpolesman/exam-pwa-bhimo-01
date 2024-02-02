@@ -3,15 +3,15 @@
 /* eslint-disable @next/next/no-img-element */
 import React from 'react';
 import Link from 'next/link';
-import { breakPointsUp } from '@helper_theme';
 import Banner from '@common_slick/Banner';
+import useMediaQuery from '@root/core/hooks/useMediaQuery';
 
 function DesktopContent(props) {
     const { data, storeConfig } = props;
-    const desktop = breakPointsUp('sm');
+    const { isDesktop } = useMediaQuery();
 
     return (
-        <div>
+        <div className="flex flex-col gap-5">
             {data && data.map((item) => {
                 switch (item.type) {
                 case 'carousel':
@@ -20,7 +20,17 @@ function DesktopContent(props) {
                         link: widget.type === 'image' ? widget.hyperlink : '',
                         urlEmbed: widget.type === 'video' ? widget.url : '',
                     }));
-                    return <Banner data={dataBanner} showArrow={desktop} storeConfig={storeConfig} />;
+                    return (
+                        <div className="h-max w-full">
+                            <Banner
+                                data={dataBanner}
+                                showArrow={isDesktop}
+                                storeConfig={storeConfig}
+                                height={400}
+                                width={800}
+                            />
+                        </div>
+                    );
                 case 'single':
                     return (
                         <div className="flex flex-row">

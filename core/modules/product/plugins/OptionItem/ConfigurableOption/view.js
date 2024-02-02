@@ -1,5 +1,6 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
+import Alert from '@common_alert';
 
 // import Item from '@plugin_optionitem/ConfigurableOption/Item';
 // import Footer from '@plugin_optionitem/components/Footer';
@@ -15,6 +16,8 @@ const ConfigurableView = (props) => {
         ...other
     } = props;
     const updatedOptions = customPos ? [...options].sort((a, b) => a.options.position - b.options.position) : options;
+    // Check if every option has 'content' property and its value is not falsey.
+    const checkSwatchData = updatedOptions.every((opt) => opt.value.every((_optVal) => typeof _optVal.content !== 'undefined' && _optVal.content));
 
     if (loadingProduct) {
         return (
@@ -27,7 +30,7 @@ const ConfigurableView = (props) => {
     return (
         <>
             <div className="flex flex-col gap-2 tablet:gap-4">
-                {showSwatches && updatedOptions.map((item, index) => (
+                {showSwatches && checkSwatchData && updatedOptions?.map((item, index) => (
                     <Item
                         key={index}
                         option={item.options}
@@ -38,6 +41,9 @@ const ConfigurableView = (props) => {
                         className={`product-configurableOption-${item.options.label}`}
                     />
                 ))}
+                {showSwatches && !checkSwatchData ? (
+                    <Alert severity="error">{t('common:error:wentWrong')}</Alert>
+                ) : null}
             </div>
             {
                 React.isValidElement(CustomFooter)

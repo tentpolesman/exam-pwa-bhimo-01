@@ -137,7 +137,7 @@ const GenerateFilter = (props) => {
                                 variant="tertiary"
                                 onClick={() => setOpenMore(!openMore)}
                                 classNameText="!justify-start"
-                                className="!p-0 !shadow-none"
+                                className="swift-action-other-filter-options !p-0 !shadow-none"
                             >
                                 <span className="text-neutral-900 hover:text-primary underline capitalize">
                                     {
@@ -187,7 +187,7 @@ const GenerateFilter = (props) => {
                                 variant="tertiary"
                                 onClick={() => setOpenMore(!openMore)}
                                 classNameText="!justify-start"
-                                className="!p-0 !shadow-none"
+                                className="swift-action-other-filter-options !p-0 !shadow-none"
                             >
                                 <span className="text-neutral-900 hover:text-primary underline capitalize">
                                     {
@@ -273,7 +273,7 @@ const GenerateFilter = (props) => {
                                 variant="tertiary"
                                 onClick={() => setOpenMore(!openMore)}
                                 classNameText="!justify-start"
-                                className="!p-0 !shadow-none"
+                                className="swift-action-other-filter-options !p-0 !shadow-none"
                             >
                                 <span className="text-neutral-900 hover:text-primary underline capitalize">
                                     {
@@ -324,7 +324,7 @@ const GenerateFilter = (props) => {
                             variant="tertiary"
                             onClick={() => setOpenMore(!openMore)}
                             classNameText="!justify-start"
-                            className="!p-0 !shadow-none"
+                            className="swift-action-other-filter-options !p-0 !shadow-none"
                         >
                             <span className="text-neutral-900 hover:text-primary underline capitalize">
                                 {

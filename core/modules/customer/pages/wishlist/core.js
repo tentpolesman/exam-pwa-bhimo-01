@@ -1,4 +1,5 @@
 /* eslint-disable no-nested-ternary */
+/* eslint-disable max-len */
 import { getCartId, setCartId } from '@helper_cartid';
 import { useQuery } from '@apollo/client';
 import Router from 'next/router';
@@ -13,19 +14,18 @@ import { basePath } from '@config';
 const Wishlist = (props) => {
     let wishlist = [];
     const {
-        Content, t, isLogin, pageConfig, Skeleton, storeConfig,
+        Content, t, isLogin, pageConfig, storeConfig,
     } = props;
     const config = {
         title: t('customer:wishlist:pageTitle'),
         header: 'relative', // available values: "absolute", "relative", false (default)
         headerTitle: t('customer:wishlist:pageTitle'),
         bottomNav: false,
+        tagSelector: 'swift-page-wishlist',
     };
     const [addToCart] = addSimpleProductsToCart();
     const [removeWishlist] = gqlremoveWishlist();
-    const {
-        data, loading, error, refetch,
-    } = getCustomer(storeConfig);
+    const { data, loading, refetch } = getCustomer(storeConfig);
     const [setShareWishlist, { loading: shareLoading }] = shareWishlist();
 
     const handleShareWishlist = async (emails, message) => {
@@ -71,15 +71,6 @@ const Wishlist = (props) => {
         skip: !isLogin || typeof window === 'undefined',
     });
 
-    if (!data || loading || error) {
-        return (
-            <Layout pageConfig={pageConfig || config} {...props}>
-                <CustomerLayout {...props}>
-                    <Skeleton />
-                </CustomerLayout>
-            </Layout>
-        );
-    }
     if (data) {
         wishlist = data.customer.wishlist.items.map(({ id, product }) => ({
             ...product,
@@ -203,8 +194,9 @@ const Wishlist = (props) => {
                 open: true,
                 text: errorCart[0]
                     ? totalSucces > 0
-                        // eslint-disable-next-line max-len
-                        ? `${t('customer:wishlist:addPartToBagSuccess').split('$'[0])} ${totalSucces} ${t('customer:wishlist:addPartToBagSuccess').split('$'[1])}`
+                        ? `${t('customer:wishlist:addPartToBagSuccess').split('$'[0])} ${totalSucces} ${t(
+                            'customer:wishlist:addPartToBagSuccess',
+                        ).split('$'[1])}`
                         : errorCart[1] || t('customer:wishlist:failedAddCart')
                     : t('customer:wishlist:addAllToBagSuccess'),
                 variant: errorCart[0] ? 'error' : 'success',
@@ -214,18 +206,20 @@ const Wishlist = (props) => {
 
     return (
         <Layout pageConfig={pageConfig || config} {...props}>
-            <Content
-                t={t}
-                wishlist={wishlist}
-                refetch={refetch}
-                handleRemove={handleRemove}
-                handleToCart={handleToCart}
-                handleAddAlltoBag={handleAddAlltoBag}
-                loading={loading}
-                shareLoading={shareLoading}
-                handleShareWishlist={handleShareWishlist}
-                storeConfig={storeConfig}
-            />
+            <CustomerLayout {...props}>
+                <Content
+                    t={t}
+                    wishlist={wishlist}
+                    refetch={refetch}
+                    handleRemove={handleRemove}
+                    handleToCart={handleToCart}
+                    handleAddAlltoBag={handleAddAlltoBag}
+                    loading={loading}
+                    shareLoading={shareLoading}
+                    handleShareWishlist={handleShareWishlist}
+                    storeConfig={storeConfig}
+                />
+            </CustomerLayout>
         </Layout>
     );
 };

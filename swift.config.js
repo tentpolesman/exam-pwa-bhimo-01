@@ -23,7 +23,7 @@ const HOST = {
 /* Magento GraphQL Endpoint */
 const graphqlEndpoint = {
     local: 'https://swift-dev.testingnow.me/graphql',
-    dev: 'https://swift.testingnow.me/graphql',
+    dev: 'https://swift-dev.testingnow.me/graphql',
     stage: 'https://b2cdemonew.gcp-staging.testingnow.me/graphql',
     prod: 'https://b2cdemo.getswift.asia/graphql',
 };
@@ -37,6 +37,11 @@ const passwordStrength = {
     minValue: 8,
     maxValue: 20,
     numberOfRequiredClass: 3, // Lowercase + Uppercse + Dgits + spesial caracter = 4
+};
+
+/* Sitemap */
+const sitemap = {
+    limitDataPerPage: 50000,
 };
 
 /* Translation */
@@ -54,7 +59,7 @@ const requestTimeout = 30000; // miliseconds
 
 // error management monitoring
 const sentry = {
-    enabled: false,
+    enabled: false, // when enable, please uncomment import Sentry in _app.js
     enableMode: 'production',
     dsn: {
         local: 'https://c60fbed461fd49da9455730ba70da8a6@o484453.ingest.sentry.io/5537614',
@@ -65,7 +70,7 @@ const sentry = {
 };
 
 const rollbar = {
-    enabled: false,
+    enabled: false, // when enable, please uncomment import rollbar scrypt in _document.js
     config: {
         accessToken: '76876f52664341b4a1981c4618723bda',
         captureUncaught: true,
@@ -76,6 +81,9 @@ const rollbar = {
 /* Dashboard */
 // identifiers for cmsBlocks in contact page
 const cmsSocialMediaLinkIdentifiers = 'pwa_socmed_links';
+
+// set empty or false to disable dynamic menu
+const cmsStaticMainMenuIdentifier = 'static-main-menu';
 
 /* Social media link */
 // social media link in dashboard
@@ -147,6 +155,7 @@ const features = {
             prod: '', // sample: 'https://chat-swift.testingnow.me/graphql',
         },
     },
+    // IMPORTANT!! If you need to use firebase on your project, please uncomment import firebase in _app.js
     firebase: {
         config: {
             apiKey: '', // sample: AIzaSyBayG_pE-BOs6DU0WAoZOa3EbJMpBlrXBI
@@ -167,6 +176,7 @@ const features = {
         },
     },
     globalPromo: {
+        enable: true,
         key_cookies: 'global_promo_enable',
     },
 };
@@ -332,13 +342,46 @@ const modules = {
         },
         xendit: {
             // Pay via button pay now
-            paymentPrefixCodeOnSuccess: ['alfamart', 'bcava', 'briva', 'qris', 'shopeepay', 'bniva', 'mandiriva',
-                'permatava', 'indomaret', 'bjbva', 'bsiva', 'dana', 'ovo', 'linkaja', 'qr_codes', 'gcash', 'grabpay', 'paymaya',
-                'seven_eleven', 'cebuana', 'dp_palawan', 'dp_mlhuillier', 'dp_ecpay_loan', 'shopeepayph', 'astrapay',
+            paymentPrefixCodeOnSuccess: [
+                'alfamart',
+                'bcava',
+                'briva',
+                'qris',
+                'shopeepay',
+                'bniva',
+                'mandiriva',
+                'permatava',
+                'indomaret',
+                'bjbva',
+                'bsiva',
+                'dana',
+                'ovo',
+                'linkaja',
+                'qr_codes',
+                'gcash',
+                'grabpay',
+                'paymaya',
+                'seven_eleven',
+                'cebuana',
+                'dp_palawan',
+                'dp_mlhuillier',
+                'dp_ecpay_loan',
+                'shopeepayph',
+                'astrapay',
             ],
             // Should pay upon place order
-            paymentPrefixCode: ['cc', 'cc_subscription', 'dd_bri', 'kredivo', 'dd_bpi', 'dd_ubp', 'billease',
-                'uangme', 'cashalo', 'akulaku', 'dd_rcbc',
+            paymentPrefixCode: [
+                'cc',
+                'cc_subscription',
+                'dd_bri',
+                'kredivo',
+                'dd_bpi',
+                'dd_ubp',
+                'billease',
+                'uangme',
+                'cashalo',
+                'akulaku',
+                'dd_rcbc',
             ],
         },
     },
@@ -528,4 +571,6 @@ module.exports = {
     keyLocalStorage,
     requestTimeout,
     customerTokenKey,
+    sitemap,
+    cmsStaticMainMenuIdentifier,
 };

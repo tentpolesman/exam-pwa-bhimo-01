@@ -1,15 +1,14 @@
 /* eslint-disable operator-linebreak */
 /* eslint-disable array-callback-return */
 /* eslint-disable consistent-return */
-import { useReactiveVar } from '@apollo/client';
 import { modules, storeConfigNameCookie } from '@config';
 import { getCountries as getAllCountries, getCityByRegionId, getRegions } from '@core_modules/customer/services/graphql';
 import helperCookies from '@helper_cookies';
 import { regexPhone } from '@helper_regex';
 import { groupingCity, groupingSubCity } from '@helpers/city';
-import { storeConfigVar } from '@root/core/services/graphql/cache';
+import { storeConfigVar } from '@core/services/graphql/cache';
 import { useFormik } from 'formik';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import * as Yup from 'yup';
 
 const AddressFormDialog = (props) => {
@@ -47,7 +46,7 @@ const AddressFormDialog = (props) => {
         storeConfig = helperCookies.get(storeConfigNameCookie);
     }
 
-    const pwaConfig = useReactiveVar(storeConfigVar);
+    const pwaConfig = storeConfigVar();
     const gmapKey = pwaConfig && pwaConfig.icube_pinlocation_gmap_key ? pwaConfig.icube_pinlocation_gmap_key : null;
     const geocodingKey = pwaConfig && pwaConfig.icube_pinlocation_geocoding_key ? pwaConfig.icube_pinlocation_geocoding_key : null;
     const { pin_location_latitude, pin_location_longitude } = pwaConfig ?? {};
@@ -76,10 +75,12 @@ const AddressFormDialog = (props) => {
 
     const splitCityValue = (cityValue) => cityValue.split(', ');
 
-    const [mapPosition, setMapPosition] = useState({
+    const defaultValueMap = {
         lat: parseFloat(latitude) || parseFloat(pin_location_latitude),
         lng: parseFloat(longitude) || parseFloat(pin_location_longitude),
-    });
+    };
+
+    const [mapPosition, setMapPosition] = useState(defaultValueMap);
 
     const displayLocationInfo = (position) => {
         const lng = position.coords.longitude;
@@ -99,9 +100,9 @@ const AddressFormDialog = (props) => {
         });
     };
 
-    const handleDragPosition = (value) => {
+    const handleDragPosition = useCallback((value) => {
         setMapPosition(value);
-    };
+    }, []);
 
     const ValidationAddress = {
         firstname: Yup.string().required(t('validate:firstName:required')),
@@ -186,8 +187,8 @@ const AddressFormDialog = (props) => {
             delete data.district;
             delete data.village;
             if (onSubmitAddress) {
-                onSubmitAddress(data, type);
-                if (!addressId) {
+                const submitRes = await onSubmitAddress(data, type);
+                if (type === 'add' && submitRes) {
                     setTimeout(() => {
                         resetForm();
                     }, 1000);
@@ -327,7 +328,7 @@ const AddressFormDialog = (props) => {
                 formik.setFieldValue('city', getCityByLabel(city, state.dropdown.city));
             }
         }
-    }, [responCities]);
+    }, [responCities, open]);
 
     // get kecamatan if city change
     React.useMemo(() => {
@@ -450,6 +451,7 @@ const AddressFormDialog = (props) => {
             formik.setFieldValue('postcode', formik.values.village.postcode);
         }
     }, [formik.values.village]);
+
     return (
         <Content
             t={t}

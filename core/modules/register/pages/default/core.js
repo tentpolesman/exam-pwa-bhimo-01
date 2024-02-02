@@ -1,7 +1,7 @@
 /* eslint-disable object-curly-newline */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable max-len */
-import { useQuery, useReactiveVar, useMutation } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client';
 import { custDataNameCookie, expiredToken } from '@config';
 import { getLastPathWithoutLogin, setEmailConfirmationFlag, setLogin } from '@helper_auth';
 import { getCartId, setCartId } from '@helper_cartid';
@@ -24,7 +24,7 @@ import { getCustomer, subscribeNewsletter } from '@core_modules/register/service
 import { requestOtpRegister } from '@core_modules/login/services/graphql';
 
 import { registerConfig } from '@services/graphql/repository/pwa_config';
-import { priceVar } from '@root/core/services/graphql/cache';
+import { priceVar } from '@core/services/graphql/cache';
 
 const appEnv = getAppEnv();
 
@@ -32,16 +32,18 @@ const Register = (props) => {
     const { t, storeConfig, pageConfig, Content, query, lastPathNoAuth } = props;
 
     const config = {
+        ...pageConfig,
         title: t('register:pageTitle'),
         header: 'relative', // available values: "absolute", "relative", false (default)
         headerTitle: t('register:title'),
         bottomNav: false,
+        tagSelector: 'swift-page-register',
     };
     // enable recaptcha
     let enableRecaptcha = false;
 
     // cache price
-    const cachePrice = useReactiveVar(priceVar);
+    const cachePrice = priceVar();
 
     const { loading: loadingRegisterConfig, data: dataRegisterConfig } = registerConfig();
     if (!loadingRegisterConfig && dataRegisterConfig && dataRegisterConfig.storeConfig && dataRegisterConfig.storeConfig.pwa) {
@@ -470,7 +472,7 @@ const Register = (props) => {
     };
 
     return (
-        <Layout pageConfig={pageConfig || config} {...props} isLoginPage>
+        <Layout pageConfig={config} {...props}>
             <Content {...contentProps} />
         </Layout>
     );

@@ -6,9 +6,8 @@ import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import firebase from 'firebase/app';
 import Cookies from 'js-cookie';
-
-import { useQuery, useReactiveVar } from '@apollo/client';
-import { custDataNameCookie, expiredToken } from '@config';
+import { features, custDataNameCookie, expiredToken } from '@config';
+import { useQuery } from '@apollo/client';
 
 import { getAppEnv } from '@helpers/env';
 import { getLastPathWithoutLogin, setLogin } from '@helper_auth';
@@ -33,7 +32,7 @@ import { getCustomer } from '@core_modules/login/services/graphql/schema';
 import { assignCompareListToCustomer } from '@core_modules/productcompare/service/graphql';
 import { loginConfig } from '@services/graphql/repository/pwa_config';
 import { localCompare } from '@services/graphql/schema/local';
-import { priceVar } from '@root/core/services/graphql/cache';
+import { priceVar } from '@core/services/graphql/cache';
 
 const Message = dynamic(() => import('@common_toast'), { ssr: false });
 const appEnv = getAppEnv();
@@ -43,11 +42,13 @@ const Login = (props) => {
         t, storeConfig, query, lastPathNoAuth, Content, pageConfig,
     } = props;
     const config = {
+        ...pageConfig,
         title: t('login:login'),
         header: 'relative', // available values: "absolute", "relative", false (default)
         headerTitle: t('login:login'),
         headerBackIcon: 'close',
         bottomNav: false,
+        tagSelector: 'swift-page-login',
     };
     // state
     const [showOtp, setShowOtp] = React.useState(false);
@@ -99,7 +100,7 @@ const Login = (props) => {
     });
 
     // cache price
-    const cachePrice = useReactiveVar(priceVar);
+    const cachePrice = priceVar();
 
     let cartId = '';
     const handleCloseMessage = () => {
@@ -238,17 +239,26 @@ const Login = (props) => {
                 variables: data,
             })
                 .then(async (res) => {
-                    let message = '';
+                    let is_login = false;
                     if (formOtp === 'otp') {
-                        message = res.data.internalGenerateCustomerTokenOtp.message;
+                        is_login = res.data.internalGenerateCustomerTokenOtp.is_login;
                     } else if (formOtp === 'password') {
-                        message = res.data.internalGenerateCustomerToken.message;
+                        is_login = res.data.internalGenerateCustomerToken.is_login;
                     } else if (formOtp === 'phoneEmail') {
-                        message = res.data.internalGenerateCustomerTokenCustom.message;
+                        is_login = res.data.internalGenerateCustomerTokenCustom.is_login;
                     }
-                    if (message) {
+                    if (is_login) {
                         setLogin(1, expired);
                         await setIsLogin(1);
+                    } else {
+                        setDisabled(false);
+                        setLoading(false);
+                        window.backdropLoader(false);
+                        window.toastMessage({
+                            open: true,
+                            variant: 'error',
+                            text: t('login:failed'),
+                        });
                     }
                 })
                 .catch((e) => {
@@ -506,7 +516,7 @@ const Login = (props) => {
 
     // Listen to the Firebase Auth state and set the local state.
     React.useEffect(() => {
-        if (firebase.app()) {
+        if (features.firebase.config.apiKey !== '' && firebase.app()) {
             try {
                 const unregisterAuthObserver = firebase.auth().onAuthStateChanged((user) => {
                     if (firebase.auth().currentUser) {
@@ -560,7 +570,7 @@ const Login = (props) => {
     }, []);
 
     return (
-        <Layout {...props} pageConfig={pageConfig || config} isLoginPage>
+        <Layout {...props} pageConfig={config}>
             <Content
                 formik={formik}
                 formikOtp={formikOtp}

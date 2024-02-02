@@ -11,7 +11,7 @@ import Backdrop from '@common/Backdrop';
 
 const HomeCore = (props) => {
     const {
-        Content, pageConfig, isLogin, storeConfig, ViewSkeleton, t, ...other
+        Content, isLogin, storeConfig, ViewSkeleton, t, ...other
     } = props;
     const [getProduct, {
         data: compareList, loading, refetch, error,
@@ -79,7 +79,7 @@ const HomeCore = (props) => {
         bottomNav: 'home',
         pageType: 'home',
         schemaOrg,
-        ...pageConfig,
+        tagSelector: 'swift-page-productcompare',
     };
 
     if (loading) {

@@ -19,6 +19,7 @@
         "edit": "Edit",
         "save": "Simpan",
         "saved": "Tersimpan",
+        "startShopping": "Mulai Berbelanja",
         "continueShopping": "Lanjut Berbelanja",
         "confirm": "Konfirmasi",
         "cancel": "Batal",
@@ -53,7 +54,7 @@
         "deleteFailed": "Hapus item cart gagal",
         "updateSuccess": "Update item cart berhasil",
         "updateFailed": "Update item cart gagal",
-        "emptyCart": "ANDA TIDAK MEMILIKI ITEM DI KERANJANG BELANJA ANDA.",
+        "emptyCart": "Keranjang Anda saat ini kosong.",
         "oos": "Stok habis",
         "inStock": "Stok tersedia",
         "cartError": "Ada kesalahan di keranjang anda, silahkan bersihkan dan ulangi kembali"
@@ -105,12 +106,13 @@
         "shortQty": "Jml",
         "action": "Aksi",
         "extraFee": "Biaya Tambahan",
-        "relatedProduct": "Anda mungkin juga menyukainya",
+        "relatedProduct": "Orang juga membeli",
         "sale": "Diskon",
         "new": "Baru",
         "free": "Free",
         "none": "Tidak ada",
-        "note": "Catatan"
+        "note": "Catatan",
+        "sku": "SKU"
     },
     "error": {
         "notFound": "Data tidak di temukan",
@@ -118,7 +120,9 @@
         "fetchError": "Terjadi kesalahan. Silakan coba lagi nanti",
         "browser": "Browser tidak didukung",
         "videoNotSupported": "Browser anda tidak mendukung elemen video.",
-        "captcha": "Gagal verifikasi recaptcha, Silakan coba lagi."
+        "captcha": "Gagal verifikasi recaptcha, Silakan coba lagi.",
+        "wentWrong": "Terjadi kesalahan. Silakan coba lagi nanti.",
+        "webpNotSupported": "WebP tidak disupport pada browser anda. Silahkan mengunduh browser versi terbaru untuk meningkatkan pengalaman browsing anda."
     },
     "fileUpload": {
         "reject": "Tidak dapat mengupload, file harus ber type  ",
@@ -141,7 +145,8 @@
     },
     "header": {
         "welcome": "Selamat Datang!",
-        "hi": "Hai, $!"
+        "hi": "Hai, $!",
+        "downloadApps": "Unduh Aplikasi"
     },
     "message": {
         "feedSuccess": "Produk berhasil di tambahkan ke wishlist",

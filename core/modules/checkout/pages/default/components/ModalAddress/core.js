@@ -8,16 +8,23 @@ import gqlService, {
     updateCustomerAddress,
     updatedDefaultAddress as gqlUpdateDefaulAddress,
 } from '@core_modules/checkout/services/graphql';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+    selectCheckoutState, setLoading, setSelectedData,
+} from '@core_modules/checkout/redux/checkoutSlice';
 
 const ModalAddressCustomer = (props) => {
     const {
-        Content, checkout, setOpen, setCheckout, setAddress, open, manageCustomer, ...other
+        Content, setOpen, setAddress, open, manageCustomer, ...other
     } = props;
     // graphql
     const [updatedDefaultAddress] = gqlUpdateDefaulAddress();
     const [updateAddress] = updateCustomerAddress();
     const [addAddress] = createCustomerAddress();
     // state
+    const dispatch = useDispatch();
+    const checkout = useSelector(selectCheckoutState);
+
     const [address, setAddresses] = useState([]);
     const [selectedAddressId, setSelectedAddressId] = useState(null);
     const [loadingAddress, setLoadingAddress] = useState(false);
@@ -69,10 +76,10 @@ const ModalAddressCustomer = (props) => {
     // handle change selected address
     const handleChange = async (event, forceUpdate = false) => {
         if (selectedAddressId !== event.target.value || forceUpdate) {
-            const state = { ...checkout };
-            state.loading.addresses = true;
-            state.loading.order = true;
-            await setCheckout(state);
+            dispatch(setLoading({
+                addresses: true,
+                order: true,
+            }));
             setOpen(false);
             const addressId = parseInt(event.target.value);
             setSelectedAddressId(addressId);
@@ -87,7 +94,7 @@ const ModalAddressCustomer = (props) => {
                 if (!!event.target.valueAddress && event.target.valueAddress !== detail.street[0]) {
                     return event.target.valueAddress;
                 }
-                return detail.street[0];
+                return detail?.street?.length ? detail.street[0] : '';
             };
 
             const dataAddress = await updatedDefaultAddress({
@@ -99,22 +106,25 @@ const ModalAddressCustomer = (props) => {
 
             if (dataAddress && dataAddress.data && dataAddress.data.updateCustomerAddress) {
                 const shipping = dataAddress.data.updateCustomerAddress;
-                state.selected.address = {
-                    firstname: shipping.firstname,
-                    lastname: shipping.lastname,
-                    city: shipping.city,
-                    region: {
-                        ...shipping.region,
-                        label: shipping.region.region,
+                dispatch(setSelectedData({
+                    address: {
+                        firstname: shipping.firstname,
+                        lastname: shipping.lastname,
+                        city: shipping.city,
+                        region: {
+                            ...shipping.region,
+                            label: shipping.region.region,
+                        },
+                        country: shipping.country,
+                        postcode: shipping.postcode,
+                        telephone: shipping.telephone,
+                        street: shipping.street,
                     },
-                    country: shipping.country,
-                    postcode: shipping.postcode,
-                    telephone: shipping.telephone,
-                    street: shipping.street,
-                };
-                state.loading.addresses = false;
-                state.loading.order = false;
-                await setCheckout(state);
+                }));
+                dispatch(setLoading({
+                    addresses: false,
+                    order: false,
+                }));
             }
 
             const { cart } = checkout.data;
@@ -128,7 +138,6 @@ const ModalAddressCustomer = (props) => {
     // handle add address
     const handleAddress = async (data) => {
         setLoadingAddress(true);
-        const state = { ...checkout };
         if (!success) {
             if (typeAddress === 'update') {
                 await updateAddress({
@@ -152,22 +161,26 @@ const ModalAddressCustomer = (props) => {
                         });
                         if (dataAddress && dataAddress.data && dataAddress.data.updateCustomerAddress) {
                             const shippingDefault = dataAddress.data.updateCustomerAddress;
-                            state.selected.address = {
-                                firstname: shippingDefault.firstname,
-                                lastname: shippingDefault.lastname,
-                                city: shippingDefault.city,
-                                region: {
-                                    ...shippingDefault.region,
-                                    label: shippingDefault.region.region,
+                            dispatch(setSelectedData({
+                                address: {
+                                    firstname: shippingDefault.firstname,
+                                    lastname: shippingDefault.lastname,
+                                    city: shippingDefault.city,
+                                    region: {
+                                        ...shippingDefault.region,
+                                        label: shippingDefault.region.region,
+                                    },
+                                    country: shippingDefault.country,
+                                    postcode: shippingDefault.postcode,
+                                    telephone: shippingDefault.telephone,
+                                    street: shippingDefault.street,
                                 },
-                                country: shippingDefault.country,
-                                postcode: shippingDefault.postcode,
-                                telephone: shippingDefault.telephone,
-                                street: shippingDefault.street,
-                            };
-                            state.loading.addresses = false;
-                            state.loading.order = false;
-                            await setCheckout(state);
+                            }));
+
+                            dispatch(setLoading({
+                                addresses: false,
+                                order: false,
+                            }));
                         }
                         const { cart } = checkout.data;
 

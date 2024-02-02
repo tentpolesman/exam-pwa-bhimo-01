@@ -173,8 +173,10 @@ const Button = (props) => {
             disabled={disabled}
             className={cx(
                 'group',
-                !disabled && styleClass[variant].button,
-                disabled && styleClass.disabled.button,
+                {
+                    [styleClass[variant]?.button || '']: !disabled && styleClass[variant]?.button,
+                    [styleClass.disabled.button]: disabled,
+                },
                 classes,
             )}
             {...restProps}

@@ -7,8 +7,7 @@
 import Typography from '@common_typography';
 import ItemProduct from '@core_modules/cart/pages/default/components/item/item';
 import TableList from '@core_modules/cart/pages/default/components/item/TableListItem';
-import { useReactiveVar } from '@apollo/client';
-import { storeConfigVar } from '@root/core/services/graphql/cache';
+import { storeConfigVar } from '@core/services/graphql/cache';
 import React from 'react';
 import Divider from '@common/Divider';
 import { ChevronRightIcon } from '@heroicons/react/24/outline';
@@ -16,16 +15,22 @@ import Button from '@common/Button';
 
 const ItemView = (props) => {
     const { data, t, toggleEditMode, editMode, deleteItem, handleFeed, toggleEditDrawer, currencyCache, ...other } = props;
-    const storeConfigLocalStorage = useReactiveVar(storeConfigVar);
+    const storeConfigLocalStorage = storeConfigVar();
     let cartItemBySeller = {};
 
-    if (storeConfigLocalStorage && storeConfigLocalStorage.enable_oms_multiseller && data && data.items) {
+    let isMultiSeller = false;
+    if (storeConfigLocalStorage) {
+        isMultiSeller = storeConfigLocalStorage.enable_oms_multiseller === 1
+        || storeConfigLocalStorage.enable_oms_multiseller === '1';
+    }
+
+    if (storeConfigLocalStorage && isMultiSeller && data && data.items) {
         const unGroupedData = data.items;
         // eslint-disable-next-line no-shadow, max-len
-        const groupData = unGroupedData.reduce((groupData, { SimpleMiniCustomizable, id, note, prices, product, quantity, custom_seller, ...other }) => {
-            let item = groupData.find((p) => p.seller_id === custom_seller.seller_id);
+        const groupData = unGroupedData.reduce((groupData, { SimpleMiniCustomizable, id, note, prices, product, quantity, ...other }) => {
+            let item = groupData.find((p) => p.seller_id === product.seller.seller_id);
             if (!item) {
-                item = { seller_id: custom_seller.seller_id, seller_name: custom_seller.seller_name, children: [] };
+                item = { seller_id: product.seller.seller_id, seller_name: product.seller.seller_name, children: [] };
                 groupData.push(item);
             }
             let child = item.children.find((ch) => ch.name === product.name);
@@ -46,10 +51,6 @@ const ItemView = (props) => {
         cartItemBySeller = groupData;
     }
 
-    const isMultiSeller = storeConfigLocalStorage &&
-    storeConfigLocalStorage.enable_oms_multiseller
-    && storeConfigLocalStorage.enable_oms_multiseller !== '0';
-
     return (
         <>
             <div className="flex flex-col gap-3 desktop:hidden">
@@ -60,12 +61,13 @@ const ItemView = (props) => {
                     {isMultiSeller &&
                     cartItemBySeller.map((seller, idx) => (
                         <React.Fragment key={idx}>
-                            <Typography variant="bd-2a" color="!text-primary">
-                                <span>{seller.seller_name ? seller.seller_name : 'Default Store'}</span>
-                            </Typography>
+                            <div className="bg-neutral-100 p-2">
+                                <Typography variant="bd-2a" color="!text-primary">
+                                    <span>{seller.seller_name ? seller.seller_name : 'Default Store'}</span>
+                                </Typography>
+                            </div>
                             {seller.children.map((item, index) => (
                                 <ItemProduct
-                                    {...item}
                                     cartItemId={item.id}
                                     key={index}
                                     t={t}
@@ -82,6 +84,7 @@ const ItemView = (props) => {
                                     currencyCache={currencyCache}
                                     isMultiSeller={isMultiSeller}
                                     {...other}
+                                    {...item}
                                 />
                             ))}
                         </React.Fragment>
@@ -90,7 +93,6 @@ const ItemView = (props) => {
                     data.items.map((item, idx) => (
                         <React.Fragment key={idx}>
                             <ItemProduct
-                                {...item}
                                 cartItemId={item.id}
                                 t={t}
                                 editMode={editMode}
@@ -105,6 +107,7 @@ const ItemView = (props) => {
                                 handleFeed={handleFeed}
                                 currencyCache={currencyCache}
                                 {...other}
+                                {...item}
                             />
                             <Divider />
                         </React.Fragment>

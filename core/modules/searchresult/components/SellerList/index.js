@@ -2,6 +2,7 @@
 import React from 'react';
 import { getSeller } from '@core_modules/searchresult/services/graphql/index';
 import SellerItem from '@core_modules/searchresult/components/SellerList/view';
+import Skeleton from '@core_modules/searchresult/components/SellerList/skeleton';
 
 const sellerList = (props) => {
     const { q } = props;
@@ -41,6 +42,18 @@ const sellerList = (props) => {
 
     if (data && data.getSeller.length > 0) {
         itemData = generateItemData(data.getSeller);
+    }
+
+    if (loading) {
+        return (
+            <div className="flex flex-row gap-4 flex-wrap">
+                {
+                    [1, 2].map((key) => (
+                        <Skeleton key={key} />
+                    ))
+                }
+            </div>
+        );
     }
 
     return (

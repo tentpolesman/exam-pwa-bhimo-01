@@ -1,7 +1,6 @@
 import Layout from '@layout';
 import { getGiftCard } from '@core_modules/customer/services/graphql';
-import { useReactiveVar } from '@apollo/client';
-import { currencyVar } from '@root/core/services/graphql/cache';
+import { currencyVar } from '@core/services/graphql/cache';
 
 const GiftCard = (props) => {
     const config = {
@@ -9,12 +8,11 @@ const GiftCard = (props) => {
         header: 'relative', // available values: "absolute", "relative", false (default)
         headerTitle: 'Gift Card',
         bottomNav: false,
+        tagSelector: 'swift-page-giftcard',
     };
     // cache currency
-    const currencyCache = useReactiveVar(currencyVar);
-    const {
-        t, storeConfig, Content, pageConfig,
-    } = props;
+    const currencyCache = currencyVar();
+    const { t, storeConfig, Content } = props;
     const [open, setOpen] = React.useState(false);
     const [selectedCode, setSelectedCode] = React.useState('');
     const [search, setSearch] = React.useState({
@@ -48,7 +46,7 @@ const GiftCard = (props) => {
         }
     };
     return (
-        <Layout {...props} pageConfig={pageConfig || config}>
+        <Layout {...props} pageConfig={config}>
             <Content
                 {...props}
                 t={t}

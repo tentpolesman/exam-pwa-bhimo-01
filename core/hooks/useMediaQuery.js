@@ -1,5 +1,5 @@
 import { useWindowSize } from '@uidotdev/usehooks';
-import { BREAKPOINTS } from '@root/core/theme/vars';
+import { BREAKPOINTS } from '@core/theme/vars';
 
 const useMediaQuery = () => {
     const size = useWindowSize();
@@ -9,7 +9,7 @@ const useMediaQuery = () => {
     const isSm = size.width >= BREAKPOINTS.sm && size.width < BREAKPOINTS.md;
     const isXs = size.width >= BREAKPOINTS.xs && size.width < BREAKPOINTS.sm;
     let screen = '';
-    if (isXs) screen = 'mobile';
+    if (isXs || isSm) screen = 'mobile';
     if (isMd) screen = 'tablet';
     if (isXl) screen = 'desktop';
     return {
@@ -18,7 +18,7 @@ const useMediaQuery = () => {
         isMd,
         isSm,
         isXs,
-        isMobile: isXs,
+        isMobile: isXs || isSm,
         isTablet: isMd,
         isDesktop: isXl,
         screen,

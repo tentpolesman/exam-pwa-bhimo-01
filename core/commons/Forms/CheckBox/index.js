@@ -78,7 +78,7 @@ const CheckBox = (props) => {
                     onClick={onClick}
                     checked={checked}
                     className={cx(
-                        'form-checkbox',
+                        'swift-form-checkbox',
                         'w-4',
                         'h-4',
                         'mr-2',
@@ -136,7 +136,7 @@ const CheckBox = (props) => {
                                 type="checkbox"
                                 disabled={item.disabled || disabled}
                                 className={cx(
-                                    'form-checkbox',
+                                    'swift-form-checkbox',
                                     'w-4',
                                     'h-4',
                                     'mr-2',
@@ -164,7 +164,7 @@ const CheckBox = (props) => {
                                 checked={selected.indexOf(item.value) !== -1}
                                 id={item.id || `${item.value.replace(/ /g, '')}_${idx}`}
                             />
-                            <label for={item.id || `${item.value.replace(/ /g, '')}_${idx}`}>
+                            <label htmlFor={item.id || `${item.value.replace(/ /g, '')}_${idx}`}>
                                 <Typography
                                     variant="bd-1b"
                                     className={cx({

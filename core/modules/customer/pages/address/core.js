@@ -11,16 +11,19 @@ import {
     updateCustomerAddress,
 } from '@core_modules/customer/services/graphql';
 import Layout from '@layout';
-import _ from 'lodash';
+import dynamic from 'next/dynamic';
 import React, { useEffect, useState } from 'react';
 
+const Content = dynamic(() => import('@core_modules/customer/pages/address/components'), { ssr: false });
+
 const AddressCustomer = (props) => {
-    const { t, pageConfig, Content } = props;
+    const { t } = props;
     const config = {
         title: t('customer:address:pageTitle'),
         headerTitle: t('customer:address:pageTitle'),
         header: 'relative', // available values: "absolute", "relative", false (default)
         bottomNav: false,
+        tagSelector: 'swift-page-customeraddress',
     };
 
     // graphql
@@ -117,61 +120,93 @@ const AddressCustomer = (props) => {
 
     // handle add address
     const handleAddress = async (data, type) => {
+        let toastText = '';
         setLoadingAddress(true);
-        if (!success) {
-            if (type === 'update') {
-                await updateAddress({
-                    variables: {
-                        ...data,
-                    },
-                });
-            } else {
-                await addAddress({
-                    variables: {
-                        ...data,
-                    },
-                });
+        try {
+            if (!success) {
+                if (type === 'update') {
+                    await updateAddress({
+                        variables: {
+                            ...data,
+                        },
+                    });
+                    toastText = t('customer:address:successUpdate');
+                } else {
+                    await addAddress({
+                        variables: {
+                            ...data,
+                        },
+                    });
+                    toastText = t('customer:address:successAdd');
+                }
+                await actGetCustomerAddress();
+                window.toastMessage({ open: true, variant: 'success', text: toastText });
             }
-        }
 
-        setSuccess(true);
-        setLoadingAddress(false);
+            setSuccess(true);
+            setLoadingAddress(false);
 
-        _.delay(async () => {
             if (openNew) {
                 setOpenDialogNew(false);
             }
             setSuccess(false);
-            handleDialogSubmit();
-        }, 1000);
+            return true;
+        } catch (e) {
+            setLoadingAddress(false);
+            let errorMessage = type === 'update' ? t('customer:address:failUpdate') : t('customer:address:failAdd');
+            if (e?.message) {
+                errorMessage = `${errorMessage} : ${e?.message}`;
+            }
+            window.toastMessage({
+                open: true,
+                variant: 'error',
+                text: errorMessage,
+            });
+            return false;
+        }
     };
 
     const setRemoveAddress = async (addressId) => {
         setLoadingAddress(true);
         setLoading(true);
-        if (!success) {
-            if (addressId) {
-                await removeAddress({
-                    variables: {
-                        id: addressId,
-                    },
-                });
+        try {
+            if (!success) {
+                if (addressId) {
+                    await removeAddress({
+                        variables: {
+                            id: addressId,
+                        },
+                    });
+                    await actGetCustomerAddress();
+                    window.toastMessage({ open: true, variant: 'success', text: t('customer:address:successRemove') });
+                }
             }
-        }
 
-        _.delay(async () => {
-            await actGetCustomerAddress();
             setSuccess(true);
             setLoadingAddress(false);
             setLoading(false);
-        }, 1000);
+            setSuccess(false);
+        } catch (e) {
+            setLoadingAddress(false);
+            setLoading(false);
+            let errorMessage = t('customer:address:failRemove');
+            if (e?.message) {
+                errorMessage = `${errorMessage} : ${e?.message}`;
+            }
+            window.toastMessage({
+                open: true,
+                variant: 'error',
+                text: errorMessage,
+            });
+        }
     };
     return (
-        <Layout pageConfig={pageConfig || config} {...props}>
+        <Layout pageConfig={config} {...props}>
             <Content
                 t={t}
                 loading={loading}
                 address={address}
+                // address={dataAddress?.customer?.addresses ?? []}
                 selectedAddressId={selectedAddressId}
                 handleDialogSubmit={handleDialogSubmit}
                 handleChange={handleChange}

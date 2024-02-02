@@ -1,15 +1,15 @@
 import { ApolloServer } from '@apollo/server';
 import { startServerAndCreateNextHandler } from '@as-integrations/next';
 
-import internalSchema from '@root/core/api/graphql/schema';
+import internalSchema from '@core/api/graphql/schema';
 
 import { schemaFromExecutor } from '@graphql-tools/wrap';
 import { stitchSchemas } from '@graphql-tools/stitch';
 import { customerTokenKey, graphqlEndpoint, storeCode } from '@config';
-import { getAccessEnv, getAppEnv } from '@root/core/helpers/env';
+import { getAccessEnv, getAppEnv } from '@core/helpers/env';
 
 import { print } from 'graphql';
-import fetchWithTimeout from '@root/core/helpers/fetchWithTimeout';
+import fetchWithTimeout from '@core/helpers/fetchWithTimeout';
 
 import { getCookies } from 'cookies-next';
 

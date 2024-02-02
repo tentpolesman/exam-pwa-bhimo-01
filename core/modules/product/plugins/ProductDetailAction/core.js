@@ -4,11 +4,11 @@
 import cx from 'classnames';
 import TagManager from 'react-gtm-module';
 import useMediaQuery from '@hook/useMediaQuery';
-import { useQuery, useReactiveVar } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { debuging, features, modules } from '@config';
 import { getPriceFromList } from '@core_modules/product/helpers/getPrice';
 import { localCompare } from '@services/graphql/schema/local';
-import { currencyVar, priceVar } from '@root/core/services/graphql/cache';
+import { currencyVar, priceVar } from '@core/services/graphql/cache';
 import { getCustomerUid } from '@core_modules/productcompare/service/graphql';
 import { getCookies } from '@helper_cookies';
 import { useRouter } from 'next/router';
@@ -62,8 +62,8 @@ const ProductDetailAction = ({
     const reviewRef = React.useRef(null);
 
     // cache currency
-    const currencyCache = useReactiveVar(currencyVar);
-    const cachePrice = useReactiveVar(priceVar);
+    const currencyCache = currencyVar();
+    const cachePrice = priceVar();
     const generateIdentifier = slug.replace(/ /g, '-');
     const mount = React.useRef(null);
     const reviewValue = parseInt(item.review.rating_summary, 0) / 20;
@@ -454,6 +454,8 @@ const ProductDetailAction = ({
         item?.id || null,
     );
 
+    const enableMultiSeller = storeConfig.enable_oms_multiseller === '1' || storeConfig.enable_oms_multiseller === 1;
+
     return (
         <Content
             isLogin={isLogin}
@@ -509,6 +511,7 @@ const ProductDetailAction = ({
             currencyCode={currencyCode}
             useProductRelated={useProductRelated}
             useProductUpsell={useProductUpsell}
+            enableMultiSeller={enableMultiSeller}
             data={{
                 ...item,
                 labels,

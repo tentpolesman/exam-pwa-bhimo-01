@@ -9,7 +9,7 @@ import Content from '@core_modules/rma/pages/detail/components';
 
 const CoreLanding = (props) => {
     const {
-        t, Loader, WarningInfo, pageConfig = {}, ...other
+        t, Loader, WarningInfo, ...other
     } = props;
     const router = useRouter();
     const { id } = router.query;
@@ -19,7 +19,7 @@ const CoreLanding = (props) => {
         header: 'relative', // available values: "absolute", "relative", false (default)
         headerTitle: `${t('rma:view:label')} #${id}`,
         bottomNav: false,
-        ...pageConfig,
+        tagSelector: 'swift-page-rmadetail',
     };
 
     let objectData = {};
@@ -61,10 +61,7 @@ const CoreLanding = (props) => {
 
     return (
         <DefaultLayout {...props} pageConfig={config}>
-            <Content
-                {...other}
-                {...contentprops}
-            />
+            <Content {...other} {...contentprops} />
         </DefaultLayout>
     );
 };

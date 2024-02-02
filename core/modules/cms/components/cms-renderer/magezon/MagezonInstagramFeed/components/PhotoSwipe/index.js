@@ -17,9 +17,7 @@ import { generateThumborUrl, getImageFallbackUrl } from '@helpers/image';
 import { basePath } from '@config';
 
 const PhotoSwipe = (props) => {
-    const {
-        open, setOpen, data, max_items, imagePosition, storeConfig,
-    } = props;
+    const { open, setOpen, data, max_items, imagePosition, storeConfig } = props;
     const sliderRef = React.createRef();
     const { t } = useTranslation(['common']);
 
@@ -70,11 +68,7 @@ const PhotoSwipe = (props) => {
 
     React.useEffect(() => {
         if (fscreen.fullscreenEnabled) {
-            fscreen.addEventListener(
-                'fullscreenchange',
-                handleFullscreenChange,
-                false,
-            );
+            fscreen.addEventListener('fullscreenchange', handleFullscreenChange, false);
             fscreen.addEventListener('fullscreenerror', handleFullscreenError, false);
             return () => {
                 fscreen.removeEventListener('fullscreenchange', handleFullscreenChange);
@@ -216,7 +210,7 @@ const PhotoSwipe = (props) => {
     //                                                 {t('common:instagramFeed:shareFb')}
 
     //                                             </Link>
-    //                                         </MenuItem>
+    //                                         </>
     //                                         <MenuItem onClick={handleClose}>
     //                                             <Link href={getLink('tweet')} target="_blank">
 

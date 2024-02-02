@@ -76,7 +76,7 @@ const ViewSwitcherCurrency = (props) => {
                 content={<PopoverContent />}
                 open={open}
                 setOpen={setOpen}
-                className={cx('top-[120%]', 'p-0')}
+                className={cx('top-[100%]', 'p-0')}
                 wrapperClassName={cx('self-end')}
                 wrapperId="top-header__content--currency-language-changer-menu__currency-switcher"
             >
@@ -107,7 +107,7 @@ const ViewSwitcherCurrency = (props) => {
 
     return (
         <div>
-            <Skeleton width={128} />
+            <Skeleton width={128} className="mt-[10px]" />
         </div>
     );
 };

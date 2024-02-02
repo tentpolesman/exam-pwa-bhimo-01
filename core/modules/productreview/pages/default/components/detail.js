@@ -10,7 +10,7 @@ import XMarkIcon from '@heroicons/react/24/solid/XMarkIcon';
 
 const ProductReview = (props) => {
     const {
-        open, setOpen, reviewItem, t,
+        open, setOpen, reviewItem, t, storeConfig,
     } = props;
 
     if (!reviewItem) {
@@ -20,7 +20,7 @@ const ProductReview = (props) => {
     const ratingProduct = reviewItem?.product?.rating_summary ? parseInt(reviewItem.product.rating_summary, 10) / 20 : 0;
 
     return (
-        <Dialog variant="plain" open={open} onClose={setOpen}>
+        <Dialog variant="plain" open={open}>
             <div>
                 <div
                     className={cx(
@@ -34,7 +34,7 @@ const ProductReview = (props) => {
                     <div className={cx('overflow-y-auto', 'max-h-[85vh]')}>
                         <div className={cx('pb-[10px]', 'flex justify-end')}>
                             <div
-                                onClick={setOpen}
+                                onClick={() => setOpen(false)}
                                 aria-label="close"
                                 aria-hidden="true"
                                 className={cx('bg-neutral-white', 'h-[30px]', 'w-[30px]', 'hover:cursor-pointer')}
@@ -45,7 +45,14 @@ const ProductReview = (props) => {
 
                         <div className="flex desktop:flex-row tablet:flex-row mobile:flex-col">
                             <div className={cx('desktop:w-[250px] tablet:w-[200px] mobile:w-[150px]', 'self-center')}>
-                                <Image src={reviewItem.product.image.url} height={250} width={250} heightMobile={150} widthMobile={150} />
+                                <Image
+                                    src={reviewItem.product.image.url}
+                                    height={250}
+                                    width={250}
+                                    heightMobile={150}
+                                    widthMobile={150}
+                                    storeConfig={storeConfig}
+                                />
                             </div>
                             <div className={cx('desktop:w-[calc(100%-250px)] tablet:w-[calc(100%-200px)]')}>
                                 <Typography variant="bd-b2" className={cx('uppercase', 'font-bold')}>

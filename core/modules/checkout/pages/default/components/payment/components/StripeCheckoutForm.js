@@ -4,10 +4,19 @@ import { useState } from 'react';
 
 import gqlService from '@core_modules/checkout/services/graphql';
 
+import { useDispatch, useSelector } from 'react-redux';
+import {
+    selectCheckoutState, setLoading, setSelectedData, setStatusState,
+} from '@core_modules/checkout/redux/checkoutSlice';
+
 const CheckoutForm = (props) => {
     const {
-        checkout, refSummary, onHandleResult, setCheckout, stripeRef, handleOpenMessage,
+        refSummary, onHandleResult, stripeRef, handleOpenMessage,
     } = props;
+
+    const dispatch = useDispatch();
+    const checkout = useSelector(selectCheckoutState);
+
     const [setPaymentMethod] = gqlService.setPaymentMethod();
     const [isProcessing, setIsProcessing] = useState(false);
     const stripe = useStripe();
@@ -25,20 +34,16 @@ const CheckoutForm = (props) => {
         }
 
         setIsProcessing(true);
-        const state = {
-            ...checkout,
-            loading: {
-                ...checkout.loading,
-                all: false,
-                shipping: false,
-                payment: false,
-                extraFee: true,
-                order: true,
-            },
-        };
-        state.selected.payment = 'stripe_payments';
-        state.status.purchaseOrderApply = false;
-        setCheckout(state);
+        dispatch(setLoading({
+            all: false,
+            shipping: false,
+            payment: false,
+            extraFee: true,
+            order: true,
+        }));
+
+        dispatch(setSelectedData({ payment: 'stripe_payments' }));
+        dispatch(setStatusState({ purchaseOrderApply: true }));
 
         const confirmStripePayments = await stripe.confirmPayment({
             elements,
@@ -65,7 +70,6 @@ const CheckoutForm = (props) => {
                 },
             }).then((result) => {
                 onHandleResult({
-                    state,
                     result,
                     val: 'stripe_payments',
                     cart,
@@ -74,7 +78,6 @@ const CheckoutForm = (props) => {
             }).catch((err) => {
                 const result = err;
                 onHandleResult({
-                    state,
                     result,
                     val: 'stripe_payments',
                     cart,

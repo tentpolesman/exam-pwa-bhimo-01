@@ -42,28 +42,23 @@ const Detail = (props) => {
     return (
         <div className="flex flex-col gap-1 relative w-full">
             <Show when={enableMultiSeller && seller && seller?.seller_name}>
-                <div className="flex">
+                <Link href={`/seller/${seller?.seller_path}`}>
                     <Typography
                         variant="bd-2"
                         className={cx(
-                            'line-clamp-2 text-primary capitalize mb-[2px] tablet:mb-[6px]',
-                            isGrid && 'text-sm tablet:text-md',
-                            !isGrid && 'text-xs tablet:text-md',
+                            'line-clamp-1 capitalize',
+                            'leading-5',
+                            isGrid && 'text-sm tablet:text-base',
+                            !isGrid && 'text-xs tablet:text-base',
                         )}
-                        color="primary"
-                        letter="capitalize"
+                        color="text-primary"
                     >
                         {parser(seller?.seller_name || '')}
                     </Typography>
-                </div>
+                </Link>
             </Show>
             <Show when={enableProductName}>
-                <Link
-                    href="/[...slug]"
-                    as={`/${urlKey}`}
-                    className="w-full plugin-productTitle-typography"
-                    onClick={() => handleClick(props)}
-                >
+                <Link href="/[...slug]" as={`/${urlKey}`} className="w-full plugin-productTitle-typography" onClick={() => handleClick(props)}>
                     <Typography
                         className={cx(
                             'font-medium line-clamp-2 mb-[6px] capitalize',
@@ -77,25 +72,17 @@ const Detail = (props) => {
                 </Link>
             </Show>
             <Show when={showShortDescription && shortDescription && !isGrid}>
-                <div className="hidden tablet:flex !line-clamp-2 text-md text-neutral-500 leading-5">
+                <div className="hidden tablet:flex !line-clamp-2 text-base text-neutral-500 leading-5">
                     <CmsRenderer content={shortDescription} />
                 </div>
             </Show>
 
             <Show when={showRating}>
                 <div className="hidden desktop:flex">
-                    <RatingStar
-                        value={ratingValue}
-                        sizeIcon="lg"
-                        prefixName={urlKey}
-                    />
+                    <RatingStar value={ratingValue} sizeIcon="lg" prefixName={urlKey} />
                 </div>
                 <div className="flex desktop:hidden">
-                    <RatingStar
-                        value={ratingValue}
-                        sizeIcon="sm"
-                        prefixName={urlKey}
-                    />
+                    <RatingStar value={ratingValue} sizeIcon="sm" prefixName={urlKey} />
                 </div>
             </Show>
             {Pricing && Pricing}

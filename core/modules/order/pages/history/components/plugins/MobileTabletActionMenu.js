@@ -1,30 +1,47 @@
 import Button from '@common_button';
 import Popover from '@common_popover';
 import Typography from '@common_typography';
-
 import Link from 'next/link';
-
 import cx from 'classnames';
-
 import EllipsisVerticalIcon from '@heroicons/react/24/solid/EllipsisVerticalIcon';
+import Show from '@common/Show';
 
 const MobileTabletActionMenu = (props) => {
-    const { t, orderNumber, reOrder } = props;
+    const {
+        t, orderNumber, reOrder, return: isRma, handlingReturn = () => {},
+    } = props;
 
     const [open, setOpen] = React.useState(false);
 
     const PopoverContent = () => (
         <ul className={cx('py-2')}>
-            <li className={cx('text-md', 'px-4', 'py-2', 'hover:bg-neutral-100', 'cursor-pointer')}>
+            <li className={cx('px-4', 'py-2')}>
                 <Link href={`/sales/order/view/order_id/${orderNumber}`} className={cx('hover:text-primary-700')}>
-                    View
+                    <Typography variant="bd-2b" className={cx('!text-primary-700', 'hover:underline')}>
+                        {t('order:view')}
+                    </Typography>
                 </Link>
             </li>
-            <li className={cx('text-md', 'px-4', 'py-2', 'hover:bg-neutral-100', 'cursor-pointer')}>
-                <Typography className={cx('hover:text-primary-700', 'cursor-pointer')} onClick={() => reOrder(orderNumber)}>
-                    {t('order:reorder')}
-                </Typography>
+            <li className={cx('px-4', 'py-2')}>
+                <button type="button" onClick={() => reOrder(orderNumber)}>
+                    <a>
+                        <Typography variant="bd-2b" className={cx('!text-primary-700', 'hover:underline')}>
+                            {t('order:reorder')}
+                        </Typography>
+                    </a>
+                </button>
             </li>
+            <Show when={isRma}>
+                <li className={cx('px-4', 'py-2')}>
+                    <button type="button" onClick={() => handlingReturn()}>
+                        <a>
+                            <Typography variant="bd-2b" className={cx('!text-primary-700', 'hover:underline')}>
+                                {t('order:smReturn')}
+                            </Typography>
+                        </a>
+                    </button>
+                </li>
+            </Show>
         </ul>
     );
 
@@ -45,7 +62,7 @@ const MobileTabletActionMenu = (props) => {
                     iconOnly
                     icon={<EllipsisVerticalIcon className="h-[20px] w-[24px]" />}
                     iconProps={{
-                        className: cx('text-neutral-700', 'w-[20px]', 'h-[20px]', 'group-hover:text-primary-700'),
+                        className: cx('text-neutral-700', 'w-[20px]', 'h-[20px]', 'text-primary-700'),
                     }}
                 />
             </Popover>

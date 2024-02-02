@@ -1,4 +1,4 @@
-import { COLORS } from '@root/core/theme/vars';
+import { COLORS } from '@core/theme/vars';
 import cx from 'classnames';
 
 const Skeleton = ({
