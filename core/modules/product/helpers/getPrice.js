@@ -36,7 +36,7 @@ const getSimpleProductPrice = ({ priceRange = {}, priceTiers = [] }) => {
         const firstTierPrice = priceTiers[0];
         // case 4: if there is no discount and has tier price
         if (regularPrice.value === finalPrice.value) {
-            return firstTierPrice.final_price.valu;
+            return firstTierPrice.final_price.value;
         }
         // case 5: if final price is lower than tier price
         if (finalPrice.value < firstTierPrice.final_price.value) {
@@ -44,7 +44,7 @@ const getSimpleProductPrice = ({ priceRange = {}, priceTiers = [] }) => {
         }
         // case 6: if tier price is lower than final price and tier price qty is 1
         if (firstTierPrice.quantity === 1 || finalPrice.value === firstTierPrice.final_price.value) {
-            return firstTierPrice.final_price.valu;
+            return firstTierPrice.final_price.value;
         }
         // case 7: if tier price is lower than final price but tier price qty > 1
         return firstTierPrice.final_price.value;
