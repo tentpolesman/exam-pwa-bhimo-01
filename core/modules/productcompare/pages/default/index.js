@@ -1,5 +1,5 @@
 /* eslint-disable react/destructuring-assignment */
-import { withTranslation } from '@i18n';
+import { withTranslation } from 'next-i18next';
 import { withApollo } from '@lib_apollo';
 import Core from '@core_modules/productcompare/pages/default/core';
 import Content from '@core_modules/productcompare/pages/default/components';
@@ -19,8 +19,4 @@ const Page = (props) => (
     />
 );
 
-Page.getInitialProps = () => ({
-    namespacesRequired: ['common', 'catalog', 'customer', 'validate', 'product'],
-});
-
-export default withApollo({ ssr: true })(withTranslation()(Page));
+export default withApollo({ ssr: false })(withTranslation()(Page));

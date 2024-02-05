@@ -1,16 +1,13 @@
+import React from 'react';
 import Typography from '@common_typography';
 import ButtonCompare from '@core_modules/theme/components/recentlyViewed/buttonCompare';
 import ProductView from '@core_modules/theme/components/recentlyViewed/productView';
-import useStyles from '@core_modules/theme/components/recentlyViewed/style';
 import { getRecentlyProduct } from '@core_modules/theme/services/graphql';
 import { getLocalStorage } from '@helper_localstorage';
 import { breakPointsUp } from '@helper_theme';
-import { useTranslation } from '@i18n';
-import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
-import React from 'react';
+import { useTranslation } from 'next-i18next';
 
 const RecentlyViewed = (props) => {
-    const styles = useStyles();
     const { recentlyBtn, isActive } = props;
     const { t } = useTranslation();
     const [openViewBar, setViewBar] = React.useState(false);
@@ -46,7 +43,7 @@ const RecentlyViewed = (props) => {
     };
     if (isActive) {
         return (
-            <div className={styles.wrapperBtn}>
+            <div className="[&>.button-title]:text-neutral-black [&>.button-title]:uppercase [&>.button-title]:text-sm">
                 {!openViewBar && viewedProduct && viewedProduct.length > 0 ? (
                     <ButtonCompare onClick={toggleDrawer(true)} className={recentlyBtn}>
                         <Typography variant="title" type="bold" className="button-title">
@@ -54,9 +51,9 @@ const RecentlyViewed = (props) => {
                         </Typography>
                     </ButtonCompare>
                 ) : null}
-                <SwipeableDrawer anchor="bottom" open={openViewBar} onClose={toggleDrawer(false)} onOpen={toggleDrawer(true)}>
+                <div className="swipeable-drawer" anchor="bottom" open={openViewBar} onClose={toggleDrawer(false)} onOpen={toggleDrawer(true)}>
                     <ProductView toggleDrawer={toggleDrawer} {...props} desktop={desktop} loading={loading} product={product} t={t} />
-                </SwipeableDrawer>
+                </div>
             </div>
         );
     }

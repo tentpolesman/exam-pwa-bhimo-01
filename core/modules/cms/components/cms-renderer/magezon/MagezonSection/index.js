@@ -12,13 +12,6 @@ const MagezonSection = (props) => {
                     </div>
                 ))}
             </div>
-            <style jsx>
-                {`
-                    .mgz-section-item {
-                        margin: 20px 0;
-                    }
-                `}
-            </style>
         </>
     );
 };

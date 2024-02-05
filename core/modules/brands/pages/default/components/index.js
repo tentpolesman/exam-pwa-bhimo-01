@@ -1,16 +1,20 @@
-import { breakPointsUp } from '@helper_theme';
-import classNames from 'classnames';
+import cx from 'classnames';
 import AllBrands from '@core_modules/brands/pages/default/components/all';
-import useStyles from '@core_modules/brands/pages/default/components/style';
 import Featured from '@core_modules/brands/pages/default/components/featured';
+import Show from '@common/Show';
 
 const Component = (props) => {
-    const { t, featured } = props;
-    const desktop = breakPointsUp('sm');
-    const styles = useStyles();
+    const { t, featured, storeConfig } = props;
+    const displayFeatured = true;
     return (
-        <div className={classNames('wrapper-brands', styles.wrapperBrands)}>
-            <Featured t={t} featured={featured} desktop={desktop} />
+        <div className={cx('')}>
+            <Show when={(featured.length > 0) && displayFeatured}>
+                <Featured
+                    t={t}
+                    featured={featured}
+                    storeConfig={storeConfig}
+                />
+            </Show>
             <AllBrands {...props} />
         </div>
     );

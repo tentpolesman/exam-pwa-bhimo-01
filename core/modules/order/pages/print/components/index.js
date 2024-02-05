@@ -1,23 +1,23 @@
+/* eslint-disable object-curly-newline */
+/* eslint-disable react/jsx-one-expression-per-line */
+/* eslint-disable operator-linebreak */
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable linebreak-style */
 /* eslint-disable consistent-return */
 /* eslint-disable no-unused-expressions */
 /* eslint-disable array-callback-return */
-import React from 'react';
+/* eslint-disable @next/next/no-img-element */
 import Typography from '@common_typography';
-import classNames from 'classnames';
-import formatDate from '@helper_date';
-import { formatPrice } from '@helper_currency';
 import { modules } from '@config';
-import useStyles from '@core_modules/order/pages/print/style';
 import Table from '@core_modules/order/pages/print/components/TableListItem';
+import { formatPrice } from '@helper_currency';
+import formatDate from '@helper_date';
+import cx from 'classnames';
 import Link from 'next/link';
+import React from 'react';
 
 const PrintOrder = (props) => {
-    const {
-        t, detail, currency, storeConfig, currencyCache,
-    } = props;
-    const styles = useStyles();
+    const { t, detail, currency, storeConfig, currencyCache } = props;
 
     let items = [];
 
@@ -37,11 +37,11 @@ const PrintOrder = (props) => {
 
     return (
         <>
-            <div className={classNames('column', styles.blockContainer)}>
-                <div className={classNames(styles.blockHeader)}>
+            <div className={cx('flex flex-col', 'mx-auto', 'px-10')}>
+                <div className={cx('')}>
                     <div className="header-middle__left">
                         <div className="box header-middle__logo">
-                            <Link href="/">
+                            <Link href="/" legacyBehavior>
                                 <img
                                     className="header-middle__logo-link"
                                     src={`${storeConfig.secure_base_media_url}logo/${storeConfig.header_logo_src}`}
@@ -49,71 +49,31 @@ const PrintOrder = (props) => {
                             </Link>
                         </div>
                     </div>
-                    <div className="row">
-                        <Typography
-                            variant="h1"
-                            letter="uppercase"
-                            type="semiBold"
-                            className={classNames('clear-margin-padding', styles.headerTitle)}
-                        >
+                    <div className="flex flex-row gap-x-4">
+                        <Typography variant="h1" className={cx('!text-2xl')}>
                             {t('order:order')}
                             {' # '}
                             {detail[0].order_number || ''}
                         </Typography>
-                        <Typography id="status_label" variant="span" size="14" letter="uppercase">
+                        <Typography id="status_label" className={cx('px-4', 'py-2', 'border-[1px]', 'border-neutral-400')}>
                             {detail[0].status_label || ''}
                         </Typography>
                     </div>
-                    <Typography variant="span" className="clear-margin-padding">
-                        {formatDate(detail[0].created_at)}
-                    </Typography>
+                    <Typography className="clear-margin-padding">{formatDate(detail[0].created_at)}</Typography>
                 </div>
-                <div className={styles.block}>
-                    <div className="row start-xs start-sm start-sm start-md start-lg">
-                        {/* <div className="col-xs-12">
-                            <Typography
-                                variant="span"
-                                letter="capitalize"
-                                type="regular"
-                                className={classNames('clear-margin-padding', styles.blockLabel)}
-                            >
-                                {t('order:orderItem')}
-                            </Typography>
-                        </div> */}
-                        {/* <div className="col-xs-12">
-                            <div className="hidden-mobile">
-                                <Table data={items} t={t} currency={currency} {...props} />
-                            </div>
-                        </div> */}
-                    </div>
-                </div>
-                <div className={classNames(styles.block)}>
-                    <div className={styles.wrapper}>
-                        <div className="col-xs-12">
+                <div>
+                    <div className={cx('flex', 'flex-col')}>
+                        <div className="mobile:basis-full">
                             <div>
-                                <Table
-                                    data={items}
-                                    t={t}
-                                    currency={currency}
-                                    currencyCache={currencyCache}
-                                    {...props}
-                                />
+                                <Table data={items} t={t} currency={currency} currencyCache={currencyCache} {...props} />
                             </div>
-                            {/* <div className="hide-desktop">
-                                {items.length > 0
-                                        && items.map((item, key) => (
-                                            <ItemProduct t={t} key={key} {...item} currency={currency} storeConfig={storeConfig} />
-                                        ))}
-                            </div> */}
                         </div>
-                        <div className="row end-xs end-sm end-md">
-                            <div className="col-md-4 col-sm-4">
+                        <div className="mobile:basis-full flex flex-row mt-4 justify-end text-end">
+                            <div className="basis-4/12 flex flex-col gap-y-2">
                                 {(detail[0].detail[0].subtotal || detail[0].detail[0].subtotal_incl_tax) && (
-                                    <div className={styles.listSummary}>
-                                        <Typography variant="span" letter="capitalize" className={styles.labelSummary}>
-                                            Sub total
-                                        </Typography>
-                                        <Typography variant="span" letter="capitalize">
+                                    <div className="flex flex-row justify-between">
+                                        <Typography className={cx('capitalize')}>Sub total</Typography>
+                                        <Typography letter="capitalize">
                                             {formatPrice(
                                                 detail[0].detail[0].tax_amount ? detail[0].detail[0].subtotal : detail[0].detail[0].subtotal_incl_tax,
                                                 currency,
@@ -122,66 +82,44 @@ const PrintOrder = (props) => {
                                         </Typography>
                                     </div>
                                 )}
-                                {/* {detail[0].detail[0].tax_amount && (
-                                <div className={styles.listSummary}>
-                                    <Typography variant="span" letter="capitalize" className={styles.labelSummary}>
-                                        {t('order:tax')}
-                                    </Typography>
-                                    <Typography variant="span" letter="capitalize">
-                                        {formatPrice(detail[0].detail[0].tax_amount, currency)}
-                                    </Typography>
-                                </div>
-                            )} */}
                                 {detail[0].detail[0].payment && (
-                                    <div className={styles.listSummary}>
-                                        <Typography variant="span" letter="capitalize" className={styles.labelSummary}>
-                                            {t('order:shipping')}
-                                        </Typography>
-                                        <Typography variant="span" letter="capitalize">
+                                    <div className="flex flex-row justify-between">
+                                        <Typography className={cx('capitalize')}>{t('order:shipping')}</Typography>
+                                        <Typography letter="capitalize">
                                             {formatPrice(detail[0].detail[0].payment.shipping_amount, currency, currencyCache)}
                                         </Typography>
                                     </div>
                                 )}
                                 {detail[0].detail[0].discount_amount ? (
-                                    <div className={styles.listSummary}>
-                                        <Typography variant="span" letter="capitalize" className={styles.labelSummary}>
-                                            {t('order:discount')}
-                                        </Typography>
-                                        <Typography variant="span" letter="capitalize">
+                                    <div className="flex flex-row justify-between">
+                                        <Typography className={cx('capitalize')}>{t('order:discount')}</Typography>
+                                        <Typography letter="capitalize">
                                             {formatPrice(detail[0].detail[0].discount_amount, currency, currencyCache)}
                                         </Typography>
                                     </div>
                                 ) : null}
                                 {detail[0].detail[0].aw_store_credit.is_use_store_credit ? (
-                                    <div className={styles.listSummary}>
-                                        <Typography variant="span" letter="capitalize" className={styles.labelSummary}>
-                                            {t('order:credit')}
-                                        </Typography>
-                                        <Typography variant="span" letter="capitalize">
+                                    <div className="flex flex-row justify-between">
+                                        <Typography className={cx('capitalize')}>{t('order:credit')}</Typography>
+                                        <Typography letter="capitalize">
                                             {formatPrice(detail[0].detail[0].aw_store_credit.store_credit_amount, currency, currencyCache)}
                                         </Typography>
                                     </div>
                                 ) : null}
                                 {modules.giftcard.enabled && detail[0].detail[0] && detail[0].detail[0].aw_giftcard.giftcard_amount ? (
-                                    <div className={styles.listSummary}>
-                                        <Typography variant="span" letter="capitalize" className={styles.labelSummary}>
-                                            {t('order:giftcard')}
-                                            {' '}
-                                            (
-                                            {detail[0].detail[0].aw_giftcard.giftcard_detail[0].giftcard_code}
-                                            )
+                                    <div className="flex flex-row justify-between">
+                                        <Typography className={cx('capitalize')}>
+                                            {t('order:giftcard')} ({detail[0].detail[0].aw_giftcard.giftcard_detail[0].giftcard_code})
                                         </Typography>
-                                        <Typography variant="span" letter="capitalize">
+                                        <Typography letter="capitalize">
                                             {formatPrice(-detail[0].detail[0].aw_giftcard.giftcard_amount, currency, currencyCache)}
                                         </Typography>
                                     </div>
                                 ) : null}
                                 {detail[0].detail[0].applied_extra_fee ? (
-                                    <div className={styles.listSummary}>
-                                        <Typography variant="span" letter="capitalize" className={styles.labelSummary}>
-                                            {detail[0].detail[0].applied_extra_fee.title}
-                                        </Typography>
-                                        <Typography variant="span" letter="capitalize">
+                                    <div className="flex flex-row justify-between">
+                                        <Typography className={cx('capitalize')}>{detail[0].detail[0].applied_extra_fee.title}</Typography>
+                                        <Typography letter="capitalize">
                                             {formatPrice(
                                                 detail[0].detail[0].applied_extra_fee.extrafee_value.value,
                                                 detail[0].detail[0].applied_extra_fee.extrafee_value.currency,
@@ -190,8 +128,8 @@ const PrintOrder = (props) => {
                                         </Typography>
                                     </div>
                                 ) : null}
-                                <div className={styles.listSummary}>
-                                    <Typography variant="title" type="bold" letter="capitalize" className={styles.labelSummary}>
+                                <div className="flex flex-row justify-between">
+                                    <Typography variant="title" type="bold" className={cx('capitalize')}>
                                         Total
                                     </Typography>
                                     <Typography variant="title" type="bold" letter="capitalize">
@@ -202,31 +140,22 @@ const PrintOrder = (props) => {
                         </div>
                     </div>
                 </div>
-                <div className={classNames(styles.block)}>
-                    <div className="row start-xs start-sm start-sm start-md start-lg">
-                        <div className="col-xs-12">
-                            <Typography
-                                variant="span"
-                                letter="capitalize"
-                                type="regular"
-                                className={classNames('clear-margin-padding', styles.blockLabel)}
-                            >
-                                {t('order:orderInfo')}
-                            </Typography>
-                            <hr />
-                        </div>
+                <div className={cx('py-8')}>
+                    <div className="mobile:basis-full">
+                        <Typography className={cx('clear-margin-padding', 'text-xl')}>{t('order:orderInfo')}</Typography>
+                        <hr className={cx('mt-2')} />
+                    </div>
+                    <div className="flex flex-row flex-wrap">
                         {Object.keys(detail[0].detail[0].shipping_address).length > 0 && (
-                        // shipped to block
-                            <div className="col-xs-12 col-xs-print-4 col-sm-4 col-md-4">
-                                <Typography variant="p" type="bold" letter="uppercase" className={styles.labelDetail}>
+                            // shipped to block
+                            <div className="mobile:basis-6/12 tablet:basis-4/12 desktop:basis-3/12 col-xs-print-4 flex flex-col">
+                                <Typography className={cx('pt-6', 'uppercase', 'font-semibold')}>
                                     {detail[0].detail[0].pickup_store && detail[0].detail[0].pickup_store.is_using_pickup_store
                                         ? t('order:pickupAt')
                                         : t('order:shippedTo')}
                                 </Typography>
-                                <Typography variant="span" className="clear-margin-padding">
-                                    {detail[0].detail[0].shipping_address.firstname || ''}
-                                    {' '}
-                                    {detail[0].detail[0].shipping_address.lastname || ''}
+                                <Typography className="clear-margin-padding">
+                                    {detail[0].detail[0].shipping_address.firstname || ''} {detail[0].detail[0].shipping_address.lastname || ''}
                                     <br />
                                     {detail[0].detail[0].shipping_address.street || ''}
                                     <br />
@@ -243,54 +172,37 @@ const PrintOrder = (props) => {
                             </div>
                         )}
                         {detail[0].detail[0].pickup_store && detail[0].detail[0].pickup_store.is_using_pickup_store && (
-                        // pickup store
-                            <div className="col-xs-12 col-xs-print-3 col-sm-3 col-md-3">
-                                <Typography variant="p" type="bold" letter="uppercase" className={styles.labelDetail}>
-                                    {t('order:pickupBy')}
-                                </Typography>
-                                <Typography variant="span" className="clear-margin-padding">
+                            // pickup store
+                            <div className="mobile:basis-6/12 tablet:basis-4/12 desktop:basis-3/12 col-xs-print-3 flex flex-col">
+                                <Typography className={cx('pt-6', 'uppercase', 'font-semibold')}>{t('order:pickupBy')}</Typography>
+                                <Typography className="clear-margin-padding">
                                     {detail[0].detail[0].pickup_store.pickup_person.name}
                                     <br />
                                 </Typography>
-                                <Typography variant="span" className="clear-margin-padding">
+                                <Typography className="clear-margin-padding">
                                     {`Hp : ${detail[0].detail[0].pickup_store.pickup_person.handphone}`}
                                     <br />
                                 </Typography>
-                                <Typography variant="span" className="clear-margin-padding">
+                                <Typography className="clear-margin-padding">
                                     {`Email : ${detail[0].detail[0].pickup_store.pickup_person.email}`}
                                     <br />
                                 </Typography>
                             </div>
                         )}
-                        {/* orderstatus */}
-                        {/* <div className="col-xs-3">
-                        <Typography variant="p" type="bold" letter="uppercase" className={styles.labelDetail}>
-                            {t('order:orderStatus')}
-                        </Typography>
-                        <Typography variant="span" className="clear-margin-padding">
-                            {detail[0].status_label || ''}
-                        </Typography>
-                    </div> */}
                         {/* shipping method */}
                         {Object.keys(detail[0].detail[0].shipping_address).length > 0 && (
-                            <div className="col-xs-3 col-xs-print-3">
-                                <Typography variant="p" type="bold" letter="uppercase" className={styles.labelDetail}>
-                                    {t('order:shippingMethod')}
-                                </Typography>
-                                <Typography variant="span" className="clear-margin-padding">
+                            <div className="mobile:basis-6/12 tablet:basis-4/12 desktop:basis-3/12 col-xs-print-3 flex flex-col">
+                                <Typography className={cx('pt-6', 'uppercase', 'font-semibold')}>{t('order:shippingMethod')}</Typography>
+                                <Typography className="clear-margin-padding">
                                     {detail[0].detail[0].shipping_methods.shipping_description || ''}
                                 </Typography>
                             </div>
                         )}
                         {/* billing address */}
-                        <div className="col-xs-12 col-xs-print-3 col-sm-3 col-md-3">
-                            <Typography variant="p" type="bold" letter="uppercase" className={styles.labelDetail}>
-                                {t('order:billingAddress')}
-                            </Typography>
-                            <Typography variant="span" className="clear-margin-padding">
-                                {detail[0].detail[0].billing_address.firstname || ''}
-                                {' '}
-                                {detail[0].detail[0].billing_address.lastname || ''}
+                        <div className="mobile:basis-6/12 tablet:basis-4/12 desktop:basis-3/12 col-xs-print-3 flex flex-col">
+                            <Typography className={cx('pt-6', 'uppercase', 'font-semibold')}>{t('order:billingAddress')}</Typography>
+                            <Typography className="clear-margin-padding">
+                                {detail[0].detail[0].billing_address.firstname || ''} {detail[0].detail[0].billing_address.lastname || ''}
                                 <br />
                                 {detail[0].detail[0].billing_address.street || ''}
                                 <br />
@@ -305,22 +217,18 @@ const PrintOrder = (props) => {
                                 {detail[0].detail[0].billing_address.postcode || ''}
                             </Typography>
                         </div>
-                        <div className="col-xs-12 col-xs-print-2 col-sm-2 col-md-2">
-                            <Typography variant="p" type="bold" letter="uppercase" className={styles.labelDetail}>
-                                {t('order:paymentMethod')}
-                            </Typography>
+                        <div className="mobile:basis-6/12 tablet:basis-4/12 desktop:basis-3/12 col-xs-print-2 flex flex-col">
+                            <Typography className={cx('pt-6', 'uppercase', 'font-semibold', 'pb-2')}>{t('order:paymentMethod')}</Typography>
                             {Object.keys(detail[0].detail[0].payment.payment_additional_info).map((item) => {
                                 if (
-                                    item !== '__typename'
-                                        && detail[0].detail[0].payment.payment_additional_info[item] !== ''
-                                        && detail[0].detail[0].payment.payment_additional_info[item] !== null
+                                    item !== '__typename' &&
+                                    detail[0].detail[0].payment.payment_additional_info[item] !== '' &&
+                                    detail[0].detail[0].payment.payment_additional_info[item] !== null
                                 ) {
                                     return (
                                         <React.Fragment key={item}>
-                                            <Typography variant="p" type="bold" letter="capitalize" className={styles.labelDetailSm}>
-                                                {item.replace('_', ' ')}
-                                            </Typography>
-                                            <Typography variant="span" className="clear-margin-padding">
+                                            <Typography className={cx('capitalize', 'font-semibold')}>{item.replace('_', ' ')}</Typography>
+                                            <Typography className="clear-margin-padding">
                                                 {detail[0].detail[0].payment.payment_additional_info[item] || ''}
                                             </Typography>
                                         </React.Fragment>

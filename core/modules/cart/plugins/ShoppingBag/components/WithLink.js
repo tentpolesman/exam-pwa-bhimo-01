@@ -1,23 +1,32 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import Badge from '@material-ui/core/Badge';
-import makeStyles from '@material-ui/core/styles/makeStyles';
-import LocalMall from '@material-ui/icons/LocalMall';
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+import ShoppingCartIcon from '@heroicons/react/24/solid/ShoppingCartIcon';
+import cx from 'classnames';
 
-const useStyles = makeStyles({
-    root: {
-        margin: 20,
-        cursor: 'pointer',
-    },
-});
+import BadgeCounter from '@common_badgecounter';
 
-const WithLink = ({ cartData, handleLink }) => {
-    const styles = useStyles();
+const WithLink = (props) => {
+    const { cartData, handleLink } = props;
+
     return (
-        <div className={styles.root} onClick={handleLink}>
-            <Badge color="secondary" badgeContent={cartData || 0}>
-                <LocalMall color="secondary" />
-            </Badge>
+        <div
+            className={cx('group hover:cursor-pointer')}
+            onClick={handleLink}
+        >
+            <BadgeCounter value={cartData}>
+                <ShoppingCartIcon
+                    className={cx(
+                        'mobile:max-tablet:w-[20px]',
+                        'tablet:w-[24px]',
+                        'text-neutral-600',
+                        'hover:text-primary-700',
+                        'group-hover:text-primary-700',
+                        'mobile:max-tablet:mt-3',
+                        'tablet:mt-3',
+                        'hover:cursor-pointer',
+                    )}
+                />
+            </BadgeCounter>
         </div>
     );
 };

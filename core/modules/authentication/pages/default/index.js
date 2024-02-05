@@ -1,10 +1,10 @@
 import { withApollo } from '@lib_apollo';
-import Loader from '@common_loaders/Backdrop';
-import { withTranslation } from '@i18n';
+import Backdrop from '@common_backdrop';
+import { withTranslation } from 'next-i18next';
 import Core from '@core_modules/authentication/pages/default/core';
 // import { decrypt } from '@helpers/encryption';
 
-const Content = () => <Loader open />;
+const Content = () => <Backdrop open />;
 
 const Page = (props) => <Core {...props} Content={Content} />;
 

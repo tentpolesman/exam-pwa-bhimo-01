@@ -1,130 +1,91 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import PriceFormat from '@common_priceformat';
 import RatingStar from '@common_ratingstar';
 import Typography from '@common_typography';
-import { modules } from '@config';
-import Button from '@material-ui/core/IconButton';
-import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
-import Favorite from '@material-ui/icons/Favorite';
-import FavoriteBorderOutlined from '@material-ui/icons/FavoriteBorderOutlined';
-import StorefrontIcon from '@material-ui/icons/Storefront';
-import useStyles from '@plugin_productitem/style';
-import { getPriceFromList } from '@core_modules/product/helpers/getPrice';
-import Skeleton from '@material-ui/lab/Skeleton';
-import classNames from 'classnames';
 import Link from 'next/link';
 import React from 'react';
+import cx from 'classnames';
+
+import Show from '@common/Show';
+import dynamic from 'next/dynamic';
+import parser from 'html-react-parser';
+
+const CmsRenderer = dynamic(() => import('@core_modules/cms/components/cms-renderer'));
 
 const Detail = (props) => {
     const {
-        spesificProduct,
         handleClick,
         name,
-        handleFeed,
         ratingValue,
-        __typename,
-        price_range,
-        price_tiers,
-        feed,
-        id,
-        special_from_date,
-        special_to_date,
-        enableWishlist,
-        handleSetCompareList,
         enableRating,
-        enablePrice = true,
-        enableProductCompare,
         storeConfig = {},
         seller,
         urlKey,
-        price: dataPrice,
-        loadPrice,
-        errorPrice,
+        showShortDescription = false,
+        short_description,
+        Pricing,
+        isGrid = true,
+        enableProductName = true,
     } = props;
-    const styles = useStyles();
-    const classFeedActive = classNames(styles.iconFeed, styles.iconActive);
-    const FeedIcon = feed ? <Favorite className={classFeedActive} /> : <FavoriteBorderOutlined className={styles.iconFeed} />;
-    const showWishlist = typeof enableWishlist !== 'undefined' ? enableWishlist : modules.wishlist.enabled;
     const showRating = typeof enableRating !== 'undefined' ? enableRating : storeConfig?.pwa?.rating_enable;
-    const priceData = getPriceFromList(dataPrice, id);
-    const enableMultiSeller = storeConfig.enable_oms_multiseller === '1';
+    const enableMultiSeller = storeConfig.enable_oms_multiseller === '1' || storeConfig.enable_oms_multiseller === 1;
 
-    const generatePrice = (priceDataItem = []) => {
-        // handle if loading price
+    let shortDescription = '';
 
-        if (loadPrice) {
-            return (
-                <div className="mgz-single-product-price">
-                    <Skeleton variant="text" width={100} />
-                    {' '}
-                </div>
-            );
-        }
+    if (typeof short_description === 'string') {
+        shortDescription = '';
+    } else if (short_description) {
+        shortDescription = short_description.html;
+    }
 
-        let priceProduct = {
-            priceRange: spesificProduct.price_range ? spesificProduct.price_range : price_range,
-            // eslint-disable-next-line camelcase
-            priceTiers: spesificProduct.price_tiers ? spesificProduct.price_tiers : price_tiers,
-            productType: __typename,
-            specialFromDate: special_from_date,
-            specialToDate: special_to_date,
-        };
-        if (priceDataItem && priceDataItem.length > 0 && !loadPrice && !errorPrice) {
-            priceProduct = {
-                priceRange: spesificProduct.price_range ? spesificProduct.price_range : priceDataItem[0].price_range,
-                priceTiers: spesificProduct.price_tiers ? spesificProduct.price_tiers : priceDataItem[0].price_tiers,
-                // eslint-disable-next-line no-underscore-dangle
-                productType: priceDataItem[0].__typename,
-                specialFromDate: priceDataItem[0].special_from_date,
-                specialToDate: priceDataItem[0].special_to_date,
-            };
-        }
-
-        return (
-            <div className="mgz-single-product-price">
-                {
-                    priceProduct && (
-                        <PriceFormat
-                            {...priceProduct}
-                            specialFromDate={special_from_date}
-                            specialToDate={special_to_date}
-                        />
-                    )
-                }
-            </div>
-        );
-    };
     return (
-        <div className={styles.descItem}>
-            {showWishlist && (
-                <Button className={styles.btnFeed} onClick={() => handleFeed(props)}>
-                    {FeedIcon}
-                </Button>
-            )}
-            {enableProductCompare && (
-                <Button className={styles.btnCompare} onClick={() => handleSetCompareList(id)}>
-                    <CompareArrowsIcon className={styles.iconCompare} />
-                </Button>
-            )}
-            <Link href="/[...slug]" as={`/${urlKey}`} className={styles.productLinkButton}>
-                <a onClick={() => handleClick(props)} className={styles.productTitle} id="plugin-productTitle-typography">
-                    {name}
-                </a>
-            </Link>
-            {enableMultiSeller && seller && seller.seller_name && (
-                <div className={styles.infoSeller}>
-                    <StorefrontIcon className={styles.iconSeller} />
-                    <Typography variant="p" className={styles.productTitle} letter="capitalize">
-                        {seller.seller_name}
+        <div className="flex flex-col gap-1 relative w-full">
+            <Show when={enableMultiSeller && seller && seller?.seller_name}>
+                <Link href={`/seller/${seller?.seller_path}`}>
+                    <Typography
+                        variant="bd-2"
+                        className={cx(
+                            'line-clamp-1 capitalize',
+                            'leading-5',
+                            isGrid && 'text-sm tablet:text-base',
+                            !isGrid && 'text-xs tablet:text-base',
+                        )}
+                        color="text-primary"
+                    >
+                        {parser(seller?.seller_name || '')}
                     </Typography>
+                </Link>
+            </Show>
+            <Show when={enableProductName}>
+                <Link href="/[...slug]" as={`/${urlKey}`} className="w-full plugin-productTitle-typography" onClick={() => handleClick(props)}>
+                    <Typography
+                        className={cx(
+                            'font-medium line-clamp-2 mb-[6px] capitalize',
+                            isGrid && 'text-[14px] tablet:text-[16px]',
+                            !isGrid && 'text-sm tablet:text-[16px]',
+                            'leading-lg tablet:leading-2lg',
+                        )}
+                    >
+                        {parser(name)}
+                    </Typography>
+                </Link>
+            </Show>
+            <Show when={showShortDescription && shortDescription && !isGrid}>
+                <div className="hidden tablet:flex !line-clamp-2 text-base text-neutral-500 leading-5">
+                    <CmsRenderer content={shortDescription} />
                 </div>
-            )}
-            {showRating && <RatingStar value={ratingValue} />}
-            {enablePrice && (
-                generatePrice(priceData)
-            )}
+            </Show>
+
+            <Show when={showRating}>
+                <div className="hidden desktop:flex">
+                    <RatingStar value={ratingValue} sizeIcon="lg" prefixName={urlKey} />
+                </div>
+                <div className="flex desktop:hidden">
+                    <RatingStar value={ratingValue} sizeIcon="sm" prefixName={urlKey} />
+                </div>
+            </Show>
+            {Pricing && Pricing}
         </div>
     );
 };

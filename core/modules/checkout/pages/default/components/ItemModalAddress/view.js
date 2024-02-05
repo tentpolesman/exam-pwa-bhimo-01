@@ -1,9 +1,9 @@
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Radio from '@material-ui/core/Radio';
 import Typography from '@common_typography';
 import React from 'react';
 import AddressFormDialog from '@plugin_addressform';
-import useStyles from '@core_modules/checkout/pages/default/components/ItemModalAddress/style';
+import Radio from '@common/Forms/Radio';
+import Button from '@common/Button';
+import cx from 'classnames';
 
 const ItemAddress = (props) => {
     const {
@@ -22,10 +22,11 @@ const ItemAddress = (props) => {
         setOpen,
         handleSave,
         success,
+        id,
         t,
+        onChange,
         // eslint-disable-next-line no-unused-vars
     } = props;
-    const styles = useStyles();
     return (
         <>
             <AddressFormDialog
@@ -37,39 +38,55 @@ const ItemAddress = (props) => {
                 setOpen={() => setOpen(false)}
                 pageTitle={t('customer:address:editTitle')}
             />
-            <div className={styles.addressColumn} id="checkoutListItemAddress">
-                <div className={[styles.address_content].join(' ')}>
-                    <FormControlLabel
-                        className={[styles.address_shipping].join(' ')}
-                        value={value}
-                        checked={checked}
-                        control={<Radio color="primary" size="small" />}
-                        label={(
-                            <>
-                                <Typography className={[styles.address_text].join(' ')} variant="p">
-                                    {`${firstname} ${lastname}`}
-                                </Typography>
-                                <Typography className={[styles.address_text].join(' ')} variant="p">
-                                    {street}
-                                    ,
-                                </Typography>
-                                <Typography className={[styles.address_text].join(' ')} variant="p">
-                                    {city !== '' && `${city}, `}
-                                    {region !== '' && `${region}, `}
-                                    {country !== '' && `${country.full_name_locale || ''}, `}
-                                    {postcode !== '' && postcode}
-                                </Typography>
-                                <Typography className={[styles.address_text].join(' ')} variant="p">
-                                    {telephone}
-                                </Typography>
-                            </>
-                        )}
-                        labelPlacement="end"
-                    />
-                    <Typography className={[styles.address_edit].join(' ')} variant="span" onClick={() => setOpen(true)}>
-                        {t('customer:address:editTitle')}
-                    </Typography>
-                </div>
+            <div
+                className={cx(
+                    'flex flex-col checkoutListItemAddress border-b border-neutral-200',
+                    'desktop:px-[32px] tablet:px-[32px] mobile:px-[16px]',
+                )}
+            >
+                <Radio
+                    variant="single"
+                    id={id}
+                    checked={checked}
+                    value={value}
+                    onClick={() => {
+                        if (onChange) {
+                            onChange({
+                                target: {
+                                    value: id,
+                                },
+                            });
+                        }
+                    }}
+                    className="flex flex-row items-center gap-3"
+                >
+                    <div className="w-full pb-2 flex flex-col">
+                        <label htmlFor={id} className="flex flex-col cursor-pointer">
+                            <Typography className="" variant="bd-2">
+                                {`${firstname} ${lastname}`}
+                            </Typography>
+                            <Typography className="" variant="bd-2">
+                                {street}
+                                ,
+                            </Typography>
+                            <Typography className="" variant="bd-2">
+                                {city !== '' && `${city}, `}
+                                {region !== '' && `${region.region || ''}, `}
+                                {country !== '' && `${country.full_name_locale || ''}, `}
+                                {postcode !== '' && postcode}
+                            </Typography>
+                            <Typography className="" variant="bd-2">
+                                {telephone}
+                            </Typography>
+                        </label>
+
+                        <Button variant="plain" onClick={() => setOpen(true)} className="!p-0">
+                            <Typography className="mt-3 cursor-pointer" variant="bd-2">
+                                {t('common:button:edit')}
+                            </Typography>
+                        </Button>
+                    </div>
+                </Radio>
             </div>
         </>
     );

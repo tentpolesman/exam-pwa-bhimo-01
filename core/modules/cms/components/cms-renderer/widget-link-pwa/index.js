@@ -1,6 +1,5 @@
-/* eslint-disable react/destructuring-assignment */
+import Link from 'next/link';
 import React from 'react';
-import { useRouter } from 'next/router';
 
 import Button from '@common_button';
 
@@ -10,35 +9,26 @@ const WidgetPwaLink = (props) => {
     } = props;
     const customStyle = props?.class;
     const buttonText = props?.button;
-    const isExternal = url?.startsWith('http') || url?.startsWith('https');
-    const router = useRouter();
 
     if (!url) return <span>no url found in pwa link widget</span>;
 
-    const propsLink = {};
     const propsOther = {};
     if (customStyle !== undefined) {
         propsOther.className = customStyle;
     }
 
-    if (isExternal) {
-        propsLink.href = url;
-    } else {
-        propsLink.onClick = () => {
-            router.push('/[...slug]', url);
-        };
-    }
-
     /**
-     * {{widget type="pwa-cms-page-link" pwa_link_type="text" text="View All" class="MuiButtonBase-root MuiButton-root MuiButton-outlined MuiTypography-caption MuiTypography-alignLeft homepage-product-list-btn-viewall-text homepage-product-list-btn-viewall" url="/about-us"}}
+     *
      * [LINK] button
      * @return {link-button}
      */
     if (pwa_link_type === 'button') {
         return (
-            <Button {...propsOther} href={url}>
-                {buttonText}
-            </Button>
+            <Link href={url} {...propsOther}>
+                <Button>
+                    {buttonText}
+                </Button>
+            </Link>
         );
     }
 
@@ -48,9 +38,9 @@ const WidgetPwaLink = (props) => {
      */
     if (pwa_link_type === 'image') {
         return (
-            <a {...propsLink}>
+            <Link href={url} {...propsOther}>
                 <img {...propsOther} src={image} alt={`${type}-${pwa_link_type}`} />
-            </a>
+            </Link>
         );
     }
 
@@ -59,9 +49,9 @@ const WidgetPwaLink = (props) => {
      * @return {link}
      */
     return (
-        <a {...propsLink} {...propsOther}>
+        <Link href={url} {...propsOther}>
             {text}
-        </a>
+        </Link>
     );
 };
 

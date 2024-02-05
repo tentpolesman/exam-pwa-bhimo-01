@@ -1,13 +1,10 @@
-import { withTranslation } from '@i18n';
+import { withTranslation } from 'next-i18next';
 import { withApollo } from '@lib_apollo';
+import dynamic from 'next/dynamic';
 
-import Content from '@core_modules/storecredit/pages/default/components';
-import Core from '@core_modules/storecredit/pages/default/core';
+const Core = dynamic(() => import('@core_modules/storecredit/pages/default/core'), { ssr: false });
+const Content = dynamic(() => import('@core_modules/storecredit/pages/default/components'), { ssr: false });
 
 const StoreCredit = (props) => <Core {...props} Content={Content} />;
-
-StoreCredit.getInitialProps = async () => ({
-    namespacesRequired: ['common', 'storecredit', 'customer'],
-});
 
 export default withApollo({ ssr: true })(withTranslation()(StoreCredit));

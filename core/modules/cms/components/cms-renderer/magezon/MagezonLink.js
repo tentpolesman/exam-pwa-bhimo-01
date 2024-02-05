@@ -43,6 +43,7 @@ const MagezonLink = (props) => {
                     const {
                         type, url, title, extra, blank, url_key, url_path, id,
                     } = domNode.attribs;
+
                     switch (type) {
                     case 'custom':
                         return (
@@ -50,10 +51,10 @@ const MagezonLink = (props) => {
                                 href={url}
                                 color="inherit"
                                 underline="none"
+                                target={blank === true || blank === 'true' ? '_blank' : '_self'}
+                                style={{ width: '100%' }}
                             >
-                                <a target={(blank === true || blank === 'true' ? '_blank' : '_self')} style={{ width: '100%' }}>
-                                    { children || title }
-                                </a>
+                                {children || title}
                             </Link>
                         );
                     case 'product':
@@ -61,15 +62,11 @@ const MagezonLink = (props) => {
                             <Link
                                 href="/[...slug]"
                                 as={`/${url_key + extra}`}
-                                target={(blank === true || blank === 'true' ? '_blank' : '_self')}
+                                target={blank === true || blank === 'true' ? '_blank' : '_self'}
+                                onClick={() => handleClickProduct(url_key, blank)}
+                                style={{ width: '100%' }}
                             >
-                                <a
-                                    target={(blank === true || blank === 'true' ? '_blank' : '_self')}
-                                    onClick={() => handleClickProduct(url_key, blank)}
-                                    style={{ width: '100%' }}
-                                >
-                                    { children || title }
-                                </a>
+                                {children || title}
                             </Link>
                         );
                     case 'category':
@@ -77,27 +74,21 @@ const MagezonLink = (props) => {
                             <Link
                                 href="/[...slug]"
                                 as={`/${(url_path || url_key) + extra}`}
+                                target={blank === true || blank === 'true' ? '_blank' : '_self'}
+                                onClick={() => handleClickCategory(url_key, id, blank)}
+                                style={{ width: '100%' }}
                             >
-                                <a
-                                    target={(blank === true || blank === 'true' ? '_blank' : '_self')}
-                                    onClick={() => handleClickCategory(url_key, id, blank)}
-                                    style={{ width: '100%' }}
-                                >
-                                    { children || title }
-                                </a>
+                                {children || title}
                             </Link>
                         );
                     case 'page':
                         return (
                             <Link
                                 href={`/${url_key + extra}`}
+                                target={blank === true || blank === 'true' ? '_blank' : '_self'}
+                                style={{ width: '100%' }}
                             >
-                                <a
-                                    target={(blank === true || blank === 'true' ? '_blank' : '_self')}
-                                    style={{ width: '100%' }}
-                                >
-                                    { children || title }
-                                </a>
+                                {children || title}
                             </Link>
                         );
                     default:
@@ -110,10 +101,8 @@ const MagezonLink = (props) => {
 
     if (contentLink && contentLink !== '' && !contentLink.includes(DOM_NAME)) {
         return (
-            <Link href={`${contentLink}`}>
-                <a target={link_target === '_blank' ? '_blank' : '_self'}>
-                    {children}
-                </a>
+            <Link href={`${contentLink}`} target={link_target === '_blank' ? '_blank' : '_self'}>
+                {children}
             </Link>
         );
     }

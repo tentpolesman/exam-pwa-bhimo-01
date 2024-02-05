@@ -1,34 +1,38 @@
+import PromoView from '@core_modules/checkout/components/fieldcode';
 import gqlService from '@core_modules/checkout/services/graphql';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+    selectCheckoutState, setIsNewUpdate, setLoading, setCheckoutData, setRefetchItemOnly,
+} from '@core_modules/checkout/redux/checkoutSlice';
 
 const DiscountSection = (props) => {
     const {
         t,
-        checkout,
-        setCheckout,
         handleOpenMessage,
         formik,
-        PromoView,
+        refetchItemCart,
     } = props;
     const [applyCouponTocart] = gqlService.applyCouponToCart({ onError: () => { } });
     const [removeCouponFromCart] = gqlService.removeCouponFromCart({ onError: () => { } });
 
+    const dispatch = useDispatch();
+    const checkout = useSelector(selectCheckoutState);
+
     const handlePromo = async () => {
         let cart;
-        const state = {
-            ...checkout,
-            loading: {
-                ...checkout.loading,
-                all: false,
-                shipping: false,
-                payment: true,
-                extraFee: false,
-                order: true,
-            },
-        };
-        state.loading.coupon = true;
-        state.newupdate = true;
-        setCheckout(state);
-        const isApplied = !state.data.isCouponAppliedToCart;
+
+        dispatch(setLoading({
+            all: false,
+            shipping: false,
+            payment: true,
+            extraFee: false,
+            order: true,
+            coupon: true,
+        }));
+
+        dispatch(setIsNewUpdate(true));
+
+        const isApplied = !checkout.data.isCouponAppliedToCart;
 
         let cartId = '';
         if (checkout && checkout.data && checkout.data.cart && checkout.data.cart.id) {
@@ -39,7 +43,7 @@ const DiscountSection = (props) => {
             const result = await applyCouponTocart({ variables: { cartId, coupon: formik.values.coupon } });
             if (result && result.data && result.data.applyCouponToCart && result.data.applyCouponToCart.cart) {
                 cart = {
-                    ...state.data.cart,
+                    ...checkout.data.cart,
                     ...result.data.applyCouponToCart.cart,
                 };
             }
@@ -53,7 +57,7 @@ const DiscountSection = (props) => {
             const result = await removeCouponFromCart({ variables: { cartId } });
             if (result && result.data && result.data.removeCouponFromCart && result.data.removeCouponFromCart.cart) {
                 cart = result && {
-                    ...state.data.cart,
+                    ...checkout.data.cart,
                     ...result.data.removeCouponFromCart.cart,
                 };
                 handleOpenMessage({
@@ -63,27 +67,42 @@ const DiscountSection = (props) => {
             }
         }
 
-        state.loading.coupon = false;
+        dispatch(setLoading({ coupon: false }));
 
         if (cart) {
-            state.data.cart = cart;
-            state.data.isCouponAppliedToCart = !state.data.isCouponAppliedToCart;
+            dispatch(setCheckoutData({
+                cart,
+                sCouponAppliedToCart: !checkout.data.isCouponAppliedToCart,
+            }));
         } else {
             await formik.setFieldError('coupon', t('checkout:message:couponError'));
         }
+        dispatch(setRefetchItemOnly(true));
+        dispatch(setLoading({
+            all: false,
+            shipping: false,
+            payment: false,
+            extraFee: false,
+            order: false,
+        }));
 
-        const finalState = {
-            ...state,
-            loading: {
-                ...checkout.loading,
+        if (refetchItemCart && typeof refetchItemCart === 'function') {
+            dispatch(setLoading({
+                payment: true,
+                order: true,
+                coupon: true,
+                shipping: true,
+            }));
+            await refetchItemCart();
+            dispatch(setLoading({
                 all: false,
                 shipping: false,
                 payment: false,
                 extraFee: false,
                 order: false,
-            },
-        };
-        setCheckout(finalState);
+                coupon: false,
+            }));
+        }
     };
 
     return (

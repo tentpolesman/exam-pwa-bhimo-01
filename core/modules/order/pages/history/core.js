@@ -1,15 +1,13 @@
-import { debuging } from '@config';
 import { getOrder, reOrder as mutationReorder } from '@core_modules/order/services/graphql';
-import { getHost } from '@helpers/config';
 import { setCartId } from '@helper_cartid';
+import { getHost } from '@helpers/config';
 import Layout from '@layout';
-import CustomerLayout from '@layout_customer';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 
 const HistoryOrder = (props) => {
     const {
-        t, Content, Skeleton, ErrorView, size, storeConfig,
+        t, Content, size, storeConfig,
     } = props;
     const router = useRouter();
     const pageConfig = {
@@ -17,54 +15,26 @@ const HistoryOrder = (props) => {
         header: 'relative', // available values: "absolute", "relative", false (default)
         headerTitle: t('order:title'),
         bottomNav: false,
+        tagSelector: 'swift-page-orderhistory',
     };
-    const [page, setPage] = React.useState(0);
+    const [page, setPage] = React.useState(1);
     const [pageSize, setPageSize] = React.useState(size || 10);
-    const [loadMore, setLoadMore] = React.useState(false);
 
     const [actionReorder] = mutationReorder();
 
-    const handleChangePage = (event, newPage) => {
-        if (newPage > page) {
-            setLoadMore(true);
-        }
+    const handleChangePage = (newPage) => {
         setPage(newPage);
     };
 
-    const handleChangePageSize = (event) => {
-        setLoadMore(true);
-        setPageSize(parseInt(event.target.value, 10));
-        setPage(0);
+    const handleChangePageSize = (value) => {
+        setPageSize(parseInt(value, 10));
+        setPage(1);
     };
 
     const { loading, data, error } = getOrder({
         pageSize,
-        currentPage: page + 1,
+        currentPage: page,
     });
-
-    React.useEffect(() => {
-        if (!loading && data && data.customer.orders && data.customer.orders.items.length) {
-            setLoadMore(false);
-        }
-    }, [loading, data]);
-
-    if (loading || (!data && !loadMore)) {
-        return (
-            <Layout pageConfig={pageConfig} {...props}>
-                <CustomerLayout {...props}>
-                    <Skeleton />
-                </CustomerLayout>
-            </Layout>
-        );
-    }
-
-    if (error) {
-        return (
-            <Layout pageConfig={pageConfig} {...props}>
-                <ErrorView type="error" message={debuging.originalError ? error.message.split(':')[1] : t('common:error:fetchError')} />
-            </Layout>
-        );
-    }
 
     const reOrder = (order_id) => {
         if (order_id && order_id !== '') {
@@ -91,7 +61,7 @@ const HistoryOrder = (props) => {
 
     let detail = [];
     let customerEmail;
-    if (!loading && data && data.customer.orders) {
+    if (!loading && data && data.customer && data.customer.orders) {
         // eslint-disable-next-line prefer-destructuring
         detail = data.customer.orders.items;
     }
@@ -125,11 +95,11 @@ const HistoryOrder = (props) => {
         <Layout pageConfig={pageConfig} {...props}>
             <Content
                 {...props}
-                loadMore={loadMore}
-                data={data.customer.orders}
+                data={data?.customer?.orders}
                 page={page}
                 pageSize={pageSize}
                 loading={loading}
+                error={error}
                 handleChangePage={handleChangePage}
                 handleChangePageSize={handleChangePageSize}
                 reOrder={reOrder}
@@ -140,15 +110,11 @@ const HistoryOrder = (props) => {
 };
 
 HistoryOrder.propTypes = {
-    ErrorView: PropTypes.func,
     Content: PropTypes.func,
-    Skeleton: PropTypes.func,
 };
 
 HistoryOrder.defaultProps = {
-    ErrorView: () => null,
     Content: () => null,
-    Skeleton: () => null,
 };
 
 export default HistoryOrder;

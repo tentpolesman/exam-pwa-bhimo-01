@@ -1,4 +1,4 @@
-import { useTranslation } from '@i18n';
+import { useTranslation } from 'next-i18next';
 import Button from '@common_button';
 import Typography from '@common_typography';
 import Link from 'next/link';
@@ -10,7 +10,7 @@ const RestrictionPopup = (props) => {
     return (
         <div className={restrictionStyle}>
             <div className="wrapper-text">
-                <div className="row">
+                <div className="flex flex-row">
                     <Typography variant="title" type="semiBold" style={{ fontSize: 12 }}>
                         {`${cookiesMessage[0]}.`}
                     </Typography>
@@ -18,7 +18,7 @@ const RestrictionPopup = (props) => {
                         {`${cookiesMessage[1]}.`}
                     </Typography>
                     <Typography variant="title" type="semiBold" style={{ cursor: 'pointer', fontSize: 12 }}>
-                        <Link href="/privacy-policy-cookie-restriction-mode">
+                        <Link href="/privacy-policy-cookie-restriction-mode" legacyBehavior>
                             {`${cookiesMessage[2]}.`}
                         </Link>
                     </Typography>

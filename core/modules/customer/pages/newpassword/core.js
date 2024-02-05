@@ -6,13 +6,16 @@ import { newPassword } from '@core_modules/customer/services/graphql';
 
 const NewPassword = (props) => {
     const {
-        t, Content, pageConfig, query: { token },
+        t,
+        Content,
+        query: { token },
     } = props;
     const config = {
         title: t('customer:newPassword:title'),
         header: 'relative', // available values: "absolute", "relative", false (default)
         headerTitle: t('customer:newPassword:title'),
         bottomNav: false,
+        tagSelector: 'swift-page-newpassword',
     };
     const [disabled, setdisabled] = React.useState(false);
     const [setNewPassword] = newPassword();
@@ -62,7 +65,7 @@ const NewPassword = (props) => {
     });
 
     return (
-        <Layout pageConfig={pageConfig || config} {...props}>
+        <Layout pageConfig={config} {...props}>
             <Content t={t} formik={formik} disabled={disabled} />
         </Layout>
     );

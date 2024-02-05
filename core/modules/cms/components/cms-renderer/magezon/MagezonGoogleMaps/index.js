@@ -1,50 +1,56 @@
+import dynamic from 'next/dynamic';
+
 /* eslint-disable no-nested-ternary */
-import IcubeMaps from '@common_googlemaps';
+const GoogleMaps = dynamic(() => import('@common_googlemaps'), { ssr: false });
 
 const MagezonGoogleMaps = (props) => {
     // prettier-ignore
     const {
-        infobox_background_color, infobox_opened, infobox_text_color, infobox_width,
-        items, map_draggable, map_height, map_scrollwheel,
-        map_type, map_ui, map_width, map_zoom,
-        storeConfig,
+        infobox_background_color, items, map_draggable, map_width, map_height, map_zoom, storeConfig,
     } = props;
 
-    const elementDimension = {
-        height:
-            map_height && map_height.toString().includes('%') ? map_height : map_height.toString().includes('px') ? map_height : `${map_height}px`,
-        width: map_width && map_width.toString().includes('%') ? map_width : map_width.toString().includes('px') ? map_width : `${map_width}px`,
-    };
     const gmapKey = (storeConfig || {}).icube_pinlocation_gmap_key;
+    const geocodingKey = (storeConfig || {}).icube_pinlocation_geocoding_key;
     const center = items.find((item) => item.center === '1') || items[0];
-    const defaultOptions = {
-        disableDefaultUI: map_ui,
-        scrollwheel: map_scrollwheel,
-        draggable: map_draggable,
-        mapTypeId: map_type,
-    };
-    const infoBoxStyles = {
-        width: `${infobox_width}px`,
-        color: infobox_text_color,
-    };
     const updatedItems = [...items.filter((item) => item.center !== '1'), center];
+
+    const [mapPosition, setMapPosition] = React.useState({
+        lat: parseFloat(center.lat),
+        lng: parseFloat(center.lng),
+    });
+
+    const handleDragPosition = (value) => {
+        setMapPosition(value);
+    };
+
+    const elementDimension = {
+        width: map_width && map_width.toString().includes('%') ? map_width : `${map_width}px`,
+        height: map_height && map_height.toString().includes('%') ? map_height : `${map_height}px`,
+    };
 
     return (
         <>
             <div className="mgz-google-maps">
                 {gmapKey && (
-                    <IcubeMaps
-                        gmapKey={gmapKey}
-                        containerElement={<div style={{ ...elementDimension }} />}
-                        searchBox={false}
-                        markers={updatedItems}
-                        defaultZoom={map_zoom}
-                        defaultOptions={defaultOptions}
-                        infoBoxStyle={infoBoxStyles}
-                        infoBoxDefaultOpen={infobox_opened}
-                        secureUrl={storeConfig.secure_base_media_url}
-                        center={{ lat: parseFloat(center.lat), lng: parseFloat(center.lng) }}
-                    />
+                    <>
+                        {
+                            typeof window !== 'undefined' && (
+                                <GoogleMaps
+                                    gmapKey={gmapKey}
+                                    geocodingKey={geocodingKey}
+                                    markers={updatedItems}
+                                    defaultZoom={map_zoom}
+                                    mapPosition={mapPosition}
+                                    dragMarkerDone={handleDragPosition}
+                                    markerIcon={storeConfig.secure_base_media_url}
+                                    useCustomMarkerIcon={storeConfig.secure_base_media_url !== ''}
+                                    markerDraggable={map_draggable}
+                                    containerStyle={elementDimension}
+                                    mode="map-only"
+                                />
+                            )
+                        }
+                    </>
                 )}
             </div>
             <style jsx>

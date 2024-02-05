@@ -1,25 +1,39 @@
 /* eslint-disable radix */
 /* eslint-disable no-plusplus */
+/* eslint-disable eqeqeq */
 import { useEffect, useState } from 'react';
 import { getCartId, setCartId } from '@helper_cartid';
 import TagManager from 'react-gtm-module';
 import { useRouter } from 'next/router';
 import Layout from '@layout';
 import { localTotalCart } from '@services/graphql/schema/local';
-import { useReactiveVar } from '@apollo/client';
-import { currencyVar } from '@root/core/services/graphql/cache';
+import { currencyVar } from '@core/services/graphql/cache';
 import {
-    addWishlist as mutationWishlist, getCartDataLazy, getCartItemLazy,
-    deleteCartItem, updateCartitem, addProductToCartPromo, applyCouponToCart, removeCouponFromCart, cancelAndReOrder,
+    addWishlist as mutationWishlist,
+    getCartDataLazy,
+    getCartItemLazy,
+    deleteCartItem,
+    updateCartitem,
+    addProductToCartPromo,
+    applyCouponToCart,
+    removeCouponFromCart,
+    cancelAndReOrder,
 } from '@core_modules/cart/services/graphql';
+import Backdrop from '@common/Backdrop';
+
+import Content from '@core_modules/cart/pages/default/components';
+import Skeleton from '@core_modules/cart/pages/default/components/skeleton';
+import { getLoginInfo } from '@helper_auth';
 
 const Cart = (props) => {
     const {
-        t, token, isLogin, EmptyView, SkeletonView, pageConfig, Content, storeConfig, ...other
+        t, token, storeConfig, ...other
     } = props;
 
+    const isLogin = getLoginInfo();
+
     // cache currency
-    const currencyCache = useReactiveVar(currencyVar);
+    const currencyCache = currencyVar();
     const router = useRouter();
     const { paymentFailed, orderId, cart_id: failedCartId } = router.query;
     const dataCart = {
@@ -50,6 +64,7 @@ const Cart = (props) => {
         headerBackIcon: 'close', // available values: "close", "arrow"
         bottomNav: false,
         pageType: 'cart',
+        tagSelector: 'swift-page-cart',
     };
 
     const toggleEditMode = () => {
@@ -181,8 +196,7 @@ const Cart = (props) => {
 
         if (responseCart.error) {
             const errorList = [];
-            if (responseCart.error && responseCart.error.graphQLErrors
-                && responseCart.error.graphQLErrors.length > 0) {
+            if (responseCart.error && responseCart.error.graphQLErrors && responseCart.error.graphQLErrors.length > 0) {
                 for (let idx = 0; idx < responseCart.error.graphQLErrors.length; idx += 1) {
                     const { message } = responseCart.error.graphQLErrors[idx];
                     const regexp = new RegExp(/stock/i);
@@ -211,17 +225,15 @@ const Cart = (props) => {
             eventLabel: itemProps.product.name,
             label: itemProps.product.name,
             ecommerce: {
-                currencyCode: itemProps.prices?.price_incl_tax.currency
-                || itemProps.custom_price?.price_incl_tax.currency
-                || storeConfig.base_currency_code,
+                currencyCode:
+                    itemProps.prices?.price_incl_tax.currency || itemProps.custom_price?.price_incl_tax.currency || storeConfig.base_currency_code,
                 remove: {
                     cartItem: itemProps.id,
                     quantity: itemProps.quantity,
                     product: {
                         name: itemProps.product.name,
                         id: itemProps.product.sku,
-                        price: itemProps.prices?.price_incl_tax.value
-                        || itemProps.custom_price?.price_incl_tax.value || 0,
+                        price: itemProps.prices?.price_incl_tax.value || itemProps.custom_price?.price_incl_tax.value || 0,
                         dimensions4: itemProps.product.stock_status || '',
                     },
                 },
@@ -236,13 +248,14 @@ const Cart = (props) => {
                         {
                             item_name: itemProps.product.name,
                             item_id: itemProps.product.sku,
-                            price: itemProps.prices?.price_incl_tax.value
-                            || itemProps.custom_price?.price_incl_tax.value || 0,
+                            price: itemProps.prices?.price_incl_tax.value || itemProps.custom_price?.price_incl_tax.value || 0,
                             // item_category: itemProps.product.categories.length > 0 ? itemProps.product.categories[0].name : '',
                             // item_list_name: itemProps.product.categories.length > 0 ? itemProps.product.categories[0].name : '',
                             quantity: itemProps.quantity,
-                            currency: itemProps.custom_price?.price_incl_tax.currency
-                            || itemProps.prices?.price_incl_tax.currency || storeConfig.base_currency_code,
+                            currency:
+                                itemProps.custom_price?.price_incl_tax.currency
+                                || itemProps.prices?.price_incl_tax.currency
+                                || storeConfig.base_currency_code,
                         },
                     ],
                 },
@@ -254,19 +267,17 @@ const Cart = (props) => {
         window.backdropLoader(true);
 
         const cartId = getCartId();
-        setLoadingCart(true);
         setLoadingSummary(true);
         actDeleteItem({
             variables: {
                 cartId,
-                cart_item_id: parseInt(itemProps.id),
+                cart_item_id: parseInt(itemProps.id, 10),
             },
             context: {
                 request: 'internal',
             },
         })
             .then(() => {
-                // setLoadingCart(false);
                 toggleEditMode();
                 window.backdropLoader(false);
                 window.toastMessage({
@@ -276,7 +287,6 @@ const Cart = (props) => {
                 });
             })
             .catch((e) => {
-                // setLoadingCart(false);
                 toggleEditMode();
                 window.backdropLoader(false);
                 window.toastMessage({
@@ -290,13 +300,12 @@ const Cart = (props) => {
     // update items
     const updateItem = (itemData) => {
         window.backdropLoader(true);
-        setLoadingCart(true);
         setLoadingSummary(true);
         const cartId = getCartId();
         actUpdateItem({
             variables: {
                 cartId,
-                cart_item_id: parseInt(itemData.cart_item_id),
+                cart_item_id: parseInt(itemData.cart_item_id, 10),
                 quantity: itemData.quantity,
             },
             context: {
@@ -476,7 +485,7 @@ const Cart = (props) => {
     // add to wishlist
     const [addWishlist] = mutationWishlist();
     const handleFeed = (itemProps) => {
-        if (isLogin && isLogin === 1) {
+        if (isLogin && isLogin == 1) {
             // GTM UA dataLayer
             TagManager.dataLayer({
                 dataLayer: {
@@ -484,15 +493,13 @@ const Cart = (props) => {
                     eventLabel: itemProps.product.name,
                     label: itemProps.product.name,
                     ecommerce: {
-                        currencyCode: itemProps.prices?.price.currency
-                        || itemProps.custom_price?.price_incl_tax.currency,
+                        currencyCode: itemProps.prices?.price.currency || itemProps.custom_price?.price_incl_tax.currency,
                         add: {
                             products: [
                                 {
                                     name: itemProps.product.name,
                                     id: itemProps.product.sku,
-                                    price: itemProps.prices?.price.value
-                                    || itemProps.custom_price?.price_incl_tax.value || 0,
+                                    price: itemProps.prices?.price.value || itemProps.custom_price?.price_incl_tax.value || 0,
                                     // category: itemProps.product.categories.length > 0 ? itemProps.product.categories[0].name : '',
                                     // list: itemProps.product.categories.length > 0 ? itemProps.product.categories[0].name : '',
                                     dimensions4: itemProps.product.stock_status,
@@ -509,12 +516,10 @@ const Cart = (props) => {
                         action: {
                             items: [
                                 {
-                                    currency: itemProps.prices?.price.currency
-                                    || itemProps.custom_price?.price_incl_tax.currency,
+                                    currency: itemProps.prices?.price.currency || itemProps.custom_price?.price_incl_tax.currency,
                                     item_name: itemProps.product.name,
                                     item_id: itemProps.product.sku,
-                                    price: itemProps.prices?.price.value
-                                    || itemProps.custom_price?.price_incl_tax.value || 0,
+                                    price: itemProps.prices?.price.value || itemProps.custom_price?.price_incl_tax.value || 0,
                                     // item_category: itemProps.product.categories.length > 0 ? itemProps.product.categories[0].name : '',
                                     item_stock_status: itemProps.product.stock_status,
                                 },
@@ -527,7 +532,7 @@ const Cart = (props) => {
             window.backdropLoader(true);
             addWishlist({
                 variables: {
-                    productId: parseInt(itemProps.product.id),
+                    productId: parseInt(itemProps.product.id, 10),
                 },
             })
                 .then(async () => {
@@ -553,21 +558,14 @@ const Cart = (props) => {
 
     if (loadingCart) {
         return (
-            <Layout pageConfig={config || pageConfig} {...props}>
-                <SkeletonView />
+            <Layout pageConfig={config} {...props}>
+                <Backdrop open />
+                <Skeleton />
             </Layout>
         );
     }
 
     const globalCurrency = storeConfig.default_display_currency_code;
-
-    if (!loadingCart && cart.items.length < 1) {
-        return (
-            <Layout pageConfig={config || pageConfig} {...props}>
-                <EmptyView t={t} />
-            </Layout>
-        );
-    }
 
     const contentProps = {
         dataCart: cart,
@@ -591,8 +589,7 @@ const Cart = (props) => {
         removeCoupon,
     };
     return (
-        <Layout pageConfig={config || pageConfig} {...props} showRecentlyBar={false}>
-            <h1 style={{ display: 'none' }}>Shopping Cart</h1>
+        <Layout pageConfig={config} {...props} showRecentlyBar={false}>
             <Content currencyCache={currencyCache} {...other} {...contentProps} />
         </Layout>
     );

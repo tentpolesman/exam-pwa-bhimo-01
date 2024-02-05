@@ -1,50 +1,38 @@
 /* eslint-disable operator-linebreak */
 /* eslint-disable react/jsx-wrap-multilines */
 
-import Header from '@common_headermobile';
 import Typography from '@common_typography';
-import { modules } from '@config';
 import ShipperView from '@core_modules/trackingorder/pages/default/components/shipper';
-import useStyles from '@core_modules/trackingorder/pages/default/components/style';
-import { checkJson } from '@core_modules/trackingorder/pages/default/helpers/checkJson';
 import formatDate from '@helper_date';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import List from '@material-ui/core/List';
-import Slide from '@material-ui/core/Slide';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import LaunchIcon from '@material-ui/icons/Launch';
-import Alert from '@material-ui/lab/Alert';
-import { startCase } from 'lodash';
+import Dialog from '@common_dialog';
+import ArrowTopRightOnSquareIcon from '@heroicons/react/20/solid/ArrowTopRightOnSquareIcon';
 import Link from 'next/link';
-
-const Transition = React.forwardRef((props, ref) => <Slide direction="up" ref={ref} {...props} />);
+import { modules } from '@config';
+import { checkJson } from '@core_modules/trackingorder/pages/default/helpers/checkJson';
+import { startCase } from 'lodash';
+import cx from 'classnames';
+import XMarkIcon from '@heroicons/react/24/solid/XMarkIcon';
 
 const ModalResult = (props) => {
     // prettier-ignore
     const {
         open, setOpen, t, orders, modalType, modalData,
     } = props;
-    const styles = useStyles();
     const { trackingorder } = modules;
-    const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
 
-    const content = () => {
-        const data = orders.data[0];
-        if (orders.data.length > 0) {
-            let { detail } = data;
-            [detail] = detail;
-            const shippingMethods = detail.shipping_methods.shipping_detail;
+    const Content = () => {
+        const data = orders?.data?.length > 0 ? orders.data[0] : null;
+        const detail = data?.detail?.length > 0 ? data.detail[0] : null;
+        const shippingMethods = detail?.shipping_methods?.shipping_detail;
 
-            const items = [];
-            const gosend = detail.shipping_methods.shipping_description?.match(/go-send/i) || '';
+        const items = [];
+        const gosend = detail?.shipping_methods?.shipping_description?.match(/go-send/i) || '';
 
-            let trackOrder;
-
+        let trackOrder;
+        if (shippingMethods) {
             shippingMethods.forEach((method) => {
                 const { data_detail } = method;
-                if (data_detail) {
+                if (data_detail && data_detail !== '[]') {
                     let dt = data_detail;
                     dt = dt.replace(/'/g, '`');
                     dt = dt.replace(/"/g, "'");
@@ -63,7 +51,7 @@ const ModalResult = (props) => {
                             modalType.toLowerCase().includes('anteraja') ||
                             modalType.toLowerCase().includes('popaket')
                         ) {
-                            trackOrder = <ShipperView type={modalType} data={modalData} orders={orders} styles={styles} t={t} />;
+                            trackOrder = <ShipperView type={modalType} data={modalData} orders={orders} t={t} />;
                         } else {
                             const keys = Object.keys(dt);
                             for (let idx = 0; idx < keys.length; idx += 1) {
@@ -72,11 +60,11 @@ const ModalResult = (props) => {
                                     if (secondary !== null && secondary !== '' && secondary.includes('http')) {
                                         secondary = (
                                             <div className="track-link">
-                                                <Link href={secondary}>
+                                                <Link href={secondary} legacyBehavior>
                                                     <a target="_blank" className="item-link">
                                                         <div style={{ display: 'flex', alignItems: 'center' }}>
                                                             <span>{t('trackingorder:track')}</span>
-                                                            <LaunchIcon fontSize="small" />
+                                                            <ArrowTopRightOnSquareIcon className="text-sm" />
                                                         </div>
                                                     </a>
                                                 </Link>
@@ -101,98 +89,89 @@ const ModalResult = (props) => {
                             secondary: dt,
                         });
                     }
+                } else {
+                    trackOrder = <div className="p-2 bg-yellow-500 text-neutral-white my-[32px]">{t('trackingorder:noDataAvailable')}</div>;
                 }
             });
-
-            return (
-                <div className="row">
-                    <div className="col-xs-12">
-                        {
-                            modalData || modalData.length > 0
-                                ? (
-                                    <List>
-                                        {trackOrder}
-                                        {items.map((item, i) => (
-                                            <>
-                                                <div key={i} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 20 }}>
-                                                    <Typography letter="capitalize" className="clear-margin-padding" style={{ width: '40%' }}>
-                                                        {item.primary}
-                                                    </Typography>
-                                                    <Typography
-                                                        variant="span"
-                                                        type="regular"
-                                                        className="clear-margin-padding"
-                                                        style={{ width: '60%' }}
-                                                    >
-                                                        {item.secondary}
-                                                    </Typography>
-                                                </div>
-                                            </>
-                                        ))}
-                                    </List>
-                                )
-
-                                :
-                                (
-                                    <Alert severity="warning" style={{ marginBottom: 32 }}>{t('trackingorder:noDataAvailable')}</Alert>
-                                )
-                        }
-                    </div>
-                    <style jsx>
-                        {`
-                            .row :global(.track-link) {
-                                display: flex;
-                            }
-                            .row :global(.track-link > *) {
-                                background-color: #eee;
-                                padding: 5px;
-                                text-decoration: none !important;
-                                border-radius: 5px;
-                            }
-                        `}
-                    </style>
-                    <style jsx global>
-                        {`
-                            .label-result {
-                                font-size: 20px;
-                                margin-top: 30px;
-                            }
-                            .item-link {
-                                font-weight: bold;
-                                text-decoration: underline;
-                            }
-                        `}
-                    </style>
-                </div>
-            );
         }
-        return <Alert severity="warning">{t('trackingorder:orderNotFound')}</Alert>;
+
+        return (
+            <div className="'w-full flex flex-col desktop:flex-row-reverse gap-2 !bg-[transparent]',">
+                <div className="w-full desktop:w-auto flex justify-end">
+                    <div
+                        role="presentation"
+                        onClick={() => setOpen(false)}
+                        className={cx(
+                            'w-7 h-7 p-1 rounded-md justify-center items-center gap-1.5 inline-flex group',
+                            'bg-neutral-white bg-opacity-40 hover:bg-primary',
+                            'cursor-pointer',
+                        )}
+                    >
+                        <XMarkIcon className="w-5 h-5 relative group-hover:text-neutral-white" />
+                    </div>
+                </div>
+                <div
+                    className={cx('w-full h-max max-h-[calc(100vh-60px)] p-4 tablet:p-8 bg-neutral-white rounded-lg', 'shadow-xl overflow-y-scroll')}
+                >
+                    {modalData?.data || data ? (
+                        <div className="list-container">
+                            {trackOrder}
+                            {items.map((item, i) => (
+                                <>
+                                    <div key={i} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 20 }}>
+                                        <Typography letter="capitalize" className="clear-margin-padding" style={{ width: '40%' }}>
+                                            {item.primary}
+                                        </Typography>
+                                        <Typography variant="span" type="regular" className="clear-margin-padding" style={{ width: '60%' }}>
+                                            {item.secondary}
+                                        </Typography>
+                                    </div>
+                                </>
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="p-2 bg-yellow-500 text-neutral-white my-[32px]">{t('trackingorder:noDataAvailable')}</div>
+                    )}
+                </div>
+                <style jsx>
+                    {`
+                        .row :global(.track-link) {
+                            display: flex;
+                        }
+                        .row :global(.track-link > *) {
+                            background-color: #eee;
+                            padding: 5px;
+                            text-decoration: none !important;
+                            border-radius: 5px;
+                        }
+                    `}
+                </style>
+                <style jsx global>
+                    {`
+                        .label-result {
+                            font-size: 20px;
+                            margin-top: 30px;
+                        }
+                        .item-link {
+                            font-weight: bold;
+                            text-decoration: underline;
+                        }
+                    `}
+                </style>
+            </div>
+        );
     };
 
     return (
         <>
             <Dialog
-                maxWidth="sm"
-                fullWidth={!!isDesktop}
-                fullScreen={!isDesktop}
                 open={open}
                 onClose={() => setOpen(false)}
-                TransitionComponent={Transition}
-            >
-                <DialogTitle>
-                    <Header
-                        LeftComponent={{
-                            onClick: () => setOpen(false),
-                        }}
-                        pageConfig={{
-                            headerTitle: t('trackingorder:trackingInformation'),
-                            headerBackIcon: 'close',
-                            header: 'relative',
-                        }}
-                    />
-                </DialogTitle>
-                <DialogContent>{content()}</DialogContent>
-            </Dialog>
+                content={<Content />}
+                classContainer="!shadow-none max-w-[360px] tablet:!max-w-[700px] desktop:!max-w-[945px]"
+                classContent="!p-0 !bg-[transparent]"
+                classWrapperTitle="!hidden"
+            />
         </>
     );
 };

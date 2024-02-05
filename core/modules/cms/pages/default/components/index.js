@@ -1,5 +1,4 @@
-import Loading from '@common_loaders/Backdrop';
-import Alert from '@material-ui/lab/Alert';
+import Backdrop from '@common_backdrop';
 import CmsRenderer from '@core_modules/cms/components/cms-renderer';
 
 const CmsPage = (props) => {
@@ -8,19 +7,17 @@ const CmsPage = (props) => {
     } = props;
     if (error) {
         return (
-            <Alert className="m-15" severity="error">
+            <div className="alert m-15" severity="error">
                 {t('common:error:fetchError')}
-            </Alert>
+            </div>
         );
     }
 
-    if (loading) return <Loading open={loading} />;
+    if (loading) return <Backdrop open={loading} />;
     if (onlyCms) return <CmsRenderer {...other} t={t} content={data.cmsPage.content} storeConfig={storeConfig} />;
 
     return (
         <div className="cms-container">
-            {/* eslint-disable-next-line react/no-danger */}
-            <h4 className="title center" dangerouslySetInnerHTML={{ __html: data.cmsPage.title }} />
             <CmsRenderer {...other} t={t} content={data.cmsPage.content} storeConfig={storeConfig} />
         </div>
     );

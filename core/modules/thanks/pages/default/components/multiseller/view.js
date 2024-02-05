@@ -3,97 +3,111 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable eqeqeq */
+/* eslint-disable no-unused-vars */
 import Button from '@common_button';
 import Typography from '@common_typography';
-
-import useStyles from '@core_modules/thanks/pages/default/components/style';
-import Paper from '@material-ui/core/Paper';
-import { withStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import IconArrow from '@material-ui/icons/ArrowForwardIos';
-import { GRAY_PRIMARY } from '@theme_color';
-import classNames from 'classnames';
+import cx from 'classnames';
 import Link from 'next/link';
 import propTypes from 'prop-types';
-
-const StyledTableCell = withStyles((theme) => ({
-    head: {
-        backgroundColor: GRAY_PRIMARY,
-        color: theme.palette.common.black,
-    },
-    body: {
-        fontSize: 14,
-    },
-}))(TableCell);
+import IconArrow from '@heroicons/react/24/outline/ArrowRightIcon';
+import { getLoginInfo } from '@helper_auth';
 
 const ViewThanksMultiSeller = (props) => {
     const {
         t,
-        isLogin,
         handleContinue,
         customerOrder,
     } = props;
 
-    const styles = useStyles();
+    const isLogin = getLoginInfo();
 
     return (
-        <div className={classNames(styles.container, 'thanks-pages')}>
-            <div className={styles.info}>
-                <Typography variant="h1" type="bold" letter="uppercase" className={styles.title}>
+        <div className={cx(
+            'thanks-pages',
+            'w-full flex flex-col gap-3 items-center justify-center',
+            'px-5 py-6 desktop:px-20 desktop:py-8',
+            'bg-no-repeat bg-cover bg-center',
+        )}
+        >
+            <div className="mt-5 mb-4 flex flex-col items-center justify-center w-full">
+                <Typography variant="h1" className="uppercase">
                     {t('thanks:thanks')}
                 </Typography>
-                <Typography variant="span" className="clear-margin-padding" letter="none">
+                <Typography variant="span">
                     {t('thanks:placeInfo')}
                 </Typography>
             </div>
-            <TableContainer component={Paper} className={styles.table}>
-                <Table aria-label="customized table">
-                    <TableHead>
-                        <TableRow>
-                            <StyledTableCell>{`${t('thanks:seller')}`}</StyledTableCell>
-                            <StyledTableCell align="right">Order ID</StyledTableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {customerOrder
+            <table class="table-auto my-5">
+                <thead>
+                    <tr className="hidden desktop:table-row">
+                        <th align="left" className="py-1">{`${t('thanks:seller')}`}</th>
+                        <th align="left" className="py-1">Order ID</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {customerOrder
                             && customerOrder.length > 0
                             && customerOrder.map((item, key) => (
-                                <TableRow key={key}>
-                                    <StyledTableCell component="th" scope="row">
-                                        {item.seller_name && `${item.seller_name}`}
-                                        {item.seller_city && ` - ${item.seller_city}`}
-                                    </StyledTableCell>
-                                    <StyledTableCell align="right">
-                                        {isLogin && isLogin === 1 ? (
-                                            <Link href={`/sales/order/view/order_id/${item?.order_number}`} passhref>
-                                                <a>
+                                <tr key={key}>
+                                    <td className="pr-[20px] py-2 hidden desktop:table-cell">
+                                        {item.seller_name ? `${item.seller_name}` : 'Default Seller'}
+                                        {item.seller_city ? ` - ${item.seller_city}` : ' - Default City'}
+                                    </td>
+                                    <td align="right" className="py-2 hidden desktop:table-cell">
+                                        {isLogin && isLogin == 1 ? (
+                                            (
+                                                <Link href={`/sales/order/view/order_id/${item?.order_number}`} passhref>
+
                                                     <b>{`#${item?.order_number}`}</b>
-                                                </a>
-                                            </Link>
+
+                                                </Link>
+                                            )
                                         ) : (
                                             <b>{`#${item?.order_number}`}</b>
                                         )}
-                                    </StyledTableCell>
-                                </TableRow>
+                                    </td>
+                                    <td className="table-cell desktop:hidden">
+                                        <div className="flex flex-col gap-1 mb-3 border-b border-b-neutral-100">
+                                            <div className="grid grid-cols-3 gap-2">
+                                                <Typography variant="bd-2">{t('thanks:seller')}</Typography>
+                                                <Typography className="col-span-2">
+                                                    {item.seller_name ? `${item.seller_name}` : 'Default Seller'}
+                                                    {item.seller_city ? ` - ${item.seller_city}` : ' - Default City'}
+                                                </Typography>
+                                            </div>
+                                            <div className="grid grid-cols-3 gap-2">
+                                                <Typography variant="bd-2">#Order ID</Typography>
+                                                {isLogin && isLogin == 1 ? (
+                                                    (
+                                                        <Link href={`/sales/order/view/order_id/${item?.order_number}`} passhref>
+
+                                                            <b>{`#${item?.order_number}`}</b>
+
+                                                        </Link>
+                                                    )
+                                                ) : (
+                                                    <b>{`#${item?.order_number}`}</b>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
                             ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-            <Link href="/sales/order/history" passHref>
-                <Typography size="10" type="bold" color="primary" letter="uppercase" className={styles.txtConfirmMultiseller}>
-                    {t('thanks:orderInfo')}
-                </Typography>
-            </Link>
-            <Button onClick={handleContinue} className={styles.btnConfirmMultiseller} endIcon={<IconArrow className={styles.btnConfirmIcon} />}>
-                <Typography size="10" type="bold" color="white" letter="uppercase" className={styles.txtConfirm}>
-                    {t('thanks:continue')}
-                </Typography>
-            </Button>
+                </tbody>
+            </table>
+            <div className="flex flex-col gap-4">
+                <Link href="/sales/order/history" passHref legacyBehavior>
+                    <Typography variant="bd-3" color="text-primary" className="uppercase cursor-pointer">
+                        {t('thanks:orderInfo')}
+                    </Typography>
+                </Link>
+                <Button onClick={handleContinue} endIcon={<IconArrow className="w-4 h-4" />}>
+                    <Typography variant="bd-3" color="text-neutral-white" className="uppercase">
+                        {t('thanks:continue')}
+                    </Typography>
+                </Button>
+            </div>
         </div>
     );
 };

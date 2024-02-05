@@ -1,41 +1,61 @@
 import Typography from '@common_typography';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import ListItemText from '@material-ui/core/ListItemText';
-import Divider from '@material-ui/core/Divider';
+import Show from '@common_show';
 import React from 'react';
-import Alert from '@material-ui/lab/Alert';
 import Button from '@common_button';
-import TextField from '@common_textfield';
+import TextField from '@common_forms/TextField';
 import { formatPrice } from '@helper_currency';
 import { debuging } from '@config';
 import Layout from '@layout_customer';
 import ModalDetail from '@core_modules/customer/pages/giftcard/components/detail';
 import DetailView from '@core_modules/customer/pages/giftcard/components/detail/view';
-import useStyles from '@core_modules/customer/pages/giftcard/components/style';
 import Loader from '@core_modules/customer/pages/giftcard/components/skeleton';
+import cx from 'classnames';
+import Alert from '@common_alert';
 
 const GiftCard = (props) => {
     const {
-        t, storeConfig, openDetail, handleCloseDetail, selectedCode, handleOpenDetail, data, search, handleTextSearch, handleSearch,
-        error, loading, currencyCache,
+        t,
+        storeConfig,
+        openDetail,
+        handleCloseDetail,
+        selectedCode,
+        handleOpenDetail,
+        data,
+        search,
+        handleTextSearch,
+        handleSearch,
+        error,
+        loading,
+        currencyCache,
     } = props;
-    const styles = useStyles();
 
-    if (error) {
+    if (loading) {
         return (
-            <Alert className="m-15" severity="error">
-                {debuging.originalError ? error.message.split(':')[1] : t('common:error:fetchError')}
-            </Alert>
+            <Layout {...props}>
+                <div className={cx('giftcard-container')}>
+                    <Loader />
+                </div>
+            </Layout>
         );
     }
 
-    if (loading || !data) return <Layout {...props}><Loader /></Layout>;
+    if (error) {
+        return (
+            <Layout {...props}>
+                <div className={cx('giftcard-container')}>
+                    <Alert className="mb-[10px]" severity="error" withIcon>
+                        {debuging.originalError ? error.message.split(':')[1] : t('common:error:fetchError')}
+                    </Alert>
+                </div>
+            </Layout>
+        );
+    }
+
+    const noGiftCardData = data && data.customer.gift_card.length === 0;
 
     return (
         <Layout {...props}>
-            <div>
+            <div className={cx('giftcard-container')}>
                 <ModalDetail
                     t={t}
                     storeConfig={storeConfig}
@@ -45,41 +65,47 @@ const GiftCard = (props) => {
                     DetailView={DetailView}
                     currencyCache={currencyCache}
                 />
-                {data && data.customer.gift_card.length === 0 && (
-                    <Alert className="m-15" severity="warning">
+                <Show when={noGiftCardData}>
+                    <Alert className="mb-[10px]" severity="warning" withIcon>
                         {t('customer:giftCard:notFound')}
                     </Alert>
-                )}
-                <div className="row">
-                    <div className="col-md-6 col-xs-12">
-                        <List>
-                            {data
-                                && data.customer.gift_card.map((item, index) => (
-                                    <ListItem key={index} onClick={() => handleOpenDetail(item.giftcard_code)}>
-                                        <ListItemText primary={item.giftcard_code} />
-                                        <ListItemSecondaryAction>
-                                            <Typography variant="span" type="bold">
-                                                {formatPrice(item.giftcard_balance, storeConfig.base_currency_code, currencyCache)}
-                                            </Typography>
-                                        </ListItemSecondaryAction>
-                                    </ListItem>
-                                ))}
-                        </List>
-                        <Divider />
+                </Show>
+                <Show when={!noGiftCardData}>
+                    <div className="flex flex-row w-max">
+                        <ul className={cx('w-max')}>
+                            {data?.customer?.gift_card?.map((item, index) => (
+                                <li
+                                    key={index}
+                                    className={cx('p-[10px] border-neutral-250', 'border-[1px]', 'rounded-[10px]', 'mb-[10px]', 'cursor-pointer')}
+                                    onClick={() => handleOpenDetail(item.giftcard_code)}
+                                    aria-hidden="true"
+                                >
+                                    <Typography className="!text-primary">
+                                        {item.giftcard_code}
+                                        {' '}
+                                        <Typography className="!text-neutral-black">
+                                            {formatPrice(item.giftcard_balance, storeConfig.base_currency_code, currencyCache)}
+                                        </Typography>
+                                    </Typography>
+                                </li>
+                            ))}
+                        </ul>
                     </div>
-                </div>
-                <div className="row">
-                    <div className="col-md-6 col-xs-12">
-                        <div className={styles.searchBox}>
+                </Show>
+                <div className="flex flex-row">
+                    <div className="">
+                        <div className={cx('searchBox')}>
                             <TextField
+                                id="textfield-giftcard-code"
+                                className={cx('mb-[20px]')}
                                 label={t('customer:giftCard:inputSearch')}
                                 value={search.value}
                                 onChange={handleTextSearch}
-                                error={!((search.error === '' || search.error === null))}
+                                error={!(search.error === '' || search.error === null)}
                                 errorMessage={search.error || ''}
                             />
                             <Button onClick={handleSearch}>
-                                <Typography letter="capitalize" color="white" type="bold">
+                                <Typography color="white" className={cx('uppercase')}>
                                     {t('customer:giftCard:buttonSearch')}
                                 </Typography>
                             </Button>

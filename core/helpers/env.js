@@ -1,6 +1,11 @@
+import getConfig from 'next/config';
+
+const { publicRuntimeConfig } = getConfig();
+
 const getAppEnv = () => {
     if (typeof window !== 'undefined') {
-        return window.APP_ENV;
+        const { appEnv } = publicRuntimeConfig;
+        return appEnv;
     }
 
     return process.env.APP_ENV;

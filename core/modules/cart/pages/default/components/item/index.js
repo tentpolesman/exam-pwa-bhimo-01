@@ -4,90 +4,33 @@
 /* eslint-disable object-curly-newline */
 /* eslint-disable implicit-arrow-linebreak */
 /* eslint-disable no-underscore-dangle */
-import Button from '@common_button';
 import Typography from '@common_typography';
-import Item from '@core_modules/cart/pages/default/components/item/item';
+import ItemProduct from '@core_modules/cart/pages/default/components/item/item';
 import TableList from '@core_modules/cart/pages/default/components/item/TableListItem';
-import useStyles from '@core_modules/cart/pages/default/components/style';
-import { useReactiveVar } from '@apollo/client';
-import { storeConfigVar } from '@root/core/services/graphql/cache';
-import classNames from 'classnames';
-import { useState } from 'react';
-
-const ItemProduct = (props) => {
-    const {
-        t,
-        editMode,
-        toggleEditDrawer,
-        cartItemId,
-        product,
-        quantity,
-        configurable_options = [],
-        deleteItem,
-        custom_price,
-        handleFeed,
-        bundle_options,
-        links,
-        customizable_options,
-        SimpleMiniCustomizable,
-        ConfigurableMiniCustomizable,
-        note,
-        errorCartItems,
-        storeConfig,
-        currencyCache,
-    } = props;
-    const [confirmDel, setConfirmDel] = useState(false);
-    const handleDelete = () => {
-        setConfirmDel(false);
-        deleteItem({
-            id: props.id,
-            product: props.product,
-            quantity: props.quantity,
-            prices: props.custom_price,
-        });
-    };
-
-    const handleAddWishlist = () => {
-        handleFeed(props);
-    };
-    return (
-        <Item
-            t={t}
-            note={note}
-            errorCartItems={errorCartItems}
-            cartItemId={cartItemId}
-            confirmDel={confirmDel}
-            handleDelete={handleDelete}
-            handleAddWishlist={handleAddWishlist}
-            setConfirmDel={setConfirmDel}
-            product={product}
-            configurable_options={configurable_options}
-            bundle_options={bundle_options}
-            links={links}
-            quantity={quantity}
-            prices={custom_price}
-            editMode={editMode}
-            toggleEditDrawer={toggleEditDrawer}
-            customizable_options={SimpleMiniCustomizable || ConfigurableMiniCustomizable || customizable_options}
-            storeConfig={storeConfig}
-            currencyCache={currencyCache}
-        />
-    );
-};
+import { storeConfigVar } from '@core/services/graphql/cache';
+import React from 'react';
+import Divider from '@common/Divider';
+import { ChevronRightIcon } from '@heroicons/react/24/outline';
+import Button from '@common/Button';
 
 const ItemView = (props) => {
-    const styles = useStyles();
     const { data, t, toggleEditMode, editMode, deleteItem, handleFeed, toggleEditDrawer, currencyCache, ...other } = props;
-    const storeConfigLocalStorage = useReactiveVar(storeConfigVar);
+    const storeConfigLocalStorage = storeConfigVar();
     let cartItemBySeller = {};
 
-    if (storeConfigLocalStorage && storeConfigLocalStorage.enable_oms_multiseller && data && data.items) {
+    let isMultiSeller = false;
+    if (storeConfigLocalStorage) {
+        isMultiSeller = storeConfigLocalStorage.enable_oms_multiseller === 1
+        || storeConfigLocalStorage.enable_oms_multiseller === '1';
+    }
+
+    if (storeConfigLocalStorage && isMultiSeller && data && data.items) {
         const unGroupedData = data.items;
         // eslint-disable-next-line no-shadow, max-len
-        const groupData = unGroupedData.reduce((groupData, { SimpleMiniCustomizable, id, note, prices, product, quantity, custom_seller, ...other }) => {
-            let item = groupData.find((p) => p.seller_id === custom_seller.seller_id);
+        const groupData = unGroupedData.reduce((groupData, { SimpleMiniCustomizable, id, note, prices, product, quantity, ...other }) => {
+            let item = groupData.find((p) => p.seller_id === product.seller.seller_id);
             if (!item) {
-                item = { seller_id: custom_seller.seller_id, seller_name: custom_seller.seller_name, children: [] };
+                item = { seller_id: product.seller.seller_id, seller_name: product.seller.seller_name, children: [] };
                 groupData.push(item);
             }
             let child = item.children.find((ch) => ch.name === product.name);
@@ -109,30 +52,22 @@ const ItemView = (props) => {
     }
 
     return (
-        <div className={styles.container}>
-            <div className={styles.toolbar}>
-                <div className={styles.toolbarCounter}>
-                    <Typography variant="p" type="regular">
-                        <span>{data.total_quantity}</span> {t('cart:counter:text')}
-                    </Typography>
-                </div>
-                <div className={classNames(styles.toolbarActions, 'hidden-desktop')}>
-                    <Button variant="outlined" className={styles.toolbarButton} onClick={toggleEditMode}>
-                        {editMode ? <>{t('common:button:save')}</> : <>{t('common:button:edit')}</>}
-                    </Button>
-                </div>
-            </div>
-            <div className={classNames(styles.items, 'hidden-desktop')}>
-                {storeConfigLocalStorage &&
-                    storeConfigLocalStorage.enable_oms_multiseller &&
-                    cartItemBySeller.map((seller) => (
-                        <>
-                            <Typography variant="h4" type="regular" className={styles.sellerName}>
-                                <span>{seller.seller_name ? seller.seller_name : 'Default Store'}</span>
-                            </Typography>
+        <>
+            <div className="flex flex-col gap-3 desktop:hidden">
+                <Typography variant="p-2a">
+                    {`${t('cart:itemDetail')} (${data.total_quantity})`}
+                </Typography>
+                <div className="flex flex-col gap-6">
+                    {isMultiSeller &&
+                    cartItemBySeller.map((seller, idx) => (
+                        <React.Fragment key={idx}>
+                            <div className="bg-neutral-100 p-2">
+                                <Typography variant="bd-2a" color="!text-primary">
+                                    <span>{seller.seller_name ? seller.seller_name : 'Default Store'}</span>
+                                </Typography>
+                            </div>
                             {seller.children.map((item, index) => (
                                 <ItemProduct
-                                    {...item}
                                     cartItemId={item.id}
                                     key={index}
                                     t={t}
@@ -147,46 +82,76 @@ const ItemView = (props) => {
                                     deleteItem={deleteItem}
                                     handleFeed={handleFeed}
                                     currencyCache={currencyCache}
+                                    isMultiSeller={isMultiSeller}
                                     {...other}
+                                    {...item}
                                 />
                             ))}
-                        </>
+                        </React.Fragment>
                     ))}
-                {storeConfigLocalStorage &&
-                    !storeConfigLocalStorage.enable_oms_multiseller &&
+                    {!isMultiSeller &&
                     data.items.map((item, idx) => (
-                        <ItemProduct
-                            {...item}
-                            cartItemId={item.id}
-                            key={idx}
-                            t={t}
-                            editMode={editMode}
-                            toggleEditDrawer={() =>
-                                toggleEditDrawer({
-                                    id: item.id,
-                                    quantity: item.quantity,
-                                    product_name: item.product.name,
-                                })
-                            }
-                            deleteItem={deleteItem}
-                            handleFeed={handleFeed}
-                            currencyCache={currencyCache}
-                            {...other}
-                        />
+                        <React.Fragment key={idx}>
+                            <ItemProduct
+                                cartItemId={item.id}
+                                t={t}
+                                editMode={editMode}
+                                toggleEditDrawer={() =>
+                                    toggleEditDrawer({
+                                        id: item.id,
+                                        quantity: item.quantity,
+                                        product_name: item.product.name,
+                                    })
+                                }
+                                deleteItem={deleteItem}
+                                handleFeed={handleFeed}
+                                currencyCache={currencyCache}
+                                {...other}
+                                {...item}
+                            />
+                            <Divider />
+                        </React.Fragment>
                     ))}
+
+                    <Button
+                        icon={<ChevronRightIcon />}
+                        iconPosition="right"
+                        variant="plain"
+                        link="/"
+                        className="!p-0 group"
+                        classNameText="!text-primary"
+                        iconProps={{ className: 'w-[18px] h-[18px]' }}
+                    >
+                        {t('common:button:continueShopping')}
+                    </Button>
+                </div>
+
             </div>
-            <div className="hidden-mobile">
+            <div className="hidden desktop:flex flex-col gap-8">
                 <TableList
-                    data={data.items}
+                    dataCart={data}
                     t={t}
                     deleteItem={deleteItem}
                     handleFeed={handleFeed}
                     toggleEditDrawer={toggleEditDrawer}
                     currencyCache={currencyCache}
+                    isMultiSeller={isMultiSeller}
                     {...other}
                 />
+
+                <Button
+                    icon={<ChevronRightIcon />}
+                    iconPosition="right"
+                    variant="plain"
+                    link="/"
+                    className="!p-0 group swift-action-continueshopping"
+                    classNameText="!text-primary"
+                    iconProps={{ className: 'w-[18px] h-[18px]' }}
+                >
+                    {t('common:button:continueShopping')}
+                </Button>
             </div>
-        </div>
+        </>
     );
 };
 

@@ -1,34 +1,16 @@
-import React, { useRef } from 'react';
-import Popover from '@material-ui/core/Popover';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import Button from '@material-ui/core/Button';
-import Skeleton from '@material-ui/lab/Skeleton';
+import cx from 'classnames';
+import React from 'react';
 
-import { makeStyles } from '@material-ui/core/styles';
+import Button from '@common_button';
+import Popover from '@common_popover';
+import Skeleton from '@common_skeleton';
+import Typography from '@common_typography';
 
-/**
- * useStyle
- */
-const useStyles = makeStyles(() => ({
-    listItemText: {
-        fontSize: '.6rem', // Insert your required size
-        textTransform: 'uppercase',
-    },
-}));
+import ChevronDownIcon from '@heroicons/react/24/outline/ChevronDownIcon';
 
 const ViewSwitcherLanguage = (props) => {
-    const {
-        t, title, id, open, anchorEl, handleClick, handleClose, dataLang, lang, onClickLanguage, loadDataLang,
-    } = props;
-    const buttonRef = useRef();
-    const classes = useStyles();
+    const { open, setOpen, dataLang, lang, onClickLanguage, loadDataLang } = props;
 
-    const anchorOrigin = { vertical: 'bottom', horizontal: 'right' };
-    const transforOrigin = { vertical: 'top', horizontal: 'right' };
-    const styleTitle = { fontSize: 12, textTransform: 'uppercase' };
-    const styleButton = { fontFamily: 'Montserrat', padding: '0px', fontSize: title ? '12px' : '1em' };
     const listDataLanguage = [];
 
     if (dataLang !== undefined) {
@@ -38,60 +20,59 @@ const ViewSwitcherLanguage = (props) => {
         });
     }
 
-    /**
-     * rendering
-     */
-    return (
-        <div>
-            {loadDataLang && (
-                <div>
-                    <Skeleton style={{ padding: 0 }} variant="rect" width={100} height={10} />
-                    <Skeleton style={{ display: 'inline-block', padding: 0 }} variant="rect" width={100} height={10} />
-                </div>
-            )}
-            {!loadDataLang && dataLang !== undefined && (
-                <div>
-                    {/* [CURRENCY] TITLE */}
-                    {title && (
-                        <div>
-                            <strong style={styleTitle}>{title}</strong>
-                        </div>
-                    )}
-
-                    {/* [CURRENCY] BUTTON */}
-                    <Button ref={buttonRef} onClick={handleClick} style={styleButton}>
-                        {t('common:setting:store')}
-                        :&nbsp;
-                        <strong>{lang?.label}</strong>
-                    </Button>
-
-                    {/* [CURRENCY] LIST */}
-                    {
-                        listDataLanguage && listDataLanguage.length > 0 && (
-                            <Popover
-                                id={id}
-                                open={open}
-                                anchorEl={anchorEl}
-                                onClose={handleClose}
-                                anchorOrigin={anchorOrigin}
-                                transformOrigin={transforOrigin}
-                                container={buttonRef.current}
-                            >
-                                <List component="nav">
-                                    {listDataLanguage !== undefined
-                            && listDataLanguage.map((item, index) => (
-                                <ListItem button key={`language-${index}`} onClick={() => onClickLanguage({ item })}>
-                                    <ListItemText classes={{ primary: classes.listItemText }} primary={`${item.label}`} />
-                                </ListItem>
-                            ))}
-                                </List>
-                            </Popover>
-                        )
-                    }
-                </div>
-            )}
-        </div>
+    const PopoverContent = () => (
+        <ul className={cx('currency-list__wrapper')}>
+            {listDataLanguage !== null &&
+                listDataLanguage.length > 0 &&
+                listDataLanguage.map((language_item, index) => (
+                    // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions
+                    <li
+                        key={`language-${index}`}
+                        className={cx('language-list__item', 'py-2', 'px-2', 'text-center', 'hover:cursor-pointer', 'hover:bg-neutral-100', 'group')}
+                        onClick={() => onClickLanguage({ item: language_item })}
+                    >
+                        <Typography className={cx('currency-list__text', 'group-hover:text-primary-700')}>{language_item.label}</Typography>
+                    </li>
+                ))}
+        </ul>
     );
+
+    if (!loadDataLang && dataLang !== undefined) {
+        return (
+            <Popover
+                content={<PopoverContent />}
+                open={open}
+                setOpen={setOpen}
+                className={cx('top-[100%]', 'p-0')}
+                wrapperClassName={cx('self-end')}
+                wrapperId="top-header__content--currency-language-changer-menu__language-switcher"
+            >
+                <Button
+                    className={cx(
+                        'm-2',
+                        'mr-0',
+                        '!px-0',
+                        '!py-0',
+                        'hover:shadow-none',
+                        'focus:shadow-none',
+                        'active:shadow-none',
+                        'active:shadow-none',
+                        'group',
+                    )}
+                    onClick={() => setOpen(!open)}
+                    icon={<ChevronDownIcon />}
+                    iconProps={{ className: cx('text-neutral-700', 'w-[20px]', 'h-[20px]', 'group-hover:text-primary-700') }}
+                    iconPosition="right"
+                    variant="tertiary"
+                    classNameText={cx('!text-neutral-700')}
+                >
+                    <Typography className={cx('group-hover:text-primary-700')}>{lang?.label}</Typography>
+                </Button>
+            </Popover>
+        );
+    }
+
+    return <Skeleton width={128} />;
 };
 
 export default ViewSwitcherLanguage;

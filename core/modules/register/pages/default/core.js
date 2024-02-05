@@ -1,21 +1,18 @@
 /* eslint-disable object-curly-newline */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable max-len */
-import { useQuery, useReactiveVar, useMutation } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client';
 import { custDataNameCookie, expiredToken } from '@config';
 import { getLastPathWithoutLogin, setEmailConfirmationFlag, setLogin } from '@helper_auth';
 import { getCartId, setCartId } from '@helper_cartid';
 import Layout from '@layout';
 import Cookies from 'js-cookie';
 import React, { useRef } from 'react';
-
 import { useFormik } from 'formik';
 import Router from 'next/router';
 import * as Yup from 'yup';
-
 import { getAppEnv } from '@helpers/env';
 import { regexPhone } from '@helper_regex';
-
 import {
     getCustomerCartId,
     getGuestCustomer,
@@ -24,9 +21,10 @@ import {
     register,
 } from '@core_modules/register/services/graphql';
 import { getCustomer, subscribeNewsletter } from '@core_modules/register/services/graphql/schema';
+import { requestOtpRegister } from '@core_modules/login/services/graphql';
 
 import { registerConfig } from '@services/graphql/repository/pwa_config';
-import { priceVar } from '@root/core/services/graphql/cache';
+import { priceVar } from '@core/services/graphql/cache';
 
 const appEnv = getAppEnv();
 
@@ -34,16 +32,18 @@ const Register = (props) => {
     const { t, storeConfig, pageConfig, Content, query, lastPathNoAuth } = props;
 
     const config = {
+        ...pageConfig,
         title: t('register:pageTitle'),
         header: 'relative', // available values: "absolute", "relative", false (default)
         headerTitle: t('register:title'),
         bottomNav: false,
+        tagSelector: 'swift-page-register',
     };
     // enable recaptcha
     let enableRecaptcha = false;
 
     // cache price
-    const cachePrice = useReactiveVar(priceVar);
+    const cachePrice = priceVar();
 
     const { loading: loadingRegisterConfig, data: dataRegisterConfig } = registerConfig();
     if (!loadingRegisterConfig && dataRegisterConfig && dataRegisterConfig.storeConfig && dataRegisterConfig.storeConfig.pwa) {
@@ -52,9 +52,13 @@ const Register = (props) => {
         }
     }
 
-    const [phoneIsWa, setPhoneIsWa] = React.useState(false);
+    const [phoneIsWa, setPhoneIsWa] = React.useState(true);
     const [cusIsLogin, setIsLogin] = React.useState(0);
-    const [disabled, setdisabled] = React.useState(false);
+    const [disabled, setDisabled] = React.useState(true);
+    const [disabledOtpButton, setDisabledOtpButton] = React.useState(false);
+    // state otp
+    const [showOtp, setShowOtp] = React.useState(false);
+    const [isFillForm, setIsFillForm] = React.useState(false);
     const [isSubscribed, setIsSubscribed] = React.useState({
         email: '',
         subscribed: false,
@@ -112,6 +116,8 @@ const Register = (props) => {
     const enableOtp = otpConfig.data && otpConfig.data.otpConfig.otp_enable[0].enable_otp_register;
 
     const [sendRegister] = register();
+    // otp
+    const [actRequestOtpRegister] = requestOtpRegister();
 
     const [actSubscribe] = useMutation(subscribeNewsletter, {
         context: {
@@ -135,7 +141,7 @@ const Register = (props) => {
             ...configValidation,
             phoneNumber: Yup.string().required(t('validate:phoneNumber:required')).matches(regexPhone, t('validate:phoneNumber:wrong')),
             whatsappNumber: Yup.string().required(t('validate:whatsappNumber:required')).matches(regexPhone, t('validate:whatsappNumber:wrong')),
-            otp: Yup.number().required('Otp is required'),
+            otp: showOtp && Yup.number().required('Otp is required'),
         };
     }
 
@@ -166,6 +172,48 @@ const Register = (props) => {
         };
     }
 
+    // handleSend to OTP View
+    const handleSend = (phoneNumber) => {
+        window.backdropLoader(true);
+        actRequestOtpRegister({
+            variables: {
+                phoneNumber,
+            },
+        })
+            .then(() => {
+                setShowOtp(true);
+                setDisabledOtpButton(false);
+                window.backdropLoader(false);
+                window.toastMessage({
+                    open: true,
+                    text: t('otp:sendSuccess'),
+                    variant: 'success',
+                });
+            })
+            .catch((e) => {
+                window.backdropLoader(false);
+                if (e.message === 'phone number is already Registered') {
+                    window.toastMessage({
+                        open: true,
+                        text: `${t('otp:registerOtpFailed', { phoneNumber })}`,
+                        variant: 'error',
+                    });
+                } else if (e.message === 'Max retries exceeded') {
+                    window.toastMessage({
+                        open: true,
+                        text: `${t('otp:registerOtpTooManyRetries', { phoneNumber })}`,
+                        variant: 'error',
+                    });
+                } else {
+                    window.toastMessage({
+                        open: true,
+                        text: e.message.split(':')[1] || t('otp:sendFailed'),
+                        variant: 'error',
+                    });
+                }
+            });
+    };
+
     const RegisterSchema = Yup.object().shape(configValidation);
 
     const handleSendRegister = (values, resetForm) => {
@@ -178,30 +226,29 @@ const Register = (props) => {
             .then(async ({ data }) => {
                 resetForm();
                 if (data.internalCreateCustomerToken.is_email_confirmation) {
-                    window.backdropLoader(false);
                     setEmailConfirmationFlag({ status: '00', message: t('register:openEmail'), variant: 'success' });
-
                     window.toastMessage({
                         open: true,
                         text: t('register:openEmail'),
                         variant: 'success',
                     });
                     setTimeout(() => {
+                        window.backdropLoader(false);
                         Router.push('/customer/account/login');
                     }, 2000);
                 } else {
-                    await setIsLogin(1);
+                    setIsLogin(1);
                     if (Object.keys(cachePrice).length > 0) {
                         priceVar({});
                     }
-                    getCart();
+                    await getCart();
                     window.backdropLoader(false);
                 }
-                setdisabled(false);
+                setDisabled(false);
             })
             .catch((e) => {
-                // console.log(e.errors);
-                setdisabled(false);
+                setShowOtp(false);
+                setDisabled(false);
                 window.backdropLoader(false);
                 window.toastMessage({
                     open: true,
@@ -228,9 +275,11 @@ const Register = (props) => {
         },
         validationSchema: RegisterSchema,
         onSubmit: (values, { resetForm }) => {
-            setdisabled(true);
+            setDisabled(true);
             window.backdropLoader(true);
-            if (enableRecaptcha) {
+            if (enableOtp && !showOtp) {
+                handleSend(values.phoneNumber);
+            } else if (enableRecaptcha) {
                 fetch('/captcha-validation', {
                     method: 'post',
                     body: JSON.stringify({
@@ -243,13 +292,13 @@ const Register = (props) => {
                         if (json.success) {
                             handleSendRegister(values, resetForm);
                         } else {
+                            window.backdropLoader(false);
                             window.toastMessage({
                                 open: true,
                                 variant: 'error',
                                 text: t('register:failed'),
                             });
                         }
-                        window.backdropLoader(false);
                     })
                     .catch(() => {
                         window.backdropLoader(false);
@@ -274,8 +323,9 @@ const Register = (props) => {
     const handleWa = () => {
         if (phoneIsWa === false) {
             // eslint-disable-next-line no-use-before-define
-
             formik.setFieldValue('whatsappNumber', formik.values.phoneNumber);
+        } else {
+            formik.setFieldValue('whatsappNumber', '');
         }
         setPhoneIsWa(!phoneIsWa);
     };
@@ -358,7 +408,7 @@ const Register = (props) => {
                     }, 700);
                 })
                 .catch((e) => {
-                    setdisabled(false);
+                    setDisabled(false);
                     window.backdropLoader(false);
                     window.toastMessage({
                         open: true,
@@ -385,27 +435,45 @@ const Register = (props) => {
         formik.initialValues.email = guestData.ordersFilter.data[0].detail[0].customer_email;
     }
 
+    /**
+     * Disable register button
+     */
+    React.useEffect(() => {
+        if (Object.keys(formik.errors).length < 2 && isFillForm) {
+            setDisabled(false);
+        } else if (Object.keys(formik.errors).length > 0 && !isFillForm) {
+            setIsFillForm(true);
+        } else if (Object.keys(formik.errors).length > 1) {
+            setDisabled(true);
+        }
+    }, [formik.errors, isFillForm, showOtp]);
+
+    const contentProps = {
+        ...props,
+        showOtp,
+        setShowOtp,
+        formik,
+        enableOtp,
+        setDisabled,
+        handleChangePhone,
+        handleWa,
+        phoneIsWa,
+        handleChangeWa,
+        enableRecaptcha,
+        sitekey,
+        handleChangeCaptcha,
+        disabled,
+        recaptchaRef,
+        gender,
+        dob: date_of_birth,
+        handleChangeDate,
+        disabledOtpButton,
+        setDisabledOtpButton,
+    };
+
     return (
-        <Layout pageConfig={pageConfig || config} {...props} isLoginPage>
-            <Content
-                {...props}
-                t={t}
-                formik={formik}
-                enableOtp={enableOtp}
-                setdisabled={setdisabled}
-                handleChangePhone={handleChangePhone}
-                handleWa={handleWa}
-                phoneIsWa={phoneIsWa}
-                handleChangeWa={handleChangeWa}
-                enableRecaptcha={enableRecaptcha}
-                sitekey={sitekey}
-                handleChangeCaptcha={handleChangeCaptcha}
-                disabled={disabled}
-                recaptchaRef={recaptchaRef}
-                gender={gender}
-                dob={date_of_birth}
-                handleChangeDate={handleChangeDate}
-            />
+        <Layout pageConfig={config} {...props}>
+            <Content {...contentProps} />
         </Layout>
     );
 };

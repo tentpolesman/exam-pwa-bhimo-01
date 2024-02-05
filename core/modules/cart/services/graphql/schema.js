@@ -187,6 +187,7 @@ items {
       values {
         label
         quantity
+        price
       }
     }
   }
@@ -252,6 +253,7 @@ items {
       values {
         label
         quantity
+        price
       }
     }
   }
@@ -277,11 +279,6 @@ items {
       currency
     }
   }
-  custom_seller{
-    seller_id
-    seller_city
-    seller_name
-  }
   product {
     id
     name
@@ -291,6 +288,12 @@ items {
     }
     url_key
     sku
+    seller {
+      seller_id
+      seller_city
+      seller_name
+      seller_path
+    }
   }
 }
 `;
@@ -354,7 +357,7 @@ export const getCartItem = gql`query getCartData($cartId: String!) {
   }
 }`;
 
-export const getCrossellCart = (config = {}) => gql`
+export const getCrossellCart = () => gql`
 query getCartData($cartId: String!) {
   cart(cart_id: $cartId) {
      items {
@@ -364,36 +367,6 @@ query getCartData($cartId: String!) {
           name
           url_key
           sku
-          ${config?.pwa?.label_weltpixel_enable ? `
-          weltpixel_labels {
-            categoryLabel {
-                css
-                customer_group
-                image
-                page_position
-                position
-                priority
-                text
-                text_padding
-                text_bg_color
-                text_font_size
-                text_font_color          
-            }
-            productLabel {
-                css
-                customer_group
-                image
-                page_position
-                position
-                priority
-                text
-                text_padding
-                text_bg_color
-                text_font_size
-                text_font_color  
-            }
-          }        
-          ` : ''}
           thumbnail {
             url
           }
@@ -492,6 +465,7 @@ export const getMiniCart = gql`
                   values {
                     label
                     quantity
+                    price
                   }
                 }
               }
@@ -731,9 +705,13 @@ export const addProductsToPromoCart = gql`
 `;
 
 export const getCheckoutScv2Url = gql`
-    mutation getCheckoutScv2Url($cart_id: String!) {
-        internalGetScv2Url(cart_id: $cart_id) {
-            url
-        }
-    }
+mutation generateScv2Url($cartId: String!) {
+  generateScv2Url(input: {
+    cartId: $cartId
+  }) {
+    message
+    scv2_url
+    success
+  }
+}
 `;

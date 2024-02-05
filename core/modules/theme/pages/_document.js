@@ -1,64 +1,36 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable max-len */
 /* eslint-disable react/no-danger */
 import React from 'react';
-import Document, { Html, Main } from 'next/document';
+import Document, { Html, Main, NextScript } from 'next/document';
+import { COLORS } from '@core/theme/vars';
+import { /* rollbar, */ basePath } from '@config';
 import HeadCustom from '@next_headcustom';
-import NextScriptCustom from '@next_nextscriptcustom';
-import theme from '@theme_theme';
-
-import { ServerStyleSheets } from '@material-ui/core/styles';
-import {
-    rollbar, basePath,
-} from '@config';
 
 export default class MyDocument extends Document {
     render() {
-        let rollbarConfig = {};
-        if (rollbar && rollbar.enabled) {
-            rollbarConfig = rollbar.config;
-            rollbarConfig.payload = {
-                environment: process.env.APP_ENV || 'prod',
-            };
+        // let rollbarConfig = {};
+        // if (rollbar && rollbar.enabled) {
+        //     rollbarConfig = rollbar.config;
+        //     rollbarConfig.payload = {
+        //         environment: process.env.APP_ENV || 'prod',
+        //     };
+        // }
+
+        let lang = 'en';
+
+        if (this.props?.__NEXT_DATA__?.props?.initialLanguage) {
+            lang = this.props?.__NEXT_DATA__?.props?.initialLanguage;
         }
-        // eslint-disable-next-line no-underscore-dangle
-        const currentLang = this.props.__NEXT_DATA__.props.initialLanguage;
+
         return (
-            <Html lang={currentLang}>
+            <Html lang={lang}>
                 <HeadCustom>
                     {/* PWA primary color */}
-                    <meta name="theme-color" content={theme.palette.primary.main} />
+                    <meta name="theme-color" content={COLORS.primary.DEFAULT} />
                     <link rel="manifest" href={`${basePath}/manifest.json`} />
                     <link rel="shortcut icon" href={`${basePath}/favicon.ico`} />
-                    {/* preload font */}
-                    <link
-                        rel="preload"
-                        href="/assets/fonts/montserrat-v18-vietnamese_latin-ext_latin_cyrillic-ext_cyrillic-regular.woff2"
-                        as="font"
-                        type="font/woff2"
-                        crossOrigin
-                    />
-                    <link
-                        rel="preload"
-                        href="/assets/fonts/montserrat-v18-vietnamese_latin-ext_latin_cyrillic-ext_cyrillic-500.woff2"
-                        as="font"
-                        type="font/woff2"
-                        crossOrigin
-                    />
-                    <link
-                        rel="preload"
-                        href="/assets/fonts/montserrat-v18-vietnamese_latin-ext_latin_cyrillic-ext_cyrillic-700.woff2"
-                        as="font"
-                        type="font/woff2"
-                        crossOrigin
-                    />
-                    <link
-                        rel="preload"
-                        href="/assets/fonts/montserrat-v18-vietnamese_latin-ext_latin_cyrillic-ext_cyrillic-900.woff2"
-                        as="font"
-                        type="font/woff2"
-                        crossOrigin
-                    />
-                    {rollbar && rollbar.enabled ? (
+                    {/* {rollbar && rollbar.enabled ? (
                         <script
                             dangerouslySetInnerHTML={{
                                 __html: `
@@ -69,58 +41,13 @@ export default class MyDocument extends Document {
                                     `,
                             }}
                         />
-                    ) : null}
-                    <script
-                        dangerouslySetInnerHTML={{
-                            __html: `window.APP_ENV = '${process.env.APP_ENV || 'prod'}'`,
-                        }}
-                    />
+                    ) : null} */}
                 </HeadCustom>
-                <body className="loading">
+                <body>
                     <Main />
-                    <NextScriptCustom />
+                    <NextScript />
                 </body>
             </Html>
         );
     }
 }
-
-MyDocument.getInitialProps = async (ctx) => {
-    // Resolution order
-    //
-    // On the server:
-    // 1. app.getInitialProps
-    // 2. page.getInitialProps
-    // 3. document.getInitialProps
-    // 4. app.render
-    // 5. page.render
-    // 6. document.render
-    //
-    // On the server with error:
-    // 1. document.getInitialProps
-    // 2. app.render
-    // 3. page.render
-    // 4. document.render
-    //
-    // On the client
-    // 1. app.getInitialProps
-    // 2. page.getInitialProps
-    // 3. app.render
-    // 4. page.render
-
-    // Render app and page and get the context of the page with collected side effects.
-    const sheets = new ServerStyleSheets();
-    const originalRenderPage = ctx.renderPage;
-
-    ctx.renderPage = () => originalRenderPage({
-        enhanceApp: (App) => (props) => sheets.collect(<App {...props} />),
-    });
-
-    const initialProps = await Document.getInitialProps(ctx);
-
-    return {
-        ...initialProps,
-        // Styles fragment is rendered after the app and page rendering finish.
-        styles: [...React.Children.toArray(initialProps.styles), sheets.getStyleElement()],
-    };
-};

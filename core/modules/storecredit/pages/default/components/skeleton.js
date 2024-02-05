@@ -1,37 +1,37 @@
-import Skeleton from '@material-ui/lab/Skeleton';
-import TableRow from '@material-ui/core/TableRow';
-import TableCell from '@material-ui/core/TableCell';
+/* eslint-disable jsx-a11y/control-has-associated-label */
+import cx from 'classnames';
+import Skeleton from '@common_skeleton';
 
-const SkeletonStoreCredit = () => (
+export const SkeletonDesktop = () => (
     <>
-        <TableRow>
-            <TableCell colSpan={5}>
-                <Skeleton variant="text" width="100%" height={30} />
-                <Skeleton variant="text" width="100%" height={30} />
-                <Skeleton variant="text" width="100%" height={30} />
-                <Skeleton variant="text" width="100%" height={30} />
-                <Skeleton variant="text" width="100%" height={30} />
-            </TableCell>
-        </TableRow>
-        <TableRow>
-            <TableCell colSpan={5}>
-                <Skeleton variant="text" width="100%" height={30} />
-                <Skeleton variant="text" width="100%" height={30} />
-                <Skeleton variant="text" width="100%" height={30} />
-                <Skeleton variant="text" width="100%" height={30} />
-                <Skeleton variant="text" width="100%" height={30} />
-            </TableCell>
-        </TableRow>
-        <TableRow>
-            <TableCell colSpan={5}>
-                <Skeleton variant="text" width="100%" height={30} />
-                <Skeleton variant="text" width="100%" height={30} />
-                <Skeleton variant="text" width="100%" height={30} />
-                <Skeleton variant="text" width="100%" height={30} />
-                <Skeleton variant="text" width="100%" height={30} />
-            </TableCell>
-        </TableRow>
+        <tr className={cx('even:bg-white', 'odd:bg-neutral-50')}>
+            <td colSpan={6}>
+                <Skeleton width="100%" height={30} />
+            </td>
+        </tr>
+        <tr className={cx('even:bg-white', 'odd:bg-neutral-50')}>
+            <td colSpan={6}>
+                <Skeleton width="100%" height={30} />
+            </td>
+        </tr>
+        <tr className={cx('even:bg-white', 'odd:bg-neutral-50')}>
+            <td colSpan={6}>
+                <Skeleton width="100%" height={30} />
+            </td>
+        </tr>
     </>
 );
 
-export default SkeletonStoreCredit;
+export const SkeletonMobile = () => (
+    <>
+        <div className={cx('mt-[12px]')}>
+            <Skeleton width="100%" height={100} />
+        </div>
+        <div className={cx('mt-[12px]')}>
+            <Skeleton width="100%" height={100} />
+        </div>
+        <div className={cx('mt-[12px]')}>
+            <Skeleton width="100%" height={100} />
+        </div>
+    </>
+);

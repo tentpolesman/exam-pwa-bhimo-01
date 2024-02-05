@@ -1,16 +1,20 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import { generateCatalogSorting } from '@plugin_productlist/components/FilterDesktop/sort';
+import { generateCatalogSorting } from '@plugin_productlist/components/Shorting';
+import FilterView from '@plugin_productlist/components/Filter/view';
+import propTypes from 'prop-types';
 
 const Filter = (props) => {
     const {
-        FilterModalView, FilterView, filterValue, isSearch, defaultSort, setFiltervalue, filter, storeConfig, ...other
+        filterValue, isSearch, defaultSort, setFiltervalue, filter, storeConfig,
+        onSave, ...other
     } = props;
     const sortByData = React.useMemo(() => generateCatalogSorting(isSearch), []);
     const [openFilter, setOpenFilter] = React.useState(false);
     const [selectedFilter, setFilter] = React.useState(filterValue);
     const [sort, setSort] = React.useState(filterValue.sort ? filterValue.sort : '');
     const [priceRange, setPriceRange] = React.useState([0, 0]);
+    const [maxPriceRange, setMaxPriceRange] = React.useState(0);
     const router = useRouter();
 
     // reset filter if route change
@@ -18,6 +22,19 @@ const Filter = (props) => {
         const pricerangelist = filter.filter((data) => data.field === 'price');
         // eslint-disable-next-line radix
         const pricerangelistmaxvalue = parseInt(pricerangelist[0]?.value[pricerangelist[0]?.value.length - 1].value) || 0;
+        setMaxPriceRange(pricerangelistmaxvalue);
+        let initPriceRange = [];
+
+        if (filterValue.priceRange) {
+            initPriceRange = filterValue.priceRange.split(',');
+            if (initPriceRange[0] === 'string') {
+                initPriceRange[0] = parseInt(initPriceRange[0], 10);
+            }
+
+            if (initPriceRange[1] === 'string') {
+                initPriceRange[1] = parseInt(initPriceRange[1], 10);
+            }
+        }
 
         setPriceRange(filterValue.priceRange ? filterValue.priceRange.split(',') : [0, pricerangelistmaxvalue]);
         setFilter(filterValue);
@@ -51,6 +68,11 @@ const Filter = (props) => {
         setFiltervalue({});
     };
 
+    const handleReset = () => {
+        router.push(`/${router.query.slug.join('/')}`);
+        onSave(null);
+    };
+
     const handleSave = () => {
         if (selectedFilter.priceRange) {
             delete selectedFilter.priceRange;
@@ -70,6 +92,7 @@ const Filter = (props) => {
         }
         setFiltervalue(savedData);
         setOpenFilter(!openFilter);
+        onSave(savedData);
     };
 
     const setCheckedFilter = (name, value) => {
@@ -88,30 +111,44 @@ const Filter = (props) => {
     };
 
     const ModalProps = {
-        selectedFilter, setSelectedFilter, setCheckedFilter, handleSave, handleClear, sortByData, sort, setSort, priceRange, setPriceRange,
+        selectedFilter,
+        setSelectedFilter,
+        setCheckedFilter,
+        handleSave,
+        handleClear,
+        sortByData,
+        sort,
+        setSort,
+        priceRange,
+        setPriceRange,
+        maxPriceRange,
     };
 
     return (
-        <>
-            {FilterModalView ? (
-                <FilterModalView
-                    open={openFilter}
-                    setOpen={() => setOpenFilter(!openFilter)}
-                    {...props}
-                    {...ModalProps}
-                />
-            ) : null}
-
-            <FilterView
-                openFilter={openFilter}
-                setOpenFilter={setOpenFilter}
-                isSearch={isSearch}
-                filter={filter}
-                {...ModalProps}
-                {...other}
-            />
-        </>
+        <FilterView
+            openFilter={openFilter}
+            setOpenFilter={setOpenFilter}
+            isSearch={isSearch}
+            filter={filter}
+            handleReset={handleReset}
+            {...ModalProps}
+            {...other}
+        />
     );
+};
+
+Filter.propTypes = {
+    onSave: propTypes.func,
+    filterValue: propTypes.object.isRequired,
+    isSearch: propTypes.bool.isRequired,
+    defaultSort: propTypes.object.isRequired,
+    setFiltervalue: propTypes.func.isRequired,
+    filter: propTypes.array.isRequired,
+    storeConfig: propTypes.object.isRequired,
+};
+
+Filter.defaultProps = {
+    onSave: () => {},
 };
 
 export default Filter;

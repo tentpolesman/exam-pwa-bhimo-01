@@ -44,8 +44,8 @@
         "problemConnection": "There is a problem with your connection",
         "couponRemoved": "Coupon has been removed",
         "couponApplied": "Coupon has been applied",
-        "giftCardApplied": "Coupon has been applied",
-        "giftCardRemoved": "Coupon has been removed",
+        "giftCardApplied": "Gift card has been applied",
+        "giftCardRemoved": "Gift card has been removed",
         "orderCommentAdded": "Order Comment has been added",
         "orderCommentRemoved": "Order Comment has been removed",
         "rewardPointsApplied": "Reward points has been applied",
@@ -79,6 +79,11 @@
         "button": "Use my credit",
         "removeButton": "Remove my credit"
     },
+    "giftCard": {
+        "placeholderField": "Gift Card Code",
+        "yourGiftCard": "Your gift card",
+        "appliedGiftCard": "Applied Gift Card"
+    },
     "promoCodePlaceholder": "Promo code",
     "giftCartPlaceholder": "Gift cart number",
     "yourOrderId": "Your order number",
@@ -107,18 +112,5 @@
     "howtoPay": "How to pay",
     "confirmation": "Confirmation",
     "open": "Open",
-    "close": "Close",
-    "travelokaPay": {
-        "enterPaymentDetails": "Enter your payment details:",
-        "activateTravelokaPaylater": "Activate your Traveloka Paylater now!",
-        "switchPayment": "Switch your payment into installment with the Traveloka app.",
-        "validation": {
-            "nameOnCard": "Name on Card",
-            "cardNumber": "Card Number",
-            "expiryDate": "Expiry Date (MM/YY)",
-            "cvv": "CVV",
-            "required": "is required.",
-            "invalid": "is invalid."
-        }
-    }
+    "close": "Close"
 }

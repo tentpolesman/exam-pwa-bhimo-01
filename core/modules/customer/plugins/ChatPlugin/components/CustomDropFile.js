@@ -1,8 +1,9 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable semi-style */
 /* eslint-disable react/forbid-prop-types */
-import useStyles from '@core_modules/customer/plugins/ChatPlugin/components/style';
-import { useTranslation } from '@i18n';
-import Button from '@material-ui/core/Button';
 import React from 'react';
+import Button from '@common_button';
+import { useTranslation } from 'next-i18next';
 import { useDropzone } from 'react-dropzone';
 
 const DropFile = (props) => {
@@ -10,7 +11,6 @@ const DropFile = (props) => {
     const {
         title = '', textButton = t('common:Choose_File'), formatFile = '.csv', getBase64, showFiles = true, singleFile = false,
     } = props;
-    const classes = useStyles();
     const toBase64 = (file) => new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
@@ -59,23 +59,24 @@ const DropFile = (props) => {
         </li>
     ));
 
-    return (
-        <div className={classes.contentDropFile}>
-            {title}
-            <div {...getRootProps({ className: 'dropzone' })}>
-                <input {...getInputProps()} />
-                <Button className={classes.btn} type="button" onClick={open}>
-                    {textButton}
-                </Button>
-                {files.length === 0 && showFiles && <span className={classes.textNoFile}>{t('common:No_file_chosen')}</span>}
-            </div>
-            {showFiles && (
-                <aside>
-                    <ul>{singleFile ? files[0] : files}</ul>
-                </aside>
-            )}
-        </div>
-    );
+    return null;
+    // return (
+    //     <div className={classes.contentDropFile}>
+    //         {title}
+    //         <div {...getRootProps({ className: 'dropzone' })}>
+    //             <input {...getInputProps()} />
+    //             <Button className={classes.btn} type="button" onClick={open}>
+    //                 {textButton}
+    //             </Button>
+    //             {files.length === 0 && showFiles && <span className={classes.textNoFile}>{t('common:No_file_chosen')}</span>}
+    //         </div>
+    //         {showFiles && (
+    //             <aside>
+    //                 <ul>{singleFile ? files[0] : files}</ul>
+    //             </aside>
+    //         )}
+    //     </div>
+    // );
 };
 
 export default DropFile;

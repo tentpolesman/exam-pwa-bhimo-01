@@ -8,11 +8,11 @@ import Router from 'next/router';
 
 import { modules } from '@config';
 import { getHost, getStoreHost } from '@helpers/config';
-import { getAppEnv } from '@root/core/helpers/env';
+import { getAppEnv } from '@core/helpers/env';
 import { availableRoute } from './routeServer';
 
 export const routeNoAuth = (path) => {
-    const route = ['/customer/account/login', '/customer/account/register', '/customer/account/forgotpassword'];
+    const route = ['/customer/account/login', '/customer/account/create', '/customer/account/forgotpassword'];
 
     const found = route.find((val) => val === path);
 
@@ -30,6 +30,13 @@ export const routeWithAuth = (path) => {
         '/inboxnotification/notification',
         '/customer/newsletter',
         '/rma/customer',
+        '/sales/order/view/order_id/[id]',
+        '/sales/order/print/order_id/[id]',
+        '/wishlist',
+        '/sales/downloadable/history',
+        '/review/customer',
+        '/customer/newsletter',
+        '/customer/account',
     ];
 
     const found = route.find((val) => val === path);
@@ -38,8 +45,8 @@ export const routeWithAuth = (path) => {
 };
 
 const setLastPathNoAuth = (req, value = '') => {
-    if (req && req.session) {
-        req.session.lastPathNoAuth = value;
+    if (req && req.cookies) {
+        req.cookies.lastPathNoAuth = value;
     }
 };
 
@@ -47,6 +54,14 @@ const routeMiddleware = (params) => {
     const {
         req, res, query, pathname, isLogin, lastPathNoAuth,
     } = params;
+
+    /*
+    Set Cache Control response header to enable varnish caching
+    */
+    if (typeof window === 'undefined') {
+        res.setHeader('Cache-Control', 'public');
+    }
+
     /**
      * middleware enabled or disabled feature
      */
@@ -56,7 +71,7 @@ const routeMiddleware = (params) => {
             if (typeof window !== 'undefined') {
                 window.location.href = '/';
             } else if (res) {
-                res.writeHead(301, {
+                res.writeHead(302, {
                     Location: '/',
                 });
                 res.end();
@@ -73,15 +88,22 @@ const routeMiddleware = (params) => {
                     Router.push(`${getHost()}/${query.redirect}`);
                     removeLastPathWithoutLogin();
                 } else {
-                    res.redirect(`${getHost()}/${query.redirect}`);
                     setLastPathNoAuth(req, '');
+                    res.writeHead(302, {
+                        Location: `/${query.redirect}`,
+                    });
+                    res.end();
                 }
             } else if (typeof window !== 'undefined') {
                 Router.push(lastPathNoAuth);
                 removeLastPathWithoutLogin();
             } else {
-                res.redirect(lastPathNoAuth);
                 setLastPathNoAuth(req, '');
+                res.writeHead(302, {
+                    Location: lastPathNoAuth,
+                });
+                res.end();
+                res.writeHead(302, { Location: lastPathNoAuth });
             }
         } else {
             typeof window !== 'undefined' ? removeLastPathWithoutLogin() : setLastPathNoAuth(req, '');
@@ -94,7 +116,10 @@ const routeMiddleware = (params) => {
                 setLastPathWithoutLogin(pathname);
             } else {
                 setLastPathNoAuth(req, pathname);
-                res.redirect('/customer/account/login');
+                res.writeHead(302, {
+                    Location: '/customer/account/login',
+                });
+                res.end();
             }
         } else {
             typeof window !== 'undefined' ? removeLastPathWithoutLogin() : setLastPathWithoutLogin(req, '');
@@ -105,17 +130,10 @@ const routeMiddleware = (params) => {
         const allow = availableRoute(pathname.trim().split('?')[0]);
         if (!allow) {
             if (typeof window !== 'undefined') {
-                window.location.href = getStoreHost(window.APP_ENV);
+                window.location.href = getStoreHost(getAppEnv());
             } else {
                 res.statusCode = 302;
                 res.setHeader('Location', getStoreHost(getAppEnv()));
-            }
-        } else if (typeof window !== 'undefined') {
-            const destinationUrl = pathname;
-            const currentUrl = window.sessionStorage.getItem('currentUrl');
-            const prevUrl = window.sessionStorage.getItem('prevUrl');
-            if (destinationUrl === '/' && currentUrl === '/' && prevUrl === '/') {
-                window.location.href = getStoreHost(window.APP_ENV);
             }
         }
     }

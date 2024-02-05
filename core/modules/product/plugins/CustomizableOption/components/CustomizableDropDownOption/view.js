@@ -1,15 +1,13 @@
 import React from 'react';
 import Typography from '@common_typography';
-import Select from '@common_select';
+import Select from '@common_forms/Select';
 import classNames from 'classnames';
-import useStyles from '@plugin_customizableitem/components/style';
 
 const ViewCustomizableDropDownOption = ({
     title = 'test', data = [], selected = '', disabled,
     onChange = () => {}, error = '', required = false,
 }) => {
-    const styles = useStyles();
-    const customClass = classNames('column', styles.container, styles.customizableDropDownOption);
+    const customClass = classNames('flex flex-col', 'w-[100%]');
     return (
         <div className={customClass}>
             {
@@ -18,25 +16,29 @@ const ViewCustomizableDropDownOption = ({
                         disabled={disabled}
                         options={data}
                         name={title}
-                        label={(
-                            <>
-                                <Typography variant="title" type="bold" letter="uppercase">
-                                    {title.replace(/_/g, ' ')}
-                                    {' '}
-                                    {required && <Typography color="red" type="bold" variant="label">*</Typography>}
-                                </Typography>
-                            </>
-                        )}
                         value={selected}
                         onChange={onChange}
-                        error={error}
+                        error={error !== ''}
                         errorMessage={error}
+                        label={(
+                            <Typography variant="bd-2a" className="font-bold">
+                                {title.replace(/_/g, ' ')}
+                                {' '}
+                                {required && <Typography variant="bd-2a" className="font-bold text-red">*</Typography>}
+                            </Typography>
+                        )}
+                        optionProps={{
+                            className: 'absolute',
+                        }}
+                        textFiledProps={{
+                            className: '!w-full mt-[6px]',
+                        }}
                     />
                 )
             }
             {
                 error && error !== '' && (
-                    <Typography color="red">{error}</Typography>
+                    <Typography className="text-red">{error}</Typography>
                 )
             }
         </div>

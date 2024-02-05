@@ -1,24 +1,25 @@
 /* eslint-disable indent */
+import React from 'react';
 import gqlService from '@core_modules/checkout/services/graphql';
-import Skeleton from '@material-ui/lab/Skeleton';
-import _ from 'lodash';
-import { useEffect } from 'react';
+import Skeleton from '@common_skeleton';
 import TagManager from 'react-gtm-module';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+ selectCheckoutState, setCheckoutData, setErrorState, setLoading, setSelectedData,
+} from '@core_modules/checkout/redux/checkoutSlice';
 
 const Loader = () => (
     <>
-        <Skeleton width="100%" variant="text" animation="wave" height={10} />
-        <Skeleton width="100%" variant="text" animation="wave" height={10} />
-        <Skeleton width="100%" variant="text" animation="wave" height={10} />
+        <Skeleton width="100%" height={10} />
+        <Skeleton width="100%" height={10} />
+        <Skeleton width="100%" height={10} />
     </>
 );
 
 const Address = (props) => {
     const {
         isOnlyVirtualProductOnCart,
-        checkout,
         t,
-        setCheckout,
         defaultAddress,
         updateFormik,
         AddressView,
@@ -31,6 +32,9 @@ const Address = (props) => {
         ...other
     } = props;
 
+    const dispatch = useDispatch();
+    const checkout = useSelector(selectCheckoutState);
+
     const [setShippingAddressById] = gqlService.setShippingAddress();
     const [setShippingAddressByInput] = gqlService.setShippingAddressByInput();
     const [setBillingAddressById] = gqlService.setBillingAddressById();
@@ -40,7 +44,7 @@ const Address = (props) => {
 
     const { address } = checkout.selected;
     const { loading, data } = checkout;
-    const street = _.isNull(address) ? null : address.street.join(' ');
+    const street = address?.street?.join(' ') ?? null;
     let dialogProps;
 
     let dest_latitude = {};
@@ -49,7 +53,7 @@ const Address = (props) => {
     let emptyPinpoint = false;
     let showEmptyPinpoint = false;
 
-    useEffect(() => {
+    React.useEffect(() => {
         if (data && data.cart && data.cart.dest_location) {
             dest_latitude = data.cart.dest_location.dest_latitude;
             dest_longitude = data.cart.dest_location.dest_longitude;
@@ -96,27 +100,42 @@ const Address = (props) => {
     }
 
     const updateAddressState = (result) => {
-        const state = { ...checkout };
         const updatedCart = result.data.setBillingAddressOnCart.cart;
         if (isOnlyVirtualProductOnCart) {
-            state.selected.billing = updatedCart?.billing_address;
-            state.selected.address = updatedCart?.billing_address;
+            dispatch(
+                setSelectedData({
+                    billing: updatedCart?.billing_address,
+                    address: updatedCart?.billing_address,
+                }),
+            );
         } else {
             const [shippingAddress] = updatedCart.shipping_addresses;
             if (shippingAddress && data.isGuest) {
-                state.selected.address = shippingAddress;
+                dispatch(
+                    setSelectedData({
+                        address: shippingAddress,
+                    }),
+                );
             }
 
             if (checkout.selected.delivery === 'home' && typeof shippingAddress.is_valid_city !== 'undefined') {
-                state.error.shippingAddress = !shippingAddress.is_valid_city;
+                dispatch(
+                    setErrorState({
+                        shippingAddress: !shippingAddress.is_valid_city,
+                    }),
+                );
             }
         }
-        state.loading.addresses = false;
+        dispatch(setLoading({ addresses: false }));
         const mergeCart = {
-            ...state.data.cart,
+            ...checkout.data.cart,
             ...updatedCart,
         };
-        state.data.cart = mergeCart;
+        dispatch(
+            setCheckoutData({
+                cart: mergeCart,
+            }),
+        );
 
         if (refetchDataCart && typeof refetchDataCart() === 'function') {
             refetchDataCart();
@@ -124,17 +143,13 @@ const Address = (props) => {
         if (refetchItemCart && typeof refetchItemCart() === 'function') {
             refetchItemCart();
         }
-        setCheckout(state);
-
         updateFormik(mergeCart);
     };
 
     const setAddress = (selectedAddress, cart, firstLoad = false) =>
         new Promise((resolve, reject) => {
-            const state = { ...checkout };
             if (checkout.data.isGuest) {
-                state.loading.addresses = true;
-                setCheckout(state);
+                dispatch(setLoading({ addresses: true }));
             }
             const { latitude, longitude } = selectedAddress;
 
@@ -236,8 +251,7 @@ const Address = (props) => {
                         });
                 };
                 if (firstLoad) {
-                    state.loading.addresses = true;
-                    setCheckout(state);
+                    dispatch(setLoading({ addresses: true }));
                     setDefaultAddress({
                         variables: {
                             addressId: selectedAddress.id,
@@ -247,22 +261,24 @@ const Address = (props) => {
                         .then((dataAddress) => {
                             if (dataAddress && dataAddress.data && dataAddress.data.updateCustomerAddress) {
                                 const shipping = dataAddress.data.updateCustomerAddress;
-                                checkout.selected.address = {
-                                    firstname: shipping.firstname,
-                                    lastname: shipping.lastname,
-                                    city: shipping.city,
-                                    region: {
-                                        ...shipping.region,
-                                        label: shipping.region.region,
-                                    },
-                                    country: shipping.country,
-                                    postcode: shipping.postcode,
-                                    telephone: shipping.telephone,
-                                    street: shipping.street,
-                                };
-                                state.loading.addresses = false;
-                                state.loading.order = false;
-                                setCheckout(state);
+                                dispatch(
+                                    setSelectedData({
+                                        address: {
+                                            firstname: shipping.firstname,
+                                            lastname: shipping.lastname,
+                                            city: shipping.city,
+                                            region: {
+                                                ...shipping.region,
+                                                label: shipping.region.region,
+                                            },
+                                            country: shipping.country,
+                                            postcode: shipping.postcode,
+                                            telephone: shipping.telephone,
+                                            street: shipping.street,
+                                        },
+                                    }),
+                                );
+                                dispatch(setLoading({ order: false, addresses: false }));
                             }
                             setShippingBilling();
                         })
@@ -275,14 +291,14 @@ const Address = (props) => {
             }
         });
 
-    useEffect(() => {
+    React.useEffect(() => {
         if (defaultAddress && !checkout.data.isGuest) {
             const { cart } = checkout.data;
             setAddress(defaultAddress, cart, true);
         }
     }, [defaultAddress]);
 
-    useEffect(() => {
+    React.useEffect(() => {
         if (address) {
             const option = `${address.firstname} ${address.lastname} ${street} 
             ${address.city} 
@@ -325,9 +341,7 @@ const Address = (props) => {
     return (
         <AddressView
             data={data}
-            checkout={checkout}
             setAddress={setAddress}
-            setCheckout={setCheckout}
             t={t}
             dialogProps={dialogProps}
             loading={loading}

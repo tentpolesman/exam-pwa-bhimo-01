@@ -4,44 +4,41 @@
 /* eslint-disable max-len */
 import { getBannerSeller } from '@core_modules/seller/services/graphql';
 import Typography from '@common_typography';
-import Skeleton from '@common_skeleton';
-import useStyles from '@core_modules/seller/pages/default/components/style';
 import React from 'react';
 import TabLayout from '@core_modules/seller/pages/default/components/TabLayout';
 import SellerInfo from '@core_modules/seller/pages/default/components/SellerInfo';
 import DesktopContent from '@core_modules/seller/pages/default/components/desktop';
 import MobileContent from '@core_modules/seller/pages/default/components/mobile';
+import Alert from '@common/Alert';
+import SellerSkeleton from '@core_modules/seller/pages/default/components/Skeleton';
 
 const Content = (props) => {
-    const { storeConfig, t, dataSeller, errorSeller, loadingSeller, link, sellerId, isLogin, route, handleChat, showChat, banner, ...other } = props;
-    const styles = useStyles();
+    const { storeConfig, t, dataSeller, errorSeller, loadingSeller, link, isLogin, route, handleChat, showChat, banner, ...other } = props;
 
     return (
         <>
-            {!loadingSeller && dataSeller && dataSeller.getSeller.length === 0 && (
-                <Typography type="bold" variant="h4" letter="capitalize" style={{ paddingBottom: '1rem', paddingLeft: '1rem' }}>
+            {
+                loadingSeller && (
+                    <SellerSkeleton />
+                )
+            }
+            {!loadingSeller && ((dataSeller && dataSeller.getSeller.length === 0) || errorSeller) && (
+                <Alert severity="error">
                     {t('seller:notFound')}
-                </Typography>
+                </Alert>
             )}
             {dataSeller && dataSeller.getSeller.length > 0 && (
                 <>
                     <SellerInfo {...props} />
-                    <div className={styles.sellerProduct}>
+                    <div className="mt-5">
                         <TabLayout noBanner={banner} t={t}>
-                            {
-                                loadingSeller && (
-                                    <div className={styles.skeletonWrapper}>
-                                        <Skeleton variant="rect" animation="wave" xsStyle={{ width: '100%', height: `${storeConfig.pwa.home_slider_mobile_height}px` }} mdStyle={{ width: '100%', height: `${storeConfig.pwa.home_slider_desktop_height}px` }} />
-                                    </div>
-                                )
-                            }
                             {
                                 dataSeller && dataSeller.getSeller && dataSeller.getSeller.length > 0 && (
                                     <>
-                                        <div className="hidden-mobile">
+                                        <div className="hidden desktop:block">
                                             <DesktopContent data={JSON.parse(dataSeller.getSeller[0].banner_desktop)} storeConfig={storeConfig} />
                                         </div>
-                                        <div className="hidden-desktop">
+                                        <div className="block desktop:hidden">
                                             <MobileContent data={JSON.parse(dataSeller.getSeller[0].banner_mobile)} storeConfig={storeConfig} />
                                         </div>
                                     </>

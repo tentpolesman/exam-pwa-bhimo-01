@@ -7,10 +7,12 @@ import Empty from '@core_modules/productcompare/pages/default/components/empty';
 import ErrorView from '@core_modules/productcompare/pages/default/components/ErrorInfo';
 import { localCompare } from '@services/graphql/schema/local';
 import { useQuery } from '@apollo/client';
+import Backdrop from '@common/Backdrop';
+import { getLoginInfo } from '@helper_auth';
 
-const HomeCore = (props) => {
+const ProductCompareCore = (props) => {
     const {
-        Content, pageConfig, isLogin, storeConfig, ViewSkeleton, t, ...other
+        Content, storeConfig, ViewSkeleton, t, ...other
     } = props;
     const [getProduct, {
         data: compareList, loading, refetch, error,
@@ -18,6 +20,8 @@ const HomeCore = (props) => {
     const [setRemoveProductCompare] = removeProductsFromCompareList();
     const [getUid, { data: dataUid }] = getCustomerUid();
     const { client } = useQuery(localCompare);
+
+    const isLogin = getLoginInfo();
 
     React.useEffect(() => {
         if (isLogin) {
@@ -78,13 +82,14 @@ const HomeCore = (props) => {
         bottomNav: 'home',
         pageType: 'home',
         schemaOrg,
-        ...pageConfig,
+        tagSelector: 'swift-page-productcompare',
     };
 
     if (loading) {
         return (
             <Layout {...props} pageConfig={config}>
-                <ViewSkeleton t={t} />
+                <div className="w-full h-[calc(100vh*1/3)]" />
+                <Backdrop open />
             </Layout>
         );
     }
@@ -156,4 +161,4 @@ const HomeCore = (props) => {
     );
 };
 
-export default HomeCore;
+export default ProductCompareCore;

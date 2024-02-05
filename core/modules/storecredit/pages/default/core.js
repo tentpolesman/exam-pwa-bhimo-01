@@ -1,24 +1,22 @@
 import Layout from '@layout';
 import { getStoreCredit } from '@core_modules/storecredit/services/graphql';
-import { useReactiveVar } from '@apollo/client';
-import { currencyVar } from '@root/core/services/graphql/cache';
+import { currencyVar } from '@core/services/graphql/cache';
 
 const PageStoreCredit = (props) => {
-    const {
-        t, Content, pageConfig, rowsPerPage = 10,
-    } = props;
+    const { t, Content } = props;
     const config = {
         title: t('storecredit:title'),
         header: 'relative', // available values: "absolute", "relative", false (default)
         headerTitle: t('storecredit:title'),
         bottomNav: false,
+        tagSelector: 'swift-page-storecredit',
     };
 
     // cache currency
-    const currencyCache = useReactiveVar(currencyVar);
+    const currencyCache = currencyVar();
 
-    const [page, setPage] = React.useState(0);
-    const [perPage, setRowsPerPage] = React.useState(rowsPerPage);
+    const [page, setPage] = React.useState(1);
+    const [perPage, setRowsPerPage] = React.useState(10);
 
     const handleChangePage = (value) => {
         setPage(value);
@@ -26,7 +24,7 @@ const PageStoreCredit = (props) => {
 
     const handleChangeRowsPerPage = (value) => {
         setRowsPerPage(value);
-        setPage(0);
+        setPage(1);
     };
     let storeCredit = {
         current_balance: {
@@ -37,21 +35,21 @@ const PageStoreCredit = (props) => {
             items: [],
         },
     };
-    const { data, loading } = getStoreCredit(
-        {
-            pageSizeStoreCredit: perPage,
-            currentPageStoreCredit: page + 1,
-        },
-    );
+    const { data, loading, error } = getStoreCredit({
+        pageSizeStoreCredit: perPage,
+        currentPageStoreCredit: page,
+    });
+
     if (data) {
         storeCredit = data.customer.store_credit;
     }
     return (
-        <Layout {...props} pageConfig={pageConfig || config}>
+        <Layout {...props} pageConfig={config}>
             <Content
                 t={t}
                 storeCredit={storeCredit}
                 loading={loading}
+                error={error}
                 rowsPerPage={perPage}
                 page={page}
                 handleChangePage={handleChangePage}

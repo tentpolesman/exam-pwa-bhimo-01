@@ -1,5 +1,5 @@
 import Layout from '@layout';
-import { withTranslation } from '@i18n';
+import { withTranslation } from 'next-i18next';
 import * as Sentry from '@sentry/node';
 import { getLoginInfo } from '@helper_auth';
 
@@ -28,10 +28,13 @@ const Error = (props) => {
     const title = props.title || statusCodes[statusCode] || 'An unexpected error has occurred';
 
     const config = {
+        ...pageConfig,
         title,
+        tagSelector: 'swift-page-error',
     };
+
     return (
-        <Layout pageConfig={pageConfig || config} isLogin={isLogin} {...props} {...storeConfig}>
+        <Layout pageConfig={config} isLogin={isLogin} {...props} {...storeConfig}>
             <Content statusCode={statusCode} title={title} />
         </Layout>
     );

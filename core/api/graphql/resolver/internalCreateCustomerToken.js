@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
+const { serialize } = require('cookie');
+const { expiredToken, customerTokenKey } = require('../../../../swift.config');
 const requestGraph = require('../request');
-const { encrypt } = require('../../../helpers/encryption');
 
 const query = `
     mutation register(
@@ -49,14 +50,22 @@ const internalCreateCustomerToken = async (parent, args, context) => {
         whatsapp_number: args.input.whatsapp_number,
     };
     const res = await requestGraph(query, variables, context);
-    // context.session.destroy();
     if (res.createCustomerCustom) {
-        context.session.token = encrypt(res.createCustomerCustom.token);
+        if (context?.res) {
+            const serialized = serialize(customerTokenKey, res.createCustomerCustom.token, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: 'strict',
+                maxAge: expiredToken,
+                path: '/',
+            });
+            context.res.setHeader('Set-Cookie', serialized);
+        }
         return {
             is_email_confirmation: res.createCustomerCustom.is_email_confirmation,
-            originalToken: res.createCustomerCustom.token,
-            token: encrypt(res.createCustomerCustom.token),
-            message: 'welcome',
+            originalToken: '',
+            token: '',
+            message: 'success',
         };
     }
     return res;

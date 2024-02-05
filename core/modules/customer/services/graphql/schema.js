@@ -1,131 +1,128 @@
 /* eslint-disable import/prefer-default-export */
-
 import { gql } from '@apollo/client';
+import swiftConfig from '@config';
+
+const { modules } = swiftConfig;
 
 export const getRegion = gql`
-query getRegions($country_id: String!){
-  getRegions(country_id: $country_id) {
-    item {
-      code
-      name
-      region_id
+    query getRegions($country_id: String!) {
+        getRegions(country_id: $country_id) {
+            item {
+                code
+                name
+                region_id
+            }
+        }
     }
-  }
-}
 `;
 
 export const getCmsBlocks = gql`
-  query($identifiers: [String]) {
-      cmsBlocks(identifiers: $identifiers) {
-          items {
-              identifier
-              title
-              content
-          }
-      }
-  }
+    query ($identifiers: [String]) {
+        cmsBlocks(identifiers: $identifiers) {
+            items {
+                identifier
+                title
+                content
+            }
+        }
+    }
 `;
 
 export const getCountries = gql`
-  {
-    countries {
-      id
-      full_name_locale
-      full_name_english
+    {
+        countries {
+            id
+            full_name_locale
+            full_name_english
+        }
     }
-  }
 `;
 
 export const getCityByRegionId = gql`
-  query Cities($regionId: Int!) {
-    getCityByRegionId(region_id: $regionId) {
-      item {
-        id
-        city
-        postcode
-      }
+    query Cities($regionId: Int!) {
+        getCityByRegionId(region_id: $regionId) {
+            item {
+                id
+                city
+                postcode
+            }
+        }
     }
-  }
 `;
 
 export const customerWishlist = gql`
-  query customerWishlist($sharing_code: ID){
-    customerWishlist(sharing_code:$sharing_code){
-      items{
-        added_at
-        description
-        id
-        product{
-          id
-          name
-          url_key
-          sku
-          small_image{
-            url
-          }
-          price_range{
-            minimum_price{
-              discount{
-                amount_off
-                percent_off
-              }
-              final_price{
-                currency
-                value
-              }
-              fixed_product_taxes{
-                amount{
-                  currency
-                  value
+    query customerWishlist($sharing_code: ID) {
+        customerWishlist(sharing_code: $sharing_code) {
+            items {
+                added_at
+                description
+                id
+                product {
+                    id
+                    name
+                    url_key
+                    sku
+                    small_image {
+                        url
+                    }
+                    price_range {
+                        minimum_price {
+                            discount {
+                                amount_off
+                                percent_off
+                            }
+                            final_price {
+                                currency
+                                value
+                            }
+                            fixed_product_taxes {
+                                amount {
+                                    currency
+                                    value
+                                }
+                                label
+                            }
+                            regular_price {
+                                currency
+                                value
+                            }
+                        }
+                        maximum_price {
+                            discount {
+                                amount_off
+                                percent_off
+                            }
+                            final_price {
+                                currency
+                                value
+                            }
+                            fixed_product_taxes {
+                                amount {
+                                    currency
+                                    value
+                                }
+                                label
+                            }
+                            regular_price {
+                                currency
+                                value
+                            }
+                        }
+                    }
                 }
-                label
-              }
-              regular_price{
-                currency
-                value
-              }
+                qty
             }
-            maximum_price{
-              discount{
-                amount_off
-                percent_off
-              }
-              final_price{
-                currency
-                value
-              }
-              fixed_product_taxes{
-                amount{
-                  currency
-                  value
-                }
-                label
-              }
-              regular_price{
-                currency
-                value
-              }
-            }
-          }
+            items_count
+            name
+            sharing_code
+            updated_at
         }
-        qty
-      }
-      items_count
-      name
-      sharing_code
-      updated_at
     }
-  } 
 `;
 
 export const shareWishlist = gql`
     mutation shareWishlist($emails: [ID]!, $message: String) {
-      shareWishlist(
-        input: {
-          emails: $emails,
-          message: $message
-        }
-      )
+        shareWishlist(input: { emails: $emails, message: $message })
     }
 `;
 
@@ -133,30 +130,26 @@ export const shareWishlist = gql`
 
 export const updateCustomer = gql`
     mutation updateCustomerSetting($isSubscribed: Boolean!) {
-        updateCustomer(
-            input: {
-              is_subscribed: $isSubscribed
-            }
-          ) {
+        updateCustomer(input: { is_subscribed: $isSubscribed }) {
             customer {
                 is_subscribed
             }
-          }
+        }
     }
 `;
 
 export const getCustomerSettings = gql`
-{
-    customer {
-     firstname
-     lastname
-     email
-     is_subscribed
+    {
+        customer {
+            firstname
+            lastname
+            email
+            is_subscribed
+        }
     }
-  }
 `;
 
-const productDetail = (config = {}) => `
+const productDetail = () => `
     id
     name
     sku
@@ -167,36 +160,6 @@ const productDetail = (config = {}) => `
     small_image{
       url
     }
-    ${config?.pwa?.label_weltpixel_enable ? `
-        weltpixel_labels {
-        categoryLabel {
-            css
-            customer_group
-            image
-            page_position
-            position
-            priority
-            text
-            text_padding
-            text_bg_color
-            text_font_size
-            text_font_color          
-        }
-        productLabel {
-            css
-            customer_group
-            image
-            page_position
-            position
-            priority
-            text
-            text_padding
-            text_bg_color
-            text_font_size
-            text_font_color  
-        }
-    }        
-    ` : ''}
     image{
       url
     }
@@ -319,25 +282,65 @@ export const getCustomer = (config = {}) => gql`
   }
 `;
 
+export const getCustomerAddress = gql`
+    {
+        customer {
+            id
+            firstname
+            lastname
+            email
+            is_subscribed
+            phonenumber
+            whatsapp_number
+            addresses {
+                id
+                city
+                default_billing
+                default_shipping
+                extension_attributes {
+                    attribute_code
+                    value
+                }
+                firstname
+                lastname
+                postcode
+                country_code
+                country {
+                    code
+                    label
+                }
+                region {
+                    region
+                    region_code
+                }
+                street
+                telephone
+                latitude
+                longitude
+            }
+        }
+    }
+`;
+
 export const removeToken = gql`
-mutation {
-  internalDeleteCustomerToken{
-    result
-  }
-}
+    mutation {
+        internalDeleteCustomerToken {
+            result
+        }
+    }
 `;
 
 export const customerNotificationList = gql`
     query customerNotificationList {
         customerNotificationList {
-          totalUnread
-          items {
-            content
-            createdAt
-            entityId
-            subject
-            unread
-          }
+            totalUnread
+            items {
+                content
+                createdAt
+                entityId
+                subject
+                unread
+            }
         }
     }
 `;
@@ -354,10 +357,8 @@ export const getGiftCard = gql`
 `;
 
 export const checkBalance = gql`
-   query checkBalance($gift_card_code: String!) {
-        giftCardAccount(input:{
-            gift_card_code: $gift_card_code
-        }){
+    query checkBalance($gift_card_code: String!) {
+        giftCardAccount(input: { gift_card_code: $gift_card_code }) {
             code
             balance
             initial_balance
@@ -465,31 +466,31 @@ export const createCustomerAddress = gql`
 
 export const updateCustomerProfile = gql`
     mutation updateCustomer(
-        $firstname: String!,
-        $lastname: String!,
-        $email: String!,
+        $firstname: String!
+        $lastname: String!
+        $email: String!
         $password: String!
-        $whatsapp_number: String,
-        $phonenumber: String,
+        $whatsapp_number: String
+        $phonenumber: String
     ) {
         updateCustomerCustom(
             input: {
-                firstname: $firstname,
-                lastname: $lastname,
-                email: $email,
-                password: $password,
-                whatsapp_number: $whatsapp_number,
-                phonenumber: $phonenumber,
+                firstname: $firstname
+                lastname: $lastname
+                email: $email
+                password: $password
+                whatsapp_number: $whatsapp_number
+                phonenumber: $phonenumber
             }
         ) {
             customer {
-              id
-              firstname
-              lastname
-              email
-              phonenumber
-              is_phonenumber_valid
-              customer_group
+                id
+                firstname
+                lastname
+                email
+                phonenumber
+                is_phonenumber_valid
+                customer_group
             }
         }
     }
@@ -506,26 +507,14 @@ export const changeCustomerPassword = gql`
 `;
 
 export const addSimpleProductsToCart = gql`
-mutation addSimpleProductsToCart(
-    $cartId: String!,
-    $qty: Float!,
-    $sku: String!,
-) {
-    addSimpleProductsToCart(input:{
-      cart_id: $cartId,
-      cart_items: {
-        data: {
-          quantity: $qty,
-          sku: $sku
+    mutation addSimpleProductsToCart($cartId: String!, $qty: Float!, $sku: String!) {
+        addSimpleProductsToCart(input: { cart_id: $cartId, cart_items: { data: { quantity: $qty, sku: $sku } } }) {
+            cart {
+                id
+                total_quantity
+            }
         }
-      }
-    }) {
-      cart {
-        id
-        total_quantity
-      }
     }
-  }
 `;
 
 export const removeWishlist = gql`
@@ -537,7 +526,7 @@ export const removeWishlist = gql`
 `;
 
 export const removeAddress = gql`
-    mutation deleteCustomerAddress($id: Int!){
+    mutation deleteCustomerAddress($id: Int!) {
         deleteCustomerAddress(id: $id)
     }
 `;
@@ -551,15 +540,8 @@ export const getCartIdUser = gql`
 `;
 
 export const setNewPassword = gql`
-    mutation (
-        $password: String!,
-        $confirmPassword: String!,
-        $token: String!
-    ) {
-        setNewPassword(input: { 
-            password: $password, 
-            password_confirmation: $confirmPassword, 
-            token: $token }) {
+    mutation ($password: String!, $confirmPassword: String!, $token: String!) {
+        setNewPassword(input: { password: $password, password_confirmation: $confirmPassword, token: $token }) {
             info
         }
     }
@@ -581,7 +563,18 @@ export const getCustomerOrder = gql`
             firstname
             lastname
           }
+          billing_address {
+            firstname
+            lastname
+          }
           grand_total
+          ${
+    modules.rma.enabled
+        ? `aw_rma {
+                        status
+                    } `
+        : ''
+} 
         }
       }
     }
@@ -589,171 +582,152 @@ export const getCustomerOrder = gql`
 `;
 
 export const subscribeNewsletter = gql`
-    mutation updateCustomer(
-        $email: String!,
-    ) {
-      subscribe(input:{
-        email:$email
-      }){
-      status{
-          code
-          message
-          response
-      }}
+    mutation updateCustomer($email: String!) {
+        subscribe(input: { email: $email }) {
+            status {
+                code
+                message
+                response
+            }
+        }
     }
 `;
 
 export const reOrder = gql`
-  mutation reOrder($order_id: String!) {
-    reorder(input: {order_id: $order_id}) {
-      cart_id
+    mutation reOrder($order_id: String!) {
+        reorder(input: { order_id: $order_id }) {
+            cart_id
+        }
     }
-  }
 `;
 
 // CHAT RELATED SCHEMA
 
 export const getSessionMessageListSchema = gql`
-  query getSessionList(
-    $customer_email: String
-  ){
-    getSessionMessageList(customer_email: $customer_email, pageSize: 1000, currentPage: 1) {
-      answered
-      # chat_session_id
-      chat_id
-      created_at
-      customer_email
-      customer_id
-      customer_name
-      ip_address
-      is_read
-      agent_code
-      updated_at
-      last_message{
-        time
-        message
-      }
+    query getSessionList($customer_email: String) {
+        getSessionMessageList(customer_email: $customer_email, pageSize: 1000, currentPage: 1) {
+            answered
+            # chat_session_id
+            chat_id
+            created_at
+            customer_email
+            customer_id
+            customer_name
+            ip_address
+            is_read
+            agent_code
+            updated_at
+            last_message {
+                time
+                message
+            }
+        }
     }
-  }
 `;
 
 export const getMessageListSchema = gql`
-  query getMessageList(
-    $chat_session_id: Int!
-  ){
-    getMessageList(
-      chat_session_id: $chat_session_id, 
-      pageSize: 1000, 
-      currentPage: 1
-    ) {
-      # chat_session_id
-      chat_id
-      customer_email
-      customer_id
-      customer_name
-      messages {
-        body_message
-        # chat_message_id
-        message_id
-        created_at
-        is_robot
-        question_id
-        updated_at
-        sender
-        is_read
-        is_read_customer
-        filename
-        filetype
-      }
-      agent_code
+    query getMessageList($chat_session_id: Int!) {
+        getMessageList(chat_session_id: $chat_session_id, pageSize: 1000, currentPage: 1) {
+            # chat_session_id
+            chat_id
+            customer_email
+            customer_id
+            customer_name
+            messages {
+                body_message
+                # chat_message_id
+                message_id
+                created_at
+                is_robot
+                question_id
+                updated_at
+                sender
+                is_read
+                is_read_customer
+                filename
+                filetype
+            }
+            agent_code
+        }
     }
-  }
 `;
 
 export const addMessageSchema = gql`
-  mutation sendMessage(
-    $body_message: String!
-    $chat_session_id: Int!
-    $customer_email: String!
-    $customer_id: Int
-    $customer_name: String!
-    $is_robot: Int!
-    $agent_code: String!
-    $sender: Int!
-    $file: String
-    $response_question_id: Int
-  ){
-    addMessage(
-      input: {
-        body_message: $body_message
-        chat_session_id: $chat_session_id
-        customer_email: $customer_email
-        customer_id: $customer_id
-        customer_name: $customer_name
-        is_robot: $is_robot
-        agent_code: $agent_code
-        sender: $sender
-        file: $file
-        response_question_id: $response_question_id
-      }
+    mutation sendMessage(
+        $body_message: String!
+        $chat_session_id: Int!
+        $customer_email: String!
+        $customer_id: Int
+        $customer_name: String!
+        $is_robot: Int!
+        $agent_code: String!
+        $sender: Int!
+        $file: String
+        $response_question_id: Int
     ) {
-      body_message
-      chat_message_id
-      chat_session_id
-      created_at
-      customer_email
-      customer_id
-      customer_name
-      is_robot
-      product_id
-      agent_code
-      updated_at
-      auto_response {
-        agent_code
-        auto_response_text
-        message
-        question_id
-        answer {
-          message
-          answer_id
-          question_id
-          response_question_id
+        addMessage(
+            input: {
+                body_message: $body_message
+                chat_session_id: $chat_session_id
+                customer_email: $customer_email
+                customer_id: $customer_id
+                customer_name: $customer_name
+                is_robot: $is_robot
+                agent_code: $agent_code
+                sender: $sender
+                file: $file
+                response_question_id: $response_question_id
+            }
+        ) {
+            body_message
+            chat_message_id
+            chat_session_id
+            created_at
+            customer_email
+            customer_id
+            customer_name
+            is_robot
+            product_id
+            agent_code
+            updated_at
+            auto_response {
+                agent_code
+                auto_response_text
+                message
+                question_id
+                answer {
+                    message
+                    answer_id
+                    question_id
+                    response_question_id
+                }
+            }
         }
-      }
     }
-  }
 `;
 
 export const createFirebaseDocSchema = gql`
-  mutation createFirebaseDoc(
-    $agent_code: String!
-    $agent_name: String!
-    $customer_email: String!
-    $customer_name: String!
-    $phone_number: String
-  ){
-    createFirebaseDocument(
-      input: {
-        agent_code: $agent_code
-        agent_name: $agent_name
-        customer_email: $customer_email
-        customer_name: $customer_name
-        phone_number: $phone_number
-      }
-    ) {
-      status
+    mutation createFirebaseDoc($agent_code: String!, $agent_name: String!, $customer_email: String!, $customer_name: String!, $phone_number: String) {
+        createFirebaseDocument(
+            input: {
+                agent_code: $agent_code
+                agent_name: $agent_name
+                customer_email: $customer_email
+                customer_name: $customer_name
+                phone_number: $phone_number
+            }
+        ) {
+            status
+        }
     }
-  }
 `;
 
 export const getBlacklistSchema = gql`
-  query getBlacklist(
-    $email: String!
-  ){
-    getBlacklist(email: $email) {
-      status
+    query getBlacklist($email: String!) {
+        getBlacklist(email: $email) {
+            status
+        }
     }
-  }
 `;
 
 // END CHAT RELATED SCHEMA

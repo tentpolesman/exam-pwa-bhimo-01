@@ -3,10 +3,11 @@ import { useRouter } from 'next/router';
 import getQueryFromPath from '@helper_generatequery';
 import { getHost } from '@helper_config';
 import PropTypes from 'prop-types';
+import Content from '@core_modules/searchresult/components';
 
 const SearchResult = (props) => {
     const router = useRouter();
-    const { storeConfig, Content } = props;
+    const { storeConfig } = props;
     const { query } = getQueryFromPath(router);
     const schemaOrg = [
         {
@@ -19,11 +20,13 @@ const SearchResult = (props) => {
             '@context': 'https://schema.org',
             '@type': 'WebSite',
             url: `${getHost()}/`,
-            potentialAction: [{
-                '@type': 'SearchAction',
-                target: `${getHost()}/catalogsearch/result?q={search_term_string}`,
-                'query-input': 'required name=search_term_string',
-            }],
+            potentialAction: [
+                {
+                    '@type': 'SearchAction',
+                    target: `${getHost()}/catalogsearch/result?q={search_term_string}`,
+                    'query-input': 'required name=search_term_string',
+                },
+            ],
         },
     ];
     const pageConfig = {
@@ -32,6 +35,7 @@ const SearchResult = (props) => {
         headerTitle: `Search Result : ${query.q}`,
         bottomNav: 'browse',
         schemaOrg,
+        tagSelector: 'swift-page-searchresult',
     };
     return (
         <Layout pageConfig={pageConfig} {...props}>

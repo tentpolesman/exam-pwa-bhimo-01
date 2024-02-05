@@ -1,15 +1,22 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-unused-vars */
-import React from 'react';
+import React, { useEffect } from 'react';
 import { getProductBySku as SchemaGetProductBySku } from '@core_modules/product/services/graphql/schema';
 import { useLazyQuery } from '@apollo/client';
 import { addProductToCartPromo } from '@core_modules/checkout/services/graphql';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+    selectCheckoutState, setCheckoutData, setLoading,
+} from '@core_modules/checkout/redux/checkoutSlice';
 
 const PromoModalItem = (props) => {
     const {
-        t, checkout, setCheckout, PromoModalItemView,
+        t, PromoModalItemView,
     } = props;
+    const dispatch = useDispatch();
+    const checkout = useSelector(selectCheckoutState);
+
     const [open, setOpen] = React.useState(false);
     const [itemsData, setItemsData] = React.useState([]);
     const [dataArray, setDataArray] = React.useState([]);
@@ -51,12 +58,10 @@ const PromoModalItem = (props) => {
                     freeItemsData: params.parentProduct.freeItemsData,
                 };
             }
-            let state = {
-                ...checkout,
-            };
-            state.loading.payment = true;
-            state.loading.order = true;
-            await setCheckout(state);
+            dispatch(setLoading({
+                payment: true,
+                order: true,
+            }));
             await window.backdropLoader(true);
             await handleClose();
             await mutationAddToCart({
@@ -76,16 +81,14 @@ const PromoModalItem = (props) => {
                     }],
                 },
             }).then(async (res) => {
-                state = {
-                    ...checkout,
-                };
                 if (res && res.data && res.data.addProductsToCartPromo && res.data.addProductsToCartPromo.cart) {
-                    state.data.cart = {
-                        ...state.data.cart,
-                        ...res.data.addProductsToCartPromo.cart,
-                    };
+                    dispatch(setCheckoutData({
+                        cart: {
+                            ...checkout.data.cart,
+                            ...res.data.addProductsToCartPromo.cart,
+                        },
+                    }));
                 }
-                await setCheckout(state);
                 window.backdropLoader(false);
                 window.toastMessage({
                     open: true,
@@ -100,14 +103,14 @@ const PromoModalItem = (props) => {
                     variant: 'error',
                 });
             });
-            state = { ...checkout };
-            state.loading.payment = false;
-            state.loading.order = false;
-            await setCheckout(state);
+            dispatch(setLoading({
+                payment: false,
+                order: false,
+            }));
         }
     };
 
-    React.useMemo(() => {
+    React.useEffect(() => {
         if (checkout && checkout.data) {
             if (checkout.data.cart) {
                 if (checkout.data.cart.available_free_items) {
@@ -124,20 +127,21 @@ const PromoModalItem = (props) => {
                         setDataArray(newDataArray);
                     } else {
                         setDataArray([]);
+                        setAvailableMaxQty(0);
+                        setItemsData([]);
                     }
                 } else {
                     setDataArray([]);
+                    setAvailableMaxQty(0);
+                    setItemsData([]);
                 }
             }
         }
-    }, [checkout.data.cart]);
+    }, [checkout]);
 
     React.useEffect(() => {
         if (dataArray && dataArray.length > 0) {
             getProductBySku({ variables: { sku: dataArray } });
-        } else {
-            setAvailableMaxQty(0);
-            setItemsData([]);
         }
     }, [dataArray]);
 

@@ -1,7 +1,7 @@
 /* eslint-disable radix */
 /* eslint-disable import/prefer-default-export */
 import cookies from 'js-cookie';
-import { expiredToken } from '@config';
+import { expiredToken, customerTokenKey } from '@config';
 
 export const setLastPathWithoutLogin = (path) => {
     cookies.set('lastPathNoAuth', path);
@@ -13,7 +13,7 @@ export const getLastPathWithoutLogin = () => {
     if (path && typeof type !== 'undefined' && path !== '') {
         return path;
     }
-    return '/customer/account';
+    return '/customer/account/login';
 };
 
 export const removeLastPathWithoutLogin = () => {
@@ -26,12 +26,16 @@ export const setLogin = (isLogin = 0, expired) => {
 };
 
 export const getLoginInfo = () => {
-    const isLogin = cookies.get('isLogin');
-    return parseInt(isLogin) || 0;
+    if (typeof window !== 'undefined') {
+        const isLogin = cookies.get('isLogin');
+        return parseInt(isLogin) || 0;
+    }
+    return 0;
 };
 
 export const removeIsLoginFlagging = () => {
     cookies.remove('isLogin');
+    cookies.remove(customerTokenKey);
 
     // add remove cookies on header and next-cookies
     // base on https://www.npmjs.com/package/next-cookies

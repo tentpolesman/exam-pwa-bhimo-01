@@ -3,18 +3,24 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable no-nested-ternary */
+/* eslint-disable radix */
+/* eslint-disable react/jsx-indent */
 
 import RatingStar from '@common_ratingstar';
 import Typography from '@common_typography';
 import formatDate from '@core/helpers/date';
 import { getProductReviews } from '@core_modules/cms/services/graphql';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import LeftArrowIcon from '@material-ui/icons/ChevronLeft';
-import RightArrowIcon from '@material-ui/icons/ChevronRight';
+import useMediaQuery from '@hook/useMediaQuery';
+import ChevronLeftIcon from '@heroicons/react/20/solid/ChevronLeftIcon';
+import ChevronRightIcon from '@heroicons/react/20/solid/ChevronRightIcon';
 import Link from 'next/link';
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import Slider from 'react-slick';
 import Thumbor from '@common_image';
+import cx from 'classnames';
+import { COLORS } from '@root/core/theme/vars';
+
+const DEFAULT_SKU = 'Jersey Manchester City (Test Customizable Options)';
 
 const MagezonRecentReviews = (props) => {
     // prettier-ignore
@@ -36,18 +42,15 @@ const MagezonRecentReviews = (props) => {
         owl_hover_background_color, owl_hover_color,
         owl_autoplay, owl_autoplay_hover_pause, storeConfig,
     } = props;
-    const { data, loading } = getProductReviews({ sku: product_sku, pageSize: max_items });
+    const { data, loading } = getProductReviews({ sku: product_sku || DEFAULT_SKU, pageSize: max_items });
     const reviewData = data?.products?.items[0] || [];
 
     const showLineClass = show_line ? 'mgz-recent-reviews-heading-line' : '';
     const linePosClass = show_line && line_position === 'bottom' ? 'mgz-recent-reviews-heading-line--bottom' : '';
     const navSize = owl_nav_size === 'mini' ? 10 : owl_nav_size === 'small' ? 15 : owl_nav_size === 'normal' ? 20 : 25;
-    const [showNav, setShowNav] = useState(true);
-    const isXl = useMediaQuery('(min-width:1200px)');
-    const isLg = useMediaQuery('(min-width:992px) and (max-width:1199px)');
-    const isMd = useMediaQuery('(min-width:768px) and (max-width:991px)');
-    const isSm = useMediaQuery('(min-width:576px) and (max-width:767px)');
-    const isXs = useMediaQuery('(max-width:576px)');
+    const {
+        isXl, isLg, isMd, isSm, isXs,
+    } = useMediaQuery();
     let sliderRef = useRef();
 
     const getItemsToShow = () => {
@@ -67,38 +70,33 @@ const MagezonRecentReviews = (props) => {
         autoplaySpeed: owl_autoplay_timeout,
         speed: owl_dots_speed || 1000,
         dots: owl_dots,
+        customPaging: () => (
+                <div
+                    className={cx(
+                        'custom-slick-dots',
+                        'cursor-pointer',
+                        'rounded-full',
+                        'shadow-[0_0_3px_0.5px]',
+                        'w-[6px] tablet:w-[10px] desktop:w-3',
+                        'h-[6px] tablet:h-[10px] desktop:h-3',
+                        'mx-[6px]',
+                    )}
+                />
+            ),
         infinite: owl_loop,
         arrows: false,
         lazyload: owl_lazyload ? 'ondemand' : null,
         pauseOnHover: owl_autoplay_hover_pause,
         adaptiveHeight: owl_auto_height,
-        customPaging: () => (
-            <a>
-                <div className="custom-slick-dots" />
-            </a>
-        ),
         slidesToShow: getItemsToShow(),
         slidesToScroll: owl_slide_by,
-        onReInit: () => {
-            if (document.querySelector('.slick-dots')) {
-                setShowNav(true);
-            } else {
-                setShowNav(false);
-            }
-        },
     };
 
     if (loading) return null;
 
-    let defaultWidth = storeConfig?.pwa?.image_product_width;
-    let defaultHeight = storeConfig?.pwa?.image_product_height;
-
-    if (typeof defaultWidth === 'string') defaultWidth = parseInt(defaultWidth, 0);
-    if (typeof defaultHeight === 'string') defaultHeight = parseInt(defaultHeight, 0);
-
     return (
         <>
-            <div className="mgz-recent-reviews">
+            <div className="mgz-recent-reviews group">
                 <div className={`mgz-recent-reviews-heading ${showLineClass} ${linePosClass}`}>
                     <div className="mgz-recent-reviews-heading-title">
                         <Typography variant={title_tag} align={title_align}>
@@ -107,20 +105,20 @@ const MagezonRecentReviews = (props) => {
                     </div>
                     <div>{description}</div>
                 </div>
-                <div className="mgz-recent-reviews-content">
+                <div className="mgz-recent-reviews-content relative">
                     <Slider ref={(slider) => (sliderRef = slider)} {...settings}>
-                        {reviewData.reviews.items.map((review, index) => (
+                        {reviewData?.reviews?.items?.map((review, index) => (
                             <div key={index} className="mgz-recent-reviews-content-container">
                                 {review_customer && (
-                                    <Typography variant="h3" type="bold" className="review-nickname">
+                                    <Typography variant="h2" type="bold" className="review-nickname text-xl">
                                         {review.nickname}
                                     </Typography>
                                 )}
-                                <div className="rating-star" style={{ display: 'flex' }}>
+                                <div className="rating-star flex mt-1">
                                     {review_rating_star && <RatingStar value={review.ratings_breakdown[0].value} />}
                                     {review_title && (
-                                        <Link href={reviewData.url_key}>
-                                            <a className="review-link">
+                                        <Link href={reviewData.url_key} legacyBehavior>
+                                            <a className="review-link ml-1">
                                                 <Typography type="bold">{review.summary}</Typography>
                                             </a>
                                         </Link>
@@ -128,7 +126,7 @@ const MagezonRecentReviews = (props) => {
                                 </div>
                                 {review_date && <div className="review-date">{formatDate(review.created_at, 'M/DD/YY')}</div>}
                                 {review_product_name && (
-                                    <Link href={reviewData.url_key}>
+                                    <Link href={reviewData.url_key} legacyBehavior>
                                         <a className="review-link">
                                             <Typography variant="h4" type="bold">
                                                 {reviewData.name}
@@ -136,32 +134,78 @@ const MagezonRecentReviews = (props) => {
                                         </a>
                                     </Link>
                                 )}
-                                <div style={{ display: 'flex' }}>
+                                <div className="flex gap-2">
                                     {review_product_image && (
-                                        <div style={{ width: defaultWidth, maxWidth: '20%', display: 'flex' }}>
-                                            <Thumbor
-                                                src={reviewData.small_image.url}
-                                                width={defaultWidth}
-                                                height={defaultHeight}
-                                                storeConfig={storeConfig}
-                                            />
+                                        <div className="flex h-16 w-16">
+                                            <Thumbor src={reviewData.small_image.url} width={64} height={64} storeConfig={storeConfig} />
                                         </div>
                                     )}
-                                    {review_content && <div className="review-text">{review.text}</div>}
+                                    {review_content && <div className="review-text max-w-[80%] break-words">{review.text}</div>}
                                 </div>
                             </div>
                         ))}
                     </Slider>
-                    {owl_nav && showNav && (
-                        <div className="mgz-recent-reviews-nav">
-                            <div className="mgz-recent-reviews-nav--btn" onClick={() => sliderRef.slickPrev()}>
-                                <LeftArrowIcon />
+                    {owl_nav ? (
+                        <div
+                            className={cx('flex', 'max-desktop:hidden', 'justify-between', 'pointer-events-none', {
+                                'order-3': owl_nav_position.indexOf('bottom') !== -1,
+                                '!justify-start': owl_nav_position.indexOf('left') !== -1,
+                                '!justify-end': owl_nav_position.indexOf('right') !== -1,
+                                '!justify-center': owl_nav_position === 'bottom_center',
+                                'opacity-100 group-hover:opacity-100 absolute w-full top-[50%] -translate-y-[50%] z-[2]':
+                                    owl_nav_position === 'center_split',
+                            })}
+                        >
+                            <div
+                                className={cx(
+                                    'mgz-recent-reviews-nav--btn',
+                                    'cursor-pointer',
+                                    'pointer-events-auto',
+                                    'text-[1.5rem]',
+                                    'bg-neutral-100',
+                                    'p-[10px]',
+                                    'rounded-[6px]',
+                                    'flex-col',
+                                    'justify-center',
+                                    'items-center',
+                                    'w-[40px]',
+                                    'h-[40px]',
+                                    'cursor-pointer',
+                                    'hidden',
+                                    'group-hover:flex',
+                                    'shadow-md',
+                                    'ml-10',
+                                )}
+                                onClick={() => sliderRef.slickPrev()}
+                            >
+                                <ChevronLeftIcon className="w-6 h-6 hover:text-primary" />
                             </div>
-                            <div className="mgz-recent-reviews-nav--btn" onClick={() => sliderRef.slickNext()}>
-                                <RightArrowIcon />
+                            <div
+                                className={cx(
+                                    'mgz-recent-reviews-nav--btn',
+                                    'cursor-pointer',
+                                    'pointer-events-auto',
+                                    'text-[1.5rem]',
+                                    'bg-neutral-100',
+                                    'p-[10px]',
+                                    'rounded-[6px]',
+                                    'flex-col',
+                                    'justify-center',
+                                    'items-center',
+                                    'w-[40px]',
+                                    'h-[40px]',
+                                    'cursor-pointer',
+                                    'hidden',
+                                    'group-hover:flex',
+                                    'shadow-md',
+                                    'mr-10',
+                                )}
+                                onClick={() => sliderRef.slickNext()}
+                            >
+                                <ChevronRightIcon className="w-6 h-6 hover:text-primary" />
                             </div>
                         </div>
-                    )}
+                    ) : null}
                 </div>
             </div>
             <style jsx>
@@ -207,9 +251,6 @@ const MagezonRecentReviews = (props) => {
                     .review-text {
                         color: ${review_color || '#000000'};
                     }
-                    .review-text {
-                        margin-left: 5px;
-                    }
                     .review-link > :global(*) {
                         margin: 5px 0;
                         color: ${review_link_color || '#007bdb'};
@@ -231,7 +272,13 @@ const MagezonRecentReviews = (props) => {
                     }
                     .mgz-recent-reviews :global(.slick-dots) {
                         position: relative;
-                        bottom: -70px;
+                    }
+                    .mgz-recent-reviews :global(.slick-dots .slick-active > div) {
+                        --tw-shadow-colored: 0 0 0 3px var(--tw-shadow-color) !important;
+                        box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
+                        --tw-shadow-color: ${COLORS.primary.DEFAULT} !important;
+                        --tw-shadow: var(--tw-shadow-colored) !important;
+                        background-color: ${COLORS.primary[100]};
                     }
                     .mgz-recent-reviews :global(.slick-track) {
                     }
@@ -242,46 +289,22 @@ const MagezonRecentReviews = (props) => {
                         border-radius: 50px;
                     }
                     .mgz-recent-reviews :global(.slick-active .custom-slick-dots) {
-                        background-color: ${owl_active_background_color || '#000000'};
+                        background-color: ${owl_active_background_color || '#000000'} !important;
                     }
                     .mgz-recent-reviews :global(.slick-slider li:not(.slick-active) .custom-slick-dots:hover) {
-                        background-color: ${owl_hover_background_color || '#000000'};
-                    }
-                    .mgz-recent-reviews-nav {
-                        position: absolute;
-                        top: ${owl_nav_position.includes('top') ? (isXs || isSm ? '2%' : '10%') : '50%'};
-                        bottom: ${owl_nav_position.includes('bottom') ? '-10%' : '50%'};
-                        display: flex;
-                        width: 100%;
-                        justify-content: ${owl_nav_position === 'top_left' || owl_nav_position === 'bottom_left'
-                            ? 'flex-start'
-                            : owl_nav_position === 'top_right' || owl_nav_position === 'bottom_right'
-                            ? 'flex-end'
-                            : 'space-between'};
-                    }
-                    .mgz-recent-reviews-nav--btn {
-                        display: flex;
-                        z-index: 1;
-                        margin: 0 2px;
-                        ${owl_nav_position === 'center_split' ? 'opacity: 0;' : ''}
-                        align-items: center;
-                        justify-content: center;
-                        width: ${navSize * 2}px;
-                        height: ${navSize * 2}px;
-                        background-color: ${owl_background_color || '#eee'};
-                        transition: opacity 0.3s ease-in-out, background-color 0.3s ease-in-out, color 0.3s ease-in-out;
-                    }
-                    .mgz-recent-reviews:hover .mgz-recent-reviews-nav--btn {
-                        ${owl_nav_position === 'center_split' ? 'opacity: 1;' : ''}
+                        background-color: ${owl_hover_background_color || '#000000'} !important;
                     }
                     .mgz-recent-reviews-nav--btn:hover {
                         cursor: pointer;
-                        border: 1px solid black;
                         background-color: ${owl_hover_background_color};
                     }
+                    .mgz-recent-reviews-nav--btn {
+                        width: ${navSize * 2}px;
+                        height: ${navSize * 2}px;
+                        ${owl_background_color ? `background-color: ${owl_background_color};` : ''}
+                    }
                     .mgz-recent-reviews-nav--btn :global(svg) {
-                        font-size: 15px;
-                        color: ${owl_color};
+                        ${owl_color ? `color: ${owl_color};` : ''}
                     }
                     .mgz-recent-reviews-nav--btn:hover :global(svg) {
                         color: ${owl_hover_color};

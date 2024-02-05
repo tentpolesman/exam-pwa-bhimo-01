@@ -3,17 +3,16 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable max-len */
 /* eslint-disable react/no-danger */
-import Link from 'next/link';
-import Typography from '@common_typography';
 import Button from '@common_button';
-import router from 'next/router';
-import { setResolver, getResolver } from '@helper_localstorage';
+import Typography from '@common_typography';
 import NewsletterDialog from '@core_modules/customer/pages/account/components/Newsletter';
-import useStyles from '@core_modules/customer/pages/account/components/Footer/style';
+import { getResolver, setResolver } from '@helper_localstorage';
+import Link from 'next/link';
+import router from 'next/router';
 
 // eslint-disable-next-line consistent-return
 const FooterView = (props) => {
-    const styles = useStyles();
+    const styles = {};
     const {
         t, isLogin, handleLogout, modules, data,
     } = props;
@@ -53,7 +52,7 @@ const FooterView = (props) => {
 
                         {isLogin ? (
                             <li className={styles.account_navigation_item}>
-                                <Button fullWidth className={styles.logoutBtn} onClick={handleLogout} variant="contained">
+                                <Button fullWidth className={styles.logoutBtn} onClick={handleLogout} variant="primary">
                                     <Typography className={styles.logOutTxt} color="white" variant="span" type="bold" letter="uppercase">
                                         {t('customer:button:logout')}
                                     </Typography>
@@ -83,37 +82,37 @@ const FooterView = (props) => {
 
                     {modules.contact.enabled ? (
                         <li className={styles.account_navigation_item}>
-                            <Link href="/contact">
-                                <a className={styles.account_navigation_link}>{t('customer:menu:contactUs')}</a>
+                            <Link href="/contact" className={styles.account_navigation_link}>
+                                {t('customer:menu:contactUs')}
                             </Link>
                         </li>
                     ) : null}
 
                     {modules.blog.enabled ? (
                         <li className={styles.account_navigation_item}>
-                            <Link href="/blog">
-                                <a className={styles.account_navigation_link}>{t('customer:menu:blog')}</a>
+                            <Link href="/blog" className={styles.account_navigation_link}>
+                                {t('customer:menu:blog')}
                             </Link>
                         </li>
                     ) : null}
                     {modules.confirmpayment.enabled ? (
                         <li className={styles.account_navigation_item}>
-                            <Link href="/confirmpayment">
-                                <a className={styles.account_navigation_link}>{t('customer:menu:confirmPayment')}</a>
+                            <Link href="/confirmpayment" className={styles.account_navigation_link}>
+                                {t('customer:menu:confirmPayment')}
                             </Link>
                         </li>
                     ) : null}
                     {modules.storeLocator.enabled ? (
                         <li className={styles.account_navigation_item}>
-                            <Link href="/storelocator">
-                                <a className={styles.account_navigation_link}>{t('customer:menu:findAStore')}</a>
+                            <Link href="/storelocator" className={styles.account_navigation_link}>
+                                {t('customer:menu:findAStore')}
                             </Link>
                         </li>
                     ) : null}
                     {modules.trackingorder.enabled ? (
                         <li className={styles.account_navigation_item}>
-                            <Link href="/sales/order/track">
-                                <a className={styles.account_navigation_link}>{t('customer:menu:trackingOrder')}</a>
+                            <Link href="/sales/order/track" className={styles.account_navigation_link}>
+                                {t('customer:menu:trackingOrder')}
                             </Link>
                         </li>
                     ) : null}
@@ -128,8 +127,8 @@ const FooterView = (props) => {
 
                     {modules.setting.enabled ? (
                         <li className={styles.account_navigation_item}>
-                            <Link href="/setting">
-                                <a className={styles.account_navigation_link}>{t('common:setting:title')}</a>
+                            <Link href="/setting" className={styles.account_navigation_link}>
+                                {t('common:setting:title')}
                             </Link>
                         </li>
                     ) : null}

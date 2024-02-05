@@ -1,27 +1,29 @@
+/* eslint-disable object-curly-newline */
 /* eslint-disable consistent-return */
 /* eslint-disable radix */
 /* eslint-disable no-plusplus */
 /* eslint-disable import/named */
-import React, { useEffect, useState } from 'react';
-import Layout from '@layout';
-import _ from 'lodash';
 import {
     createCustomerAddress,
+    getCustomerAddress,
     removeAddress as gqlRemoveAddress,
-    updateCustomerAddress,
     updatedDefaultAddress as gqlUpdateDefaulAddress,
-    getCustomer as gqlGetCustomer,
+    updateCustomerAddress,
 } from '@core_modules/customer/services/graphql';
+import Layout from '@layout';
+import dynamic from 'next/dynamic';
+import React, { useEffect, useState } from 'react';
+
+const Content = dynamic(() => import('@core_modules/customer/pages/address/components'), { ssr: false });
 
 const AddressCustomer = (props) => {
-    const {
-        t, pageConfig, Content, storeConfig,
-    } = props;
+    const { t } = props;
     const config = {
         title: t('customer:address:pageTitle'),
         headerTitle: t('customer:address:pageTitle'),
         header: 'relative', // available values: "absolute", "relative", false (default)
         bottomNav: false,
+        tagSelector: 'swift-page-customeraddress',
     };
 
     // graphql
@@ -29,13 +31,13 @@ const AddressCustomer = (props) => {
     const [updateAddress] = updateCustomerAddress();
     const [addAddress] = createCustomerAddress();
     const [removeAddress] = gqlRemoveAddress();
-    const getCustomer = gqlGetCustomer(storeConfig);
+    const [actGetCustomerAddress, { data: dataAddress, loading: loadingGetAddress }] = getCustomerAddress();
     // state
     const [address, setAddress] = useState([]);
     const [selectedAddressId, setSelectedAddressId] = useState(null);
     const [loadingAddress, setLoadingAddress] = useState(false);
     const [success, setSuccess] = useState(false);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [openNew, setOpenDialogNew] = useState(false);
     const [, setMapPosition] = useState({
         lat: -6.197361,
@@ -51,11 +53,23 @@ const AddressCustomer = (props) => {
         });
     };
 
+    useEffect(() => {
+        actGetCustomerAddress();
+    }, []);
+
+    useEffect(() => {
+        if (loadingGetAddress) {
+            setLoading(true);
+        } else {
+            setLoading(false);
+        }
+    }, [loadingGetAddress]);
+
     // didmount
     useEffect(() => {
         setLoading(true);
-        if (!getCustomer.loading && getCustomer.data) {
-            const { customer } = getCustomer.data;
+        if (dataAddress) {
+            const { customer } = dataAddress;
 
             if (customer) {
                 const selectedAddress = customer.addresses.find((addr) => addr.default_shipping);
@@ -68,7 +82,7 @@ const AddressCustomer = (props) => {
         if (navigator.geolocation) {
             return navigator.geolocation.getCurrentPosition(displayLocationInfo);
         }
-    }, [getCustomer]);
+    }, [dataAddress]);
 
     // handle open modal add adress button
     const handleOpenNew = () => {
@@ -92,75 +106,107 @@ const AddressCustomer = (props) => {
                 street: detail.street[0],
             },
         });
-        await getCustomer.refetch();
+        await actGetCustomerAddress();
         window.backdropLoader(false);
     };
 
     // handle edit address
     const handleDialogSubmit = async () => {
         setLoading(true);
-        await getCustomer.refetch();
-        setAddress(getCustomer.data.customer.addresses);
+        const { data } = await actGetCustomerAddress();
+        setAddress(data.customer.addresses);
         setLoading(false);
     };
 
     // handle add address
     const handleAddress = async (data, type) => {
+        let toastText = '';
         setLoadingAddress(true);
-        if (!success) {
-            if (type === 'update') {
-                await updateAddress({
-                    variables: {
-                        ...data,
-                    },
-                });
-            } else {
-                await addAddress({
-                    variables: {
-                        ...data,
-                    },
-                });
+        try {
+            if (!success) {
+                if (type === 'update') {
+                    await updateAddress({
+                        variables: {
+                            ...data,
+                        },
+                    });
+                    toastText = t('customer:address:successUpdate');
+                } else {
+                    await addAddress({
+                        variables: {
+                            ...data,
+                        },
+                    });
+                    toastText = t('customer:address:successAdd');
+                }
+                await actGetCustomerAddress();
+                window.toastMessage({ open: true, variant: 'success', text: toastText });
             }
-        }
 
-        setSuccess(true);
-        setLoadingAddress(false);
+            setSuccess(true);
+            setLoadingAddress(false);
 
-        _.delay(() => {
             if (openNew) {
                 setOpenDialogNew(false);
             }
             setSuccess(false);
-            handleDialogSubmit();
-        }, 1000);
+            return true;
+        } catch (e) {
+            setLoadingAddress(false);
+            let errorMessage = type === 'update' ? t('customer:address:failUpdate') : t('customer:address:failAdd');
+            if (e?.message) {
+                errorMessage = `${errorMessage} : ${e?.message}`;
+            }
+            window.toastMessage({
+                open: true,
+                variant: 'error',
+                text: errorMessage,
+            });
+            return false;
+        }
     };
 
     const setRemoveAddress = async (addressId) => {
         setLoadingAddress(true);
         setLoading(true);
-        if (!success) {
-            if (addressId) {
-                await removeAddress({
-                    variables: {
-                        id: addressId,
-                    },
-                });
+        try {
+            if (!success) {
+                if (addressId) {
+                    await removeAddress({
+                        variables: {
+                            id: addressId,
+                        },
+                    });
+                    await actGetCustomerAddress();
+                    window.toastMessage({ open: true, variant: 'success', text: t('customer:address:successRemove') });
+                }
             }
-        }
 
-        _.delay(async () => {
-            await getCustomer.refetch();
             setSuccess(true);
             setLoadingAddress(false);
             setLoading(false);
-        }, 1000);
+            setSuccess(false);
+        } catch (e) {
+            setLoadingAddress(false);
+            setLoading(false);
+            let errorMessage = t('customer:address:failRemove');
+            if (e?.message) {
+                errorMessage = `${errorMessage} : ${e?.message}`;
+            }
+            window.toastMessage({
+                open: true,
+                variant: 'error',
+                text: errorMessage,
+            });
+        }
     };
     return (
-        <Layout pageConfig={pageConfig || config} {...props}>
+        <Layout pageConfig={config} {...props}>
             <Content
                 t={t}
                 loading={loading}
                 address={address}
+                // address={dataAddress?.customer?.addresses ?? []}
                 selectedAddressId={selectedAddressId}
                 handleDialogSubmit={handleDialogSubmit}
                 handleChange={handleChange}
@@ -170,6 +216,7 @@ const AddressCustomer = (props) => {
                 loadingAddress={loadingAddress}
                 success={success}
                 openNew={openNew}
+                setOpenDialogNew={setOpenDialogNew}
             />
         </Layout>
     );

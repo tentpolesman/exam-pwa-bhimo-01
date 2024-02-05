@@ -1,18 +1,21 @@
 import PropTypes from 'prop-types';
 import Layout from '@layout';
 import { getCustomer, getTrackingOrder } from '@core_modules/trackingorder/services/graphql';
-import Content from '@core_modules/trackingorder/pages/default/components/form';
+import dynamic from 'next/dynamic';
+import { getLoginInfo } from '@helper_auth';
+
+const Skeleton = dynamic(() => import('@core_modules/trackingorder/pages/default/components/skeletonform'), { ssr: false });
+const Content = dynamic(() => import('@core_modules/trackingorder/pages/default/components/form'), { ssr: false });
 
 const Tracking = (props) => {
     let customer = {};
-    const {
-        isLogin, Skeleton, pageConfig, t,
-    } = props;
+    const { t } = props;
     const config = {
         title: t('trackingorder:trackingOrder'),
         header: 'relative', // available values: "absolute", "relative", false (default)
         headerTitle: t('trackingorder:trackingOrder'),
         bottomNav: false,
+        tagSelector: 'swift-page-trackingorder',
     };
 
     const [orderField, setOrderField] = React.useState({
@@ -21,11 +24,13 @@ const Tracking = (props) => {
     });
     const [getTrackOrder, { loading, data, error }] = getTrackingOrder({ ...orderField });
 
+    const isLogin = getLoginInfo();
+
     if (isLogin) {
         const { data: dataCustomer, loading: loadCustomer } = getCustomer();
         if (loadCustomer) {
             return (
-                <Layout {...props} pageConfig={pageConfig || config}>
+                <Layout {...props} pageConfig={config}>
                     <Skeleton />
                 </Layout>
             );
@@ -35,7 +40,7 @@ const Tracking = (props) => {
         }
     }
     return (
-        <Layout {...props} pageConfig={pageConfig || config}>
+        <Layout {...props} pageConfig={config}>
             <Content
                 {...props}
                 email={customer.email || ''}
@@ -58,10 +63,10 @@ Tracking.propTypes = {
 };
 
 Tracking.defaultProps = {
-    FormView: () => { },
-    Skeleton: () => { },
-    SkeletonResult: () => { },
-    ResultView: () => { },
+    FormView: () => {},
+    Skeleton: () => {},
+    SkeletonResult: () => {},
+    ResultView: () => {},
 };
 
 export default Tracking;

@@ -14,7 +14,7 @@ import { modules } from '@config';
 export const filterProduct = (filter, router) => {
     // remove duplicate filter
     const newFilter = filter.filter((value, index) => {
-    // eslint-disable-next-line no-underscore-dangle
+        // eslint-disable-next-line no-underscore-dangle
         const _value = JSON.stringify(value);
         return index === filter.findIndex((obj) => JSON.stringify(obj) === _value);
     });
@@ -75,9 +75,9 @@ export const filterProduct = (filter, router) => {
     return queryFilter;
 };
 
-export const getProductAgragations = () => gql`
-    {
-        products(search: "") {
+export const getProductAggregations = () => gql`
+    query getProductAggregations($filter: ProductAttributeFilterInput) {
+        products(search: "", filter: $filter) {
             aggregations {
                 attribute_code
             }
@@ -124,7 +124,10 @@ export const getProduct = (config = {}, router) => gql`
       __typename
       items {
         seller {
+          seller_id
           seller_name
+          seller_path
+          seller_city
         }
         id
         sku
@@ -134,40 +137,6 @@ export const getProduct = (config = {}, router) => gql`
         short_description {
           html
         }
-        ${
-    config.label_weltpixel_enable
-        ? `
-        weltpixel_labels {
-          categoryLabel {
-            css
-            customer_group
-            image
-            page_position
-            position
-            priority
-            text
-            text_padding
-            text_bg_color
-            text_font_size
-            text_font_color          
-          }
-          productLabel {
-            css
-            customer_group
-            image
-            page_position
-            position
-            priority
-            text
-            text_padding
-            text_bg_color
-            text_font_size
-            text_font_color  
-          }
-        }        
-        `
-        : ''
-}
         ${
     config.configurable_options_enable
         ? `review {
@@ -427,7 +396,9 @@ export const getProductPrice = (config = {}, router) => gql`
             }
           }
           __typename
-        }` : ''}
+        }`
+        : ''
+}
       }
     }
   }
@@ -476,7 +447,8 @@ const productDetail = (config = {}) => `
     }
     special_from_date
     special_to_date
-
+    new_from_date
+    new_to_date
     `;
 const priceRange = `
     price_range {
@@ -596,7 +568,12 @@ query getDetailproduct($url_key: String!){
           label,
           url
         }
-        seller_id
+        seller {
+          seller_id
+          seller_name
+          seller_path
+          seller_city
+        }
       }
       total_count
     }
@@ -642,24 +619,29 @@ query getDetailproduct($url_key: String!){
                   }
                 }
                 __typename
-              }` : ''}
+              }`
+        : ''
+}
+
+        ... on BundleProduct {
+          price_view
+        }
       }
     }
 }`;
 
 export const getSeller = gql`
-query getSeller($seller_id: [Int!]){
-  getSeller(input: {
-    seller_id: $seller_id
-  }) {
-    id
-    name
-    address
-    city
-    description
-    latitude
-    longitude
-    logo
-    status
-  }
-}`;
+    query getSeller($seller_id: [Int!]) {
+        getSeller(input: { seller_id: $seller_id }) {
+            id
+            name
+            address
+            city
+            description
+            latitude
+            longitude
+            logo
+            status
+        }
+    }
+`;

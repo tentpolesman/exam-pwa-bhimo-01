@@ -1,13 +1,11 @@
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Radio from '@material-ui/core/Radio';
+/* eslint-disable jsx-a11y/control-has-associated-label */
+import Dialog from '@common_dialog';
 import Typography from '@common_typography';
+import Show from '@common_show';
+import Radio from '@common_forms/Radio';
 import AddressFormDialog from '@plugin_addressform';
 import React, { useState } from 'react';
-import TableRow from '@material-ui/core/TableRow';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import TableCell from '@material-ui/core/TableCell';
-import ConfirmationDelete from '@common_confirmdialog';
-import useStyles from '@core_modules/customer/pages/address/components/style';
+import cx from 'classnames';
 
 const TableAddress = (props) => {
     const {
@@ -29,7 +27,7 @@ const TableAddress = (props) => {
         handleChange,
         removeAddress,
         addressId,
-        // eslint-disable-next-line no-unused-vars
+        idx,
     } = props;
     const [open, setOpen] = useState(false);
     const [openDelete, setOpenDelete] = useState(false);
@@ -38,19 +36,22 @@ const TableAddress = (props) => {
             setOpen(false);
         }
     }, [loadingAddress]);
-    const styles = useStyles();
     const handleRemoveAddress = () => {
         removeAddress(addressId);
         setOpenDelete(true);
     };
     return (
         <>
-            <ConfirmationDelete
+            <Dialog
                 open={openDelete}
-                handleCancel={() => setOpenDelete(!openDelete)}
-                handleYes={handleRemoveAddress}
-                message={t('customer:address:warningDelete')}
+                title={t('customer:address:warningDelete')}
+                onClose={() => setOpenDelete(!openDelete)}
+                positiveAction={handleRemoveAddress}
+                positiveLabel={t('common:button:yes')}
+                negativeLabel={t('common:button:cancel')}
+                negativeAction={() => setOpenDelete(!openDelete)}
             />
+
             <AddressFormDialog
                 {...props}
                 open={open}
@@ -60,116 +61,72 @@ const TableAddress = (props) => {
                 setOpen={() => setOpen(!open)}
                 pageTitle={t('customer:address:editTitle')}
             />
-            <TableRow className={styles.tableRowResponsive}>
-                <TableCell
-                    className={[styles.tableCellResponsive, styles.ok].join(' ')}
-                    align="left"
-                >
-                    <RadioGroup row aria-label="position" onChange={handleChange} name="position" value={selectedAddressId}>
-                        <FormControlLabel
-                            className={[styles.address_shipping].join(' ')}
-                            value={value}
-                            checked={checked}
-                            control={<Radio color="primary" size="small" />}
-                            label=""
-                            labelPlacement="end"
-                        />
-                    </RadioGroup>
-                </TableCell>
-                <TableCell
-                    className={styles.tableCellResponsive}
-                    align="left"
-                >
-                    <div className={styles.displayFlexRow}>
-                        <div className={styles.mobLabel}>
-                            <b>{t('customer:address:firstname')}</b>
-                        </div>
-                        <div className={styles.value}>{firstname}</div>
-                    </div>
-                </TableCell>
-                <TableCell
-                    className={styles.tableCellResponsive}
-                    align="left"
-                >
-                    <div className={styles.displayFlexRow}>
-                        <div className={styles.mobLabel}>
-                            <b>{t('customer:address:lastname')}</b>
-                        </div>
-                        <div className={styles.value}>{lastname}</div>
-                    </div>
-                </TableCell>
-                <TableCell
-                    className={styles.tableCellResponsive}
-                    align="left"
-                >
-                    <div className={styles.displayFlexRow}>
-                        <div className={styles.mobLabel}>
-                            <b>{t('customer:address:street')}</b>
-                        </div>
-                        <div className={styles.value}>
-                            {street}
-                            ,
-                            {' '}
-                            {' '}
-                            <br />
-                            {city}
-                            ,
-                            {' '}
-                            {' '}
-                            {region}
-                            ,
-                            {' '}
-                            {' '}
-                            <br />
-                            {country.full_name_locale || ''}
-                            ,
-                            {' '}
-                            {' '}
-                            {postcode}
-                        </div>
-                    </div>
-                </TableCell>
-                <TableCell
-                    className={styles.tableCellResponsive}
-                    align="left"
-                >
-                    <div className={styles.displayFlexRow}>
-                        <div className={styles.mobLabel}>
-                            <b>{t('customer:address:phone')}</b>
-                        </div>
-                        <div className={styles.value}>{telephone}</div>
-                    </div>
-                </TableCell>
-                <TableCell
-                    className={styles.tableCellResponsive}
-                    align="left"
-                >
-                    <div className={styles.displayFlexRow}>
-                        <div className={styles.value}>
-                            <Typography className={[styles.address_edit].join(' ')} variant="span" onClick={() => setOpen(!open)}>
-                                {t('customer:address:editTitle')}
+
+            <tr
+                className={cx({
+                    'bg-white': idx % 2 === 1,
+                    'bg-neutral-50': idx % 2 !== 1,
+                })}
+            >
+                <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'px-4', 'py-3')}>
+                    <Radio
+                        color="default"
+                        size="sm"
+                        variant="single"
+                        value={addressId}
+                        checked={!loadingAddress && checked}
+                        onClick={handleChange}
+                        id={`${addressId}_${value}`.replace(/ /g, '_')}
+                        className={cx('text-center')}
+                        classNames={{
+                            radioClasses: cx('cursor-pointer'),
+                        }}
+                    />
+                </td>
+                <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'px-4', 'py-3')}>{firstname}</td>
+                <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'px-4', 'py-3')}>{lastname}</td>
+                <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'px-4', 'py-3')}>
+                    {country.id === 'ID' ? (
+                        <>
+                            <p>{`${street},`}</p>
+                            <p>{`Kec. ${city.split(', ')[1]}`}</p>
+                            <p>{`Kel. ${city.split(', ')[2]}`}</p>
+                            <p>{`${city.split(', ')[0]}`}</p>
+                            <p>{`${postcode}`}</p>
+                            <p>{`${region}`}</p>
+                            <p>{`${country.full_name_locale || ''}`}</p>
+                        </>
+                    ) : (
+                        <>
+                            <p>{`${city.split(', ')[0]},`}</p>
+                            <p>{`${street}`}</p>
+                            <p>{`${city}, ${region},`}</p>
+                            <p>{`${country.full_name_locale || ''}, ${postcode},`}</p>
+                        </>
+                    )}
+                </td>
+                <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'px-4', 'py-3')}>{telephone}</td>
+                <td>
+                    <button type="button" onClick={() => setOpen(!open)}>
+                        <a className="px-4">
+                            <Typography variant="bd-2b" className={cx('!text-primary-700', 'hover:underline')}>
+                                {t('customer:address:editAddress')}
                             </Typography>
-                        </div>
-                    </div>
-                </TableCell>
-                <TableCell
-                    className={styles.tableCellResponsive}
-                    align="left"
-                >
-                    {
-                        selectedAddressId !== addressId
-                            ? (
-                                <div className={styles.displayFlexRow}>
-                                    <div className={styles.value}>
-                                        <Typography className={[styles.address_remove].join(' ')} variant="span" onClick={() => setOpenDelete(true)}>
-                                            {t('customer:address:removeTitle')}
-                                        </Typography>
-                                    </div>
-                                </div>
-                            ) : null
-                    }
-                </TableCell>
-            </TableRow>
+                        </a>
+                    </button>
+                </td>
+                <td>
+                    <Show when={selectedAddressId !== addressId}>
+                        <button type="button" onClick={() => setOpenDelete(true)}>
+                            <a className="px-4">
+                                <Typography variant="bd-2b" className={cx('!text-primary-700', 'hover:underline')}>
+                                    {t('customer:address:removeTitle')}
+                                </Typography>
+                            </a>
+                        </button>
+                    </Show>
+                </td>
+            </tr>
         </>
     );
 };

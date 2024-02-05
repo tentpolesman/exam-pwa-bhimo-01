@@ -7,18 +7,14 @@
  */
 // eslint-disable-next-line no-unused-vars
 const generateConfig = (query, config, elastic, availableFilter = []) => {
-    // availableFilter aggregation from getProductAgragations not appropriate
-    // const filter = {};
-    // for (let index = 0; index < availableFilter.length; index++) {
-    //     const element = availableFilter[index];
-    //     filter[element.attribute_code] = element.attribute_code;
-    // }
+    // availableFilter aggregation from getProductAggregations not appropriate
+    const availFilter = [];
+    availableFilter.map((item) => availFilter.push(item.attribute_code));
 
     const resolveConfig = config;
     // eslint-disable-next-line no-restricted-syntax
     for (const q in query) {
-        if (q.includes('seller') && !q.includes('filter')
-        && q !== 'seller_id' && q !== 'seller_name') {
+        if (q.includes('seller') && !q.includes('filter') && q !== 'seller_id' && q !== 'seller_name') {
             const trueQuery = q.split('?');
             if (trueQuery && trueQuery[1]) {
                 resolveConfig.filter.push({
@@ -48,10 +44,14 @@ const generateConfig = (query, config, elastic, availableFilter = []) => {
                 });
             }
         } else if (q !== 'cat' && query[q]) {
-            resolveConfig.filter.push({
-                type: q,
-                value: elastic ? query[q].split(',') : query[q],
-            });
+            // check if filter is available or not
+            const checkAvailFilter = availFilter.find((val) => val === q);
+            if (checkAvailFilter) {
+                resolveConfig.filter.push({
+                    type: q,
+                    value: elastic ? query[q].split(',') : query[q],
+                });
+            }
         }
     }
     return resolveConfig;

@@ -2,7 +2,7 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable consistent-return */
 import { useApolloClient } from '@apollo/client';
-import ErrorInfo from '@core_modules/thanks/pages/default/components/ErrorInfo';
+import Alert from '@common/Alert';
 import Loader from '@core_modules/thanks/pages/default/components/Loader';
 import Content from '@core_modules/thanks/pages/default/components/multiseller/view';
 import * as Schema from '@core_modules/thanks/services/graphql/schema';
@@ -15,7 +15,7 @@ import TagManager from 'react-gtm-module';
 
 const CoreMultiseller = (props) => {
     const {
-        t, pageConfig, checkoutData, storeConfig, ...other
+        t, checkoutData, storeConfig, ...other
     } = props;
 
     const apolloClient = useApolloClient();
@@ -25,7 +25,7 @@ const CoreMultiseller = (props) => {
         headerTitle: t('thanks:title'),
         bottomNav: false,
         pageType: 'purchase',
-        ...pageConfig,
+        tagSelector: 'swift-page-thanks',
     };
 
     const [customerOrder, setCustomerOrder] = React.useState([]);
@@ -152,7 +152,7 @@ const CoreMultiseller = (props) => {
                                     item_list_name: product.categories && product.categories.length > 0 ? product.categories[0].name : '',
                                     quantity: JSON.stringify(product.qty_ordered),
                                     item_stock_status: product.quantity_and_stock_status.is_in_stock ? 'In stock' : 'Out stock',
-                                    item_reviews_score: product.rating.value ? parseInt(product.rating.value, 0) / 20 : '',
+                                    item_reviews_score: product.rating.value ? parseInt(product.rating.value, 10) / 20 : '',
                                     item_reviews_count: product.rating.total ? product.rating.total : '',
                                 })),
                             },
@@ -166,7 +166,7 @@ const CoreMultiseller = (props) => {
     if (!loader && (!customerOrder || customerOrder.length === 0)) {
         return (
             <Layout t={t} {...other} pageConfig={config} storeConfig={storeConfig}>
-                <ErrorInfo variant="warning" text={t('common:error:notFound')} />
+                <Alert variant="warning">{t('common:error:notFound')}</Alert>
             </Layout>
         );
     }

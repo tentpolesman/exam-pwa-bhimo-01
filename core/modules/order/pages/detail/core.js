@@ -1,15 +1,17 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable semi-style */
 import {
     getOrderDetail, getPaymentInformation, getTrackingOrder, reOrder as mutationReorder,
 } from '@core_modules/order/services/graphql';
-import { getHost } from '@helpers/config';
 import { setCartId } from '@helper_cartid';
+import { getHost } from '@helpers/config';
 import Layout from '@layout';
 import CustomerLayout from '@layout_customer';
-import Alert from '@material-ui/lab/Alert';
+import { currencyVar } from '@core/services/graphql/cache';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
-import { useReactiveVar } from '@apollo/client';
-import { currencyVar } from '@root/core/services/graphql/cache';
+
+import Alert from '@common/Alert';
 
 const OrderDetail = (props) => {
     const {
@@ -17,7 +19,7 @@ const OrderDetail = (props) => {
     } = props;
 
     // cache currency
-    const currencyCache = useReactiveVar(currencyVar);
+    const currencyCache = currencyVar();
 
     const { storeConfig } = other;
     const router = useRouter();
@@ -28,6 +30,7 @@ const OrderDetail = (props) => {
         header: 'relative', // available values: "absolute", "relative", false (default)
         headerTitle: `${t('order:order')} #${detail.length > 0 ? detail[0].order_number : ''}`,
         bottomNav: false,
+        tagSelector: 'swift-page-orderdetail',
     };
     const [params] = React.useState({
         order_id: id,
@@ -36,6 +39,7 @@ const OrderDetail = (props) => {
     const { loading: loadingPaymentInfo, data: paymentInfo, error: errorPaymentInfo } = getPaymentInformation(params);
     const [actionReorder] = mutationReorder();
     const { loading: loadingTrackingOrder, data: dataTrackingOrder, error: errorTrackingOrder } = getTrackingOrder({ order_id: params.order_id });
+
     if (error || errorPaymentInfo || errorTrackingOrder) {
         return (
             <Layout pageConfig={pageConfig} {...props}>
@@ -56,7 +60,7 @@ const OrderDetail = (props) => {
             </Layout>
         );
     }
-    if (!loading && data && data.customer.orders) {
+    if (!loading && data && data.customer && data.customer.orders) {
         // eslint-disable-next-line prefer-destructuring
         detail = data.customer.orders.items;
     }
@@ -111,6 +115,14 @@ const OrderDetail = (props) => {
     const printOrder = (order_number) => {
         window.open(`${getHost()}/sales/order/print/order_id/${order_number}`);
     };
+
+    // return (
+    //     <Layout pageConfig={pageConfig} {...props}>
+    //         <CustomerLayout {...props}>
+    //             <Skeleton />
+    //         </CustomerLayout>
+    //     </Layout>
+    // );
 
     return (
         <Layout pageConfig={pageConfig} {...props}>

@@ -1,35 +1,9 @@
+/* eslint-disable @next/next/no-img-element */
 import React from 'react';
-import MuiDialog from '@material-ui/core/Dialog';
-import Slide from '@material-ui/core/Slide';
-import { withStyles } from '@material-ui/core/styles';
-import MuiDialogContent from '@material-ui/core/DialogContent';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/CancelRounded';
+import Dialog from '@common_dialog';
 import Button from '@common_button';
 import Typography from '@common_typography';
-
-const Transition = React.forwardRef((props, ref) => <Slide direction="up" ref={ref} {...props} />);
-
-const DialogContent = withStyles(() => ({
-    root: {
-        padding: 0,
-        background: 'transparent',
-    },
-}))(MuiDialogContent);
-
-const Dialog = withStyles(() => ({
-    root: {
-        padding: 0,
-        '& :first-child': {
-            padding: 0,
-        },
-    },
-    paper: {
-        boxShadow: 'none',
-        padding: 0,
-        background: 'white',
-    },
-}))(MuiDialog);
+import cx from 'classnames';
 
 const ModalXenditView = (props) => {
     const {
@@ -40,31 +14,30 @@ const ModalXenditView = (props) => {
 
     return (
         <Dialog
-            TransitionComponent={Transition}
-            aria-labelledby="customized-dialog-title"
+            variant="plain"
             open={open}
-            disableBackdropClick
-            disableEscapeKeyDown
-            className="modal-xendit"
-            PaperProps={{
-                classes: {
-                    root: 'modal-xendit-paper',
-                },
-            }}
         >
-            <IconButton
+            <Button
                 color="primary"
-                size="medium"
-                className="xendit-btn-close"
+                className={
+                    cx(
+                        'xendit-btn-close bg-neutral-black !rounded-full absolute',
+                        'desktop:right-space-600 desktop:top-0',
+                        'mobile:right-space-100 mobile:top-space-100',
+                        'scrollbar-none',
+                    )
+                }
                 onClick={() => {
                     setOpen();
                     handleCloseXendit();
                 }}
                 disabled={loadSimulate}
             >
-                <CloseIcon fontSize="large" />
-            </IconButton>
-            <DialogContent classes={{ root: 'modal-xendit-box' }}>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+                </svg>
+            </Button>
+            <div className="dialog-content p-0 bg-neutral-white desktop:w-[500px] desktop:h-[500px] mobile:w-full mobile:h-full scrollbar-none">
                 {
                     payment_code === 'qr_codes' && mode && mode === 'test' && (
                         <div className="form qr-simulate">
@@ -75,7 +48,7 @@ const ModalXenditView = (props) => {
                                 onClick={() => handleSimulateQr()}
                                 loading={loadSimulate}
                             >
-                                <Typography variant="span" letter="uppercase" type="bold" color="white">
+                                <Typography variant="bd-2" letter="uppercase" type="bold" color="white">
                                     {t('common:button:simulateQrCode')}
                                 </Typography>
 
@@ -95,13 +68,13 @@ const ModalXenditView = (props) => {
                         ) : (
                             <iframe
                                 id="iframe-invoice"
-                                className="iframe-invoice"
+                                className="iframe-invoice w-full"
                                 title="Invoice"
                                 src={iframeUrl}
                             />
                         )
                 }
-            </DialogContent>
+            </div>
             <style jsx global>
                 {`
 
@@ -112,13 +85,6 @@ const ModalXenditView = (props) => {
                     .modal-xendit-paper {
                         overflow-y: visible;
                     }
-                    .xendit-btn-close {
-                        position: absolute;
-                        right: -15px;
-                        top: -15px;
-                        z-index: 99;
-                    }
-
                    .modal-xendit-box {
                        padding: 0px;
                        width: 600px;

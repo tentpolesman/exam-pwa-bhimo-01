@@ -1,54 +1,51 @@
 /* eslint-disable no-unused-vars */
 import { getEtalase } from '@core_modules/seller/services/graphql';
-import TabView from '@common_tabs';
-import Typography from '@common_typography';
-import useStyles from '@core_modules/seller/pages/default/components/style';
-import DetailProductView from '@plugin_productitem/components/Detail';
-import ImageProductView from '@plugin_productitem/components/Image';
 import CoreBase from '@plugin_productlist/core';
-import dynamic from 'next/dynamic';
 import React from 'react';
 import TabLayout from '@core_modules/seller/pages/default/components/TabLayout';
 import SellerInfo from '@core_modules/seller/pages/default/components/SellerInfo';
 import EtalaseDesktop from '@core_modules/seller/pages/default/components/Products/etalaseDesktop';
 import EtalaseMobile from '@core_modules/seller/pages/default/components/Products/etalaseMobile';
-
-const ErrorMessage = dynamic(() => import('@plugin_productlist/components/ErrorMessage'), { ssr: false });
-const ProductListSkeleton = dynamic(() => import('@plugin_productlist/components/ProductListSkeleton'), { ssr: false });
-const FilterView = dynamic(() => import('@plugin_productlist/components/Filter/view'), { ssr: false });
-const FilterModalView = dynamic(() => import('@plugin_productlist/components/Filter/FilterDialog'), { ssr: false });
+import Alert from '@common/Alert';
+import SellerSkeleton from '@core_modules/seller/pages/default/components/Skeleton';
 
 const ContentProducts = (props) => {
     const {
-        storeConfig, t, dataSeller, errorSeller, loadingSeller, link, sellerId, isLogin, route, handleChat, showChat, banner, ...other
+        storeConfig, t, dataSeller, errorSeller, loadingSeller, link, sellerPath, isLogin, route, handleChat, showChat, banner, ...other
     } = props;
-    const styles = useStyles();
 
     const { data } = getEtalase({
         variables: {
-            sellerId: parseInt(route.query.sellerId, 10),
+            sellerId: parseInt(dataSeller?.getSeller[0]?.id, 10),
         },
+        skip: !dataSeller?.getSeller[0],
     });
 
     const dataEtalase = data && data.getEtalase.length > 0 ? data.getEtalase : null;
 
     return (
         <>
-            {!loadingSeller && dataSeller && dataSeller.getSeller.length === 0 && (
-                <Typography type="bold" variant="h4" letter="capitalize" style={{ paddingBottom: '1rem', paddingLeft: '1rem' }}>
+
+            {
+                loadingSeller && (
+                    <SellerSkeleton />
+                )
+            }
+            {!loadingSeller && ((dataSeller && dataSeller.getSeller.length === 0) || errorSeller) && (
+                <Alert severity="error">
                     {t('seller:notFound')}
-                </Typography>
+                </Alert>
             )}
             {dataSeller && dataSeller.getSeller.length > 0 && (
                 <>
                     <SellerInfo {...props} />
-                    <div className={styles.sellerProduct}>
+                    <div className="mt-5">
                         <TabLayout noBanner={banner} t={t}>
-                            <div className="row">
+                            <div className="flex flex-row">
                                 {
                                     dataEtalase && (
                                         <>
-                                            <div className="col-md-2 hidden-mobile">
+                                            <div className="md:basis-2/12 hidden-mobile">
                                                 <EtalaseDesktop noBanner={banner} t={t} data={dataEtalase} route={route} />
                                             </div>
                                             <div className="hidden-desktop" style={{ width: '100%' }}>
@@ -57,20 +54,18 @@ const ContentProducts = (props) => {
                                         </>
                                     )
                                 }
-                                <div className={dataEtalase ? 'col-md-10 col-12' : 'col-md-12'} style={{ width: '100%' }}>
-                                    <CoreBase
-                                        t={t}
-                                        ErrorMessage={ErrorMessage}
-                                        ProductListSkeleton={ProductListSkeleton}
-                                        ImageProductView={ImageProductView}
-                                        DetailProductView={DetailProductView}
-                                        TabView={TabView}
-                                        FilterView={FilterView}
-                                        FilterModalView={FilterModalView}
-                                        defaultSort={{ key: 'position', value: 'ASC' }}
-                                        sellerId={sellerId}
-                                        {...props}
-                                    />
+                                <div className={dataEtalase ? 'md:basis-10/12 basis-full' : 'md:basis-full'} style={{ width: '100%' }}>
+                                    {
+                                        dataSeller?.getSeller[0] && (
+                                            <CoreBase
+                                                t={t}
+                                                // FilterModalView={FilterModalView}
+                                                defaultSort={{ key: 'position', value: 'ASC' }}
+                                                {...props}
+                                                sellerId={JSON.stringify(dataSeller?.getSeller[0]?.seller_id)}
+                                            />
+                                        )
+                                    }
                                 </div>
                             </div>
                         </TabLayout>

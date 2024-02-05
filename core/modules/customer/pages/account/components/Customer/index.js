@@ -1,21 +1,23 @@
 // Library
-import React from 'react';
 import { modules } from '@config';
-import Layout from '@layout_customer';
 import gqlService from '@core_modules/customer/services/graphql';
+import Layout from '@layout_customer';
+import React from 'react';
+import { getHost } from '@helpers/config';
+import Skeleton from '@core_modules/customer/pages/account/components/Skeleton';
+import Show from '@common/Show';
+import { getLoginInfo } from '@helper_auth';
 
 const Customer = (props) => {
     const {
-        t, Skeleton, CustomerView, storeConfig, isLogin, reOrder, ...other
+        t, CustomerView, storeConfig, reOrder, ...other
     } = props;
     let userData = {};
     let wishlist = [];
     const { data, loading, error } = gqlService.getCustomer(storeConfig);
-    const { data: customerNotificationList } = gqlService.customerNotificationList();
     const { data: customerOrders } = gqlService.getCustomerOrder();
-    const totalUnread = customerNotificationList
-        && customerNotificationList.customerNotificationList
-        && customerNotificationList.customerNotificationList.totalUnread;
+
+    const isLogin = getLoginInfo();
 
     if (!data || loading || error) {
         return (
@@ -40,17 +42,32 @@ const Customer = (props) => {
         }
     }
 
-    if (customerNotificationList && customerNotificationList.customerNotificationList) {
-        userData = { ...userData, notificationList: customerNotificationList.customerNotificationList };
-    }
     if (customerOrders && customerOrders.customerOrders) {
         userData = { ...userData, customerOrders: customerOrders.customerOrders };
     }
+
+    const returnUrl = (order_number) => {
+        if (storeConfig && storeConfig.OmsRma.enable_oms_rma) {
+            const omsRmaLink = storeConfig.OmsRma.oms_rma_link;
+            const omsChannelCode = storeConfig.oms_channel_code;
+            const backUrl = window.location.href;
+            const customerEmail = userData?.customer?.email;
+            // eslint-disable-next-line max-len
+            const encodedQuerystring = `email=${encodeURIComponent(customerEmail)}&order_number=${encodeURIComponent(
+                order_number,
+            )}&channel_code=${encodeURIComponent(omsChannelCode)}&from=${encodeURIComponent(backUrl)}`;
+            const omsUrl = `${omsRmaLink}?${encodedQuerystring}`;
+            window.location.replace(omsUrl);
+        } else {
+            window.location.replace(`${getHost()}/rma/customer/new/order_id/${order_number}`);
+        }
+    };
 
     const pushIf = (condition, ...elements) => (condition ? elements : []);
 
     const menu = [
         { href: '/sales/order/history', title: t('customer:menu:myOrder') },
+        { href: '/inboxnotification/notification', title: t('customer:menu:notification') },
         { href: '/customer/account/profile', title: t('customer:menu:myAccount') },
         { href: '/customer/account/address', title: t('customer:menu:address') },
         { href: '/sales/downloadable/history', title: t('customer:menu:myDownload') },
@@ -76,26 +93,27 @@ const Customer = (props) => {
         }),
         { href: '/customer/newsletter', title: t('customer:setting:newsletter') },
         {
-            href: storeConfig && storeConfig.OmsRma.enable_oms_rma
-                ? storeConfig.OmsRma.oms_rma_link
-                : '/rma/customer',
+            href: storeConfig && storeConfig.OmsRma.enable_oms_rma ? storeConfig.OmsRma.oms_rma_link : '/rma/customer',
             title: t('customer:menu:return'),
         },
     ];
 
     return (
         <Layout {...props}>
+            <Show when={!data || loading || error}>
+                <Skeleton />
+            </Show>
             <CustomerView
                 {...other}
                 t={t}
                 modules={modules}
                 menu={menu}
                 userData={userData}
-                totalUnread={totalUnread}
                 wishlist={wishlist}
                 storeConfig={storeConfig}
                 isLogin={isLogin}
                 reOrder={reOrder}
+                returnUrl={returnUrl}
             />
         </Layout>
     );

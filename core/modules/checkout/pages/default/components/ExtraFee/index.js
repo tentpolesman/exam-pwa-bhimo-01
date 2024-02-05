@@ -2,11 +2,19 @@
 /* eslint-disable consistent-return */
 import React from 'react';
 import gqlService from '@core_modules/checkout/services/graphql';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+    selectCheckoutState, setCheckoutData, setIsNewUpdate, setLoading,
+} from '@core_modules/checkout/redux/checkoutSlice';
 
 const AdditionSelect = (props) => {
     const {
-        t, checkout, setCheckout, storeConfig, ExtraFeeView, currencyCache,
+        t, storeConfig, ExtraFeeView, currencyCache,
     } = props;
+
+    const dispatch = useDispatch();
+    const checkout = useSelector(selectCheckoutState);
+
     const [updateExtraFee] = gqlService.updateExtraFee();
     const { data: { cart }, loading } = checkout;
     const [state, setState] = React.useState({});
@@ -76,39 +84,33 @@ const AdditionSelect = (props) => {
                 });
             }
         }
-        const isState = {
-            ...checkout,
-            loading: {
-                ...checkout.loading,
-                all: false,
-                shipping: true,
-                payment: true,
-                extraFee: false,
-                order: true,
-            },
-        };
-        setCheckout(isState);
+        dispatch(setLoading({
+            all: false,
+            shipping: true,
+            payment: true,
+            extraFee: false,
+            order: true,
+        }));
         updateExtraFee({
             variables: {
                 cart_id: cart.id,
                 select_options,
             },
         }).then(async (res) => {
-            const checkoutData = { ...checkout };
-            checkoutData.data.cart = {
-                ...checkoutData.data.cart,
-                ...res.data.updateExtraFeeOnCart.cart,
-                loading: {
-                    ...checkout.loading,
-                    all: false,
-                    shipping: false,
-                    payment: false,
-                    extraFee: false,
-                    order: false,
+            dispatch(setCheckoutData({
+                cart: {
+                    ...checkout.data.cart,
+                    ...res.data.updateExtraFeeOnCart.cart,
                 },
-            };
-            checkoutData.newupdate = true;
-            await setCheckout(checkoutData);
+            }));
+            dispatch(setIsNewUpdate(true));
+            dispatch(setLoading({
+                all: false,
+                shipping: false,
+                payment: false,
+                extraFee: false,
+                order: false,
+            }));
         }).catch(() => window.backdropLoader(false));
     };
     if (cart && cart.addtional_fees && cart.addtional_fees.data && cart.addtional_fees.data.length > 0) {

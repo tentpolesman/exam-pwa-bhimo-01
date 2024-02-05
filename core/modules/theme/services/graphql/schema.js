@@ -3,39 +3,52 @@ import { gql } from '@apollo/client';
 
 export const categories = gql`
     {
-        categoryList {
-            children_count
-            children {
-                id
-                level
+        categories {
+            items {
+                uid
                 name
+                level
                 path
                 url_path
                 url_key
                 include_in_menu
+                children_count
                 children {
-                    id
-                    level
+                    uid
                     name
+                    level
                     path
                     url_path
                     url_key
-                    image
-                    image_path
+                    include_in_menu
+                    children_count
                     children {
-                        id
-                        level
+                        uid
                         name
+                        level
                         path
                         url_path
                         url_key
+                        include_in_menu
+                        children_count
                         children {
-                            id
-                            level
+                            uid
                             name
+                            level
                             path
                             url_path
                             url_key
+                            include_in_menu
+                            children_count
+                            children {
+                                uid
+                                name
+                                level
+                                path
+                                url_path
+                                url_key
+                                include_in_menu
+                            }
                         }
                     }
                 }
@@ -79,94 +92,6 @@ export const removeToken = gql`
     mutation {
         internalDeleteCustomerToken {
             result
-        }
-    }
-`;
-
-export const vesMenu = gql`
-    query getVesMenu($alias: String!) {
-        vesMenu(alias: $alias) {
-            menu_id
-            name
-            items {
-                id
-                status
-                classes
-                category
-                target
-                show_icon
-                icon
-                hover_icon
-                icon_position
-                icon_classes
-                disable_dimension
-                caret
-                hover_caret
-                before_html
-                after_html
-                is_group
-                sub_width
-                dropdown_animation_in
-                dropdown_animation_time
-                dropdown_align
-                dropdown_bgcolor
-                dropdown_bgimage
-                dropdown_bgimagerepeat
-                dropdown_bgpositionx
-                dropdown_bgpositiony
-                dropdown_inlinecss
-                show_header
-                header_html
-                show_left_sidebar
-                left_sidebar_width
-                left_sidebar_html
-                show_content
-                content_width
-                parentcat
-                child_col
-                child_col_type
-                content_html
-                tab_position
-                isgroup_level
-                submenu_sorttype
-                show_right_sidebar
-                right_sidebar_width
-                right_sidebar_html
-                show_footer
-                footer_html
-                color
-                hover_color
-                bg_color
-                bg_hover_color
-                inline_css
-                menu_id
-                name
-                content_type
-                link_type
-                category_id
-                link
-                children {
-                    id
-                    name
-                    link
-                    link_type
-                    category_id
-                    children {
-                        id
-                        name
-                        link
-                        link_type
-                        category_id
-                        children {
-                            id
-                            name
-                            link
-                            link_type
-                            category_id
-                        }
-                    }
-                }
-            }
         }
     }
 `;
@@ -265,6 +190,7 @@ export const getSellerByName = (name) => {
             latitude
             longitude
             additional_info
+            seller_path
             }
         }
     `;
@@ -393,7 +319,6 @@ export default {
     categories,
     getCustomer,
     removeToken,
-    vesMenu,
     getCurrencySchema,
     getProduct,
     getSeller,

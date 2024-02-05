@@ -1,11 +1,24 @@
 /* eslint-disable import/no-extraneous-dependencies */
-const withOffline = require('next-offline');
 const { createSecureHeaders } = require('next-secure-headers');
-const { basePath } = require('./swift.config');
 // const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-// const withCSS = require('@zeit/next-css');
 
-module.exports = withOffline({
+const withPWA = require('next-pwa')({
+    dest: 'public',
+    swSrc: 'core/public/sw.js',
+    sw: 'sw.js',
+    register: true,
+    skipWaiting: true,
+    disable: process.env.NODE_ENV === 'development',
+});
+const { i18n } = require('./next-i18next.config');
+const {
+    basePath, assetsVersion, graphqlEndpoint, features,
+} = require('./swift.config');
+
+const baseHostUrl = graphqlEndpoint[process.env.APP_ENV];
+
+module.exports = withPWA({
+    i18n,
     basePath,
     // Secure Header
     async headers() {
@@ -13,25 +26,30 @@ module.exports = withOffline({
     },
     // Disable X-Powered-By
     poweredByHeader: false,
-    future: {
-        webpack5: true,
-    },
-    dontAutoRegisterSw: true,
     productionBrowserSourceMaps: true,
     publicRuntimeConfig: {
         appEnv: process.env.APP_ENV,
         rootDir: __dirname,
     },
-    optimization: {
-        minimize: process.env.NODE_ENV === 'production', // Update this to true or false
+    // Images
+    images: {
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: features.thumbor.domainThumborConfig,
+                port: '',
+                pathname: '/**',
+            },
+            {
+                protocol: 'https',
+                hostname: baseHostUrl.replace('http://', '').replace('https://', '').replace('/graphql', ''),
+                port: '',
+                pathname: '/**',
+            },
+        ],
     },
-    webpack: (
-        config,
-        {
-            isServer,
-            webpack,
-        },
-    ) => {
+    // Webpack
+    webpack: (config, { isServer, webpack }) => {
         // Note: we provide webpack above so you should not `require` it
         // Perform customizations to webpack config
         // Important: return the modified config
@@ -48,34 +66,59 @@ module.exports = withOffline({
             // eslint-disable-next-line no-param-reassign
             config.resolve.alias['@sentry/node'] = '@sentry/browser';
         }
+
+        config.module.rules.push({
+            test: /\.(graphql|gql)/,
+            exclude: /node_modules/,
+            loader: 'graphql-tag/loader',
+        });
+
         return config;
     },
     // generateInDevMode: true, // please comment if develop to production
-    workboxOpts: {
-        importScripts: ['./sw.js'], // comment if disabled notifications
-        swDest: process.env.NEXT_EXPORT ? 'service-worker.js' : 'static/service-worker.js',
-        runtimeCaching: [
-            {
-                urlPattern: /facebook/,
-                handler: 'NetworkFirst',
-            },
-            {
-                urlPattern: /_next/,
-                handler: 'NetworkFirst',
-                options: {
-                    cacheName: 'offlineCache',
-                    expiration: {
-                        maxEntries: 200,
-                    },
-                },
-            },
-        ],
-    },
     async rewrites() {
         return [
             {
-                source: `${basePath}/service-worker.js`,
-                destination: '/_next/static/service-worker.js',
+                source: `${basePath}/firebase-messaging-sw.js`,
+                destination: `/static/firebase/firebase-messaging-sw.${assetsVersion}.js`,
+            },
+            {
+                source: `${basePath}/.well-known/assetlinks.json`,
+                destination: '/static/assetlinks.json',
+            },
+            {
+                source: `${basePath}/maintenance`,
+                destination: '/static/maintenance.html',
+            },
+            {
+                source: `${basePath}/manifest.json`,
+                destination: '/manifest.json',
+            },
+            {
+                source: `${basePath}/favicon.ico`,
+                destination: '/favicon.ico',
+            },
+            {
+                source: `${basePath}/sitemap.xml`,
+                destination: '/api/sitemap',
+            },
+            {
+                source: `${basePath}/captcha-validation`,
+                destination: '/api/captcha-validation',
+            },
+
+            {
+                source: `${basePath}/auth/fcm-token`,
+                destination: '/api/auth/fcm-token',
+            },
+
+            {
+                source: `${basePath}/paypal/detail-transaction`,
+                destination: '/api/paypal/detail-transaction',
+            },
+            {
+                source: `${basePath}/geocoding-services`,
+                destination: '/api/geocoding-services',
             },
         ];
     },

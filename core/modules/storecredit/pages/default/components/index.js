@@ -1,178 +1,281 @@
-/* eslint-disable radix */
-/* eslint-disable no-nested-ternary */
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import TablePagination from '@material-ui/core/TablePagination';
-import Paper from '@material-ui/core/Paper';
-import TableContainer from '@material-ui/core/TableContainer';
-import Alert from '@material-ui/lab/Alert';
 import { formatPrice } from '@helper_currency';
 import formatDate from '@helper_date';
 import Layout from '@layout_customer';
-import useStyles from '@core_modules/storecredit/pages/default/components/style';
-import SkeletonStoreCredit from '@core_modules/storecredit/pages/default/components/skeleton';
+import cx from 'classnames';
+import Typography from '@common_typography';
+import Show from '@common_show';
+import Select from '@common_forms/Select';
+import Pagination from '@common_pagination';
+import Skeleton from '@common_skeleton';
+import { SkeletonDesktop, SkeletonMobile } from '@core_modules/storecredit/pages/default/components/skeleton';
+import Alert from '@common_alert';
+import useMediaQuery from '@hook/useMediaQuery';
+
+const MobileTableItemComponent = ({ label, value, CustomComponentValue }) => (
+    <div className={cx('flex flex-row')}>
+        <div className={cx('mobile:w-[40%] tablet:w-[45%]')}>
+            <Typography variant="bd-2b" className={cx('!font-semibold')}>
+                {label}
+            </Typography>
+        </div>
+        <div className="w-[5%]">
+            <Typography variant="bd-2b">{' : '}</Typography>
+        </div>
+        <div className={cx('mobile:w-[55%] tablet:w-[50%]')}>
+            <Show when={!!CustomComponentValue}>{CustomComponentValue}</Show>
+            <Show when={!CustomComponentValue}>
+                <Typography variant="bd-2b">{value}</Typography>
+            </Show>
+        </div>
+    </div>
+);
 
 const StoreCreditPage = (props) => {
-    const styles = useStyles();
     const {
-        t,
-        storeCredit,
-        loading,
-        rowsPerPage,
-        page,
-        handleChangePage,
-        handleChangeRowsPerPage,
-        currencyCache,
+        t, storeCredit, loading, error, rowsPerPage, page, handleChangePage, handleChangeRowsPerPage, currencyCache,
     } = props;
+    const { isDesktop } = useMediaQuery();
+    const hasData = storeCredit?.transaction_history?.items && storeCredit?.transaction_history?.items?.length > 0;
+    const pageInfo = storeCredit?.transaction_history?.page_info;
+    const totalCount = storeCredit?.transaction_history?.total_count ?? 0;
 
-    const handlePage = (event) => {
-        handleChangePage(parseInt(event.target.value));
-    };
-
-    const handleRowsPerPage = (event) => {
-        handleChangeRowsPerPage(parseInt(event.target.value, 10));
-    };
-    return (
-        <Layout {...props}>
-            <div className={styles.container}>
-                <p className={styles.textBalance}>
+    const StoreCreditBalanceComponent = () => (
+        <div className={cx('storecredit-balance-wrapper', 'flex', 'items-center')}>
+            <div>
+                <Typography variant="bd-2b">
                     {t('storecredit:balance')}
                     {' '}
-                    <b>
-                        {storeCredit.current_balance && storeCredit.current_balance.value !== null
-                            ? formatPrice(storeCredit.current_balance.value, storeCredit.current_balance.currency)
-                            : ''}
-                    </b>
-                </p>
+                    <Show when={!loading}>
+                        <b>{formatPrice(storeCredit?.current_balance?.value ?? 0, storeCredit?.current_balance?.currency ?? 'IDR', currencyCache)}</b>
+                    </Show>
+                </Typography>
+            </div>
+            <Show when={loading}>
+                <Skeleton width={50} height={15} className={cx('ml-[5px]')} />
+            </Show>
+        </div>
+    );
 
-                <div className={styles.tableOuterContainer}>
-                    <TableContainer component={Paper} className={styles.tableContainer}>
-                        <Table className={styles.table} aria-label="a dense table">
-                            <TableHead>
-                                <TableRow className={styles.tableRowHead}>
-                                    <TableCell align="left">{t('storecredit:transactionId')}</TableCell>
-                                    <TableCell align="left">{t('storecredit:adjustment')}</TableCell>
-                                    <TableCell align="left">{t('storecredit:creditbalance')}</TableCell>
-                                    <TableCell align="left">{t('storecredit:comment')}</TableCell>
-                                    <TableCell align="left">{t('storecredit:transactionDate')}</TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {loading ? (
-                                    <SkeletonStoreCredit />
-                                ) : storeCredit.transaction_history.items.length > 0 ? (
+    const PaginationComponent = () => (
+        <div className={cx('table-data pt-6 flex justify-between', 'tablet:items-center tablet:flex-row', 'mobile:flex-col')}>
+            <div className="flex justify-between items-center flex-1">
+                <Typography className={cx('font-normal', 'leading-2lg')}>{`${totalCount ?? 0} ${t('common:label:data')}`}</Typography>
+                <div className="flex items-center">
+                    <Typography className={cx('font-normal', 'leading-2lg', 'p-3')}>{t('common:label:show')}</Typography>
+                    <Select
+                        name="show"
+                        value={rowsPerPage}
+                        onChange={handleChangeRowsPerPage}
+                        options={[
+                            {
+                                label: 10,
+                                value: 10,
+                            },
+                            {
+                                label: 20,
+                                value: 20,
+                            },
+                            {
+                                label: 50,
+                                value: 50,
+                            },
+                            {
+                                label: t('common:label:all'),
+                                value: totalCount,
+                            },
+                        ]}
+                        textFiledProps={{ className: cx('w-[80px]') }}
+                        inputProps={{ className: cx('!py-0') }}
+                    />
+                </div>
+            </div>
+            <div className={cx('flex', 'flex-row', 'items-center', 'mobile:max-tablet:pt-4', 'mobile:max-tablet:justify-center')}>
+                <Pagination
+                    clickToTop
+                    handleChangePage={handleChangePage}
+                    page={page}
+                    siblingCount={0}
+                    className={cx('!p-0')}
+                    totalPage={pageInfo?.total_pages}
+                />
+            </div>
+        </div>
+    );
+
+    return (
+        <Layout {...props}>
+            <div className={cx('storecredit-container')}>
+                {/** Desktop */}
+                <Show when={isDesktop}>
+                    <div className={cx('desktop-view')}>
+                        <StoreCreditBalanceComponent />
+                        <div className={cx('relative', 'overflow-x-auto', 'rounded-lg', 'pt-5')}>
+                            <table className={cx('w-full', 'text-base', 'border-[1px]', 'border-neutral-100')}>
+                                <thead>
+                                    <tr className={cx('text-neutral-500', 'font-semibold', 'leading-2lg', 'text-left')}>
+                                        <th className={cx('px-4', 'py-3')}>
+                                            {t('storecredit:transactionId')}
+                                            {' '}
+                                            #
+                                        </th>
+                                        <th className={cx('px-4', 'py-3')}>{t('storecredit:adjustment')}</th>
+                                        <th className={cx('px-4', 'py-3')}>{t('storecredit:creditbalance')}</th>
+                                        <th className={cx('px-4', 'py-3')}>{t('storecredit:comment')}</th>
+                                        <th className={cx('px-4', 'py-3')}>{t('storecredit:transactionDate')}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <Show when={loading}>
+                                        <SkeletonDesktop />
+                                    </Show>
+                                    <Show when={!loading}>
+                                        <Show when={error}>
+                                            <td colSpan={5}>
+                                                <Alert severity="error" withIcon>
+                                                    {error?.message ?? t('common:error:fetchError')}
+                                                </Alert>
+                                            </td>
+                                        </Show>
+                                        <Show when={!error}>
+                                            <Show when={hasData}>
+                                                <>
+                                                    {storeCredit?.transaction_history?.items.map((val, index) => (
+                                                        <tr className={cx('even:bg-white', 'odd:bg-neutral-50')} key={index}>
+                                                            <td className={cx('p-4')}>
+                                                                <Typography variant="bd-2b">{val.transaction_id}</Typography>
+                                                            </td>
+                                                            <td className={cx('p-4')}>
+                                                                <Typography
+                                                                    variant="bd-2b"
+                                                                    className={cx(
+                                                                        val?.store_credit_adjustment?.value < 0 ? '!text-red-500' : '!text-green-500',
+                                                                    )}
+                                                                >
+                                                                    {formatPrice(
+                                                                        val.store_credit_adjustment.value,
+                                                                        val.store_credit_adjustment.currency,
+                                                                        currencyCache,
+                                                                    )}
+                                                                </Typography>
+                                                            </td>
+                                                            <td className={cx('p-4')}>
+                                                                <Typography variant="bd-2b">
+                                                                    {formatPrice(
+                                                                        val.store_credit_balance.value,
+                                                                        val.store_credit_balance.currency,
+                                                                        currencyCache,
+                                                                    )}
+                                                                </Typography>
+                                                            </td>
+                                                            <td className={cx('p-4')}>
+                                                                <Typography variant="bd-2b">{val.comment}</Typography>
+                                                            </td>
+                                                            <td className={cx('p-4')}>
+                                                                <Typography variant="bd-2b">{formatDate(val.created_at, 'DD/MM/YYYY')}</Typography>
+                                                            </td>
+                                                        </tr>
+                                                    ))}
+                                                </>
+                                            </Show>
+                                            <Show when={!hasData}>
+                                                <td colSpan={5}>
+                                                    <Alert severity="warning" withIcon>
+                                                        {t('storecredit:emptyMessage')}
+                                                    </Alert>
+                                                </td>
+                                            </Show>
+                                        </Show>
+                                    </Show>
+                                </tbody>
+                            </table>
+                        </div>
+                        {/** show pagination */}
+                        <Show when={hasData && !loading}>
+                            <PaginationComponent />
+                        </Show>
+                    </div>
+                </Show>
+
+                {/** Mobile Tablet */}
+                <Show when={!isDesktop}>
+                    <div className={cx('mobile-tablet-view')}>
+                        <StoreCreditBalanceComponent />
+
+                        <div className={cx('divider', 'border-b-[1.5px] border-neutral-200', 'mt-[16px]', 'mobile:!mb-[20px] tablet:mb-[24px]')} />
+
+                        <Show when={loading}>
+                            <SkeletonMobile />
+                        </Show>
+
+                        <Show when={!loading}>
+                            <Show when={error}>
+                                <Alert severity="error" withIcon>
+                                    {error?.message ?? t('common:error:fetchError')}
+                                </Alert>
+                            </Show>
+
+                            <Show when={!error}>
+                                <Show when={hasData}>
                                     <>
-                                        {storeCredit.transaction_history.items.map((val, idx) => (
-                                            <TableRow key={idx} className={styles.tableRowResponsive}>
-                                                <TableCell
-                                                    className={styles.tableCellResponsive}
-                                                    align="left"
-                                                    data-th={t('storecredit:transactionId')}
-                                                >
-                                                    <div className={styles.displayFlexRow}>
-                                                        <div className={styles.mobLabel}>
-                                                            <b>{t('storecredit:transactionId')}</b>
-                                                        </div>
-                                                        <div className={styles.value}>{val.transaction_id}</div>
-                                                    </div>
-                                                </TableCell>
-                                                <TableCell
-                                                    className={styles.tableCellResponsive}
-                                                    align="left"
-                                                    data-th={t('storecredit:adjustment')}
-                                                >
-                                                    <div className={styles.displayFlexRow}>
-                                                        <div className={styles.mobLabel}>
-                                                            <b>{t('storecredit:adjustment')}</b>
-                                                        </div>
-                                                        <div className={styles.value}>
-                                                            <div className={val.store_credit_adjustment.value < 0
-                                                                ? styles.textRed : styles.textGreen}
-                                                            >
-                                                                {formatPrice(
-                                                                    val.store_credit_adjustment.value,
-                                                                    val.store_credit_adjustment.currency,
-                                                                    currencyCache,
-                                                                )}
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </TableCell>
-                                                <TableCell
-                                                    className={styles.tableCellResponsive}
-                                                    align="left"
-                                                    data-th={t('storecredit:creditbalance')}
-                                                >
-                                                    <div className={styles.displayFlexRow}>
-                                                        <div className={styles.mobLabel}>
-                                                            <b>{t('storecredit:creditbalance')}</b>
-                                                        </div>
-                                                        <div className={styles.value}>
+                                        {storeCredit?.transaction_history?.items.map((val, index) => (
+                                            <div
+                                                key={`mobile-item-${index}`}
+                                                className={cx(
+                                                    'mobile-item',
+                                                    'flex',
+                                                    'flex-col',
+                                                    'border-[1px] border-neutral-200',
+                                                    'rounded-[6px]',
+                                                    'px-[24px]',
+                                                    'py-[20px]',
+                                                    'mobile:!mb-[16px] tablet:!mb-[24px]',
+                                                )}
+                                            >
+                                                <MobileTableItemComponent label={t('storecredit:transactionId')} value={val.transaction_id} />
+                                                <MobileTableItemComponent
+                                                    label={t('storecredit:adjustment')}
+                                                    CustomComponentValue={(
+                                                        <Typography
+                                                            variant="bd-2b"
+                                                            className={cx(
+                                                                val?.store_credit_adjustment?.value < 0 ? '!text-red-500' : '!text-green-500',
+                                                            )}
+                                                        >
                                                             {formatPrice(
-                                                                val.store_credit_balance.value,
-                                                                val.store_credit_balance.currency,
+                                                                val.store_credit_adjustment.value,
+                                                                val.store_credit_adjustment.currency,
                                                                 currencyCache,
                                                             )}
-                                                        </div>
-                                                    </div>
-                                                </TableCell>
-                                                <TableCell
-                                                    className={styles.tableCellResponsive}
-                                                    align="left"
-                                                    data-th={t('storecredit:comment')}
-                                                >
-                                                    <div className={styles.displayFlexRow}>
-                                                        <div className={styles.mobLabel}>
-                                                            <b>{t('storecredit:comment')}</b>
-                                                        </div>
-                                                        <div className={styles.value}>{val.comment}</div>
-                                                    </div>
-                                                </TableCell>
-                                                <TableCell
-                                                    className={styles.tableCellResponsive}
-                                                    align="left"
-                                                    data-th={t('storecredit:transactionDate')}
-                                                >
-                                                    <div className={styles.displayFlexRow}>
-                                                        <div className={styles.mobLabel}>
-                                                            <b>{t('storecredit:transactionDate')}</b>
-                                                        </div>
-                                                        <div className={styles.value}>{formatDate(val.transaction_date_time)}</div>
-                                                    </div>
-                                                </TableCell>
-                                            </TableRow>
+                                                        </Typography>
+                                                    )}
+                                                />
+                                                <MobileTableItemComponent
+                                                    label={t('storecredit:creditbalance')}
+                                                    value={formatPrice(
+                                                        val.store_credit_balance.value,
+                                                        val.store_credit_balance.currency,
+                                                        currencyCache,
+                                                    )}
+                                                />
+                                                <MobileTableItemComponent label={t('storecredit:comment')} value={val.comment} />
+                                                <MobileTableItemComponent
+                                                    label={t('storecredit:transactionDate')}
+                                                    value={formatDate(val.created_at, 'DD/MM/YYYY')}
+                                                />
+                                            </div>
                                         ))}
-
-                                        <TableRow>
-                                            <TablePagination
-                                                rowsPerPageOptions={[10, 20, 50, { label: 'All', value: -1 }]}
-                                                colSpan={5}
-                                                count={storeCredit.transaction_history.total_count}
-                                                rowsPerPage={rowsPerPage}
-                                                page={page}
-                                                SelectProps={{
-                                                    inputProps: { 'aria-label': 'rows per page' },
-                                                    native: true,
-                                                }}
-                                                onChangePage={handlePage}
-                                                onChangeRowsPerPage={handleRowsPerPage}
-                                            />
-                                        </TableRow>
+                                        <PaginationComponent />
                                     </>
-                                ) : (
-                                    <TableRow>
-                                        <TableCell colSpan={5}>
-                                            <Alert severity="warning">{t('storecredit:emptyMessage')}</Alert>
-                                        </TableCell>
-                                    </TableRow>
-                                )}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                </div>
+                                </Show>
+                                <Show when={!hasData}>
+                                    <Alert severity="warning" withIcon>
+                                        {t('storecredit:emptyMessage')}
+                                    </Alert>
+                                </Show>
+                            </Show>
+                        </Show>
+                    </div>
+                </Show>
             </div>
         </Layout>
     );

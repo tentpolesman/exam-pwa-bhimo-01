@@ -1,14 +1,10 @@
-const fs = require("fs");
-const path = require("path");
-const projectPath = path.resolve(__dirname, "./");
-
 module.exports = {
     env: {
         browser: true,
         es6: true,
         jest: true,
     },
-    extends: 'airbnb',
+    extends: ['airbnb', 'plugin:@next/next/recommended'],
     globals: {
         Atomics: 'readonly',
         SharedArrayBuffer: 'readonly',
@@ -46,14 +42,13 @@ module.exports = {
                 aspects: ['invalidHref', 'preferButton'],
             },
         ],
-        'no-restricted-imports': [
-            'error',
-            {
-                paths: ['@material-ui/core', '@material-ui/icons', '@material-ui/lab'],
-            },
-        ],
+        'no-restricted-imports': ['error'],
         'import/no-extraneous-dependencies': 'off',
         'import/no-unresolved': 'off',
+        'react/forbid-prop-types': 'off',
+        'react/no-unknown-property': 'off',
+        'jsx-a11y/label-has-associated-control': 'off',
+        'linebreak-style': 'off',
     },
     settings: {
         'import/ignore': 'node_modules',

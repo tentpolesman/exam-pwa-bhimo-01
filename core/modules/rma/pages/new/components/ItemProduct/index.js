@@ -1,7 +1,7 @@
 import React from 'react';
 import Typography from '@common_typography';
-import useStyles from '@core_modules/rma/pages/new/components/styles';
 import ItemField from '@core_modules/rma/pages/new/components/ItemField';
+import Divider from '@common/Divider';
 
 const ItemProduct = (props) => {
     const {
@@ -10,7 +10,6 @@ const ItemProduct = (props) => {
         image_url, name, other_rma_request, price, currency = 'USD',
         errorForm, ItemFieldView, OtherRmaLink, ...other
     } = props;
-    const styles = useStyles();
     const checked = dataValues.indexOf(value) !== -1;
     const [selectedData, setSelectedData] = React.useState({
         item_id: '',
@@ -92,7 +91,7 @@ const ItemProduct = (props) => {
     };
 
     return (
-        <div className="column">
+        <div className="flex flex-col gap-3">
             <ItemProductView
                 checked={checked}
                 disabled={disabled}
@@ -104,7 +103,7 @@ const ItemProduct = (props) => {
                 {...other}
             />
 
-            <div className={styles.selectItemBox}>
+            <div className="bg-neutral-50 p-4 flex flex-col gap-3">
                 {disabled ? <Typography color="red">{t('rma:noItemReturn')}</Typography> : null}
                 {other_rma_request && other_rma_request.length > 0 ? (
                     <OtherRmaLink
@@ -153,8 +152,13 @@ const ItemProduct = (props) => {
                           }
                           return null;
                       })
-                    : !disabled && <Typography align="center">{t('rma:form:label:tickSelect')}</Typography>}
+                    : !disabled && (
+                        <div className="w-full flex items-center justify-center">
+                            <Typography className="text-center">{t('rma:form:label:tickSelect')}</Typography>
+                        </div>
+                    )}
             </div>
+            <Divider />
         </div>
     );
 };

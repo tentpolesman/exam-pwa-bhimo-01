@@ -79,6 +79,11 @@
         "button": "Gunakan kredit",
         "removeButton": "Hapus kredit saya"
     },
+    "giftCard": {
+        "placeholderField": "Kode Gift Card",
+        "yourGiftCard": "Gift card Kamu",
+        "appliedGiftCard": "Gift Card Terpasang"
+    },
     "promoCodePlaceholder": "Kode promo",
     "giftCartPlaceholder": "Nomor kartu hadiah",
     "yourOrderId": "Nomor pesanan Anda",
@@ -107,18 +112,5 @@
     "howtoPay": "Bagaimana cara membayar",
     "confirmation": "Konfirmasi",
     "open": "Buka",
-    "close": "Tutup",
-    "travelokaPay": {
-        "enterPaymentDetails": "Masukkan info pembayaran:",
-        "activateTravelokaPaylater": "Aktifkan Traveloka PayLater-mu Sekarang!",
-        "switchPayment": "Ubah pembayaranmu jadi cicilan melalui aplikasi Traveloka.",
-        "validation": {
-            "nameOnCard": "Nama pada Kartu",
-            "cardNumber": "Nomor Kartu",
-            "expiryDate": "Masa Aktif (MM/YY)",
-            "cvv": "CVV",
-            "required": "tidak boleh kosong.",
-            "invalid": "tidak sesuai format."
-        }
-    }
+    "close": "Tutup"
 }

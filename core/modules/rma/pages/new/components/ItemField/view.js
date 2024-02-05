@@ -1,4 +1,4 @@
-import Select from '@common_select';
+import Select from '@common_forms/Select';
 
 const ItemFieldView = ({
     options = [],
@@ -9,6 +9,8 @@ const ItemFieldView = ({
     select,
     handleSelect,
     error,
+    disabled,
+    ...other
 }) => (
     <Select
         options={options}
@@ -18,6 +20,13 @@ const ItemFieldView = ({
         onChange={handleSelect}
         error={error}
         errorMessage={errorMessage || t('rma:form:required')}
+        classNameLabel="!text-md font-bold capitalize"
+        textFiledProps={{
+            disabled,
+            className: 'w-full desktop:w-[50%]',
+            classWrapper: 'mt-2',
+        }}
+        {...other}
     />
 );
 

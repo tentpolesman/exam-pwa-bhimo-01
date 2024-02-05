@@ -8,11 +8,14 @@
         "search": "Search ...",
         "brand": "Brand",
         "category": "Category",
-        "searchResult": "Search result"
+        "searchResult": "Search result",
+        "quickView": "Quick View"
     },
     "button": {
         "save": "Save",
-        "clear": "Clear"
+        "clear": "Clear",
+        "addToWishlist": "Add to wishlist",
+        "addToCompare": "Add to compare"
     },
     "product": {
         "title_product": "Name product",
@@ -20,5 +23,15 @@
     },
     "wishlist": {
         "addWithoutLogin": "Please login to add this item to your wishlist"
+    },
+    "filter": {
+        "title": "Shopping options",
+        "viewAs": "View As",
+        "showMore": "Show more",
+        "lessMore": "Show Less",
+        "others": "Others",
+        "reset": "Reset Filter",
+        "viewResult": "View Result"
     }
+
 }

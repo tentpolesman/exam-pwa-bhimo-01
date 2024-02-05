@@ -7,12 +7,13 @@ import Router from 'next/router';
 import { modules } from '@config';
 import { getStoreHost } from '@helpers/config';
 import Cookies from 'js-cookie';
-import { getAppEnv } from '@root/core/helpers/env';
+import { getAppEnv } from '@core/helpers/env';
 import gqlService from '@core_modules/checkout/services/graphql';
 import Toast from '@common_toast';
 import {
     getCartCallbackUrl, getLoginCallbackUrl, getSuccessCallbackUrl,
 } from '@core_modules/checkout/helpers/config';
+import { getLoginInfo } from '@helper_auth';
 
 const PaypalReviewCore = (props) => {
     const {
@@ -32,7 +33,10 @@ const PaypalReviewCore = (props) => {
         },
     };
 
-    let { cartId, isLogin } = props;
+    let { cartId } = props;
+
+    let isLogin = getLoginInfo();
+
     let urlRedirect = '/checkout/cart';
     if (modules.checkout.checkoutOnly) {
         urlRedirect = getStoreHost(getAppEnv());

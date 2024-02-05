@@ -2,41 +2,12 @@
 import { gql } from '@apollo/client';
 import { modules } from '@config';
 
-const weltpixel_labels = `
-weltpixel_labels {
-  categoryLabel {
-      css
-      customer_group
-      image
-      page_position
-      position
-      priority
-      text
-      text_padding
-      text_bg_color
-      text_font_size
-      text_font_color          
-  }
-  productLabel {
-      css
-      customer_group
-      image
-      page_position
-      position
-      priority
-      text
-      text_padding
-      text_bg_color
-      text_font_size
-      text_font_color  
-  }
-}        
-`;
-
 const productDetail = (config = {}) => `
-    seller_id
     seller {
+      seller_id
       seller_name
+      seller_path
+      seller_city
     }
     id
     name
@@ -150,7 +121,6 @@ query Product($url: String!){
       id
       upsell_products {
         ${productDetail(config)}        
-        ${config?.pwa?.label_weltpixel_enable ? weltpixel_labels : ''}
         ${priceRange}
         ${priceTiers}
       }
@@ -172,7 +142,6 @@ query Product($url: String!) {
       id
       related_products {
         ${productDetail(config)}        
-        ${config?.pwa?.label_weltpixel_enable ? weltpixel_labels : ''}
         ${priceRange}
         ${priceTiers}
       }
@@ -260,14 +229,14 @@ const priceTiersPartial = `
 const productDetailFragment = (config = {}) => gql`
   fragment CORE_PRODUCT_DETAILS on ProductInterface {
     id
-    name @skip(if: $includeName)
+    name
     sku
     ${config?.pwa?.label_sale_enable ? 'sale' : ''}
     stock_status
     url_key
     __typename
     attribute_set_id
-    small_image @skip(if: $includeImg) {
+    small_image {
       url,
       label
     }
@@ -299,10 +268,12 @@ const productDetailFragment = (config = {}) => gql`
     meta_keyword
     special_from_date
     special_to_date
-    price_range @skip(if: $includePrice) {
+    new_from_date
+    new_to_date
+    price_range {
       ${priceRangePartial}
     }
-    price_tiers @skip(if: $includePrice) {
+    price_tiers {
       ${priceTiersPartial}
     }
   }
@@ -312,9 +283,6 @@ export const getProduct = (config = {}) => {
     const query = gql`
     ${productDetailFragment(config)}
     query getProducts(
-      $includeName: Boolean = false,
-      $includePrice: Boolean = false,
-      $includeImg: Boolean = false,
       $url: String!
     ) {
         products(
@@ -386,7 +354,12 @@ export const getProduct = (config = {}) => {
                 text
               }
             }
-            seller_id
+            seller {
+              seller_id
+              seller_name
+              seller_path
+              seller_city
+            }
           }
           total_count
         }
@@ -611,11 +584,17 @@ export const getDownloadProduct = (sku) => {
           id
           name
           url_key
+          links_title
           downloadable_product_links {
             id
             uid
             title
             price
+            sample_url
+          }
+          downloadable_product_samples {
+            title
+            sample_url
           }
         }
       }
@@ -723,7 +702,7 @@ export const getGroupedProduct = (config = {}) => gql`
     }
 `;
 
-export const getProductLabel = (config = {}) => gql`
+export const getProductLabel = () => gql`
 query Products($url: String){
   products(
     search: "" ,filter: {
@@ -733,10 +712,15 @@ query Products($url: String){
     }
   ) {
     items {
-      seller_id
+      seller {
+        seller_id
+        seller_name
+        seller_path
+        seller_city
+      }
+      
       id
       __typename
-      ${config?.pwa?.label_weltpixel_enable ? weltpixel_labels : ''}
     }
   }
 }

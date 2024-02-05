@@ -2,44 +2,33 @@
 /* eslint-disable no-return-assign */
 /* eslint-disable no-lonely-if */
 /* eslint-disable no-console */
-import {
-    useEffect, useRef, useState, useMemo,
-} from 'react';
-import cookies from 'js-cookie';
 import { getCurrency } from '@core_modules/setting/services/graphql';
+import cookies from 'js-cookie';
+import React from 'react';
 
 import ViewSwitcherCurrency from '@core_modules/setting/components/currency/view';
 
-import { currencyVar } from '@root/core/services/graphql/cache';
-import { useReactiveVar } from '@apollo/client';
+import { currencyVar } from '@core/services/graphql/cache';
 
 const COOKIES_APP_CURRENCY = 'app_currency';
 
 const SwitcherCurrency = (props) => {
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const open = Boolean(anchorEl);
-    const id = open ? 'simple-popover' : undefined;
+    const [open, setOpen] = React.useState(false);
 
     const { data, loading } = getCurrency();
-    const [currencyState, setCurrencyState] = useState(null);
+    const [currencyState, setCurrencyState] = React.useState(null);
 
-    const mount = useRef();
+    const mount = React.useRef();
 
     // cache currency
-    const cacheCurrency = useReactiveVar(currencyVar);
+    const cacheCurrency = currencyVar();
 
-    /**
-     * [useEffect] for react lifecycle
-     */
-    useEffect(() => {
+    React.useEffect(() => {
         mount.current = true;
         return () => (mount.current = false);
     }, []);
 
-    /**
-     * [useEffect] for {data} currency changes
-     */
-    useEffect(() => {
+    React.useEffect(() => {
         if (mount.current) {
             const getCurrencyFromStorage = () => {
                 try {
@@ -81,19 +70,6 @@ const SwitcherCurrency = (props) => {
     }, [data]);
 
     /**
-     * [METHOD] handle click popover
-     * @param {*} event
-     */
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    /**
-     * [METHOD] handle close popover
-     */
-    const handleClose = () => setAnchorEl(null);
-
-    /**
      * [METHOD] set default currency code
      * @param {string} code
      */
@@ -109,37 +85,32 @@ const SwitcherCurrency = (props) => {
         window.location.reload();
     };
 
-    /**
-     * [useMemo]
-     */
-    useMemo(() => {
-        if (mount.current) {
-            if (open) {
-                const header = document.getElementById('header');
-                const checkScrollTop = () => {
-                    // handle show hide header
-                    if (header) {
-                        if (document.getElementById(id) && window.pageYOffset > 100) {
-                            handleClose();
-                        }
+    React.useEffect(() => {
+        if (window !== 'undefined' && open) {
+            const header = document.getElementById('header-inner');
+            const checkScrollTop = () => {
+                // handle show hide header
+                if (header) {
+                    if (
+                        document.getElementById('top-header__content--currency-language-changer-menu__currency-switcher')
+                        && window.pageYOffset > 100
+                    ) {
+                        setOpen(false);
                     }
-                };
-                window.addEventListener('scroll', checkScrollTop);
-            } else {
-                window.removeEventListener('scroll', () => {}, false);
-            }
+                }
+            };
+            window.addEventListener('scroll', checkScrollTop);
+        } else {
+            window.removeEventListener('scroll', () => {}, false);
         }
-    }, [open]);
+    }, [open, window]);
 
     const propsOther = {
-        id,
         open,
+        setOpen,
         data,
         loading,
-        anchorEl,
         currencyState,
-        handleClick,
-        handleClose,
         setDefaultCurrency,
     };
 

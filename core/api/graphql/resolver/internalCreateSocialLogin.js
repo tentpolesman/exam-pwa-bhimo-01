@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
+const { serialize } = require('cookie');
+const { expiredToken, customerTokenKey } = require('../../../../swift.config');
 const requestGraph = require('../request');
-const { encrypt } = require('../../../helpers/encryption');
 
 const query = `
 mutation generateCustomerTokenSocialLogin(
@@ -29,15 +30,30 @@ const internalCreateSocialLogin = async (parent, args, context) => {
         lastname: args.input.lastname,
     };
     const res = await requestGraph(query, variables, context);
-    if (res.generateCustomerTokenSocialLogin) {
-        context.session.token = encrypt(res.generateCustomerTokenSocialLogin.token);
+    if (res?.generateCustomerTokenSocialLogin) {
+        if (context?.res) {
+            const serialized = serialize(customerTokenKey, res.generateCustomerTokenSocialLogin.token, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: 'strict',
+                maxAge: expiredToken,
+                path: '/',
+            });
+            context.res.setHeader('Set-Cookie', serialized);
+        }
         return {
-            originalToken: res.generateCustomerTokenSocialLogin.token,
-            token: encrypt(res.generateCustomerTokenSocialLogin.token),
-            message: 'welcome',
+            is_login: true,
+            originalToken: '',
+            token: '',
+            message: 'success',
         };
     }
-    return res;
+    return {
+        is_login: false,
+        originalToken: '',
+        token: '',
+        message: 'failed',
+    };
 };
 
 module.exports = internalCreateSocialLogin;

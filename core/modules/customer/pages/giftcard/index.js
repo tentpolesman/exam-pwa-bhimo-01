@@ -1,13 +1,10 @@
-import { withTranslation } from '@i18n';
+import { withTranslation } from 'next-i18next';
 import { withApollo } from '@lib_apollo';
-import Core from '@core_modules/customer/pages/giftcard/core';
-import Content from '@core_modules/customer/pages/giftcard/components';
+import dynamic from 'next/dynamic';
+
+const Core = dynamic(() => import('@core_modules/customer/pages/giftcard/core'), { ssr: false });
+const Content = dynamic(() => import('@core_modules/customer/pages/giftcard/components'), { ssr: false });
 
 const Page = (props) => <Core {...props} Content={Content} />;
-
-Page.getInitialProps = async () => ({
-    namespacesRequired: ['common', 'customer'],
-    withAuth: true,
-});
 
 export default withApollo({ ssr: false })(withTranslation()(Page));

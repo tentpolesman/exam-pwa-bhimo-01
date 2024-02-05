@@ -1,11 +1,9 @@
-import Alert from '@material-ui/lab/Alert';
+import Alert from '@common/Alert';
 
 const AlertCustom = ({ variant, text }) => (
-    <div>
-        <Alert className="m-15" severity={variant}>
-            {text}
-        </Alert>
-    </div>
+    <Alert className="alert mt-4" severity={variant}>
+        {text}
+    </Alert>
 );
 
 export default AlertCustom;

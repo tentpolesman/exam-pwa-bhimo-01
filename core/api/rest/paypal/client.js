@@ -38,7 +38,7 @@ function environment() {
         fetch(`${graphqlEndpoint[getAppEnv()]}?query=${encodeURI(query)}`, {
             method: 'GET',
             headers: {
-                Authorization: `Bearer ${getAccessEnv()}`,
+                Authentication: `Bearer ${getAccessEnv()}`,
                 'Content-Type': 'application/json',
             },
         })

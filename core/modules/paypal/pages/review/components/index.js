@@ -10,27 +10,27 @@ import SummaryPlugin from '@plugin_summary';
 const PaypalReviewComponent = (props) => {
     const { t, checkout } = props;
     return (
-        <div id="paypal-review" className="row between-lg">
-            <div className="col-lg-12 col-xs-12">
+        <div id="paypal-review" className="flex flex-row between-lg">
+            <div className="lg:basis-full xs:basis-full">
                 <Typography variant="h1" letter="uppercase" type="bold">
                     {t('checkout:paypal:reviewPage')}
                 </Typography>
             </div>
-            <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            <div className="lg:basis-3/12 md:basis-3/12 sm:basis-full xs:basis-full">
                 <ShippingMethod {...props} />
             </div>
-            <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            <div className="lg:basis-3/12 md:basis-3/12 sm:basis-full xs:basis-full">
                 <ShippingAddress {...props} />
             </div>
-            <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            <div className="lg:basis-3/12 md:basis-3/12 sm:basis-full xs:basis-full">
                 <PaymentMethod {...props} />
             </div>
-            <div className="col-lg-12 col-xs-12">
+            <div className="lg:basis-full xs:basis-full">
                 <ListItemCart
                     {...props}
                 />
             </div>
-            <div className="col-lg-12 col-xs-12">
+            <div className="lg:basis-full xs:basis-full">
                 {
                     !checkout.loading.all && checkout.cart && checkout.cart.items && (
                         <SummaryPlugin
@@ -47,7 +47,7 @@ const PaypalReviewComponent = (props) => {
                 }
 
             </div>
-            <div className="col-lg-12 col-xs-12">
+            <div className="lg:basis-full xs:basis-full">
                 <PlaceOrder
                     {...props}
                 />

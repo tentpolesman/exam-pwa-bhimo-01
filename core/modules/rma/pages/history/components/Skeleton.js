@@ -1,47 +1,37 @@
-import Divider from '@material-ui/core/Divider';
-import Skeleton from '@material-ui/lab/Skeleton';
-import classNames from 'classnames';
-import useStyles from '@core_modules/rma/pages/history/components/styles';
+/* eslint-disable jsx-a11y/control-has-associated-label */
+import cx from 'classnames';
+import Skeleton from '@common_skeleton';
 
-export const Loader = () => {
-    const styles = useStyles();
-    return (
-        <div className={classNames(styles.container, 'row')}>
-            <div className="col-lg-10 col-xs-12 col-sm-12">
-                <div className={styles.tableOuterContainer}>
-                    <div className={styles.table}>
-                        <div className="column" style={{ marginTop: 15, marginBottom: 10 }}>
-                            <Skeleton variant="text" width="100%" height={30} />
-                            <Skeleton variant="text" width="100%" height={30} />
-                            <Skeleton variant="text" width="100%" height={30} />
-                            <Skeleton variant="text" width="100%" height={30} />
-                            <Skeleton variant="text" width="100%" height={30} />
-                            <Skeleton variant="text" width="100%" height={30} />
-                            <Divider />
-                        </div>
-                        <div className="column" style={{ marginTop: 15, marginBottom: 10 }}>
-                            <Skeleton variant="text" width="100%" height={30} />
-                            <Skeleton variant="text" width="100%" height={30} />
-                            <Skeleton variant="text" width="100%" height={30} />
-                            <Skeleton variant="text" width="100%" height={30} />
-                            <Skeleton variant="text" width="100%" height={30} />
-                            <Skeleton variant="text" width="100%" height={30} />
-                            <Divider />
-                        </div>
-                        <div className="column" style={{ marginTop: 15, marginBottom: 10 }}>
-                            <Skeleton variant="text" width="100%" height={30} />
-                            <Skeleton variant="text" width="100%" height={30} />
-                            <Skeleton variant="text" width="100%" height={30} />
-                            <Skeleton variant="text" width="100%" height={30} />
-                            <Skeleton variant="text" width="100%" height={30} />
-                            <Skeleton variant="text" width="100%" height={30} />
-                            <Divider />
-                        </div>
-                    </div>
-                </div>
-            </div>
+export const SkeletonDesktop = () => (
+    <>
+        <tr className={cx('even:bg-white', 'odd:bg-neutral-50')}>
+            <td colSpan={5}>
+                <Skeleton width="100%" height={30} />
+            </td>
+        </tr>
+        <tr className={cx('even:bg-white', 'odd:bg-neutral-50')}>
+            <td colSpan={5}>
+                <Skeleton width="100%" height={30} />
+            </td>
+        </tr>
+        <tr className={cx('even:bg-white', 'odd:bg-neutral-50')}>
+            <td colSpan={5}>
+                <Skeleton width="100%" height={30} />
+            </td>
+        </tr>
+    </>
+);
+
+export const SkeletonMobile = () => (
+    <>
+        <div>
+            <Skeleton width="100%" height={100} />
         </div>
-    );
-};
-
-export default Loader;
+        <div className={cx('mt-[12px]')}>
+            <Skeleton width="100%" height={100} />
+        </div>
+        <div className={cx('mt-[12px]')}>
+            <Skeleton width="100%" height={100} />
+        </div>
+    </>
+);

@@ -1,20 +1,21 @@
-import Layout from '@layout';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import { regexPhone } from '@helper_regex';
+/* eslint-disable no-nested-ternary */
 import { debuging } from '@config';
-import { getAppEnv } from '@helpers/env';
+import Content from '@core_modules/contact/pages/default/components';
+import Skeleton from '@core_modules/contact/pages/default/components/skeleton';
 import gqlService from '@core_modules/contact/services/graphql';
+import { regexPhone } from '@helper_regex';
+import { getAppEnv } from '@helpers/env';
+import Layout from '@layout';
 import { contactConfig } from '@services/graphql/repository/pwa_config';
+import { useFormik } from 'formik';
 import { useRef } from 'react';
+import * as Yup from 'yup';
+import Alert from '@common/Alert';
 
 const Contact = (props) => {
     const {
-        Content,
+        //
         t,
-        pageConfig,
-        ErrorInfo,
-        Skeleton,
         isCms = false,
         storeConfig,
     } = props;
@@ -27,6 +28,7 @@ const Contact = (props) => {
         headerTitle: t('contact:pageTitle'),
         header: 'relative', // available values: "absolute", "relative", false (default)
         bottomNav: false,
+        tagSelector: 'swift-page-contact',
     };
     const [message, setMessage] = React.useState({
         open: false,
@@ -43,38 +45,39 @@ const Contact = (props) => {
 
     if (appEnv === 'local') {
         sitekey = dataContactConfig
-                && dataContactConfig.storeConfig
-                && dataContactConfig.storeConfig.pwa
-                && dataContactConfig.storeConfig.pwa.recaptcha_site_key_local;
+            && dataContactConfig.storeConfig
+            && dataContactConfig.storeConfig.pwa
+            && dataContactConfig.storeConfig.pwa.recaptcha_site_key_local;
     } else if (appEnv === 'dev') {
         sitekey = dataContactConfig
-                && dataContactConfig.storeConfig
-                && dataContactConfig.storeConfig.pwa
-                && dataContactConfig.storeConfig.pwa.recaptcha_site_key_dev;
+            && dataContactConfig.storeConfig
+            && dataContactConfig.storeConfig.pwa
+            && dataContactConfig.storeConfig.pwa.recaptcha_site_key_dev;
     } else if (appEnv === 'stage') {
         sitekey = dataContactConfig
-                && dataContactConfig.storeConfig
-                && dataContactConfig.storeConfig.pwa
-                && dataContactConfig.storeConfig.pwa.recaptcha_site_key_stage;
+            && dataContactConfig.storeConfig
+            && dataContactConfig.storeConfig.pwa
+            && dataContactConfig.storeConfig.pwa.recaptcha_site_key_stage;
     } else if (appEnv === 'prod') {
         sitekey = dataContactConfig
-                && dataContactConfig.storeConfig
-                && dataContactConfig.storeConfig.pwa
-                && dataContactConfig.storeConfig.pwa.recaptcha_site_key_prod;
+            && dataContactConfig.storeConfig
+            && dataContactConfig.storeConfig.pwa
+            && dataContactConfig.storeConfig.pwa.recaptcha_site_key_prod;
     }
 
     const [contactusFormSubmit] = gqlService.contactusFormSubmit();
     if (!loadingConfig && dataContactConfig && dataContactConfig.storeConfig && dataContactConfig.storeConfig.pwa) {
-        if (dataContactConfig.storeConfig.pwa.cms_contact_identifiers
-            && dataContactConfig.storeConfig.pwa.cms_contact_identifiers !== '') {
+        if (dataContactConfig.storeConfig.pwa.cms_contact_identifiers && dataContactConfig.storeConfig.pwa.cms_contact_identifiers !== '') {
             cmsContactIdentifiers = dataContactConfig.storeConfig.pwa.cms_contact_identifiers;
         }
 
         if (dataContactConfig.storeConfig.pwa.recaptcha_contact_enable !== null) {
-            enableRecaptcha = (storeConfig && storeConfig.pwa.recaptcha_enable)
-                            && (dataContactConfig && dataContactConfig.storeConfig
-                                && dataContactConfig.storeConfig.pwa
-                                && dataContactConfig.storeConfig.pwa.recaptcha_contact_enable);
+            enableRecaptcha = storeConfig
+                && storeConfig.pwa.recaptcha_enable
+                && dataContactConfig
+                && dataContactConfig.storeConfig
+                && dataContactConfig.storeConfig.pwa
+                && dataContactConfig.storeConfig.pwa.recaptcha_contact_enable;
         }
     }
 
@@ -167,32 +170,12 @@ const Contact = (props) => {
         formik.setFieldValue('captcha', value || '');
     };
 
-    const { error, loading, data } = gqlService.getCmsBlocks(
-        { identifiers: [cmsContactIdentifiers] },
-        { skip: !cmsContactIdentifiers },
-    );
-
-    if (!cmsContactIdentifiers) {
-        return (
-            <Layout pageConfig={pageConfig || Config} {...props}>
-                <ErrorInfo variant="error" text={props.t('contact:nullCmsIdentifer')} />
-            </Layout>
-        );
-    }
-
-    if (error) {
-        return (
-            <Layout pageConfig={pageConfig || Config} {...props}>
-                <ErrorInfo variant="error" text={debuging.originalError ? error.message.split(':')[1] : props.t('common:error:fetchError')} />
-            </Layout>
-        );
-    }
+    const { error, loading, data } = gqlService.getCmsBlocks({ identifiers: [cmsContactIdentifiers] }, { skip: isCms || !cmsContactIdentifiers });
 
     if (isCms) {
         return (
             <Content
                 t={t}
-                Content={Content}
                 handleChangeCaptcha={handleChangeCaptcha}
                 formik={formik}
                 error={error}
@@ -205,27 +188,38 @@ const Contact = (props) => {
                 Skeleton={Skeleton}
                 load={load}
                 enableRecaptcha={enableRecaptcha}
+                isCms={isCms}
             />
         );
     }
+
     return (
-        <Layout pageConfig={pageConfig || Config} {...props}>
-            <Content
-                t={t}
-                Content={Content}
-                handleChangeCaptcha={handleChangeCaptcha}
-                formik={formik}
-                error={error}
-                message={message}
-                setMessage={setMessage}
-                sitekey={sitekey}
-                loading={loading}
-                data={data}
-                recaptchaRef={recaptchaRef}
-                Skeleton={Skeleton}
-                load={load}
-                enableRecaptcha={enableRecaptcha}
-            />
+        <Layout pageConfig={Config} {...props}>
+            {!load && !loading && !loadingConfig && (!dataContactConfig || error) ? (
+                <Alert severity="error" className="capitalize">
+                    {!cmsContactIdentifiers
+                        ? t('contact:nullCmsIdentifer')
+                        : debuging.originalError
+                            ? error.message.split(':')[1]
+                            : t('common:error:fetchError')}
+                </Alert>
+            ) : (
+                <Content
+                    t={t}
+                    handleChangeCaptcha={handleChangeCaptcha}
+                    formik={formik}
+                    error={error}
+                    message={message}
+                    setMessage={setMessage}
+                    sitekey={sitekey}
+                    loading={loading}
+                    data={data}
+                    recaptchaRef={recaptchaRef}
+                    Skeleton={Skeleton}
+                    load={load}
+                    enableRecaptcha={enableRecaptcha}
+                />
+            )}
         </Layout>
     );
 };

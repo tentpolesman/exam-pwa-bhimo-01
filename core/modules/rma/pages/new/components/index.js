@@ -2,38 +2,38 @@
 /* eslint-disable consistent-return */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import TextField from '@common_textfield';
-import classNames from 'classnames';
+import TextField from '@common_forms/TextField';
 import Typography from '@common_typography';
 import Layout from '@layout_customer';
 import Button from '@common_button';
-import Divider from '@material-ui/core/Divider';
+import Divider from '@common_divider';
 import DropFile from '@common_dropfile';
-import CheckBox from '@common_checkbox';
+import CheckBox from '@common_forms/CheckBox';
 import Router from 'next/router';
+import ItemProduct from '@core_modules/rma/pages/new/components/ItemProduct';
+import ItemField from '@core_modules/rma/pages/new/components/ItemField';
 import { requestRma } from '@core_modules/rma/services/graphql';
-import useStyles from './styles';
-import ItemProduct from './ItemProduct';
-import ItemField from './ItemField/index';
+import Alert from '@common/Alert';
 
 const NewContent = (props) => {
     const {
         t, data: { custom_fields, items, allowed_file_extensions }, storeConfig, customerData,
-        order_number, ItemProductView, ItemFieldView, OtherRmaLink, error, loadCustomerData, WarningInfo,
+        order_number, ItemProductView, ItemFieldView, OtherRmaLink, error, loadCustomerData,
     } = props;
 
     if (error || loadCustomerData.error) {
         return (
             <Layout {...props} title={t('customer:menu:return')} activeMenu="/rma/customer">
-                <WarningInfo variant="error" text={t('rma:error:fetch')} />
+                <Alert severity="error">
+                    {t('rma:error:fetch')}
+                </Alert>
             </Layout>
         );
     }
-    const styles = useStyles();
     const [formData, setFormData] = React.useState({
         order_number,
-        customer_name: customerData.firstname,
-        customer_email: customerData.email,
+        customer_name: customerData?.firstname || '',
+        customer_email: customerData?.email || '',
         custom_fields: [],
         order_items: [],
         message: '',
@@ -46,9 +46,11 @@ const NewContent = (props) => {
         textMessage: '',
         variantMessage: 'success',
         errorForm: false,
+        dropFile: [],
     });
 
     let products = [];
+    let disableAll = false;
     const currency = storeConfig ? storeConfig.base_currency_code : 'IDR';
     const [postRma] = requestRma();
 
@@ -69,24 +71,31 @@ const NewContent = (props) => {
                 return item;
             }
         });
+        let countDisable = 0;
         const simpleData = items.filter((item) => !itemsChild.find(({ sku }) => item.sku === sku) && item);
         products = [...itemsChild, ...simpleData];
-        products = products.map((product) => ({
-            label: product.name,
-            value: product.item_id,
-            form: custom_fields,
-            disabled: !product.is_returnable,
-            currency,
-            formData,
-            setFormData,
-            t,
-            errorForm: state.errorForm,
-            ItemProductView,
-            ItemFieldView,
-            OtherRmaLink,
-            storeConfig,
-            ...product,
-        }));
+        products = products.map((product) => {
+            if (!product.is_returnable) {
+                countDisable += 1;
+            }
+            return ({
+                label: product.name,
+                value: product.item_id,
+                form: custom_fields,
+                disabled: !product.is_returnable,
+                currency,
+                formData,
+                setFormData,
+                t,
+                errorForm: state.errorForm,
+                ItemProductView,
+                ItemFieldView,
+                OtherRmaLink,
+                storeConfig,
+                ...product,
+            });
+        });
+        disableAll = countDisable === products.length;
     }
 
     const changeOptionCustomField = (value) => {
@@ -184,8 +193,8 @@ const NewContent = (props) => {
 
     return (
         <Layout {...props} title={t('customer:menu:return')} activeMenu="/rma/customer">
-            <div className="column">
-                <div className={classNames(styles.block)}>
+            <div className="flex flex-col gap-4 mt-4">
+                <div className="flex flex-col gap-4">
                     {
                         custom_fields && custom_fields.length > 0 && custom_fields.map((item, index) => {
                             if (item.refers === 'request') {
@@ -208,25 +217,26 @@ const NewContent = (props) => {
                                         required={item.is_required}
                                         t={t}
                                         ItemFieldView={ItemFieldView}
+                                        disabled={disableAll}
                                     />
                                 );
                             } return null;
                         })
                     }
                 </div>
-                <div className={styles.labelProduct}>
-                    <Typography variant="title">{t('rma:product')}</Typography>
+                <div>
+                    <Typography variant="bd-2" className="capitalize">{t('rma:product')}</Typography>
                 </div>
-                <div className={styles.selectProductContainer}>
-                    <span onClick={selectAll}>
-                        <Typography variant="label">{t('rma:selectAll')}</Typography>
-                    </span>
-                    <Divider orientation="vertical" flexItem />
-                    <span onClick={deselectAll}>
-                        <Typography variant="label">{t('rma:deselectAll')}</Typography>
-                    </span>
+                <div className="flex flex-row gap-1 w-max">
+                    <Button classNameText="w-max" className="!p-0" variant="plain" onClick={selectAll}>
+                        <Typography variant="bd-2b">{t('rma:selectAll')}</Typography>
+                    </Button>
+                    <Divider width="1px" height="100%" orientation="vertical" />
+                    <Button classNameText="w-max" className="!p-0" variant="plain" onClick={deselectAll}>
+                        <Typography variant="bd-2b">{t('rma:deselectAll')}</Typography>
+                    </Button>
                 </div>
-                <div className={styles.block}>
+                <div className="flex flex-col gap-3">
                     {products.length > 0
                             && (
                                 <CheckBox
@@ -236,10 +246,13 @@ const NewContent = (props) => {
                                     onChange={handleSelectProduct}
                                     flex="column"
                                     CustomItem={ItemProduct}
+                                    classNames={{
+                                        checkboxGroupClasses: 'gap-4',
+                                    }}
                                 />
                             )}
                 </div>
-                <div className={styles.block}>
+                <div className="desktop:max-w-[50%]">
                     <TextField
                         name="message"
                         onChange={(event) => setFormData({ ...formData, message: event.target.value })}
@@ -248,13 +261,33 @@ const NewContent = (props) => {
                         label={t('rma:form:label:message')}
                         multiline
                         rows={4}
+                        disabled={disableAll}
+                        className="w-full"
+                        inputProps={{
+                            className: 'w-full',
+                        }}
+                        propsLabelText={{ variant: 'bd-2' }}
+
                     />
                 </div>
-                <div className={styles.block}>
-                    <DropFile label={t('rma:form:placeholder:uploadFile')} getBase64={handleGetBase64} acceptedFile={fileAccept} />
+                <div className="desktop:max-w-[50%]">
+                    <DropFile
+                        label={t('rma:form:placeholder:uploadFile')}
+                        getBase64={handleGetBase64}
+                        acceptedFile={fileAccept}
+                        disabled={disableAll}
+                        className="w-full"
+                        value={state.dropValue}
+                        setValue={(dropValue) => setState({ ...state, dropValue })}
+                    />
                 </div>
-                <div className={styles.block}>
-                    <Button fullWidth onClick={handleSubmit}>
+                <div>
+                    <Button
+                        disabled={disableAll}
+                        onClick={handleSubmit}
+                        className="w-full desktop:max-w-[50%]"
+                        classNameText="justify-center"
+                    >
                         <Typography letter="uppercase" type="bold" variant="span" color="white">{t('rma:form:submit')}</Typography>
                     </Button>
                 </div>
@@ -265,10 +298,10 @@ const NewContent = (props) => {
 
 const NewReturnRma = (props) => {
     const {
-        data, loadCustomerData, loading, Loader,
+        loadCustomerData, loading, Loader,
     } = props;
 
-    if (loading || !data || loadCustomerData.loading) {
+    if (loading || loadCustomerData.loading) {
         return <Loader />;
     }
 

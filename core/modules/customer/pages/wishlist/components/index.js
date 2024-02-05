@@ -1,20 +1,15 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-nested-ternary */
-/* eslint-disable array-callback-return */
-/* eslint-disable no-underscore-dangle */
-// Library
+import React from 'react';
+import cx from 'classnames';
 import Typography from '@common_typography';
 import Button from '@common_button';
-import Alert from '@material-ui/lab/Alert';
-import React from 'react';
-import Layout from '@layout_customer';
-import useStyles from '@core_modules/customer/pages/wishlist/components/style';
 import Item from '@core_modules/customer/pages/wishlist/components/item';
 import ShareWishlistComponent from '@core_modules/customer/pages/wishlist/components/sharewishlist';
+import Alert from '@common/Alert';
+import Show from '@common/Show';
+import Skeleton from '@core_modules/customer/pages/wishlist/components/skeleton';
 
 // Main Render Page
 const Content = (props) => {
-    const styles = useStyles();
     const {
         t, wishlist, refetch, handleRemove, handleToCart, handleAddAlltoBag, loading,
         handleShareWishlist, shareLoading, storeConfig,
@@ -23,66 +18,93 @@ const Content = (props) => {
     const handleOpenShare = () => {
         setOpenShare(true);
     };
+
     return (
-        <Layout {...props}>
-            <div className={styles.root}>
-                {
-                    openShare && (
-                        <ShareWishlistComponent
-                            open={openShare}
-                            setOpen={() => setOpenShare(false)}
-                            handleShareWishlist={handleShareWishlist}
-                            shareLoading={shareLoading}
-                            t={t}
-                        />
-                    )
-                }
-                {wishlist.length === 0 && (
-                    <Alert className="m-15" severity="warning">
+        <div>
+            {
+                openShare && (
+                    <ShareWishlistComponent
+                        open={openShare}
+                        setOpen={() => setOpenShare(false)}
+                        handleShareWishlist={handleShareWishlist}
+                        shareLoading={shareLoading}
+                        t={t}
+                    />
+                )
+            }
+            {wishlist.length === 0 && !loading && (
+                <Alert severity="warning">
+                    <Typography
+                        variant="p-2a"
+                        className={cx()}
+                    >
                         {t('customer:wishlist:notFound')}
-                    </Alert>
+                    </Typography>
+                </Alert>
+            )}
+            <div
+                className={cx(
+                    'grid tablet:grid-cols-3 tablet:gap-4 mobile:grid-cols-2 mobile:gap-2',
                 )}
-                <div className={[styles.content, styles.wishlistItems, 'row'].join(' ')}>
-                    {wishlist.map((item, index) => (
-                        <div className="col-md-3 col-xs-12">
-                            <Item
-                                key={index}
-                                {...item}
-                                {...props}
-                                refetch={refetch}
-                                handleRemove={handleRemove}
-                                handleToCart={handleToCart}
-                                storeConfig={storeConfig}
-                            />
-                        </div>
-                    ))}
+            >
+                <Show when={loading || wishlist.length === 0}>
+                    <Skeleton />
+                </Show>
+                {wishlist.map((item, index) => (
+                    <div
+                        key={index}
+                        className={cx(
+                            '',
+                        )}
+                    >
+                        <Item
+                            {...item}
+                            {...props}
+                            refetch={refetch}
+                            handleRemove={handleRemove}
+                            handleToCart={handleToCart}
+                            storeConfig={storeConfig}
+                            noBorderTop={index > 0}
+                        />
+                    </div>
+                ))}
+            </div>
+            <div
+                className={cx(
+                    'flex items-center justify-center flex-wrap',
+                    'mt-[24px]',
+                )}
+            >
+                <div
+                    className={cx(
+                        'm-2',
+                    )}
+                >
+                    <Button
+                        onClick={handleOpenShare}
+                        disabled={loading || wishlist.length === 0}
+                    >
+                        <Typography className={cx('!text-neutral-white uppercase')}>
+                            {t('customer:wishlist:shareWishlist')}
+                        </Typography>
+                    </Button>
                 </div>
-                <div className={styles.footer}>
-                    <div>
-                        <Button
-                            onClick={handleOpenShare}
-                            disabled={loading || wishlist.length === 0}
-                            className={styles.btnWishlist}
-                        >
-                            <Typography variant="span" type="bold" letter="uppercase" color="white">
-                                {t('customer:wishlist:shareWishlist')}
-                            </Typography>
-                        </Button>
-                    </div>
-                    <div>
-                        <Button
-                            onClick={handleAddAlltoBag}
-                            disabled={loading || wishlist.length === 0}
-                            className={styles.btnWishlist}
-                        >
-                            <Typography variant="span" type="bold" letter="uppercase" color="white">
-                                {t('customer:wishlist:addAllToBag')}
-                            </Typography>
-                        </Button>
-                    </div>
+                <div
+                    className={cx(
+                        'm-2',
+                    )}
+                >
+                    <Button
+                        onClick={handleAddAlltoBag}
+                        disabled={loading || wishlist.length === 0}
+                    >
+                        <Typography className={cx('!text-neutral-white uppercase')}>
+                            {t('customer:wishlist:addAllToBag')}
+                        </Typography>
+                    </Button>
                 </div>
             </div>
-        </Layout>
+        </div>
     );
 };
 

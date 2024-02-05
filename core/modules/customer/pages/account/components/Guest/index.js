@@ -2,13 +2,12 @@
 import React from 'react';
 import Button from '@common_button';
 import Typography from '@common_typography';
-import useStyles from '@core_modules/customer/pages/account/components/Guest/style';
 import dynamic from 'next/dynamic';
 
 const Footer = dynamic(() => import('@common_footer'), { ssr: false });
 
 const WihtOut = (props) => {
-    const styles = useStyles();
+    const styles = {};
     const { t, storeConfig } = props;
 
     return (

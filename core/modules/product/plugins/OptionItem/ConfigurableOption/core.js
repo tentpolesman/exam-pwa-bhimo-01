@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-nested-ternary */
 import { modules } from '@config';
@@ -10,27 +11,28 @@ import ProductByVariant, { generateAvailableCombination, generateValue, handleSe
 import Router from 'next/router';
 import React from 'react';
 import TagManager from 'react-gtm-module';
+import View from '@plugin_optionitem/ConfigurableOption/view';
+import propTypes from 'prop-types';
 
-const OptionsItemConfig = (props) => {
+const ConfigurableOptionCore = (props) => {
     const {
-        setBanner = () => {},
-        setPrice = () => {},
+        setBanner = undefined,
+        setPrice = undefined,
         t,
         data,
         dataPrice,
-        setOpen = () => {},
+        setOpen = undefined,
         ConfigurableView,
         Footer,
-        setStockStatus = () => {},
+        setStockStatus = undefined,
         stockStatus = '',
         handleAddToCart: CustomAddToCart,
-        View,
         loading: customLoading,
         setLoading: setCustomLoading,
         checkCustomizableOptionsValue,
         errorCustomizableOptions,
         customizableOptions,
-        handleSelecteProduct = () => {},
+        handleSelecteProduct = undefined,
         isGrid,
         noValidate = false,
         ...other
@@ -44,7 +46,7 @@ const OptionsItemConfig = (props) => {
         __typename, sku, media_gallery, image, price_range, price_tiers, small_image, name, categories, url_key, stock_status, review, sale,
     } = data;
 
-    const reviewValue = parseInt(review?.rating_summary, 0) / 20;
+    const reviewValue = parseInt(review?.rating_summary, 10) / 20;
     const [selectConfigurable, setSelectConfigurable] = React.useState({});
     const [selectedProduct, setSelectedProduct] = React.useState({});
     const [qty, setQty] = React.useState(1);
@@ -76,10 +78,12 @@ const OptionsItemConfig = (props) => {
                 ...product,
                 ...productPrice,
             });
-            handleSelecteProduct({
-                ...product,
-                ...productPrice,
-            });
+            if (handleSelecteProduct) {
+                handleSelecteProduct({
+                    ...product,
+                    ...productPrice,
+                });
+            }
             const bannerData = [];
             if (product.media_gallery.length > 0) {
                 // eslint-disable-next-line array-callback-return
@@ -101,14 +105,20 @@ const OptionsItemConfig = (props) => {
                     imageUrl,
                 });
             }
-            setBanner(bannerData);
-            setPrice({
-                priceRange: productPrice.price_range,
-                priceTiers: productPrice.price_tiers,
-                // eslint-disable-next-line no-underscore-dangle
-                productType: product.__typename,
-            });
-            setStockStatus(product.stock_status);
+            if (setBanner) {
+                setBanner(bannerData);
+            }
+            if (setPrice) {
+                setPrice({
+                    priceRange: productPrice.price_range,
+                    priceTiers: productPrice.price_tiers,
+                    // eslint-disable-next-line no-underscore-dangle
+                    productType: product.__typename,
+                });
+            }
+            if (setStockStatus) {
+                setStockStatus(product.stock_status);
+            }
         } else {
             const bannerData = [];
             if (media_gallery && media_gallery.length > 0) {
@@ -131,29 +141,29 @@ const OptionsItemConfig = (props) => {
                     imageUrl,
                 });
             }
-            setBanner(bannerData);
-            setPrice({
-                priceRange: price_range,
-                priceTiers: price_tiers,
-                // eslint-disable-next-line no-underscore-dangle
-                productType: __typename,
-            });
-            setStockStatus(stock_status);
-            handleSelecteProduct({ ...data });
+            if (setBanner) {
+                setBanner(bannerData);
+            }
+            if (setPrice) {
+                setPrice({
+                    priceRange: price_range,
+                    priceTiers: price_tiers,
+                    // eslint-disable-next-line no-underscore-dangle
+                    productType: __typename,
+                });
+            }
+            if (setStockStatus) {
+                setStockStatus(stock_status);
+            }
+            if (handleSelecteProduct) {
+                handleSelecteProduct({ ...data });
+            }
         }
 
         firstSelected.code = key;
         firstSelected.value = value;
         await setFirstSelected({ ...firstSelected });
     };
-
-    let cartId = '';
-    let isLogin = 0;
-
-    if (typeof window !== 'undefined') {
-        isLogin = getLoginInfo();
-        cartId = getCartId();
-    }
 
     const [addConfigurableProducts] = addConfigurableProductsToCart();
     const [getGuestCartId] = queryGetGuestCartId();
@@ -162,6 +172,8 @@ const OptionsItemConfig = (props) => {
     const [error, setError] = React.useState({});
 
     const addToCart = async () => {
+        const isLogin = getLoginInfo();
+        let cartId = getCartId();
         let customizable_options = [];
         const entered_options = [];
         const uids = [];
@@ -221,7 +233,7 @@ const OptionsItemConfig = (props) => {
         const errorData = {};
         if (!noValidate) {
             // eslint-disable-next-line array-callback-return
-            configProduct.data.products.items[0].configurable_options.map((option) => {
+            configProduct?.data?.products?.items[0]?.configurable_options?.forEach((option) => {
                 if (selectConfigurable[option.attribute_code] === '' || !selectConfigurable[option.attribute_code]) {
                     errorData[option.attribute_code] = `${option.attribute_code} ${t('validate:required')}`;
                 }
@@ -234,7 +246,7 @@ const OptionsItemConfig = (props) => {
          * Find attributes that have the same 'selectConfigurable' values
          * eg: color with the value of 52, size with the value of 24, etc.
          */
-        const selectedVariantAttrs = configProduct.data.products.items[0].variants
+        const selectedVariantAttrs = configProduct?.data?.products?.items[0]?.variants
             .find((variant) => variant.attributes
                 .every((attr) => Object.keys(selectConfigurable)
                     .some((sc) => sc === attr.code && selectConfigurable[sc] === attr.value_index)));
@@ -284,7 +296,11 @@ const OptionsItemConfig = (props) => {
                             {
                                 quantity: parseFloat(qty),
                                 sku,
-                                selected_options: [...selectedVariantAttrs.attributes.map((selectedOpt) => selectedOpt.uid), ...uids],
+                                selected_options: [
+                                    ...((selectedVariantAttrs?.attributes?.length > 0
+                                        && selectedVariantAttrs.attributes.map((selectedOpt) => selectedOpt.uid)) || []),
+                                    ...uids,
+                                ],
                                 entered_options,
                             },
                         ],
@@ -347,7 +363,7 @@ const OptionsItemConfig = (props) => {
                             window.reloadCartQty = true;
                             window.toastMessage({ variant: 'success', text: t('product:successAddCart'), open: true });
                             setLoading(false);
-                            setOpen(false);
+                            if (setOpen) setOpen(false);
                         })
                         .catch((e) => {
                             const originalError = e.message.includes(':') ? e.message.split(':')[1] : e.message;
@@ -362,6 +378,13 @@ const OptionsItemConfig = (props) => {
                         });
                 }
             }
+        } else {
+            window.toastMessage({
+                open: true,
+                text: t('common:message:selectOptionFailed'),
+                variant: 'warning',
+                autoHideDuration: 3000,
+            });
         }
     };
 
@@ -407,6 +430,8 @@ const OptionsItemConfig = (props) => {
         }
     }, [selectConfigurable]);
 
+    const disabled = stockStatus === 'OUT_OF_STOCK' || stock_status === 'OUT_OF_STOCK';
+
     return (
         <View
             options={options}
@@ -419,12 +444,56 @@ const OptionsItemConfig = (props) => {
             setQty={setQty}
             t={t}
             loading={loading || configProduct.loading}
-            disabled={!selectedProduct || !selectedProduct.sku || stockStatus === 'OUT_OF_STOCK'}
+            loadingProduct={configProduct.loading}
+            disabled={disabled}
             isGrid={isGrid}
-            disableItem={stock_status === 'OUT_OF_STOCK'}
+            disableItem={disabled || loading}
+            stockStatus={stockStatus}
+            url_key={url_key}
             {...other}
         />
     );
 };
 
-export default OptionsItemConfig;
+ConfigurableOptionCore.propTypes = {
+    setBanner: propTypes.func,
+    setPrice: propTypes.func,
+    t: propTypes.func.isRequired,
+    data: propTypes.object.isRequired,
+    dataPrice: propTypes.array.isRequired,
+    setOpen: propTypes.func,
+    ConfigurableView: propTypes.func,
+    Footer: propTypes.func,
+    setStockStatus: propTypes.func,
+    stockStatus: propTypes.string,
+    handleAddToCart: propTypes.func,
+    loading: propTypes.bool,
+    setLoading: propTypes.func,
+    checkCustomizableOptionsValue: propTypes.func,
+    errorCustomizableOptions: propTypes.oneOfType([propTypes.object, propTypes.array]),
+    customizableOptions: propTypes.oneOfType([propTypes.object, propTypes.array]),
+    handleSelecteProduct: propTypes.func,
+    isGrid: propTypes.bool,
+    noValidate: propTypes.oneOfType([propTypes.bool, propTypes.func]),
+};
+
+ConfigurableOptionCore.defaultProps = {
+    setBanner: undefined,
+    setPrice: undefined,
+    setOpen: undefined,
+    ConfigurableView: undefined,
+    Footer: undefined,
+    setStockStatus: undefined,
+    stockStatus: '',
+    handleAddToCart: undefined,
+    loading: false,
+    setLoading: undefined,
+    checkCustomizableOptionsValue: undefined,
+    errorCustomizableOptions: {},
+    customizableOptions: {},
+    handleSelecteProduct: undefined,
+    isGrid: false,
+    noValidate: false,
+};
+
+export default ConfigurableOptionCore;

@@ -2,16 +2,15 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable-next-line jsx-a11y/click-events-have-key-events */
-import { getCartId, setCartId, removeCartId } from '@helper_cartid';
-import dynamic from 'next/dynamic';
-import { getLoginInfo } from '@helper_auth';
-import { useQuery, useApolloClient } from '@apollo/client';
-import { localTotalCart } from '@services/graphql/schema/local';
-import Router from 'next/router';
-import propTypes from 'prop-types';
-import { getCartIdUser } from '@core_modules/cart/services/graphql/schema';
+import { useApolloClient, useQuery } from '@apollo/client';
 import { getCountCart } from '@core_modules/cart/services/graphql';
+import { getCartIdUser } from '@core_modules/cart/services/graphql/schema';
 import { getCountCart as getCountCartRoot } from '@core_modules/theme/services/graphql';
+import { getLoginInfo } from '@helper_auth';
+import { getCartId, removeCartId, setCartId } from '@helper_cartid';
+import { localTotalCart } from '@services/graphql/schema/local';
+import dynamic from 'next/dynamic';
+import propTypes from 'prop-types';
 
 const MiniCart = dynamic(() => import('@plugin_minicart'), { ssr: false });
 
@@ -42,10 +41,7 @@ const ShoppingBagIcon = ({
         }
     }
     const {
-        loading: getQtyLoading,
-        data: getQtyData,
-        error: getQtyError,
-        refetch: getQtyRefetch,
+        loading: getQtyLoading, data: getQtyData, error: getQtyError, refetch: getQtyRefetch,
     } = getCountCart(cartId);
 
     const reloadCartQty = typeof window !== 'undefined' && window && window.reloadCartQty;
@@ -89,28 +85,23 @@ const ShoppingBagIcon = ({
 
     const cartData = data && data.totalCart ? data.totalCart : 0;
     const handleLink = () => {
-        if (window.innerWidth >= 768) {
-            setOpen(true);
-        } else {
-            Router.push('/checkout/cart');
-        }
+        setOpen(true);
     };
     if (withLink) {
         return (
             <>
-                {typeof window !== 'undefined'
-                    ? <MiniCart storeConfig={storeConfig} open={open} setOpen={() => setOpen(!open)} count={cartData} /> : null}
-                <WihtLinkView
-                    cartData={cartData}
-                    handleLink={handleLink}
-                />
+                {typeof window !== 'undefined' && open ? (
+                    <MiniCart storeConfig={storeConfig} open={open} setOpen={() => setOpen(!open)} count={cartData} />
+                ) : null}
+                <WihtLinkView cartData={cartData} handleLink={handleLink} />
             </>
         );
     }
     return (
         <>
-            {typeof window !== 'undefined' && cartData > 0
-                ? <MiniCart storeConfig={storeConfig} open={open} setOpen={() => setOpen(!open)} count={cartData} /> : null}
+            {typeof window !== 'undefined' && open && cartData > 0 ? (
+                <MiniCart storeConfig={storeConfig} open={open} setOpen={() => setOpen(!open)} count={cartData} />
+            ) : null}
             <WithoutLinkView cartData={cartData} />
         </>
     );

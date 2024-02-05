@@ -9,41 +9,50 @@ import * as productSchema from '@core_modules/catalog/services/graphql/productSc
  * @param router router Object from nextjs (useRouter hook)
  * @returns Schema get product
  */
-export const getProduct = (config, otherConfig = {}, router) => useQuery(productSchema.getProduct(config, router), {
-    ...otherConfig,
-});
-export const getProductPrice = (config, otherConfig = {}, router) => useLazyQuery(productSchema.getProductPrice(config, router), {
-    ...otherConfig,
-    fetchPolicy: 'no-cache',
-});
-export const getProductAgragations = () => useQuery(productSchema.getProductAgragations(), {});
-export const getCategory = (variables) => useQuery(schemaCategory.getCategory(variables), {
-});
-export const getCategoryProducts = (variables) => useQuery(schemaCategory.getCategoryProducts(variables), {
-    context: {
-        request: 'internal',
-    },
-});
+export const getProduct = (config, otherConfig = {}, router) =>
+    useQuery(productSchema.getProduct(config, router), {
+        ...otherConfig,
+    });
+export const getProductPrice = (config, otherConfig = {}, router) =>
+    useLazyQuery(productSchema.getProductPrice(config, router), {
+        ...otherConfig,
+        fetchPolicy: 'no-cache',
+    });
+export const getProductAggregations = (options) =>
+    useQuery(productSchema.getProductAggregations(), {
+        ...options,
+    });
+export const getCategory = (variables) => useQuery(schemaCategory.getCategory(variables), {});
+export const getCategoryProducts = (variables) =>
+    useQuery(schemaCategory.getCategoryProducts(variables), {
+        context: {
+            request: 'internal',
+        },
+    });
 export const getFilter = (catId) => useQuery(schemaCategory.getFilter(catId), { ssr: true });
-export const addWishlist = () => useMutation(productSchema.addWishlist, {
-    context: {
-        request: 'internal',
-    },
-});
+export const addWishlist = () =>
+    useMutation(productSchema.addWishlist, {
+        context: {
+            request: 'internal',
+        },
+    });
 
-export const getDetailProduct = (config = {}) => useLazyQuery(productSchema.getDetailProduct(config), {
-    fetchPolicy: 'no-cache',
-    extFetchPolicy: 'no-cache',
-});
+export const getDetailProduct = (config = {}) =>
+    useLazyQuery(productSchema.getDetailProduct(config), {
+        fetchPolicy: 'no-cache',
+        extFetchPolicy: 'no-cache',
+    });
 
-export const getDetailProductPrice = (config = {}) => useLazyQuery(productSchema.getDetailProductPrice(config), {
-    fetchPolicy: 'no-cache',
-    extFetchPolicy: 'no-cache',
-});
+export const getDetailProductPrice = (config = {}) =>
+    useLazyQuery(productSchema.getDetailProductPrice(config), {
+        fetchPolicy: 'no-cache',
+        extFetchPolicy: 'no-cache',
+    });
 
-export const getSeller = (options = {}) => useLazyQuery(productSchema.getSeller, {
-    ...options,
-});
+export const getSeller = (options = {}) =>
+    useLazyQuery(productSchema.getSeller, {
+        ...options,
+    });
 
 export const getPwaConfig = () => useQuery(schemaCategory.configpwa);
 

@@ -1,22 +1,10 @@
 import React from 'react';
 import Button from '@common_button';
-import Typography from '@common_typography';
-import AppBar from '@material-ui/core/AppBar';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import IconButton from '@material-ui/core/IconButton';
-import Slide from '@material-ui/core/Slide';
-import CloseIcon from '@material-ui/icons/Close';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
+import Dialog from '@common_dialog';
 import gqlService from '@core_modules/checkout/services/graphql';
 import CmsRenderer from '@core_modules/cms/components/cms-renderer';
-import useStyles from '@core_modules/checkout/pages/default/components/ModalHowtoPay/style';
-import { useTranslation } from '@i18n';
-
-const Transition = React.forwardRef((props, ref) => (
-    <Slide direction="up" ref={ref} {...props} />
-));
+import { useTranslation } from 'next-i18next';
+import cx from 'classnames';
 
 const ModalHowtoPay = ({
     open,
@@ -24,8 +12,6 @@ const ModalHowtoPay = ({
     setDisplayHowToPay,
 }) => {
     const { t } = useTranslation(['common', 'checkout', 'validate']);
-    const styles = useStyles();
-    const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
     const { data, error, loading: loadingTutor } = gqlService.getCmsPage({ identifier: 'how-to-pay' });
     const mount = React.useRef(null);
 
@@ -43,47 +29,28 @@ const ModalHowtoPay = ({
         return (
             <Dialog
                 open={open}
-                TransitionComponent={Transition}
-                onClose={setOpen}
-                maxWidth="sm"
-                fullWidth={!!isDesktop}
-                fullScreen={!isDesktop}
-            >
-                <AppBar className={styles.appBar}>
-                    <Typography
-                        variant="label"
-                        type="bold"
-                        align="left"
-                        letter="uppercase"
-                        className={styles.title}
-                    >
-                        {data.cmsPage.title}
-                    </Typography>
-                    <IconButton
-                        className={styles.btnClose}
-                        edge="start"
-                        onClick={setOpen}
-                        aria-label="close"
-                    >
-                        <CloseIcon className={styles.iconClose} />
-                    </IconButton>
-                </AppBar>
-                <div>
-                    <DialogContent dividers>
-                        <div className={styles.body}>
+                onClose={() => setOpen()}
+                title={data.cmsPage.title}
+                onClickCloseTitle={() => setOpen()}
+                closeOnBackdrop
+                useCloseTitleButton
+                content={(
+                    <div className="flex !max-h-[calc(100vh-36px)] flex-col gap-4 desktop:border-t desktop:border-neutral-200">
+                        <div className={cx(
+                            'flex flex-col relative max-h-[calc(100vh-300px)] !overflow-y-scroll overflow-x-hidden',
+                            'max-w-full',
+                        )}
+                        >
                             <CmsRenderer content={data.cmsPage.content} />
                         </div>
-                    </DialogContent>
-
-                    <DialogActions>
-                        <div className={styles.footer}>
-                            <Button loading={loadingTutor} onClick={setOpen} className={styles.btnSave} type="submit">
+                        <div className="flex flex-row justify-end bg-neutral-white">
+                            <Button loading={loadingTutor} classNameText="justify-center" className="w-[100px]" onClick={setOpen} type="submit">
                                 {t('checkout:buttonOk')}
                             </Button>
                         </div>
-                    </DialogActions>
-                </div>
-            </Dialog>
+                    </div>
+                )}
+            />
         );
     }
     return null;

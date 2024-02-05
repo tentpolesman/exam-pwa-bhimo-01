@@ -1,32 +1,46 @@
+import React, { useRef } from 'react';
 import Layout from '@layout';
 import { useFormik } from 'formik';
 import { regexPhone, regexEmail } from '@helper_regex';
 import * as Yup from 'yup';
 import Router from 'next/router';
+import { getAppEnv } from '@helpers/env';
 import { requestLinkToken, otpConfig } from '../../services/graphql';
 
+const appEnv = getAppEnv();
+
 const ForgotPassword = (props) => {
-    const {
-        t, storeConfig, pageConfig, Content,
-    } = props;
+    const { t, storeConfig, Content } = props;
     const config = {
         title: t('forgotpassword:title'),
         header: 'relative', // available values: "absolute", "relative", false (default)
         headerTitle: t('forgotpassword:title'),
         bottomNav: false,
+        tagSelector: 'swift-page-forgotpassword',
     };
-    const [toast, setToast] = React.useState({
-        open: false,
-        variant: 'success',
-        text: '',
-    });
     const forgotWithPhone = storeConfig.forgot_password_phone;
     const [useEmail, setUseEmail] = React.useState(false);
     const [useForgotWithPhone, setUseForgotWithPhone] = React.useState(forgotWithPhone);
     const { loading, data } = otpConfig();
     const [load, setLoad] = React.useState(false);
     const [disabled, setDisabled] = React.useState(true);
+    const [isEmailSent, setIsEmailSent] = React.useState(false);
     const [getToken] = requestLinkToken();
+
+    const recaptchaRef = useRef();
+    const enableRecaptcha = storeConfig?.pwa?.recaptcha_enable;
+
+    let sitekey;
+
+    if (appEnv === 'local') {
+        sitekey = storeConfig?.pwa?.recaptcha_site_key_local;
+    } else if (appEnv === 'dev') {
+        sitekey = storeConfig?.pwa?.recaptcha_site_key_dev;
+    } else if (appEnv === 'stage') {
+        sitekey = storeConfig?.pwa?.recaptcha_site_key_stage;
+    } else if (appEnv === 'prod') {
+        sitekey = storeConfig?.pwa?.recaptcha_site_key_prod;
+    }
 
     const formik = useFormik({
         initialValues: {
@@ -34,6 +48,7 @@ const ForgotPassword = (props) => {
             otp: '',
             phoneNumber: '',
             phoneNumberEmail: '',
+            captcha: '',
         },
         validationSchema: Yup.object().shape({
             email: useEmail && Yup.string().required(t('validate:email:required')),
@@ -62,6 +77,7 @@ const ForgotPassword = (props) => {
                 && data
                 && data.otpConfig.otp_enable[0].enable_otp_forgot_password
                 && Yup.string().required('Otp is required'),
+            captcha: enableRecaptcha && Yup.string().required(t('validate:captcha:required')),
         }),
         onSubmit: (values) => {
             setLoad(true);
@@ -98,38 +114,33 @@ const ForgotPassword = (props) => {
                     const { token, message } = res.data.requestLinkForgotPassword;
 
                     if (token) {
-                        setToast({
+                        window.toastMessage({
                             open: true,
-                            variant: 'success',
                             text: `${t('forgotpassword:successPhone', { phone })}`,
+                            variant: 'success',
                         });
                         setTimeout(() => {
                             Router.push(`/customer/account/createPassword?token=${token}`);
                         }, 3000);
                     } else if (message === 'Email is not registered.') {
-                        setToast({
+                        window.toastMessage({
                             open: true,
                             variant: 'error',
                             text: `${t('forgotpassword:failedEmail', { email })}`,
                         });
-                        setLoad(false);
                     } else {
-                        setToast({
-                            open: true,
-                            variant: 'success',
-                            text: `${t('forgotpassword:successEmail', { email })}`,
-                        });
+                        setIsEmailSent(true);
                     }
                 })
                 .catch((e) => {
                     if (e.message === 'phone number is not registered.') {
-                        setToast({
+                        window.toastMessage({
                             open: true,
                             variant: 'error',
                             text: t('forgotpassword:failedPhone', { phone }),
                         });
                     } else {
-                        setToast({
+                        window.toastMessage({
                             open: true,
                             variant: 'error',
                             text: e.message.split(':')[1] || t('forgotpassword:failed'),
@@ -141,7 +152,6 @@ const ForgotPassword = (props) => {
     });
 
     const handleSwitch = () => {
-        setToast({ ...toast, open: false });
         setUseEmail(!useEmail);
         if (data && data.otpConfig.otp_enable[0].enable_otp_forgot_password) {
             setDisabled(!disabled);
@@ -153,15 +163,19 @@ const ForgotPassword = (props) => {
         formik.setFieldValue('phoneNumber', value);
     };
     React.useEffect(() => {
-        if (data && !data.otpConfig.otp_enable[0].enable_otp_forgot_password && !useForgotWithPhone) {
+        if (data && !data?.otpConfig?.otp_enable?.[0]?.enable_otp_forgot_password && !useForgotWithPhone) {
             setUseEmail(true);
-        } else if (data && data.otpConfig.otp_enable[0].enable_otp_forgot_password) {
+        } else if (data && data?.otpConfig?.otp_enable?.[0]?.enable_otp_forgot_password) {
             setUseForgotWithPhone(false);
         }
-    }, [useEmail, useForgotWithPhone]);
+    }, [data, useForgotWithPhone]);
+
+    const handleChangeCaptcha = (value) => {
+        formik.setFieldValue('captcha', value || '');
+    };
 
     return (
-        <Layout pageConfig={pageConfig || config} {...props}>
+        <Layout pageConfig={config} {...props}>
             <Content
                 t={t}
                 loading={loading}
@@ -170,12 +184,15 @@ const ForgotPassword = (props) => {
                 load={load}
                 useEmail={useEmail}
                 handleSwitch={handleSwitch}
-                toast={toast}
-                setToast={setToast}
                 handleChangePhone={handleChangePhone}
                 setDisabled={setDisabled}
                 disabled={disabled}
                 useForgotWithPhone={useForgotWithPhone}
+                enableRecaptcha={enableRecaptcha}
+                sitekey={sitekey}
+                handleChangeCaptcha={handleChangeCaptcha}
+                recaptchaRef={recaptchaRef}
+                isEmailSent={isEmailSent}
             />
         </Layout>
     );

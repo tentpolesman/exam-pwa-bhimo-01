@@ -1,27 +1,31 @@
-import classNames from 'classnames';
-import TextField from '@common_textfield';
-import useStyles from '@core_modules/checkout/pages/default/components/OrderComment/style';
+import TextField from '@common_forms/TextField';
 
 const OrderCommentView = (props) => {
-    const styles = useStyles();
     const {
         formik,
     } = props;
     return (
         <>
-            <div className={classNames(styles.block, styles.rmBorder)}>
-                <div className={styles.orderCommentContainer}>
+            <div className="flex flex-col w-full">
+                <div className="flex flex-row items-center my-3 w-full">
                     <TextField
                         name="orderComment"
                         onChange={formik.handleChange}
                         value={formik.values.orderComment}
                         placeholder="Order Note"
                         label="Order Note"
-                        className={styles.textField}
+                        classWrapper="w-full"
+                        className="w-full"
+                        inputProps={{
+                            className: 'w-full!',
+                        }}
                         multiline
                         row="4"
-                        error={!!(formik.touched.orderComment && formik.errors.orderComment)}
-                        errorMessage={(formik.touched.orderComment && formik.errors.orderComment) || null}
+                        hintProps={{
+                            displayHintText: !!(formik.touched.orderComment && formik.errors.orderComment),
+                            hintType: 'error',
+                            hintText: formik.errors.orderComment,
+                        }}
                     />
                 </div>
             </div>

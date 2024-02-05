@@ -1,241 +1,274 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint max-len: ["error", { "code": 180 }] */
-/* eslint-disable jsx-a11y/anchor-is-valid */
-/* eslint-disable no-undef */
-/* eslint-disable no-nested-ternary */
-/* eslint-disable eqeqeq */
-import Typography from '@common_typography';
-import Layout from '@layout_customer';
-import Paper from '@material-ui/core/Paper';
-import TableContainer from '@material-ui/core/TableContainer';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Alert from '@material-ui/lab/Alert';
-import formatDate from '@helper_date';
-import GetAppIcon from '@material-ui/icons/GetApp';
-import Button from '@material-ui/core/Button';
-import classNames from 'classnames';
+import { useState } from 'react';
+import cx from 'classnames';
 import Link from 'next/link';
-import useStyles from '@core_modules/order/pages/history/style';
-import { SkeletonContent } from '@core_modules/order/pages/history/components/skeleton';
+import Layout from '@layout_customer';
+import Typography from '@common_typography';
+import Pagination from '@common_pagination';
+import Alert from '@common/Alert';
+import Show from '@common_show';
+import formatDate from '@helper_date';
+import ArrowDownTrayIcon from '@heroicons/react/24/outline/ArrowDownTrayIcon';
+import { SkeletonDesktop, SkeletonMobile } from '@core_modules/order/pages/history/components/downloadable/skeleton';
+import useMediaQuery from '@hook/useMediaQuery';
+
+const MobileTableItemComponent = ({
+    label, value, CustomComponentValue, isLong = false,
+}) => (
+    <div className={cx('flex flex-row')}>
+        <div className={cx('tablet:w-[35%]', isLong ? 'mobile:max-tablet:hidden' : 'mobile:w-[30%]')}>
+            <Typography variant="bd-2b" className={cx('!font-semibold')}>
+                {label}
+            </Typography>
+        </div>
+        <div className={cx('w-[5%]', isLong ? 'mobile:max-tablet:hidden' : '')}>
+            <Typography variant="bd-2b">{' : '}</Typography>
+        </div>
+        <div className={cx(isLong ? 'mobile:w-full' : 'mobile:w-[65%]', 'tablet:w-[60%]')}>
+            <Show when={!!CustomComponentValue}>{CustomComponentValue}</Show>
+            <Show when={!CustomComponentValue}>
+                <Typography variant="bd-2b">{value}</Typography>
+            </Show>
+        </div>
+    </div>
+);
 
 const DefaultView = (props) => {
     const {
-        data, t,
-        loadMore,
+        data, t, loading, error,
     } = props;
-    const styles = useStyles();
+    const { isDesktop } = useMediaQuery();
+    const [page, setPage] = useState(1);
+    const itemCount = data?.length;
+    const itemLimit = 10;
+    const totalPage = itemCount < itemLimit ? 1 : Math.ceil(itemCount / itemLimit);
+
+    const itemList = Array.from({ length: totalPage }, (_, i) => data.slice(i * itemLimit, i * itemLimit + itemLimit));
+
+    const handleChangePage = (value) => {
+        setPage(value);
+    };
+
+    const hasData = itemCount > 0;
+
+    const PaginationComponent = () => (
+        <div className={cx('table-data pt-6 flex justify-between', 'tablet:items-center tablet:flex-row', 'mobile:flex-col')}>
+            <div className="flex justify-between items-center flex-1">
+                <Typography className={cx('font-normal', 'leading-2lg')}>{`${itemCount ?? 0} ${t('common:label:data')}`}</Typography>
+            </div>
+            <div className={cx('flex', 'flex-row', 'items-center', 'mobile:max-tablet:pt-4', 'mobile:max-tablet:justify-center')}>
+                <Pagination
+                    clickToTop
+                    handleChangePage={handleChangePage}
+                    page={page}
+                    siblingCount={0}
+                    className={cx('!p-0')}
+                    totalPage={totalPage}
+                />
+            </div>
+        </div>
+    );
+
     return (
         <Layout t={t} wishlist={[]}>
             <div>
-                <TableContainer component={Paper} className={styles.tableContainer}>
-                    <Table className={styles.table} size="small" aria-label="a dense table">
-                        <TableHead>
-                            <TableRow className={styles.tableRowHead}>
-                                <TableCell align="left">
-                                    <Typography variant="span" type="bold">
-                                        {t('order:order')}
-                                        {' '}
-                                        #
-                                    </Typography>
-                                </TableCell>
-                                <TableCell align="left"><Typography variant="span" type="bold">{t('order:date')}</Typography></TableCell>
-                                <TableCell align="left"><Typography variant="span" type="bold">{t('order:titleDownload')}</Typography></TableCell>
-                                <TableCell align="left"><Typography variant="span" type="bold">{t('order:status')}</Typography></TableCell>
-                                <TableCell align="left"><Typography variant="span" type="bold">{t('order:remaining')}</Typography></TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {
-                                loadMore ? (
-                                    <TableRow>
-                                        <TableCell colSpan={6} rowSpan={10}>
-                                            <SkeletonContent />
-                                        </TableCell>
-                                    </TableRow>
-                                )
-                                    : data.length > 0
-                                        ? (
-                                            <>
-                                                {
-                                                    data.map((val, index) => (
-                                                        <TableRow className={styles.tableRowResponsive} key={index}>
-                                                            <TableCell
-                                                                className={styles.tableCellResponsive}
-                                                                align="left"
-                                                                data-th={(
-                                                                    <Typography align="center" type="bold" letter="capitalize">
-                                                                        {`${t('order:order')} #`}
-                                                                    </Typography>
-                                                                )}
+                {/** Desktop */}
+                <Show when={isDesktop}>
+                    <div className={cx('desktop-view')}>
+                        <div className={cx('relative', 'overflow-x-auto', 'rounded-lg')}>
+                            <table className={cx('w-full', 'text-base', 'border-[1px]', 'border-neutral-100')}>
+                                <thead>
+                                    <tr className={cx('text-neutral-500', 'font-semibold', 'leading-2lg', 'text-left')}>
+                                        <th className={cx('px-4', 'py-3')}>
+                                            {t('order:order')}
+                                            {' '}
+                                            #
+                                        </th>
+                                        <th className={cx('px-4', 'py-3')}>{t('order:date')}</th>
+                                        <th className={cx('px-4', 'py-3')}>{t('order:titleDownload')}</th>
+                                        <th className={cx('px-4', 'py-3')}>{t('order:status')}</th>
+                                        <th className={cx('px-4', 'py-3')}>{t('order:remaining')}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <Show when={loading}>
+                                        <SkeletonDesktop />
+                                    </Show>
+
+                                    <Show when={!loading}>
+                                        <Show when={error}>
+                                            <tr>
+                                                <td colSpan={5}>
+                                                    <Alert severity="error" withIcon>
+                                                        {error?.message ?? t('common:error:fetchError')}
+                                                    </Alert>
+                                                </td>
+                                            </tr>
+                                        </Show>
+
+                                        <Show when={!error}>
+                                            <Show when={hasData}>
+                                                {itemList?.[page - 1]?.map((val, index) => (
+                                                    <tr className={cx('even:bg-white', 'odd:bg-neutral-50')} key={index}>
+                                                        <td className={cx('p-4')}>
+                                                            <Link
+                                                                href={`/sales/order/view/order_id/${val.order_increment_id}`}
+                                                                className={cx('hover:underline')}
                                                             >
-                                                                <div className={styles.displayFlexRow}>
-                                                                    <div className={styles.mobLabel}>
-                                                                        <Typography align="center" type="bold" letter="capitalize">
-                                                                            {`${t('order:order')} #`}
-                                                                        </Typography>
-                                                                    </div>
-                                                                    <div className={styles.value}>
-                                                                        <Typography variant="span" letter="capitalize">
-                                                                            <Link
-                                                                                href="/sales/order/view/order_id/[id]"
-                                                                                as={`/sales/order/view/order_id/${val.order_increment_id}`}
-                                                                            >
-                                                                                <a>
-                                                                                    <Typography variant="span" type="regular" decoration="underline">
-                                                                                        {val.order_increment_id}
-                                                                                    </Typography>
-                                                                                </a>
-                                                                            </Link>
-                                                                        </Typography>
-                                                                    </div>
-                                                                </div>
-                                                            </TableCell>
-                                                            <TableCell
-                                                                className={styles.tableCellResponsive}
-                                                                align="left"
-                                                                data-th={(
-                                                                    <Typography align="center" type="bold" letter="capitalize">
-                                                                        {t('order:date')}
-                                                                    </Typography>
-                                                                )}
-                                                            >
-                                                                <div className={styles.displayFlexRow}>
-                                                                    <div className={styles.mobLabel}>
-                                                                        <Typography align="center" type="bold" letter="capitalize">
-                                                                            {`${t('order:date')}`}
-                                                                        </Typography>
-                                                                    </div>
-                                                                    <div className={styles.value}>
-                                                                        <Typography variant="span" letter="capitalize">
-                                                                            {formatDate(val.date, 'M/DD/YY')}
-                                                                        </Typography>
-                                                                    </div>
-                                                                </div>
-                                                            </TableCell>
-                                                            <TableCell
-                                                                className={styles.tableCellResponsive}
-                                                                align="left"
-                                                                data-th={(
-                                                                    <Typography align="center" type="bold" letter="capitalize">
-                                                                        {t('order:title')}
-                                                                    </Typography>
-                                                                )}
-                                                            >
-                                                                <div className={styles.displayFlexRow}>
-                                                                    <div className={styles.mobLabel}>
-                                                                        <Typography align="center" type="bold" letter="capitalize">
-                                                                            {`${t('order:title')}`}
-                                                                        </Typography>
-                                                                    </div>
-                                                                    <div className={classNames(styles.valueDownload)}>
-                                                                        <Typography variant="span" letter="capitalize">
-                                                                            {val.title}
-                                                                        </Typography>
-                                                                        { val.status == 'available'
-                                                                        && (
-                                                                            <a
-                                                                                download
-                                                                                className={styles.linkDownload}
-                                                                                target="_blank"
-                                                                                rel="noreferrer"
-                                                                                href={val.download_url}
-                                                                            >
-                                                                                <Button
-                                                                                    variant="text"
-                                                                                    startIcon={<GetAppIcon color="action" />}
-                                                                                    size="small"
-                                                                                    disableRipple
-                                                                                >
-                                                                                    <Typography variant="span" letter="capitalize">
-                                                                                        {val.link_title}
-                                                                                    </Typography>
-                                                                                </Button>
-                                                                            </a>
+                                                                <Typography variant="bd-2b" className={cx('!text-primary-700', 'hover:underline')}>
+                                                                    {val.order_increment_id}
+                                                                </Typography>
+                                                            </Link>
+                                                        </td>
+                                                        <td className={cx('p-4')}>
+                                                            <Typography variant="bd-2b">{formatDate(val.date, 'DD/MM/YYYY')}</Typography>
+                                                        </td>
+                                                        <td className={cx('p-4')}>
+                                                            <div>
+                                                                <Typography variant="bd-2b">{val.title}</Typography>
+                                                            </div>
+                                                            <Show when={val.status === 'available'}>
+                                                                <Link href={val.download_url} target="_blank" rel="noreferrer">
+                                                                    <div
+                                                                        className={cx(
+                                                                            'flex flex-row items-center',
+                                                                            'text-primary-700',
+                                                                            'border-b-[1px] border-neutral-white',
+                                                                            'hover:border-primary-700',
+                                                                            'w-max',
                                                                         )}
-                                                                    </div>
-                                                                </div>
-                                                            </TableCell>
-                                                            <TableCell
-                                                                className={styles.tableCellResponsive}
-                                                                align="left"
-                                                                data-th={(
-                                                                    <Typography align="center" type="bold" letter="capitalize">
-                                                                        {t('order:status')}
-                                                                    </Typography>
-                                                                )}
-                                                            >
-                                                                <div className={styles.displayFlexRow}>
-                                                                    <div className={styles.mobLabel}>
-                                                                        <Typography align="center" type="bold" letter="capitalize">
-                                                                            {t('order:status')}
+                                                                    >
+                                                                        <div className="h-[15px] w-[15px] mr-[5px]">
+                                                                            <ArrowDownTrayIcon />
+                                                                        </div>
+                                                                        <Typography variant="bd-2b" className={cx('!text-primary-700')}>
+                                                                            {val.link_title}
                                                                         </Typography>
                                                                     </div>
-                                                                    <div className={styles.value}>
-                                                                        <Typography variant="span" letter="capitalize">
-                                                                            {val.status}
-                                                                        </Typography>
-                                                                    </div>
-                                                                </div>
-                                                            </TableCell>
-                                                            <TableCell
-                                                                className={styles.tableCellResponsive}
-                                                                align="left"
-                                                                data-th={(
-                                                                    <Typography align="center" type="bold" letter="capitalize">
-                                                                        Remaining Downloads
-                                                                    </Typography>
-                                                                )}
-                                                            >
-                                                                <div className={styles.displayFlexRow}>
-                                                                    <div className={styles.mobLabel}>
-                                                                        <Typography align="center" type="bold" letter="capitalize">
-                                                                            Remaining Downloads
-                                                                        </Typography>
-                                                                    </div>
-                                                                    <div className={styles.value}>
-                                                                        <Typography variant="span" letter="capitalize">
-                                                                            {val.remaining_downloads}
-                                                                        </Typography>
-                                                                    </div>
-                                                                </div>
-                                                            </TableCell>
-                                                        </TableRow>
-                                                    ))
-                                                }
-                                                {/* <TableRow>
-                                                <TablePagination
-                                                    rowsPerPageOptions={[10, 20, 50, { label: 'All', value: -1 }]}
-                                                    colSpan={6}
-                                                    count={data.length || 0}
-                                                    rowsPerPage={10}
-                                                    page={0}
-                                                    labelRowsPerPage="Limit"
-                                                    SelectProps={{
-                                                        inputProps: { 'aria-label': 'rows per page' },
-                                                        native: true,
-                                                    }}
-                                                    onChangePage={handleChangePage}
-                                                    onChangeRowsPerPage={handleChangePageSize}
+                                                                </Link>
+                                                            </Show>
+                                                        </td>
+                                                        <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-4')}>
+                                                            <Typography variant="bd-2b">{val.status}</Typography>
+                                                        </td>
+                                                        <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'p-4')}>
+                                                            <Typography variant="bd-2b">{val.remaining_downloads}</Typography>
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                            </Show>
+
+                                            <Show when={!hasData}>
+                                                <tr>
+                                                    <td colSpan={5}>
+                                                        <Alert severity="warning" withIcon>
+                                                            {t('customer:order:emptyMessage')}
+                                                        </Alert>
+                                                    </td>
+                                                </tr>
+                                            </Show>
+                                        </Show>
+                                    </Show>
+                                </tbody>
+                            </table>
+                        </div>
+                        {/** show pagination */}
+                        <Show when={hasData}>
+                            <PaginationComponent />
+                        </Show>
+                    </div>
+                </Show>
+
+                {/** Mobile */}
+                <Show when={!isDesktop}>
+                    <div className={cx('mobile-tablet-view')}>
+                        <Show when={loading}>
+                            <SkeletonMobile />
+                        </Show>
+
+                        <Show when={!loading}>
+                            <Show when={error}>
+                                <Alert severity="error" withIcon>
+                                    {error?.message ?? t('common:error:fetchError')}
+                                </Alert>
+                            </Show>
+
+                            <Show when={!error}>
+                                <Show when={hasData}>
+                                    <>
+                                        {itemList?.[page - 1]?.map((val, index) => (
+                                            <div
+                                                key={`mobile-downloadable-item-${index}`}
+                                                className={cx(
+                                                    'mobile-downloadable-item',
+                                                    'flex',
+                                                    'flex-col',
+                                                    'border-[1px] border-neutral-200',
+                                                    'rounded-[6px]',
+                                                    'px-[24px]',
+                                                    'py-[20px]',
+                                                    'mobile:!mb-[16px] tablet:!mb-[24px]',
+                                                )}
+                                            >
+                                                <MobileTableItemComponent
+                                                    isLong
+                                                    label={`${t('order:order')}`}
+                                                    CustomComponentValue={(
+                                                        <Link
+                                                            href={`/sales/order/view/order_id/${val.order_increment_id}`}
+                                                            className={cx('hover:underline')}
+                                                        >
+                                                            <Typography variant="bd-2b" className={cx('!text-primary-700', 'hover:underline')}>
+                                                                {val.order_increment_id}
+                                                            </Typography>
+                                                        </Link>
+                                                    )}
                                                 />
-                                            </TableRow> */}
-                                            </>
-                                        )
-                                        : (
-                                            <TableRow>
-                                                <TableCell colSpan={6}>
-                                                    <Alert severity="warning">{t('order:notFound')}</Alert>
-                                                </TableCell>
-                                            </TableRow>
-                                        )
-                            }
-                        </TableBody>
-                    </Table>
-                </TableContainer>
+                                                <MobileTableItemComponent label={t('order:date')} value={formatDate(val.date, 'DD/MM/YYYY')} />
+                                                <MobileTableItemComponent
+                                                    label={t('order:titleDownload')}
+                                                    CustomComponentValue={(
+                                                        <>
+                                                            <div>
+                                                                <Typography variant="bd-2b">{val.title}</Typography>
+                                                            </div>
+                                                            <Show when={val.status === 'available'}>
+                                                                <Link href={val.download_url} target="_blank" rel="noreferrer">
+                                                                    <div
+                                                                        className={cx(
+                                                                            'flex flex-row items-center',
+                                                                            'text-primary-700',
+                                                                            'border-b-[1px] border-neutral-white',
+                                                                            'hover:border-primary-700',
+                                                                        )}
+                                                                    >
+                                                                        <div className="h-[15px] w-[15px] mr-[5px]">
+                                                                            <ArrowDownTrayIcon />
+                                                                        </div>
+                                                                        <Typography variant="bd-2b" className={cx('!text-primary-700')}>
+                                                                            {val.link_title}
+                                                                        </Typography>
+                                                                    </div>
+                                                                </Link>
+                                                            </Show>
+                                                        </>
+                                                    )}
+                                                />
+                                                <MobileTableItemComponent label={t('order:status')} value={val.status} />
+                                                <MobileTableItemComponent label={t('order:remaining')} value={val.remaining_downloads} />
+                                            </div>
+                                        ))}
+                                        <PaginationComponent />
+                                    </>
+                                </Show>
+                                <Show when={!hasData}>
+                                    <Alert severity="warning" withIcon>
+                                        {t('customer:order:emptyMessage')}
+                                    </Alert>
+                                </Show>
+                            </Show>
+                        </Show>
+                    </div>
+                </Show>
             </div>
         </Layout>
     );

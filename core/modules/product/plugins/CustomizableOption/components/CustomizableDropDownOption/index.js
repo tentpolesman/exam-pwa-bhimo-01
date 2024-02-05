@@ -1,10 +1,12 @@
 /* eslint-disable no-underscore-dangle */
+/* eslint-disable eqeqeq */
 import React, { useState, useMemo } from 'react';
-import { useQuery } from '@apollo/client';
-import { formatPrice } from '@helpers/currency';
-import { useTranslation } from '@i18n';
 import getPrice from '@core_modules/product/helpers/getPrice';
 import View from '@plugin_customizableitem/components/CustomizableDropDownOption/view';
+import Typography from '@common_typography';
+import { useQuery } from '@apollo/client';
+import { formatPrice } from '@helpers/currency';
+import { useTranslation } from 'next-i18next';
 import { getCustomizableDropDownOption } from '@core_modules/product/services/graphql/customizableSchema';
 
 const CustomizableDropDownOption = ({
@@ -12,7 +14,7 @@ const CustomizableDropDownOption = ({
     errorCustomizableOptions, additionalPrice, setAdditionalPrice,
     stock_status, ...other
 }) => {
-    const { t } = useTranslation(['product']);
+    const { t } = useTranslation(['common', 'product']);
     const productPrice = getPrice(other.price);
     const [value, setValue] = useState([]);
     const [options, setOptions] = useState({});
@@ -24,8 +26,7 @@ const CustomizableDropDownOption = ({
         fetchPolicy: 'no-cache',
     });
 
-    const onChange = async (e) => {
-        const val = e.target.value;
+    const onChange = async (val) => {
         let filterValues = [];
         let addPrice = 0;
         if (val && val !== '') {
@@ -64,7 +65,12 @@ const CustomizableDropDownOption = ({
                 setAdditionalPrice(0);
             }
         }
-        setSelected(val);
+        const filter = value?.filter((item) => item.option_type_id == val);
+        let selectedLabel = '';
+        if (filter.length > 0) {
+            selectedLabel = filter[0].label;
+        }
+        setSelected(selectedLabel);
     };
 
     useMemo(() => {
@@ -89,6 +95,7 @@ const CustomizableDropDownOption = ({
                     }
                     return {
                         ...item,
+                        id: option[0].option_type_id,
                         option_id: option[0].option_id,
                         label: `${item.title} + ${formatPrice(price)}`,
                         value: JSON.stringify(item.option_type_id),
@@ -109,8 +116,8 @@ const CustomizableDropDownOption = ({
 
     let error = '';
     useMemo(() => {
-        if (options.option_id && errorCustomizableOptions.length > 0) {
-            const findError = errorCustomizableOptions.filter((op) => op.option_id === options.option_id);
+        if (options.option_id && errorCustomizableOptions?.length > 0) {
+            const findError = errorCustomizableOptions?.filter((op) => op.option_id === options.option_id);
             if (findError && findError.length > 0) {
                 error = t('product:validate:fieldRequired');
             }
@@ -118,7 +125,7 @@ const CustomizableDropDownOption = ({
     }, [options, errorCustomizableOptions]);
 
     if (loading || !data) {
-        return <p>Loading...</p>;
+        return <Typography>{`${t('common:label:loading')}...`}</Typography>;
     }
 
     return (

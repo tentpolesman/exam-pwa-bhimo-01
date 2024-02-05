@@ -1,12 +1,9 @@
 import { withApollo } from '@lib_apollo';
-import { withTranslation } from '@i18n';
-import Core from '@core_modules/customer/pages/address/core';
-import Content from '@core_modules/customer/pages/address/components';
+import { withTranslation } from 'next-i18next';
+import dynamic from 'next/dynamic';
 
-const Page = (props) => <Core {...props} Content={Content} />;
+const Core = dynamic(() => import('@core_modules/customer/pages/address/core'), { ssr: false });
 
-Page.getInitialProps = async () => ({
-    namespacesRequired: ['common', 'customer', 'validate'],
-});
+const Page = (props) => <Core {...props} />;
 
 export default withApollo({ ssr: false })(withTranslation()(Page));

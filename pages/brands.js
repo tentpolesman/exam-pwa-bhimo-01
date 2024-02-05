@@ -1,6 +1,6 @@
 import Page from '@core_modules/brands/pages/default';
+import getSSRProps from '@core_modules/brands/pages/default/ssr';
 
-// if need to custom brands page
-// import Page from '@custom/brands/pages/default';
+export const getServerSideProps = async (ctx) => getSSRProps(ctx);
 
 export default Page;

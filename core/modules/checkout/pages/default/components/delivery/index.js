@@ -1,16 +1,22 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 
-import useStyles from '@core_modules/checkout/pages/default/components/style';
 import gqlService from '@core_modules/checkout/services/graphql';
 import TagManager from 'react-gtm-module';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+    selectCheckoutState, setPickupLocationCode, setPinckupInformation, setSelectedData, setSelectedStore,
+} from '@core_modules/checkout/redux/checkoutSlice';
+import { setCheckoutData } from '@core/helpers/cookies';
 
 const DeliveryComp = (props) => {
     const {
-        t, checkout, setCheckout, handleOpenMessage, storeConfig, DeliveryView, Skeleton, isOnlyVirtualProductOnCart,
+        t, handleOpenMessage, storeConfig, DeliveryView, Skeleton, isOnlyVirtualProductOnCart,
     } = props;
+
+    const dispatch = useDispatch();
+    const checkout = useSelector(selectCheckoutState);
     const [removePickupStore] = gqlService.removePickupStore();
-    const styles = useStyles();
     const handleSelect = async (delivery) => {
         await window.backdropLoader(true);
         if (delivery === 'home' && Object.keys(checkout.selectStore).length > 0 && Object.keys(checkout.pickupInformation).length > 0) {
@@ -20,24 +26,19 @@ const DeliveryComp = (props) => {
                 },
             })
                 .then(async (res) => {
-                    await setCheckout({
-                        ...checkout,
-                        pickup_location_code: null,
-                        data: {
-                            ...checkout.data,
-                            cart: {
-                                ...checkout.data.cart,
-                                ...res.data.removePickupStore,
-                            },
+                    dispatch(setPickupLocationCode(null));
+                    dispatch(setCheckoutData({
+                        cart: {
+                            ...checkout.data.cart,
+                            ...res.data.removePickupStore,
                         },
-                        selected: {
-                            ...checkout.selected,
-                            delivery,
-                            address: checkout.data.isGuest ? null : checkout.selected.address,
-                        },
-                        selectStore: {},
-                        pickupInformation: {},
-                    });
+                    }));
+                    dispatch(setSelectedData({
+                        delivery,
+                        address: checkout.data.isGuest ? null : checkout.selected.address,
+                    }));
+                    dispatch(setPinckupInformation({}));
+                    dispatch(setSelectedStore({}));
                     await window.backdropLoader(false);
                 })
                 .catch(() => {
@@ -123,13 +124,9 @@ const DeliveryComp = (props) => {
                 dataLayer: dataLayerOpt,
             });
             window.backdropLoader(false);
-            await setCheckout({
-                ...checkout,
-                selected: {
-                    ...checkout.selected,
-                    delivery,
-                },
-            });
+            dispatch(setSelectedData({
+                delivery,
+            }));
         } else if (delivery === 'instore') {
             // user chooses instore tab
             if (Object.keys(checkout.selectStore).length > 0 && Object.keys(checkout.pickupInformation).length > 0) {
@@ -138,23 +135,18 @@ const DeliveryComp = (props) => {
                         cart_id: checkout.data.cart.id,
                     },
                 }).then(async (res) => {
-                    await setCheckout({
-                        ...checkout,
-                        data: {
-                            ...checkout.data,
-                            cart: {
-                                ...checkout.data.cart,
-                                ...res.data.removePickupStore,
-                            },
+                    dispatch(setCheckoutData({
+                        cart: {
+                            ...checkout.data.cart,
+                            ...res.data.removePickupStore,
                         },
-                        selected: {
-                            ...checkout.selected,
-                            delivery,
-                            address: checkout.data.isGuest ? null : checkout.selected.address,
-                        },
-                        selectStore: {},
-                        pickupInformation: {},
-                    });
+                    }));
+                    dispatch(setSelectedData({
+                        delivery,
+                        address: checkout.data.isGuest ? null : checkout.selected.address,
+                    }));
+                    dispatch(setPinckupInformation({}));
+                    dispatch(setSelectedStore({}));
                 }).catch(() => {
                     handleOpenMessage({
                         variant: 'error',
@@ -163,42 +155,26 @@ const DeliveryComp = (props) => {
                 });
             }
 
-            await setCheckout({
-                ...checkout,
-                selected: {
-                    ...checkout.selected,
-                    delivery,
-                },
-            });
+            dispatch(setSelectedData({ delivery }));
 
             window.backdropLoader(false);
         } else if (delivery !== 'instore' && checkout.pickup_location_code) {
             // user had chosen instore tab,
             // entered some data, but later decided to switch to the other tabs
-            await setCheckout({
-                ...checkout,
-                selected: {
-                    ...checkout.selected,
-                    address: null,
-                    delivery,
-                    selectStore: {},
-                    pickupInformation: {},
-                },
-            });
+            dispatch(setSelectedData({
+                address: null,
+                delivery,
+                selectStore: {},
+                pickupInformation: {},
+            }));
             window.backdropLoader(false);
         } else {
-            await setCheckout({
-                ...checkout,
-                pickup_location_code: null,
-                selected: {
-                    ...checkout.selected,
-                    delivery,
-                },
-            });
+            dispatch(setPickupLocationCode(null));
+            dispatch(setSelectedData({ delivery }));
             window.backdropLoader(false);
         }
     };
-    if (checkout.loading.all) return <Skeleton styles={styles} />;
+    if (checkout.loading.all) return <Skeleton />;
     if (storeConfig.enable_oms_multiseller === '1') return null;
     if (isOnlyVirtualProductOnCart) return null;
     return <DeliveryView {...props} handleSelect={handleSelect} />;

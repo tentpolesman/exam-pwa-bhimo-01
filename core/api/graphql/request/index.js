@@ -1,36 +1,42 @@
 /* eslint-disable no-console */
 /* eslint-disable no-nested-ternary */
 const { GraphQLClient, gql } = require('graphql-request');
-const { graphqlEndpoint, storeCode } = require('../../../../swift.config');
+const { getCookies } = require('cookies-next');
+const { graphqlEndpoint, storeCode, customerTokenKey } = require('../../../../swift.config');
 
-const { decrypt } = require('../../../helpers/encryption');
 const { getAppEnv, getAccessEnv } = require('../../../helpers/env');
 
 function requestGraph(query, variables = {}, context = {}, config = {}) {
     let token = '';
-    if (config.token) {
+    let tokenAuth = '';
+    if (config?.token) {
         if (query.includes('snap_client_key')) {
-            token = `Bearer ${getAccessEnv()}`;
+            tokenAuth = `Bearer ${getAccessEnv()}`;
         } else {
             token = `Bearer ${config.token}`;
         }
-    } else if (context.session || context.headers) {
+    } else if (context?.req?.cookies || context?.req?.headers) {
+        const cookies = getCookies({ req: context?.req, res: context?.req });
         if (query.includes('snap_client_key')) {
-            token = `Bearer ${getAccessEnv()}`;
+            tokenAuth = `Bearer ${getAccessEnv()}`;
         } else {
-            token = context.session.token
-                ? `Bearer ${decrypt(context.session.token)}`
-                : context.headers.authorization
-                    ? context.headers.authorization
-                    : '';
+            token = cookies[customerTokenKey]
+                ? cookies[customerTokenKey]
+                : '';
+            token = `Bearer ${token}`;
         }
     } else if (query.includes('snap_client_key')) {
-        token = `Bearer ${getAccessEnv()}`;
+        tokenAuth = `Bearer ${getAccessEnv()}`;
     }
     const additionalHeader = storeCode ? { store: storeCode } : {};
     if (token && token !== '') {
         additionalHeader.Authorization = token;
     }
+
+    if (tokenAuth && tokenAuth !== '') {
+        additionalHeader.Authentication = tokenAuth;
+    }
+
     const headers = {
         ...additionalHeader,
     };

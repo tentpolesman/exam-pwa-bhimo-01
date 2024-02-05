@@ -1,43 +1,57 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
-import Box from '@material-ui/core/Box';
-import Skeleton from '@material-ui/lab/Skeleton';
-
+import Skeleton from '@common_skeleton';
+import GlobalPromoCarousel from '@core_modules/cms/components/cms-renderer/global-promo-carousel';
+import cx from 'classnames';
 import { features } from '@config';
-import WidgetSliderCaraousel from '@core_modules/cms/components/cms-renderer/widget-slider-caraousel';
-import {
-    getCmsBlocks,
-} from '@core_modules/theme/services/graphql';
-import useStyles from '@core_modules/theme/components/globalPromo/styles';
+import { getCmsBlocks } from '@core_modules/theme/services/graphql';
 
 const GlobalPromoMessage = (props) => {
-    const styles = useStyles();
-
-    const { storeConfig, showGlobalPromo, ...other } = props;
+    const {
+        // prettier-ignore
+        storeConfig,
+        ...other
+    } = props;
     const { key_cookies } = features.globalPromo;
 
     const { data, loading } = getCmsBlocks({
-        identifiers: 'weltpixel_global_promo_message',
+        identifiers: 'global_promo_message',
     });
 
     if (loading) {
         return (
-            <Box className={styles.containerLoading}>
-                <Skeleton animation="wave" variant="text" width="60%" height={16} />
-            </Box>
+            <div id="global-promo-message">
+                <Skeleton height={38} className={cx('!top-[10px]', '!left-[25%]', '!w-[50vw]')} />
+            </div>
         );
     }
 
-    if (showGlobalPromo && data?.cmsBlocks?.items[0]?.content) {
+    if (!loading && data && data.cmsBlocks && data.cmsBlocks.items.length > 0 && data.cmsBlocks.items[0].content) {
         return (
-            <WidgetSliderCaraousel
-                className={styles.container}
-                content={data.cmsBlocks.items[0].content}
-                key_cookies={key_cookies}
-                backgroundColor={storeConfig.global_promo.background_color}
-                textColor={storeConfig.global_promo.text_color}
-                storeConfig={storeConfig}
-                {...other}
-            />
+            <>
+                <div
+                    id="global-promo-message"
+                    className={cx(
+                        'global-promo-message',
+                        'h-[38px]',
+                        'text-center',
+                        'font-normal',
+                        'tablet:text-base',
+                        'mobile:max-tablet:text-sm',
+                        'bg-primary-700',
+                        'text-neutral-white',
+                        'mobile:max-tablet:py-1',
+                    )}
+                >
+                    <GlobalPromoCarousel
+                        className={cx('relative', 'flex', 'justify-center', 'tablet:max-w-screen-tablet', 'desktop:max-w-screen-desktop', 'mx-auto')}
+                        content={data.cmsBlocks.items[0].content}
+                        key_cookies={key_cookies}
+                        storeConfig={storeConfig}
+                        {...other}
+                    />
+                </div>
+            </>
         );
     }
 

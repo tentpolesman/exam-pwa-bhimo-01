@@ -1,21 +1,18 @@
 import Button from '@common_button';
-import TextField from '@common_textfield';
-import Password from '@common_password';
+import Password from '@common_forms/Password';
+import PhoneInput from '@common_forms/PhoneInput';
 import Typography from '@common_typography';
-import useStyles from '@plugin_otp/style';
 
 const OtpView = (props) => {
-    const styles = useStyles();
     const {
         t, handleSend, phoneProps, handlePhone, time, manySend, config, codeProps, handleOtp, handleCheck,
     } = props;
 
     return (
-        <div className={styles.root}>
-            <div className={styles.componentContainer}>
-                <div className={styles.input}>
-                    <TextField
-                        type="phone"
+        <div>
+            <div>
+                <div>
+                    <PhoneInput
                         label={t('common:form:phoneNumber')}
                         fullWidth
                         {...phoneProps}
@@ -23,7 +20,7 @@ const OtpView = (props) => {
                         value={phoneProps.value}
                     />
                 </div>
-                <div className={styles.button}>
+                <div>
                     <Button
                         id="plugin-sendotp-btn"
                         fullWidth
@@ -40,8 +37,8 @@ const OtpView = (props) => {
                 {time > 0 && <Typography variant="p">{`${t('otp:wait')} ${time} ${t('otp:resend')}`}</Typography>}
                 {manySend > 1 && <Typography variant="p">{`${t('otp:sendTimes')} ${manySend - 1} ${t('otp:time')}`}</Typography>}
             </>
-            <div className={styles.componentContainer}>
-                <div className={styles.input}>
+            <div>
+                <div>
                     <Password
                         label="Code Otp"
                         showVisible={false}
@@ -54,7 +51,7 @@ const OtpView = (props) => {
                         onChange={handleOtp}
                     />
                 </div>
-                <div className={styles.button}>
+                <div>
                     <Button id="plugin-verifyotp-btn" fullWidth disabled={manySend <= 1} onClick={handleCheck}>
                         <Typography variant="p" type="bold" letter="uppercase" color="white">
                             {t('common:button:verify')}

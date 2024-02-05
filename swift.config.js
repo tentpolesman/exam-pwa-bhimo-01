@@ -22,8 +22,8 @@ const HOST = {
 
 /* Magento GraphQL Endpoint */
 const graphqlEndpoint = {
-    local: 'https://b2cdemo.getswift.asia/graphql',
-    dev: 'https://swift.testingnow.me/graphql',
+    local: 'https://swift-dev.testingnow.me/graphql',
+    dev: 'https://swift-dev.testingnow.me/graphql',
     stage: 'https://b2cdemonew.gcp-staging.testingnow.me/graphql',
     prod: 'https://b2cdemo.getswift.asia/graphql',
 };
@@ -37,6 +37,11 @@ const passwordStrength = {
     minValue: 8,
     maxValue: 20,
     numberOfRequiredClass: 3, // Lowercase + Uppercse + Dgits + spesial caracter = 4
+};
+
+/* Sitemap */
+const sitemap = {
+    limitDataPerPage: 50000,
 };
 
 /* Translation */
@@ -54,7 +59,7 @@ const requestTimeout = 30000; // miliseconds
 
 // error management monitoring
 const sentry = {
-    enabled: false,
+    enabled: false, // when enable, please uncomment import Sentry in _app.js
     enableMode: 'production',
     dsn: {
         local: 'https://c60fbed461fd49da9455730ba70da8a6@o484453.ingest.sentry.io/5537614',
@@ -65,7 +70,7 @@ const sentry = {
 };
 
 const rollbar = {
-    enabled: false,
+    enabled: false, // when enable, please uncomment import rollbar scrypt in _document.js
     config: {
         accessToken: '76876f52664341b4a1981c4618723bda',
         captureUncaught: true,
@@ -76,6 +81,9 @@ const rollbar = {
 /* Dashboard */
 // identifiers for cmsBlocks in contact page
 const cmsSocialMediaLinkIdentifiers = 'pwa_socmed_links';
+
+// set empty or false to disable dynamic menu
+const cmsStaticMainMenuIdentifier = 'static-main-menu';
 
 /* Social media link */
 // social media link in dashboard
@@ -99,12 +107,16 @@ const nameToken = 'sk';
 const expiredToken = 60 * 60 * 1000;
 const expiredDefault = 365;
 const localResolverKey = 'resolver';
+const customerTokenKey = 'ct';
 
 const keyLocalStorage = {
     home: 'homePageConfig',
 };
 
 const features = {
+    thumbor: {
+        domainThumborConfig: 'thumbor.sirclocdn.com',
+    },
     useCustomStyle: false,
     ssrCache: false,
     magezon: {
@@ -143,32 +155,78 @@ const features = {
             prod: '', // sample: 'https://chat-swift.testingnow.me/graphql',
         },
     },
+    // IMPORTANT!! If you need to use firebase on your project, please uncomment import firebase in _app.js
     firebase: {
         config: {
-            apiKey: '', // sample: AIzaSyCt9ks21BjiE9qirv-8xOEcUnUnH6viobw
-            authDomain: '', // sample: swift-pwa-dev.firebaseapp.com
-            databaseURL: '', // sample: https://swiftpwa-firebase.firebaseio.com
-            projectId: '', // sample: swift-pwa-dev
-            storageBucket: '', // sample: swift-pwa-dev.appspot.com
-            messagingSenderId: '', // sample: 1083571104838
-            appId: '', // sample: 1:1083571104838:web:4f06ca5a60b1c1a9efee47
-            measurementId: '', // sample: G-HBHPY22H0H
+            apiKey: '', // sample: AIzaSyBayG_pE-BOs6DU0WAoZOa3EbJMpBlrXBI
+            authDomain: '', // sample: swiftpwa-e6324.firebaseapp.com
+            databaseURL: '', // sample: https://swiftpwa-e6324.firebaseio.com
+            projectId: '', // sample: swiftpwa-e6324
+            storageBucket: '', // sample: swiftpwa-e6324.appspot.com
+            messagingSenderId: '', // sample: 190092779246
+            appId: '', // sample: 1:190092779246:web:d35e1495a66353fafc5dff
+            measurementId: '', // sample: G-VDET2ZQ490
         },
         pushNotification: {
             enabled: false,
             config: {
                 // key from cloud messaging sertificat web push
-                pairKey: '', // sample: BJ2IqpfQQGrckDUAI7TaX8r0_v6aykBSIIEpZUqhlkzZI2e7WVZk9ZB4xOiWBqTbVo6wk44gnpRLAJDemB66zAU
+                pairKey: '', // sample: BJp_5C5jzA06Ouh4mGVExKY_qTT7ODfxzwb8J4XTf5EsPbG1rlwhSIAgYvJ5XGEXfSlnOH4ygkqLt67e7qLKA_A
             },
         },
     },
     globalPromo: {
+        enable: true,
         key_cookies: 'global_promo_enable',
     },
 };
 
 const modules = {
     product: {
+        imageSize: {
+            thumbnail: {
+                desktop: {
+                    width: 78,
+                    height: 78,
+                },
+                tablet: {
+                    width: 78,
+                    height: 78,
+                },
+                mobile: {
+                    width: 78,
+                    height: 78,
+                },
+            },
+            main: {
+                desktop: {
+                    width: 533,
+                    height: 533,
+                },
+                tablet: {
+                    width: 352,
+                    height: 352,
+                },
+                mobile: {
+                    width: 329,
+                    height: 329,
+                },
+            },
+            main_preview: {
+                desktop: {
+                    width: 603,
+                    height: 603,
+                },
+                tablet: {
+                    width: 603,
+                    height: 603,
+                },
+                mobile: {
+                    width: 329,
+                    height: 329,
+                },
+            },
+        },
         customizableOptions: {
             enabled: true,
             availableOptions: {
@@ -216,6 +274,22 @@ const modules = {
     catalog: {
         enabled: true,
         productListing: {
+            quickView: {
+                bannerImage: {
+                    mobile: {
+                        width: 296,
+                        height: 296,
+                    },
+                    tablet: {
+                        width: 296,
+                        height: 296,
+                    },
+                    desktop: {
+                        width: 400,
+                        height: 400,
+                    },
+                },
+            },
             sort: {
                 relevance: true,
                 position: true,
@@ -231,6 +305,10 @@ const modules = {
                 toprated: true,
                 featured: true,
                 free: true,
+            },
+            imageSize: {
+                width: 250,
+                height: 250,
             },
         },
     },
@@ -264,13 +342,46 @@ const modules = {
         },
         xendit: {
             // Pay via button pay now
-            paymentPrefixCodeOnSuccess: ['alfamart', 'bcava', 'briva', 'qris', 'shopeepay', 'bniva', 'mandiriva',
-                'permatava', 'indomaret', 'bjbva', 'bsiva', 'dana', 'ovo', 'linkaja', 'qr_codes', 'gcash', 'grabpay', 'paymaya',
-                'seven_eleven', 'cebuana', 'dp_palawan', 'dp_mlhuillier', 'dp_ecpay_loan', 'shopeepayph', 'astrapay',
+            paymentPrefixCodeOnSuccess: [
+                'alfamart',
+                'bcava',
+                'briva',
+                'qris',
+                'shopeepay',
+                'bniva',
+                'mandiriva',
+                'permatava',
+                'indomaret',
+                'bjbva',
+                'bsiva',
+                'dana',
+                'ovo',
+                'linkaja',
+                'qr_codes',
+                'gcash',
+                'grabpay',
+                'paymaya',
+                'seven_eleven',
+                'cebuana',
+                'dp_palawan',
+                'dp_mlhuillier',
+                'dp_ecpay_loan',
+                'shopeepayph',
+                'astrapay',
             ],
             // Should pay upon place order
-            paymentPrefixCode: ['cc', 'cc_subscription', 'dd_bri', 'kredivo', 'dd_bpi', 'dd_ubp', 'billease',
-                'uangme', 'cashalo', 'akulaku', 'dd_rcbc',
+            paymentPrefixCode: [
+                'cc',
+                'cc_subscription',
+                'dd_bri',
+                'kredivo',
+                'dd_bpi',
+                'dd_ubp',
+                'billease',
+                'uangme',
+                'cashalo',
+                'akulaku',
+                'dd_rcbc',
             ],
         },
     },
@@ -459,4 +570,7 @@ module.exports = {
     translation,
     keyLocalStorage,
     requestTimeout,
+    customerTokenKey,
+    sitemap,
+    cmsStaticMainMenuIdentifier,
 };

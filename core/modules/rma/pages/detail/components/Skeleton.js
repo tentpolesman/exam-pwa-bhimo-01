@@ -1,43 +1,62 @@
-import Skeleton from '@material-ui/lab/Skeleton';
+/* eslint-disable no-unused-vars */
+/* eslint-disable semi-style */
+import Divider from '@common/Divider';
+import Skeleton from '@common_skeleton';
 import classNames from 'classnames';
-import useStyles from '@core_modules/rma/pages/detail/components/styles';
 
-const SkeletonLoader = () => {
-    const styles = useStyles();
-    return (
-        <div className={classNames(styles.container, 'row')}>
-            <div className="col-lg-10 col-xs-12 col-sm-12">
-                <div className={classNames(styles.block, styles.detail)} style={{ height: '50%' }}>
-                    <Skeleton animation="wave" variant="text" width={150} height={35} />
-                    <Skeleton animation="wave" variant="text" width={120} height={25} />
-                    <Skeleton animation="wave" variant="text" width={150} height={35} />
-                    <Skeleton animation="wave" variant="text" width={120} height={25} />
-                    <Skeleton animation="wave" variant="text" width={150} height={25} />
-                    <Skeleton animation="wave" variant="text" width={120} height={25} />
-                    <Skeleton animation="wave" variant="text" width={150} height={25} />
-                    <Skeleton animation="wave" variant="text" width={120} height={25} />
-                    <Skeleton animation="wave" variant="text" width={150} height={25} />
-                </div>
-                <div className={styles.block}>
-                    <Skeleton animation="wave" variant="text" width="50%" height={30} />
-                    <div className={styles.itemContainer}>
-                        <Skeleton animation="wave" variant="rect" width={105} height={130} />
-                        <div className={styles.detailItem}>
-                            <Skeleton animation="wave" variant="text" width={90} height={15} />
-                            <Skeleton animation="wave" variant="text" width={120} height={15} />
-                            <Skeleton animation="wave" variant="text" width={120} height={15} />
-                            <Skeleton animation="wave" variant="text" width={120} height={15} />
-                            <div className="flex-grow" />
-                        </div>
+const SkeletonLoader = () => (
+    <div className={classNames(
+        'shadow-sm border border-neutral-100 rounded-md',
+        'flex flex-col gap-5 mt-4',
+    )}
+    >
+        <>
+            <div className="p-4 w-full">
+                <div className="flex flex-col gap-2 desktop:max-w-[50%]">
+                    <div className="grid grid-cols-3 gap-5">
+                        <Skeleton width="100%" />
+                        <Skeleton />
+                    </div>
+                    <div className="grid grid-cols-3 gap-5">
+                        <Skeleton width="100%" />
+                        <Skeleton width="200%" />
+                    </div>
+                    <div className="grid grid-cols-3 gap-5">
+                        <Skeleton width="100%" />
+                        <Skeleton width="85%" />
+                    </div>
+                    <div className="grid grid-cols-3 gap-5">
+                        <Skeleton width="100%" />
+                        <Skeleton width="200%" />
                     </div>
                 </div>
-                <div className={classNames(styles.block, styles.footer)}>
-                    <Skeleton animation="wave" variant="rect" width="100%" height={40} />
-                    <Skeleton animation="wave" variant="rect" width="100%" height={40} />
-                </div>
             </div>
+            <Divider />
+        </>
+        <div
+            className={classNames(
+                'flex flex-col gap-3 px-4 pb-5',
+            )}
+        >
+            {
+                [1, 2, 3].map((index) => (
+                    <div className="flex flex-row gap-4 w-full" key={index}>
+                        <Skeleton height={105} width={105} />
+                        <div className="flex flex-col gap-2 w-full">
+                            <Skeleton width="30%" className="!hidden tablet:!inline-block" />
+                            <Skeleton width="100%" className="tablet:!hidden" />
+
+                            <Skeleton width="20%" className="!hidden tablet:!inline-block" />
+                            <Skeleton width="70%" className="tablet:!hidden" />
+
+                            <Skeleton width="30%" className="!hidden tablet:!inline-block" />
+                            <Skeleton width="100%" className="tablet:!hidden" />
+                        </div>
+                    </div>
+                ))
+            }
         </div>
-    );
-};
+    </div>
+);
 
 export default SkeletonLoader;

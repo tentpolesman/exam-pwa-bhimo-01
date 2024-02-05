@@ -1,57 +1,46 @@
 /* eslint-disable consistent-return */
-import Dialog from '@material-ui/core/Dialog';
-import Slide from '@material-ui/core/Slide';
-import Grid from '@material-ui/core/Grid';
+import Dialog from '@common_dialog';
 import React from 'react';
 import Typography from '@common_typography';
 import Skeleton from '@common_skeleton';
 import Button from '@common_button';
-import Header from '@common_headermobile';
 import Router from 'next/router';
-import Alert from '@material-ui/lab/Alert';
-import Menu from '@material-ui/icons/Menu';
 import { modules } from '@config';
-import useStyles from '@core_modules/blog/components/ModalCategory/style';
-
-const Transition = React.forwardRef((props, ref) => <Slide direction="left" ref={ref} {...props} />);
 
 const CategoryWrapperSkeleteon = () => {
     const SkeletonRect = ({ width }) => (
         <Skeleton
-            style={{ alignSelf: 'center', marginBottom: '32px' }}
-            variant="rect"
+            className="self-center mb-[32px]"
             width={width}
             height={16}
-            animation="wave"
         />
     );
     return (
-        <div style={{ width: '100%', marginTop: '36px' }}>
-            <Grid container direction="column" alignItems="center">
+        <div className="w-full mt-[36px]">
+            <div className="grid items-center">
                 {[100, 60, 180, 65, 150, 70, 80, 175, 70, 55, 115, 60, 155].map((width, i) => (
                     <SkeletonRect key={i} width={width} />
                 ))}
-            </Grid>
+            </div>
         </div>
     );
 };
 
 const ListCategory = ({ setOpen, t, loadCategory }) => {
-    const styles = useStyles();
     const { loading, error, data } = loadCategory;
     const { link } = modules.blog;
     if (loading) return <CategoryWrapperSkeleteon />;
     if (error) {
         return (
-            <div className={styles.divMessage}>
-                <Alert className="m-15" severity="error">{t('commong:error:fetchError')}</Alert>
+            <div className="alert-danger-container">
+                <div className="m-15 p-2 bg-red-600 text-neutral-white">{t('commong:error:fetchError')}</div>
             </div>
         );
     }
     if (!data || data.getBlogCategory.data.length === 0) {
         return (
-            <div className={styles.divMessage}>
-                <Alert className="m-15" severity="warning">{t('common:error:notFound')}</Alert>
+            <div className="alert-warning-container">
+                <div className="m-15 p-2 bg-yellow-500 text-neutral-white">{t('common:error:notFound')}</div>
             </div>
         );
     }
@@ -64,26 +53,24 @@ const ListCategory = ({ setOpen, t, loadCategory }) => {
             setOpen();
         };
         return (
-            <div className={styles.body}>
-                <div className={styles.item}>
+            <div className="flex flex-col justify-center items-center px-[80px] pt-[20px] pb-[80px]">
+                <div className="m-0 flex flex-col justify-center items-center">
                     <Button
-                        variant="text"
+                        variant="plain"
                         onClick={() => Router.push(link.default.href)}
                     >
-
-                        <Typography type="semiBold" variant="title" align="center">
-                            All
+                        <Typography className="font-semibold items-center">
+                            {t('common:label:all')}
                         </Typography>
                     </Button>
                     {
                         data.getBlogCategory.data.map((item, key) => (
                             <Button
-                                variant="text"
+                                variant="plain"
                                 onClick={() => handleClick(item)}
                                 key={key}
                             >
-
-                                <Typography type="semiBold" variant="title" align="center">
+                                <Typography className="font-semibold text-center">
                                     {item.name}
                                 </Typography>
                             </Button>
@@ -97,44 +84,27 @@ const ListCategory = ({ setOpen, t, loadCategory }) => {
 
 const ModalContent = ({
     open, setOpen, t, ...other
-}) => {
-    const styles = useStyles();
-    return (
-        <Dialog
-            fullScreen
-            open={open}
-            TransitionComponent={Transition}
-        >
-            <div className={styles.container}>
-                <Header
-                    LeftComponent={{
-                        onClick: setOpen,
-                    }}
-                    pageConfig={{
-                        headerTitle: t('common:title:category'),
-                        header: 'relative',
-                    }}
-                />
-                {
-                    open && (<ListCategory setOpen={setOpen} t={t} {...other} />)
-                }
-            </div>
-        </Dialog>
-    );
-};
+}) => (
+    <Dialog open={open}>
+        <div className="modal-content-container">
+            {
+                open && (<ListCategory setOpen={setOpen} t={t} {...other} />)
+            }
+        </div>
+    </Dialog>
+);
 
 const ModalCategory = ({ t, ...other }) => {
-    const styles = useStyles();
     const [openModal, setOpenModal] = React.useState(false);
     return (
         <>
             <ModalContent t={t} open={openModal} setOpen={() => setOpenModal(false)} {...other} />
-            <div className={styles.btnCategoryContainer}>
-                <Button variant="text" customRootStyle={{ width: 'fit-content' }} className={styles.btnFilter} onClick={() => setOpenModal(true)}>
-                    <Menu className={styles.iconFilter} />
+            <div className="flex flex-row justify-start items-center pr-[20px] w-auto">
+                <Button variant="plain" className="object-contain" onClick={() => setOpenModal(true)}>
+                    <div className="menu" />
                 </Button>
-                <Typography type="bold" variant="span" letter="capitalize">
-                    Categories
+                <Typography className="font-bold first-letter:uppercase">
+                    {t('common:title:category')}
                 </Typography>
             </div>
         </>

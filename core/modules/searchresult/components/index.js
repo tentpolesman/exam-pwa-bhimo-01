@@ -1,33 +1,36 @@
 import React from 'react';
 import Product from '@plugin_productlist';
 import Typography from '@common_typography';
-import useStyles from '@core_modules/searchresult/components/style';
 import CategoryList from '@core_modules/searchresult/components/CategoryList';
 import SellerList from '@core_modules/searchresult/components/SellerList';
+import Show from '@common/Show';
+import { getLoginInfo } from '@helper_auth';
 
 const SearchResult = (props) => {
-    const styles = useStyles();
     const {
-        storeConfig, t, q, isLogin,
+        storeConfig, t, q,
     } = props;
+
+    const isLogin = getLoginInfo();
+
     return (
-        <div className={styles.container}>
+        <div className="flex flex-col w-full h-full gap-3">
             {/* add url path if no redirect to slug */}
             <div className="hidden-mobile">
-                <Typography variant="span" letter="uppercase" className={styles.title}>
+                <Typography variant="span" className="flex flex-row justify-between items-center uppercase">
                     {t('catalog:title:searchResult')}
                     {': '}
                     {q}
                 </Typography>
             </div>
             <CategoryList {...props} />
-            {storeConfig.enable_oms_multiseller === '1' && (
+            <Show when={storeConfig.enable_oms_multiseller === '1' || storeConfig.enable_oms_multiseller === 1}>
                 <SellerList {...props} />
-            )}
-            <div className={styles.wrapper}>
-                <div className={styles.topTitle}>
-                    Product
-                </div>
+            </Show>
+            <div className="flex flex-col gap-4">
+                <Typography variant="h2" className="uppercase">
+                    {t('common:product:name')}
+                </Typography>
                 <Product
                     defaultSort={{ key: 'relevance', value: 'DESC' }}
                     url_path="catalogsearch/advanced/result"

@@ -2,17 +2,23 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable-next-line jsx-a11y/click-events-have-key-events */
-import React from 'react';
-import propTypes from 'prop-types';
-import { setCookies, getCookies } from '@helper_cookies';
-import { getCompareList, getCustomerUid } from '@core_modules/productcompare/service/graphql';
-import { localCompare } from '@services/graphql/schema/local';
-import { createCompareList } from '@core_modules/product/services/graphql';
 import { useQuery } from '@apollo/client';
-import Typography from '@common_typography';
-import { useTranslation } from '@i18n';
+import { createCompareList } from '@core_modules/product/services/graphql';
+import { getCompareList, getCustomerUid } from '@core_modules/productcompare/service/graphql';
+import { getCookies, setCookies } from '@helper_cookies';
+import { localCompare } from '@services/graphql/schema/local';
+import { useTranslation } from 'next-i18next';
+import propTypes from 'prop-types';
+import React from 'react';
 
-const ProductCompareIcon = ({ withLink, WihtLinkView, isLogin }) => {
+import BadgeCounter from '@common_badgecounter';
+import Typography from '@common_typography';
+
+import ArrowsRightLeftIcon from '@heroicons/react/24/solid/ArrowsRightLeftIcon';
+import cx from 'classnames';
+import { getLoginInfo } from '@helper_auth';
+
+const ProductCompareIcon = ({ withLink, WithLinkView }) => {
     const [getProductCompare, { loading, data: compareList }] = getCompareList({
         errorPolicy: 'all',
     });
@@ -21,10 +27,10 @@ const ProductCompareIcon = ({ withLink, WihtLinkView, isLogin }) => {
     const [setCompareList] = createCompareList();
     const { t } = useTranslation();
 
+    const isLogin = getLoginInfo();
+
     React.useEffect(() => {
-        if (!dataCompare
-            && compareList
-            && compareList.compareList !== null) {
+        if (!dataCompare && compareList && compareList.compareList !== null) {
             client.writeQuery({
                 query: localCompare,
                 data: {
@@ -52,15 +58,14 @@ const ProductCompareIcon = ({ withLink, WihtLinkView, isLogin }) => {
                 });
             }
         }
-        if (!loading && (compareList && compareList.compareList == null) && !isLogin) {
+        if (!loading && compareList && compareList.compareList == null && !isLogin) {
             setCompareList({
                 variables: {
                     uid: [],
                 },
-            })
-                .then(async (res) => {
-                    setCookies('uid_product_compare', res.data.createCompareList.uid);
-                });
+            }).then(async (res) => {
+                setCookies('uid_product_compare', res.data.createCompareList.uid);
+            });
         }
     }, [compareList, isLogin]);
 
@@ -93,35 +98,39 @@ const ProductCompareIcon = ({ withLink, WihtLinkView, isLogin }) => {
         if (tempCompare || compareList) {
             return (
                 <>
-                    <WihtLinkView compareList={tempCompare || compareList} handleLink="/catalog/product_compare" />
+                    <WithLinkView compareList={tempCompare || compareList} handleLink="/catalog/product_compare" isLogin={isLogin} />
                 </>
             );
         }
-        return null;
+        return (
+            <BadgeCounter value={0}>
+                <ArrowsRightLeftIcon className={cx('w-[24px]', 'text-neutral-600', 'hover:text-primary-700', 'mt-3')} />
+            </BadgeCounter>
+        );
     }
 
     /* eslint-disable */
-   if (dataCompare || compareList) {
-    return (
-        <>
-            <Typography variant="span" type="bold" letter="uppercase">
-                {t('common:productCompare:title')} (
-                {
-                    dataCompare && dataCompare.item_count ||
-                    compareList && compareList.compareList && compareList.compareList.item_count && compareList.compareList.item_count || 0
-                }
-                )
-            </Typography>
-        </>
-    );
-   }
+    if (dataCompare || compareList) {
+        return (
+            <>
+                <Typography variant="bd-2">
+                    {t('common:productCompare:title')} (
+                    {(dataCompare && dataCompare.item_count) ||
+                        (compareList && compareList.compareList && compareList.compareList.item_count && compareList.compareList.item_count) ||
+                        0}
+                    )
+                </Typography>
+            </>
+        );
+    }
 
-   return null
+    return <ArrowsRightLeftIcon className={cx('w-[24px]', 'text-neutral-600', 'mt-3')} />;
+    // return null;
     /* eslint-enable */
 };
 
 ProductCompareIcon.propTypes = {
-    WihtLinkView: propTypes.func.isRequired,
+    WithLinkView: propTypes.func.isRequired,
 };
 
 export default ProductCompareIcon;

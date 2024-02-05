@@ -4,14 +4,17 @@ import { getHost } from '@helper_config';
 import { useRouter } from 'next/router';
 import { useApolloClient } from '@apollo/client';
 import { localTotalCart } from '@services/graphql/schema/local';
-import { setCartId } from '@helper_cartid';
+import { getCartId, setCartId } from '@helper_cartid';
 import { customerWishlist } from '@core_modules/customer/services/graphql';
 import { addSimpleProductsToCart, getGuestCartId as queryGetGuestCartId, getCustomerCartId } from '@core_modules/product/services/graphql';
+import { getLoginInfo } from '@helper_auth';
 
 const HomeCore = (props) => {
     const {
-        Content, pageConfig, storeConfig, SharedSkeleton, t, isLogin, ...other
+        Content, pageConfig, storeConfig, SharedSkeleton, t, ...other
     } = props;
+
+    const isLogin = getLoginInfo();
 
     let cartId = '';
     const router = useRouter();
@@ -40,6 +43,7 @@ const HomeCore = (props) => {
     }, [cartUser, isLogin]);
 
     const handleToCart = async ({ sku, url_key, __typename }) => {
+        cartId = getCartId();
         const errorMessage = {
             variant: 'error',
             text: t('product:failedAddCart'),
