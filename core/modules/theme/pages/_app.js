@@ -13,7 +13,7 @@ import {
     modules,
     // sentry
 } from '@config';
-import { getLastPathWithoutLogin, getLoginInfo } from '@helper_auth';
+import { getLastPathWithoutLogin } from '@helper_auth';
 import { setLocalStorage, setResolver, testLocalStorage } from '@helper_localstorage';
 import { getAppEnv } from '@core/helpers/env';
 import { cmsPageVar, currencyVar, storeConfigVar } from '@core/services/graphql/cache';
@@ -24,7 +24,6 @@ import App from 'next/app';
 import React from 'react';
 import { gql } from '@apollo/client';
 import graphRequest from '@graphql_request';
-import routeMiddleware from '@middleware_route';
 // import getConfig from 'next/config';
 import TagManager from 'react-gtm-module';
 import ModalCookies from '@core_modules/theme/components/modalCookies';
@@ -82,11 +81,6 @@ import { getDeviceByUA, getUAString } from '@core/helpers/deviceDection';
 // }
 
 class MyApp extends App {
-    constructor(props) {
-        super(props);
-        this.isLogin = false;
-    }
-
     static async getInitialProps(appContex) {
         const { Component, ctx } = appContex;
         const uastring = getUAString(appContex);
@@ -97,29 +91,24 @@ class MyApp extends App {
         if (Component.getInitialProps) {
             pageProps = await Component.getInitialProps(ctx);
         }
-        const { res, pathname, query, req } = ctx;
+        const { req } = ctx;
         /*
          * ---------------------------------------------
          * MAINTAIN LOGIN FLAG
          * check if login from server
          */
-        let isLogin = 0;
         let lastPathNoAuth = '';
         // let customerData = {};
-        const allcookie = req ? req.cookies : {};
         let removeDecimalConfig;
         if (typeof window !== 'undefined') {
-            isLogin = getLoginInfo();
             lastPathNoAuth = getLastPathWithoutLogin();
             // customerData = Cookie.getJSON(custDataNameCookie);
         } else {
-            isLogin = allcookie.isLogin || 0;
             // customerData = allcookie[custDataNameCookie];
             lastPathNoAuth = req.cookies && typeof req.cookies !== 'undefined' && req.cookies.lastPathNoAuth && typeof req.cookies.lastPathNoAuth !== 'undefined'
                 ? req.cookies.lastPathNoAuth
                 : '/customer/account';
         }
-        isLogin = parseInt(isLogin);
 
         /*
          * ---------------------------------------------
@@ -131,14 +120,6 @@ class MyApp extends App {
          * ---------------------------------------------
          * CALLING ROUTING MIDDLEWARE
          */
-        routeMiddleware({
-            res,
-            req,
-            query,
-            pathname,
-            isLogin,
-            lastPathNoAuth,
-        });
 
         /*
          * ---------------------------------------------
@@ -203,9 +184,7 @@ class MyApp extends App {
                 ...pageProps,
                 app_cookies,
                 storeConfig,
-                // isLogin,
                 lastPathNoAuth,
-                // customerData,
                 removeDecimalConfig,
                 dataMenu,
                 frontendOptions,

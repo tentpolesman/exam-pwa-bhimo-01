@@ -4,11 +4,15 @@ import Typography from '@common_typography';
 import CategoryList from '@core_modules/searchresult/components/CategoryList';
 import SellerList from '@core_modules/searchresult/components/SellerList';
 import Show from '@common/Show';
+import { getLoginInfo } from '@helper_auth';
 
 const SearchResult = (props) => {
     const {
-        storeConfig, t, q, isLogin,
+        storeConfig, t, q,
     } = props;
+
+    const isLogin = getLoginInfo();
+
     return (
         <div className="flex flex-col w-full h-full gap-3">
             {/* add url path if no redirect to slug */}

@@ -15,11 +15,11 @@ import { modules } from '@config';
 import Alert from '@common/Alert';
 import IconArrow from '@heroicons/react/24/outline/ArrowRightIcon';
 import AccountCircleIcon from '@heroicons/react/24/outline/UserCircleIcon';
+import { getLoginInfo } from '@helper_auth';
 
 const View = (props) => {
     const {
         t,
-        isLogin,
         checkoutData,
         handleCotinue,
         ordersFilter,
@@ -34,6 +34,8 @@ const View = (props) => {
         const registerLink = `/customer/account/create?order_id=${checkoutData.order_id}`;
         Router.push(registerLink);
     };
+
+    const isLogin = getLoginInfo();
 
     const [openXendit, setOpenXendit] = React.useState(false);
 

@@ -1,4 +1,4 @@
-import { removeIsLoginFlagging } from '@helper_auth';
+import { getLoginInfo, removeIsLoginFlagging } from '@helper_auth';
 import { removeCartId } from '@helper_cartid';
 import { useApolloClient } from '@apollo/client';
 import Router from 'next/router';
@@ -10,8 +10,9 @@ import {
 import { removeToken as deleteToken } from '@core_modules/customer/services/graphql';
 
 const Footer = ({
-    t, isLogin, storeConfig, FooterView, modules, data,
+    t, storeConfig, FooterView, modules, data,
 }) => {
+    const isLogin = getLoginInfo();
     const { aw_blog_general_enabled: blog } = storeConfig;
     const client = useApolloClient();
     const [deleteTokenGql] = deleteToken();

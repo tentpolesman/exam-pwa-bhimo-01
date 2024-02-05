@@ -2,13 +2,14 @@ import PropTypes from 'prop-types';
 import Layout from '@layout';
 import { getCustomer, getTrackingOrder } from '@core_modules/trackingorder/services/graphql';
 import dynamic from 'next/dynamic';
+import { getLoginInfo } from '@helper_auth';
 
 const Skeleton = dynamic(() => import('@core_modules/trackingorder/pages/default/components/skeletonform'), { ssr: false });
 const Content = dynamic(() => import('@core_modules/trackingorder/pages/default/components/form'), { ssr: false });
 
 const Tracking = (props) => {
     let customer = {};
-    const { isLogin, t } = props;
+    const { t } = props;
     const config = {
         title: t('trackingorder:trackingOrder'),
         header: 'relative', // available values: "absolute", "relative", false (default)
@@ -22,6 +23,8 @@ const Tracking = (props) => {
         order_id: '',
     });
     const [getTrackOrder, { loading, data, error }] = getTrackingOrder({ ...orderField });
+
+    const isLogin = getLoginInfo();
 
     if (isLogin) {
         const { data: dataCustomer, loading: loadCustomer } = getCustomer();

@@ -6,15 +6,18 @@ import React from 'react';
 import { getHost } from '@helpers/config';
 import Skeleton from '@core_modules/customer/pages/account/components/Skeleton';
 import Show from '@common/Show';
+import { getLoginInfo } from '@helper_auth';
 
 const Customer = (props) => {
     const {
-        t, CustomerView, storeConfig, isLogin, reOrder, ...other
+        t, CustomerView, storeConfig, reOrder, ...other
     } = props;
     let userData = {};
     let wishlist = [];
     const { data, loading, error } = gqlService.getCustomer(storeConfig);
     const { data: customerOrders } = gqlService.getCustomerOrder();
+
+    const isLogin = getLoginInfo();
 
     if (!data || loading || error) {
         return (
