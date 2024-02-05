@@ -39,6 +39,8 @@ const AddressView = (props) => {
         getCities,
     } = props;
     const addBtn = success ? cx('bg-green-500', 'hover:bg-green-500', 'py-8') : cx('py-8');
+    const inputHintClasses = cx('z-10', '-bottom-[26px]');
+
     const [isDesktop, setIsDekstop] = React.useState(false);
 
     React.useEffect(() => {
@@ -127,7 +129,7 @@ const AddressView = (props) => {
                     }}
                     inputProps={{
                         hintProps: {
-                            className: cx('z-10', '-bottom-[35%]'),
+                            className: inputHintClasses,
                             displayHintText: !!(formik.touched.region && formik.errors.region),
                             hintType: 'error',
                             hintText: formik.touched.region && formik.errors.region ? formik.errors.region : '',
@@ -153,7 +155,7 @@ const AddressView = (props) => {
                     formik.setFieldValue('postcode', '');
                 }}
                 hintProps={{
-                    className: cx('z-10', '-bottom-[35%]'),
+                    className: inputHintClasses,
                     displayHintText: !!(formik.touched.region && formik.errors.region),
                     hintType: 'error',
                     hintText: formik.touched.region && formik.errors.region ? formik.errors.region : '',
@@ -190,7 +192,7 @@ const AddressView = (props) => {
                     }}
                     inputProps={{
                         hintProps: {
-                            className: cx('z-10', '-bottom-[35%]'),
+                            className: inputHintClasses,
                             displayHintText: !!(formik.touched.city && formik.errors.city),
                             hintType: 'error',
                             hintText: formik.touched.city && formik.errors.city ? formik.errors.city : '',
@@ -215,7 +217,7 @@ const AddressView = (props) => {
                     formik.setFieldValue('postcode', '');
                 }}
                 hintProps={{
-                    className: cx('z-10', '-bottom-[35%]'),
+                    className: inputHintClasses,
                     displayHintText: !!(formik.touched.city && formik.errors.city),
                     hintType: 'error',
                     hintText: formik.touched.city && formik.errors.city ? formik.errors.city : '',
@@ -251,7 +253,7 @@ const AddressView = (props) => {
                     }}
                     inputProps={{
                         hintProps: {
-                            className: cx('z-10', '-bottom-[35%]'),
+                            className: inputHintClasses,
                             displayHintText: !!(formik.touched.district && formik.errors.district),
                             hintType: 'error',
                             hintText: formik.touched.district && formik.errors.district ? formik.errors.district : '',
@@ -275,7 +277,7 @@ const AddressView = (props) => {
                     formik.setFieldValue('postcode', '');
                 }}
                 hintProps={{
-                    className: cx('z-10', '-bottom-[35%]'),
+                    className: inputHintClasses,
                     displayHintText: !!(formik.touched.district && formik.errors.district),
                     hintType: 'error',
                     hintText: formik.touched.district && formik.errors.district ? formik.errors.district : '',
@@ -309,7 +311,7 @@ const AddressView = (props) => {
                     }}
                     inputProps={{
                         hintProps: {
-                            className: cx('z-10', '-bottom-[35%]'),
+                            className: inputHintClasses,
                             displayHintText: !!(formik.touched.village && formik.errors.village),
                             hintType: 'error',
                             hintText: formik.touched.village && formik.errors.village ? formik.errors.village : '',
@@ -343,7 +345,7 @@ const AddressView = (props) => {
                                 value={formik.values.firstname}
                                 onChange={formik.handleChange}
                                 hintProps={{
-                                    className: cx('z-10', '-bottom-[35%]'),
+                                    className: inputHintClasses,
                                     displayHintText: !!(formik.touched.firstname && formik.errors.firstname),
                                     hintType: 'error',
                                     hintText: formik.touched.firstname && formik.errors.firstname ? formik.errors.firstname : '',
@@ -358,7 +360,7 @@ const AddressView = (props) => {
                                 value={formik.values.lastname}
                                 onChange={formik.handleChange}
                                 hintProps={{
-                                    className: cx('z-10', '-bottom-[35%]'),
+                                    className: inputHintClasses,
                                     displayHintText: !!(formik.touched.lastname && formik.errors.lastname),
                                     hintType: 'error',
                                     hintText: formik.touched.lastname && formik.errors.lastname ? formik.errors.lastname : '',
@@ -373,7 +375,7 @@ const AddressView = (props) => {
                                 value={formik.values.telephone}
                                 onChange={formik.handleChange}
                                 hintProps={{
-                                    className: cx('z-10', '-bottom-[35%]'),
+                                    className: inputHintClasses,
                                     displayHintText: !!(formik.touched.telephone && formik.errors.telephone),
                                     hintType: 'error',
                                     hintText: formik.touched.telephone && formik.errors.telephone ? formik.errors.telephone : '',
@@ -403,7 +405,7 @@ const AddressView = (props) => {
                                     e.target.setAttribute('role', 'combobox');
                                 }}
                                 hintProps={{
-                                    className: cx('z-10', '-bottom-[35%]'),
+                                    className: inputHintClasses,
                                     displayHintText: !!(formik.touched.postcode && formik.errors.postcode),
                                     hintType: 'error',
                                     hintText: formik.touched.postcode && formik.errors.postcode ? formik.errors.postcode : '',
@@ -445,7 +447,7 @@ const AddressView = (props) => {
                                         e.target.setAttribute('role', 'combobox');
                                     }}
                                     hintProps={{
-                                        className: cx('z-10', '-bottom-[35%]'),
+                                        className: inputHintClasses,
                                         displayHintText: !!(formik.touched.addressDetail && formik.errors.addressDetail),
                                         hintType: 'error',
                                         hintText: formik.touched.addressDetail && formik.errors.addressDetail ? formik.errors.addressDetail : '',
@@ -464,7 +466,7 @@ const AddressView = (props) => {
                                         onChange={() => formik.setFieldValue('defaultShippingBilling', !formik.values.defaultShippingBilling)}
                                         classNames={{
                                             checkboxContainerClasses: cx('flex', 'flex-row'),
-                                            checkboxClasses: cx('cursor-pointer'),
+                                            checkboxClasses: cx('cursor-pointer min-w-5'),
                                         }}
                                     >
                                         <label className="mt-[-2px]" htmlFor={`addressform-defaultshippingbilling-checkbox-${addressId || 'new'}`}>
@@ -485,7 +487,7 @@ const AddressView = (props) => {
                                         onChange={() => formik.setFieldValue('confirmPinPoint', !formik.values.confirmPinPoint)}
                                         classNames={{
                                             checkboxContainerClasses: cx('flex', 'flex-row'),
-                                            checkboxClasses: cx('cursor-pointer'),
+                                            checkboxClasses: cx('cursor-pointer min-w-5'),
                                         }}
                                     >
                                         <label className="mt-[-2px]" htmlFor={`addressform-confirmpinpoint-checkbox-${addressId || 'new'}`}>
