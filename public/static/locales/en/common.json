@@ -54,7 +54,7 @@
         "cardTotal": "Subtotal",
         "deleteSuccess": "Delete cart item success",
         "deleteFailed": "Delete cart item failed",
-        "updateSuccess": "Update cart item success",
+        "updateSuccess": "Item has been updated successfully",
         "updateFailed": "Update cart item failed",
         "emptyCart": "Your cart is currently empty.",
         "oos": "Out of stock",
