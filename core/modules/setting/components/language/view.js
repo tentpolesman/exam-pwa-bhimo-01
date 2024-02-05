@@ -9,7 +9,9 @@ import Typography from '@common_typography';
 import ChevronDownIcon from '@heroicons/react/24/outline/ChevronDownIcon';
 
 const ViewSwitcherLanguage = (props) => {
-    const { open, setOpen, dataLang, lang, onClickLanguage, loadDataLang } = props;
+    const {
+        open, setOpen, dataLang, lang, onClickLanguage, loadDataLang,
+    } = props;
 
     const listDataLanguage = [];
 
@@ -22,9 +24,9 @@ const ViewSwitcherLanguage = (props) => {
 
     const PopoverContent = () => (
         <ul className={cx('currency-list__wrapper')}>
-            {listDataLanguage !== null &&
-                listDataLanguage.length > 0 &&
-                listDataLanguage.map((language_item, index) => (
+            {listDataLanguage !== null
+                && listDataLanguage.length > 0
+                && listDataLanguage.map((language_item, index) => (
                     // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions
                     <li
                         key={`language-${index}`}
@@ -58,6 +60,7 @@ const ViewSwitcherLanguage = (props) => {
                         'active:shadow-none',
                         'active:shadow-none',
                         'group',
+                        'swift-language-switcher',
                     )}
                     onClick={() => setOpen(!open)}
                     icon={<ChevronDownIcon />}

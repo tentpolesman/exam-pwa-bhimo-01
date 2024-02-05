@@ -87,7 +87,7 @@ const Menu = (props) => {
 
     return (
         <>
-            <ul className="nav" role="menubar" id="header-nav-menubar">
+            <ul className="nav swift-nav-menubar" role="menubar" id="header-nav-menubar">
                 {menu.map((val, idx) => {
                     if (val.include_in_menu && val.name) {
                         const linkEl = useRef(null);
@@ -120,7 +120,14 @@ const Menu = (props) => {
                                         megaMenuRef.current.classList.remove(`animate__${val.dropdown_animation_in}`);
                                     }
                                 }}
-                                className={cx('text-md', 'font-medium', 'tracking-normal', 'px-4', 'py-[13px]', 'hover:text-primary-700')}
+                                className={cx(
+                                    'swift-nav-lv1',
+                                    'text-md',
+                                    'font-medium',
+                                    'tracking-normal',
+                                    'px-4', 'py-[13px]',
+                                    'hover:text-primary-700',
+                                )}
                             >
                                 {val.link && val.link !== '#' ? (
                                     <>
@@ -179,7 +186,16 @@ const Menu = (props) => {
 
                                 {val.children.length > 0 ? (
                                     <div
-                                        className={cx('mega-menu', 'grid', 'bg-neutral-white', 'shadow-md', 'grid-cols-1', 'rounded-lg', 'z-10')}
+                                        className={cx(
+                                            'mega-menu',
+                                            'grid',
+                                            'bg-neutral-white',
+                                            'shadow-md',
+                                            'grid-cols-1',
+                                            'rounded-lg',
+                                            'z-10',
+                                            'swift-megamenu',
+                                        )}
                                         aria-hidden="true"
                                         role="menu"
                                         ref={megaMenuRef}

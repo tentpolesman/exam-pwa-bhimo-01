@@ -43,7 +43,7 @@ const PrintOrder = (props) => {
                         <div className="box header-middle__logo">
                             <Link href="/" legacyBehavior>
                                 <img
-                                    className="header-middle__logo-link"
+                                    className="swift-header-middle__logo-link"
                                     src={`${storeConfig.secure_base_media_url}logo/${storeConfig.header_logo_src}`}
                                 />
                             </Link>
@@ -241,7 +241,7 @@ const PrintOrder = (props) => {
             </div>
             <style jsx>
                 {`
-                    .header-middle__logo-link {
+                    .swift-header-middle__logo-link {
                         cursor: pointer;
                         width: 120px;
                     }
