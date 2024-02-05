@@ -174,7 +174,16 @@ const Item = (props) => {
                             )}
                         >
                             <div className={cx('details-qty qty', 'desktop:basis-full')}>
-                                <ButtonQty value={quantity} onChange={handleUpdateCart} />
+                                <ButtonQty
+                                    value={quantity}
+                                    onChange={(newQty, trigger) => {
+                                        // only update cart if user change qty via +- button
+                                        if (trigger === 'button') {
+                                            handleUpdateCart(newQty);
+                                        }
+                                    }}
+                                    onBlur={handleUpdateCart}
+                                />
                             </div>
                             <div
                                 className={cx(

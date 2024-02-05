@@ -163,7 +163,16 @@ const ItemView = (props) => {
                 <div className="flex flex-col gap-[6px] tablet:flex-row justify-between tablet:items-center w-full">
                     <ButtonQty
                         value={quantity}
-                        onChange={(newQty) => {
+                        onChange={(newQty, trigger) => {
+                            // only update item if user change qty via +- button
+                            if (trigger === 'button') {
+                                updateItem({
+                                    cart_item_id: id,
+                                    quantity: newQty,
+                                });
+                            }
+                        }}
+                        onBlur={(newQty) => {
                             updateItem({
                                 cart_item_id: id,
                                 quantity: newQty,
@@ -204,7 +213,7 @@ const ItemProduct = (props) => {
         storeConfig,
         currencyCache,
         aw_giftcard_option,
-
+        updateItem,
     } = props;
 
     const { id, custom_price: prices } = props;
@@ -245,6 +254,8 @@ const ItemProduct = (props) => {
             storeConfig={storeConfig}
             currencyCache={currencyCache}
             aw_giftcard_option={aw_giftcard_option}
+            id={id}
+            updateItem={updateItem}
         />
     );
 };

@@ -152,7 +152,16 @@ const TableItem = (props) => {
             <td align="center" valign="top" className="py-4 px-14">
                 <ButtonQty
                     value={quantity}
-                    onChange={(newQty) => {
+                    onChange={(newQty, trigger) => {
+                        // only update item if user change qty via +- button
+                        if (trigger === 'button') {
+                            updateItem({
+                                cart_item_id: id,
+                                quantity: newQty,
+                            });
+                        }
+                    }}
+                    onBlur={(newQty) => {
                         updateItem({
                             cart_item_id: id,
                             quantity: newQty,
