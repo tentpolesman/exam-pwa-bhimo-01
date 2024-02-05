@@ -84,7 +84,7 @@ const AddressView = (props) => {
 
                             _.delay(async () => {
                                 dispatch(setStatusState({ openAddressDialog: false, addresses: false }));
-                                await setAddress(dataAddress, cart);
+                                // await setAddress(dataAddress, cart);
                             }, CLOSE_ADDRESS_DIALOG);
                         }}
                         loading={checkout.loading.addresses}
