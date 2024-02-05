@@ -67,6 +67,7 @@ export const storeConfig = `
       catalog_default_sort_by
       catalog_search_engine
       category_url_suffix
+      cms_page
       code
       cookie_restriction
       copyright

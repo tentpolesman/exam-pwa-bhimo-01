@@ -38,6 +38,7 @@ const ButtonActionQty = ({
 const ButtonQty = ({
     value = 1,
     onChange,
+    onBlur,
     max = 100,
     disabled = false,
     width = 120,
@@ -49,6 +50,13 @@ const ButtonQty = ({
     const [localValue, setLocalValue] = React.useState(value);
     const disabledMin = disabled || localValue === 1;
     const disableMax = disabled || localValue === max;
+    const inputRef = React.useRef();
+
+    // to distinguish onChange event are triggered by +- button or by input
+    const trigger = {
+        BUTTON: 'button',
+        INPUT: 'input',
+    };
 
     React.useEffect(() => {
         setLocalValue(value);
@@ -57,7 +65,7 @@ const ButtonQty = ({
     const handleMinus = () => {
         if (!disabled && localValue > 1 && localValue <= max) {
             if (onChange) {
-                onChange(localValue - 1);
+                onChange(localValue - 1, trigger.BUTTON);
             }
             setLocalValue(parseInt(localValue, 0) - 1);
         }
@@ -65,7 +73,7 @@ const ButtonQty = ({
     const handlePlus = () => {
         if (!disabled && localValue > 0 && localValue < max) {
             if (onChange) {
-                onChange(localValue + 1);
+                onChange(localValue + 1, trigger.BUTTON);
             }
             setLocalValue(parseInt(localValue, 0) + 1);
         }
@@ -87,9 +95,24 @@ const ButtonQty = ({
             });
         } else {
             if (onChange) {
-                onChange(val);
+                onChange(val, trigger.INPUT);
             }
             setLocalValue(parseInt(val, 0));
+        }
+    };
+
+    const handleBlur = (event) => {
+        const val = parseInt(event.target.value, 0);
+        if (onBlur) {
+            onBlur(val);
+        }
+    };
+
+    const handleKeyUp = (event) => {
+        const ENTER_KEY = 'Enter';
+        const ESC_KEY = 'Escape';
+        if (event.key === ENTER_KEY || event.key === ESC_KEY) {
+            inputRef.current.blur();
         }
     };
 
@@ -115,19 +138,22 @@ const ButtonQty = ({
         >
 
             <ButtonActionQty
-                className={cx('mx-auto', classNameBtnMinus)}
+                className={cx('mx-auto swift-button-qty-minus', classNameBtnMinus)}
                 label="-"
                 disabled={disabledMin}
                 onClick={handleMinus}
             />
             <input
+                ref={inputRef}
                 type="number"
                 value={localValue}
                 disabled={disabled}
                 onChange={handleLocalChange}
+                onKeyUp={handleKeyUp}
+                onBlur={handleBlur}
                 className={
                     cx(
-                        'btn-qty-input',
+                        'swift-btn-qty-input',
                         'text-center',
                         '!font-pwa-default',
                         'bg-neutral-white focus:outline-none',
@@ -140,7 +166,7 @@ const ButtonQty = ({
                 }
             />
             <ButtonActionQty
-                className={cx('mx-auto', classNameBtnPlus)}
+                className={cx('mx-auto swift-button-qty-plus', classNameBtnPlus)}
                 label="+"
                 onClick={handlePlus}
                 disabled={disableMax}

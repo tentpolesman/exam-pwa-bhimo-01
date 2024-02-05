@@ -23,11 +23,14 @@ import Backdrop from '@common/Backdrop';
 
 import Content from '@core_modules/cart/pages/default/components';
 import Skeleton from '@core_modules/cart/pages/default/components/skeleton';
+import { getLoginInfo } from '@helper_auth';
 
 const Cart = (props) => {
     const {
-        t, token, isLogin, storeConfig, ...other
+        t, token, storeConfig, ...other
     } = props;
+
+    const isLogin = getLoginInfo();
 
     // cache currency
     const currencyCache = currencyVar();

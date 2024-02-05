@@ -20,7 +20,9 @@ const CustomerAccount = (props) => {
         tagSelector: isLogin ? 'swift-page-dashboard' : 'swift-page-guest-view',
     };
     const [actionReorder] = mutationReorder();
-    const { data } = getCmsBlocks({ identifiers: [storeConfig.pwa.footer_version] });
+    const { data } = getCmsBlocks({ identifiers: [storeConfig?.pwa?.footer_version] }, {
+        skip: typeof window === 'undefined' || !storeConfig?.pwa?.footer_version,
+    });
 
     const reOrder = (order_id) => {
         if (order_id && order_id !== '') {

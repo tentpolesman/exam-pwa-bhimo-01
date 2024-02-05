@@ -36,7 +36,7 @@ const TableItem = (props) => {
                         <Link
                             href="/[...slug]"
                             as={`/${product.url_key}`}
-                            className="justify-center items-center overflow-hidden"
+                            className="swift-product-item-photo justify-center items-center overflow-hidden"
                         >
                             <Image
                                 src={product.small_image.url}
@@ -55,7 +55,7 @@ const TableItem = (props) => {
                     </div>
                     <div className="flex flex-col px-4 col-span-2">
                         <div className="flex flex-col gap-2">
-                            <Link href="/[...slug]" as={`/${product.url_key}`}>
+                            <Link href="/[...slug]" as={`/${product.url_key}`} className="swift-product-item-name">
                                 <Typography variant="bd-2b" className="!text-base font-normal line-clamp-2 capitalize">
                                     {product.name}
                                 </Typography>
@@ -152,7 +152,16 @@ const TableItem = (props) => {
             <td align="center" valign="top" className="py-4 px-14">
                 <ButtonQty
                     value={quantity}
-                    onChange={(newQty) => {
+                    onChange={(newQty, trigger) => {
+                        // only update item if user change qty via +- button
+                        if (trigger === 'button') {
+                            updateItem({
+                                cart_item_id: id,
+                                quantity: newQty,
+                            });
+                        }
+                    }}
+                    onBlur={(newQty) => {
                         updateItem({
                             cart_item_id: id,
                             quantity: newQty,
@@ -174,7 +183,7 @@ const TableItem = (props) => {
                     </Typography>
                     <Button
                         iconOnly
-                        className="!px-0 !py-4 cart-tableCart-removeCartBtn"
+                        className="!px-0 !py-4 swift-cart-tableCart-removeCartBtn"
                         iconPosition="right"
                         icon={<TrashIcon />}
                         variant="plain"

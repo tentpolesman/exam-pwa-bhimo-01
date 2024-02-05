@@ -8,10 +8,13 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import Content from '@core_modules/seller/pages/default/components';
 import ContentProducts from '@core_modules/seller/pages/default/components/Products';
+import { getLoginInfo } from '@helper_auth';
 
 const Seller = (props) => {
-    const { t, storeConfig, pageConfig, isLogin, ...other } = props;
+    const { t, storeConfig, pageConfig, ...other } = props;
     const router = useRouter();
+
+    const isLogin = getLoginInfo();
 
     const {
         data: dataSeller,

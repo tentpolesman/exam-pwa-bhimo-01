@@ -48,6 +48,7 @@ import {
     setSelectedData,
     setStatusState,
 } from '@core_modules/checkout/redux/checkoutSlice';
+import { getLoginInfo } from '@helper_auth';
 
 function equalTo(ref, msg) {
     return this.test({
@@ -88,7 +89,7 @@ const Checkout = (props) => {
     const currencyCache = currencyVar();
     const appEnv = getAppEnv();
 
-    let { isLogin } = props;
+    let isLogin = getLoginInfo();
     let pwaCheckoutState = null;
     let urlRedirect = modules.checkout.checkoutOnly ? getStoreHost(appEnv) : '/checkout/cart';
 

@@ -14,13 +14,15 @@ import getPrice from '@core_modules/catalog/helpers/getPrice';
 import { getTagManager, getTagManagerGA4 } from '@core_modules/catalog/helpers/catalogTagManager';
 import TagManager from 'react-gtm-module';
 import Alert from '@common/Alert';
+import { getLoginInfo } from '@helper_auth';
 
 const ProductList = (props) => {
     const {
-        storeConfig, defaultSort, catId, sellerId = null, banner, isLogin, customFilter, t, categoryPath, url_path, ...other
+        storeConfig, defaultSort, catId, sellerId = null, banner, customFilter, t, categoryPath, url_path, ...other
     } = props;
     const router = useRouter();
     const { path, query } = getQueryFromPath(router);
+    const isLogin = getLoginInfo();
     /**
      * config from BO
      * pagination or loadmore

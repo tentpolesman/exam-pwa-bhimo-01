@@ -139,7 +139,7 @@ const ProductDetailAction = ({
                         </Typography>
                     </Link>
                 </Show>
-                <Typography variant="h1" className="first-letter:uppercase mb-[12px] desktop:mt-[0px] tablet:mt-[0px] mobile:mt-[24px]">
+                <Typography variant="h1" className="swift-page-title first-letter:uppercase mb-[12px] desktop:mt-[0px] tablet:mt-[0px] mobile:mt-[24px]">
                     {parser(data?.name || '-')}
                 </Typography>
                 <Show when={!isAwGiftCard && !loadPrice}>
@@ -280,20 +280,20 @@ const ProductDetailAction = ({
                     )}
                 >
                     <Show when={useShareProduct}>
-                        <div className={cx('product-detail-info-footer-share')}>
+                        <div className={cx('swift-product-detail-info-footer-share')}>
                             <Share />
                         </div>
                     </Show>
                     {/* WISHLIST & COMPARE DESKTOP, TABLET */}
                     <div
                         className={cx(
-                            'product-detail-info-footer-action',
+                            'swift-product-detail-info-footer-action',
                             'flex desktop:justify-end tablet:justify-start',
                             'desktop:mt-[0px] tablet:mt-[16px]',
                         )}
                     >
                         <Show when={enableWishlist}>
-                            <Button variant="plain" icon={false} iconOnly={false} onClick={handleWishlist} className="!p-0 whitespace-nowrap">
+                            <Button variant="plain" icon={false} iconOnly={false} onClick={handleWishlist} className="!p-0 whitespace-nowrap swift-action-towishlist">
                                 <Typography color="text-neutral-500 hover:text-neutral-400 flex items-center" variant="bd-2a">
                                     {t('common:label:addToWishlist')}
                                     <HeartIcon className="h-[14px] w-[14px] ml-[6px]" />
@@ -306,7 +306,7 @@ const ProductDetailAction = ({
                                 icon={false}
                                 iconOnly={false}
                                 onClick={() => handleSetCompareList(data?.id)}
-                                className="!p-0 whitespace-nowrap ml-[12px]"
+                                className="!p-0 whitespace-nowrap ml-[12px] swift-action-tocompare"
                             >
                                 <Typography color="text-neutral-500 hover:text-neutral-400 flex items-center" variant="bd-2a">
                                     {t('common:label:addToCompare')}
@@ -320,7 +320,7 @@ const ProductDetailAction = ({
         </div>
 
         <Show when={!isMobile && useProductTabs}>
-            <div className={cx('product-detail-tabs', 'desktop:mt-[64px] tablet:mt-[64px]', 'desktop:px-[0px] tablet:px-[16px] mobile:px-[16px]')}>
+            <div className={cx('swift-product-detail-tabs', 'desktop:mt-[64px] tablet:mt-[64px]', 'desktop:px-[0px] tablet:px-[16px] mobile:px-[16px]')}>
                 <ProductTabs
                     data={expandData}
                     tabTitleWrapperClassName="[&>li:first-child>a]:!pl-[0px]"
@@ -355,7 +355,7 @@ const ProductDetailAction = ({
         </Show>
 
         <Show when={useReviewList}>
-            <div ref={reviewRef} className={cx('product-list-review-container', 'mt-[48px]', 'desktop:px-[0px] tablet:px-[16px] mobile:px-[16px]')}>
+            <div ref={reviewRef} className={cx('swift-product-list-review-container', 'mt-[48px]', 'desktop:px-[0px] tablet:px-[16px] mobile:px-[16px]')}>
                 <ReviewList t={t} data={data} storeConfig={storeConfig} isLogin={isLogin} />
             </div>
         </Show>

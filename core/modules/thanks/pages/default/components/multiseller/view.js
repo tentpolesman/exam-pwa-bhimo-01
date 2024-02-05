@@ -11,14 +11,16 @@ import cx from 'classnames';
 import Link from 'next/link';
 import propTypes from 'prop-types';
 import IconArrow from '@heroicons/react/24/outline/ArrowRightIcon';
+import { getLoginInfo } from '@helper_auth';
 
 const ViewThanksMultiSeller = (props) => {
     const {
         t,
-        isLogin,
         handleContinue,
         customerOrder,
     } = props;
+
+    const isLogin = getLoginInfo();
 
     return (
         <div className={cx(

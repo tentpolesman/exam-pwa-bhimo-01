@@ -47,7 +47,7 @@ const FieldPoint = ({
                     variant="outlined"
                     onClick={action}
                     disabled={disabled || loading || value === ''}
-                    className="h-[43px]"
+                    className="h-[43px] swift-action-apply"
                     loading={loading}
                 >
                     <Typography

@@ -13,7 +13,7 @@ export const getLastPathWithoutLogin = () => {
     if (path && typeof type !== 'undefined' && path !== '') {
         return path;
     }
-    return '/customer/account';
+    return '/customer/account/login';
 };
 
 export const removeLastPathWithoutLogin = () => {

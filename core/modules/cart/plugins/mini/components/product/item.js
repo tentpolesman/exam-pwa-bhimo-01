@@ -40,14 +40,14 @@ const Item = (props) => {
 
     return (
         <li className={cx('px-6', 'py-4')}>
-            <div className={cx('minicart__item--wrapper tablet:max-desktop:py-4 flex', 'flex-row gap-4 plugin-minicart-itemsProduct')}>
+            <div className={cx('swift-minicart__item--wrapper tablet:max-desktop:py-4 flex', 'flex-row gap-4 plugin-minicart-itemsProduct')}>
                 <div className={cx('minicart__item--photo-wrapper', 'rounded-[4px]')}>
                     <Link
                         href="/[...slug]"
                         as={`/${product.url_key}`}
                         passHref
                         className={cx(
-                            'minicart__item--photo',
+                            'swift-minicart__item--photo',
                             'tablet:h-[120px]',
                             'tablet:w-[120px]',
                             'mobile:max-tablet:h-[100px]',
@@ -72,7 +72,7 @@ const Item = (props) => {
                     <div className={cx('minicart__item--details-child-wrapper', 'grid', 'grid-cols-1', 'gap-y-[10px]')}>
                         <div className={cx('minicart__item--details-child-top-wrapper', 'flex', 'flex-row', 'gap-3', 'justify-between')}>
                             <div className={cx('minicart__item--name-wrapper', 'tablet:max-desktop:basis-[176px]', 'desktop:basis-[320px]')}>
-                                <Link href="/[...slug]" as={`/${product.url_key}`}>
+                                <Link href="/[...slug]" as={`/${product.url_key}`} className="swift-minicart__item--name">
                                     <Typography variant="bd-1b" className={cx('normal-case', 'mobile:max-tablet:text-base')}>
                                         {product.name}
                                     </Typography>
@@ -140,7 +140,7 @@ const Item = (props) => {
                                     ) : null}
                                 </div>
                             </div>
-                            <div className={cx('minicart__item--delete-wrapper')}>
+                            <div className={cx('swift-minicart__item--delete-wrapper')}>
                                 <Button
                                     className={cx(
                                         '!m-0',
@@ -174,7 +174,16 @@ const Item = (props) => {
                             )}
                         >
                             <div className={cx('details-qty qty', 'desktop:basis-full')}>
-                                <ButtonQty value={quantity} onChange={handleUpdateCart} />
+                                <ButtonQty
+                                    value={quantity}
+                                    onChange={(newQty, trigger) => {
+                                        // only update cart if user change qty via +- button
+                                        if (trigger === 'button') {
+                                            handleUpdateCart(newQty);
+                                        }
+                                    }}
+                                    onBlur={handleUpdateCart}
+                                />
                             </div>
                             <div
                                 className={cx(

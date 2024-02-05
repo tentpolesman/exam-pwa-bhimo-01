@@ -217,6 +217,7 @@ const ReviewList = ({
                             className={cx(
                                 'xs:py-[8px] xs:px-[16px]',
                                 'sm:py-[10px] sm:px-[20px]',
+                                'swift-action-toreview',
                             )}
                         >
                             <Typography variant="bd-2" type="bold" letter="uppercase">

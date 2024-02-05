@@ -32,6 +32,8 @@ import { getLoginInfo } from '@helper_auth';
 import supportsWebP from 'supports-webp';
 import Typography from '@common/Typography';
 import PageProgressLoader from '@common_pageprogress';
+import { usePathname } from 'next/navigation';
+import { routeWithAuth } from '@core/middlewares/route';
 /**
  * Set font family using nextjs helper,
  * path property needs to be an absolute path
@@ -105,6 +107,7 @@ const Layout = (props) => {
     } = props;
     const { ogContent = {}, schemaOrg = null, headerDesktop = true, footer = true } = pageConfig;
     const router = useRouter();
+    const pathname = usePathname();
     const appEnv = getAppEnv();
     // login get From cookies
     const isLogin = getLoginInfo();
@@ -226,6 +229,13 @@ const Layout = (props) => {
         ogData['fb:app_id'] = storeConfig.pwa.facebook_meta_id_app_id;
     }
 
+    if (pathname) {
+        const allow = routeWithAuth(pathname);
+        if (!allow && !isLogin && typeof window !== 'undefined') {
+            router.push('/customer/account/login');
+        }
+    }
+
     React.useEffect(() => {
         if (!isLogin && modules.productcompare.enabled) {
             const uid_product = getCookies('uid_product_compare');
@@ -247,7 +257,7 @@ const Layout = (props) => {
                     });
             }
         }
-    }, [isLogin]);
+    }, [isLogin, pathname]);
 
     const reloadCartQty = typeof window !== 'undefined' && window && window.reloadCartQty;
     let cartId = '';

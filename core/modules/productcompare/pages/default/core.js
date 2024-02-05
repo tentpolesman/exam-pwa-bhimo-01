@@ -8,10 +8,11 @@ import ErrorView from '@core_modules/productcompare/pages/default/components/Err
 import { localCompare } from '@services/graphql/schema/local';
 import { useQuery } from '@apollo/client';
 import Backdrop from '@common/Backdrop';
+import { getLoginInfo } from '@helper_auth';
 
-const HomeCore = (props) => {
+const ProductCompareCore = (props) => {
     const {
-        Content, isLogin, storeConfig, ViewSkeleton, t, ...other
+        Content, storeConfig, ViewSkeleton, t, ...other
     } = props;
     const [getProduct, {
         data: compareList, loading, refetch, error,
@@ -19,6 +20,8 @@ const HomeCore = (props) => {
     const [setRemoveProductCompare] = removeProductsFromCompareList();
     const [getUid, { data: dataUid }] = getCustomerUid();
     const { client } = useQuery(localCompare);
+
+    const isLogin = getLoginInfo();
 
     React.useEffect(() => {
         if (isLogin) {
@@ -158,4 +161,4 @@ const HomeCore = (props) => {
     );
 };
 
-export default HomeCore;
+export default ProductCompareCore;

@@ -109,7 +109,7 @@ const Pagination = (props) => {
                     onClick={handlePrevious}
                     onKeyUp={() => {}}
                     className={cx(
-                        'swift-pagination-item w-10 h-10 flex items-center',
+                        'swift-pagination-item-prev w-10 h-10 flex items-center',
                         'justify-center bg-neutral-white rounded-md',
                         page === 1 && 'text-neutral-150',
                     )}
@@ -144,7 +144,7 @@ const Pagination = (props) => {
                     onClick={handleNext}
                     onKeyUp={() => {}}
                     className={cx(
-                        'swift-pagination-item w-10 h-10 flex items-center',
+                        'swift-pagination-item-next w-10 h-10 flex items-center',
                         'justify-center bg-neutral-white rounded-md',
                         page === totalPage && 'text-neutral-150',
                     )}

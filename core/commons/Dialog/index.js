@@ -120,7 +120,7 @@ const Dialog = ({
                                     iconOnly
                                     className={
                                         cx(
-                                            'button-close-dialog',
+                                            'swift-button-close-dialog',
                                             'desktop:!px-[32px] tablet:!px-[32px] mobile:!px-[16px]',
                                         )
                                     }

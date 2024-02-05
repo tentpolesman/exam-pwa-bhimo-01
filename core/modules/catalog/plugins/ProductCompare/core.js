@@ -16,8 +16,9 @@ import Typography from '@common_typography';
 
 import ArrowsRightLeftIcon from '@heroicons/react/24/solid/ArrowsRightLeftIcon';
 import cx from 'classnames';
+import { getLoginInfo } from '@helper_auth';
 
-const ProductCompareIcon = ({ withLink, WithLinkView, isLogin }) => {
+const ProductCompareIcon = ({ withLink, WithLinkView }) => {
     const [getProductCompare, { loading, data: compareList }] = getCompareList({
         errorPolicy: 'all',
     });
@@ -25,6 +26,8 @@ const ProductCompareIcon = ({ withLink, WithLinkView, isLogin }) => {
     const { data: dataCompare, client } = useQuery(localCompare);
     const [setCompareList] = createCompareList();
     const { t } = useTranslation();
+
+    const isLogin = getLoginInfo();
 
     React.useEffect(() => {
         if (!dataCompare && compareList && compareList.compareList !== null) {

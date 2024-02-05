@@ -13,6 +13,7 @@ import Toast from '@common_toast';
 import {
     getCartCallbackUrl, getLoginCallbackUrl, getSuccessCallbackUrl,
 } from '@core_modules/checkout/helpers/config';
+import { getLoginInfo } from '@helper_auth';
 
 const PaypalReviewCore = (props) => {
     const {
@@ -32,7 +33,10 @@ const PaypalReviewCore = (props) => {
         },
     };
 
-    let { cartId, isLogin } = props;
+    let { cartId } = props;
+
+    let isLogin = getLoginInfo();
+
     let urlRedirect = '/checkout/cart';
     if (modules.checkout.checkoutOnly) {
         urlRedirect = getStoreHost(getAppEnv());

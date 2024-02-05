@@ -334,7 +334,7 @@ const PaymentView = (props) => {
                 {(modules.checkout.howtoPay.enabled && displayHowToPay) ? (
                     <div>
                         <Button
-                            className="px-2 py-2"
+                            className="px-2 py-2 swift-action-howtopay"
                             onClick={() => handleModal(true)}
                             disabled={loading.order || loading.all}
                         >

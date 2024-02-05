@@ -1,8 +1,10 @@
 /* eslint-disable no-plusplus */
 import Accordion from '@common/Accordion';
+import Backdrop from '@common/Backdrop';
 import Typography from '@common_typography';
 
 import { modules } from '@config';
+import { getLoginInfo } from '@helper_auth';
 import cx from 'classnames';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -14,6 +16,8 @@ const Layout = (props) => {
     const pushIf = (condition, ...elements) => (condition ? elements : []);
     const router = useRouter();
     let titlePage = '';
+
+    const isLogin = getLoginInfo();
 
     const menu = [
         { href: '/customer/account', title: t('customer:menu:myAccount') },
@@ -58,6 +62,11 @@ const Layout = (props) => {
             titlePage = item.title;
         }
     }
+
+    if (!isLogin) {
+        return <Backdrop open />;
+    }
+
     return (
         <>
             <div className="desktop:flex desktop:flex-row desktop:gap-x-[18px] mobile:grid mobile:grid-cols-1">

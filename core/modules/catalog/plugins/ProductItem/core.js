@@ -579,6 +579,7 @@ const ProductItem = (props) => {
                                         'desktop:group-hover:visible',
                                         'absolute px-3 py-2',
                                         'left-1/2 bottom-4 -translate-x-1/2 z-[2] w-32',
+                                        'swift-quickview-button',
                                     )}
                                     size="sm"
                                 >

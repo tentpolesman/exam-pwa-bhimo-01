@@ -144,7 +144,7 @@ const ItemView = (props) => {
                     iconPosition="right"
                     variant="plain"
                     link="/"
-                    className="!p-0 group"
+                    className="!p-0 group swift-action-continueshopping"
                     classNameText="!text-primary"
                     iconProps={{ className: 'w-[18px] h-[18px]' }}
                 >

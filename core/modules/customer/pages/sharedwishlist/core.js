@@ -7,11 +7,14 @@ import { localTotalCart } from '@services/graphql/schema/local';
 import { getCartId, setCartId } from '@helper_cartid';
 import { customerWishlist } from '@core_modules/customer/services/graphql';
 import { addSimpleProductsToCart, getGuestCartId as queryGetGuestCartId, getCustomerCartId } from '@core_modules/product/services/graphql';
+import { getLoginInfo } from '@helper_auth';
 
 const HomeCore = (props) => {
     const {
-        Content, pageConfig, storeConfig, SharedSkeleton, t, isLogin, ...other
+        Content, pageConfig, storeConfig, SharedSkeleton, t, ...other
     } = props;
+
+    const isLogin = getLoginInfo();
 
     let cartId = '';
     const router = useRouter();
