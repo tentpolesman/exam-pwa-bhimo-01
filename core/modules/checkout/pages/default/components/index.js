@@ -102,7 +102,7 @@ const Content = (props) => {
      * [VIEW]
      */
     return (
-        <div id="checkout" className="flex flex-col pb-8 desktop:py-0 relative">
+        <div id="checkout" className="flex flex-col pb-8 desktop:py-0 desktop:px-8 relative">
             <div
                 className={classNames(
                     'flex flex-row items-center justify-center relative',
