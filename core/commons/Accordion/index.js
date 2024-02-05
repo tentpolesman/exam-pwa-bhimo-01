@@ -34,11 +34,11 @@ const Accordion = (props) => {
     };
 
     return (
-        <details className={cx('swift-filter-options group flex flex-col common-accordion', className)} open={open}>
+        <details className={cx('group flex flex-col swift-common-accordion', className)} open={open}>
             <summary
                 onClick={handleShow}
                 className={cx(
-                    'swift-filter-options-title flex justify-between',
+                    'swift-accordion-title flex justify-between',
                     'items-center font-medium cursor-pointer list-none w-full',
                     classSummary,
                 )}
@@ -64,7 +64,7 @@ const Accordion = (props) => {
             </summary>
             <div
                 className={cx(
-                    'swift-filter-options-content text-neutral-600 mt-4',
+                    'swift-accordion-content text-neutral-600 mt-4',
                     'group-open:animate-fadeIn group-open:duration-700',
                     classContent,
                 )}

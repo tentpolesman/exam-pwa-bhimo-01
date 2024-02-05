@@ -78,7 +78,7 @@ const EmailView = (props) => {
             </div>
             {!isExternalLoginLink
                 ? (
-                    <Button align="left" variant="plain" link={generateLoginRedirect()} className="w-max !p-0">
+                    <Button align="left" variant="plain" link={generateLoginRedirect()} className="swift-action-tologin w-max !p-0">
                         <Typography variant="bd-2a" type="regular" decoration="underline" size="14">
                             {t('checkout:haveAccount')}
                         </Typography>
@@ -88,7 +88,7 @@ const EmailView = (props) => {
                     <Button
                         align="left"
                         variant="plain"
-                        className="w-max !p-0"
+                        className="swift-action-tologin w-max !p-0"
                         onClick={() => { window.location.href = generateLoginRedirect(); }}
                     >
                         <Typography variant="bd-2a" type="regular" decoration="underline" size="14">

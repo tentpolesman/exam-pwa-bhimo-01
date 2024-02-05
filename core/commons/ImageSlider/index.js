@@ -297,7 +297,7 @@ const ImageSlider = ({
                     style={{ width: thumbnailImageWidth }}
                     className={
                         cx(
-                            'image-slider-vertical',
+                            'swift-image-slider-vertical',
                             'px-[0px] mx-auto',
                             'm-0 !p-0',
                             'desktop:m-0 tablet:m-0 mobile:m-0',
@@ -310,7 +310,7 @@ const ImageSlider = ({
                             const isVideo = item?.urlEmbed || item?.video || item?.videoUrl;
                             return (
                                 <div
-                                    className="mb-[12px] relative"
+                                    className="mb-[12px] relative swift-image-slider-item"
                                     key={`image-slider-vertical-${index}`}
                                     onClick={() => onSelectedImage({ index, item })}
                                 >
@@ -468,6 +468,7 @@ const ImageSlider = ({
                                             'desktop:first:ml-[0px] desktop:last:mr-[0px]',
                                             'tablet:first:ml-[0px] tablet:last:mr-[0px]',
                                             'mobile:first:ml-[16px] mobile:last:mr-[6px]',
+                                            'swift-image-slider-item',
                                         )
                                     }
                                     onClick={() => onSelectedImage({ index, item })}

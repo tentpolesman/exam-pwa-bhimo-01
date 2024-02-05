@@ -18,11 +18,11 @@ const ShippingView = (props) => {
         ? cx(
             'p-4 border border-neutral-200 rounded-xl flex flex-row items-center cursor-pointer',
             'border-primary',
-            `${delivery}Delivery`,
+            `swift-${delivery}Delivery`,
         )
         : cx(
             'p-4 border border-neutral-200 rounded-xl flex flex-row items-center cursor-pointer',
-            `${delivery}Delivery`,
+            `swift-${delivery}Delivery`,
         ));
     const checkActiveColor = (delivery) => (((checkout.selected.delivery === delivery))
         ? 'text-primary'
@@ -30,7 +30,7 @@ const ShippingView = (props) => {
 
     return (
         <div
-            id="checkoutDeliveryMethod"
+            id="swift-checkoutDeliveryMethod"
             className={cx(
                 'flex flex-col border-b border-b-neutral-200',
                 'w-full pb-6 gap-4',

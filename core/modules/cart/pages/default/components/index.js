@@ -101,7 +101,7 @@ const Content = (props) => {
             </div>
             <div className="flex flex-col gap-6">
                 <Breadcrumb iconHomeOnly data={breadcrumbsData} />
-                <Typography variant="h1" className="text-lg tablet:text-[24px] destkop:text-[30px]">
+                <Typography variant="h1" className="swift-page-title text-lg tablet:text-[24px] destkop:text-[30px]">
                     {t('cart:pageTitle')}
                 </Typography>
                 <Show when={dataCart && dataCart.items && dataCart.items.length < 1}>
