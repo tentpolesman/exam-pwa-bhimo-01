@@ -20,9 +20,8 @@ import ModalXendit from '@core_modules/checkout/pages/default/components/ModalXe
 import { getAppEnv } from '@core/helpers/env';
 
 import { useDispatch, useSelector } from 'react-redux';
-import {
-    selectCheckoutState, setLoading, setCheckoutData as setCheckoutDataState
-} from '@core_modules/checkout/redux/checkoutSlice';
+import { selectCheckoutState, setLoading, setCheckoutData as setCheckoutDataState } from '@core_modules/checkout/redux/checkoutSlice';
+import Button from '@common/Button';
 
 const Summary = ({
     t,
@@ -34,6 +33,7 @@ const Summary = ({
     storeConfig,
     checkoutTokenState,
     setCheckoutTokenState,
+    buttonOnly = false,
 }) => {
     const dispatch = useDispatch();
     const checkout = useSelector(selectCheckoutState);
@@ -198,12 +198,14 @@ const Summary = ({
 
             if (!validateResponse(result)) return;
 
-            dispatch(setCheckoutDataState({
-                cart: {
-                    ...checkout.data.cart,
-                    ...result.data.setPaymentMethodOnCart.cart,
-                }
-            }));
+            dispatch(
+                setCheckoutDataState({
+                    cart: {
+                        ...checkout.data.cart,
+                        ...result.data.setPaymentMethodOnCart.cart,
+                    },
+                }),
+            );
             updateFormik({
                 ...checkout.data.cart,
                 ...result.data.setPaymentMethodOnCart.cart,
@@ -437,20 +439,24 @@ const Summary = ({
     // End - Process Snap Pop Up Close (Waitinge Response From Reorder)
 
     const setCart = (cart = {}) => {
-        dispatch(setCheckoutDataState({
-            cart: { ...checkout.data.cart, ...cart }
-        }));
+        dispatch(
+            setCheckoutDataState({
+                cart: { ...checkout.data.cart, ...cart },
+            }),
+        );
     };
 
     const setLoadSummary = (load = false) => {
         window.backdropLoader(load);
-        dispatch(setLoading({
-            addresses: load,
-            order: load,
-            shipping: load,
-            payment: load,
-            extraFee: load,
-        }));
+        dispatch(
+            setLoading({
+                addresses: load,
+                order: load,
+                shipping: load,
+                payment: load,
+                extraFee: load,
+            }),
+        );
     };
 
     useEffect(() => {
@@ -566,27 +572,48 @@ const Summary = ({
         return (
             <>
                 <ModalXendit open={openXendit} setOpen={() => setOpenXendit(!openXendit)} iframeUrl={xenditIframeUrl} {...xenditState} />
-                <SummaryPlugin
-                    t={t}
-                    loadTotal={totalPrice}
-                    loading={loading}
-                    isLoader={checkout.loading.order}
-                    disabled={errorItems || disabled || (isSelectedPurchaseOrder && !isPurchaseOrderApply) || checkout.error.shippingAddress}
-                    handleActionSummary={() => {
-                        if (!loading) {
-                            handlePlaceOrder();
+                {buttonOnly ? (
+                    <Button
+                        disabled={
+                            errorItems || disabled || (isSelectedPurchaseOrder && !isPurchaseOrderApply) || checkout.error.shippingAddress
+                            || (formik && Object.keys(formik.errors).length)
                         }
-                    }}
-                    dataCart={checkout.data.cart}
-                    showItems
-                    label={t('checkout:placeOrder')}
-                    globalCurrency={globalCurrency}
-                    updateCart={updateCart}
-                    deleteCart={deleteCart}
-                    withAction
-                    storeConfig={storeConfig}
-                    mobilePosition="bottom" // top: static on top, bottom: assolute on bottom like bottom sheet
-                />
+                        classNameText="justify-center text-lg"
+                        loading={loading}
+                        onClick={
+                            () => {
+                                if (!loading) {
+                                    handlePlaceOrder();
+                                }
+                            }
+                        }
+                    >
+                        {t('checkout:placeOrder')}
+                    </Button>
+                ) : (
+                    <SummaryPlugin
+                        t={t}
+                        loadTotal={totalPrice}
+                        loading={loading}
+                        isLoader={checkout.loading.order}
+                        disabled={errorItems || disabled || (isSelectedPurchaseOrder && !isPurchaseOrderApply) || checkout.error.shippingAddress}
+                        handleActionSummary={() => {
+                            if (!loading) {
+                                handlePlaceOrder();
+                            }
+                        }}
+                        dataCart={checkout.data.cart}
+                        showItems
+                        label={t('checkout:placeOrder')}
+                        globalCurrency={globalCurrency}
+                        updateCart={updateCart}
+                        deleteCart={deleteCart}
+                        withAction
+                        hideButton
+                        storeConfig={storeConfig}
+                        mobilePosition="bottom" // top: static on top, bottom: assolute on bottom like bottom sheet
+                    />
+                )}
             </>
         );
     }

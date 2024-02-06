@@ -47,7 +47,7 @@ const Customer = (props) => {
     }
 
     const returnUrl = (order_number) => {
-        if (storeConfig && storeConfig.OmsRma.enable_oms_rma) {
+        if (storeConfig && storeConfig?.OmsRma?.enable_oms_rma) {
             const omsRmaLink = storeConfig.OmsRma.oms_rma_link;
             const omsChannelCode = storeConfig.oms_channel_code;
             const backUrl = window.location.href;
@@ -93,7 +93,7 @@ const Customer = (props) => {
         }),
         { href: '/customer/newsletter', title: t('customer:setting:newsletter') },
         {
-            href: storeConfig && storeConfig.OmsRma.enable_oms_rma ? storeConfig.OmsRma.oms_rma_link : '/rma/customer',
+            href: (storeConfig && storeConfig?.OmsRma?.enable_oms_rma) ? storeConfig?.OmsRma?.oms_rma_link : '/rma/customer',
             title: t('customer:menu:return'),
         },
     ];
