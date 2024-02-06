@@ -37,9 +37,10 @@ const Login = (props) => {
         phonePassword,
         formikPhoneEmail,
         disabled,
+        activeTabs,
+        setActiveTabs,
     } = props;
 
-    const [activeTabs, setActiveTabs] = useState(0);
     const tabsData = [{ title: 'Email' }, { title: t('login:Phone') }];
     const breadcrumbsData = [{ label: t('login:login'), link: '#', active: true }];
     const signInOptions = [];
@@ -149,7 +150,7 @@ const Login = (props) => {
                                         }}
                                         absolute={false}
                                     />
-                                    <div className={`flex-col ${formikPhoneEmail.errors.password ? 'gap-9' : 'gap-3'} inline-flex `}>
+                                    <div className="flex-col gap-3 inline-flex">
                                         <PasswordField
                                             id="login-password-passfield"
                                             className="w-full"
@@ -158,6 +159,7 @@ const Login = (props) => {
                                             classLabel="capitalize font-medium"
                                             value={formikPhoneEmail.values.password}
                                             onChange={(e) => formikPhoneEmail.setFieldValue('password', e.target.value)}
+                                            hintClassName={cx('!static', 'mt-2')}
                                             error={checkIsFieldError(formikPhoneEmail, 'password')}
                                             errorMessage={fieldErrorMessage(formikPhoneEmail, 'password')}
                                             showVisible
@@ -206,7 +208,7 @@ const Login = (props) => {
                                         }}
                                         absolute={false}
                                     />
-                                    <div className={`flex-col ${formik.errors.password ? 'gap-9' : 'gap-3'} inline-flex `}>
+                                    <div className="flex-col gap-3 inline-flex">
                                         <PasswordField
                                             id="login-password-passfield"
                                             className="w-full"
@@ -215,6 +217,7 @@ const Login = (props) => {
                                             classLabel="capitalize font-medium"
                                             value={formik.values.password}
                                             onChange={(e) => formik.setFieldValue('password', e.target.value)}
+                                            hintClassName={cx('!static', 'mt-2')}
                                             error={checkIsFieldError(formik, 'password')}
                                             errorMessage={fieldErrorMessage(formik, 'password')}
                                             showVisible
