@@ -134,7 +134,7 @@ const DefaultView = (props) => {
                 <Show when={isDesktop}>
                     <div className={cx('desktop-view')}>
                         <div className={cx('relative', 'overflow-x-auto', 'rounded-lg')}>
-                            <table className={cx('w-full', 'text-base', 'border-[1px]', 'border-neutral-100')}>
+                            <table className={cx('swift-table-order-history', 'w-full', 'text-base', 'border-[1px]', 'border-neutral-100')}>
                                 <thead>
                                     <tr className={cx('text-neutral-500', 'font-semibold', 'leading-2lg', 'text-left')}>
                                         <th className={cx('px-4', 'py-3')}>{t('customer:order:order')} #</th>
@@ -165,7 +165,7 @@ const DefaultView = (props) => {
                                             <Show when={hasData}>
                                                 <>
                                                     {data?.items?.map((val, index) => (
-                                                        <tr className={cx('even:bg-white', 'odd:bg-neutral-50')} key={index}>
+                                                        <tr className={cx('swift-table-row', 'even:bg-white', 'odd:bg-neutral-50')} key={index}>
                                                             <td className={cx('p-4')}>
                                                                 <Typography variant="bd-2b">{val.order_number}</Typography>
                                                             </td>
@@ -194,7 +194,7 @@ const DefaultView = (props) => {
                                                                 <div className={cx('mobile:max-desktop:hidden')}>
                                                                     <Link
                                                                         href={`/sales/order/view/order_id/${val.order_number}`}
-                                                                        className={cx('px-4')}
+                                                                        className={cx('swift-orderactionview', 'px-4')}
                                                                     >
                                                                         <Typography
                                                                             variant="bd-2b"
@@ -206,6 +206,7 @@ const DefaultView = (props) => {
                                                                     <button type="button" onClick={() => reOrder(val.order_number)}>
                                                                         <a
                                                                             className={cx(
+                                                                                'swift-orderactionreorder',
                                                                                 'px-4',
                                                                                 'desktop:border-l-[1px]',
                                                                                 'desktop:border-neutral-200',
@@ -223,6 +224,7 @@ const DefaultView = (props) => {
                                                                         <button type="button" onClick={() => returnUrl(val.order_number)}>
                                                                             <a
                                                                                 className={cx(
+                                                                                    'swift-orderactionreturn',
                                                                                     'px-4',
                                                                                     'desktop:border-l-[1px]',
                                                                                     'desktop:border-neutral-200',

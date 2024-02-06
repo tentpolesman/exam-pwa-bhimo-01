@@ -494,7 +494,7 @@ const ProductItem = (props) => {
                                     variant="outlined"
                                     onClick={() => handlingRemove()}
                                     className={classNames(
-                                        '!p-[10px] !border-neutral-200 hover:bg-primary group',
+                                        'swift-action-toremove !p-[10px] !border-neutral-200 hover:bg-primary group',
                                         'hover:!shadow-none focus:!shadow-none hover:!opacity-100',
                                     )}
                                 />
