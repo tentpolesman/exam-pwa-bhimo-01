@@ -91,6 +91,7 @@ const ViewSwitcherCurrency = (props) => {
                         'active:shadow-none',
                         'active:shadow-none',
                         'group',
+                        'swift-currency-switcher',
                     )}
                     onClick={() => setOpen(!open)}
                     icon={<ChevronDownIcon />}
