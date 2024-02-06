@@ -75,10 +75,15 @@ export default function CustomizedExpansionPanels({
                     variant: 'error',
                     text: t('checkout:message:purchaseOrderFailed'),
                 });
-            } else {
+            } else if (!checkout.selected.shipping || !checkout.selected.shipping.length) {
                 handleOpenMessage({
                     variant: 'error',
                     text: t('checkout:message:emptyShippingError'),
+                });
+            } else {
+                handleOpenMessage({
+                    variant: 'error',
+                    text: t('checkout:error:wentWrong'),
                 });
             }
         }
