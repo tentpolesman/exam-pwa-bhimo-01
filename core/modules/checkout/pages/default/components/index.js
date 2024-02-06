@@ -392,6 +392,22 @@ const Content = (props) => {
                             </div>
                         ) : null}
                     </>
+                    <Summary
+                        {...props}
+                        loading={loading}
+                        disabled={disabled}
+                        checkout={checkout}
+                        updateFormik={updateFormik}
+                        setCheckout={setCheckout}
+                        handleOpenMessage={handleOpenMessage}
+                        formik={formik}
+                        storeConfig={storeConfig}
+                        refSummary={SummaryRef}
+                        isOnlyVirtualProductOnCart={isOnlyVirtualProductOnCart}
+                        checkoutTokenState={checkoutTokenState}
+                        setCheckoutTokenState={setCheckoutTokenState}
+                        buttonOnly
+                    />
                 </div>
             </div>
         </div>
