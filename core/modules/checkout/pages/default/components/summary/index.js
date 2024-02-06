@@ -578,6 +578,7 @@ const Summary = ({
                             errorItems || disabled || (isSelectedPurchaseOrder && !isPurchaseOrderApply) || checkout.error.shippingAddress
                             || (formik && Object.keys(formik.errors).length)
                         }
+                        className="w-full"
                         classNameText="justify-center text-lg"
                         loading={loading}
                         onClick={
