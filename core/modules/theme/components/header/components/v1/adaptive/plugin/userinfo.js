@@ -40,7 +40,7 @@ const UserInfo = (props) => {
                     </Popover>
                 </div>
             ) : (
-                <Link href="/customer/account/login" className={cx('login-register-link')}>
+                <Link href="/customer/account/login" className={cx('swift-login-register-link')}>
                     <UserIcon
                         className={cx(
                             'w-[24px]',

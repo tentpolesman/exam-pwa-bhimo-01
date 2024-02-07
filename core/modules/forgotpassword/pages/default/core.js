@@ -50,8 +50,12 @@ const ForgotPassword = (props) => {
             phoneNumberEmail: '',
             captcha: '',
         },
+        validateOnMount: true,
+        isInitialValid: false,
         validationSchema: Yup.object().shape({
-            email: useEmail && Yup.string().required(t('validate:email:required')),
+            email: useEmail && Yup.string()
+                .email(t('validate:email:wrong'))
+                .required(t('validate:email:required')),
             phoneNumberEmail:
                 useForgotWithPhone
                 && !data.otpConfig.otp_enable[0].enable_otp_forgot_password
@@ -173,6 +177,15 @@ const ForgotPassword = (props) => {
     const handleChangeCaptcha = (value) => {
         formik.setFieldValue('captcha', value || '');
     };
+
+    // Disable submit button
+    React.useEffect(() => {
+        if (Object.keys(formik.errors).length > 0 || !formik.isValid) {
+            setDisabled(true);
+        } else {
+            setDisabled(false);
+        }
+    }, [formik, useEmail, useForgotWithPhone]);
 
     return (
         <Layout pageConfig={config} {...props}>
