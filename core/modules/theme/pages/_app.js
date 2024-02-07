@@ -91,7 +91,7 @@ class MyApp extends App {
         if (Component.getInitialProps) {
             pageProps = await Component.getInitialProps(ctx);
         }
-        const { req } = ctx;
+        const { req, res } = ctx;
         /*
          * ---------------------------------------------
          * MAINTAIN LOGIN FLAG
@@ -118,8 +118,11 @@ class MyApp extends App {
 
         /*
          * ---------------------------------------------
-         * CALLING ROUTING MIDDLEWARE
+         * Set Cache Control response header to enable varnish caching
          */
+        if (typeof window === 'undefined') {
+            res.setHeader('Cache-Control', 'public');
+        }
 
         /*
          * ---------------------------------------------

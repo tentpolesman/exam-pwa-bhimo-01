@@ -4,7 +4,7 @@ import classnames from 'classnames';
 const MagezonIcon = (props) => {
     // prettier-ignore
     const {
-        link_url, icon_size, icon, align,
+        link_url, icon_size, icon, align, el_class, el_inner_class,
         icon_background_color, icon_border_color, icon_border_radius,
         icon_border_style, icon_border_width, icon_color,
         icon_hover_background_color, icon_hover_border_color, icon_hover_color,
@@ -21,10 +21,10 @@ const MagezonIcon = (props) => {
     if (link_url) customUrl = link_url;
 
     return (
-        <div className={classnames(classIcon, sizeClasses)}>
+        <div className={classnames(classIcon, sizeClasses, el_class)}>
             {/* <div className="wrapperIcon"> */}
             <MagezonLink link={customUrl} link_target={link_target}>
-                <div className="magezon-icon-inner flex justify-center items-center">
+                <div className={classnames('magezon-icon-inner flex justify-center items-center', el_inner_class)}>
                     <i className={iconRes} />
                 </div>
             </MagezonLink>

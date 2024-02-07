@@ -66,7 +66,7 @@ const TableAddress = (props) => {
                 className={cx({
                     'bg-white': idx % 2 === 1,
                     'bg-neutral-50': idx % 2 !== 1,
-                })}
+                }, 'swift-table-row')}
             >
                 <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'px-4', 'py-3')}>
                     <Radio
@@ -107,7 +107,7 @@ const TableAddress = (props) => {
                 </td>
                 <td className={cx('text-neutral-700', 'text-base', 'font-normal', 'leading-2lg', 'px-4', 'py-3')}>{telephone}</td>
                 <td>
-                    <button type="button" onClick={() => setOpen(!open)}>
+                    <button className="swift-action-edit" type="button" onClick={() => setOpen(!open)}>
                         <a className="px-4">
                             <Typography variant="bd-2b" className={cx('!text-primary-700', 'hover:underline')}>
                                 {t('customer:address:editAddress')}
@@ -117,7 +117,7 @@ const TableAddress = (props) => {
                 </td>
                 <td>
                     <Show when={selectedAddressId !== addressId}>
-                        <button type="button" onClick={() => setOpenDelete(true)}>
+                        <button className="swift-action-remove" type="button" onClick={() => setOpenDelete(true)}>
                             <a className="px-4">
                                 <Typography variant="bd-2b" className={cx('!text-primary-700', 'hover:underline')}>
                                     {t('customer:address:removeTitle')}

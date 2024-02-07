@@ -220,13 +220,13 @@ const Checkout = (props) => {
     const CheckoutSchema = Yup.object().shape({
         confirmation: checkout.confirmation ? '' : Yup.bool().oneOf([true], 'Accept Ts & Cs is required'),
         email: checkout.data.isGuest ? Yup.string().nullable().email(t('validate:email:wrong')).required(t('validate:email.required')) : null,
-        payment: Yup.string().nullable().required(t('validate:required')),
+        payment: Yup.string().required(t('validate:required')),
         oldEmail: checkout.data.isGuest ? Yup.string().equalTo(Yup.ref('email')) : null,
         address: isOnlyVirtualProductOnCart || checkout.selectStore.id !== null ? null : Yup.object().nullable().required(t('validate:required')),
         billing: checkout.selected.delivery === 'home' && Yup.object().nullable().required(t('validate:required')),
         shipping: isOnlyVirtualProductOnCart
             ? null
-            : checkout.selected.delivery === 'home' && Yup.object().nullable().required(t('validate:required')),
+            : checkout.selected.delivery === 'home' && Yup.object().required(t('validate:required')),
     });
 
     const formik = useFormik({
@@ -243,6 +243,7 @@ const Checkout = (props) => {
             confirmation: false,
         },
         validationSchema: CheckoutSchema,
+        validateOnChange: true,
         onSubmit: () => {},
     });
 
@@ -262,10 +263,26 @@ const Checkout = (props) => {
             formik.setFieldValue('coupon', coupon.code);
         }
 
-        formik.setFieldValue('address', address);
-        formik.setFieldValue('shipping', shipping);
-        formik.setFieldValue('payment', payment);
-        formik.setFieldValue('billing', billing);
+        if (address && address !== null) {
+            formik.setFieldValue('address', address);
+        }
+
+        if (shipping && shipping !== null) {
+            formik.setFieldValue('shipping', shipping);
+            setTimeout(() => formik.setFieldTouched('shipping', true));
+        }
+        if (payment && payment !== null) {
+            formik.setFieldValue('payment', payment);
+            setTimeout(() => formik.setFieldTouched('payment', true));
+        }
+
+        if (billing && billing !== null) {
+            formik.setFieldValue('billing', billing);
+        }
+
+        if (address && shipping && payment && billing) {
+            formik.setErrors({});
+        }
     };
 
     const updateAddressState = useCallback(

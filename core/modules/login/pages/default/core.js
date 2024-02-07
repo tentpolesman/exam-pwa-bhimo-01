@@ -58,7 +58,8 @@ const Login = (props) => {
     const [isRevokeToken, setRevokeToken] = React.useState(false);
     const [loading, setLoading] = React.useState(false);
     const [cusIsLogin, setIsLogin] = React.useState(0);
-    const [disabled, setDisabled] = React.useState(false);
+    const [disabled, setDisabled] = React.useState(true);
+    const [activeTabs, setActiveTabs] = React.useState(0);
 
     const [state, setState] = React.useState({
         toastMessage: {
@@ -69,6 +70,7 @@ const Login = (props) => {
         backdropLoader: false,
     });
 
+    const phonePassword = storeConfig.login_phone_password;
     const recaptchaRef = useRef();
 
     // gql
@@ -350,6 +352,7 @@ const Login = (props) => {
             password: '',
             captcha: '',
         },
+        validateOnMount: true,
         validationSchema: LoginSchema,
         onSubmit: (values) => {
             const variables = {
@@ -367,6 +370,7 @@ const Login = (props) => {
             password: '',
             captcha: '',
         },
+        validateOnMount: true,
         validationSchema: LoginPhoneEmailSchema,
         onSubmit: (values) => {
             const variables = {
@@ -384,6 +388,7 @@ const Login = (props) => {
             otp: '',
             captcha: '',
         },
+        validateOnMount: true,
         validationSchema: LoginOtpSchema,
         onSubmit: (values) => {
             const variables = {
@@ -514,6 +519,23 @@ const Login = (props) => {
         }
     }, [isRevokeToken]);
 
+    // Disable login button
+    React.useEffect(() => {
+        let activeFormik;
+        switch (activeTabs) {
+        case 0:
+            activeFormik = phonePassword !== false ? formikPhoneEmail : formik; break;
+        default:
+            activeFormik = formikOtp; break;
+        }
+
+        if (Object.keys(activeFormik.errors).length > 0) {
+            setDisabled(true);
+        } else {
+            setDisabled(false);
+        }
+    }, [formik.errors, formikPhoneEmail.errors, formikOtp.errors, activeTabs, otpConfig]);
+
     // Listen to the Firebase Auth state and set the local state.
     React.useEffect(() => {
         if (features.firebase.config.apiKey !== '' && firebase.app()) {
@@ -586,12 +608,14 @@ const Login = (props) => {
                 handleChangeCaptcha={handleChangeCaptcha}
                 recaptchaRef={recaptchaRef}
                 query={query}
-                phonePassword={storeConfig.login_phone_password}
+                phonePassword={phonePassword}
                 showOtp={showOtp}
                 setShowOtp={setShowOtp}
                 handleSend={handleSend}
                 disabled={disabled}
                 setDisabled={setDisabled}
+                activeTabs={activeTabs}
+                setActiveTabs={setActiveTabs}
             />
         </Layout>
     );

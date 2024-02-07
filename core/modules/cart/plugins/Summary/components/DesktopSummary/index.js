@@ -129,7 +129,7 @@ const Summary = (props) => {
         <>
             <div className={cx(
                 'fixed desktop:hidden bottom-0 left-0 z-[1100] w-full h-max bg-neutral-white bottom-checkout',
-                'shadow-inner bg-neutral-white py-4',
+                'shadow-inner bg-neutral-white py-4 max-tablet:px-4',
             )}
             >
                 <Show when={mobilePosition === 'bottom' && showItems}>

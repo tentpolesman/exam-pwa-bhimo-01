@@ -20,7 +20,6 @@ const getSSRProps = async (ctx) => {
         slug: ctx?.query?.slug,
         ...(await serverSideTranslations(ctx.locale, ['common', 'product', 'category', 'validate', 'catalog', 'contact'])),
         token: ctx.query && allcookie[customerTokenKey] ? allcookie[customerTokenKey] : '',
-        isLogin: allcookie.isLogin || 0,
         url_key: '',
     };
 

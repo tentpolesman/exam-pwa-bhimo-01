@@ -27,7 +27,7 @@ const MenuChildren = ({ data, handleClick, generateLink, mainData }) => {
                 </div>
             )}
             <div
-                className={cx('nav-column nav-column-left', 'min-w-[150px]', {
+                className={cx('nav-column swift-nav-column-left', 'min-w-[150px]', {
                     '!bg-neutral-white': mainData && mainData.dropdown_bgcolor === '',
                 })}
             >
@@ -50,6 +50,7 @@ const MenuChildren = ({ data, handleClick, generateLink, mainData }) => {
                                     '!leading-lg',
                                     '!px-2',
                                     '!py-[10px]',
+                                    'swift-nav-menu-lv2',
                                 )}
                                 onMouseEnter={() => setActive(idx)}
                                 // eslint-disable-next-line react/no-danger
@@ -61,14 +62,22 @@ const MenuChildren = ({ data, handleClick, generateLink, mainData }) => {
                     );
                 })}
             </div>
-            <div className={cx('nav-column', { 'nav-column-right': child.children.length > 0 })}>
+            <div className={cx('nav-column', { 'swift-nav-column-right': child.children.length > 0 })}>
                 <div className={`${child.image_path ? 'lg:basis-9/12' : 'lg:basis-full'} row`}>
                     {child.children.map((lvl3, id3) => (
                         <div className="lg:basis-3/12" key={id3}>
                             <Link href={generateLink(lvl3)[0]} as={generateLink(lvl3)[1]} prefetch={false} legacyBehavior>
                                 <a
                                     onClick={() => handleClick(lvl3)}
-                                    className={cx('!text-neutral-700', 'text-base', '!font-medium', '!leading-lg', '!px-4', '!py-[11px]')}
+                                    className={cx(
+                                        '!text-neutral-700',
+                                        'text-base',
+                                        '!font-medium',
+                                        '!leading-lg',
+                                        '!px-4',
+                                        '!py-[11px]',
+                                        'swift-nav-menu-lv3',
+                                    )}
                                 >
                                     {lvl3.name}
                                 </a>
@@ -79,7 +88,15 @@ const MenuChildren = ({ data, handleClick, generateLink, mainData }) => {
                                         <Link href={generateLink(lvl4)[0]} as={generateLink(lvl4)[1]} prefetch={false} legacyBehavior>
                                             <a
                                                 onClick={() => handleClick(lvl4)}
-                                                className={cx('!text-neutral-700', 'text-base', '!font-normal', '!leading-lg', '!px-4', '!py-[11px]')}
+                                                className={cx(
+                                                    '!text-neutral-700',
+                                                    'text-base',
+                                                    '!font-normal',
+                                                    '!leading-lg',
+                                                    '!px-4',
+                                                    '!py-[11px]',
+                                                    'swift-nav-menu-lv4',
+                                                )}
                                             >
                                                 {lvl4.name}
                                             </a>
@@ -106,12 +123,12 @@ const MenuChildren = ({ data, handleClick, generateLink, mainData }) => {
                     .row {
                         margin: 0;
                     }
-                    .nav-column-left {
+                    .swift-nav-column-left {
                         background: ${mainData && mainData.dropdown_bgcolor ? mainData.dropdown_bgcolor : '#FFFFFF'};
                         padding: 16px;
                         border-radius: 8px !important;
                     }
-                    .nav-column-right {
+                    .swift-nav-column-right {
                         padding: 16px 16px 16px 0;
                     }
                     .list-item__menu a {

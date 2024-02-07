@@ -50,7 +50,7 @@ const Content = (props) => {
                 <Show when={isDesktop}>
                     <div className={cx('desktop-view')}>
                         <div className={cx('relative', 'overflow-x-auto', 'border-[1px]', 'border-neutral-100', 'rounded-lg')}>
-                            <table className={cx('w-full', 'text-base')}>
+                            <table className={cx('swift-table-address', 'w-full', 'text-base')}>
                                 <thead>
                                     <tr className={cx('text-neutral-500', 'font-semibold', 'leading-2lg', 'text-left')}>
                                         <th className={cx('px-4', 'py-3')}>Default</th>
@@ -179,7 +179,7 @@ const Content = (props) => {
                         </div>
                     </Show>
                     <Show when={!loading}>
-                        <Button icon={<PlusIcon />} iconPosition="right" onClick={() => setOpenDialogNew(true)}>
+                        <Button className="swift-action-add" icon={<PlusIcon />} iconPosition="right" onClick={() => setOpenDialogNew(true)}>
                             <Typography className={cx('!text-neutral-white')}>{t('customer:address:addTitle')}</Typography>
                         </Button>
                     </Show>

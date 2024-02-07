@@ -293,10 +293,7 @@ const GoogleMaps = (props) => {
                 {mode === 'location-search' ? (
                     <TextField
                         id="addressForm-addressDetail-textField"
-                        className={cx(
-                            inputClassName,
-                            !!(formik.touched.addressDetail && formik.errors.addressDetail) && 'mb-4',
-                        )}
+                        className={cx(inputClassName)}
                         autoComplete="new-password"
                         label={useLabel ? t('common:form:addressDetail') : null}
                         placeholder={t('common:search:addressDetail')}
@@ -305,7 +302,7 @@ const GoogleMaps = (props) => {
                             ref: inputRef,
                         }}
                         hintProps={{
-                            className: cx('z-10', '-bottom-[12%]'),
+                            className: cx('z-10', '!static', 'mt-2'),
                             displayHintText: !!(formik.touched.addressDetail && formik.errors.addressDetail),
                             hintType: 'error',
                             hintText: (formik.touched.addressDetail && formik.errors.addressDetail) || null,

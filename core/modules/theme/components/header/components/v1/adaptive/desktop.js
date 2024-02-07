@@ -245,7 +245,7 @@ const DesktopHeader = (props) => {
                     >
                         <Link href="/">
                             <Image
-                                className="header-middle__logo-link"
+                                className="swift-header-middle__logo-link"
                                 src={`${storeConfig.secure_base_media_url}logo/${storeConfig.header_logo_src}`}
                                 alt={storeConfig.default_title}
                                 {...logoDimensions}
@@ -261,11 +261,11 @@ const DesktopHeader = (props) => {
                         <div
                             className={cx('middle-header__statusicon__left-section', 'flex', 'flex-row', 'gap-x-2', 'mobile:max-tablet:justify-end')}
                         >
-                            <div className={cx('notification', 'mobile:max-tablet:hidden')}>
+                            <div className={cx('swift-action-notification', 'mobile:max-tablet:hidden')}>
                                 <NotificationBell withLink />
                             </div>
                             {modules.productcompare.enabled && (
-                                <div className={cx('product-compare', 'mobile:max-desktop:hidden')}>
+                                <div className={cx('swift-action-product-compare', 'mobile:max-desktop:hidden')}>
                                     <ProductCompareIcon withLink isLogin={isLogin} />
                                 </div>
                             )}
@@ -288,7 +288,7 @@ const DesktopHeader = (props) => {
                                     classNameText={cx('!text-neutral-700')}
                                 />
                             </div>
-                            <div id="header-shoppingBag-icon" className={cx('shopping-bag')}>
+                            <div id="header-shoppingBag-icon" className={cx('swift-action-shopping-bag')}>
                                 <ShoppingBagIcon withLink storeConfig={storeConfig} />
                             </div>
                         </div>
@@ -326,7 +326,7 @@ const DesktopHeader = (props) => {
             <div className={cx('bottom-header', 'tablet:max-w-[768px]', 'desktop:max-w-[1280px]', 'm-[0_auto]', 'px-6')}>
                 <div className="flex flex-row menu-category mobile:max-desktop:hidden">
                     <div className="xs:basis-full menu-middle">
-                        <nav className="menu-wrapper" role="navigation">
+                        <nav className="swift-menu-wrapper" role="navigation">
                             {loadingMenu ? <></> : <Menu data={dataMenu} storeConfig={storeConfig} />}
                             {
                                 cmsMenu ? <CmsMenuList rawData={cmsMenu} storeConfig={storeConfig} /> : null

@@ -72,11 +72,18 @@ const GiftCard = (props) => {
                 </Show>
                 <Show when={!noGiftCardData}>
                     <div className="flex flex-row w-max">
-                        <ul className={cx('w-max')}>
+                        <ul className={cx('swift-giftcard-list', 'w-max')}>
                             {data?.customer?.gift_card?.map((item, index) => (
                                 <li
                                     key={index}
-                                    className={cx('p-[10px] border-neutral-250', 'border-[1px]', 'rounded-[10px]', 'mb-[10px]', 'cursor-pointer')}
+                                    className={cx(
+                                        'swift-giftcard-item',
+                                        'p-[10px] border-neutral-250',
+                                        'border-[1px]',
+                                        'rounded-[10px]',
+                                        'mb-[10px]',
+                                        'cursor-pointer',
+                                    )}
                                     onClick={() => handleOpenDetail(item.giftcard_code)}
                                     aria-hidden="true"
                                 >
@@ -104,7 +111,7 @@ const GiftCard = (props) => {
                                 error={!(search.error === '' || search.error === null)}
                                 errorMessage={search.error || ''}
                             />
-                            <Button onClick={handleSearch}>
+                            <Button className="swift-action-checkgiftcard" onClick={handleSearch}>
                                 <Typography color="white" className={cx('uppercase')}>
                                     {t('customer:giftCard:buttonSearch')}
                                 </Typography>

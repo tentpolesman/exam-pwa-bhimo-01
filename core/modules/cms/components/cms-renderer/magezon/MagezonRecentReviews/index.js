@@ -210,6 +210,9 @@ const MagezonRecentReviews = (props) => {
             </div>
             <style jsx>
                 {`
+                    .mgz-recent-reviews {
+                        overflow: visible;
+                    }
                     .mgz-recent-reviews-heading {
                         text-align: ${title_align};
                         position: relative;

@@ -43,7 +43,7 @@ const MiniComponent = (props) => {
         }, 500);
     };
 
-    const handlingAddToCart = useCallback(() => {
+    const handlingGoToCheckout = useCallback(() => {
         const minimumOrderEnabled = storeConfig.minimum_order_enable;
         const grandTotalValue = data.custom_total_price.grand_total.value;
         const minimumOrderAmount = storeConfig.minimum_order_amount;
@@ -94,7 +94,7 @@ const MiniComponent = (props) => {
                 variant: 'error',
             });
         }
-    }, [cartId]);
+    }, [cartId, data, storeConfig]);
 
     return (
         <>
@@ -210,7 +210,7 @@ const MiniComponent = (props) => {
                                             )}
                                             loading={loaddingScv2Url}
                                             classNameText={cx('justify-center')}
-                                            onClick={handlingAddToCart}
+                                            onClick={handlingGoToCheckout}
                                             variant="primary"
                                             id="plugin-minicart-checkoutBtn"
                                         >

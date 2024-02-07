@@ -88,13 +88,14 @@ const NotificationList = (props) => {
 
     return (
         <Layout {...props}>
-            <div>
+            <div className="swift-notification-list">
                 <Show when={hasData}>
                     {notifList[page - 1].map((item, i) => (
                         <div
                             key={i}
                             onClick={() => handleItemClick(item)}
                             className={cx(
+                                'swift-notification-item',
                                 'relative border-t-[1px] border-b-[1px] border-neutral-100',
                                 'px-8 py-6 cursor-pointer hover:bg-neutral-100',
                             )}

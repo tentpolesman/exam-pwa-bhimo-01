@@ -39,7 +39,7 @@ const AddressView = (props) => {
         getCities,
     } = props;
     const addBtn = success ? cx('bg-green-500', 'hover:bg-green-500', 'py-8') : cx('py-8');
-    const inputHintClasses = cx('z-10', '-bottom-[26px]');
+    const inputHintClasses = cx('z-10', '!static', 'mt-2');
 
     const [isDesktop, setIsDekstop] = React.useState(false);
 
@@ -466,7 +466,7 @@ const AddressView = (props) => {
                                         onChange={() => formik.setFieldValue('defaultShippingBilling', !formik.values.defaultShippingBilling)}
                                         classNames={{
                                             checkboxContainerClasses: cx('flex', 'flex-row'),
-                                            checkboxClasses: cx('cursor-pointer min-w-5'),
+                                            checkboxClasses: cx('cursor-pointer', 'min-w-5', 'focus:shadow-none'),
                                         }}
                                     >
                                         <label className="mt-[-2px]" htmlFor={`addressform-defaultshippingbilling-checkbox-${addressId || 'new'}`}>
@@ -487,7 +487,7 @@ const AddressView = (props) => {
                                         onChange={() => formik.setFieldValue('confirmPinPoint', !formik.values.confirmPinPoint)}
                                         classNames={{
                                             checkboxContainerClasses: cx('flex', 'flex-row'),
-                                            checkboxClasses: cx('cursor-pointer min-w-5'),
+                                            checkboxClasses: cx('cursor-pointer', 'min-w-5', 'focus:shadow-none'),
                                         }}
                                     >
                                         <label className="mt-[-2px]" htmlFor={`addressform-confirmpinpoint-checkbox-${addressId || 'new'}`}>
