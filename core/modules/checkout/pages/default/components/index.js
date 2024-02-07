@@ -43,9 +43,7 @@ import { getStoreHost } from '@helpers/config';
 import { getAppEnv } from '@core/helpers/env';
 
 import { useSelector } from 'react-redux';
-import {
-    selectCheckoutState,
-} from '@core_modules/checkout/redux/checkoutSlice';
+import { selectCheckoutState } from '@core_modules/checkout/redux/checkoutSlice';
 
 const GimmickBanner = dynamic(() => import('@plugin_gimmickbanner'), { ssr: false });
 
@@ -137,16 +135,17 @@ const Content = (props) => {
                 title={`${t('checkout:invalidTokenConfirmation')}`}
                 content={(
                     <>
-                        <Typography>
-                            {`${t('checkout:invalidToken')}`}
-                        </Typography>
+                        <Typography>{`${t('checkout:invalidToken')}`}</Typography>
                     </>
                 )}
             />
             <div className="xs:basis-full sm:basis-full md:basis-full lg:basis-full center">
-                {checkout && checkout.data && checkout.data.cart
-                    && checkout.data.cart?.promoBanner?.length && checkout.data.cart?.promoBanner?.length > 0 ? (
-                        <GimmickBanner data={checkout.data.cart.promoBanner || []} />
+                {checkout
+                && checkout.data
+                && checkout.data.cart
+                && checkout.data.cart?.promoBanner?.length
+                && checkout.data.cart?.promoBanner?.length > 0
+                    ? (<GimmickBanner data={checkout.data.cart.promoBanner || []} />
                     ) : null}
             </div>
             <div className="flex flex-col desktop:flex-row-reverse gap-6 tablet:gap-8 desktop:gap-10">
@@ -392,22 +391,24 @@ const Content = (props) => {
                             </div>
                         ) : null}
                     </>
-                    <Summary
-                        {...props}
-                        loading={loading}
-                        disabled={disabled}
-                        checkout={checkout}
-                        updateFormik={updateFormik}
-                        setCheckout={setCheckout}
-                        handleOpenMessage={handleOpenMessage}
-                        formik={formik}
-                        storeConfig={storeConfig}
-                        refSummary={SummaryRef}
-                        isOnlyVirtualProductOnCart={isOnlyVirtualProductOnCart}
-                        checkoutTokenState={checkoutTokenState}
-                        setCheckoutTokenState={setCheckoutTokenState}
-                        buttonOnly
-                    />
+                    <div className="hidden desktop:block w-full mt-5">
+                        <Summary
+                            {...props}
+                            loading={loading}
+                            disabled={disabled}
+                            checkout={checkout}
+                            updateFormik={updateFormik}
+                            setCheckout={setCheckout}
+                            handleOpenMessage={handleOpenMessage}
+                            formik={formik}
+                            storeConfig={storeConfig}
+                            refSummary={SummaryRef}
+                            isOnlyVirtualProductOnCart={isOnlyVirtualProductOnCart}
+                            checkoutTokenState={checkoutTokenState}
+                            setCheckoutTokenState={setCheckoutTokenState}
+                            buttonOnly
+                        />
+                    </div>
                 </div>
             </div>
         </div>
