@@ -92,7 +92,7 @@ const HistoryContent = (props) => {
                 <Show when={isDesktop}>
                     <div className={cx('desktop-view')}>
                         <div className={cx('relative', 'overflow-x-auto', 'rounded-lg')}>
-                            <table className={cx('w-full', 'text-base', 'border-[1px]', 'border-neutral-100')}>
+                            <table className={cx('swift-table-rma-history', 'w-full', 'text-base', 'border-[1px]', 'border-neutral-100')}>
                                 <thead>
                                     <tr className={cx('text-neutral-500', 'font-semibold', 'leading-2lg', 'text-left')}>
                                         <th className={cx('px-4', 'py-3')}>{t('rma:table:returnId')}</th>
@@ -119,14 +119,14 @@ const HistoryContent = (props) => {
                                             <Show when={hasData}>
                                                 <>
                                                     {data?.getCustomerRequestAwRma?.items?.map((val, index) => (
-                                                        <tr className={cx('even:bg-white', 'odd:bg-neutral-50')} key={index}>
+                                                        <tr className={cx('swift-table-row', 'even:bg-white', 'odd:bg-neutral-50')} key={index}>
                                                             <td className={cx('p-4')}>
                                                                 <Typography variant="bd-2b">{val.increment_id}</Typography>
                                                             </td>
                                                             <td className={cx('p-4')}>
                                                                 <Link
                                                                     href={`/sales/order/view/order_id/${val.order_number}`}
-                                                                    className={cx('hover:underline')}
+                                                                    className={cx('swift-action-vieworder', 'hover:underline')}
                                                                 >
                                                                     <Typography
                                                                         variant="bd-2b"
@@ -153,7 +153,7 @@ const HistoryContent = (props) => {
                                                                             `/rma/customer/view/id/${val.increment_id}`,
                                                                         )}
                                                                     aria-label="view-detail"
-                                                                    className="w-max"
+                                                                    className="swift-action-viewrma w-max"
                                                                 >
                                                                     <a>
                                                                         <Typography

@@ -50,7 +50,7 @@ const MenuChildren = ({ data, handleClick, generateLink, mainData }) => {
                                     '!leading-lg',
                                     '!px-2',
                                     '!py-[10px]',
-                                    'swift-nav-lv2',
+                                    'swift-nav-menu-lv2',
                                 )}
                                 onMouseEnter={() => setActive(idx)}
                                 // eslint-disable-next-line react/no-danger
@@ -76,7 +76,7 @@ const MenuChildren = ({ data, handleClick, generateLink, mainData }) => {
                                         '!leading-lg',
                                         '!px-4',
                                         '!py-[11px]',
-                                        'swift-nav-lv3',
+                                        'swift-nav-menu-lv3',
                                     )}
                                 >
                                     {lvl3.name}
@@ -95,7 +95,7 @@ const MenuChildren = ({ data, handleClick, generateLink, mainData }) => {
                                                     '!leading-lg',
                                                     '!px-4',
                                                     '!py-[11px]',
-                                                    'swift-nav-lv4',
+                                                    'swift-nav-menu-lv4',
                                                 )}
                                             >
                                                 {lvl4.name}

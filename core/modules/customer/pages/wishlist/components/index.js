@@ -44,7 +44,7 @@ const Content = (props) => {
             )}
             <div
                 className={cx(
-                    'grid tablet:grid-cols-3 tablet:gap-4 mobile:grid-cols-2 mobile:gap-2',
+                    'swift-wishlist-items grid tablet:grid-cols-3 tablet:gap-4 mobile:grid-cols-2 mobile:gap-2',
                 )}
             >
                 <Show when={loading || wishlist.length === 0}>
@@ -83,6 +83,7 @@ const Content = (props) => {
                     <Button
                         onClick={handleOpenShare}
                         disabled={loading || wishlist.length === 0}
+                        className="swift-action-sharewishlist"
                     >
                         <Typography className={cx('!text-neutral-white uppercase')}>
                             {t('customer:wishlist:shareWishlist')}
@@ -97,6 +98,7 @@ const Content = (props) => {
                     <Button
                         onClick={handleAddAlltoBag}
                         disabled={loading || wishlist.length === 0}
+                        className="swift-action-addalltobag"
                     >
                         <Typography className={cx('!text-neutral-white uppercase')}>
                             {t('customer:wishlist:addAllToBag')}

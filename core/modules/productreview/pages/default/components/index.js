@@ -121,7 +121,7 @@ const ProductReviewPage = (props) => {
                 <Show when={isDesktop}>
                     <div className={cx('desktop-view')}>
                         <div className={cx('relative', 'overflow-x-auto', 'rounded-lg')}>
-                            <table className={cx('w-full', 'text-base', 'border-[1px]', 'border-neutral-100')}>
+                            <table className={cx('swift-table-productreviews', 'w-full', 'text-base', 'border-[1px]', 'border-neutral-100')}>
                                 <thead>
                                     <tr className={cx('text-neutral-500', 'font-semibold', 'leading-2lg', 'text-left')}>
                                         <th className={cx('px-4', 'py-3')}>{t('productreview:created')}</th>
@@ -148,13 +148,13 @@ const ProductReviewPage = (props) => {
                                             <Show when={hasData}>
                                                 <>
                                                     {reviewCustomer?.items?.map((val, index) => (
-                                                        <tr className={cx('even:bg-white', 'odd:bg-neutral-50')} key={index}>
+                                                        <tr className={cx('swift-table-row', 'even:bg-white', 'odd:bg-neutral-50')} key={index}>
                                                             <td className={cx('p-4')}>
                                                                 <Typography variant="bd-2b">{formatDate(val.created_at, 'DD/MM/YYYY')}</Typography>
                                                             </td>
                                                             <td className={cx('p-4')}>
                                                                 <Link href={`/${val.product.url_key}`} legacyBehavior>
-                                                                    <a target="_blank" rel="noopener noreferrer">
+                                                                    <a className="swift-action-viewproduct" target="_blank" rel="noopener noreferrer">
                                                                         <Typography
                                                                             variant="bd-2b"
                                                                             className={cx('!text-primary-700', 'hover:underline')}
@@ -180,7 +180,11 @@ const ProductReviewPage = (props) => {
                                                                     <a>
                                                                         <Typography
                                                                             variant="bd-2b"
-                                                                            className={cx('!text-primary-700', 'hover:underline')}
+                                                                            className={cx(
+                                                                                'swift-action-viewreview',
+                                                                                '!text-primary-700',
+                                                                                'hover:underline',
+                                                                            )}
                                                                         >
                                                                             {t('productreview:seeDetails')}
                                                                         </Typography>
