@@ -578,9 +578,17 @@ const Layout = (props) => {
                     className={bodyStyles.itemProduct}
                 />
             )} */}
-                <div className="fixed bottom-0 flex flex-col w-full z-scroll-to-top">
-                    <ScrollToTop deviceType={deviceType} showGlobalPromo={showGlobalPromo} {...props} />
-                    {!hasWebpSupport ? (
+
+                <ScrollToTop
+                    deviceType={deviceType}
+                    showGlobalPromo={showGlobalPromo}
+                    {...props}
+                    className={
+                        !hasWebpSupport ? 'bottom-10' : ''
+                    }
+                />
+                {!hasWebpSupport ? (
+                    <div className="fixed bottom-0 flex flex-col w-full z-scroll-to-top-1">
                         <div className="bg-yellow w-full">
                             <Typography
                                 variant="h2"
@@ -599,8 +607,8 @@ const Layout = (props) => {
                                 {t('common:error:webpNotSupported')}
                             </Typography>
                         </div>
-                    ) : null}
-                </div>
+                    </div>
+                ) : null}
                 <Script src="/install.js" defer />
             </div>
         </>

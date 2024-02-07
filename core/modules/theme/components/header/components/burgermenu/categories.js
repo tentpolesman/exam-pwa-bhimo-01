@@ -8,7 +8,7 @@ import parse from 'html-react-parser';
 import Link from 'next/link';
 
 import Typography from '@common_typography';
-import { generateChildren } from '@core_modules/theme/components/header/components/v1/CmsMenuList';
+import { generateChildren } from '@core_modules/theme/components/header/components/v1/genereateCmsMenu';
 
 const BurgerMenuCategories = (props) => {
     const { data = [], cmsMenu } = props;
