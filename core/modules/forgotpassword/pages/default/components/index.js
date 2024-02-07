@@ -114,13 +114,13 @@ const ForgotPassword = (props) => {
                             value={formik.values.email}
                             onChange={formik.handleChange}
                             hintProps={{
-                                displayHintText: !!formik.errors.email,
+                                displayHintText: !!(formik.touched.email && formik.errors.email),
                                 hintType: 'error',
                                 hintText: formik.errors.email || null,
                                 className: 'mt-2',
                             }}
                             absolute={false}
-                            error={!!formik.errors.email}
+                            error={!!(formik.touched.email && formik.errors.email)}
                             errorMessage={formik.errors.email || null}
                         />
                         {enableRecaptcha ? (
@@ -139,7 +139,7 @@ const ForgotPassword = (props) => {
                         <Button
                             className="flex justify-center capitalize"
                             type="submit"
-                            disabled={data && data.otpConfig.otp_enable[0].enable_otp_forgot_password && disabled}
+                            disabled={data?.otpConfig.otp_enable[0].enable_otp_forgot_password || disabled}
                             loading={load}
                         >
                             {t('common:button:send')}
