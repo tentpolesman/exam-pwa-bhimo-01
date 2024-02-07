@@ -42,7 +42,7 @@ const ItemAddress = (props) => {
     };
 
     return (
-        <div className={cx('py-2')}>
+        <div className={cx('swift-mobile-item', 'py-2')}>
             <Dialog
                 open={openDelete}
                 title={t('customer:address:warningDelete')}
@@ -103,7 +103,7 @@ const ItemAddress = (props) => {
                             <p>{`T: ${telephone}`}</p>
                         </div>
                     )}
-                    <button type="button" onClick={() => setOpen(!open)}>
+                    <button className="swift-mobile-action-edit" type="button" onClick={() => setOpen(!open)}>
                         <a className="pr-4">
                             <Typography variant="bd-2b" className={cx('!text-primary-700', 'hover:underline')}>
                                 {t('customer:address:editAddress')}
@@ -111,7 +111,7 @@ const ItemAddress = (props) => {
                         </a>
                     </button>
                     <Show when={selectedAddressId !== addressId}>
-                        <button type="button" onClick={() => setOpenDelete(true)}>
+                        <button className="swift-mobile-action-remove" type="button" onClick={() => setOpenDelete(true)}>
                             <a className="px-4">
                                 <Typography variant="bd-2b" className={cx('!text-primary-700', 'hover:underline')}>
                                     {t('customer:address:removeTitle')}
