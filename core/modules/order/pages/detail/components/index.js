@@ -108,6 +108,8 @@ const DetailOrder = (props) => {
             setModalData(datas);
         };
 
+        const { pickup_person } = detail[0].detail[0].pickup_store;
+
         return (
             <Layout t={t} title={t('customer:menu:myOrder')} activeMenu="/sales/order/history">
                 {paymentInfo && paymentInfo.invoice_url && (
@@ -234,6 +236,7 @@ const DetailOrder = (props) => {
                                         'flex-col',
                                         'gap-y-0',
                                         'justify-between',
+                                        'pr-2',
                                     )}
                                 >
                                     <Typography className={cx('uppercase', '!font-bold')}>
@@ -265,25 +268,37 @@ const DetailOrder = (props) => {
                                         'flex',
                                         'flex-col',
                                         'gap-y-0',
-                                        'justify-between',
+                                        'pr-2',
                                     )}
                                 >
-                                    <Typography className={cx('uppercase', '!font-bold', 'tablet:pt-2')}>{t('order:pickupBy')}</Typography>
+                                    <Typography className={cx('uppercase', '!font-bold')}>{t('order:pickupBy')}</Typography>
                                     <Typography className={cx('tablet:pt-2')}>
-                                        {detail[0].detail[0].pickup_store.pickup_person.name}
+                                        {pickup_person.name && (
+                                            <>
+                                                <Typography>
+                                                    {pickup_person.name}
+                                                </Typography>
+                                                <br />
+                                            </>
+                                        )}
+                                        {`Hp : ${pickup_person.handphone ? pickup_person.handphone : '-'}`}
                                         <br />
-                                    </Typography>
-                                    <Typography className={cx('tablet:pt-2')}>
-                                        {`Hp : ${detail[0].detail[0].pickup_store.pickup_person.handphone}`}
-                                        <br />
-                                    </Typography>
-                                    <Typography className={cx('tablet:pt-2')}>
-                                        {`Email : ${detail[0].detail[0].pickup_store.pickup_person.email}`}
+                                        {`Email : ${pickup_person.email ? pickup_person.email : '-'}`}
                                         <br />
                                     </Typography>
                                 </div>
                             )}
-                            <div className={cx('mobile:basis-full', 'tablet:basis-1/2', 'desktop:basis-1/4', 'flex', 'flex-col', 'gap-y-0')}>
+                            <div
+                                className={cx(
+                                    'mobile:basis-full',
+                                    'tablet:basis-1/2',
+                                    'desktop:basis-1/4',
+                                    'flex',
+                                    'flex-col',
+                                    'gap-y-0',
+                                    'pr-2',
+                                )}
+                            >
                                 <Typography className={cx('uppercase', '!font-bold')}>{t('order:orderStatus')}</Typography>
                                 <Typography className={cx('tablet:pt-2')}>{detail[0].status_label || ''}</Typography>
                             </div>
@@ -295,7 +310,7 @@ const DetailOrder = (props) => {
                                     'flex',
                                     'flex-col',
                                     'gap-y-0',
-                                    'justify-between',
+                                    'pr-2',
                                 )}
                             >
                                 <Typography className={cx('uppercase', '!font-bold')}>{t('order:billingAddress')}</Typography>
