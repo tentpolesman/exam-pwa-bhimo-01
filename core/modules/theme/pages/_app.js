@@ -28,6 +28,8 @@ import graphRequest from '@graphql_request';
 import TagManager from 'react-gtm-module';
 import ModalCookies from '@core_modules/theme/components/modalCookies';
 import { getDeviceByUA, getUAString } from '@core/helpers/deviceDection';
+import { availableRoute } from '@core/middlewares/routeServer';
+import { getStoreHost } from '@core/helpers/config';
 
 /* Firebase /*
 /* Commented by default to avoid unused code which directly impact on performance socre
@@ -91,7 +93,7 @@ class MyApp extends App {
         if (Component.getInitialProps) {
             pageProps = await Component.getInitialProps(ctx);
         }
-        const { req, res } = ctx;
+        const { req, res, pathname } = ctx;
         /*
          * ---------------------------------------------
          * MAINTAIN LOGIN FLAG
@@ -122,6 +124,22 @@ class MyApp extends App {
          */
         if (typeof window === 'undefined') {
             res.setHeader('Cache-Control', 'public');
+        }
+
+        /**
+         * Handling Checkout Only
+         */
+
+        if (modules.checkout.checkoutOnly) {
+            const allow = availableRoute(pathname.trim().split('?')[0]);
+            if (!allow) {
+                if (typeof window !== 'undefined') {
+                    window.location.href = getStoreHost(getAppEnv());
+                } else {
+                    res.statusCode = 302;
+                    res.setHeader('Location', getStoreHost(getAppEnv()));
+                }
+            }
         }
 
         /*
