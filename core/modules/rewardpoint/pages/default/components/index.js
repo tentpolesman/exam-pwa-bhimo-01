@@ -262,7 +262,7 @@ const RewardPointView = (props) => {
 
                 {/** Mobile Tablet */}
                 <Show when={!isDesktop}>
-                    <div className={cx('mobile-tablet-view')}>
+                    <div className={cx('swift-mobile-tablet-view')}>
                         <RewardPointInfoComponent />
 
                         <div className={cx('divider', 'border-b-[1.5px] border-neutral-200', 'mt-[16px]', 'mobile:!mb-[20px] tablet:mb-[24px]')} />
@@ -285,7 +285,7 @@ const RewardPointView = (props) => {
                                             <div
                                                 key={`mobile-item-${index}`}
                                                 className={cx(
-                                                    'mobile-item',
+                                                    'swift-mobile-item',
                                                     'flex',
                                                     'flex-col',
                                                     'border-[1px] border-neutral-200',
@@ -306,7 +306,12 @@ const RewardPointView = (props) => {
                                                                 <div
                                                                     dangerouslySetInnerHTML={{
                                                                         __html: `${val.comment.split('<a')[0]}
-                                                                            <a href="${getPath(val.comment)}">#${getId(val.comment)}</a>`,
+                                                                            <a 
+                                                                                class='swift-mobile-action-vieworder' 
+                                                                                href="${getPath(val.comment)}"
+                                                                            >
+                                                                                #${getId(val.comment)}
+                                                                            </a>`,
                                                                     }}
                                                                 />
                                                             ) : (

@@ -185,7 +185,7 @@ const DefaultView = (props) => {
 
                 {/** Mobile */}
                 <Show when={!isDesktop}>
-                    <div className={cx('mobile-tablet-view')}>
+                    <div className={cx('swift-mobile-tablet-view')}>
                         <Show when={loading}>
                             <SkeletonMobile />
                         </Show>
@@ -204,7 +204,7 @@ const DefaultView = (props) => {
                                             <div
                                                 key={`mobile-downloadable-item-${index}`}
                                                 className={cx(
-                                                    'mobile-downloadable-item',
+                                                    'swift-mobile-downloadable-item',
                                                     'flex',
                                                     'flex-col',
                                                     'border-[1px] border-neutral-200',
@@ -237,7 +237,12 @@ const DefaultView = (props) => {
                                                                 <Typography variant="bd-2b">{val.title}</Typography>
                                                             </div>
                                                             <Show when={val.status === 'available'}>
-                                                                <Link href={val.download_url} target="_blank" rel="noreferrer">
+                                                                <Link
+                                                                    className="swift-mobile-action-download"
+                                                                    href={val.download_url}
+                                                                    target="_blank"
+                                                                    rel="noreferrer"
+                                                                >
                                                                     <div
                                                                         className={cx(
                                                                             'flex flex-row items-center',

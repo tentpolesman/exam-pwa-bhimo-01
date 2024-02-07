@@ -42,7 +42,7 @@ const Select = (props) => {
     const selectValue = options?.find((opt) => opt.value === value)?.label ?? value;
 
     return (
-        <div ref={ref} className={cx('relative', open ? 'z-50' : '', className)} {...restProps}>
+        <div ref={ref} className={cx('swift-form-select', 'relative', open ? 'z-50' : '', className)} {...restProps}>
             {label && typeof label === 'string' ? (
                 <Typography variant="bd-2" className={cx('mb-2 uppercase', classNameLabel)}>
                     {label.replace(/_/g, ' ')}
