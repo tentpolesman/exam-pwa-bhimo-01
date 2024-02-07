@@ -124,11 +124,11 @@ const Item = (props) => {
                                         </div>
                                     ) : null}
                                     {aw_giftcard_option && aw_giftcard_option.length ? (
-                                        <div className="flex flex-col max-w-[50%] desktop:max-w-full gap-3">
+                                        <div className="flex flex-col gap-3">
                                             {aw_giftcard_option.map((val, idx) => (
-                                                <div className="flex flex-col tablet:flex-row gap-1" key={idx}>
+                                                <div className="flex flex-col" key={idx}>
                                                     <Typography variant="bd-1b">
-                                                        {`${val.label}: `}
+                                                        {`${val.label} : `}
                                                     </Typography>
 
                                                     <Typography variant="bd-1b">
