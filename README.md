@@ -125,6 +125,13 @@ Explanations:
 9. NEXT_PUBLIC_ENCRYPTION_KEY = Encryption key to encrypt sensitive data (required) -> This is for client side usage, consider make this different from the server side one (`ENCRYPTION_KEY`)
 10. NEXT_PUBLIC_ALGORITHM = Encryption algorithm (required) -> This is for client side usage, consider make this different from the server side one (`ALGORITHM`)
 
+# Crontab
+In production, this job needs to be set to run sitemap regeneration every midnight.
+Replace [pwa base url] with your real PWA base url
+```
+0 0 * * * curl '[pwa base url]/sitemap.xml'
+```
+
 # Highlight Releases
 ## Version 3.0.0
 1. Upgrade to NextJs14
