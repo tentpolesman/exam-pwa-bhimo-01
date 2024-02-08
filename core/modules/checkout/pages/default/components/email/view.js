@@ -12,7 +12,7 @@ import Popover from '@common/Popover';
 const EmailView = (props) => {
     const {
         t, formik, setAnchorEl, anchorEl, config,
-        handleBlur, load,
+        handleBlur, load, loadingAll,
     } = props;
 
     let isExternalLoginLink = false;
@@ -56,6 +56,7 @@ const EmailView = (props) => {
             )}
             >
                 <TextField
+                    disabled={loadingAll || load}
                     id="checkout-email-input"
                     name="email"
                     placeholder="john.doe@gmail.com"

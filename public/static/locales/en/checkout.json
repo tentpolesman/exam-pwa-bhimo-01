@@ -16,13 +16,15 @@
         "instorePickupDesc": "Pickup your order at our store"
     },
     "pickupInformation": {
+        "failedFetchStore": "Get list stores is failed",
         "label": "Pickup information",
         "pickupPerson": "Pickup person",
         "pickupAtLabel": "You will pick up your order at",
         "pickupNote": "We will send you an email when your order is ready (within 2 hours for order placed by 7pm local time). Note: Bring valid goverment ID such as driver license or password",
         "changePickupInformation": "Change pickup information",
         "changePickupLocation": "Change pickup location",
-        "selectStoreLocation": "Select store location"
+        "selectStoreLocation": "Select store location",
+        "searchStore": "Search store name"
     },
     "invalidToken": "You have an active checkout session in another browser or device. You are allowed to checkout in one browser or device only.",
     "invalidTokenConfirmation": "Do you want to continue checkout here?",

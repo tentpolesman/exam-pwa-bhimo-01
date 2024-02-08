@@ -393,7 +393,7 @@ const Checkout = (props) => {
     const initData = useCallback(async () => {
         let { cart } = dataCart;
         const { errorItems, items } = itemCart?.cart;
-        cart = { ...cart, ...(checkout.data.cart ? checkout.data.cart : {}), items };
+        cart = { ...(checkout.data.cart ? checkout.data.cart : {}), ...cart, items };
         // check error items
         if (errorItems && errorItems.length > 0) {
             dispatch(setCheckoutData({ errorItems: true }));

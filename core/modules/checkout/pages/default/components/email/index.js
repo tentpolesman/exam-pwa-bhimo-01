@@ -64,6 +64,7 @@ const Email = (props) => {
             setAnchorEl={setAnchorEl}
             handleBlur={handleBlur}
             load={load}
+            loadingAll={checkout?.loading?.all}
         />
     );
 

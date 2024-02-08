@@ -104,9 +104,9 @@ const ModalSelectStore = ({
 
     const getStyle = (key, index) => {
         let classname;
-        const styleCard = 'w-full p-4 my-3 flex flex-col justify-between items-center border border-neutral-200 rouded-lg';
+        const styleCard = 'w-full p-4 flex flex-col items-left justify-between border border-neutral-100 rounded-lg';
         const styleCardActive = '!border-primary';
-        const styleCardLast = 'mb-10';
+        const styleCardLast = '';
         if (selected.key && selected.key === key) {
             classname = cx(styleCard, styleCardActive);
         } else if (Object.keys(checkout.selectStore).length > 0 && !selected.key) {
@@ -152,11 +152,13 @@ const ModalSelectStore = ({
             content={(
                 <>
                     <div className="flex flex-col">
-                        <div className="flex flex-col">
+                        <div className="flex flex-col gap-4 relative h-full mb-10">
                             <TextField
                                 label="Search"
                                 value={search}
                                 onChange={handleSearch}
+                                className="w-full"
+                                placeholder={t('checkout:pickupInformation:searchStore')}
                             />
                             {
                                 stores.length > 0
@@ -186,9 +188,11 @@ const ModalSelectStore = ({
                                             </div>
                                         ))
                                     ) : (
-                                        <Alert className="m-15" severity="warning">
-                                            {t('checkout:storesNotFound')}
-                                        </Alert>
+                                        <div className="my-5">
+                                            <Alert className="m-15" severity="warning">
+                                                {t('checkout:storesNotFound')}
+                                            </Alert>
+                                        </div>
                                     )
                             }
                         </div>
