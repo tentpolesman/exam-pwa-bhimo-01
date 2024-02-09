@@ -49,6 +49,7 @@ import {
     setStatusState,
 } from '@core_modules/checkout/redux/checkoutSlice';
 import { getLoginInfo } from '@helper_auth';
+import { useRouter } from 'next/navigation';
 
 function equalTo(ref, msg) {
     return this.test({
@@ -66,6 +67,7 @@ function equalTo(ref, msg) {
 
 const Checkout = (props) => {
     const { t, storeConfig, cartId: propsCardId } = props;
+    const router = useRouter();
     const config = {
         successRedirect: {
             link: getSuccessCallbackUrl(),
@@ -120,6 +122,11 @@ const Checkout = (props) => {
                 removeCheckoutData();
             }
             setCartId(cartid);
+
+            if ((storeConfig?.pwacheckout?.enable === 1 || storeConfig?.pwacheckout?.enable === '1')
+                && storeConfig?.pwacheckout?.version === 'V2') {
+                router.replace('/checkout/cart');
+            }
         }
 
         return () => {
@@ -224,9 +231,7 @@ const Checkout = (props) => {
         oldEmail: checkout.data.isGuest ? Yup.string().equalTo(Yup.ref('email')) : null,
         address: isOnlyVirtualProductOnCart || checkout.selectStore.id !== null ? null : Yup.object().nullable().required(t('validate:required')),
         billing: checkout.selected.delivery === 'home' && Yup.object().nullable().required(t('validate:required')),
-        shipping: isOnlyVirtualProductOnCart
-            ? null
-            : checkout.selected.delivery === 'home' && Yup.object().required(t('validate:required')),
+        shipping: isOnlyVirtualProductOnCart ? null : checkout.selected.delivery === 'home' && Yup.object().required(t('validate:required')),
     });
 
     const formik = useFormik({
@@ -388,7 +393,7 @@ const Checkout = (props) => {
     const initData = useCallback(async () => {
         let { cart } = dataCart;
         const { errorItems, items } = itemCart?.cart;
-        cart = { ...cart, ...(checkout.data.cart ? checkout.data.cart : {}), items };
+        cart = { ...(checkout.data.cart ? checkout.data.cart : {}), ...cart, items };
         // check error items
         if (errorItems && errorItems.length > 0) {
             dispatch(setCheckoutData({ errorItems: true }));
