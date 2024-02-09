@@ -206,7 +206,11 @@ const ProfileForm = (props) => {
                     />
                 </Show>
                 <div className={cx('pt-5')}>
-                    <Button type="submit" disabled={updateCustomerStatus.loading || changeCustomerPasswordStatus.loading}>
+                    <Button
+                        className="swift-action-save"
+                        type="submit"
+                        disabled={updateCustomerStatus.loading || changeCustomerPasswordStatus.loading}
+                    >
                         <Typography className={cx('!text-neutral-white')}>{t('common:button:save')}</Typography>
                     </Button>
                 </div>

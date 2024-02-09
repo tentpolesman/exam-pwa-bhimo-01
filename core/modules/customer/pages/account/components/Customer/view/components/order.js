@@ -176,14 +176,14 @@ const OrderView = (props) => {
                 </Show>
                 {/** Mobile View */}
                 <Show when={isMobile}>
-                    <div className={cx('mobile-view')}>
+                    <div className={cx('swift-mobile-view')}>
                         <Show when={hasData}>
                             <>
                                 {customerOrders?.items?.map((val, index) => (
                                     <div
                                         key={`mobile-order-item-${index}`}
                                         className={cx(
-                                            'mobile-order-item',
+                                            'swift-mobile-order-item',
                                             'flex',
                                             'flex-col',
                                             'border-[1px] border-neutral-200',

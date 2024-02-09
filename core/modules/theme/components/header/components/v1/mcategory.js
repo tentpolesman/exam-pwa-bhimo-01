@@ -127,7 +127,7 @@ const Menu = (props) => {
                                     }
                                 }}
                                 className={cx(
-                                    'swift-nav-lv1',
+                                    'swift-nav-menu-lv1',
                                     'text-md',
                                     'font-medium',
                                     'tracking-normal',

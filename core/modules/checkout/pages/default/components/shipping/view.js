@@ -106,8 +106,6 @@ const ShippingView = (props) => {
         if (isMultiSeller) {
             if (checkout.data.shippingMethods.length > 0 && checkout.data.shippingMethods[0].seller_id !== null) {
                 setLoadingSellerInfo(false);
-            } else {
-                content = <Typography variant="bd-2">{t('checkout:noShipping')}</Typography>;
             }
         }
 

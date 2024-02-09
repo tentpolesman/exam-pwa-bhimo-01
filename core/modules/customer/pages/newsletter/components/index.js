@@ -34,7 +34,7 @@ const SettingPage = (props) => {
                     </Checkbox>
                 </Show>
                 <div className={cx('pt-5')}>
-                    <Button onClick={handleSave} disabled={isDisabled}>
+                    <Button className="swift-action-save" onClick={handleSave} disabled={isDisabled}>
                         <Typography className={cx(isDisabled ? '!text-neutral-black' : '!text-neutral-white')}>{t('common:button:save')}</Typography>
                     </Button>
                 </div>

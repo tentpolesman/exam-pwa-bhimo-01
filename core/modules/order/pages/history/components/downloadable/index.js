@@ -75,7 +75,7 @@ const DefaultView = (props) => {
                 <Show when={isDesktop}>
                     <div className={cx('desktop-view')}>
                         <div className={cx('relative', 'overflow-x-auto', 'rounded-lg')}>
-                            <table className={cx('w-full', 'text-base', 'border-[1px]', 'border-neutral-100')}>
+                            <table className={cx('swift-table-downloadable-history', 'w-full', 'text-base', 'border-[1px]', 'border-neutral-100')}>
                                 <thead>
                                     <tr className={cx('text-neutral-500', 'font-semibold', 'leading-2lg', 'text-left')}>
                                         <th className={cx('px-4', 'py-3')}>
@@ -108,11 +108,11 @@ const DefaultView = (props) => {
                                         <Show when={!error}>
                                             <Show when={hasData}>
                                                 {itemList?.[page - 1]?.map((val, index) => (
-                                                    <tr className={cx('even:bg-white', 'odd:bg-neutral-50')} key={index}>
+                                                    <tr className={cx('swift-table-row', 'even:bg-white', 'odd:bg-neutral-50')} key={index}>
                                                         <td className={cx('p-4')}>
                                                             <Link
                                                                 href={`/sales/order/view/order_id/${val.order_increment_id}`}
-                                                                className={cx('hover:underline')}
+                                                                className={cx('swift-action-vieworder', 'hover:underline')}
                                                             >
                                                                 <Typography variant="bd-2b" className={cx('!text-primary-700', 'hover:underline')}>
                                                                     {val.order_increment_id}
@@ -127,7 +127,12 @@ const DefaultView = (props) => {
                                                                 <Typography variant="bd-2b">{val.title}</Typography>
                                                             </div>
                                                             <Show when={val.status === 'available'}>
-                                                                <Link href={val.download_url} target="_blank" rel="noreferrer">
+                                                                <Link
+                                                                    className="swift-action-download"
+                                                                    href={val.download_url}
+                                                                    target="_blank"
+                                                                    rel="noreferrer"
+                                                                >
                                                                     <div
                                                                         className={cx(
                                                                             'flex flex-row items-center',
@@ -180,7 +185,7 @@ const DefaultView = (props) => {
 
                 {/** Mobile */}
                 <Show when={!isDesktop}>
-                    <div className={cx('mobile-tablet-view')}>
+                    <div className={cx('swift-mobile-tablet-view')}>
                         <Show when={loading}>
                             <SkeletonMobile />
                         </Show>
@@ -199,7 +204,7 @@ const DefaultView = (props) => {
                                             <div
                                                 key={`mobile-downloadable-item-${index}`}
                                                 className={cx(
-                                                    'mobile-downloadable-item',
+                                                    'swift-mobile-downloadable-item',
                                                     'flex',
                                                     'flex-col',
                                                     'border-[1px] border-neutral-200',
@@ -232,7 +237,12 @@ const DefaultView = (props) => {
                                                                 <Typography variant="bd-2b">{val.title}</Typography>
                                                             </div>
                                                             <Show when={val.status === 'available'}>
-                                                                <Link href={val.download_url} target="_blank" rel="noreferrer">
+                                                                <Link
+                                                                    className="swift-mobile-action-download"
+                                                                    href={val.download_url}
+                                                                    target="_blank"
+                                                                    rel="noreferrer"
+                                                                >
                                                                     <div
                                                                         className={cx(
                                                                             'flex flex-row items-center',

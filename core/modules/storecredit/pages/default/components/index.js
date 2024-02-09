@@ -110,7 +110,7 @@ const StoreCreditPage = (props) => {
                     <div className={cx('desktop-view')}>
                         <StoreCreditBalanceComponent />
                         <div className={cx('relative', 'overflow-x-auto', 'rounded-lg', 'pt-5')}>
-                            <table className={cx('w-full', 'text-base', 'border-[1px]', 'border-neutral-100')}>
+                            <table className={cx('swift-table-storecredit-history', 'w-full', 'text-base', 'border-[1px]', 'border-neutral-100')}>
                                 <thead>
                                     <tr className={cx('text-neutral-500', 'font-semibold', 'leading-2lg', 'text-left')}>
                                         <th className={cx('px-4', 'py-3')}>
@@ -140,7 +140,14 @@ const StoreCreditPage = (props) => {
                                             <Show when={hasData}>
                                                 <>
                                                     {storeCredit?.transaction_history?.items.map((val, index) => (
-                                                        <tr className={cx('even:bg-white', 'odd:bg-neutral-50')} key={index}>
+                                                        <tr
+                                                            className={cx(
+                                                                'swift-table-row',
+                                                                'even:bg-white',
+                                                                'odd:bg-neutral-50',
+                                                            )}
+                                                            key={index}
+                                                        >
                                                             <td className={cx('p-4')}>
                                                                 <Typography variant="bd-2b">{val.transaction_id}</Typography>
                                                             </td>
@@ -198,7 +205,7 @@ const StoreCreditPage = (props) => {
 
                 {/** Mobile Tablet */}
                 <Show when={!isDesktop}>
-                    <div className={cx('mobile-tablet-view')}>
+                    <div className={cx('swift-mobile-tablet-view')}>
                         <StoreCreditBalanceComponent />
 
                         <div className={cx('divider', 'border-b-[1.5px] border-neutral-200', 'mt-[16px]', 'mobile:!mb-[20px] tablet:mb-[24px]')} />
@@ -221,7 +228,7 @@ const StoreCreditPage = (props) => {
                                             <div
                                                 key={`mobile-item-${index}`}
                                                 className={cx(
-                                                    'mobile-item',
+                                                    'swift-mobile-item',
                                                     'flex',
                                                     'flex-col',
                                                     'border-[1px] border-neutral-200',

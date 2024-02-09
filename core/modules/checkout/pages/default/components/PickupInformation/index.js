@@ -11,6 +11,7 @@ import { useSelector } from 'react-redux';
 import {
     selectCheckoutState,
 } from '@core_modules/checkout/redux/checkoutSlice';
+import { useEffect } from 'react';
 
 const PickupInformation = (props) => {
     const {
@@ -39,6 +40,17 @@ const PickupInformation = (props) => {
             [state]: !openModal[state],
         });
     };
+
+    useEffect(() => {
+        if (!pickupStores.loading && pickupStores.error) {
+            window.toastMessage({
+                open: true,
+                text: t('chekcout:pickupInformation:failedFetchStore'),
+                variant: 'error',
+            });
+        }
+    }, [pickupStores]);
+
     return (
         <div
             id="checkoutPickupStore"
@@ -66,9 +78,9 @@ const PickupInformation = (props) => {
                 'max-w-lg p-4 mb-4',
             )}
             >
-                <div className="flex flex-col">
+                <div className="flex flex-col gap-4">
                     {
-                        (Object.keys(checkout.pickupInformation).length > 0) && (
+                        (Object.keys(checkout.pickupInformation).length > 0 && checkout.pickupInformation?.pickup_person_name) && (
                             <>
                                 <table>
                                     <tbody>
@@ -95,13 +107,16 @@ const PickupInformation = (props) => {
                     <Button
                         align="left"
                         variant="plain"
-                        className="clear-margin-padding"
+                        className="!p-0"
                         onClick={() => handleOpen('openModalInfo')}
                         disabled={
                             formik.values.email !== '' && formik.values.email !== formik.values.oldEmail
                         }
                     >
-                        <Typography variant="bd-3" className="uppercase">
+                        <Typography
+                            variant="bd-3"
+                            className={cx('uppercase', checkout?.pickupInformation?.pickup_person_name ? '!text-primary' : '')}
+                        >
                             {t('checkout:pickupInformation:changePickupInformation')}
                         </Typography>
                     </Button>
@@ -115,7 +130,7 @@ const PickupInformation = (props) => {
                 'max-w-lg p-4 mb-4',
             )}
             >
-                <div className="flex flex-col">
+                <div className="flex flex-col gap-4">
                     {
                         (Object.keys(checkout.selectStore).length > 0) && (
                             <>
@@ -145,13 +160,16 @@ const PickupInformation = (props) => {
                             <Button
                                 align="left"
                                 variant="plain"
-                                className="clear-margin-padding"
+                                className="!p-0"
                                 onClick={() => handleOpen('openModalSelectStore')}
                                 disabled={
                                     formik.values.email !== '' && formik.values.email !== formik.values.oldEmail
                                 }
                             >
-                                <Typography variant="bd-3" className="uppercase">
+                                <Typography
+                                    variant="bd-3"
+                                    className={cx('uppercase', (checkout.selectStore && checkout.selectStore.length) ? '!text-primary' : '')}
+                                >
                                     {t('checkout:pickupInformation:changePickupLocation')}
                                 </Typography>
                             </Button>

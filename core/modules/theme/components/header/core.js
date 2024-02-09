@@ -2,7 +2,7 @@
 /* eslint-disable indent */
 /* eslint-disable no-unused-expressions */
 import { useApolloClient } from '@apollo/client';
-import { cmsStaticMainMenuIdentifier, custDataNameCookie, features, modules } from '@config';
+import { custDataNameCookie, features, modules } from '@config';
 import Content from '@core_modules/theme/components/header/components';
 import { getCategories, getCustomerLazy, removeToken } from '@core_modules/theme/services/graphql';
 import { removeIsLoginFlagging } from '@helper_auth';
@@ -30,6 +30,7 @@ const CoreTopNavigation = (props) => {
         deviceType,
         ...other
     } = props;
+    const cmsStaticMainMenuIdentifier = storeConfig?.pwa?.megamenu_cms_block;
     let data = propsMenu;
     let loading = !propsMenu;
     const [deviceWidth, setDeviceWidth] = React.useState(0);

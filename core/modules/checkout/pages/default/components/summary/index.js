@@ -175,6 +175,7 @@ const Summary = ({
     };
 
     const handlePlaceOrder = async () => {
+        window.backdropLoader(true);
         const { cart, isGuest } = checkout.data;
         let formValidation = {};
         let result;
@@ -345,6 +346,8 @@ const Summary = ({
                 text: msg,
             });
         }
+
+        window.backdropLoader(false);
     };
 
     // manage indodana redirect
@@ -569,15 +572,15 @@ const Summary = ({
     }
 
     if (checkout && checkout.data && checkout.data.cart && checkout.loading) {
+        const disablePlaceOrder = errorItems || disabled || (isSelectedPurchaseOrder && !isPurchaseOrderApply) || checkout.error.shippingAddress
+        || (formik && Object.keys(formik.errors).length);
         return (
             <>
                 <ModalXendit open={openXendit} setOpen={() => setOpenXendit(!openXendit)} iframeUrl={xenditIframeUrl} {...xenditState} />
                 {buttonOnly ? (
                     <Button
-                        disabled={
-                            errorItems || disabled || (isSelectedPurchaseOrder && !isPurchaseOrderApply) || checkout.error.shippingAddress
-                            || (formik && Object.keys(formik.errors).length)
-                        }
+                        disabled={disablePlaceOrder}
+                        className="w-full"
                         classNameText="justify-center text-lg"
                         loading={loading}
                         onClick={
@@ -596,7 +599,9 @@ const Summary = ({
                         loadTotal={totalPrice}
                         loading={loading}
                         isLoader={checkout.loading.order}
-                        disabled={errorItems || disabled || (isSelectedPurchaseOrder && !isPurchaseOrderApply) || checkout.error.shippingAddress}
+                        disabled={
+                            disablePlaceOrder
+                        }
                         handleActionSummary={() => {
                             if (!loading) {
                                 handlePlaceOrder();

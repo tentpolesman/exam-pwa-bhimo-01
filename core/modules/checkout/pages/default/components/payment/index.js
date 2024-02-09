@@ -83,7 +83,7 @@ export default function CustomizedExpansionPanels({
             } else {
                 handleOpenMessage({
                     variant: 'error',
-                    text: t('checkout:error:wentWrong'),
+                    text: t('common:error:wentWrong'),
                 });
             }
         }

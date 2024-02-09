@@ -92,7 +92,15 @@ const RewardPointView = (props) => {
                     <Typography variant="bd-2b">
                         {t('rewardpoint:learnMore').split('$')[0]}
                         <Link href="/[...slug]" as="/aw-reward-points" legacyBehavior>
-                            <a target="_blank" rel="noopener noreferrer" className={cx('text-primary-700', 'hover:underline')}>
+                            <a
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className={cx(
+                                    'swift-action-learnmore',
+                                    'text-primary-700',
+                                    'hover:underline',
+                                )}
+                            >
                                 {t('rewardpoint:learnMore').split('$')[1]}
                             </a>
                         </Link>
@@ -156,7 +164,7 @@ const RewardPointView = (props) => {
                     <div className={cx('desktop-view')}>
                         <RewardPointInfoComponent />
                         <div className={cx('relative', 'overflow-x-auto', 'rounded-lg', 'pt-5')}>
-                            <table className={cx('w-full', 'text-base', 'border-[1px]', 'border-neutral-100')}>
+                            <table className={cx('swift-table-rewardpoints', 'w-full', 'text-base', 'border-[1px]', 'border-neutral-100')}>
                                 <thead>
                                     <tr className={cx('text-neutral-500', 'font-semibold', 'leading-2lg', 'text-left')}>
                                         <th className={cx('px-4', 'py-3')}>
@@ -188,7 +196,7 @@ const RewardPointView = (props) => {
                                             <Show when={hasData}>
                                                 <>
                                                     {data?.transaction_history?.items?.map((val, index) => (
-                                                        <tr className={cx('even:bg-white', 'odd:bg-neutral-50')} key={index}>
+                                                        <tr className={cx('swift-table-row', 'even:bg-white', 'odd:bg-neutral-50')} key={index}>
                                                             <td className={cx('p-4')}>
                                                                 <Typography variant="bd-2b">{val.transactionId}</Typography>
                                                             </td>
@@ -254,7 +262,7 @@ const RewardPointView = (props) => {
 
                 {/** Mobile Tablet */}
                 <Show when={!isDesktop}>
-                    <div className={cx('mobile-tablet-view')}>
+                    <div className={cx('swift-mobile-tablet-view')}>
                         <RewardPointInfoComponent />
 
                         <div className={cx('divider', 'border-b-[1.5px] border-neutral-200', 'mt-[16px]', 'mobile:!mb-[20px] tablet:mb-[24px]')} />
@@ -277,7 +285,7 @@ const RewardPointView = (props) => {
                                             <div
                                                 key={`mobile-item-${index}`}
                                                 className={cx(
-                                                    'mobile-item',
+                                                    'swift-mobile-item',
                                                     'flex',
                                                     'flex-col',
                                                     'border-[1px] border-neutral-200',
@@ -298,7 +306,12 @@ const RewardPointView = (props) => {
                                                                 <div
                                                                     dangerouslySetInnerHTML={{
                                                                         __html: `${val.comment.split('<a')[0]}
-                                                                            <a href="${getPath(val.comment)}">#${getId(val.comment)}</a>`,
+                                                                            <a 
+                                                                                class='swift-mobile-action-vieworder' 
+                                                                                href="${getPath(val.comment)}"
+                                                                            >
+                                                                                #${getId(val.comment)}
+                                                                            </a>`,
                                                                     }}
                                                                 />
                                                             ) : (
