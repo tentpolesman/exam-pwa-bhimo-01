@@ -27,6 +27,7 @@ const ProductPage = (props) => {
                 useShareProduct
                 useProductRelated
                 useProductUpsell
+                useStickyImageSlider
                 {...props}
             />
         </div>

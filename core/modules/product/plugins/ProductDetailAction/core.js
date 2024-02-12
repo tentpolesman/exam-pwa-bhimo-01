@@ -193,6 +193,8 @@ const ProductDetailAction = ({
         specialToDate: item.special_to_date,
     });
 
+    const [stickyImageSliderTopPosition, setStickyImageSliderTopPosition] = React.useState(null);
+
     const checkCustomizableOptionsValue = React.useCallback(async () => {
         if (item.options && item.options.length > 0) {
             const requiredOptions = item.options.filter((op) => op.required);
@@ -442,6 +444,16 @@ const ProductDetailAction = ({
         }
     }, [customizableOptions]);
 
+    React.useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const headerHeight = document.getElementById('sticky-header')?.getBoundingClientRect()?.height;
+            const headerHeightFallback = document.getElementById('header-inner')?.getBoundingClientRect()?.height;
+            if (storeConfig?.pwa?.enabler_sticky_header && ((headerHeight > 0) || (headerHeightFallback > 0))) {
+                setStickyImageSliderTopPosition(headerHeight || headerHeightFallback);
+            }
+        }
+    }, []);
+
     const handleOpenImageDetail = React.useCallback((e, idx) => {
         setOpenImageDetail(!openImageDetail);
         setSelectedImgIdx(idx);
@@ -516,6 +528,7 @@ const ProductDetailAction = ({
                 ...item,
                 labels,
             }}
+            stickyImageSliderTopPosition={stickyImageSliderTopPosition}
             {...other}
         />
     );
