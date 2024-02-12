@@ -28,6 +28,7 @@ const ItemAddress = (props) => {
         // eslint-disable-next-line no-unused-vars
     } = props;
     const region_value = region.region;
+    const street_value = street[0];
     return (
         <>
             <AddressFormDialog
@@ -40,6 +41,7 @@ const ItemAddress = (props) => {
                 pageTitle={t('customer:address:editTitle')}
                 addressId={id}
                 region={region_value}
+                street={street_value}
             />
             <div
                 className={cx(
