@@ -232,6 +232,7 @@ const Address = (props) => {
                     });
             } else {
                 const setShippingBilling = () => {
+                    dispatch(setLoading({ shipping: true }));
                     setShippingAddressById({
                         variables: {
                             cartId: cart.id,
@@ -241,8 +242,10 @@ const Address = (props) => {
                         .then((resBilling) => {
                             updateAddressState(resBilling);
                             resolve();
+                            dispatch(setLoading({ shipping: false }));
                         })
                         .catch((e) => {
+                            dispatch(setLoading({ shipping: false }));
                             if (e.message.includes('Token is wrong.')) {
                                 setCheckoutTokenState(!checkoutTokenState);
                             } else {
