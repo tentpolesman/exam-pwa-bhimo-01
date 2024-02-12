@@ -80,39 +80,49 @@ const ProductDetailAction = ({
     openOption,
     setOpenOption,
     enableMultiSeller,
+    useStickyImageSlider = false,
+    stickyImageSliderTopPosition,
 }) => (
     <div className="plugin-product-detail-action">
         <div
             className={cx('product-detail-container', 'desktop:grid tablet:grid desktop:grid-cols-2 tablet:grid-cols-2', 'mt-[32px]', classContainer)}
         >
-            <div className={cx('product-detail-slider', 'relative', classImageSliderWrapper)}>
-                <ImageSlider
-                    useZoom={false}
-                    data={banner}
-                    storeConfig={storeConfig}
-                    onClickZoomImage={useProductImagePreview && enablePopupImage ? handleOpenImageDetail : null}
-                    {...imageSliderProps}
-                    FooterComponentImagePreview={(
-                        <ProductLabel
-                            className="absolute top-[15px] left-[17px]"
-                            stockStatus={data?.stock_status}
-                            newFromDate={data?.new_from_date}
-                            newToDate={data?.new_to_date}
-                            specialFromDate={data?.special_from_date}
-                            specialToDate={data?.special_to_date}
-                            priceRange={data?.price_range}
-                            config={{
-                                enable: storeConfig.pwa.label_enable,
-                                new: {
+            <div className={cx('product-detail-slider', 'relative')}>
+                <div
+                    className={cx(classImageSliderWrapper)}
+                    style={{
+                        position: (useStickyImageSlider && stickyImageSliderTopPosition) ? 'sticky' : 'static',
+                        top: (useStickyImageSlider && stickyImageSliderTopPosition) ? `${stickyImageSliderTopPosition}px` : 'unset',
+                    }}
+                >
+                    <ImageSlider
+                        useZoom={false}
+                        data={banner}
+                        storeConfig={storeConfig}
+                        onClickZoomImage={useProductImagePreview && enablePopupImage ? handleOpenImageDetail : null}
+                        {...imageSliderProps}
+                        FooterComponentImagePreview={(
+                            <ProductLabel
+                                className="absolute top-[15px] left-[17px]"
+                                stockStatus={data?.stock_status}
+                                newFromDate={data?.new_from_date}
+                                newToDate={data?.new_to_date}
+                                specialFromDate={data?.special_from_date}
+                                specialToDate={data?.special_to_date}
+                                priceRange={data?.price_range}
+                                config={{
                                     enable: storeConfig.pwa.label_enable,
-                                },
-                                sale: {
-                                    enable: storeConfig.pwa.label_sale_enable,
-                                },
-                            }}
-                        />
-                    )}
-                />
+                                    new: {
+                                        enable: storeConfig.pwa.label_enable,
+                                    },
+                                    sale: {
+                                        enable: storeConfig.pwa.label_sale_enable,
+                                    },
+                                }}
+                            />
+                        )}
+                    />
+                </div>
             </div>
             <div
                 className={cx(
