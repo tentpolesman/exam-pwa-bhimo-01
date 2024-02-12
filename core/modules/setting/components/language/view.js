@@ -10,7 +10,7 @@ import ChevronDownIcon from '@heroicons/react/24/outline/ChevronDownIcon';
 
 const ViewSwitcherLanguage = (props) => {
     const {
-        open, setOpen, dataLang, lang, onClickLanguage, loadDataLang,
+        open, setOpen, dataLang, lang, onClickLanguage, loadDataLang, CustomButton,
     } = props;
 
     const listDataLanguage = [];
@@ -49,28 +49,41 @@ const ViewSwitcherLanguage = (props) => {
                 wrapperClassName={cx('self-end')}
                 wrapperId="top-header__content--currency-language-changer-menu__language-switcher"
             >
-                <Button
-                    className={cx(
-                        'm-2',
-                        'mr-0',
-                        '!px-0',
-                        '!py-0',
-                        'hover:shadow-none',
-                        'focus:shadow-none',
-                        'active:shadow-none',
-                        'active:shadow-none',
-                        'group',
-                        'swift-language-switcher',
-                    )}
-                    onClick={() => setOpen(!open)}
-                    icon={<ChevronDownIcon />}
-                    iconProps={{ className: cx('text-neutral-700', 'w-[20px]', 'h-[20px]', 'group-hover:text-primary-700') }}
-                    iconPosition="right"
-                    variant="tertiary"
-                    classNameText={cx('!text-neutral-700')}
-                >
-                    <Typography className={cx('group-hover:text-primary-700')}>{lang?.label}</Typography>
-                </Button>
+                {
+                    React.isValidElement(CustomButton)
+                        ? React.cloneElement(CustomButton, {
+                            onClick: () => setOpen(!open),
+                            icon: <ChevronDownIcon />,
+                            children: <Typography className={cx('group-hover:text-primary-700')}>{lang?.label}</Typography>,
+                            iconPosition: 'right',
+                            iconProps: { className: cx('text-neutral-700', 'w-[20px]', 'h-[20px]', 'group-hover:text-primary-700') },
+                            classNameText: cx('!text-neutral-700'),
+                        })
+                        : (
+                            <Button
+                                className={cx(
+                                    'm-2',
+                                    'mr-0',
+                                    '!px-0',
+                                    '!py-0',
+                                    'hover:shadow-none',
+                                    'focus:shadow-none',
+                                    'active:shadow-none',
+                                    'active:shadow-none',
+                                    'group',
+                                    'swift-language-switcher',
+                                )}
+                                onClick={() => setOpen(!open)}
+                                icon={<ChevronDownIcon />}
+                                iconProps={{ className: cx('text-neutral-700', 'w-[20px]', 'h-[20px]', 'group-hover:text-primary-700') }}
+                                iconPosition="right"
+                                variant="tertiary"
+                                classNameText={cx('!text-neutral-700')}
+                            >
+                                <Typography className={cx('group-hover:text-primary-700')}>{lang?.label}</Typography>
+                            </Button>
+                        )
+                }
             </Popover>
         );
     }

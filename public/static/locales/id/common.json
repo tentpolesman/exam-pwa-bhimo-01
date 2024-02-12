@@ -245,7 +245,9 @@
         "all": "Semua",
         "total": "Total",
         "remove": "Hapus",
-        "apply": "Terapkan"
+        "apply": "Terapkan",
+        "privacyPolicy": "Kebijakan Privasi",
+        "termCondition": "Syarat & Ketentuan"
     },
     "cms": {
         "unableToRender": "Gagal menampilkan konten"

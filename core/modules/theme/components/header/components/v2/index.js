@@ -25,8 +25,6 @@ const HeaderV2 = (props) => {
         ...other
     } = props;
 
-    console.log(storeConfig);
-
     React.useEffect(() => {
         if (typeof window !== 'undefined') {
             // handle sticky

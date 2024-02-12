@@ -249,7 +249,9 @@
         "all": "All",
         "total": "Total",
         "remove": "Remove",
-        "apply": "Apply"
+        "apply": "Apply",
+        "privacyPolicy": "Privacy Policy",
+        "termCondition": "Term & Conditions"
     },
     "cms": {
         "unableToRender": "Unable to render the content"

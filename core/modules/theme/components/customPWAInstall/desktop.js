@@ -5,7 +5,7 @@ import DevicePhoneMobileIcon from '@heroicons/react/24/solid/DevicePhoneMobileIc
 import Typography from '@common_typography';
 import cx from 'classnames';
 
-const DesktopInstall = ({ id = 'wrapper-desktop__install', t }) => {
+const DesktopInstall = ({ id = 'wrapper-desktop__install', t, CustomButton }) => {
     const onClick = () => {
         const timestamp = Date.now();
         const identifier = `${(Math.floor(Math.random() * 100) * Math.floor(Math.random() * 100))}_${timestamp}`;
@@ -21,27 +21,41 @@ const DesktopInstall = ({ id = 'wrapper-desktop__install', t }) => {
 
     return (
         <div className={cx('top-header__content__popup-installation')} id={id}>
-            <Button
-                className={cx(
-                    'm-2',
-                    '!px-0',
-                    '!py-0',
-                    '!ml-0',
-                    'hover:shadow-none',
-                    'focus:shadow-none',
-                    'active:shadow-none',
-                    'active:shadow-none',
-                    'hidden',
-                )}
-                onClick={onClick}
-                icon={<DevicePhoneMobileIcon />}
-                iconProps={{ className: cx('w-[20px]', 'text-neutral-600', 'inline-block') }}
-                iconPosition="left"
-                variant="tertiary"
-                classNameText={cx('!text-neutral-700')}
-            >
-                <Typography>{t('common:header:downloadApps')}</Typography>
-            </Button>
+            {
+                React.isValidElement(CustomButton)
+                    ? React.cloneElement(CustomButton, {
+                        onClick,
+                        icon: <DevicePhoneMobileIcon />,
+                        iconProps: { className: cx('w-[20px]', 'text-neutral-600', 'inline-block'), ...(CustomButton.props.iconProps || {}) },
+                        iconPosition: 'left',
+                        classNameText: cx('!text-neutral-700'),
+                        className: cx(CustomButton.props.className, 'hidden'),
+                        children: CustomButton.props.children || <Typography>{t('common:header:downloadApps')}</Typography>,
+                    })
+                    : (
+                        <Button
+                            className={cx(
+                                'm-2',
+                                '!px-0',
+                                '!py-0',
+                                '!ml-0',
+                                'hover:shadow-none',
+                                'focus:shadow-none',
+                                'active:shadow-none',
+                                'active:shadow-none',
+                                'hidden',
+                            )}
+                            onClick={onClick}
+                            icon={<DevicePhoneMobileIcon />}
+                            iconProps={{ className: cx('w-[20px]', 'text-neutral-600', 'inline-block') }}
+                            iconPosition="left"
+                            variant="tertiary"
+                            classNameText={cx('!text-neutral-700')}
+                        >
+                            <Typography>{t('common:header:downloadApps')}</Typography>
+                        </Button>
+                    )
+            }
         </div>
     );
 };
