@@ -36,7 +36,7 @@ const ScrollTop = () => {
                 'hidden invisible': !trigger,
             })}
         >
-            <Button className="!px-[10px]" iconOnly icon={<ArrowUp />} variant="primary" />
+            <Button id="swift-action-scrolltotop" className="!px-[10px]" iconOnly icon={<ArrowUp />} variant="primary" />
         </div>
     );
 };
