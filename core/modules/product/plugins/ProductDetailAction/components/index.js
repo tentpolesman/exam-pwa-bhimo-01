@@ -382,10 +382,28 @@ const ProductDetailAction = ({
             </Dialog>
         </Show>
         <Show when={useProductRelated}>
-            <ProductRelated t={t} dataProduct={data} isLogin={isLogin} storeConfig={storeConfig} />
+            <ProductRelated
+                t={t}
+                dataProduct={data}
+                isLogin={isLogin}
+                storeConfig={storeConfig}
+                carouselProps={{
+                    className: 'mobile:!-ml-1 mobile:!-mr-1 tablet:!-ml-6 tablet:!-mr-6',
+                    classNameItem: 'mobile:first:!ml-4 tablet:first:!ml-6 bg-red-200',
+                }}
+            />
         </Show>
         <Show when={useProductUpsell}>
-            <ProductUpsell t={t} dataProduct={data} isLogin={isLogin} storeConfig={storeConfig} />
+            <ProductUpsell
+                t={t}
+                dataProduct={data}
+                isLogin={isLogin}
+                storeConfig={storeConfig}
+                carouselProps={{
+                    className: 'mobile:!-ml-1 mobile:!-mr-1 tablet:!-ml-6 tablet:!-mr-6',
+                    classNameItem: 'mobile:first:!ml-4 tablet:first:!ml-6 bg-red-200',
+                }}
+            />
         </Show>
     </div>
 );
