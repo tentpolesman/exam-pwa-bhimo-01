@@ -1,6 +1,5 @@
 /* eslint-disable operator-linebreak */
 import Typography from '@common_typography';
-import magezonDesignOptionsCss from '@core_modules/cms/helpers/magezonDesignOptionsCss';
 import cx from 'classnames';
 import dynamic from 'next/dynamic';
 import { useEffect, useRef, useState } from 'react';
@@ -14,7 +13,6 @@ const MagezonProduct = (props) => {
         description, show_line,
         line_color, line_position, line_width,
         title, title_align, title_tag, title_color,
-        ...other
     } = props;
     const showLineClass = show_line ? 'mgz-product-heading-line' : '';
     const linePosClass = show_line && line_position === 'bottom' ? 'mgz-product-heading-line--bottom' : '';
@@ -98,6 +96,12 @@ const MagezonProduct = (props) => {
                         `
                             box-shadow: 0px 20px 50px -20px rgb(0 0 0 / 50%) !important;
                             border: 1px solid ${border_hover_color || '#ffffff'} !important;
+                        `}
+                    }
+                    .mgz-product :global(.swift-catalog-item-product:first-child) {
+                        ${type === 'product_slider' &&
+                        `
+                            margin-left: 2.5rem;
                         `}
                     }
                     .mgz-product-content :global(.mgz-single-product-card) {
