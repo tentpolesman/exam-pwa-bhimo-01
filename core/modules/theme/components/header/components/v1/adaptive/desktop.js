@@ -32,9 +32,6 @@ const UserInfo = dynamic(() => import('@core_modules/theme/components/header/com
 const InstallDesktop = dynamic(() => import('@core_modules/theme/components/customPWAInstall/desktop'), { ssr: true });
 const BurgerMenuCategories = dynamic(() => import('@core_modules/theme/components/header/components/burgermenu/categories'), { ssr: false });
 const BurgerMenuAccount = dynamic(() => import('@core_modules/theme/components/header/components/burgermenu/account'), { ssr: false });
-
-const CmsMenuList = dynamic(() => import('@core_modules/theme/components/header/components/v1/CmsMenuList'), { ssr: true });
-
 const DesktopHeader = (props) => {
     const {
         //
@@ -327,10 +324,7 @@ const DesktopHeader = (props) => {
                 <div className="flex flex-row menu-category mobile:max-desktop:hidden">
                     <div className="xs:basis-full menu-middle">
                         <nav className="swift-menu-wrapper" role="navigation">
-                            {loadingMenu ? <></> : <Menu data={dataMenu} storeConfig={storeConfig} />}
-                            {
-                                cmsMenu ? <CmsMenuList rawData={cmsMenu} storeConfig={storeConfig} /> : null
-                            }
+                            {loadingMenu ? <></> : <Menu t={t} data={dataMenu} cmsMenu={cmsMenu} storeConfig={storeConfig} />}
                         </nav>
                     </div>
                 </div>

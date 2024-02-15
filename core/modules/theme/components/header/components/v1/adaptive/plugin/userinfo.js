@@ -9,7 +9,7 @@ import Show from '@common_show';
 import Skeleton from '@common_skeleton';
 
 const UserInfo = (props) => {
-    const { t, isLogin, customer, open, setOpen, PopoverContent } = props;
+    const { t, isLogin, customer, open, setOpen, PopoverContent, withLabel = true } = props;
 
     return (
         <>
@@ -51,9 +51,11 @@ const UserInfo = (props) => {
                             'group-hover:text-primary-700',
                         )}
                     />
-                    <Typography variant="bd-2b" className={cx('inline-block', 'pl-2', 'hover:text-primary-700', 'group-hover:text-primary-700')}>
-                        {t('common:menu:sign')}/{t('common:menu:register')}
-                    </Typography>
+                    <Show when={withLabel}>
+                        <Typography variant="bd-2b" className={cx('inline-block', 'pl-2', 'hover:text-primary-700', 'group-hover:text-primary-700')}>
+                            {t('common:menu:sign')}/{t('common:menu:register')}
+                        </Typography>
+                    </Show>
                 </Link>
             )}
         </>

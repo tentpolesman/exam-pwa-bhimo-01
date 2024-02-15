@@ -143,7 +143,8 @@
         "myaccount": "My Account",
         "mywishlist": "My Wishlist",
         "signout": "Sign Out",
-        "loading": "Loading"
+        "loading": "Loading",
+        "others": "Others"
     },
     "header": {
         "welcome": "Welcome!",
@@ -249,7 +250,9 @@
         "all": "All",
         "total": "Total",
         "remove": "Remove",
-        "apply": "Apply"
+        "apply": "Apply",
+        "privacyPolicy": "Privacy Policy",
+        "termCondition": "Term & Conditions"
     },
     "cms": {
         "unableToRender": "Unable to render the content"

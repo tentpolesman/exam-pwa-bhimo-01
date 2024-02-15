@@ -9,7 +9,7 @@ import { getCookies, setCookies } from '@helper_cookies';
 import { localCompare } from '@services/graphql/schema/local';
 import { useTranslation } from 'next-i18next';
 import propTypes from 'prop-types';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import BadgeCounter from '@common_badgecounter';
 import Typography from '@common_typography';
@@ -18,7 +18,9 @@ import ArrowsRightLeftIcon from '@heroicons/react/24/solid/ArrowsRightLeftIcon';
 import cx from 'classnames';
 import { getLoginInfo } from '@helper_auth';
 
-const ProductCompareIcon = ({ withLink, WithLinkView }) => {
+const ProductCompareIcon = ({
+    withLink, WithLinkView, showZeroValue = true, setIsZeroCompare,
+}) => {
     const [getProductCompare, { loading, data: compareList }] = getCompareList({
         errorPolicy: 'all',
     });
@@ -84,6 +86,20 @@ const ProductCompareIcon = ({ withLink, WithLinkView }) => {
             }
         }
     }, [compareList, dataUid]);
+
+    useEffect(() => {
+        if (setIsZeroCompare) {
+            if (!showZeroValue && (!compareList || !compareList.compareList || !compareList.compareList.item_count)) {
+                setIsZeroCompare(true);
+            } else {
+                setIsZeroCompare(false);
+            }
+        }
+    }, [compareList, setIsZeroCompare, showZeroValue]);
+
+    if (!showZeroValue && (!compareList || !compareList.compareList || !compareList.compareList.item_count)) {
+        return null;
+    }
 
     if (withLink) {
         let tempCompare = null;

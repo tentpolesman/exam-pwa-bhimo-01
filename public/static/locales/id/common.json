@@ -141,7 +141,8 @@
         "myaccount": "Akun Saya",
         "mywishlist": "Daftar Saya",
         "signout": "keluar",
-        "loading": "Menunggu"
+        "loading": "Menunggu",
+        "others": "Lainnya"
     },
     "header": {
         "welcome": "Selamat Datang!",
@@ -245,7 +246,9 @@
         "all": "Semua",
         "total": "Total",
         "remove": "Hapus",
-        "apply": "Terapkan"
+        "apply": "Terapkan",
+        "privacyPolicy": "Kebijakan Privasi",
+        "termCondition": "Syarat & Ketentuan"
     },
     "cms": {
         "unableToRender": "Gagal menampilkan konten"
