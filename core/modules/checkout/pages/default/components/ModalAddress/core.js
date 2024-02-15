@@ -224,6 +224,7 @@ const ModalAddressCustomer = (props) => {
             setDataEdit={setDataEdit}
             manageCustomer={manageCustomer}
             updateAddress={updateAddress}
+            refetchAddress={refetch}
             {...other}
         />
     );
