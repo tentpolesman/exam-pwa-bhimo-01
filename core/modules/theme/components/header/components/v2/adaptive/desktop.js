@@ -219,10 +219,20 @@ const DesktopHeader = (props) => {
                                 />
                             </Link>
                             <div className="ml-8 flex flex-row menu-category mobile:max-desktop:hidden">
-                                <div className="overflow-x-scroll scrollbar-none max-w-[800px]">
+                                <div className="max-w-[800px]">
                                     <div className="xs:basis-full menu-middle w-max">
                                         <nav className={cx('menu-wrapper')} role="navigation">
-                                            {loadingMenu ? <></> : <Menu data={dataMenu} cmsMenu={cmsMenu} storeConfig={storeConfig} />}
+                                            {loadingMenu
+                                                ? <></>
+                                                : (
+                                                    <Menu
+                                                        useOthers
+                                                        t={t}
+                                                        data={dataMenu}
+                                                        cmsMenu={cmsMenu}
+                                                        storeConfig={storeConfig}
+                                                    />
+)}
                                         </nav>
                                     </div>
                                 </div>

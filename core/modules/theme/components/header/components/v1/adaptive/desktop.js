@@ -324,7 +324,7 @@ const DesktopHeader = (props) => {
                 <div className="flex flex-row menu-category mobile:max-desktop:hidden">
                     <div className="xs:basis-full menu-middle">
                         <nav className="swift-menu-wrapper" role="navigation">
-                            {loadingMenu ? <></> : <Menu data={dataMenu} cmsMenu={cmsMenu} storeConfig={storeConfig} />}
+                            {loadingMenu ? <></> : <Menu t={t} data={dataMenu} cmsMenu={cmsMenu} storeConfig={storeConfig} />}
                         </nav>
                     </div>
                 </div>

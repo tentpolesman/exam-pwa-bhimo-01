@@ -67,14 +67,14 @@ const HeaderV2 = (props) => {
 
                         if (scrollTopPosition > lastScrollTop) {
                             if (scrollTopPosition > headerHeight) {
-                                sticky.style.top = `-${headerHeight}px`;
+                                sticky.style.top = '0px';
                                 sticky.appendChild(headerContent);
                                 header.style.height = `${globalPromoheight + topHeaderheight + midHeaderheight + bottomHeaderheight}px`;
                                 sticky.style.top = isDesktop ? `-${topHeaderheight + midHeaderheight}px` : `-${topHeaderheight}px`;
                             }
                         } else if (scrollTopPosition < lastScrollTop) {
                             if (scrollTopPosition > globalPromoheight + topHeaderheight) {
-                                sticky.style.top = `-${topHeaderheight}px`;
+                                sticky.style.top = '0px';
                             } else {
                                 sticky.style.top = '-500px';
                                 innerHeader.appendChild(headerContent);

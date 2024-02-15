@@ -17,7 +17,9 @@ import genereateCmsMenu from '@core_modules/theme/components/header/components/v
 const MenuChildren = dynamic(() => import('@common_header/components/v1/mcategoryChildren'), { ssr: true });
 
 const Menu = (props) => {
-    const { data, cmsMenu = '', className = '' } = props;
+    const {
+        data, cmsMenu = '', className = '', t, useOthers = false,
+    } = props;
     // WIP : Custom Header Menu
     // const cmsPages = storeConfig && storeConfig.cms_page ? storeConfig.cms_page.split(',') : [];
     let menu = data?.categories?.items[0]?.children;
@@ -31,6 +33,26 @@ const Menu = (props) => {
         if (dataMenu && dataMenu.length) {
             menu = [...menu, ...dataMenu];
         }
+    }
+
+    if (menu.length > 7 && useOthers) {
+        const firstMenu = menu.filter((item, key) => key < 8);
+        const otherChildren = menu.filter((item, key) => key >= 8);
+        const othersMenu = {
+            uid: `NavOther-${Math.random(1000)}`,
+            name: t('common:menu:others'),
+            level: 2,
+            path: '#',
+            url_path: '#',
+            url_key: '#',
+            include_in_menu: otherChildren.length,
+            children: otherChildren,
+        };
+
+        menu = [
+            ...firstMenu,
+            othersMenu,
+        ];
     }
 
     const generateLink = (cat) => {
@@ -88,8 +110,6 @@ const Menu = (props) => {
             />
         </svg>
     `;
-
-    // console.log(menu);
 
     return (
         <>

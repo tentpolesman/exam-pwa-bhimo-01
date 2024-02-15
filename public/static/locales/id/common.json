@@ -141,7 +141,8 @@
         "myaccount": "Akun Saya",
         "mywishlist": "Daftar Saya",
         "signout": "keluar",
-        "loading": "Menunggu"
+        "loading": "Menunggu",
+        "others": "Lainnya"
     },
     "header": {
         "welcome": "Selamat Datang!",
