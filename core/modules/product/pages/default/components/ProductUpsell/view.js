@@ -7,7 +7,9 @@ import Typography from '@common_typography';
 const Caraousel = dynamic(() => import('@common_slick/Caraousel'), { ssr: false });
 const ProductItem = dynamic(() => import('@plugin_productitem'), { ssr: false });
 
-const ProductRelatedView = ({ data, t, storeConfig }) => (
+const ProductRelatedView = ({
+    data, t, storeConfig, carouselProps,
+}) => (
     <div className={cx('product-related-container', 'xs:basis-full lg:basis-full', 'mt-[48px]')}>
         <Typography
             variant="h1"
@@ -26,6 +28,7 @@ const ProductRelatedView = ({ data, t, storeConfig }) => (
             Item={ProductItem}
             storeConfig={storeConfig}
             classNameCarousel="desktop:m-0 tablet:m-0 mobile:m-0 desktop:!p-0 tablet:!p-4 !mobile:!p-4"
+            {...carouselProps}
         />
     </div>
 );
