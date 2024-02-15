@@ -25,6 +25,7 @@ const HeaderV2 = (props) => {
         ...other
     } = props;
 
+    // eslint-disable-next-line consistent-return
     React.useEffect(() => {
         if (typeof window !== 'undefined') {
             // handle sticky
@@ -49,8 +50,10 @@ const HeaderV2 = (props) => {
                     const sticky = document.querySelector('#sticky-header');
                     let headerHeight = 0;
                     let globalPromoheight = 0;
+                    // eslint-disable-next-line no-unused-vars
                     let topHeaderheight = 0;
                     let midHeaderheight = 0;
+                    // eslint-disable-next-line no-unused-vars
                     let bottomHeaderheight = 0;
                     let lastScrollTop = window.pageYOffset || document.documentElement.scrollTop;
                     const handleScroll = () => {
@@ -58,22 +61,22 @@ const HeaderV2 = (props) => {
                         headerHeight = header.offsetHeight;
                         globalPromoheight = document.querySelector('#global-promo-message')?.offsetHeight;
                         topHeaderheight = isDesktop
-                            ? document.querySelector('.desktop-header .top-header')?.offsetHeight
-                            : document.querySelector('#top-header-tablet')?.offsetHeight;
+                            ? document.querySelector('.desktop-header .top-header')?.offsetHeight || 0
+                            : document.querySelector('#top-header-tablet')?.offsetHeight || 0;
                         midHeaderheight = isDesktop
                             ? document.querySelector('.desktop-header .middle-header')?.offsetHeight
-                            : document.querySelector('.tablet-header .middle-header-tablet')?.offsetHeight;
-                        bottomHeaderheight = isDesktop ? document.querySelector('.desktop-header .bottom-header')?.offsetHeight : 0;
+                            : document.querySelector('.desktop-header .middle-header')?.offsetHeight;
+                        bottomHeaderheight = isDesktop ? document.querySelector('.desktop-header .bottom-header')?.offsetHeight || 0 : 0;
 
                         if (scrollTopPosition > lastScrollTop) {
                             if (scrollTopPosition > headerHeight) {
-                                sticky.style.top = '0px';
+                                sticky.style.top = `-${headerHeight}px`;
                                 sticky.appendChild(headerContent);
-                                header.style.height = `${globalPromoheight + topHeaderheight + midHeaderheight + bottomHeaderheight}px`;
-                                sticky.style.top = isDesktop ? `-${topHeaderheight + midHeaderheight}px` : `-${topHeaderheight}px`;
+                                header.style.height = `${globalPromoheight + midHeaderheight}px`;
+                                sticky.style.top = `-${midHeaderheight}px`;
                             }
                         } else if (scrollTopPosition < lastScrollTop) {
-                            if (scrollTopPosition > globalPromoheight + topHeaderheight) {
+                            if (scrollTopPosition > globalPromoheight) {
                                 sticky.style.top = '0px';
                             } else {
                                 sticky.style.top = '-500px';
@@ -87,6 +90,7 @@ const HeaderV2 = (props) => {
 
                     if (storeConfig?.pwa?.enabler_sticky_header) {
                         window.addEventListener('scroll', handleScroll);
+                        return () => window.removeEventListener('scroll', handleScroll);
                     }
                 }
             }
