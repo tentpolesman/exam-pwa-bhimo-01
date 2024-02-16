@@ -111,14 +111,14 @@ const Menu = (props) => {
         </svg>
     `;
 
+    const linkEl = useRef([]);
+    const megaMenuRef = useRef([]);
+
     return (
         <>
             <ul className={cx('nav swift-nav-menubar', className)} role="menubar" id="header-nav-menubar">
                 {menu.map((val, idx) => {
                     if (val.include_in_menu && val.name) {
-                        const linkEl = useRef(null);
-                        const megaMenuRef = useRef(null);
-
                         let prefix = '';
 
                         prefix += ` ${val.name} `;
@@ -136,14 +136,14 @@ const Menu = (props) => {
                                 id={`header-menuitem-${idx}`}
                                 onMouseEnter={() => {
                                     if (megaMenuRef && val.dropdown_animation_in) {
-                                        megaMenuRef.current.classList.add('animate__animated');
-                                        megaMenuRef.current.classList.add(`animate__${val.dropdown_animation_in}`);
+                                        megaMenuRef.current[idx].classList.add('animate__animated');
+                                        megaMenuRef.current[idx].classList.add(`animate__${val.dropdown_animation_in}`);
                                     }
                                 }}
                                 onMouseLeave={() => {
                                     if (megaMenuRef && val.dropdown_animation_in) {
-                                        megaMenuRef.current.classList.remove('animate__animated');
-                                        megaMenuRef.current.classList.remove(`animate__${val.dropdown_animation_in}`);
+                                        megaMenuRef.current[idx].classList.remove('animate__animated');
+                                        megaMenuRef.current[idx].classList.remove(`animate__${val.dropdown_animation_in}`);
                                     }
                                 }}
                                 className={cx(
@@ -176,18 +176,21 @@ const Menu = (props) => {
                                         >
                                             <a
                                                 onClick={() => handleClick(val)}
-                                                ref={linkEl}
+                                                // eslint-disable-next-line no-return-assign
+                                                ref={(el) => (linkEl.current[idx] = el)}
                                                 dangerouslySetInnerHTML={{
                                                     __html: prefix !== '' ? `${prefix}` : val.name,
                                                 }}
                                                 onMouseEnter={() => {
                                                     if (val.caret) {
-                                                        linkEl.current.innerHTML = linkEl.current.innerHTML.replace(val.caret, val.hover_caret);
+                                                        // eslint-disable-next-line max-len
+                                                        linkEl.current[idx].innerHTML = linkEl.current[idx].innerHTML.replace(val.caret, val.hover_caret);
                                                     }
                                                 }}
                                                 onMouseLeave={() => {
                                                     if (val.hover_caret) {
-                                                        linkEl.current.innerHTML = linkEl.current.innerHTML.replace(val.hover_caret, val.caret);
+                                                        // eslint-disable-next-line max-len
+                                                        linkEl.current[idx].innerHTML = linkEl.current[idx].innerHTML.replace(val.hover_caret, val.caret);
                                                     }
                                                 }}
                                             />
@@ -225,7 +228,8 @@ const Menu = (props) => {
                                         )}
                                         aria-hidden="true"
                                         role="menu"
-                                        ref={megaMenuRef}
+                                        // eslint-disable-next-line no-return-assign
+                                        ref={(el) => (megaMenuRef.current[idx] = el)}
                                     >
                                         {val.show_header && (
                                             <div className="header-html grid">

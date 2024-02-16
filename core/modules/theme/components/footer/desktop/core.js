@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { setResolver, getResolver } from '@helper_localstorage';
 import { getCmsBlocks } from '@core_modules/theme/services/graphql';
 import React, { useState } from 'react';
+import { footerVersion } from '@config';
 
 const Footer = (props) => {
     const {
@@ -11,7 +12,7 @@ const Footer = (props) => {
     } = props;
     const {
         data, loading, error,
-    } = getCmsBlocks({ identifiers: [storeConfig?.pwa?.footer_version] }, { skip: !storeConfig });
+    } = getCmsBlocks({ identifiers: [footerVersion] }, { skip: !storeConfig });
     const router = useRouter();
     const Config = {
         title: data && data.cmsBlocks ? data.cmsBlocks.title : '',

@@ -4,12 +4,13 @@ import { useRouter } from 'next/router';
 import { setCartId } from '@helper_cartid';
 import { getLoginInfo } from '@helper_auth';
 import { reOrder as mutationReorder, getCmsBlocks } from '@core_modules/customer/services/graphql';
+import { footerVersion } from '@config';
 
 const Customer = dynamic(() => import('@core_modules/customer/pages/account/components/Customer'), { ssr: false });
 
 const CustomerAccount = (props) => {
     const {
-        t, CustomerView, GuestView, storeConfig,
+        t, CustomerView, GuestView,
     } = props;
     const isLogin = getLoginInfo();
     const router = useRouter();
@@ -20,8 +21,8 @@ const CustomerAccount = (props) => {
         tagSelector: isLogin ? 'swift-page-dashboard' : 'swift-page-guest-view',
     };
     const [actionReorder] = mutationReorder();
-    const { data } = getCmsBlocks({ identifiers: [storeConfig?.pwa?.footer_version] }, {
-        skip: typeof window === 'undefined' || !storeConfig?.pwa?.footer_version,
+    const { data } = getCmsBlocks({ identifiers: [footerVersion] }, {
+        skip: typeof window === 'undefined' || !footerVersion,
     });
 
     const reOrder = (order_id) => {

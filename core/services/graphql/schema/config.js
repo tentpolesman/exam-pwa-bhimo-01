@@ -123,8 +123,6 @@ export const storeConfig = `
           facebook_meta_id_app_id
           facebook_meta_id_enable
           font_color
-          footer_version
-          header_version
           heading_font
           home_slider_desktop_height
           home_slider_desktop_width
