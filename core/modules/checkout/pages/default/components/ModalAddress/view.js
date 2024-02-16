@@ -20,7 +20,7 @@ const AddressView = (props) => {
         t, open, setOpen, loading, success,
         address, handleAddress, selectedAddressId, loadingAddress,
         handleChange, handleCloseDiff, handleOpenNew, openNew, typeAddress, dataEdit,
-        updateAddress, manageCustomer,
+        updateAddress, manageCustomer, refetchAddress,
     } = props;
 
     const getItemAddress = () => {
@@ -46,6 +46,8 @@ const AddressView = (props) => {
                         updateAddress,
                         handleCloseDiff,
                         selectedAddressId,
+                        refetchAddress,
+                        handleChange,
                     }}
                     classNames={{
                         radioGroupClasses: 'gap-5',
