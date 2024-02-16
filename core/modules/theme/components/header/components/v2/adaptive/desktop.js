@@ -10,7 +10,7 @@ import Link from 'next/link';
 import React, { useEffect } from 'react';
 import Image from '@common_image';
 import Typography from '@common_typography';
-import config from '@config';
+import config, { headerVersion } from '@config';
 
 import Button from '@common_button';
 
@@ -48,7 +48,7 @@ const DesktopHeader = (props) => {
     } = props;
     const { modules } = config;
     const { isDesktop, isMobile } = useMediaQuery();
-    const isHeaderV2 = storeConfig.pwa.header_version === 'v2';
+    const isHeaderV2 = headerVersion === 'header_v2';
 
     const logoDimensions = {
         width: storeConfig?.logo_width || (isDesktop ? 120 : 74),
