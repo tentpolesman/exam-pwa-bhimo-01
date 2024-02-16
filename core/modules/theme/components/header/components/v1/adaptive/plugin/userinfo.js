@@ -9,7 +9,7 @@ import Show from '@common_show';
 import Skeleton from '@common_skeleton';
 
 const UserInfo = (props) => {
-    const { t, isLogin, customer, open, setOpen, PopoverContent, withLabel = true } = props;
+    const { t, isLogin, customer, open, setOpen, PopoverContent, withLabel = true, withUsername = true } = props;
 
     return (
         <>
@@ -26,7 +26,7 @@ const UserInfo = (props) => {
                             <div>
                                 <UserIcon className={cx('w-[24px]', 'text-neutral-600', 'inline-block', 'ml-1')} />
                             </div>
-                            <Show when={customer?.firstname}>
+                            <Show when={customer?.firstname && withUsername}>
                                 <Typography variant="bd-2b" className={cx('inline-block', 'pl-2', '!text-primary-700')}>
                                     {customer?.firstname?.length <= 15 ? `${customer?.firstname}` : `${customer?.firstname?.substring(0, 15)}...`}
                                 </Typography>

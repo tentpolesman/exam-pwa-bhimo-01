@@ -48,6 +48,7 @@ const DesktopHeader = (props) => {
     } = props;
     const { modules } = config;
     const { isDesktop, isMobile } = useMediaQuery();
+    const isHeaderV2 = storeConfig.pwa.header_version === 'v2';
 
     const logoDimensions = {
         width: storeConfig?.logo_width || (isDesktop ? 120 : 74),
@@ -97,6 +98,11 @@ const DesktopHeader = (props) => {
     const PopoverContent = () => {
         return (
             <ul className={cx('my-account-list__wrapper')}>
+                <li key={0} className={cx('my-account-list__item', 'py-2', 'px-2', 'text-left')}>
+                    <Typography className={cx('currency-list__text', 'text-neutral-700')}>
+                        {customer?.firstname?.length <= 10 ? `Hi, ${customer?.firstname}` : `${customer?.firstname?.substring(0, 10)}...`}
+                    </Typography>
+                </li>
                 <li key={0} className={cx('my-account-list__item', 'py-2', 'px-2', 'text-left', 'hover:cursor-pointer', 'hover:bg-neutral-100')}>
                     <Link href="/customer/account">
                         <Typography className={cx('currency-list__text', 'text-neutral-700')}>My Account</Typography>
@@ -282,6 +288,7 @@ const DesktopHeader = (props) => {
                             >
                                 <UserInfo
                                     withLabel={false}
+                                    withUsername={!isHeaderV2}
                                     t={t}
                                     isLogin={isLogin}
                                     customer={customer}
