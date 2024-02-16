@@ -101,10 +101,13 @@ const HeaderV2 = (props) => {
         <>
             <div
                 id="sticky-header"
-                className={cx('top-[-500px]', 'bg-neutral-white', 'transition-all', 'duration-500', 'ease-in-out', 'z-[999]', 'w-[100%]', {
+                className={cx(
+                    'top-[-500px]', 'bg-neutral-white',
+                    'transition-all', 'duration-500', 'ease-in-out', 'z-[999]', 'w-[100%]', {
                     '!fixed': storeConfig && storeConfig.pwa && storeConfig.pwa.enabler_sticky_header && deviceWidth >= 768,
                     '!relative': storeConfig && !storeConfig.pwa && !storeConfig.pwa.enabler_sticky_header,
-                })}
+                },
+)}
             />
             <div id="header-inner" className={cx('top-0', 'bg-neutral-white')}>
                 <div className={cx('header-wrapper-main')}>

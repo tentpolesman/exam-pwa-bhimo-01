@@ -99,8 +99,10 @@ const DesktopHeader = (props) => {
         return (
             <ul className={cx('my-account-list__wrapper')}>
                 <li key={0} className={cx('my-account-list__item', 'py-2', 'px-2', 'text-left')}>
-                    <Typography className={cx('currency-list__text', 'text-neutral-700')}>
-                        {customer?.firstname?.length <= 10 ? `Hi, ${customer?.firstname}` : `${customer?.firstname?.substring(0, 10)}...`}
+                    <Typography className={cx('currency-list__text', '!text-primary-700')}>
+                        Hi,
+                        {' '}
+                        {customer?.firstname}
                     </Typography>
                 </li>
                 <li key={0} className={cx('my-account-list__item', 'py-2', 'px-2', 'text-left', 'hover:cursor-pointer', 'hover:bg-neutral-100')}>
