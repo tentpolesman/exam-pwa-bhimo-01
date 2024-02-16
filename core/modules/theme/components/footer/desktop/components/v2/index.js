@@ -18,12 +18,12 @@ const FooterV2 = (props) => {
         <>
             <div className="bg-neutral-100 flex flex-col justify-center items-center">
                 {!loading ? <CmsRenderer content={data.cmsBlocks.items[0].content} storeConfig={storeConfig} /> : null}
-                <div className="flex flex-col items-center justify-center tablet:flex-row gap-6 mb-8 desktop:mt-6 mobile:mt-4">
+                <div className="flex flex-col items-center justify-center tablet:flex-row gap-y-6 mb-8 desktop:mt-6 mobile:mt-4">
                     <DesktopInstall
                         t={t}
                         CustomButton={(
                             <Button
-                                className={cx('group', 'swift-button-install', 'border-neutral-300', 'hover:border-primary-700')}
+                                className={cx('group', 'tablet:mr-6', 'swift-button-install', 'border-neutral-300', 'hover:border-primary-700')}
                                 variant="outlined"
                                 iconProps={{ className: cx('w-[20px]', 'text-neutral-600', 'inline-block', 'group-hover:!text-primary-700') }}
                             >

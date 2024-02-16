@@ -16,7 +16,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useRef, useState } from 'react';
 import TagManager from 'react-gtm-module';
 // eslint-disable-next-line object-curly-newline
-import { basePath, custDataNameCookie, debuging, features, modules } from '@config';
+import { basePath, custDataNameCookie, debuging, features, modules, headerVersion, footerVersion } from '@config';
 import { createCompareList } from '@core_modules/product/services/graphql';
 import Copyright from '@core_modules/theme/components/footer/desktop/components/copyright';
 import { getCountCart } from '@core_modules/theme/services/graphql';
@@ -478,7 +478,7 @@ const Layout = (props) => {
             <div className={pageNameSelector}>
                 <PageProgressLoader />
                 {allowHeaderCheckout && (
-                    <header ref={refHeader} className={cx(font.variable, 'font-sans', '!font-pwa-default')}>
+                    <header ref={refHeader} className={cx(`header-${headerVersion}`, font.variable, 'font-sans', '!font-pwa-default')}>
                         <GlobalPromoMessage
                             t={t}
                             storeConfig={storeConfig}
@@ -550,7 +550,7 @@ const Layout = (props) => {
                 {/* END CHAT FEATURES */}
 
                 {withLayoutFooter && (
-                    <footer className={cx('!block', 'mt-[50px]', font.variable, 'font-sans', '!font-pwa-default')} ref={refFooter}>
+                    <footer className={cx(`${footerVersion}`, '!block', 'mt-[50px]', font.variable, 'font-sans', '!font-pwa-default')} ref={refFooter}>
                         {footer ? <Footer storeConfig={storeConfig} t={t} /> : null}
                         <Copyright storeConfig={storeConfig} t={t} />
                     </footer>
