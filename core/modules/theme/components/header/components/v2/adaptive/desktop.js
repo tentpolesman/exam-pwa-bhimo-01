@@ -48,7 +48,7 @@ const DesktopHeader = (props) => {
     } = props;
     const { modules } = config;
     const { isDesktop, isMobile } = useMediaQuery();
-    const isHeaderV2 = headerVersion === 'header_v2';
+    const isHeaderV2 = headerVersion === 'v2';
 
     const logoDimensions = {
         width: storeConfig?.logo_width || (isDesktop ? 120 : 74),
