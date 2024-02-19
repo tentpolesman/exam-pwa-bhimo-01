@@ -10,7 +10,6 @@ import Content from '@plugin_productlist/components';
 import { getLocalStorage, setLocalStorage } from '@core/helpers/localstorage';
 import generateConfig from '@core_modules/catalog/helpers/generateConfig';
 import getCategoryFromAgregations from '@core_modules/catalog/helpers/getCategory';
-import getPrice from '@core_modules/catalog/helpers/getPrice';
 import { getTagManager, getTagManagerGA4 } from '@core_modules/catalog/helpers/catalogTagManager';
 import TagManager from 'react-gtm-module';
 import Alert from '@common/Alert';
@@ -23,6 +22,7 @@ const ProductList = (props) => {
     const router = useRouter();
     const { path, query } = getQueryFromPath(router);
     const isLogin = getLoginInfo();
+
     /**
      * config from BO
      * pagination or loadmore
@@ -206,7 +206,9 @@ const ProductList = (props) => {
                 pageSize,
                 currentPage: page,
             },
-            context,
+            context: {
+                request: 'internal',
+            },
         },
         router,
     );
@@ -424,7 +426,6 @@ const ProductList = (props) => {
         <Content
             {...contentProps}
             {...other}
-            price={getPrice(cachePrice, generateIdentifier, dataPrice)}
             loadPrice={loadPrice}
             errorPrice={errorPrice}
         />
