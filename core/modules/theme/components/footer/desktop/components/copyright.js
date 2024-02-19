@@ -4,15 +4,13 @@ import { useTranslation } from 'next-i18next';
 
 import cx from 'classnames';
 import Link from 'next/link';
-
-const v1 = 'pwa_footer_v1';
-const v2 = 'pwa_footer_v2';
+import { footerVersion } from '@config';
 
 const Copyright = (props) => {
     const { loading, error, storeConfig } = props;
     const { t } = useTranslation(['common']);
 
-    const version = storeConfig?.pwa?.footer_version || v1;
+    const version = footerVersion;
 
     if (error) {
         return <Badge danger>{t('common:error:fetchError')}</Badge>;
@@ -38,7 +36,7 @@ const Copyright = (props) => {
                 {storeConfig.copyright}
             </span>
             {
-                version === v2 ? (
+                version === 'pwa_footer_v2' ? (
                     <div className="flex flex-row gap-4">
                         <Link href="/privacy-policy-cookie-restriction-mode">
                             <span className={cx('text-base', 'font-normal', 'leading-5', 'text-neutral-400', 'cursor-pointer')}>

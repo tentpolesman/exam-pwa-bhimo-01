@@ -18,12 +18,12 @@ const FooterV2 = (props) => {
         <>
             <div className="bg-neutral-100 flex flex-col justify-center items-center">
                 {!loading ? <CmsRenderer content={data.cmsBlocks.items[0].content} storeConfig={storeConfig} /> : null}
-                <div className="flex flex-col items-center justify-center tablet:flex-row gap-6 mb-8 mt-6">
+                <div className="flex flex-col items-center justify-center tablet:flex-row gap-y-6 mb-8 desktop:mt-6 mobile:mt-4">
                     <DesktopInstall
                         t={t}
                         CustomButton={(
                             <Button
-                                className={cx('group', 'swift-button-install', '!bg-opacity-0', 'hover:border-primary-700')}
+                                className={cx('group', 'tablet:mr-6', 'swift-button-install', 'border-neutral-300', 'hover:border-primary-700')}
                                 variant="outlined"
                                 iconProps={{ className: cx('w-[20px]', 'text-neutral-600', 'inline-block', 'group-hover:!text-primary-700') }}
                             >
@@ -36,7 +36,7 @@ const FooterV2 = (props) => {
                             {...props}
                             CustomButton={(
                                 <Button
-                                    className={cx('group', 'swift-currency-switcher', '!bg-opacity-0', 'hover:border-primary-700')}
+                                    className={cx('group', 'swift-currency-switcher', 'border-neutral-300', 'hover:border-primary-700')}
                                     variant="outlined"
                                 />
                             )}
@@ -48,7 +48,7 @@ const FooterV2 = (props) => {
                                     className={cx(
                                         'group',
                                         'swift-language-switcher',
-                                        '!bg-opacity-0',
+                                        'border-neutral-300',
                                         'hover:border-primary-700',
                                         'focus:border-primary-700',
                                     )}
@@ -70,6 +70,7 @@ const FooterV2 = (props) => {
                             margin-left: 12px;
                             margin-right: 12px;
                             text-decoration: none;
+                            color: ${COLORS.neutral[600]};
                             &:hover {
                                 color: ${COLORS.primary.DEFAULT};
                             }
@@ -92,8 +93,8 @@ const FooterV2 = (props) => {
                             padding: 6px 0px;
                         }
 
-                        .footer-links.payment-list .prose span {
-                            margin: 0px 8px;
+                        .footer-links.payment-list .prose>div {
+                            gap: 1rem;
                         }
 
                         .footer-links.payment-list .prose img {
@@ -108,17 +109,27 @@ const FooterV2 = (props) => {
                             padding: 16px;
                         }
 
-                        .footer-links.social-media i {
+                        .footer-links.social-media .magezon-icon i {
                             font-size: 32px;
                         }
 
-                        .footer-links.social-media .magezon-icon-inner {
+                        .footer-links.social-media .magezon-icon .magezon-icon-inner {
                             height: auto;
+                            width: 3em;
+                        }
+
+                        .footer-links.social-media .mgz-element-inner {
+                            padding: 5px 3px;
                         }
 
                         @media screen and (max-width: 400px) {
                             .footer-links .mgz-text .prose > div {
                                 flex-direction: column;
+                            }
+                        }
+                        @media screen and (max-width: 900px) {
+                            .footer-links.w-full.flex .prose>div {
+                                max-width: 576px;
                             }
                         }
 

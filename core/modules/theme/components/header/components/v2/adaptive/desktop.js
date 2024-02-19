@@ -10,7 +10,7 @@ import Link from 'next/link';
 import React, { useEffect } from 'react';
 import Image from '@common_image';
 import Typography from '@common_typography';
-import config from '@config';
+import config, { headerVersion } from '@config';
 
 import Button from '@common_button';
 
@@ -48,7 +48,7 @@ const DesktopHeader = (props) => {
     } = props;
     const { modules } = config;
     const { isDesktop, isMobile } = useMediaQuery();
-    const isHeaderV2 = storeConfig.pwa.header_version === 'v2';
+    const isHeaderV2 = headerVersion === 'v2';
 
     const logoDimensions = {
         width: storeConfig?.logo_width || (isDesktop ? 120 : 74),
@@ -99,8 +99,10 @@ const DesktopHeader = (props) => {
         return (
             <ul className={cx('my-account-list__wrapper')}>
                 <li key={0} className={cx('my-account-list__item', 'py-2', 'px-2', 'text-left')}>
-                    <Typography className={cx('currency-list__text', 'text-neutral-700')}>
-                        {customer?.firstname?.length <= 10 ? `Hi, ${customer?.firstname}` : `${customer?.firstname?.substring(0, 10)}...`}
+                    <Typography className={cx('currency-list__text', '!text-primary-700')}>
+                        Hi,
+                        {' '}
+                        {customer?.firstname}
                     </Typography>
                 </li>
                 <li key={0} className={cx('my-account-list__item', 'py-2', 'px-2', 'text-left', 'hover:cursor-pointer', 'hover:bg-neutral-100')}>
