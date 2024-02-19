@@ -9,9 +9,9 @@ import {
 } from '@core_modules/product/services/graphql';
 
 const GroupedProductOption = ({
-    View, data, setOpen, t, ...other
+    View, data, setOpen, stockStatus, t, ...other
 }) => {
-    const { sku, __typename, stock_status } = data;
+    const { sku, __typename } = data;
 
     const { storeConfig = {} } = other;
 
@@ -138,7 +138,7 @@ const GroupedProductOption = ({
             loading={loading}
             loadData={loadData}
             optionsData={optionsData}
-            disabled={loading || loadData || stock_status === 'OUT_OF_STOCK'}
+            disabled={loading || loadData || stockStatus === 'OUT_OF_STOCK'}
             itemsCart={itemsCart}
             setItemsCart={setItemsCart}
         />

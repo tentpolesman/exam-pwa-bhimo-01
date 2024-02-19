@@ -21,6 +21,7 @@ const CoreGiftCardOptionItem = ({
     checkCustomizableOptionsValue,
     errorCustomizableOptions,
     customizableOptions,
+    stockStatus,
     ...other
 }) => {
     const [qty, setQty] = React.useState(1);
@@ -28,7 +29,7 @@ const CoreGiftCardOptionItem = ({
     // prettier-ignore
     const {
         __typename, sku, name, categories,
-        price_range, stock_status, url_key,
+        price_range, url_key,
         aw_gc_allow_delivery_date, aw_gc_allow_open_amount, aw_gc_custom_message_fields,
         aw_gc_amounts, aw_gc_open_amount_max, aw_gc_open_amount_min, aw_gc_email_templates,
         aw_gc_type, review, sale,
@@ -210,7 +211,7 @@ const CoreGiftCardOptionItem = ({
                                             category: categories?.length > 0 ? categories[0].name : '',
                                             list: categories?.length > 0 ? categories[0].name : '',
                                             quantity: qty,
-                                            dimensions4: stock_status,
+                                            dimensions4: stockStatus,
                                         },
                                     ],
                                 },
@@ -232,7 +233,7 @@ const CoreGiftCardOptionItem = ({
                                             item_list_name: categories?.length > 0 ? categories[0].name : '',
                                             quantity: qty,
                                             currency: price_range.minimum_price.regular_price.currency || 'USD',
-                                            item_stock_status: stock_status,
+                                            item_stock_status: stockStatus,
                                             item_reviews_score: reviewValue,
                                             item_reviews_count: review?.reviews_count,
                                             item_sale_product: sale === 0 ? 'NO' : 'YES',
@@ -302,9 +303,10 @@ const CoreGiftCardOptionItem = ({
             handleAddToCart={handleAddToCart}
             t={t}
             loading={loading}
-            disabled={stock_status === 'OUT_OF_STOCK'}
+            disabled={stockStatus === 'OUT_OF_STOCK'}
             data={data}
             formik={formik}
+            stockStatus={stockStatus}
             {...other}
         />
     );

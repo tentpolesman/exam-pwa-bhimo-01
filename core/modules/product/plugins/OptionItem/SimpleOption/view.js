@@ -39,6 +39,7 @@ const SimpleOptionView = ({
                         setQty={setQty}
                         t={t}
                         showAddToCart={showAddToCart}
+                        disabled={disabled}
                         {...other}
                     />
                 )

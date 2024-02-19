@@ -383,6 +383,7 @@ query getProducts(
         id
         name
         sku
+        stock_status
         ${priceRange}
         ${priceTiers}
         ${

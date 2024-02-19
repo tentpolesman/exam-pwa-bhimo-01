@@ -80,12 +80,13 @@ const OptionsItemsBundle = (props) => {
     const {
         t,
         data: {
-            __typename, sku, name, categories, price_range, stock_status, review, sale,
+            __typename, sku, name, categories, price_range, review, sale,
         },
         View,
         loading: customLoading,
         setLoading: setCustomLoading,
         customButton,
+        stockStatus,
         ...other
     } = props;
 
@@ -170,7 +171,7 @@ const OptionsItemsBundle = (props) => {
                                     category: categories?.length > 0 ? categories[0].name : '',
                                     list: categories?.length > 0 ? categories[0].name : '',
                                     quantity: qty,
-                                    dimensions4: stock_status,
+                                    dimensions4: stockStatus,
                                 },
                             ],
                         },
@@ -192,7 +193,7 @@ const OptionsItemsBundle = (props) => {
                                     item_list_name: categories?.length > 0 ? categories[0].name : '',
                                     quantity: qty,
                                     currency: price_range.minimum_price.regular_price.currency || 'USD',
-                                    item_stock_status: stock_status,
+                                    item_stock_status: stockStatus,
                                     item_reviews_score: reviewValue,
                                     item_reviews_count: review?.reviews_count,
                                     item_sale_product: sale === 0 ? 'NO' : 'YES',
@@ -269,8 +270,8 @@ const OptionsItemsBundle = (props) => {
             handleAddToCart={handleAddToCart}
             loading={loading || loadingAdd}
             t={t}
-            disabled={stock_status === 'OUT_OF_STOCK'}
-            stockStatus={stock_status}
+            disabled={stockStatus === 'OUT_OF_STOCK'}
+            stockStatus={stockStatus}
             customButton={customButton}
             currencyCache={currencyCache}
             {...other}

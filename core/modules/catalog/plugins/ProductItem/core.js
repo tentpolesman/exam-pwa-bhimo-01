@@ -638,6 +638,7 @@ const ProductItem = (props) => {
                                         url_key,
                                         review,
                                     }}
+                                    stockStatus={stock_status}
                                     dataPrice={getPrice()}
                                     showQty={false}
                                     catalogList={catalogList}
@@ -785,6 +786,7 @@ const ProductItem = (props) => {
                                         url_key,
                                         review,
                                     }}
+                                    stockStatus={stock_status}
                                     dataPrice={getPrice()}
                                     showQty={false}
                                     catalogList={catalogList}
