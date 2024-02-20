@@ -80,7 +80,10 @@ const ModalAddressCustomer = (props) => {
                 addresses: true,
                 order: true,
             }));
-            setOpen(false);
+            // refetch address
+            if (refetch && typeof refetch === 'function') {
+                refetch();
+            }
             const addressId = parseInt(event.target.value);
             setSelectedAddressId(addressId);
             let detail = {};
