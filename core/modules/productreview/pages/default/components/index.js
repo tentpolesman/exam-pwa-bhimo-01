@@ -217,7 +217,7 @@ const ProductReviewPage = (props) => {
 
                 {/** Mobile Tablet */}
                 <Show when={!isDesktop}>
-                    <div className={cx('mobile-tablet-view')}>
+                    <div className={cx('swift-mobile-tablet-view')}>
                         <Show when={loading}>
                             <SkeletonMobile />
                         </Show>
@@ -236,7 +236,7 @@ const ProductReviewPage = (props) => {
                                             <div
                                                 key={`mobile-item-${index}`}
                                                 className={cx(
-                                                    'mobile-item',
+                                                    'swift-mobile-item',
                                                     'flex',
                                                     'flex-col',
                                                     'border-[1px] border-neutral-200',

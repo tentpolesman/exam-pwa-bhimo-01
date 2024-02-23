@@ -1,8 +1,6 @@
 import Layout from '@layout';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-import Alert from '@common/Alert';
-import Typography from '@common/Typography';
 
 const Seller = (props) => {
     const { t, pageConfig } = props;
@@ -11,19 +9,26 @@ const Seller = (props) => {
     const [seconds, setSeconds] = useState(7);
 
     useEffect(() => {
+        const backdropTimeout = setTimeout(() => {
+            window.backdropLoader(true);
+        }, 100);
         const countdownInterval = setInterval(() => {
             // Decrease the seconds every second
             setSeconds((prevSeconds) => prevSeconds - 1);
         }, 1000);
 
-        // Clear the interval when the component is unmounted
-        return () => clearInterval(countdownInterval);
+        // Clear interval and timeout when the component is unmounted
+        return () => {
+            clearInterval(countdownInterval);
+            clearTimeout(backdropTimeout);
+        };
     }, []);
 
     useEffect(() => {
         // Check if the countdown has reached 0
         if (seconds === 0) {
             // Perform any action when the countdown reaches 0
+            window.backdropLoader(false);
             router.replace('/checkout/cart');
         }
     }, [seconds]);
@@ -38,14 +43,12 @@ const Seller = (props) => {
     };
 
     return (
-        <Layout pageConfig={pageConfig || config} {...props}>
-            <div className="flex flex-col gap-5">
-                <Alert severity="error">{t('scv2:error:message')}</Alert>
-                <Typography className="italic text-center !text-neutral-300">
-                    {t('scv2:error:waitingRedirect', { s: seconds })}
-                </Typography>
-            </div>
-        </Layout>
+        <Layout
+            pageConfig={pageConfig || config}
+            withLayoutHeader={false}
+            withLayoutFooter={false}
+            {...props}
+        />
     );
 };
 

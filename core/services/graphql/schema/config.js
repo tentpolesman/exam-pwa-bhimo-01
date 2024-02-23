@@ -123,8 +123,6 @@ export const storeConfig = `
           facebook_meta_id_app_id
           facebook_meta_id_enable
           font_color
-          footer_version
-          header_version
           heading_font
           home_slider_desktop_height
           home_slider_desktop_width
@@ -148,7 +146,7 @@ export const storeConfig = `
           magezon_slider_desktop_width
           magezon_slider_mobile_height
           magezon_slider_mobile_width
-          mobile_navigation
+          megamenu_cms_block
           page_size
           paypal_debug
           paypal_enable

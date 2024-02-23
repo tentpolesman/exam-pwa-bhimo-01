@@ -13,6 +13,7 @@ const Caraousel = (props) => {
         storeConfig = {},
         className = '',
         classNameCarousel = '',
+        classNameItem = '',
         children,
         ...other
     } = props;
@@ -22,7 +23,15 @@ const Caraousel = (props) => {
             <ContainerScroll showArrow={showArrow} className={classNameCarousel}>
                 {data?.length > 0 && data.map((item, key) => (
                     <Item
-                        className="carousel-item [&:not(:last-child)]:mr-4 !min-w-[160px] tablet:!min-w-[230px] desktop:!min-w-[288px] !h-[initial]"
+                        className={cx(
+                            'carousel-item',
+                            '[&:not(:last-child)]:mr-4',
+                            '!min-w-[160px]',
+                            'tablet:!min-w-[230px]',
+                            'desktop:!min-w-[288px]',
+                            '!h-[initial]',
+                            classNameItem,
+                        )}
                         key={key}
                         {...item}
                         storeConfig={storeConfig}

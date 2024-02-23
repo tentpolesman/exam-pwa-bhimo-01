@@ -236,10 +236,9 @@ const View = (props) => {
                         icon={<IconArrow className="w-4 h-4" />}
                         iconPosition="right"
                         variant="plain"
+                        classNameText="!text-primary uppercase"
                     >
-                        <Typography varaint="bd-2" className="uppercase">
-                            {t('thanks:continue')}
-                        </Typography>
+                        {t('thanks:continue')}
                     </Button>
                 )}
             </div>
@@ -267,31 +266,6 @@ const View = (props) => {
                     </Button>
                 </div>
             ) : null}
-            <div className={cx('p-4 tablet:p-5', 'hidden-desktop')}>
-                {ordersFilter && ordersFilter.data[0].detail[0].payment.method === 'banktransfer' ? (
-                    <>
-                        <Button onClick={handleConfirmPayment}>
-                            <Typography variant="p" letter="uppercase" color="white" type="bold" align="center">
-                                {t('thanks:paymentConfirmation')}
-                            </Typography>
-                        </Button>
-                        <Button
-                            onClick={handleCotinue}
-                            variant="tertiary"
-                            iconPosition="right"
-                            icon={<IconArrow className="w-4 h-4" />}
-                        >
-                            {t('thanks:continue')}
-                        </Button>
-                    </>
-                ) : (
-                    <Button onClick={handleCotinue} iconPosition="right" icon={<IconArrow className="w-4 h-4" />}>
-                        <Typography size="10" type="bold" color="white" letter="uppercase">
-                            {t('thanks:continue')}
-                        </Typography>
-                    </Button>
-                )}
-            </div>
         </div>
     );
 };

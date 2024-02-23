@@ -205,7 +205,7 @@ const StoreCreditPage = (props) => {
 
                 {/** Mobile Tablet */}
                 <Show when={!isDesktop}>
-                    <div className={cx('mobile-tablet-view')}>
+                    <div className={cx('swift-mobile-tablet-view')}>
                         <StoreCreditBalanceComponent />
 
                         <div className={cx('divider', 'border-b-[1.5px] border-neutral-200', 'mt-[16px]', 'mobile:!mb-[20px] tablet:mb-[24px]')} />
@@ -228,7 +228,7 @@ const StoreCreditPage = (props) => {
                                             <div
                                                 key={`mobile-item-${index}`}
                                                 className={cx(
-                                                    'mobile-item',
+                                                    'swift-mobile-item',
                                                     'flex',
                                                     'flex-col',
                                                     'border-[1px] border-neutral-200',

@@ -4,8 +4,8 @@ import { updateCustomerAddress } from '@core_modules/checkout/services/graphql';
 
 const ItemAddressCore = (props) => {
     const {
-        manageCustomer, handleChange, handleCloseDiff, selectedAddressId,
-        country, id,
+        manageCustomer, handleChange, selectedAddressId,
+        country, id, refetchAddress,
     } = props;
     const [updateAddress] = updateCustomerAddress();
     const [open, setOpen] = React.useState(false);
@@ -19,7 +19,8 @@ const ItemAddressCore = (props) => {
             },
         })
             .then(async () => {
-                if (data.defaultShippingBilling || data.addressId === selectedAddressId) {
+                const defaultShippingBilling = data.default_shipping || data.default_billing;
+                if (defaultShippingBilling || data.addressId === selectedAddressId) {
                     await handleChange(
                         {
                             target: {
@@ -30,7 +31,9 @@ const ItemAddressCore = (props) => {
                         data.addressId === selectedAddressId,
                     );
                 } else if (data.addressId !== selectedAddressId) {
-                    await handleCloseDiff();
+                    if (refetchAddress && typeof refetchAddress === 'function') {
+                        refetchAddress();
+                    }
                 }
                 setSuccess(true);
                 setLoading(false);

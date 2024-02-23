@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable object-curly-newline */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable no-plusplus */
@@ -33,6 +34,7 @@ const generateItemData = (product, category, seller, enableMultiseller) => {
             price_tiers: element.price_tiers,
             price_range: element.price_range,
             type: 'product',
+            product_type: element.__typename,
         };
         result.push(prod);
     }
@@ -188,6 +190,7 @@ export default function AutocompleteSearch(props) {
                                         priceRange={propsPopoverItem.price_range}
                                         priceTiers={propsPopoverItem.price_tier}
                                         textClassName={cx('!text-sm', '!leading-4', '!font-normal', '!text-neutral-500')}
+                                        productType={propsPopoverItem.product_type}
                                     />
                                 </div>
                             </div>

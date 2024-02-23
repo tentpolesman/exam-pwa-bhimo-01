@@ -98,13 +98,14 @@ const RadioDeliveryItem = (props) => {
     const itemId = id || `${label}_${value}_${Math.random(Date.now())}`.replace(/ /g, '_');
 
     return (
-        <div className="swift-checkoutRadioItem flex flex-row">
+        <div className="swift-checkoutRadioItem items-center flex flex-row">
             <Radio
                 color="default"
                 size="sm"
                 variant="single"
                 checked={selected}
                 onClick={handleChange}
+                className="flex-[0_0_auto] flex items-center justify-center"
                 classNames={{
                     radioClasses: classNames(
                         'cursor-pointer',

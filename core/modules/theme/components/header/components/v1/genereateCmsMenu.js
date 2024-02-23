@@ -1,9 +1,6 @@
 import parse from 'html-react-parser';
-import dynamic from 'next/dynamic';
 
-const Menu = dynamic(() => import('@core_modules/theme/components/header/components/v1/mcategory'), { ssr: true });
-
-export const generateChildren = (dataChild = [], latestLevel = 1) => {
+const generateChildren = (dataChild = [], latestLevel = 1) => {
     const newChild = [];
     function removeFirstSlash(inputString) {
         if (inputString.charAt(0) === '/' && inputString.length > 1) {
@@ -63,26 +60,21 @@ export const generateChildren = (dataChild = [], latestLevel = 1) => {
     return newChild;
 };
 
-const CmsMenuList = (props) => {
-    const { rawData = '', storeConfig = {} } = props;
-    // const [dataMenu, setDataMenu] = useState([]);
+const genereateCmsMenu = (cmsMenu) => {
     let dataMenu = [];
-
-    if (rawData) {
-        const parseMenu = parse(rawData.replace(/\n /g, '').replace(/\n/g, ''));
-        if (parseMenu.length > 0) {
-            parseMenu.forEach((ulFirst) => {
-                if (ulFirst.type && ulFirst.type === 'ul') {
-                    if (ulFirst?.props?.children && ulFirst?.props?.children.length) {
-                        const ulChildren = ulFirst.props.children;
-                        dataMenu = generateChildren(ulChildren, 1);
-                    }
+    const parseMenu = parse(cmsMenu.replace(/\n /g, '').replace(/\n/g, ''));
+    if (parseMenu.length > 0) {
+        parseMenu.forEach((ulFirst) => {
+            if (ulFirst.type && ulFirst.type === 'ul') {
+                if (ulFirst?.props?.children && ulFirst?.props?.children.length) {
+                    const ulChildren = ulFirst.props.children;
+                    dataMenu = generateChildren(ulChildren, 1);
                 }
-            });
-        }
+            }
+        });
     }
 
-    return <>{dataMenu && dataMenu.length > 0 ? <Menu customMenu={dataMenu} storeConfig={storeConfig} /> : null}</>;
+    return dataMenu;
 };
 
-export default CmsMenuList;
+export default genereateCmsMenu;

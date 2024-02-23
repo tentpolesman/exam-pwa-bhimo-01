@@ -12,7 +12,7 @@ const Toast = ({
     setOpen, // handle close
     message = 'Title',
     variant = 'success',
-    position = 'bottom', // top or bottom
+    position = 'bottom-right', // top or bottom
     positionNumber = 0,
     className,
     classNameIcon,
@@ -60,13 +60,16 @@ const Toast = ({
         );
     }
 
+    const scrollTopEl = document?.getElementById('swift-action-scrolltotop');
+    const scrollTopHeight = scrollTopEl?.parentNode?.parentNode?.offsetHeight || 0;
+
     return (
         <div
             role="alert"
             style={{
                 ...(!open ? { zIndex: -9999 } : null),
                 ...(position === 'bottom' ? (isXl ? { bottom: positionNumber, marginLeft: 'auto', marginRight: 'auto' } : { bottom: positionNumber }) : null),
-                ...(position === 'bottom-right' ? (isXl ? { bottom: positionNumber, marginLeft: 'auto' } : { bottom: positionNumber }) : null),
+                ...(position === 'bottom-right' ? (isXl ? { bottom: positionNumber + scrollTopHeight, marginLeft: 'auto' } : { bottom: positionNumber }) : null),
                 ...(position === 'bottom-left' ? (isXl ? { bottom: positionNumber, marginRight: 'auto' } : { bottom: positionNumber }) : null),
                 ...(position === 'top' ? (isXl ? { top: positionNumber, marginLeft: 'auto', marginRight: 'auto' } : { top: positionNumber }) : null),
                 ...(position === 'top-right' ? (isXl ? { top: positionNumber, marginLeft: 'auto' } : { top: positionNumber }) : null),
@@ -86,7 +89,7 @@ const Toast = ({
                     'align-middle',
                     'rounded-[4px]',
                     'lg:m-4 sm:m-4 xs:m-4',
-                    'lg:max-w-md',
+                    'lg:max-w-[18.75rem]',
                     'items-center',
                     open && 'z-toast opacity-100',
                     !open && 'opacity-0',
@@ -100,6 +103,7 @@ const Toast = ({
             </div>
             {
                 close && (
+                    // eslint-disable-next-line jsx-a11y/control-has-associated-label
                     <button type="button" className="section-toast-action flex items-center" onClick={setOpen}>
                         <XMarkIcon className={classNameIcon} />
                     </button>

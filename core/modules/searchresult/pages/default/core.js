@@ -30,7 +30,7 @@ const SearchResult = (props) => {
         },
     ];
     const pageConfig = {
-        title: `Search Result : ${query.q}`,
+        title: `${query.q}`,
         header: 'relative', // available values: "absolute", "relative", false (default)
         headerTitle: `Search Result : ${query.q}`,
         bottomNav: 'browse',

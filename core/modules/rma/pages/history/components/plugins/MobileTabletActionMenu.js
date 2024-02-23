@@ -14,7 +14,7 @@ const MobileTabletActionMenu = (props) => {
             <li className={cx('px-4', 'py-2')}>
                 <button
                     type="button"
-                    className={cx('w-[100px]')}
+                    className={cx('swift-mobile-action-viewdetail', 'w-[100px]')}
                     onClick={() => {
                         openDetail();
                     }}
@@ -41,7 +41,7 @@ const MobileTabletActionMenu = (props) => {
             >
                 <Button
                     onClick={() => setOpen(!open)}
-                    className={cx('!p-0')}
+                    className={cx('swift-mobile-action', '!p-0')}
                     variant="plain"
                     iconOnly
                     icon={<EllipsisVerticalIcon className="h-[20px] w-[24px]" />}

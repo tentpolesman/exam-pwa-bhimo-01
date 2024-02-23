@@ -4,11 +4,10 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import cx from 'classnames';
-import parse from 'html-react-parser';
 import Link from 'next/link';
 
 import Typography from '@common_typography';
-import { generateChildren } from '@core_modules/theme/components/header/components/v1/CmsMenuList';
+import genereateCmsMenu from '@core_modules/theme/components/header/components/v1/genereateCmsMenu';
 
 const BurgerMenuCategories = (props) => {
     const { data = [], cmsMenu } = props;
@@ -41,17 +40,7 @@ const BurgerMenuCategories = (props) => {
     let cmsMenuList = [];
 
     if (cmsMenu) {
-        const parseMenu = parse(cmsMenu.replace(/\n /g, '').replace(/\n/g, ''));
-        if (parseMenu.length > 0) {
-            parseMenu.forEach((ulFirst) => {
-                if (ulFirst.type && ulFirst.type === 'ul') {
-                    if (ulFirst?.props?.children && ulFirst?.props?.children.length) {
-                        const ulChildren = ulFirst.props.children;
-                        cmsMenuList = generateChildren(ulChildren, 1);
-                    }
-                }
-            });
-        }
+        cmsMenuList = genereateCmsMenu(cmsMenu);
     }
 
     const mergeData = [...data, ...cmsMenuList];
