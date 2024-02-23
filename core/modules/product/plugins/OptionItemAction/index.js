@@ -5,6 +5,7 @@ import Typography from '@common_typography';
 import ButtonQty from '@common_buttonqty';
 import Show from '@common_show';
 import StockStatus from '@common_statusstock';
+import PriceTierList from '@core_modules/product/plugins/PriceTiers';
 
 const Button = dynamic(() => import('@common_button'), { ssr: false });
 
@@ -31,6 +32,7 @@ const OptionItemAction = (props) => {
         url_key,
         isPlp = false,
         CustomFooter,
+        price,
     } = props;
     const IS_OOS = stockStatus === 'OUT_OF_STOCK';
     const IS_INSTOCK = stockStatus === 'IN_STOCK';
@@ -65,6 +67,7 @@ const OptionItemAction = (props) => {
                     <StockStatus inStock={IS_INSTOCK} />
                 </Show>
             </div>
+            <PriceTierList price={price} {...props} />
             <div className="flex flex-row gap-4 items-end">
                 {showQty && (
                     <div className={cx('flex flex-col gap-2', 'product-OptionItem-qty')}>

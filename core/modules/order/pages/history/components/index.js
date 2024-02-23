@@ -268,7 +268,7 @@ const DefaultView = (props) => {
 
                 {/** Mobile & Tablet */}
                 <Show when={!isDesktop}>
-                    <div className={cx('mobile-tablet-view')}>
+                    <div className={cx('swift-mobile-tablet-view')}>
                         <Show when={loading}>
                             <SkeletonMobile />
                         </Show>
@@ -287,7 +287,7 @@ const DefaultView = (props) => {
                                             <div
                                                 key={`mobile-order-item-${index}`}
                                                 className={cx(
-                                                    'mobile-order-item',
+                                                    'swift-mobile-order-item',
                                                     'flex',
                                                     'flex-col',
                                                     'border-[1px] border-neutral-200',

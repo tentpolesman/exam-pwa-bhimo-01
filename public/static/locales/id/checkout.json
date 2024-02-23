@@ -16,13 +16,15 @@
         "instorePickupDesc": "Ambil sendiri barang di toko"
     },
     "pickupInformation": {
+        "failedFetchStore": "List toko gagal didapat.",
         "label": "Informasi pengambilan",
         "pickupPerson": "Orang yang mengambil",
         "pickupAtLabel": "Anda akan mengambil pesanan di ",
         "pickupNote": "Kami akan mengirimkan email kepada Anda ketika pesanan Anda siap (dalam 2 jam untuk pesanan dilakukan pukul 19:00 waktu setempat). Catatan: bawa ID pemerintah yang berlaku seperti SIM atau kata sandi",
         "changePickupInformation": "Ubah informasi pengambilan",
         "changePickupLocation": "Ubah lokasi pengambilan",
-        "selectStoreLocation": "Pilih lokasi toko"
+        "selectStoreLocation": "Pilih lokasi toko",
+        "searchStore": "Cari nama toko"
     },
     "invalidToken": "Anda memiliki sesi checkout aktif pada perangkat atau peramban lain. Anda hanya diperbolehkan untuk checkout satu perangkat atau peramban saja.",
     "invalidTokenConfirmation": "Apakah anda ingin melanjutkan checkout pada perangkat ini?",

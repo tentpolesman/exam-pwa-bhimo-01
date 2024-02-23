@@ -73,7 +73,7 @@ const StoreLocatorContentWrapper = (props) => {
         loading, storeLocations, storeConfig, t,
     } = props;
     return (
-        <div className="mobile:mt-[20%]">
+        <div className="mt-[12.5%] tablet:mt-[5%]">
             {loading || typeof window === 'undefined' ? (
                 <SkeletonStoreLocator />
             ) : (

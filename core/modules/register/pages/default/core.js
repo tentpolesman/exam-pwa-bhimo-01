@@ -58,7 +58,6 @@ const Register = (props) => {
     const [disabledOtpButton, setDisabledOtpButton] = React.useState(false);
     // state otp
     const [showOtp, setShowOtp] = React.useState(false);
-    const [isFillForm, setIsFillForm] = React.useState(false);
     const [isSubscribed, setIsSubscribed] = React.useState({
         email: '',
         subscribed: false,
@@ -134,13 +133,13 @@ const Register = (props) => {
             .required(t('validate:confirmPassword:required'))
             // eslint-disable-next-line no-use-before-define
             .test('check-pass', t('validate:confirmPassword.wrong'), (input) => input === formik.values.password),
+        phoneNumber: Yup.string().required(t('validate:phoneNumber:required')).matches(regexPhone, t('validate:phoneNumber:wrong')),
+        whatsappNumber: Yup.string().required(t('validate:whatsappNumber:required')).matches(regexPhone, t('validate:whatsappNumber:wrong')),
     };
 
     if (enableOtp) {
         configValidation = {
             ...configValidation,
-            phoneNumber: Yup.string().required(t('validate:phoneNumber:required')).matches(regexPhone, t('validate:phoneNumber:wrong')),
-            whatsappNumber: Yup.string().required(t('validate:whatsappNumber:required')).matches(regexPhone, t('validate:whatsappNumber:wrong')),
             otp: showOtp && Yup.number().required('Otp is required'),
         };
     }
@@ -273,6 +272,7 @@ const Register = (props) => {
             otp: '',
             captcha: '',
         },
+        validateOnMount: true,
         validationSchema: RegisterSchema,
         onSubmit: (values, { resetForm }) => {
             setDisabled(true);
@@ -439,14 +439,12 @@ const Register = (props) => {
      * Disable register button
      */
     React.useEffect(() => {
-        if (Object.keys(formik.errors).length < 2 && isFillForm) {
-            setDisabled(false);
-        } else if (Object.keys(formik.errors).length > 0 && !isFillForm) {
-            setIsFillForm(true);
-        } else if (Object.keys(formik.errors).length > 1) {
+        if (Object.keys(formik.errors).length > 0) {
             setDisabled(true);
+        } else {
+            setDisabled(false);
         }
-    }, [formik.errors, isFillForm, showOtp]);
+    }, [formik.errors, showOtp]);
 
     const contentProps = {
         ...props,

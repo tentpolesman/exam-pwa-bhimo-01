@@ -16,7 +16,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useRef, useState } from 'react';
 import TagManager from 'react-gtm-module';
 // eslint-disable-next-line object-curly-newline
-import { basePath, custDataNameCookie, debuging, features, modules } from '@config';
+import { basePath, custDataNameCookie, debuging, features, modules, headerVersion, footerVersion } from '@config';
 import { createCompareList } from '@core_modules/product/services/graphql';
 import Copyright from '@core_modules/theme/components/footer/desktop/components/copyright';
 import { getCountCart } from '@core_modules/theme/services/graphql';
@@ -128,8 +128,8 @@ const Layout = (props) => {
             open: false,
             variant: 'success',
             text: '',
-            position: 'bottom',
-            positionNumber: '0',
+            position: 'bottom-right',
+            positionNumber: 0,
             duration: 3000,
             close: true,
         },
@@ -327,11 +327,7 @@ const Layout = (props) => {
     }, []);
 
     const styles = {
-        marginBottom:
-            pageConfig.bottomNav && storeConfig?.pwa?.mobile_navigation === 'bottom_navigation' && storeConfig?.pwa?.enabler_footer_mobile === true
-                ? '60px'
-                : 0,
-        marginTop: storeConfig?.pwa?.mobile_navigation === 'burger_menu' && !isHomepage && !isPdp ? '55px' : 0,
+        marginTop: !isHomepage && !isPdp ? '55px' : 0,
     };
 
     const generateClasses = () => {
@@ -339,15 +335,9 @@ const Layout = (props) => {
             !isCms && (router.pathname !== '/' || (router.pathname === '/' && modules.checkout.checkoutOnly))
                 ? 'desktop:max-w-[1280px] min-h-[350px] desktop:px-10 tablet:max-w-[768px] tablet:px-6 mobile:px-4 my-0 mx-auto'
                 : ''
-        } ${font.variable} font-sans !font-pwa-default ${isPdp ? 'mobile:!px-0 tablet:!px-6 desktop:!px-10' : ''}`;
+        } ${font.variable} font-sans !font-pwa-default mb-0 ${isPdp ? 'mobile:!px-0 tablet:!px-6 desktop:!px-10' : ''}`;
 
-        if (pageConfig.bottomNav && storeConfig?.pwa?.mobile_navigation === 'bottom_navigation' && storeConfig?.pwa?.enabler_footer_mobile) {
-            classes += ' mb-[60px]';
-        } else {
-            classes += ' mb-0';
-        }
-
-        if (storeConfig?.pwa?.mobile_navigation === 'burger_menu' && !isHomepage && !isPdp) {
+        if (!isHomepage && !isPdp) {
             classes += ' mt-[55px]';
         } else {
             classes += ' xs:mt-6 xl:mt-10';
@@ -488,7 +478,7 @@ const Layout = (props) => {
             <div className={pageNameSelector}>
                 <PageProgressLoader />
                 {allowHeaderCheckout && (
-                    <header ref={refHeader} className={cx(font.variable, 'font-sans', '!font-pwa-default')}>
+                    <header ref={refHeader} className={cx(`header-${headerVersion}`, font.variable, 'font-sans', '!font-pwa-default')}>
                         <GlobalPromoMessage
                             t={t}
                             storeConfig={storeConfig}
@@ -560,7 +550,7 @@ const Layout = (props) => {
                 {/* END CHAT FEATURES */}
 
                 {withLayoutFooter && (
-                    <footer className={cx('!block', 'mt-[50px]', font.variable, 'font-sans', '!font-pwa-default')} ref={refFooter}>
+                    <footer className={cx(`${footerVersion}`, '!block', 'mt-[50px]', font.variable, 'font-sans', '!font-pwa-default')} ref={refFooter}>
                         {footer ? <Footer storeConfig={storeConfig} t={t} /> : null}
                         <Copyright storeConfig={storeConfig} t={t} />
                     </footer>
@@ -578,9 +568,17 @@ const Layout = (props) => {
                     className={bodyStyles.itemProduct}
                 />
             )} */}
-                <div className="fixed bottom-0 flex flex-col w-full z-scroll-to-top">
-                    <ScrollToTop deviceType={deviceType} showGlobalPromo={showGlobalPromo} {...props} />
-                    {!hasWebpSupport ? (
+
+                <ScrollToTop
+                    deviceType={deviceType}
+                    showGlobalPromo={showGlobalPromo}
+                    {...props}
+                    className={
+                        !hasWebpSupport ? 'bottom-10' : ''
+                    }
+                />
+                {!hasWebpSupport ? (
+                    <div className="fixed bottom-0 flex flex-col w-full z-scroll-to-top-1">
                         <div className="bg-yellow w-full">
                             <Typography
                                 variant="h2"
@@ -599,8 +597,8 @@ const Layout = (props) => {
                                 {t('common:error:webpNotSupported')}
                             </Typography>
                         </div>
-                    ) : null}
-                </div>
+                    </div>
+                ) : null}
                 <Script src="/install.js" defer />
             </div>
         </>

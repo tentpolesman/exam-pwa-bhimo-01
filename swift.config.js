@@ -82,8 +82,13 @@ const rollbar = {
 // identifiers for cmsBlocks in contact page
 const cmsSocialMediaLinkIdentifiers = 'pwa_socmed_links';
 
-// set empty or false to disable dynamic menu
-const cmsStaticMainMenuIdentifier = 'static-main-menu';
+/* Header */
+// identifier for header (v1, v2, v3, v4)
+const headerVersion = 'v1';
+
+/* Footer */
+// identifier for footer (pwa_footer_v1, pwa_footer_v2, pwa_footer_v3, pwa_footer_v4)
+const footerVersion = 'pwa_footer_v1';
 
 /* Social media link */
 // social media link in dashboard
@@ -572,5 +577,6 @@ module.exports = {
     requestTimeout,
     customerTokenKey,
     sitemap,
-    cmsStaticMainMenuIdentifier,
+    headerVersion,
+    footerVersion,
 };

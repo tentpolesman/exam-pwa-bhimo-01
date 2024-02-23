@@ -16,14 +16,20 @@ const MobileTabletActionMenu = (props) => {
     const PopoverContent = () => (
         <ul className={cx('py-2')}>
             <li className={cx('px-4', 'py-2')}>
-                <Link href={`/sales/order/view/order_id/${orderNumber}`} className={cx('hover:text-primary-700')}>
+                <Link
+                    href={`/sales/order/view/order_id/${orderNumber}`}
+                    className={cx(
+                        'swift-mobile-action-vieworder',
+                        'hover:text-primary-700',
+                    )}
+                >
                     <Typography variant="bd-2b" className={cx('!text-primary-700', 'hover:underline')}>
                         {t('order:view')}
                     </Typography>
                 </Link>
             </li>
             <li className={cx('px-4', 'py-2')}>
-                <button type="button" onClick={() => reOrder(orderNumber)}>
+                <button className="swift-mobile-action-reorder" type="button" onClick={() => reOrder(orderNumber)}>
                     <a>
                         <Typography variant="bd-2b" className={cx('!text-primary-700', 'hover:underline')}>
                             {t('order:reorder')}
@@ -57,7 +63,7 @@ const MobileTabletActionMenu = (props) => {
             >
                 <Button
                     onClick={() => setOpen(!open)}
-                    className={cx('!p-0')}
+                    className={cx('swift-mobile-action-menu', '!p-0')}
                     variant="plain"
                     iconOnly
                     icon={<EllipsisVerticalIcon className="h-[20px] w-[24px]" />}

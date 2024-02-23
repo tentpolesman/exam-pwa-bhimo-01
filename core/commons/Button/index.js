@@ -74,7 +74,7 @@ const Button = (props) => {
         outlined: {
             button: cx(
                 'focus:shadow-[0_0_0_4px] hover:shadow-lg bg-neutral-white border border-black',
-                'hover:opacity-50 focus:shadow-neutral-100 focus:border-none',
+                'hover:opacity-50 focus:shadow-neutral-100',
                 loading && 'focus:shadow-none hover:shadow-none cursor-default',
             ),
             typography: cx('!text-black', underline && 'underline'),

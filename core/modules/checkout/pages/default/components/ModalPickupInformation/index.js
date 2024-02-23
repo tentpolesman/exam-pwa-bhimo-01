@@ -79,7 +79,12 @@ const ModalPickupInformation = ({
                     dispatch(setErrorState({ selectStore: false, pickupInformation: false }));
                     await setLoading(false);
                     setOpen();
-                }).catch(() => {
+                }).catch((err) => {
+                    window.toastMessage({
+                        open: true,
+                        variant: 'error',
+                        text: err.message.split(':')[1] || t('checkout:message:serverError'),
+                    });
                     setLoading(false);
                 });
             } else {
