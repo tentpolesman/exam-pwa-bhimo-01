@@ -163,7 +163,7 @@ const features = {
     // IMPORTANT!! If you need to use firebase on your project, please uncomment import firebase in _app.js
     firebase: {
         config: {
-            apiKey: '', // sample: AIzaSyBayG_pE-BOs6DU0WAoZOa3EbJMpBlrXBI
+            apiKey: process.env.GOOGLE_API_KEY, // sample: AIzaSyBayG_pE-BOs6DU0WAoZOa3EbJMpBlrXBI
             authDomain: '', // sample: swiftpwa-e6324.firebaseapp.com
             databaseURL: '', // sample: https://swiftpwa-e6324.firebaseio.com
             projectId: '', // sample: swiftpwa-e6324

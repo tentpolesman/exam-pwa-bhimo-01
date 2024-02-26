@@ -134,7 +134,7 @@ const DesktopHeader = (props) => {
                     className={cx(
                         'top-header__content',
                         'grid grid-cols-[75%_25%]',
-                        'tablet:max-w-[768px] desktop:max-w-[1280px]',
+                        'tablet:max-w-screen-tablet desktop:max-w-screen-desktop',
                         'm-[0_auto]',
                         'desktop:px-10 tablet:px-6 mobile:px-4',
                     )}
@@ -165,12 +165,12 @@ const DesktopHeader = (props) => {
                         'flex',
                         'flex-row',
                         'justify-between',
-                        'tablet:max-w-[768px]',
+                        'tablet:max-w-screen-tablet',
                         'desktop:gap-x-5',
                         'px-4',
                         'tablet:px-6',
                         'desktop:gap-x-6',
-                        'desktop:max-w-[1280px]',
+                        'desktop:max-w-screen-desktop',
                         'desktop:px-10',
                         'mobile:max-tablet:grid',
                         'mobile:max-tablet:grid-cols-[4fr_8fr_4fr]',
@@ -320,7 +320,7 @@ const DesktopHeader = (props) => {
                     </div>
                 </div>
             </div>
-            <div className={cx('bottom-header', 'tablet:max-w-[768px]', 'desktop:max-w-[1280px]', 'm-[0_auto]', 'px-6')}>
+            <div className={cx('bottom-header', 'tablet:max-w-screen-tablet', 'desktop:max-w-screen-desktop', 'm-[0_auto]', 'px-6')}>
                 <div className="flex flex-row menu-category mobile:max-desktop:hidden">
                     <div className="xs:basis-full menu-middle">
                         <nav className="swift-menu-wrapper" role="navigation">

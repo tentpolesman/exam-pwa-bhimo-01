@@ -27,6 +27,8 @@ const Select = (props) => {
         textFiledProps = {},
         optionProps = {},
         required = false,
+        multiple = false,
+        itemChange = () => {},
         ...restProps
     } = props;
 
@@ -41,6 +43,22 @@ const Select = (props) => {
 
     const selectValue = options?.find((opt) => opt.value === value)?.label ?? value;
 
+    const [multipleSelected, setMultipleSelected] = useState(selectValue);
+    const handleOptionChange = (option) => {
+        const selectedOptions = [...multipleSelected];
+        const index = selectedOptions.indexOf(option);
+
+        if (index !== -1) {
+            selectedOptions.splice(index, 1);
+        } else {
+            selectedOptions.push(option);
+        }
+
+        setMultipleSelected(selectedOptions);
+        onChange(selectedOptions);
+        itemChange(option);
+    };
+
     return (
         <div ref={ref} className={cx('swift-form-select', 'relative', open ? 'z-50' : '', className)} {...restProps}>
             {label && typeof label === 'string' ? (
@@ -52,60 +70,97 @@ const Select = (props) => {
                 </Typography>
             ) : null}
             {label && typeof label === 'object' ? label : null}
-            <TextField
-                className={cx('cursor-pointer', textFiledClass || '')}
-                rightIcon={!open ? <ArrowDown /> : <ArrowUp />}
-                inputProps={{
-                    readOnly: true,
-                    className: cx('cursor-pointer', inputPropsClass || ''),
-                    name,
-                    ...restInputProps,
-                }}
-                hintProps={{
-                    displayHintText: error,
-                    hintType: error ? 'error' : '',
-                    hintText: errorMessage,
-                }}
-                onClick={() => {
-                    setOpen(!open);
-                }}
-                value={selectValue}
-                placeholder={placeholder}
-                {...restTextFiledProps}
-            />
-            {open && options?.length > 0 ? (
-                <div
+
+            {multiple ? (
+                <ul
                     className={cx(
-                        'w-full',
-                        'flex',
-                        'flex-col',
-                        'py-3',
-                        'px-4',
-                        'shadow-md',
-                        'cursor-pointer',
-                        'bg-neutral-white',
-                        'absolute',
-                        'z-50',
-                        optionClass,
+                        'w-full overflow-auto border border-neutral-200 hover:border-neutral-400',
+                        'rounded-md px-3 py-2 h-44 overflow-auto',
                     )}
-                    {...restOptionProps}
                 >
-                    {options.map((d, idx) => (
+                    {options.map((d, idx) => {
+                        const isChecked = multipleSelected.includes(d.value);
+                        return (
+                            <li
+                                key={idx}
+                                className={cx(
+                                    'px-2 py-3',
+                                    isChecked ? 'bg-neutral-100 text-primary-600' : '',
+                                    optionClass,
+                                )}
+                            >
+                                <input
+                                    type="checkbox"
+                                    id={`option-${d.value}`}
+                                    className="opacity-0 absolute"
+                                    checked={multipleSelected.includes(d.value)}
+                                    onChange={() => handleOptionChange(d.value)}
+                                />
+                                <label htmlFor={`option-${d.value}`} className="w-full flex">
+                                    {d.label}
+                                </label>
+                            </li>
+                        );
+                    })}
+                </ul>
+            ) : (
+                <>
+                    <TextField
+                        className={cx('cursor-pointer', textFiledClass || '')}
+                        rightIcon={!open ? <ArrowDown /> : <ArrowUp />}
+                        inputProps={{
+                            readOnly: true,
+                            className: cx('cursor-pointer', inputPropsClass || ''),
+                            name,
+                            ...restInputProps,
+                        }}
+                        hintProps={{
+                            displayHintText: error,
+                            hintType: error ? 'error' : '',
+                            hintText: errorMessage,
+                        }}
+                        onClick={() => {
+                            setOpen(!open);
+                        }}
+                        value={selectValue}
+                        placeholder={placeholder}
+                        {...restTextFiledProps}
+                    />
+                    {open && options?.length > 0 ? (
                         <div
-                            key={idx}
-                            className="dropdown-item py-3 px-4 hover:bg-neutral-50"
-                            onClick={() => {
-                                onChange(d.value);
-                                setOpen(false);
-                            }}
+                            className={cx(
+                                'w-full',
+                                'flex',
+                                'flex-col',
+                                'py-3',
+                                'px-4',
+                                'shadow-md',
+                                'cursor-pointer',
+                                'bg-neutral-white',
+                                'absolute',
+                                'z-50',
+                                optionClass,
+                            )}
+                            {...restOptionProps}
                         >
-                            <Typography variant="bd-2b" className="">
-                                {d.label}
-                            </Typography>
+                            {options.map((d, idx) => (
+                                <div
+                                    key={idx}
+                                    className="dropdown-item py-3 px-4 hover:bg-neutral-50"
+                                    onClick={() => {
+                                        onChange(d.value);
+                                        setOpen(false);
+                                    }}
+                                >
+                                    <Typography variant="bd-2b" className="">
+                                        {d.label}
+                                    </Typography>
+                                </div>
+                            ))}
                         </div>
-                    ))}
-                </div>
-            ) : null}
+                    ) : null}
+                </>
+            )}
             <style jsx>
                 {`
                     .dropdown-item:hover > :global(span) {

@@ -333,7 +333,7 @@ const Layout = (props) => {
     const generateClasses = () => {
         let classes = `${
             !isCms && (router.pathname !== '/' || (router.pathname === '/' && modules.checkout.checkoutOnly))
-                ? 'desktop:max-w-[1280px] min-h-[350px] desktop:px-10 tablet:max-w-[768px] tablet:px-6 mobile:px-4 my-0 mx-auto'
+                ? 'desktop:max-w-screen-desktop min-h-[350px] desktop:px-10 tablet:max-w-screen-tablet tablet:px-6 mobile:px-4 my-0 mx-auto'
                 : ''
         } ${font.variable} font-sans !font-pwa-default mb-0 ${isPdp ? 'mobile:!px-0 tablet:!px-6 desktop:!px-10' : ''}`;
 
