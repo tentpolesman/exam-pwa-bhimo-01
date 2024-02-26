@@ -34,8 +34,10 @@ export const getCmsBlocks = (variables) => useQuery(Schema.getCmsBlocks, {
 });
 
 export const getProductReviews = (variables) => useQuery(Schema.getProductReviews, { variables });
-export const getProductList = () => (
-    useLazyQuery(Schema.getProductList)
+export const getProductList = (options = {}) => (
+    useLazyQuery(Schema.getProductList, {
+        ...options,
+    })
 );
 export const getProductPrice = (variables) => (
     useLazyQuery(Schema.getProductPrice,

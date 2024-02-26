@@ -88,7 +88,11 @@ const Product = (props) => {
     let content = '';
     const dataCondition = useMemo(() => getProductListConditions(condition), [condition]);
     const dataFilter = generateQueries(type, type === 'single_product' ? { sku: { eq: product_sku } } : dataCondition, orer_by);
-    const [fetchProductList, { data, loading, error }] = getProductList();
+    const [fetchProductList, { data, loading, error }] = getProductList({
+        context: {
+            request: 'internal',
+        },
+    });
 
     useEffect(() => {
         fetchProductList({

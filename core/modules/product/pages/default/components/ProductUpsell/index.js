@@ -12,7 +12,12 @@ const Loader = dynamic(() => import('@common_slick/Caraousel/Skeleton'));
 const ProductUpsell = ({
     dataProduct, isLogin, storeConfig, ...other
 }) => {
-    const { loading, data, error } = getUpsellProduct(storeConfig, { variables: { url: dataProduct.url_key } });
+    const { loading, data, error } = getUpsellProduct(storeConfig, {
+        variables: { url: dataProduct.url_key },
+        context: {
+            request: 'internal',
+        },
+    });
 
     React.useEffect(() => {
         if (!loading && !error && data && data.products && data.products.items.length > 0
