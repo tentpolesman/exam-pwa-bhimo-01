@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import firebase from 'firebase/app';
 import Cookies from 'js-cookie';
-import { features, custDataNameCookie, expiredToken } from '@config';
+import { custDataNameCookie, expiredToken } from '@config';
 import { useQuery } from '@apollo/client';
 
 import { getAppEnv } from '@helpers/env';
@@ -33,6 +33,9 @@ import { assignCompareListToCustomer } from '@core_modules/productcompare/servic
 import { loginConfig } from '@services/graphql/repository/pwa_config';
 import { localCompare } from '@services/graphql/schema/local';
 import { priceVar } from '@core/services/graphql/cache';
+import getConfig from 'next/config';
+
+const { publicRuntimeConfig } = getConfig();
 
 const Message = dynamic(() => import('@common_toast'), { ssr: false });
 const appEnv = getAppEnv();
@@ -538,7 +541,7 @@ const Login = (props) => {
 
     // Listen to the Firebase Auth state and set the local state.
     React.useEffect(() => {
-        if (features.firebase.config.apiKey !== '' && firebase.app()) {
+        if (publicRuntimeConfig && publicRuntimeConfig?.firebaseApiKey !== '' && firebase.app()) {
             try {
                 const unregisterAuthObserver = firebase.auth().onAuthStateChanged((user) => {
                     if (firebase.auth().currentUser) {

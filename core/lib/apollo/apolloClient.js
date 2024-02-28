@@ -7,14 +7,17 @@ import { removeIsLoginFlagging } from '@helper_auth';
 import { removeCartId } from '@helper_cartid';
 import { removeCookies } from '@core/helpers/cookies';
 import {
-    graphqlEndpoint, HOST, storeCode, requestTimeout, features,
+    graphqlEndpoint, HOST, storeCode, requestTimeout,
 } from '@root/swift.config.js';
 import { onError } from 'apollo-link-error';
 import { RetryLink } from 'apollo-link-retry';
 import firebase from 'firebase/app';
 import fetch from 'isomorphic-unfetch';
+import getConfig from 'next/config';
 import cookies from 'js-cookie';
 import ApolloLinkTimeout from './apolloLinkTimeout';
+
+const { publicRuntimeConfig } = getConfig();
 
 const appEnv = getAppEnv();
 
@@ -38,7 +41,7 @@ const logoutLink = onError((err) => {
         removeCartId();
         removeIsLoginFlagging();
         removeCookies('uid_product_compare');
-        if (features.firebase.config.apiKey && features.firebase.config.apiKey !== '') {
+        if (publicRuntimeConfig && publicRuntimeConfig.firebaseApiKey !== '') {
             firebase
                 .auth()
                 .signOut()

@@ -124,6 +124,7 @@ Explanations:
 8. SESSION_SECRET = Session secret (required)
 9. NEXT_PUBLIC_ENCRYPTION_KEY = Encryption key to encrypt sensitive data (required) -> This is for client side usage, consider make this different from the server side one (`ENCRYPTION_KEY`)
 10. NEXT_PUBLIC_ALGORITHM = Encryption algorithm (required) -> This is for client side usage, consider make this different from the server side one (`ALGORITHM`)
+11. FIREBASE_API_KEY = Firebase API Key for initial firebase config
 
 # Highlight Releases
 ## Version 3.0.0

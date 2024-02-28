@@ -2,7 +2,7 @@
 /* eslint-disable indent */
 /* eslint-disable no-unused-expressions */
 import { useApolloClient } from '@apollo/client';
-import { custDataNameCookie, features, modules } from '@config';
+import { custDataNameCookie, modules } from '@config';
 import Content from '@core_modules/theme/components/header/components';
 import { getCategories, getCustomerLazy, removeToken } from '@core_modules/theme/services/graphql';
 import { removeIsLoginFlagging } from '@helper_auth';
@@ -14,6 +14,9 @@ import firebase from 'firebase/app';
 import Cookies from 'js-cookie';
 import Router from 'next/router';
 import { getCmsBlocks } from '@core_modules/cart/services/graphql';
+import getConfig from 'next/config';
+
+const { publicRuntimeConfig } = getConfig();
 
 const CoreTopNavigation = (props) => {
     const {
@@ -82,7 +85,7 @@ const CoreTopNavigation = (props) => {
 
     const handleLogout = async () => {
         window.backdropLoader(true);
-        if (features.firebase.config.apiKey && features.firebase.config.apiKey !== '') {
+        if (publicRuntimeConfig && publicRuntimeConfig?.firebaseApiKey !== '') {
             firebase
                 .auth()
                 .signOut()
