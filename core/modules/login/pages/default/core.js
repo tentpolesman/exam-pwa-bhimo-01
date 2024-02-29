@@ -4,10 +4,10 @@ import dynamic from 'next/dynamic';
 import Router from 'next/router';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
-import firebase from 'firebase/app';
+import firebase from 'firebase';
 import Cookies from 'js-cookie';
-import { custDataNameCookie, expiredToken } from '@config';
-import { useQuery } from '@apollo/client';
+import { custDataNameCookie, expiredToken, features } from '@config';
+import { useQuery, useReactiveVar } from '@apollo/client';
 
 import { getAppEnv } from '@helpers/env';
 import { getLastPathWithoutLogin, setLogin } from '@helper_auth';
@@ -105,7 +105,7 @@ const Login = (props) => {
     });
 
     // cache price
-    const cachePrice = priceVar();
+    const cachePrice = useReactiveVar(priceVar);
 
     let cartId = '';
     const handleCloseMessage = () => {
@@ -541,7 +541,15 @@ const Login = (props) => {
 
     // Listen to the Firebase Auth state and set the local state.
     React.useEffect(() => {
-        if (publicRuntimeConfig && publicRuntimeConfig?.firebaseApiKey !== '' && firebase.app()) {
+        if (publicRuntimeConfig && publicRuntimeConfig?.firebaseApiKey !== '') {
+            if (!firebase.apps.length) {
+                firebase.initializeApp({
+                    ...features.firebase.config,
+                    apiKey: publicRuntimeConfig?.firebaseApiKey,
+                });
+            } else {
+                firebase.app(); // if already initialized, use that one
+            }
             try {
                 const unregisterAuthObserver = firebase.auth().onAuthStateChanged((user) => {
                     if (firebase.auth().currentUser) {
