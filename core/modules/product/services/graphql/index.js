@@ -39,6 +39,22 @@ export const getUpsellProduct = (config = {}, options = {}) => useQuery(Schema.g
     ...options,
 });
 
+export const getPriceUpsellProduct = (config = {}, options = {}) => useLazyQuery(Schema.getPriceUpsellProduct(config), {
+    ...defaultConfig,
+    ...options,
+    context: {
+        request: 'internal',
+    },
+});
+
+export const getPriceRelatedProduct = (config = {}, options = {}) => useLazyQuery(Schema.getPriceRelatedProduct(config), {
+    ...defaultConfig,
+    ...options,
+    context: {
+        request: 'internal',
+    },
+});
+
 export const getCustomizableOption = (urlpath) => useLazyQuery(CustomizableSchema.getCustomizableOption(urlpath), {
     ...defaultConfig,
     fetchPolicy: 'no-cache',

@@ -39,6 +39,15 @@ export const getProductList = (options = {}) => (
         ...options,
     })
 );
+
+export const getPriceProductList = () => (
+    useLazyQuery(Schema.getPriceProductList, {
+        context: {
+            request: 'internal',
+        },
+    })
+);
+
 export const getProductPrice = (variables) => (
     useLazyQuery(Schema.getProductPrice,
         {

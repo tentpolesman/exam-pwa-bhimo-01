@@ -422,6 +422,65 @@ query getCartData($cartId: String!) {
 }
 `;
 
+export const getPriceCrossellCart = () => gql`
+query getCartData($cartId: String!) {
+  cart(cart_id: $cartId) {
+     items {
+      product {
+        crosssell_products {
+          id
+          name
+          url_key
+          sku
+          stock_status
+          price_tiers {
+            discount {
+              percent_off
+              amount_off
+            }
+            final_price {
+              currency
+              value
+            }
+            quantity
+          }
+          price_range {
+            maximum_price {
+              discount {
+                amount_off
+                percent_off
+              }
+              final_price {
+                currency
+                value
+              }
+              regular_price {
+                currency
+                value
+              }
+            }
+            minimum_price {
+              discount {
+                amount_off
+                percent_off
+              }
+              final_price {
+                currency
+                value
+              }
+              regular_price {
+                currency
+                value
+              }
+            }
+          }
+        }
+      }
+     }
+  }
+}
+`;
+
 export const getMiniCart = gql`
     query getCartData($cartId: String!) {
         cart(cart_id: $cartId) {

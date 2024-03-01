@@ -1,6 +1,6 @@
 /* eslint-disable operator-linebreak */
 import { generateQueries, getProductListConditions } from '@core_modules/cms/helpers/getProductListConditions';
-import { getProductList } from '@core_modules/cms/services/graphql';
+import { getPriceProductList, getProductList } from '@core_modules/cms/services/graphql';
 import { useTranslation } from 'next-i18next';
 import { useEffect, useMemo } from 'react';
 import ProductItem from '@plugin_productitem';
@@ -8,6 +8,7 @@ import ContainerScroll from '@common/ContainerScroll';
 import cx from 'classnames';
 import { generateGridItemClass } from '@helpers/style';
 import { BREAKPOINTS, COLORS } from '@core/theme/vars';
+import { priceVar } from '@core/services/graphql/cache';
 
 const Product = (props) => {
     const {
@@ -38,6 +39,9 @@ const Product = (props) => {
     const isProductGrid = type === 'product_grid';
     const isProductList = type === 'product_list';
     const isSingleProduct = type === 'single_product';
+
+    // cache price
+    const cachePrice = priceVar();
 
     const productProps = {
         storeConfig,
@@ -88,17 +92,28 @@ const Product = (props) => {
     let content = '';
     const dataCondition = useMemo(() => getProductListConditions(condition), [condition]);
     const dataFilter = generateQueries(type, type === 'single_product' ? { sku: { eq: product_sku } } : dataCondition, orer_by);
-    const [fetchProductList, { data, loading, error }] = getProductList({
-        context: {
-            request: 'internal',
-        },
-    });
+    const [fetchProductList, { data, loading, error }] = getProductList({});
+    const [fetchPriceProductList, { data: dataPrice }] = getPriceProductList({});
 
     useEffect(() => {
         fetchProductList({
             variables: { ...dataFilter, pageSize: max_items },
         });
+        fetchPriceProductList({
+            variables: { ...dataFilter, pageSize: max_items },
+        });
     }, []);
+
+    useEffect(() => {
+        if (dataPrice && dataPrice?.products?.items?.length) {
+            const identifier = 'home-product-caraousel';
+            const dataTemp = cachePrice;
+            dataTemp[identifier] = dataPrice;
+            priceVar({
+                ...cachePrice,
+            });
+        }
+    }, [dataPrice]);
 
     useEffect(() => {
         if (error) {

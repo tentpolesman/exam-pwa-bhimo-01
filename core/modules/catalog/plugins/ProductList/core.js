@@ -199,7 +199,9 @@ const ProductList = (props) => {
         router,
     );
     /* ====Start get price Product==== */
-    const [getProdPrice, { data: dataPrice, loading: loadPrice, error: errorPrice }] = getProductPrice(
+    const [getProdPrice, {
+        data: dataPrice, loading: loadPrice, error: errorPrice,
+    }] = getProductPrice(
         config,
         {
             variables: {
@@ -307,6 +309,12 @@ const ProductList = (props) => {
                     },
                     fetchPolicy: 'network-only',
                 });
+                getProdPrice({
+                    variables: {
+                        pageSize,
+                        currentPage: pageInput,
+                    },
+                });
                 setPage(pageInput);
                 // to change setLoadmore to false on useEffect
                 timerRef.current = setTimeout(() => {
@@ -342,6 +350,13 @@ const ProductList = (props) => {
                                 items: [...previousResult.products.items, ...fetchMoreResult.products.items],
                             },
                         };
+                    },
+                });
+
+                getProdPrice({
+                    variables: {
+                        pageSize,
+                        currentPage: pageTemp,
                     },
                 });
             }
