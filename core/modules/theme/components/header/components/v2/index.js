@@ -34,6 +34,7 @@ const HeaderV2 = (props) => {
                 // eslint-disable-next-line no-unused-vars
                 let isTablet = false;
                 let isMobile = false;
+                const headerPromo = document.getElementById('global-promo-message');
                 if (window.innerWidth >= BREAKPOINTS.xl) {
                     isDesktop = true;
                 } else if (window.innerWidth >= BREAKPOINTS.md) {
@@ -59,7 +60,9 @@ const HeaderV2 = (props) => {
                     const handleScroll = () => {
                         const scrollTopPosition = window.pageYOffset || document.documentElement.scrollTop;
                         headerHeight = header.offsetHeight;
-                        globalPromoheight = document.querySelector('#global-promo-message')?.offsetHeight;
+                        if (headerPromo) {
+                            globalPromoheight = document.querySelector('#global-promo-message')?.offsetHeight;
+                        }
                         topHeaderheight = isDesktop
                             ? document.querySelector('.desktop-header .top-header')?.offsetHeight || 0
                             : document.querySelector('#top-header-tablet')?.offsetHeight || 0;
