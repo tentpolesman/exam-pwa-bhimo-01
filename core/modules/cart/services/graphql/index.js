@@ -34,9 +34,15 @@ export const getCartItem = (cartId) => useQuery(Schema.getCartItem,
 export const getCrossellCart = (cartId, config = {}) => useQuery(Schema.getCrossellCart(config),
     {
         variables: { cartId },
+        fetchPolicy: 'no-cache',
+    });
+
+export const getPriceCrossellCart = (cartId, config = {}) => useQuery(Schema.getCrossellCart(config),
+    {
         context: {
             request: 'internal',
         },
+        variables: { cartId },
         fetchPolicy: 'no-cache',
     });
 

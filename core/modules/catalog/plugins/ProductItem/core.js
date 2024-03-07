@@ -4,13 +4,13 @@ import { getLoginInfo } from '@helper_auth';
 import { setCookies, getCookies } from '@helper_cookies';
 import { useTranslation } from 'next-i18next';
 import route, { useRouter } from 'next/router';
-import { useQuery } from '@apollo/client';
-import React from 'react';
+import { useQuery, useReactiveVar } from '@apollo/client';
+import React, { useMemo } from 'react';
 import { setResolver, getResolver } from '@helper_localstorage';
 import { getSessionStorage, setSessionStorage } from '@helpers/sessionstorage';
 import classNames from 'classnames';
 import ConfigurableOpt from '@plugin_optionitem';
-import { addWishlist, getDetailProduct, getDetailProductPrice } from '@core_modules/catalog/services/graphql';
+import { addWishlist, getDetailProduct } from '@core_modules/catalog/services/graphql';
 import { addProductsToCompareList } from '@core_modules/product/services/graphql';
 import { getCustomerUid } from '@core_modules/productcompare/service/graphql';
 import { localCompare } from '@services/graphql/schema/local';
@@ -128,56 +128,41 @@ const ProductItem = (props) => {
     let isLogin = '';
     if (typeof window !== 'undefined') isLogin = getLoginInfo();
 
-    const context = isLogin && isLogin == 1 ? { request: 'internal' } : {};
-
     const [getProduct, { data: dataDetailProduct, error: errorDetailProduct, loading: loadingDetailProduct }] = getDetailProduct(
         storeConfig.pwa || {},
+        {
+            context: {
+                request: 'internal',
+            },
+        },
     );
 
-    const [getProductPrice, { data: dataPrice, loading: loadPrice, error: errorPrice }] = getDetailProductPrice(storeConfig.pwa || {});
-
     // cache price
-    const cachePrice = priceVar();
-
-    const generateIdentifier = () => {
-        let identifier = url_key;
-        identifier = identifier?.replace(/ /g, '-');
-        return identifier;
-    };
-
-    React.useEffect(() => {
-        if (!cachePrice[generateIdentifier()]) {
-            getProductPrice({
-                context,
-                variables: {
-                    url_key,
-                },
-            });
-        }
-    }, [dataDetailProduct]);
-
-    React.useEffect(() => {
-        if (dataPrice) {
-            const identifier = generateIdentifier();
-            const dataTemp = cachePrice;
-            dataTemp[identifier] = dataPrice;
-            priceVar({
-                ...dataTemp,
-            });
-        }
-    }, [dataPrice]);
+    const cachePrice = useReactiveVar(priceVar);
 
     const getPrice = () => {
         let productPrice = [];
 
-        if (cachePrice[generateIdentifier()] && cachePrice[generateIdentifier()].products && cachePrice[generateIdentifier()].products.items) {
-            productPrice = cachePrice[generateIdentifier()].products.items;
-        } else if (dataPrice && dataPrice.products && dataPrice.products.items) {
-            productPrice = dataPrice.products.items;
+        const keysPriceVar = Object.keys(cachePrice).filter((keyPrice) => keyPrice.includes(categorySelect));
+
+        if (keysPriceVar.length) {
+            productPrice = cachePrice[keysPriceVar[0]].products.items;
         }
 
         return productPrice;
     };
+
+    const stockStatus = useMemo(() => {
+        const keysPriceVar = Object.keys(cachePrice).filter((keyPrice) => keyPrice.includes(categorySelect));
+        if (keysPriceVar.length) {
+            const product = cachePrice[keysPriceVar[0]].products.items.filter((prod) => prod.id === id);
+            if (product[0]?.stock_status) {
+                return product[0]?.stock_status;
+            }
+        }
+
+        return stock_status;
+    }, [stock_status, cachePrice, categorySelect]);
 
     const [postAddWishlist] = addWishlist();
     const [getUid, { data: dataUid, refetch: refetchCustomerUid }] = getCustomerUid();
@@ -391,15 +376,6 @@ const ProductItem = (props) => {
 
     const generatePrice = (priceDataItem = []) => {
         // handle if loading price
-        if (loadPrice) {
-            return (
-                <div className="w-full h-auto">
-                    <div className="h-4 bg-neutral-100 animate-pulse rounded-full dark:bg-gray-700 w-[75%]" />
-                    {' '}
-                </div>
-            );
-        }
-
         let priceProduct = {
             priceRange: spesificProduct.price_range ? spesificProduct.price_range : price_range,
             // eslint-disable-next-line camelcase
@@ -408,7 +384,7 @@ const ProductItem = (props) => {
             specialFromDate: special_from_date,
             specialToDate: special_to_date,
         };
-        if (priceDataItem && priceDataItem.length > 0 && !loadPrice && !errorPrice) {
+        if (priceDataItem && priceDataItem.length > 0) {
             priceProduct = {
                 priceRange: spesificProduct.price_range ? spesificProduct.price_range : priceDataItem[0].price_range,
                 priceTiers: spesificProduct.price_tiers ? spesificProduct.price_tiers : priceDataItem[0].price_tiers,
@@ -519,7 +495,7 @@ const ProductItem = (props) => {
         );
     };
 
-    const isOos = stock_status === 'OUT_OF_STOCK';
+    const isOos = useMemo(() => stockStatus === 'OUT_OF_STOCK', [stockStatus]);
     const viewItemOnly = __typename === 'BundleProduct'
         || __typename === 'DownloadableProduct'
         || __typename === 'GroupedProduct'
@@ -539,8 +515,6 @@ const ProductItem = (props) => {
                             dataDetailProduct?.__typename === 'AwGiftCardProduct' ? dataDetailProduct : dataDetailProduct?.products
                         }
                         dataPrice={getPrice()}
-                        loadPrice={loadPrice}
-                        errorPrice={errorPrice}
                         keyProduct={url_key}
                         t={t}
                         weltpixel_labels={weltpixel_labels}
@@ -563,7 +537,7 @@ const ProductItem = (props) => {
                         ) : null}
                         {isOos && (
                             <div className={classNames('absolute top-2 tablet:top-3 left-2 tablet:left-3 z-10')}>
-                                <Badge bold label={stock_status.replace(/_/g, ' ')} className="!bg-neutral text-white !text-xs tablet:!text-sm" />
+                                <Badge bold label={stockStatus.replace(/_/g, ' ')} className="!bg-neutral text-white !text-xs tablet:!text-sm" />
                             </div>
                         )}
                         {showQuickView && (
@@ -638,6 +612,7 @@ const ProductItem = (props) => {
                                         url_key,
                                         review,
                                     }}
+                                    stockStatus={stockStatus}
                                     dataPrice={getPrice()}
                                     showQty={false}
                                     catalogList={catalogList}
@@ -679,8 +654,6 @@ const ProductItem = (props) => {
                         dataDetailProduct?.__typename === 'AwGiftCardProduct' ? dataDetailProduct : dataDetailProduct?.products
                     }
                     dataPrice={getPrice()}
-                    loadPrice={loadPrice}
-                    errorPrice={errorPrice}
                     keyProduct={url_key}
                     t={t}
                     weltpixel_labels={weltpixel_labels}
@@ -710,7 +683,7 @@ const ProductItem = (props) => {
                         ) : null}
                         {isOos && (
                             <div className="absolute top-2 tablet:top-3 left-2 tablet:left-3 z-10">
-                                <Badge bold label={stock_status.replace(/_/g, ' ')} className="!bg-neutral text-white !text-xs tablet:!text-sm" />
+                                <Badge bold label={stockStatus.replace(/_/g, ' ')} className="!bg-neutral text-white !text-xs tablet:!text-sm" />
                             </div>
                         )}
                         {showQuickView && (
@@ -785,6 +758,7 @@ const ProductItem = (props) => {
                                         url_key,
                                         review,
                                     }}
+                                    stockStatus={stockStatus}
                                     dataPrice={getPrice()}
                                     showQty={false}
                                     catalogList={catalogList}

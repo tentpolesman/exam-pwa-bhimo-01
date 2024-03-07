@@ -4,7 +4,8 @@ import React from 'react';
 import propTypes from 'prop-types';
 import dynamic from 'next/dynamic';
 import TagManager from 'react-gtm-module';
-import { getUpsellProduct } from '@core_modules/product/services/graphql';
+import { getPriceUpsellProduct, getUpsellProduct } from '@core_modules/product/services/graphql';
+import { priceVar } from '@core/services/graphql/cache';
 
 const View = dynamic(() => import('@core_modules/product/pages/default/components/ProductUpsell/view'), { ssr: false });
 const Loader = dynamic(() => import('@common_slick/Caraousel/Skeleton'));
@@ -12,11 +13,23 @@ const Loader = dynamic(() => import('@common_slick/Caraousel/Skeleton'));
 const ProductUpsell = ({
     dataProduct, isLogin, storeConfig, ...other
 }) => {
-    const { loading, data, error } = getUpsellProduct(storeConfig, { variables: { url: dataProduct.url_key } });
+    // cache price
+    const cachePrice = priceVar();
+    const [getProductPrice, { data: dataPrice }] = getPriceUpsellProduct();
+
+    const { loading, data, error } = getUpsellProduct(storeConfig, {
+        variables: { url: dataProduct.url_key },
+    });
+
+    React.useEffect(() => {
+        getProductPrice({
+            variables: { url: dataProduct.url_key },
+        });
+    }, []);
 
     React.useEffect(() => {
         if (!loading && !error && data && data.products && data.products.items.length > 0
-            && data.products.items[0].related_products && data.products.items[0].related_products.length > 0) {
+            && data.products.items[0].upsell_products && data.products.items[0].upsell_products.length > 0) {
             let index = 0;
             let categoryProduct = '';
             // eslint-disable-next-line no-unused-expressions
@@ -30,7 +43,7 @@ const ProductUpsell = ({
                     pageType: 'product',
                     ecommerce: {
                         impressions: [
-                            ...data.products.items[0].related_products.map((val) => {
+                            ...data.products.items[0].upsell_products.map((val) => {
                                 index += 1;
                                 return ({
                                     name: val.name,
@@ -52,6 +65,21 @@ const ProductUpsell = ({
             TagManager.dataLayer(tagManagerArgs);
         }
     }, [data]);
+
+    React.useEffect(() => {
+        if (dataPrice && dataPrice?.products.items?.length && dataPrice?.products.items[0].upsell_products?.length) {
+            const identifier = `upsell-${dataProduct.url_key}`;
+            const dataTemp = cachePrice;
+            dataTemp[identifier] = {
+                products: {
+                    items: dataPrice?.products.items[0].upsell_products,
+                },
+            };
+            priceVar({
+                ...cachePrice,
+            });
+        }
+    }, [dataPrice]);
 
     if (loading) return <Loader />;
 

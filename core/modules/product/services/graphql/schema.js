@@ -129,6 +129,30 @@ query Product($url: String!){
 }
 `;
 
+export const getPriceUpsellProduct = () => gql`
+query Product($url: String!){
+  products(
+    search: "" ,filter: {
+      url_key: {
+        eq: $url
+      }
+    }
+  ) {
+    items {
+      id
+      upsell_products {
+        id
+        name
+        sku
+        stock_status
+        ${priceRange}
+        ${priceTiers}
+      }
+    }
+  }
+}
+`;
+
 export const getRelatedProduct = (config = {}) => gql`
 query Product($url: String!) {
   products(
@@ -149,6 +173,31 @@ query Product($url: String!) {
   }
 }
 `;
+
+export const getPriceRelatedProduct = () => gql`
+query Product($url: String!) {
+  products(
+    search: "" ,filter: {
+      url_key: {
+        eq: $url
+      }
+    }
+  ) {
+    items {      
+      id
+      related_products {   
+        id
+        name
+        sku
+        stock_status
+        ${priceRange}
+        ${priceTiers}
+      }
+    }
+  }
+}
+`;
+
 const tabListProduct = `
     tab_1 {
       label
@@ -383,6 +432,7 @@ query getProducts(
         id
         name
         sku
+        stock_status
         ${priceRange}
         ${priceTiers}
         ${

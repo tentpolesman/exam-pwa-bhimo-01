@@ -212,6 +212,56 @@ export const getProductList = gql`
     }
 `;
 
+export const getPriceProductList = gql`
+query getProductList($search: String, $pageSize: Int, $filter: ProductAttributeFilterInput, $sort: ProductAttributeSortInput) {
+    products(search: $search, pageSize: $pageSize, filter: $filter, sort: $sort) {
+        items {
+            id
+            sku
+            url_key
+            price_range {
+                maximum_price {
+                    regular_price {
+                        value
+                    }
+                    final_price {
+                        value
+                    }
+                    discount {
+                        amount_off
+                        percent_off
+                    }
+                }
+                minimum_price {
+                    regular_price {
+                        value
+                    }
+                    final_price {
+                        value
+                    }
+                    discount {
+                        amount_off
+                        percent_off
+                    }
+                }
+            }
+            price_tiers {
+                discount {
+                    amount_off
+                    percent_off
+                }
+                final_price {
+                    currency
+                    value
+                }
+                quantity
+            }
+            stock_status
+        }
+    }
+}
+`;
+
 export const getCategories = gql`
     query getCategories($ids: [String]) {
         categoryList(filters: { ids: { in: $ids } }) {

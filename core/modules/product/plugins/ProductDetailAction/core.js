@@ -400,7 +400,6 @@ const ProductDetailAction = ({
     React.useEffect(() => {
         if (!cachePrice[generateIdentifier]) {
             getProdPrice({
-                context,
                 variables: {
                     url: slug,
                 },
@@ -414,6 +413,7 @@ const ProductDetailAction = ({
             const identifier = generateIdentifier;
             const dataTemp = cachePrice;
             dataTemp[identifier] = dataPrice;
+            setStockStatus(dataPrice?.products?.items[0]?.stock_status || item.stock_status);
             priceVar({ ...cachePrice });
         }
     }, [dataPrice, slug]);

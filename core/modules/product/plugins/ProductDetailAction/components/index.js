@@ -82,6 +82,7 @@ const ProductDetailAction = ({
     enableMultiSeller,
     useStickyImageSlider = false,
     stickyImageSliderTopPosition,
+    stockStatus,
 }) => (
     <div className="plugin-product-detail-action">
         <div
@@ -104,7 +105,7 @@ const ProductDetailAction = ({
                         FooterComponentImagePreview={(
                             <ProductLabel
                                 className="absolute top-[15px] left-[17px]"
-                                stockStatus={data?.stock_status}
+                                stockStatus={stockStatus}
                                 newFromDate={data?.new_from_date}
                                 newToDate={data?.new_to_date}
                                 specialFromDate={data?.special_from_date}
@@ -230,7 +231,7 @@ const ProductDetailAction = ({
                         showWishlist={false}
                         enableProductCompare={false}
                         showStockStatus
-                        stockStatus={data?.stock_status || ''}
+                        stockStatus={stockStatus}
                         storeConfig={storeConfig}
                         handleOption={handleOption}
                         setPrice={setPrice}

@@ -335,6 +335,7 @@ export const getProductPrice = (config = {}, router) => gql`
         sku
         name
         url_key
+        stock_status
         price_range {
             maximum_price {
                 regular_price {

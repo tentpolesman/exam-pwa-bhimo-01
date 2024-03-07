@@ -37,10 +37,11 @@ export const addWishlist = () =>
         },
     });
 
-export const getDetailProduct = (config = {}) =>
+export const getDetailProduct = (config = {}, options = {}) =>
     useLazyQuery(productSchema.getDetailProduct(config), {
         fetchPolicy: 'no-cache',
         extFetchPolicy: 'no-cache',
+        ...options,
     });
 
 export const getDetailProductPrice = (config = {}) =>
