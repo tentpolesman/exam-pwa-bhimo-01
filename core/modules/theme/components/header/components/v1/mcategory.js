@@ -29,13 +29,12 @@ const Menu = (props) => {
 
     if (cmsMenu) {
         const dataMenu = genereateCmsMenu(cmsMenu);
-
         if (dataMenu && dataMenu.length) {
             menu = [...menu, ...dataMenu];
         }
     }
 
-    if (menu.length > 7 && useOthers) {
+    if (menu.filter((item) => item.include_in_menu).length > 7 && useOthers) {
         const firstMenu = menu.filter((item, key) => key < 8);
         const otherChildren = menu.filter((item, key) => key >= 8);
         const othersMenu = {

@@ -72,6 +72,11 @@ const genereateCmsMenu = (cmsMenu) => {
                 }
             }
         });
+    } else if (parseMenu && parseMenu.type === 'ul') {
+        if (parseMenu?.props?.children && parseMenu?.props?.children.length) {
+            const ulChildren = parseMenu.props.children;
+            dataMenu = generateChildren(ulChildren, 1);
+        }
     }
 
     return dataMenu;
