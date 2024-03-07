@@ -141,12 +141,12 @@ const DesktopHeader = (props) => {
                         'flex',
                         'flex-row',
                         'justify-between',
-                        'tablet:max-w-[768px]',
+                        'tablet:max-w-screen-tablet',
                         'desktop:gap-x-5',
                         'px-4',
                         'tablet:px-6',
                         'desktop:gap-x-6',
-                        'desktop:max-w-[1280px]',
+                        'desktop:max-w-screen-desktop',
                         'desktop:px-10',
                         'mobile:max-tablet:grid',
                         'mobile:max-tablet:grid-cols-[4fr_4fr]',
@@ -311,7 +311,7 @@ const DesktopHeader = (props) => {
                     </div>
                 ) : null}
             </div>
-            <div className={cx('bottom-header', 'tablet:max-w-[768px]', 'desktop:max-w-[1280px]', 'm-[0_auto]', 'px-6')}>
+            <div className={cx('bottom-header', 'tablet:max-w-screen-tablet', 'desktop:max-w-screen-desktop', 'm-[0_auto]', 'px-6')}>
                 {isSearchShown && isMobile ? (
                     <div className={cx('bottom-header-mobile__search')}>
                         <Autocomplete setValue={setValue} handleSearch={handleSearch} t={t} storeConfig={storeConfig} />

@@ -24,7 +24,7 @@ import App from 'next/app';
 import React from 'react';
 import { gql } from '@apollo/client';
 import graphRequest from '@graphql_request';
-// import getConfig from 'next/config';
+import getConfig from 'next/config';
 import TagManager from 'react-gtm-module';
 import ModalCookies from '@core_modules/theme/components/modalCookies';
 import { getDeviceByUA, getUAString } from '@core/helpers/deviceDection';
@@ -35,8 +35,8 @@ import { getStoreHost } from '@core/helpers/config';
 /* Commented by default to avoid unused code which directly impact on performance socre
  * Uncomment this if firebase is used in you progect
  */
-// import firebase from '@lib_firebase/index';
-// import Notification from '@lib_firebase/notification';
+import firebase from '@lib_firebase/index';
+import Notification from '@lib_firebase/notification';
 
 /* Sentry /*
 /* Commented by default to avoid unused code which directly impact on performance socre
@@ -55,7 +55,7 @@ import { getStoreHost } from '@core/helpers/config';
 
 // import { useApollo } from '@core/lib/apollo/apolloClient';
 
-// const { publicRuntimeConfig } = getConfig();
+const { publicRuntimeConfig } = getConfig();
 
 /*
  * ---------------------------------------------
@@ -243,7 +243,7 @@ class MyApp extends App {
          * ---------------------------------------------
          * FIREBASE INITIALIZATION
          */
-        if (features.firebase.config.apiKey !== '' && features.firebase.pushNotification.enabled) {
+        if (publicRuntimeConfig && publicRuntimeConfig.firebaseApiKey && features.firebase.pushNotification.enabled) {
             // initial firebase messaging
             Notification.init();
             // handle if have message on focus

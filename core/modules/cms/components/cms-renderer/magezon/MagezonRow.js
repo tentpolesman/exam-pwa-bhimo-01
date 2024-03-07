@@ -27,7 +27,7 @@ const MagezonRow = (props) => {
             <div
                 className={cx({
                     'w-full': isFullWidth,
-                    'desktop:max-w-[1280px] desktop:px-10 tablet:max-w-[768px] tablet:px-6 mobile:px-4 my-0 mx-auto': isContained,
+                    'desktop:max-w-screen-desktop desktop:px-10 tablet:max-w-screen-tablet tablet:px-6 mobile:px-4 my-0 mx-auto': isContained,
                 })}
             >
                 <div

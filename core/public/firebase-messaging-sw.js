@@ -5,7 +5,10 @@
 // Give the service worker access to Firebase Messaging.
 // Note that you can only use Firebase Messaging here, other Firebase libraries
 // are not available in the service worker.
+const getConfig = require('next/config');
 const { features } = require('../../swift.config');
+
+const { publicRuntimeConfig } = getConfig();
 
 importScripts('https://www.gstatic.com/firebasejs/8.2.7/firebase-app.js');
 importScripts('https://www.gstatic.com/firebasejs/8.2.7/firebase-messaging.js');
@@ -14,7 +17,7 @@ importScripts('https://www.gstatic.com/firebasejs/8.2.7/firebase-messaging.js');
 // messagingSenderId.
 const firebaseConfig = features.firebase.config;
 // Initialize Firebase
-if (firebaseConfig.apiKey !== '' && !firebase.apps.length) {
+if (publicRuntimeConfig && publicRuntimeConfig?.firebaseApiKey !== '' && !firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
 }
 
