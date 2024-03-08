@@ -20,7 +20,7 @@ const GlobalPromoMessage = (props) => {
 
     if (loading) {
         return (
-            <div id="global-promo-message">
+            <div id="global-promo-message-skeleton">
                 <Skeleton height={38} className={cx('!top-[10px]', '!left-[25%]', '!w-[50vw]')} />
             </div>
         );
