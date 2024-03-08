@@ -27,3 +27,8 @@
     box-shadow: none;
     
 }
+
+/* Tweak accordion on safari */
+summary::-webkit-details-marker { 
+    display: none; 
+}
