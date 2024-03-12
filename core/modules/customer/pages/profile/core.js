@@ -155,8 +155,6 @@ const ProfilePage = (props) => {
         }
     }, [data]);
 
-    console.log('masuk data', formik.values, formik.errors, formik.touched);
-
     return (
         <Content
             t={t}
