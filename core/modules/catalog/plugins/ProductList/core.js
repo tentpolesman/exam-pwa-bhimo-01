@@ -70,13 +70,12 @@ const ProductList = (props) => {
     }
     // end handle previous
 
-    let sizePage;
     const [products, setProducts] = React.useState({
         total_count: 0,
         items: [],
     });
     const [page, setPage] = React.useState(backPage || 1);
-    const [pageSize, setPageSize] = React.useState(sizePage || 10);
+    const [pageSize, setPageSize] = React.useState(15);
     const [totalCount, setTotalCount] = React.useState(0);
     const [totalPage, setTotalPage] = React.useState(0);
     const [loadmore, setLoadmore] = React.useState(false);
@@ -204,10 +203,6 @@ const ProductList = (props) => {
     }] = getProductPrice(
         config,
         {
-            variables: {
-                pageSize,
-                currentPage: page,
-            },
             context: {
                 request: 'internal',
             },
@@ -219,7 +214,12 @@ const ProductList = (props) => {
 
     React.useEffect(() => {
         if (typeof window !== 'undefined' && !cachePrice[generateIdentifier]) {
-            getProdPrice();
+            getProdPrice({
+                variables: {
+                    pageSize,
+                    currentPage: page,
+                },
+            });
         }
         // clear timeout when the component unmounts
         return () => {
