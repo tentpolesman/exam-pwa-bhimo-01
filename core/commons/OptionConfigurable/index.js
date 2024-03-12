@@ -4,9 +4,10 @@ import Swatch from '@common/Forms/Swatch';
 
 const SelectOption = (props) => {
     const {
-        value, selected, onChange, className = '', disabled = false, thumbnail, content, variant: customVariant,
+        label, value, selected, onChange, className = '', disabled = false, thumbnail, content, variant: customVariant,
     } = props;
 
+    console.log('masuk select props', props, content, value, disabled);
     let variant = 'text';
     if (content?.includes('#')) {
         variant = 'color';
@@ -26,9 +27,14 @@ const SelectOption = (props) => {
             disabled={disabled}
             variant={customVariant || variant}
             checked={selected}
-            value={content}
+            /*
+                value =
+                isSwatch true : content
+                isSwatch false : value
+            */
+            value={content || value}
             onClick={handleChange}
-            label={thumbnail && thumbnail !== '' ? thumbnail : content}
+            label={thumbnail || content || label}
             className={className}
         />
     );

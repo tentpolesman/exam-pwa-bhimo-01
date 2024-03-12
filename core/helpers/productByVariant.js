@@ -193,14 +193,16 @@ export const generateValue = (selected = {}, configurable = [], combination = {}
 
             // kondisi jika belum select semua maka option setelahyang diselect di disabled jika tidak ada
             if (!combination[subVal.value_index] && !selected[element.attribute_code] && selectKey.length !== 0) {
+                console.log('masuk sini 1');
                 initValue.disabled = true;
             }
             // jika sudah select semua maka kecuali urutan pertama di coret jika tidak ada
-            else if (selectKey.length === configurable.length && selectKey[0] !== element.attribute_code) {
-                if (!combination[subVal.value_index]) {
-                    initValue.disabled = true;
-                }
-            }
+            // else if (selectKey.length === configurable.length && selectKey[0] !== element.attribute_code) {
+            //     if (!combination[subVal.value_index]) {
+            //         console.log('masuk sini 2');
+            //         initValue.disabled = true;
+            //     }
+            // }
             value.push(initValue);
         }
         element.isSwatch = isSwatch;
@@ -231,7 +233,8 @@ export const handleSelected = (selected, key, value) => {
                 delete result[selectKey[index]];
             }
         }
-    } else if (result[key]) { // kondisi jika key sama tapi merubah value
+    } else if (result[key]) {
+        // kondisi jika key sama tapi merubah value
         let position = 0;
         for (let index = 0; index < selectKey.length; index += 1) {
             if (key === selectKey[index]) {
