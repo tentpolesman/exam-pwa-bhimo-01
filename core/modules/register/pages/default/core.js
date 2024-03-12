@@ -331,7 +331,7 @@ const Register = (props) => {
     };
 
     const handleChangePhone = (event) => {
-        const value = event;
+        const value = event ?? '';
         if (phoneIsWa === true) {
             formik.setFieldValue('whatsappNumber', value);
         }
@@ -340,7 +340,7 @@ const Register = (props) => {
     };
 
     const handleChangeWa = (event) => {
-        const value = event;
+        const value = event ?? '';
 
         formik.setFieldValue('whatsappNumber', value);
     };
