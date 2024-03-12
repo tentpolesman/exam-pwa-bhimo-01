@@ -9,7 +9,7 @@ import Layout from '@layout';
 import CustomerLayout from '@layout_customer';
 import { useFormik } from 'formik';
 import Cookies from 'js-cookie';
-import React from 'react';
+import React, { useEffect } from 'react';
 import * as Yup from 'yup';
 
 const ProfilePage = (props) => {
@@ -125,22 +125,38 @@ const ProfilePage = (props) => {
         if (phoneIsWa === false) {
             // eslint-disable-next-line no-use-before-define
             formik.setFieldValue('whatsapp_number', formik.values.phonenumber);
+        } else {
+            formik.setFieldValue('whatsapp_number', '');
         }
         setPhoneIsWa(!phoneIsWa);
     };
 
     const handleChangePhone = (event) => {
-        const value = event;
+        const value = event ?? '';
         if (phoneIsWa) {
             formik.setFieldValue('whatsapp_number', value);
         }
         formik.setFieldValue('phonenumber', value);
     };
+
     const handleChangeWa = (event) => {
-        const value = event;
+        const value = event ?? '';
 
         formik.setFieldValue('whatsapp_number', value);
     };
+
+    useEffect(() => {
+        // init handle checklist WA
+        if (data?.phonenumber) {
+            if (data.phonenumber === data.whatsapp_number) {
+                formik.setFieldValue('whatsapp_number', formik.values.phonenumber);
+                setPhoneIsWa(true);
+            }
+        }
+    }, [data]);
+
+    console.log('masuk data', formik.values, formik.errors, formik.touched);
+
     return (
         <Content
             t={t}
