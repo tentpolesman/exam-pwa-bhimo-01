@@ -13,7 +13,6 @@ import getCategoryFromAgregations from '@core_modules/catalog/helpers/getCategor
 import { getTagManager, getTagManagerGA4 } from '@core_modules/catalog/helpers/catalogTagManager';
 import TagManager from 'react-gtm-module';
 import Alert from '@common/Alert';
-import { getLoginInfo } from '@helper_auth';
 
 const ProductList = (props) => {
     const {
@@ -21,7 +20,6 @@ const ProductList = (props) => {
     } = props;
     const router = useRouter();
     const { path, query } = getQueryFromPath(router);
-    const isLogin = getLoginInfo();
 
     /**
      * config from BO
@@ -179,7 +177,6 @@ const ProductList = (props) => {
         };
         config = generateConfig(query, config, elastic, availableFilter);
     }
-    const context = (isLogin && isLogin == 1) || (config.sort && config.sort.key === 'random') ? { request: 'internal' } : {};
 
     const {
         loading,
@@ -341,7 +338,6 @@ const ProductList = (props) => {
                         pageSize,
                         currentPage: pageTemp,
                     },
-                    context,
                     updateQuery: (previousResult, { fetchMoreResult }) => {
                         setLoadmore(false);
                         return {
