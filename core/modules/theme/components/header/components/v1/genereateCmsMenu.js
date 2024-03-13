@@ -61,25 +61,29 @@ const generateChildren = (dataChild = [], latestLevel = 1) => {
 };
 
 const genereateCmsMenu = (cmsMenu) => {
-    let dataMenu = [];
-    const parseMenu = parse(cmsMenu.replace(/\n /g, '').replace(/\n/g, ''));
-    if (parseMenu.length > 0) {
-        parseMenu.forEach((ulFirst) => {
-            if (ulFirst.type && ulFirst.type === 'ul') {
-                if (ulFirst?.props?.children && ulFirst?.props?.children.length) {
-                    const ulChildren = ulFirst.props.children;
-                    dataMenu = generateChildren(ulChildren, 1);
+    try {
+        let dataMenu = [];
+        const parseMenu = parse(cmsMenu.replace(/\n /g, '').replace(/\n/g, ''));
+        if (parseMenu.length > 0) {
+            parseMenu.forEach((ulFirst) => {
+                if (ulFirst.type && ulFirst.type === 'ul') {
+                    if (ulFirst?.props?.children && ulFirst?.props?.children.length) {
+                        const ulChildren = ulFirst.props.children;
+                        dataMenu = generateChildren(ulChildren, 1);
+                    }
                 }
+            });
+        } else if (parseMenu && parseMenu.type === 'ul') {
+            if (parseMenu?.props?.children && parseMenu?.props?.children.length) {
+                const ulChildren = parseMenu.props.children;
+                dataMenu = generateChildren(ulChildren, 1);
             }
-        });
-    } else if (parseMenu && parseMenu.type === 'ul') {
-        if (parseMenu?.props?.children && parseMenu?.props?.children.length) {
-            const ulChildren = parseMenu.props.children;
-            dataMenu = generateChildren(ulChildren, 1);
         }
-    }
 
-    return dataMenu;
+        return dataMenu;
+    } catch (error) {
+        return [];
+    }
 };
 
 export default genereateCmsMenu;
