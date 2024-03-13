@@ -10,10 +10,7 @@ import { localCompare } from '@services/graphql/schema/local';
 import { useTranslation } from 'next-i18next';
 import propTypes from 'prop-types';
 import React, { useEffect } from 'react';
-
-import BadgeCounter from '@common_badgecounter';
 import Typography from '@common_typography';
-
 import ArrowsRightLeftIcon from '@heroicons/react/24/solid/ArrowsRightLeftIcon';
 import cx from 'classnames';
 import { getLoginInfo } from '@helper_auth';
@@ -111,17 +108,10 @@ const ProductCompareIcon = ({
                 },
             };
         }
-        if (tempCompare || compareList) {
-            return (
-                <>
-                    <WithLinkView compareList={tempCompare || compareList} handleLink="/catalog/product_compare" isLogin={isLogin} />
-                </>
-            );
-        }
         return (
-            <BadgeCounter value={0}>
-                <ArrowsRightLeftIcon className={cx('w-[24px]', 'text-neutral-600', 'hover:text-primary-700', 'mt-3')} />
-            </BadgeCounter>
+            <>
+                <WithLinkView compareList={tempCompare || compareList} handleLink="/catalog/product_compare" isLogin={isLogin} />
+            </>
         );
     }
 
