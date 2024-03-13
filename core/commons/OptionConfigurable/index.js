@@ -7,7 +7,6 @@ const SelectOption = (props) => {
         label, value, selected, onChange, className = '', disabled = false, thumbnail, content, variant: customVariant,
     } = props;
 
-    console.log('masuk select props', props, content, value, disabled);
     let variant = 'text';
     if (content?.includes('#')) {
         variant = 'color';
