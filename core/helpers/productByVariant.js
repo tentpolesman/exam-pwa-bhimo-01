@@ -193,13 +193,11 @@ export const generateValue = (selected = {}, configurable = [], combination = {}
 
             // kondisi jika belum select semua maka option setelahyang diselect di disabled jika tidak ada
             if (!combination[subVal.value_index] && !selected[element.attribute_code] && selectKey.length !== 0) {
-                console.log('masuk sini 1');
                 initValue.disabled = true;
             }
             // jika sudah select semua maka kecuali urutan pertama di coret jika tidak ada
             // else if (selectKey.length === configurable.length && selectKey[0] !== element.attribute_code) {
             //     if (!combination[subVal.value_index]) {
-            //         console.log('masuk sini 2');
             //         initValue.disabled = true;
             //     }
             // }
