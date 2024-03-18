@@ -13,7 +13,6 @@ import getCategoryFromAgregations from '@core_modules/catalog/helpers/getCategor
 import { getTagManager, getTagManagerGA4 } from '@core_modules/catalog/helpers/catalogTagManager';
 import TagManager from 'react-gtm-module';
 import Alert from '@common/Alert';
-import { getLoginInfo } from '@helper_auth';
 
 const ProductList = (props) => {
     const {
@@ -21,7 +20,6 @@ const ProductList = (props) => {
     } = props;
     const router = useRouter();
     const { path, query } = getQueryFromPath(router);
-    const isLogin = getLoginInfo();
 
     /**
      * config from BO
@@ -70,13 +68,12 @@ const ProductList = (props) => {
     }
     // end handle previous
 
-    let sizePage;
     const [products, setProducts] = React.useState({
         total_count: 0,
         items: [],
     });
     const [page, setPage] = React.useState(backPage || 1);
-    const [pageSize, setPageSize] = React.useState(sizePage || 10);
+    const [pageSize, setPageSize] = React.useState(15);
     const [totalCount, setTotalCount] = React.useState(0);
     const [totalPage, setTotalPage] = React.useState(0);
     const [loadmore, setLoadmore] = React.useState(false);
@@ -180,7 +177,6 @@ const ProductList = (props) => {
         };
         config = generateConfig(query, config, elastic, availableFilter);
     }
-    const context = (isLogin && isLogin == 1) || (config.sort && config.sort.key === 'random') ? { request: 'internal' } : {};
 
     const {
         loading,
@@ -204,10 +200,6 @@ const ProductList = (props) => {
     }] = getProductPrice(
         config,
         {
-            variables: {
-                pageSize,
-                currentPage: page,
-            },
             context: {
                 request: 'internal',
             },
@@ -219,7 +211,12 @@ const ProductList = (props) => {
 
     React.useEffect(() => {
         if (typeof window !== 'undefined' && !cachePrice[generateIdentifier]) {
-            getProdPrice();
+            getProdPrice({
+                variables: {
+                    pageSize,
+                    currentPage: page,
+                },
+            });
         }
         // clear timeout when the component unmounts
         return () => {
@@ -341,7 +338,6 @@ const ProductList = (props) => {
                         pageSize,
                         currentPage: pageTemp,
                     },
-                    context,
                     updateQuery: (previousResult, { fetchMoreResult }) => {
                         setLoadmore(false);
                         return {
