@@ -26,6 +26,9 @@ const ProfileForm = (props) => {
         handleChangeWa,
     } = props;
 
+    const checkIsFieldError = (name = '') => !!(formik.touched[name] && formik.errors[name]);
+    const fieldErrorMessage = (name = '') => (formik.touched[name] && formik.errors[name]) || null;
+
     return (
         <div className={cx('desktop:w-[50%] w-full')}>
             <form onSubmit={formik.handleSubmit}>
@@ -40,9 +43,9 @@ const ProfileForm = (props) => {
                     onChange={formik.handleChange}
                     absolute={false}
                     hintProps={{
-                        displayHintText: !!formik.errors.firstName,
+                        displayHintText: checkIsFieldError('firstName'),
                         hintType: 'error',
-                        hintText: formik.errors.firstName || null,
+                        hintText: fieldErrorMessage('firstName'),
                         className: cx('my-2'),
                     }}
                 />
@@ -57,9 +60,9 @@ const ProfileForm = (props) => {
                     onChange={formik.handleChange}
                     absolute={false}
                     hintProps={{
-                        displayHintText: !!formik.errors.lastName,
+                        displayHintText: checkIsFieldError('lastName'),
                         hintType: 'error',
-                        hintText: formik.errors.lastName || null,
+                        hintText: fieldErrorMessage('lastName'),
                         className: cx('my-2'),
                     }}
                 />
@@ -77,8 +80,8 @@ const ProfileForm = (props) => {
                     required
                     value={formik.values.phonenumber}
                     onChange={handleChangePhone}
-                    error={!!(formik.touched.phonenumber && formik.errors.phonenumber)}
-                    errorMessage={(formik.touched.phonenumber && formik.errors.phonenumber) || null}
+                    error={checkIsFieldError('phonenumber')}
+                    errorMessage={fieldErrorMessage('phonenumber')}
                 />
                 <div className={cx('flex content-center mb-[24px]')}>
                     <Checkbox
@@ -109,8 +112,8 @@ const ProfileForm = (props) => {
                         required
                         value={formik.values.whatsapp_number}
                         onChange={handleChangeWa}
-                        error={!!(formik.touched.whatsapp_number && formik.errors.whatsapp_number)}
-                        errorMessage={(formik.touched.whatsapp_number && formik.errors.whatsapp_number) || null}
+                        error={checkIsFieldError('whatsapp_number')}
+                        errorMessage={fieldErrorMessage('whatsapp_number')}
                     />
                 </Show>
                 <div className={cx('flex content-center mb-[24px]')}>
@@ -139,9 +142,9 @@ const ProfileForm = (props) => {
                         onChange={formik.handleChange}
                         absolute={false}
                         hintProps={{
-                            displayHintText: !!formik.errors.email,
+                            displayHintText: checkIsFieldError('email'),
                             hintType: 'error',
-                            hintText: formik.errors.email || null,
+                            hintText: fieldErrorMessage('email'),
                             className: cx('my-2'),
                         }}
                     />
@@ -172,8 +175,8 @@ const ProfileForm = (props) => {
                         hintClassName={cx('my-2')}
                         value={formik.values.currentPassword}
                         onChange={(e) => formik.setFieldValue('currentPassword', e.target.value)}
-                        error={!!(formik.touched.currentPassword && formik.errors.currentPassword)}
-                        errorMessage={(formik.touched.currentPassword && formik.errors.currentPassword) || null}
+                        error={checkIsFieldError('currentPassword')}
+                        errorMessage={fieldErrorMessage('currentPassword')}
                     />
                     <PasswordField
                         className={cx('w-full mb-[24px]')}
@@ -187,8 +190,8 @@ const ProfileForm = (props) => {
                         hintClassName={cx('my-2')}
                         value={formik.values.password}
                         onChange={(e) => formik.setFieldValue('password', e.target.value)}
-                        error={!!(formik.touched.password && formik.errors.password)}
-                        errorMessage={(formik.touched.password && formik.errors.password) || null}
+                        error={checkIsFieldError('password')}
+                        errorMessage={fieldErrorMessage('password')}
                     />
                     <PasswordField
                         className={cx('w-full mb-[24px]')}
@@ -201,8 +204,8 @@ const ProfileForm = (props) => {
                         hintClassName={cx('my-2')}
                         value={formik.values.confirmPassword}
                         onChange={(e) => formik.setFieldValue('confirmPassword', e.target.value)}
-                        error={!!(formik.touched.confirmPassword && formik.errors.confirmPassword)}
-                        errorMessage={(formik.touched.confirmPassword && formik.errors.confirmPassword) || null}
+                        error={checkIsFieldError('confirmPassword')}
+                        errorMessage={fieldErrorMessage('confirmPassword')}
                     />
                 </Show>
                 <div className={cx('pt-5')}>

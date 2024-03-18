@@ -1,8 +1,10 @@
 import { withTranslation } from 'next-i18next';
 import { withApollo } from '@lib_apollo';
-import Content from '@core_modules/customer/pages/profile/components';
-import Skeleton from '@core_modules/customer/pages/profile/components/skeleton';
-import Core from '@core_modules/customer/pages/profile/core';
+import dynamic from 'next/dynamic';
+
+const Core = dynamic(() => import('@core_modules/customer/pages/profile/core'), { ssr: false });
+const Skeleton = dynamic(() => import('@core_modules/customer/pages/profile/components/skeleton'), { ssr: false });
+const Content = dynamic(() => import('@core_modules/customer/pages/profile/components'), { ssr: false });
 
 const Page = (props) => <Core {...props} Content={Content} Skeleton={Skeleton} />;
 
