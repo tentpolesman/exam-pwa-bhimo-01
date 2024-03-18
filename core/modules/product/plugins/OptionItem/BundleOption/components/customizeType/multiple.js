@@ -14,12 +14,12 @@ const SelectItem = ({
     data, options = [], selectOptions, currencyCache, dynamicPrice,
 }) => {
     const defaultValue = React.useMemo(() => {
-        let tempValue = 0;
+        const tempValue = [];
         if (options && options.length > 0) {
             for (let index = 0; index < options.length; index++) {
                 const element = options[index];
                 if (element.is_default) {
-                    tempValue = element.id;
+                    tempValue.push(element.id);
                 }
             }
         }
@@ -27,16 +27,10 @@ const SelectItem = ({
     }, [options]);
 
     const selectedValue = React.useMemo(() => {
-        let selectedLabel = '';
-        const filterOption = options.filter((item) => item.id === defaultValue);
-        if (filterOption.length > 0) {
-            const option_item = filterOption[0];
-            selectedLabel = `${option_item.label} - ${formatPrice(dynamicPrice === false
-                ? option_item.price : option_item.product.price_range.minimum_price.final_price.value,
-            option_item.product.price_range.minimum_price.final_price.currency,
-            currencyCache)}`;
-        }
-        return selectedLabel;
+        const selectedValues = [];
+        const filterOption = options.filter((item) => defaultValue.includes(item.id));
+        filterOption.map((option_item) => selectedValues.push(option_item.id));
+        return selectedValues;
     }, [defaultValue]);
 
     const listOptions = React.useMemo(() => {
@@ -57,18 +51,18 @@ const SelectItem = ({
         return dataOptions;
     }, [options]);
 
+    const handleChange = (value) => {
+        selectOptions(data, parseInt(value));
+    };
+
     return (
         <div className={cx('cutomize-option-select-multiple')}>
             <Select
-                id="demo-simple-select-multiple"
+                id="multiple-option"
+                multiple
                 value={selectedValue}
                 options={listOptions}
-                optionProps={{
-                    className: 'absolute',
-                }}
-                onChange={(value) => {
-                    selectOptions(data, parseInt(value));
-                }}
+                itemChange={handleChange}
             />
         </div>
     );

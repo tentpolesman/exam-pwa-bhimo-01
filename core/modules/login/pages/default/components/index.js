@@ -10,11 +10,13 @@ import PhoneField from '@common_forms/PhoneInput';
 import TextField from '@common_forms/TextField';
 import Tabs from '@common_tabs';
 import Typography from '@common_typography';
-import { features } from '@config';
 import OtpView from '@plugin_otpfield';
 import Show from '@common_show';
 import cx from 'classnames';
 import dynamic from 'next/dynamic';
+import getConfig from 'next/config';
+
+const { publicRuntimeConfig } = getConfig();
 
 const Breadcrumb = dynamic(() => import('@common_breadcrumb'), { ssr: false });
 
@@ -44,7 +46,8 @@ const Login = (props) => {
     const tabsData = [{ title: 'Email' }, { title: t('login:Phone') }];
     const breadcrumbsData = [{ label: t('login:login'), link: '#', active: true }];
     const signInOptions = [];
-    if (features.firebase.config.apiKey !== '' && firebase && firebase.auth && socialLoginMethodData && socialLoginMethodData.length > 0) {
+    if (publicRuntimeConfig && publicRuntimeConfig?.firebaseApiKey !== ''
+        && firebase && firebase.auth && socialLoginMethodData && socialLoginMethodData.length > 0) {
         for (let idx = 0; idx < socialLoginMethodData.length; idx += 1) {
             const code = socialLoginMethodData[idx];
             if (code.match(/google/i) && firebase.auth.GoogleAuthProvider && firebase.auth.GoogleAuthProvider.PROVIDER_ID) {
@@ -80,7 +83,7 @@ const Login = (props) => {
     const [firebaseLoaded, setFirebaseLoaded] = useState(false);
 
     useEffect(() => {
-        if (features.firebase.config.apiKey === '') {
+        if (publicRuntimeConfig && publicRuntimeConfig?.firebaseApiKey === '') {
             setFirebaseLoaded(false);
         } else {
             setFirebaseLoaded(true);

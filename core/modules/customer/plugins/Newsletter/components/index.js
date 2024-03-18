@@ -8,7 +8,9 @@ import cx from 'classnames';
 
 const NewsletterView = (props) => {
     // base props
-    const { formik, loading, t, type, storeConfig, ...others } = props;
+    const {
+        formik, loading, t, type, storeConfig, ...others
+    } = props;
 
     // magezon newsletter props
     const {
@@ -59,7 +61,7 @@ const NewsletterView = (props) => {
                 <div
                     className={cx(
                         'relative',
-                        'tablet:max-desktop:max-w-[768px] desktop:max-w-[1280px] m-[0_auto]',
+                        'tablet:max-desktop:max-w-screen-tablet desktop:max-w-screen-desktop m-[0_auto]',
                         'tablet:flex',
                         'tablet:flex-row',
                         'tablet:justify-between',

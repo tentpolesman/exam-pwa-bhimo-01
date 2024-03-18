@@ -30,6 +30,7 @@ module.exports = withPWA({
     publicRuntimeConfig: {
         appEnv: process.env.APP_ENV,
         rootDir: __dirname,
+        firebaseApiKey: process.env.FIREBASE_API_KEY,
     },
     // Images
     images: {

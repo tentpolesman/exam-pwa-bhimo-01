@@ -31,6 +31,7 @@ const HeaderV1 = (props) => {
             // handle sticky
             if (storeConfig && storeConfig.pwa && storeConfig.pwa.enabler_sticky_header) {
                 let isDesktop = false;
+                const headerPromo = document.getElementById('global-promo-message');
                 // eslint-disable-next-line no-unused-vars
                 let isTablet = false;
                 let isMobile = false;
@@ -57,7 +58,9 @@ const HeaderV1 = (props) => {
                     const handleScroll = () => {
                         const scrollTopPosition = window.pageYOffset || document.documentElement.scrollTop;
                         headerHeight = header.offsetHeight;
-                        globalPromoheight = document.querySelector('#global-promo-message')?.offsetHeight;
+                        if (headerPromo) {
+                            globalPromoheight = document.querySelector('#global-promo-message')?.offsetHeight;
+                        }
                         topHeaderheight = isDesktop
                             ? document.querySelector('.desktop-header .top-header')?.offsetHeight
                             : document.querySelector('#top-header')?.offsetHeight || 0;

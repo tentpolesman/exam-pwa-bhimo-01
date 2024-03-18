@@ -21,6 +21,7 @@ export const getProduct = (config = {}, options = {}) => useQuery(Schema.getProd
 export const getProductPrice = (config = {}, options = {}) => useLazyQuery(Schema.getProductPrice(config), {
     ...defaultConfig,
     ...options,
+    ...useInternal,
     fetchPolicy: 'no-cache',
 });
 export const getProductLabel = (config = {}, options = {}) => useQuery(Schema.getProductLabel(config), {
@@ -36,6 +37,22 @@ export const getRelatedProduct = (config, options = {}) => useQuery(Schema.getRe
 export const getUpsellProduct = (config = {}, options = {}) => useQuery(Schema.getUpsellProduct(config), {
     ...defaultConfig,
     ...options,
+});
+
+export const getPriceUpsellProduct = (config = {}, options = {}) => useLazyQuery(Schema.getPriceUpsellProduct(config), {
+    ...defaultConfig,
+    ...options,
+    context: {
+        request: 'internal',
+    },
+});
+
+export const getPriceRelatedProduct = (config = {}, options = {}) => useLazyQuery(Schema.getPriceRelatedProduct(config), {
+    ...defaultConfig,
+    ...options,
+    context: {
+        request: 'internal',
+    },
 });
 
 export const getCustomizableOption = (urlpath) => useLazyQuery(CustomizableSchema.getCustomizableOption(urlpath), {
