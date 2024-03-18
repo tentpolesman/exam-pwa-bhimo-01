@@ -27,8 +27,8 @@ const RangeSlider = (props) => {
 
     React.useEffect(() => {
         if (maxValue > 0) {
-            const minPercent = getPercent(minVal);
-            const maxPercent = getPercent(maxVal);
+            const minPercent = getPercent(min);
+            const maxPercent = getPercent(max);
 
             if (range.current) {
                 range.current.style.left = `${minPercent}%`;
@@ -38,8 +38,8 @@ const RangeSlider = (props) => {
     }, [maxValue, range]);
 
     React.useEffect(() => {
-        const minPercent = getPercent(minVal);
-        const maxPercent = getPercent(maxValRef.current);
+        const minPercent = getPercent(min);
+        const maxPercent = getPercent(max);
 
         if (range.current) {
             range.current.style.left = `${minPercent}%`;
@@ -48,10 +48,11 @@ const RangeSlider = (props) => {
     }, [minVal, getPercent]);
 
     React.useEffect(() => {
-        const minPercent = getPercent(minValRef.current);
-        const maxPercent = getPercent(maxVal);
+        const minPercent = getPercent(min);
+        const maxPercent = getPercent(max);
 
         if (range.current) {
+            range.current.style.left = `${minPercent}%`;
             range.current.style.width = `${maxPercent - minPercent}%`;
         }
     }, [maxVal, getPercent]);
@@ -70,8 +71,8 @@ const RangeSlider = (props) => {
                                     <Typography>
                                         {
                                             formatLabel && typeof formatLabel === 'function'
-                                                ? formatLabel(minVal)
-                                                : formatPrice(minVal, storeConfig && storeConfig.base_currency_code)
+                                                ? formatLabel(min)
+                                                : formatPrice(min, storeConfig && storeConfig.base_currency_code)
                                         }
                                     </Typography>
                                 )
@@ -99,8 +100,8 @@ const RangeSlider = (props) => {
                                     <Typography>
                                         {
                                             formatLabel && typeof formatLabel === 'function'
-                                                ? formatLabel(maxVal)
-                                                : formatPrice(maxVal, storeConfig && storeConfig.base_currency_code)
+                                                ? formatLabel(max)
+                                                : formatPrice(max, storeConfig && storeConfig.base_currency_code)
                                         }
                                     </Typography>
                                 )
@@ -134,11 +135,11 @@ const RangeSlider = (props) => {
                         type="range"
                         min={minValue}
                         max={maxValue}
-                        value={minVal}
+                        value={min}
                         onChange={(event) => {
                             const valueMin = Math.min(Number(event.target.value), maxVal - 1);
                             setMinVal(valueMin);
-                            onChange([valueMin, maxVal]);
+                            onChange([valueMin, max]);
                             minValRef.current = valueMin;
                         }}
                         disabled={disabled}
@@ -151,11 +152,11 @@ const RangeSlider = (props) => {
                         type="range"
                         min={minValue}
                         max={maxValue}
-                        value={maxVal}
+                        value={max}
                         onChange={(event) => {
                             const valueMax = Math.max(Number(event.target.value), minVal + 1);
                             setMaxVal(valueMax);
-                            onChange([minVal, valueMax]);
+                            onChange([min, valueMax]);
                             maxValRef.current = valueMax;
                         }}
                         disabled={disabled}
