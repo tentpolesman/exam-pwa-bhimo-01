@@ -34,12 +34,12 @@ export const generateCatalogSorting = (isSearch) => {
 
 const Sorting = (props) => {
     const {
-        isSearch, defaultSort, filterValue, setFiltervalue, t,
+        isSearch, filterValue, setFiltervalue, t,
     } = props;
     const sortByData = React.useMemo(() => generateCatalogSorting(isSearch), []);
 
-    const [value, setValue] = React.useState(defaultSort);
     const [selectedFilter] = React.useState(filterValue);
+    const [value, setValue] = React.useState(selectedFilter.sort);
 
     const handleChange = (event) => {
         const savedData = {
