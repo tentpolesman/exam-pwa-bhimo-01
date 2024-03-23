@@ -492,14 +492,14 @@ const modules = {
         enabled: true,
     },
     productcompare: {
-        enabled: true,
+        enabled: false,
     },
     order: {
         enabled: true,
         path: '/sales/order',
     },
     wishlist: {
-        enabled: true,
+        enabled: false,
         path: '/wishlist',
     },
     maintenance: {
