@@ -23,7 +23,10 @@ const FooterV2 = (props) => {
                         t={t}
                         CustomButton={(
                             <Button
-                                className={cx('group', 'tablet:mr-6', 'swift-button-install', 'border-neutral-300', 'hover:border-primary-700')}
+                                className={cx(
+                                    '!block', 'group', 'tablet:mr-6', 'swift-button-install',
+                                    'border-neutral-300', 'hover:border-primary-700',
+                                )}
                                 variant="outlined"
                                 iconProps={{ className: cx('w-[20px]', 'text-neutral-600', 'inline-block', 'group-hover:!text-primary-700') }}
                             >
@@ -122,6 +125,16 @@ const FooterV2 = (props) => {
 
                         .footer-links.social-media .mgz-element-inner {
                             padding: 5px 3px;
+                        }
+
+                        @media screen and (max-width: 767px) {
+                            .footer-links.w-full.flex .prose>div {
+                                display: flex;
+                                flex-direction: column;
+                            }
+                            .footer-links a {
+                                margin: 12px !important;
+                            }
                         }
 
                         @media screen and (max-width: 400px) {
